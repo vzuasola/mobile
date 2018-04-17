@@ -1,0 +1,272 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - tests
+  - package
+  - release
+  - deploy-dev
+  - integration-tests-development
+  - deploy-test
+  - integration-tests-test
+  - deploy-staging
+  - integration-tests-staging
+  - staging-signoff
+  - deploy-internal-production
+  - internal-production-signoff
+  - deploy-production
+
+static code analysis:
+  stage: tests
+  script:
+    # To use jacoco coverage reports define the profile "coverage" in your pom.xml that prepares the jacoco plugin
+    # Example can be found here; https://gitlab.ph.esl-asia.com/javanila/javanila-parent/blob/master/pom.xml#L180
+    - python -u automation/run.py --stage java-sonarqube
+
+build locally:
+  stage: package
+  script:
+    - python -u automation/run.py --stage java-package
+
+deploy:
+  stage: release
+  script:
+    - python -u automation/run.py --stage java-deploy
+  when: manual
+
+
+dev:
+  stage: deploy-dev
+  environment:
+    name: development
+    url: https://rodwin.fix.me
+  script:
+    - python -u automation/run.py --stage deploy-development
+  when: manual
+  dependencies:
+    - build locally
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+
+selenium tests development:
+  stage: integration-tests-development
+  script:
+    - python -u automation/run.py --stage integration-tests-development
+  when: manual
+  dependencies:
+    - dev
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+
+qa1:
+  stage: deploy-test
+  environment:
+    name: testing
+    url: https://rodwin.fix.me
+  script:
+    - python -u automation/run.py --stage deploy-testing
+  when: manual
+  dependencies:
+    - dev
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^working$/
+    - /^release-.*$/
+    - tags
+
+selenium tests qa1:
+  stage: integration-tests-test
+  script:
+    - python -u automation/run.py --stage integration-tests-test
+  when: manual
+  dependencies:
+    - qa1
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^working$/
+    - /^release-.*$/
+    - tags
+
+hp fortify scan qa1:
+  stage: integration-tests-test
+  script:
+    - python -u automation/run.py --stage code-scan-testing
+  when: manual
+  dependencies:
+    - qa1
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^working$/
+    - /^release-.*$/
+    - tags
+
+tct:
+  stage: deploy-test
+  environment:
+    name: tct
+    url: https://rodwin.fix.me
+  script:
+    - python -u automation/run.py --stage deploy-tct
+  when: manual
+  dependencies:
+    - dev
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^working$/
+    - /^release-.*$/
+    - tags
+
+selenium tests tct:
+  stage: integration-tests-test
+  script:
+    - python -u automation/run.py --stage integration-tests-tct
+  when: manual
+  dependencies:
+    - tct
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^working$/
+    - /^release-.*$/
+    - tags
+
+uat:
+  stage: deploy-staging
+  environment:
+    name: uat
+    url: https://rodwin.fix.me
+  script:
+    - python -u automation/run.py --stage deploy-uat
+  when: manual
+  dependencies:
+    - qa1
+    - tct
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^release-.*$/
+    - tags
+
+selenium tests uat:
+  stage: integration-tests-staging
+  script:
+    - python -u automation/run.py --stage integration-tests-uat
+  when: manual
+  dependencies:
+    - uat
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^release-.*$/
+    - tags
+
+staging:
+  stage: deploy-staging
+  environment:
+    name: staging
+    url: https://rodwin.fix.me
+  script:
+    - python -u automation/run.py --stage deploy-staging
+  when: manual
+  dependencies:
+    - qa1
+    - tct
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^release-.*$/
+    - tags
+
+selenium tests staging:
+  stage: integration-tests-staging
+  script:
+    - python -u automation/run.py --stage integration-tests-stg
+  when: manual
+  dependencies:
+    - staging
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^release-.*$/
+    - tags
+
+staging signoff:
+  stage: staging-signoff
+  environment:
+    name: staging-signoff
+  script:
+    - python -u automation/run.py --stage staging-signoff
+  when: manual
+  dependencies:
+    - staging
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^release-.*$/
+    - tags
+
+internal prod:
+  stage: deploy-internal-production
+  environment:
+    name: internal-production
+    url: https://rodwin.fix.me
+  script:
+    - python -u automation/run.py --stage deploy-internal-production
+  when: manual
+  dependencies:
+   - staging signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^release-.*$/
+    - tags
+
+internal prod signoff:
+  stage: internal-production-signoff
+  environment:
+    name: internal-production-signoff
+  script:
+    - python -u automation/run.py --stage internal-prod-signoff
+  when: manual
+  dependencies:
+    - internal prod
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^release-.*$/
+    - tags
+
+production:
+  stage: deploy-production
+  environment:
+    name: production
+    url: https://www.dafabet.com/en/sports-df/
+  script:
+    - python -u automation/run.py --stage deploy-production
+  when: manual
+  dependencies:
+   - internal prod signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+  only:
+    - /^release-.*$/
+    - tags
