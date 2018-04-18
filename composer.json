@@ -1,7 +1,7 @@
 {
-    "name": "webcomposer/fe-demo-web-app",
+    "name": "webcomposer/fe-mobile-entrypage",
     "license": "proprietary",
-    "description": "Demo Web App Instance using Web Composer framework",
+    "description": "Mobile Instance using Web Composer framework",
     "require": {
         "php": ">=7.1.0",
         "oomphinc/composer-installers-extender": "^1.1",
