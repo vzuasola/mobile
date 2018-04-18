@@ -1,0 +1,224 @@
+// Banner icons
+
+// sprite icons
+.icon {
+    &-faq.lazy-loaded {
+        @extend %lazy-loaded;
+        background-position: 0 0;
+        width: 2.6rem;
+        height: 2.6rem;
+
+        .banner-list--content:hover & {
+            background-position: -6rem 0;
+        }
+    }
+
+    &-email.lazy-loaded {
+        background-position: 0 -4rem;
+        width: 3rem;
+        height: 2.2rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -4rem;
+        }
+    }
+
+    &-call.lazy-loaded {
+        background-position: 0 -8rem;
+        width: 2.4rem;
+        height: 2.6rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -8rem;
+        }
+    }
+
+    &-banner-facebook.lazy-loaded {
+        background-position: 0.8rem -12rem;
+        width: 2.6rem;
+        height: 2.6rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -5.2rem -12rem;
+        }
+    }
+
+    &-banner-twitter.lazy-loaded {
+        background-position: 0 -16rem;
+        width: 2.8rem;
+        height: 2.8rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -16rem;
+        }
+    }
+
+    &-banner-youtube.lazy-loaded {
+        background-position: 0 -20rem;
+        width: 3.4rem;
+        height: 2.6rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -20rem;
+        }
+    }
+
+    &-wechat.lazy-loaded {
+        background-position: 0 -24rem;
+        width: 3rem;
+        height: 2.8rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -24rem;
+        }
+    }
+
+    &-weibo.lazy-loaded {
+        background-position: 0 -28rem;
+        width: 3.2rem;
+        height: 2.8rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -28rem;
+        }
+    }
+
+    &-viber.lazy-loaded {
+        background-position: 0 -32rem;
+        width: 2.8rem;
+        height: 2.8rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -32rem;
+        }
+    }
+
+    &-zalo.lazy-loaded {
+        background-position: 0 -36rem;
+        width: 3.2rem;
+        height: 3rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -36rem;
+        }
+    }
+
+    &-line.lazy-loaded {
+        background-position: 0 -40rem;
+        width: 2.8rem;
+        height: 2.8rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -40rem;
+        }
+    }
+
+    &-talk.lazy-loaded {
+        background-position: 0 -44rem;
+        width: 3.2rem;
+        height: 3rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -44rem;
+        }
+    }
+
+    &-messenger.lazy-loaded {
+        background-position: 0 -48rem;
+        width: 3.2rem;
+        height: 3rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -48rem;
+        }
+    }
+
+    &-whatsapp.lazy-loaded {
+        background-position: 0 -52rem;
+        width: 3rem;
+        height: 3rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -52rem;
+        }
+    }
+
+    &-bbm.lazy-loaded {
+        background-position: 0 -56rem;
+        width: 3.2rem;
+        height: 3rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -56rem;
+        }
+    }
+
+    &-qq.lazy-loaded {
+        background-position: 0 -60rem;
+        width: 3.2rem;
+        height: 3rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -6rem -60rem;
+        }
+    }
+
+    &-casino.lazy-loaded {
+        background-position: -12rem 0;
+        width: 3.4rem;
+        height: 3.4rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -18rem 0;
+        }
+    }
+
+    &-casino-gold.lazy-loaded {
+        background-position: -12rem -4rem;
+        width: 3.8rem;
+        height: 3.8rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -18rem -4rem;
+        }
+    }
+
+    &-poker.lazy-loaded {
+        background-position: -12rem -8rem;
+        width: 3.4rem;
+        height: 3rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -18rem -8rem;
+        }
+    }
+
+    &-dafabet-connect.lazy-loaded {
+        background-position: -12rem -12rem;
+        width: 3.4rem;
+        height: 3.5rem;
+        @extend %lazy-loaded;
+
+        .banner-list--content:hover & {
+            background-position: -18rem -12rem;
+        }
+    }
+}

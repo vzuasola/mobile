@@ -1,0 +1,98 @@
+// Grid Generator
+@mixin grid-generator($num-grid) {
+    .grid {
+        @extend %clearfix;
+        margin-right: -$col-spacing;
+        margin-bottom: $default-element-margin-bottom;
+        margin-left: -$col-spacing;
+    }
+
+    %col-properties {
+        position: relative;
+        min-height: 0.1rem;
+        padding-right: $col-spacing;
+        padding-left: $col-spacing;
+        float: left;
+    }
+
+    @for $i from 1 through $num-grid {
+        .col-#{$i} {
+            @extend %col-properties;
+        }
+
+        .col-#{$i} {
+            width: $i / $num-grid * 100%;
+        }
+
+        // Special/additional grid for 5/7 column grid
+        @if $i == 2 {
+            .col-2-5 {
+                @extend %col-properties;
+                width: 20%;
+            }
+
+            .col-2-7 {
+                @extend %col-properties;
+                width: 14.28571428571429%;
+            }
+        }
+    }
+}
+
+// Grid Modifier
+@mixin grid-modifier($class) {
+    @for $i from 0 through 10 {
+        $gapClass: $i * 10;
+        $gap: ($i * 10) * 0.1;
+
+        .#{$class}-#{$gapClass} {
+            &,
+            & > .grid {
+                margin-right: -#{$gap / 2}rem;
+                margin-left: -#{$gap / 2}rem;
+            }
+
+            @for $j from 0 through 12 {
+                & > .col-#{$j} {
+                    padding-right: #{$gap / 2}rem;
+                    padding-left: #{$gap / 2}rem;
+                }
+
+                // Special/additional grid for 5/7 column grid
+                @if $j == 2 {
+                    & > .col-2-5 {
+                        padding-right: #{$gap / 2}rem;
+                        padding-left: #{$gap / 2}rem;
+                    }
+
+                    & > .col-2-7 {
+                        padding-right: #{$gap / 2}rem;
+                        padding-left: #{$gap / 2}rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Grid Offset
+@mixin grid-offset($num-grid, $type) {
+    @for $k from 0 through $num-grid {
+        @if $type == offset {
+            .col-offset-#{$k} {
+                margin-left: $k / $num-grid * 100%;
+            }
+        }
+
+        // Special/additional grid for 5/7 column grid
+        @if $k == 2 {
+            .col-offset-2-5 {
+                margin-left: 20%;
+            }
+
+            .col-offset-2-7 {
+                margin-left: 14.28571428571429%;
+            }
+        }
+    }
+}

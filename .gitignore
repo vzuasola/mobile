@@ -1,0 +1,25 @@
+/vendor/
+/core/
+/logs/*
+/cache/*
+!/cache/.gitkeep
+!/logs/.gitkeep
+node_modules/
+
+# Ignore generated assets
+/web/*
+!/web/app.php
+!/web/index.php
+!/web/.htaccess
+
+# files created by the build process
+*.pyc
+*.tar.gz
+build/deployed/*.jsonl
+deploy/*
+
+# package cache
+.node-cache
+.bower-cache
+.composer-cache
+.yarn-cache

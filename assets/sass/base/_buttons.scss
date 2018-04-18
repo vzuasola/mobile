@@ -1,0 +1,152 @@
+//
+// Buttons
+// --------------------------------------------------
+
+// Base styles
+// --------------------------------------------------
+
+.btn {
+    @include button-size($btn-padding-vertical, $btn-padding-horizontal, $btn-font-size, $btn-font-weight, $btn-line-height, $btn-border-radius);
+    @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border, $btn-default-hover-color, $btn-default-hover-bg, $btn-default-hover-border);
+    @include user-select(none);
+    display: inline-block;
+    margin-bottom: 0; // For input.btn
+    border-width: 0.2rem;
+    border-style: solid;
+    background-image: none;
+    font-weight: $btn-font-weight;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    vertical-align: middle;
+    touch-action: manipulation;
+
+    &,
+    &:active,
+    &.active {
+        &:focus,
+        &.focus {
+            outline: 0.5rem auto -webkit-focus-ring-color;
+            outline-offset: -0.2rem;
+        }
+    }
+
+    &.disabled,
+    &[disabled],
+    fieldset[disabled] & {
+        @include box-shadow(none);
+        cursor: not-allowed;
+        opacity: 0.65;
+    }
+
+    // [converter] extracted a& to a.btn
+}
+
+a.btn {
+    &.disabled,
+    fieldset[disabled] & {
+        pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
+    }
+}
+
+// Alternate buttons
+// --------------------------------------------------
+.btn-gray {
+    @include button-variant($btn-gray-color, $btn-gray-bg, $btn-gray-border, $btn-gray-hover-color, $btn-gray-hover-bg, $btn-gray-hover-border);
+}
+
+.btn-yellow {
+    @include button-variant($btn-yellow-color, $btn-yellow-bg, $btn-yellow-border, $btn-yellow-hover-color, $btn-yellow-hover-bg, $btn-yellow-hover-border);
+}
+
+.btn-red {
+    @include button-variant($btn-red-color, $btn-red-bg, $btn-red-border, $btn-red-hover-color, $btn-red-hover-bg, $btn-red-hover-border);
+}
+
+.btn-light-gold {
+    @include button-variant($btn-light-gold-color, $btn-light-gold-bg, $btn-light-gold-border, $btn-light-gold-hover-color, $btn-light-gold-hover-bg, $btn-light-gold-hover-border);
+}
+
+// Link buttons
+// -------------------------
+
+// Make a button look and behave like a link
+.btn-link {
+    border-radius: 0;
+    color: $red;
+    font-weight: normal;
+
+    &,
+    &:active,
+    &.active,
+    &[disabled],
+    fieldset[disabled] & {
+        @include box-shadow(none);
+        background-color: transparent;
+    }
+
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+        border-color: transparent;
+    }
+
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        color: $dark-red;
+    }
+
+    &[disabled],
+    fieldset[disabled] & {
+        &:hover,
+        &:focus {
+            color: $btn-link-disabled-color;
+            text-decoration: none;
+        }
+    }
+}
+
+// Button Sizes
+// --------------------------------------------------
+.btn-medium {
+    // line-height: ensure proper height of button next to small input
+    @include button-size($btn-medium-padding-vertical, $btn-medium-padding-horizontal, $btn-medium-font-size, $btn-medium-font-weight, $btn-medium-line-height, $btn-medium-border-radius);
+}
+
+.btn-large {
+    // line-height: ensure even-numbered height of button next to large input
+    @include button-size($btn-large-padding-vertical, $btn-large-padding-horizontal, $btn-large-font-size, $btn-large-font-weight, $btn-large-line-height, $btn-large-border-radius);
+}
+
+.btn-small {
+    @include button-size($btn-small-padding-vertical, $btn-small-padding-horizontal, $btn-small-font-size, $btn-small-font-weight, $btn-small-line-height, $btn-small-border-radius);
+}
+
+// Block button
+// --------------------------------------------------
+
+.btn-block {
+    display: block;
+    width: 100%;
+
+    // Vertically space out multiple block buttons
+    + .btn-block {
+        margin-top: 0.5rem;
+    }
+}
+
+// Specificity overrides
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+    &.btn-block {
+        width: 100%;
+    }
+}
+
+// Button Lower Case
+.btn-lower-case {
+    text-transform: none;
+}

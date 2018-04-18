@@ -1,0 +1,97 @@
+@import "banner";
+
+.banner {
+    z-index: 10;
+
+    .banner-blurb {
+        padding: 2rem $slider-inner-gap;
+    }
+
+    .slides-item {
+        @include transition(opacity 1s);
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 11;
+        width: 100%;
+        height: auto;
+        opacity: 0;
+
+        &.showing {
+            position: relative;
+            opacity: 1;
+            z-index: 12;
+        }
+    }
+
+    .slider-pager {
+        @include pagination-position(center);
+        position: absolute;
+        bottom: 3rem;
+        z-index: 15;
+    }
+
+    .pager-item {
+        @extend %hide-text;
+        display: block;
+        width: 1.5rem;
+        height: 1.5rem;
+        margin: 0.3rem;
+        padding: 0;
+        float: left;
+        border: 0.1rem solid $slider-pager-color;
+        border-radius: 0.2rem;
+        text-indent: -999.9rem;
+        background: rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+
+        &.active {
+            background-color: $slider-pager-color;
+            outline: none;
+        }
+    }
+
+    // Controls
+    .btn-prev,
+    .btn-next {
+        @include translateY(-50%);
+        position: absolute;
+        top: 75%;
+        z-index: 15;
+        width: 1.5rem;
+        cursor: pointer;
+
+        svg {
+    
+        }
+
+        path {
+            fill: $white;
+        }
+
+        &:hover path,
+        &:active path {
+            fill: $yellow;
+        }
+
+        @include media(">=tablet") {
+            width: 2rem;
+        }
+    }
+
+    .btn-prev {
+        left: 2rem;
+
+        @include media(">=tablet") {
+            left: 3.5rem;
+        }
+    }
+
+    .btn-next {
+        right: 2rem;
+
+        @include media(">=tablet") {
+            right: 3.5rem;
+        }
+    }
+}

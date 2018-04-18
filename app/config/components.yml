@@ -1,0 +1,11 @@
+# Component list
+
+components:
+  header:
+    class: App\Web\Component\Header\HeaderComponent
+
+  footer:
+    class: App\Web\Component\Footer\FooterComponent
+
+  slider:
+    class: App\Web\Component\Slider\SliderComponent

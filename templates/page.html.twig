@@ -1,0 +1,23 @@
+{% extends '@site/base.html.twig' %}
+
+{% block css %}
+<link href="{{ asset('app.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+    {{ widget('header') }}
+{% endblock header %}
+
+{% block footer %}
+    {{ widget('footer') }}
+{% endblock footer %}
+
+{% block body %}
+    {% block main %}
+        {# {{ widget('main') }} #}
+    {% endblock main %}
+{% endblock body %}
+
+{% block script %}
+<script src="{{ asset('app.js') }}"></script>
+{% endblock %}

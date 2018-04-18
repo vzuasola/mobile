@@ -1,0 +1,7 @@
+// Margins
+@mixin margin($class, $position) {
+    @for $i from 0 through 20 {
+        $i: $i * 5;
+        .#{$class}-#{$i} { #{$position}: #{$i}px !important; }
+    }
+}

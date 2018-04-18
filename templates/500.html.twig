@@ -1,0 +1,9 @@
+{% extends '@site/page.html.twig' %}
+
+{% block main %}
+    <div class="container mt-35 mb-10 text-center blank-template">
+        {% for key, value in configs['exception_messages'] %}
+            <div class="top-blurb mb-15 text-14 text-semibold">{{ value }}</div>
+        {% endfor %}
+    </div>
+{% endblock %}

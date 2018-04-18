@@ -1,0 +1,19 @@
+// Widths
+@mixin widths($class, $property, $unit: %) {
+    @if $unit == % {
+        @for $i from 0 through 10 {
+            $i: $i * 10;
+            .#{$class}-#{$i} {
+                #{$property}: #{$i}#{$unit} !important;
+            }
+        }
+    } @else {
+        @for $i from 0 through 20 {
+            $iClass: $i * 50;
+            $i: ($i * 50) * 0.1;
+            .#{$class}-#{$iClass} {
+                #{$property}: #{$i}#{$unit} !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+routes:
+    /:
+        method: GET
+        action: App\Web\Controller\PageController:home
+        components:
+          main: home
+
+    /about:
+        method: GET
+        action: App\Web\Controller\AboutController:about
+        components:
+          main: about
+
+    /about/summary:
+        method: GET
+        action: App\Web\Controller\AboutController:summary
+        components:
+          main: about
+          about_blub: about_content
+
+    /api/plugins/component/route/{id}/{method}:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:route
+
+    /*.*:
+        method: ANY
+        action: App\Web\Controller\NodeController:viewNodeByType
+        components:
+            main: basic

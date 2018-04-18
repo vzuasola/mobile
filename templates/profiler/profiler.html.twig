@@ -1,0 +1,33 @@
+{% import "@site/profiler/trace.html.twig" as macros %}
+
+{% if app.get('profiler').isProfileable() %}
+
+    {{ app.get('profiler').setMessage('Page Render', 0, true) }}
+    {{ app.get('profiler').debugSession() }}
+
+    <div id="profiler" class="profiler">
+        <button id="btn-profile" class="profiler-button">Render Time 
+            <strong>
+                <span class="profiler-time-ms">{{ app.get('profiler').getRenderTime() }}</span> ms
+            </strong>
+        </button>
+        <div class="profiler-content">
+            <div class="profiler-content-inner">
+                {% for key, messages in app.get('profiler').getMessages() %}
+                    {% if not key == 0 and messages is iterable %}
+                        <p><strong>{{ key }} ({{ messages|length }}) </strong></p>
+                        {{ include('@base/components/profiler/message.html.twig') }}
+                    {% elseif key == 0 and messages is iterable %}
+                        <p><strong>Debug</strong></p>
+                        {{ include('@base/components/profiler/message.html.twig') }}
+                    {% endif %}
+                {% else %}
+                    <p>No debug messages to display</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {{ include('@base/components/profiler/style.html.twig') }}
+    {{ include('@base/components/profiler/script.html.twig') }}
+{% endif %}
