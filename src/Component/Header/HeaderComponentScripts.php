@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Web\Component\Header;
+namespace App\MobileEntry\Component\Header;
 
 use App\Plugins\Javascript\ScriptProviderInterface;
 

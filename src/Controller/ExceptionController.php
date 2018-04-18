@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Web\Controller;
+namespace App\MobileEntry\Controller;
 
 use App\Async\Async;
 use App\BaseController;

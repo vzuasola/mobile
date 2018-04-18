@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Web\Controller;
+namespace App\MobileEntry\Controller;
 
 use App\BaseController;
 use Slim\Exception\NotFoundException;

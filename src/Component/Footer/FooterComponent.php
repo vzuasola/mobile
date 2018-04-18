@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Web\Component\Footer;
+namespace App\MobileEntry\Component\Footer;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 

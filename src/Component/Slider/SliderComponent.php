@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Web\Component\Slider;
+namespace App\MobileEntry\Component\Slider;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
