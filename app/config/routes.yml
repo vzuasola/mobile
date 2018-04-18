@@ -1,19 +1,19 @@
 routes:
     /:
         method: GET
-        action: App\Web\Controller\PageController:home
+        action: App\MobileEntry\Controller\PageController:home
         components:
           main: home
 
     /about:
         method: GET
-        action: App\Web\Controller\AboutController:about
+        action: App\MobileEntry\Controller\AboutController:about
         components:
           main: about
 
     /about/summary:
         method: GET
-        action: App\Web\Controller\AboutController:summary
+        action: App\MobileEntry\Controller\AboutController:summary
         components:
           main: about
           about_blub: about_content
@@ -24,6 +24,6 @@ routes:
 
     /*.*:
         method: ANY
-        action: App\Web\Controller\NodeController:viewNodeByType
+        action: App\MobileEntry\Controller\NodeController:viewNodeByType
         components:
             main: basic

@@ -2,10 +2,10 @@
 
 components:
   header:
-    class: App\Web\Component\Header\HeaderComponent
+    class: App\MobileEntry\Component\Header\HeaderComponent
 
   footer:
-    class: App\Web\Component\Footer\FooterComponent
+    class: App\MobileEntry\Component\Footer\FooterComponent
 
   slider:
-    class: App\Web\Component\Slider\SliderComponent
+    class: App\MobileEntry\Component\Slider\SliderComponent
