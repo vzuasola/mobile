@@ -1,0 +1,42 @@
+{
+    "name": "webcomposer/fe-mobile-entrypage",
+    "license": "proprietary",
+    "description": "Mobile Instance using Web Composer framework",
+    "require": {
+        "php": ">=7.1.0",
+        "oomphinc/composer-installers-extender": "^1.1",
+        "webcomposer/fe-core": "dev-working"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\MobileEntry\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0",
+        "kint-php/kint": "^1.1"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git"
+        }
+    ],
+    "scripts": {
+        "int": [
+            "@composer install",
+            "@composer update webcomposer/fe-core"
+        ]
+    },
+    "config": {
+        "secure-http": false,
+        "cache-dir": ".composer-cache"
+    },
+    "extra": {
+        "product": "webcomposer",
+        "installer-types": ["library"],
+        "installer-paths": {
+            "core": ["webcomposer/fe-core"]
+        }
+    }
+}
