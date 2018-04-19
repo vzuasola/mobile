@@ -1,0 +1,20 @@
+{
+    "deploy-development": "package",
+    "integration-tests-development": "deploy-development",
+    "performance-tests-dev": "deploy-development",
+    "deploy-testing": "package",
+    "integration-tests-test": "deploy-testing",
+    "performance-tests-test": "deploy-testing",
+    "performance-tests-tct": "deploy-tct",
+    "performance-tests-uat": "deploy-uat",
+    "performance-tests-staging": "deploy-staging",
+    "acunetix-scan": "deploy-staging",
+    "deploy-tct": "package",
+    "integration-tests-tct": "deploy-tct",
+    "deploy-uat": "testing-signoff",
+    "integration-tests-uat": "deploy-uat",
+    "deploy-staging": "testing-signoff",
+    "integration-tests-stg": "deploy-staging",
+    "staging-signoff": "deploy-staging",
+    "deploy-production": "staging-signoff"
+}

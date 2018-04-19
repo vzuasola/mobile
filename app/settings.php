@@ -10,7 +10,7 @@ $settings['settings']['configurations']['inheritance'] = false;
 $settings['settings']['renderer']['template_path']['site'] = __DIR__ . '/../templates';
 $settings['settings']['renderer']['template_path']['component'] = __DIR__ . '/../src/Component';
 
-$settings['settings']['product'] = 'demo';
+$settings['settings']['product'] = 'mobile-entrypage';
 // $settings['settings']['product_url'] = ['demo'];
 
 $settings['settings']['asset']['prefixed'] = false;
