@@ -1,0 +1,9 @@
+{
+    "config": {
+        "endpoint": "https://gitlab.ph.esl-asia.com/api/v4/projects/504/variables/",
+        "credentials": "b1pbr1R7NUA9YaxAFHiJ"
+    },
+    "data": {
+        "BASELINE_BRANCH": "working"
+    }
+}
