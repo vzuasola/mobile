@@ -21,6 +21,6 @@ components:
   basic:
     class: App\MobileEntry\Component\Main\Basic\BasicComponent
 
-  mobile_menu:
-    class: App\MobileEntry\Component\Header\MobileMenu\MobileMenuComponent
+  header_menu:
+    class: App\MobileEntry\Component\Header\Menu\MenuComponent
     parent: header

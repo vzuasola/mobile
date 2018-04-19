@@ -1,10 +1,10 @@
 <?php
 
-namespace App\MobileEntry\Component\Header\MobileMenu;
+namespace App\MobileEntry\Component\Header\Menu;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
-class MobileMenuComponent implements ComponentWidgetInterface
+class MenuComponent implements ComponentWidgetInterface
 {
     /**
      * Defines the template path
@@ -13,7 +13,7 @@ class MobileMenuComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Header/MobileMenu/template.html.twig';
+        return '@component/Header/Menu/template.html.twig';
     }
 
     /**

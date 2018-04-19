@@ -1,15 +1,16 @@
 import {ComponentInterface} from '@plugins/ComponentWidget/asset/component';
 
-import mobileMenu from '@app/assets/script/components/mobile-menu';
+import menu from './scripts/menu';
 
 /**
  *
  */
-export class MobileMenuComponent implements ComponentInterface {
+export class MenuComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
-        mobileMenu(element);
+        menu(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+        menu(element);
     }
 }
