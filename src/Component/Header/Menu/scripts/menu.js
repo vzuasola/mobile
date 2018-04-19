@@ -1,4 +1,4 @@
-import * as utility from "Base/utility";
+import * as utility from '@core/assets/js/components/utility';
 
 export default function menu(component) {
     // Global vars
