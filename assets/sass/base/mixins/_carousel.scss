@@ -1,0 +1,36 @@
+// Carousel Mixins and Functions
+
+// Pagination map
+//Stores the map-name and map-value in $name: $value format respectively.
+$pagination-map: (center: center, left: left, right: right);
+
+// Pagination position
+// Mixin for getting the pagination position based on the parameter passed via '$side'
+@mixin pagination-position($side: center) {
+    @if $side == center {
+        @include translateX(-50%);
+        left: 50%;
+    }
+    @else if $side == right {
+        @include translateX(-25%);
+        left: 75%;
+    }
+    @else if $side == left {
+        @include translateX(-75%);
+        left: 25%;
+    }
+    @else {
+        @include translateX(-50%);
+        left: 50%;
+    }
+}
+
+// Iterate through each key and value pairs from the pre-defined map and set the value
+// as a param of mixin function accordingly
+@each $name, $value in $pagination-map {
+    .Wallop-pagination {
+        &.#{$name} {
+            @include pagination-position($value);
+        }
+    }
+}

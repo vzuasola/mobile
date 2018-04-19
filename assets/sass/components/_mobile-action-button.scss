@@ -1,0 +1,70 @@
+// Mobile/Tablet buttons
+.mobile-action-button {
+    position: absolute;
+    top: 0.7rem;
+    right: $container-gutter-xs;
+    text-transform: uppercase;
+    line-height: normal;
+
+    @include media(">=tablet") {
+        @include translateY(-50%);
+        top: 50%;
+    }
+
+    .btn-mobile-login {
+        max-width: 6rem;
+        padding: 0.5rem;
+        white-space: inherit;
+
+        span:first-child {
+            line-height: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        // Language specific (mobile only)
+        @include media("<tablet") {
+            .sc &,
+            .ch & {
+                max-width: 5.5rem;
+            }
+
+            .th & {
+                max-width: 8rem;
+            }
+
+            .vn &,
+            .pl & {
+                max-width: 9.5rem;
+            }
+
+            .id & {
+                max-width: 7rem;
+                margin-top: 0.6rem;
+            }
+
+            .jp &,
+            .gr & {
+                max-width: 7.5rem;
+            }
+
+            .kr & {
+                max-width: 6.5rem
+            }
+        }
+
+    }
+
+    .btn-mobile-join-now {
+        @include media("<tablet") {
+            display: none;
+        }
+    }
+
+    .btn {
+        @include media(">=tablet") {
+            max-width: none;
+            min-width: 7.5rem;
+            padding: 0.2rem 1.3rem;
+        }
+    }
+}

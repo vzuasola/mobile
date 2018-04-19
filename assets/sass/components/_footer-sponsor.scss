@@ -1,0 +1,26 @@
+.sponsors {
+    ul {
+        padding: 0;
+        clear: both;
+        overflow: hidden;
+        font-size: 0;
+        text-align: center;
+        list-style-type: none;
+    }
+
+    li {
+        display: inline-block;
+        margin: 0 .6rem;
+    }
+
+    a,
+    span {
+        @extend %hide-text;
+    }
+
+    // Main Club sponsor
+    &-main-desc {
+        padding-bottom: 1.5rem;
+        border-bottom: 0.1rem solid $dark-red;
+    }
+}

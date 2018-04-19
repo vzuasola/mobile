@@ -1,0 +1,254 @@
+// Resonsive Design Break Points
+$mobile-breakpoint:         0;
+$mobile-medium-breakpoint:  360px; // 360px / 22.5rem
+$tablet-breakpoint:         768px; // 768px / 48rem
+$desktop-breakpoint:        1024px; // 1024px / 125.875rem
+
+// Layout/Grid system ----------------------------------------
+$container-gap:       1.5rem; // .container space from side of browser window
+$col-spacing:         1.5rem; // 20px column spacing
+
+// Images ----------------------------------------
+$base-sprite:  "../../core/core/assets/images/sprite.png";
+$sprite-responsive:  "../../core/core/assets/responsive/images/sprite-responsive.png";
+$base-default-image:  "../../core/core/assets/images/default_image.png";
+$base-balance-loader-white: "../../core/core/assets/images/balance-loader-white.gif";
+$base-balance-loader: "../../core/core/assets/images/loader.gif";
+$base-404-error-page: "../../core/core/assets/images/404/sprite_404.png";
+
+// $base-sprite:  "";
+// $sprite-responsive:  "";
+// $base-default-image:  "";
+// $base-balance-loader-white: "";
+// $base-balance-loader: "";
+// $base-404-error-page: "";
+
+// Default Fonts ----------------------------------------
+$default-font-family:       "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+$default-code-font-family:  "courier new", monospace, serif;
+$font-verdana: Verdana, Geneva, sans-serif;
+$font-tahoma: Tahoma, Geneva, sans-serif;
+$font-yahei: "Microsoft Yahei", Arial, sans-serif;
+$font-notosans: "Noto Sans Japanese", "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",  "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+
+// Font Size Defaults
+$default-font-size:   1.4rem;
+$default-line-height: 1.8rem;
+$h1: 2.8rem;
+$h2: 2.4rem;
+$h3: 2rem;
+$h4: 1.8rem;
+$h5: 1.8rem;
+$h6: 1.8rem;
+
+// Colors ----------------------------------------
+$yellow:        #ffe000;
+$fire-red:      #cc0505;
+$red:           #af0000;
+$dark-red:      #900000;
+$darker-red:    #560202;
+$white:         #fff;
+$black:         #000;
+$lightest-gray: #e6e7e8;
+$light-gray:    #d3d3d3;
+$gray:          #5e5e5e;
+$dark-gray:     #373737;
+$light-gold:    #ffd27e;
+$orange:		#edb200;
+$dark-orange:	#c59006;
+
+// Helpers Colors -------------------------------
+
+$disabled-field-gray: #eaeaea;
+$disabled-text-gray:  #777;
+$legend-border:       #868686;
+$error-text-color:    #f20000;
+$success-text-color:  #0b840b;
+$alert-text-color:    #c09853;
+
+// Body
+$background-color: $red;
+
+// Miscellaneous ----------------------------------------
+$default-element-margin-bottom: 1.5rem; // h1, h2, h3, h4, h5, h6, p, ul, ol, table, dl, form, menu
+
+// Border Radius ----------------------------------------
+$border-radius-default:     0.2rem !default;
+$border-radius-large:       1rem !default;
+$border-radius-small:       0.1rem !default;
+
+// form Elements ----------------------------------------
+$input-color-placeholder:       #999 !default;
+// Horizontal rule
+$hr-color:              $gray;
+
+// Buttons ----------------------------------------
+@import 'variable-buttons';
+
+// Category Tab ----------------------------------------
+$cat-tab-color:         $dark-gray;
+$cat-tab-bg:            #bababa;
+$cat-tab-hover-color:   $white;
+$cat-tab-hover-bg:      #7a7a7a;
+
+// Language Switcher ----------------------------------------
+$lang-swithcer-hover:    #a00;
+// Copyright
+$copyright-bg:           #c6c6c7;
+$copyright-font-size:    1.4rem;
+
+// Navbar ----------------------------------------
+$navbar-bg:                 $dark-gray;
+$navbar-border-color:       $red;
+
+// Main Menu ----------------------------------------
+$mainmenu-link-color:         $white;
+$mainmenu-link-bg:            $dark-gray;
+$mainmenu-link-hover-color:   $yellow;
+$mainmenu-link-hover-bg:      $red;
+$mainmenu-link-active-color:  $mainmenu-link-hover-color;
+$mainmenu-link-active-bg:     $mainmenu-link-hover-bg;
+$mainmenu-separator-color:    #4f4f4f;
+$mainmenu-font-size:          1.6rem;
+
+// Submenu ----------------------------------------
+$submenu-wrapper-bg:         $red;
+$submenu-link-color:         $white;
+$submenu-link-bg:            $submenu-wrapper-bg;
+$submenu-link-hover-color:   $yellow;
+$submenu-link-hover-bg:      $dark-red;
+$submenu-link-active-color:  $submenu-link-hover-color;
+$submenu-link-active-bg:     $submenu-link-hover-bg;
+$submenu-font-size:         1.6rem;
+
+// Carousel ----------------------------------------
+$slider-light-gold: #c99f4d;
+
+// Modal -------------------------------------------
+$modal-padding: 2rem;
+$modal-width: 80rem;
+$modal-bg: #f7f7f7;
+$modal-overlay-bg: rgba(0, 0, 0, 0.8);
+$modal-radius: 1.5rem;
+$modal-header-color: $white;
+$modal-header-bg: $red;
+
+// Push Notification Modal -------------------------------------------
+$pushnx-color: #3e3e3e;
+$pushnx-bg: #e7e7e7;
+$pushnx-title-color: #fff;
+$pushnx-title-bg: #af0001;
+$pushnx-title-border-bg: #e7e7e7;
+$pushnx-msg-border-top: 0.1rem solid #aaa;
+$pushnx-msg-bullet-bg: #af0001;
+$pushnx-time-color: #3e3e3e;
+$pushnx-action-color: #3e3e3e;
+$pushnx-action-bg: #ccc;
+$pushnx-action-border: 0.1rem solid #3e3e3e;
+$pushnx-action-hover-color: #3e3e3e;
+$pushnx-action-hover-bg: #ffe001;
+$pushnx-action-expired-color: #af0001;
+
+// Banner Slider ----------------------------------------
+$slider-side-gap:       14rem; // slider side gap to next and prev controls
+$slider-inner-gap:      18rem; // slider gap from blurb to its side.
+$slider-pager-color: 	#fff; //default pager item color
+
+// Scrollbar -------------------------------------------
+$scroll-holder-bg: #b2b2b2;
+$scrollbar-bg: #aaa;
+
+// Pagination
+$pagination-border-color: #777;
+$pagination-color: #777;
+
+// Loading Page
+$loader-body-bg: #501414;
+
+// form top right to middle
+$loader-top-bg: #501414;
+$loader-middle-bg: #c60c0a;
+$loader-bottom-bg: #e92f30;
+
+$loader-color: #fff;
+
+//Loader
+$loader-bg: #ffc600;
+
+// == Bootstrap Grid system ==================================================================
+
+//== Container sizes
+//
+//## Define the maximum width of `.container` for different screen sizes.
+
+// Small screen / tablet
+$container-sm:                 76.8rem !default;
+
+// Medium screen / desktop
+$container-md:                 102.4rem !default;
+
+// Large screen / wide desktop
+$container-lg:                 130rem !default;
+
+//== Container Gutter width
+$container-gutter-xs: 1.5rem;
+$container-gutter-sm: 2rem;
+$container-gutter-md: 10rem;
+$container-gutter-lg: 10rem;
+ 
+//== Media queries breakpoints
+//
+//## Define the breakpoints at which your layout will change, adapting to different screen sizes.
+
+// Extra small screen / phone
+//** Deprecated `$screen-xs` as of v3.0.1
+$screen-xs:                  32rem !default;
+//** Deprecated `$screen-xs-min` as of v3.2.0
+$screen-xs-min:              $screen-xs !default;
+//** Deprecated `$screen-phone` as of v3.0.1
+$screen-phone:               $screen-xs-min !default;
+
+// Small screen / tablet
+//** Deprecated `$screen-sm` as of v3.0.1
+$screen-sm:                  76.8rem !default;
+$screen-sm-min:              $screen-sm !default;
+//** Deprecated `$screen-tablet` as of v3.0.1
+$screen-tablet:              $screen-sm-min !default;
+
+// Medium screen / desktop
+//** Deprecated `$screen-md` as of v3.0.1
+$screen-md:                  102.4rem !default;
+$screen-md-min:              $screen-md !default;
+//** Deprecated `$screen-desktop` as of v3.0.1
+$screen-desktop:             $screen-md-min !default;
+
+// Large screen / wide desktop
+//** Deprecated `$screen-lg` as of v3.0.1
+$screen-lg:                  136.6rem !default;
+$screen-lg-min:              $screen-lg !default;
+//** Deprecated `$screen-lg-desktop` as of v3.0.1
+$screen-lg-desktop:          $screen-lg-min !default;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max:              ($screen-sm-min - 1) !default;
+$screen-sm-max:              ($screen-md-min - 1) !default;
+$screen-md-max:              ($screen-lg-min - 1) !default;
+
+//== Grid system
+//
+//## Define your custom responsive grid.
+
+//** Number of columns in the grid.
+$grid-columns:              12 !default;
+//** Padding between columns. Gets divided in half for the left and right.
+$grid-gutter-width:         2rem !default;
+// Navbar collapse
+//** Point at which the navbar becomes uncollapsed.
+$grid-float-breakpoint:     $screen-sm-min !default;
+//** Point at which the navbar begins collapsing.
+$grid-float-breakpoint-max: ($grid-float-breakpoint - 1) !default;
+
+// Password Strenght 'Meter' -------------------------------------------
+$weak-color: #f20000;
+$average-color: #f43e06;
+$strong-color: #0b840b;

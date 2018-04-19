@@ -1,0 +1,42 @@
+@import '../../vendor/include-media';
+$media-expressions: (
+	'screen': 'screen', 
+	'print': 'print', 
+	'handheld': 'handheld',
+	'retina2x': (
+		'(-webkit-min-device-pixel-ratio: 2)', 
+		'(min-resolution: 192dpi)'
+	), 
+	'retina3x': (
+		'(-webkit-min-device-pixel-ratio: 3)', 
+		'(min-resolution: 350dpi)'
+	),
+	'portrait': (
+		'(orientation: portrait)'
+	),
+	'landscape': (
+		'(orientation: landscape)'
+	), 
+);
+
+$breakpoints: (
+	'mobile': 	$mobile-breakpoint,
+	'medium': 	$mobile-medium-breakpoint,
+	'tablet': 	$tablet-breakpoint,
+	'desktop':	$desktop-breakpoint
+);
+
+// mobile
+// @include media("<tablet") {}
+
+// tablet
+// @include media(">=tablet", "<desktop") {}
+
+// desktop
+// @include media(">=desktop") {}
+
+// mobile-tablet
+// @include media("<desktop") {}
+
+// tablet-desktop
+// @include media(">=tablet") {}

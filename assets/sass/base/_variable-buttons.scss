@@ -1,0 +1,86 @@
+// Buttons ----------------------------------------
+
+$btn-font-weight:           normal !default;
+
+// Button Styles-----
+
+// default
+$btn-default-color:         $yellow !default;
+$btn-default-bg:            transparent !default;
+$btn-default-border:        $yellow !default;
+
+$btn-default-hover-color:   $dark-gray !default;
+$btn-default-hover-bg:      $yellow !default;
+$btn-default-hover-border:  $yellow !default;
+
+// gray
+$btn-gray-color:          $dark-gray !default;
+$btn-gray-bg:             #e4e4e4 !default;
+$btn-gray-border:         #e4e4e4 !default;
+
+$btn-gray-hover-color:    $dark-gray !default;
+$btn-gray-hover-bg:       #f7f7f7 !default;
+$btn-gray-hover-border:   #f7f7f7 !default;
+
+// yellow
+$btn-yellow-color:          $dark-gray !default;
+$btn-yellow-bg:             $yellow !default;
+$btn-yellow-border:         $yellow !default;
+
+$btn-yellow-hover-color:    $dark-gray !default;
+$btn-yellow-hover-bg:       #ffe255 !default;
+$btn-yellow-hover-border:   #ffe255 !default;
+
+// red
+$btn-red-color:          $white !default;
+$btn-red-bg:             $red !default;
+$btn-red-border:         $red !default;
+
+$btn-red-hover-color:    $white !default;
+$btn-red-hover-bg:       #da1b08 !default;
+$btn-red-hover-border:   #da1b08 !default;
+
+// light gold
+$btn-light-gold-color:          $light-gold !default;
+$btn-light-gold-bg:             transparent !default;
+$btn-light-gold-border:         $light-gold !default;
+
+$btn-light-gold-hover-color:    $dark-gray !default;
+$btn-light-gold-hover-bg:       $light-gold !default;
+$btn-light-gold-hover-border:   $light-gold !default;
+
+$btn-link-disabled-color: $light-gray !default;
+
+// Button Sizes -----
+
+// Default
+$btn-padding-vertical:          0.5rem !default;
+$btn-padding-horizontal:        2.3rem !default;
+$btn-font-size:                 2.4rem !default;
+$btn-font-weight:               normal;
+$btn-line-height:               1.428571429 !default;
+$btn-border-radius:             $border-radius-default;
+
+// Medium
+$btn-medium-padding-vertical:   0.5rem !default;
+$btn-medium-padding-horizontal: 2.6rem !default;
+$btn-medium-font-size:          3rem !default;
+$btn-medium-font-weight:        normal;
+$btn-medium-line-height:        1.428571429 !default;
+$btn-medium-border-radius:      $border-radius-default;
+
+// Large
+$btn-large-padding-vertical:    0.8rem !default;
+$btn-large-padding-horizontal:  5.2rem !default;
+$btn-large-font-size:           3.8rem !default;
+$btn-large-font-weight:         bold;
+$btn-large-line-height:         1.428571429 !default;
+$btn-large-border-radius:       $border-radius-large;
+
+// Small
+$btn-small-padding-vertical:    0.2rem !default;
+$btn-small-padding-horizontal:  1.3rem !default;
+$btn-small-font-size:           1.4rem !default;
+$btn-small-font-weight:         normal;
+$btn-small-line-height:         1.428571429 !default;
+$btn-small-border-radius:       $border-radius-small;

@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "watch": "NODE_ENV=development node_modules/.bin/webpack --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js --watch",
+    "dev": "NODE_ENV=development node_modules/.bin/webpack --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "browser-sync": "^2.23.6",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "clean-webpack-plugin": "^0.1.19",
+    "ts-loader": "^3.5.0",
+    "typescript": "^2.8.1",
+    "webpack-mix": "^2.0.2"
+  }
+}

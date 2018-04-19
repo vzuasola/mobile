@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<ruleset name="PHP Standard">
+    <description>The coding standard for PHP_CodeSniffer itself.</description>
+
+    <file>src/</file>
+    <file>web/</file>
+    <file>app/</file>
+
+
+    <exclude-pattern>*.js</exclude-pattern>
+
+    <arg name="report" value="full"/>
+    <arg name="report" value="summary"/>
+
+    <!-- <rule ref="Symfony3Custom"/> -->
+    <rule ref="PSR1"/>
+    <rule ref="PSR2"/>
+
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+	<properties>
+    	    <property name="ignoreBlankLines" value="false"/>
+        </properties>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.StartFile">
+	<severity>0</severity>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile">
+ 	<severity>0</severity>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines">
+        <severity>0</severity>
+    </rule>
+
+    <config name="ignore_errors_on_exit" value="0"/>
+    <config name="ignore_warnings_on_exit" value="0"/>
+
+</ruleset>

@@ -1,0 +1,25 @@
+// Gradients
+
+// Linear Gradient
+@mixin gradient($background-color: $light-gray, $background-top: $lightest-gray, $background-bottom: $light-gray) {
+    background: $background-color;
+    background: -moz-linear-gradient(top, $background-top 0%, $background-bottom 100%);
+    background: -webkit-linear-gradient(top, $background-top 0%, $background-bottom 100%);
+    background: linear-gradient(to bottom, $background-top 0%, $background-bottom 100%);
+}
+
+// Vertical Linear Gradient. top, middle & bottom color
+@mixin gradient-three-color($background-color: $light-gray, $background-top: $lightes-gray, $background-middle: $light-gray, $background-bottom: $light-gray, $middle-position: 50%) {
+    background: $background-color;
+    background: -moz-linear-gradient(top, $background-top 0%, $background-middle $middle-position, $background-bottom 100%);
+    background: -webkit-linear-gradient(top, $background-top 0%, $background-middle $middle-position, $background-bottom 100%);
+    background: linear-gradient(to bottom, $background-top 0%, $background-middle $middle-position, $background-bottom 100%);
+}
+
+// Diagonal Linear Gradient. top, middle & bottom color
+@mixin gradient-three-diagonal-color($background-color: $light-gray, $background-top: $lightes-gray, $background-middle: $light-gray, $background-bottom: $light-gray) {
+    background: $background-color; /* Old browsers */
+    background: -moz-linear-gradient(45deg, $background-top 15%, $background-middle 30%, $background-bottom 50%, $background-middle 70%, $background-top 85%);
+    background: -webkit-linear-gradient(45deg, $background-top 15%, $background-middle 30%, $background-bottom 50%, $background-middle 70%, $background-top 85%);
+    background: linear-gradient(45deg, $background-top 15%, $background-middle 30%, $background-bottom 50%, $background-middle 70%, $background-top 85%);
+}

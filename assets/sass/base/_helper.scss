@@ -1,0 +1,250 @@
+/* stylelint-disable */
+
+// clearfix
+%clearfix:before,
+%clearfix:after {
+    display: table;
+    line-height: 0;
+    content: "";
+}
+
+%clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    @extend %clearfix;
+}
+
+.clear {
+    clear: both;
+}
+
+// hide text
+%hide-text {
+    border: 0;
+    background-color: transparent;
+    color: transparent;
+    font: 0;
+    text-shadow: none;
+}
+
+.hide-text {
+    @extend %hide-text;
+}
+
+%input-block-level {
+    @include box-sizing();
+    display: block;
+    width: 100%;
+    min-height: 2.6rem;
+}
+
+.input-block-level {
+    @extend %input-block-level;
+}
+
+@-ms-viewport       {width: device-width;}
+
+// Floats
+.pull-left          {float: left;}
+.pull-right         {float: right;}
+
+// center block element
+.center-block {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+// Display
+.block              {display: block;}
+.inline             {display: inline;}
+.inline-block       {display: inline-block;}
+
+// Hide element
+.hidden,
+[hidden] {
+    display: none;
+    visibility: hidden;
+}
+
+// Text Position
+.text-left          {text-align: left;}
+.text-right         {text-align: right;}
+.text-center        {text-align: center;}
+
+.text-align-left    {text-align: left;}
+.text-align-right   {text-align: right;}
+.text-align-center  {text-align: center;}
+
+// Text color
+.text-yellow        {color: $yellow;}
+.text-red           {color: $red;}
+.text-dark-red      {color: $dark-red;}
+.text-white         {color: $white;}
+.text-black         {color: $black;}
+.text-lightest-gray {color: $lightest-gray;}
+.text-light-gray    {color: $light-gray;}
+.text-gray          {color: $gray;}
+.text-dark-gray     {color: $dark-gray;}
+.text-light-gold    {color: $light-gold;}
+
+// Text color
+.fill-yellow        {fill: $yellow;}
+.fill-red           {fill: $red;}
+.fill-dark-red      {fill: $dark-red;}
+.fill-white         {fill: $white;}
+.fill-black         {fill: $black;}
+.fill-lightest-gray {fill: $lightest-gray;}
+.fill-light-gray    {fill: $light-gray;}
+.fill-gray          {fill: $gray;}
+.fill-dark-gray     {fill: $dark-gray;}
+.fill-light-gold    {fill: $light-gold;}
+
+// Text Size
+.text-12 { font-size: 1.2rem; }
+.text-14 { font-size: 1.4rem; }
+.text-16 { font-size: 1.6rem; }
+.text-18 { font-size: 1.8rem; }
+.text-20 { font-size: 2rem; }
+.text-36 { font-size: 3.6rem; }
+.text-48 { font-size: 4.8rem; }
+.text-72 { font-size: 7.2rem; }
+
+// Text/font weight
+.text-light     {font-weight: 300;}
+.text-regular   {font-weight: 400;}
+.text-semibold  {font-weight: 600;}
+.text-bold      {font-weight: 700;}
+.text-extrabold {font-weight: 800;}
+
+// Style
+.text-underline {text-decoration: underline;}
+
+// Background color
+.bg-yellow          {background-color: $yellow;}
+.bg-red             {background-color: $red;}
+.bg-dark-red        {background-color: $dark-red;}
+.bg-white           {background-color: $white;}
+.bg-black           {background-color: $black;}
+.bg-lightest-gray   {background-color: $lightest-gray;}
+.bg-light-gray      {background-color: $light-gray;}
+.bg-gray            {background-color: $gray;}
+.bg-dark-gray       {background-color: $dark-gray;}
+
+// Text tranformation
+.text-lowercase     {text-transform: lowercase;}
+.text-uppercase     {text-transform: uppercase;}
+.text-capitalize    {text-transform: capitalize;}
+
+// Widths all viewports
+@include widths("w", "width");
+@include widths("maxw", "max-width", rem);
+
+// Margins all viewports
+@include margin("m", "margin");
+@include margin("mt", "margin-top");
+@include margin("mb", "margin-bottom");
+@include margin("ml", "margin-left");
+@include margin("mr", "margin-right");
+
+// Lazy loading effect
+%lazy-load {
+    opacity: 0;
+    transition: opacity .3s;
+}
+
+%lazy-loaded {
+    opacity: 1;
+}
+
+.lazy-load {
+    @extend %lazy-load;
+}
+
+.lazy-loaded {
+    @extend %lazy-loaded;
+}
+
+// Images
+.img-responsive {
+    max-width: 100%; // Part 1: Set a maximum relative to the parent
+    height: auto; // Part 2: Scale the height according to the width, otherwise you get stretching
+}
+
+// Responsive Visibility Helpers
+.visible-mobile {
+    display: inherit !important;
+}
+
+.visible-tablet {
+    display: none !important;
+}
+
+.visible-desktop {
+    display: none !important;
+}
+
+.hidden-mobile {
+    display: none !important;
+}
+
+.hidden-tablet {
+    display: inherit !important;
+}
+
+.hidden-desktop {
+    display: inherit !important;
+}
+
+@include media(">=tablet", "<desktop") {
+    .visible-mobile {
+        display: none !important;
+    }
+
+    .visible-tablet {
+        display: inherit !important;
+    }
+
+    .visible-desktop {
+        display: none !important;
+    }
+
+    .hidden-mobile {
+        display: inherit !important;
+    }
+
+    .hidden-tablet {
+        display: none !important;
+    }
+
+    .hidden-desktop {
+        display: inherit !important;
+    }
+}
+
+@include media(">=desktop") {
+    .visible-mobile {
+        display: none !important;
+    }
+
+    .visible-tablet {
+        display: none !important;
+    }
+
+    .visible-desktop {
+        display: inherit !important;
+    }
+
+    .hidden-mobile {
+        display: inherit !important;
+    }
+
+    .hidden-tablet {
+        display: inherit !important;
+    }
+
+    .hidden-desktop {
+        display: none !important;
+    }
+}

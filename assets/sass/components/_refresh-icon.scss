@@ -1,0 +1,39 @@
+.balance-wrapper {
+    position: relative;
+    margin-right: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+}
+
+.refresh-icon {
+    display: none;
+    background-image: url($base-sprite);
+    background-position: -36rem -10rem;
+
+    img {
+        display: none;
+    }
+
+    &.active {
+        background-image: none;
+
+        img {
+            @extend .block;
+        }
+    }
+}
+
+.refresh-loading {
+    display: inline-block;
+}
+
+.refresh-icon,
+.refresh-loading {
+    position: absolute;
+    top: 0.3rem;
+    right: -2rem;
+    margin-left: 0.5rem;
+    width: 1.6rem;
+    height: 1.5rem;
+    cursor: pointer;
+}

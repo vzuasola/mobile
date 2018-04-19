@@ -1,0 +1,124 @@
+// Login Lightbox
+.login-form-lightbox {
+    width: 100%;
+    min-width: 100%;
+    margin-bottom: 0;
+
+    .modal-content {
+        width: 42rem;
+        padding: 5.2rem 5.2rem 4rem;
+        border-radius: 0.5rem;
+        background: $gray;
+    }
+
+    .modal-close-button {
+        width: 3rem;
+        height: 3rem;
+
+        &.lazy-loaded {
+            background-position: -28rem -24rem;
+        }
+    }
+
+    .loginform-textfield-wrapper {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+
+        .username-field-wrapper,
+        .password-field-wrapper {
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            display: block;
+            width: 100%;
+            height: 5.2rem;
+            margin-bottom: 2rem;
+            padding: 0 1.5rem 0 5rem;
+            line-height: 5.2rem;
+            font-size: 2rem;
+            border-radius: 0.2rem;
+            border: 0 none;
+        }
+
+        .username-icon,
+        .password-icon {
+            @include image-replacement(
+                $background-url: $base-sprite,
+                $x: center,
+                $y: center,
+                $width: 2.5rem,
+                $height: 2.5rem,
+                $line-height: 1
+            );
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+        }
+
+        .username-icon {
+            top: 1.5rem;
+            width: 2.8rem;
+            height: 2.4rem;
+            background-position: -24rem -28rem;
+        }
+
+        .password-icon {
+            width: 2.6rem;
+            height: 3rem;
+            background-position: -28rem -28rem;
+        }
+    }
+
+    .loginform-button-wrapper {
+        width: 100%;
+
+        button {
+            text-transform: uppercase;
+            float: none;
+        }
+
+        .btn-links {
+            display: inline-block;
+            font-size: 2rem;
+            color: $lightest-gray;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-form-lightbox-blurb {
+            font-size: 2rem;
+            color: $lightest-gray;
+        }
+    }
+
+    .login-error {
+        min-height: 3rem;
+        margin-bottom: 1rem;
+        color: $white;
+    }
+
+    hr {
+        border-top-color: $white;
+        margin: 3.5rem -2.5rem 2rem;
+    }
+
+    .ie8_username_placeholder,
+    .ie8_password_placeholder {
+        position: absolute;
+        top: 0;
+        left: 5rem;
+        z-index: 10;
+        width: 26.6rem;
+        height: 5.2rem;
+        padding: 1.5rem 1.5rem 1.5rem 0;
+        font-size: 2rem;
+        color: #999;
+        background: #fff;
+        cursor: text;
+        text-align: left;
+    }
+}

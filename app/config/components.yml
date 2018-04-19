@@ -1,0 +1,22 @@
+# Component list
+
+components:
+  header:
+    class: App\MobileEntry\Component\Header\HeaderComponent
+
+  footer:
+    class: App\MobileEntry\Component\Footer\FooterComponent
+
+  home:
+    class: App\MobileEntry\Component\Main\Home\HomeComponent
+
+  home_slider:
+    class: App\MobileEntry\Component\Main\Home\Slider\SliderComponent
+    parent: home
+
+  home_products:
+    class: App\MobileEntry\Component\Main\Home\Products\ProductsComponent
+    parent: home
+
+  basic:
+    class: App\MobileEntry\Component\Main\Basic\BasicComponent
