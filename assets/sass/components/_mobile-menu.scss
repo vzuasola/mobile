@@ -92,12 +92,15 @@
         line-height: 3rem;
 
         // Icon
-        &:before {
-            @include image-replacement($sprite-responsive, -36rem, -28rem, 2.6rem, 2.2rem, 2.2rem);
-            content: "";
+        .user-icon {
+            width: 2.6rem;
             margin: -0.4rem 0.8rem 0 0;
-        }
+            vertical-align: middle;
 
+            path {
+                fill: $white;
+            }
+        }
     }
 
     // close button

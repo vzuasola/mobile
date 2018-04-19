@@ -1,5 +1,8 @@
 <footer class="footer pt-25">
-    <div class="copyright clear">
-        <p class="container text-center">Copyright &copy; {{ now | date('Y') }} | Dafabet | All Rights Reserved</p>
+    <div class="container">
+        {{ include('@component/Footer/templates/download.html.twig') }}
+        {{ include('@component/Footer/templates/sponsor.html.twig') }}
     </div>
+    {{ include('@component/Footer/templates/menu.html.twig') }}
+    {{ include('@component/Footer/templates/copyright.html.twig') }}
 </footer>

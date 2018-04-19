@@ -7,5 +7,13 @@ components:
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
 
+  home:
+    class: App\MobileEntry\Component\Main\Home\HomeComponent
+
   slider:
-    class: App\MobileEntry\Component\Slider\SliderComponent
+    class: App\MobileEntry\Component\Main\Home\Slider\SliderComponent
+    parent: home
+
+  product_list:
+    class: App\MobileEntry\Component\Main\Home\ProductList\ProductListComponent
+    parent: home

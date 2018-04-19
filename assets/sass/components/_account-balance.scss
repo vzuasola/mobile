@@ -1,0 +1,36 @@
+// Mobile/Table
+.account-balance {
+    position: absolute;
+    // top: 10px;
+    top: 7px;
+    right: $container-gutter-xs;
+    text-align: center;
+
+    a,
+    a:hover {
+        color: $white;
+    }
+
+    &-amount {
+        display: block;
+        margin-top: 3px;
+        font-size: 12px;
+    }
+
+    // icon
+    &-icon {
+        width: 36px;
+        vertical-align: middle;
+
+        path {
+            fill: $white;
+        }
+    }
+
+    // loader 
+    &-loader {
+        width: 16px;
+        height: 15px;
+        margin-top: 10px;
+    }
+}

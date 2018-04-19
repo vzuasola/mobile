@@ -3,7 +3,7 @@ import {ComponentInterface} from '@plugins/ComponentWidget/asset/component';
 /**
  *
  */
-export class SliderComponent implements ComponentInterface {
+export class ProductListComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
     }
 

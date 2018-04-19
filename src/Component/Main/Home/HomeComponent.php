@@ -1,10 +1,10 @@
 <?php
 
-namespace App\MobileEntry\Component\Slider;
+namespace App\MobileEntry\Component\Main\Home;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
-class SliderComponent implements ComponentWidgetInterface
+class HomeComponent implements ComponentWidgetInterface
 {
     /**
      * Defines the template path
@@ -13,7 +13,7 @@ class SliderComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Slider/template.html.twig';
+        return '@component/Main/Home/template.html.twig';
     }
 
     /**

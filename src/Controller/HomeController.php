@@ -3,9 +3,8 @@
 namespace App\MobileEntry\Controller;
 
 use App\BaseController;
-use Slim\Exception\NotFoundException;
 
-class PageController extends BaseController
+class HomeController extends BaseController
 {
     /**
      *
