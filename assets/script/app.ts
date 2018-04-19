@@ -5,12 +5,14 @@ import {HeaderComponent} from '@app/src/Component/Header/script';
 import {FooterComponent} from '@app/src/Component/Footer/script';
 import {SliderComponent} from '@app/src/Component/Main/Home/Slider/script';
 import {ProductsComponent} from '@app/src/Component/Main/Home/Products/script';
+import {MobileMenuComponent} from '@app/src/Component/Header/MobileMenu/script';
 
 ComponentManager.setComponents({
     'header': new HeaderComponent(),
     'footer': new FooterComponent(),
     'home_slider': new SliderComponent(),
     'home_products': new ProductsComponent(),
+    'mobile_menu': new MobileMenuComponent(),
 });
 
 ComponentManager.init();

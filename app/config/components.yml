@@ -20,3 +20,7 @@ components:
 
   basic:
     class: App\MobileEntry\Component\Main\Basic\BasicComponent
+
+  mobile_menu:
+    class: App\MobileEntry\Component\Header\MobileMenu\MobileMenuComponent
+    parent: header
