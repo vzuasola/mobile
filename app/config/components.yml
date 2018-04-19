@@ -10,10 +10,13 @@ components:
   home:
     class: App\MobileEntry\Component\Main\Home\HomeComponent
 
-  slider:
+  home_slider:
     class: App\MobileEntry\Component\Main\Home\Slider\SliderComponent
     parent: home
 
-  product_list:
-    class: App\MobileEntry\Component\Main\Home\ProductList\ProductListComponent
+  home_products:
+    class: App\MobileEntry\Component\Main\Home\Products\ProductsComponent
     parent: home
+
+  basic:
+    class: App\MobileEntry\Component\Main\Basic\BasicComponent

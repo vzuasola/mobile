@@ -1,9 +1,15 @@
 routes:
     /:
         method: GET
-        action: App\MobileEntry\Controller\HomeController:home
+        action: App\MobileEntry\Controller\HomeController:view
         components:
           main: home
+
+    /about:
+        method: GET
+        action: App\MobileEntry\Controller\AboutController:view
+        components:
+          main: basic
 
     /api/plugins/component/route/{id}/{method}:
         method: ANY

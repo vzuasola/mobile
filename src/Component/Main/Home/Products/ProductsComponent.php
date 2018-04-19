@@ -1,10 +1,10 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Home\ProductList;
+namespace App\MobileEntry\Component\Main\Home\Products;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
-class ProductListComponent implements ComponentWidgetInterface
+class ProductsComponent implements ComponentWidgetInterface
 {
     /**
      * Defines the template path
@@ -13,7 +13,7 @@ class ProductListComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Main/Home/ProductList/template.html.twig';
+        return '@component/Main/Home/Products/template.html.twig';
     }
 
     /**
