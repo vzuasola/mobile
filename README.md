@@ -1,13 +1,18 @@
-# Dafabet Webcomposer Template
+# Webcomposer Dafabet Mobile Instance
 
-Use this Repository to create a new Webcomposer Site Instance using the 
-Dafabet Stack
+The official repository for Webcomposer Dafabet Mobile project
 
-## Creating a new Site Instance from this Template
+## Documentations
 
-* Git clone this repository and delete the git folder
-* Change the **/composer.json** project name
-* Change the **/devtool/package.json** project name and URL rewrite path
-* Change the namespace of all classes under **/src** folder
-* Change the **/app/settings.php** product and product URL parameters
-* Commit everything to a new repository
+All documentations can be found here
+
+* [**Front End**](https://gitlab.ph.esl-asia.com/CMS/fe-core#web-composer-core-framework)
+* [**API**](https://gitlab.ph.esl-asia.com/CMS/cms-api#web-composer-api-layer)
+* [**Drupal**](https://gitlab.ph.esl-asia.com/CMS/drupal-data#web-composer-template-for-drupal-projects)
+
+## Setting up this Instance
+
+* Checkout this repository
+* Run `composer install`
+* Run `yarn install`
+* Run `yarn watch`
