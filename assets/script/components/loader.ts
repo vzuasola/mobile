@@ -29,7 +29,7 @@ export class Loader {
     show() {
         utility.removeClass(this.loader, 'hidden');
 
-        // class to target if it's <body> tag for styling overly
+        // set loader as overlay within component
         if (this.overlay) {
             utility.addClass(this.target, "loader-overlay");
         }
