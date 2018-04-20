@@ -535,6 +535,93 @@
             }
         }
     },
+    "package-v2": {
+        "steps": {
+            "composer": {
+                "dockerfile": "automation/Dockerfile.composer",
+                "docker-image-suffix": "-composer",
+                "options": [
+                    "--env",
+                    "SYMFONY_ENV=prod"
+                ],
+                "command": [
+                    "install",
+                    "-v",
+                    "--no-interaction",
+                    "--no-dev",
+                    "--optimize-autoloader"
+                ],
+                "volumes": [
+                    "$PWD:/var/www/html/app"
+                ]
+            },
+            "yarn-install": {
+                "dockerfile": "automation/Dockerfile.yarn-mobile",
+                "docker-image-suffix": "-yarn",
+                "options": [
+                    "--env",
+                    "DIRPATH=/app/devtool/"
+                ],
+                "command": [
+                    "yarn",
+                    "install"
+                ],
+                "volumes": [
+                    "$PWD:/app/devtool"
+                ]
+            },
+            "yarn-dist": {
+                "dockerfile": "automation/Dockerfile.yarn-mobile",
+                "docker-image-suffix": "-yarn",
+                "options": [
+                    "--env",
+                    "DIRPATH=/app/devtool/"
+                ],
+                "command": [
+                    "yarn",
+                    "run",
+                    "dist"
+                ],
+                "volumes": [
+                    "$PWD:/app/devtool"
+                ]
+            },
+            "package": {
+                "dockerfile": "automation/Dockerfile.package",
+                "docker-image-suffix": "-package",
+                "options": [
+                    "--env", "CI_PROJECT_NAME=$CI_PROJECT_NAME",
+                    "--env", "VERSION=$VERSION",
+                    "--env", "CI_PIPELINE_ID=$CI_PIPELINE_ID",
+                    "--env", "ARTIFACTORY_PASSWORD=$ARTIFACTORY_PASSWORD"
+                ],
+                "command": [
+                    "python",
+                    "/app/automation/package.py",
+                    "--configuration-file",
+                    "/app/pipeline-package.json"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            },
+            "mark as complete": {
+                "dockerfile": "automation/Dockerfile.authorize",
+                "docker-image-suffix": "-mark-as-complete",
+                "options": [
+                    "--env",
+                    "USER=$GITLAB_USER_EMAIL"
+                ],
+                "command": [
+                    "python",
+                    "/app/automation/mark_as_complete.py"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
     "deploy-development": {
         "steps": {
             "authorize": {
