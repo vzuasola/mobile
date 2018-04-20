@@ -28,7 +28,7 @@ Router.on(RouterClass.afterNavigate, (event) => {
 });
 
 Router.on(RouterClass.navigateError, (event) => {
-    alert("Error occured...");
+    console.log("Error occured...");
 });
 
 
