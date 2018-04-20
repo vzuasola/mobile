@@ -24,6 +24,8 @@ class FooterComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+        
+        $data['copyright'] = 'Copyright';
 
         return $data;
     }
