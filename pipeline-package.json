@@ -4,7 +4,6 @@
             "assets",
             "cache",
             "core",
-            // "devtool",
             "logs",
             "src",
             "templates",
