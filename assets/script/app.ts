@@ -17,7 +17,6 @@ ComponentManager.setComponents({
     'header_menu': new MenuComponent(),
 });
 
-// let loader = new Loader(document.body, true);
 let loader = new Loader(document.querySelector(".main"), true);
 
 Router.on(RouterClass.beforeNavigate, (event) => {
