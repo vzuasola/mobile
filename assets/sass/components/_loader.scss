@@ -1,98 +1,73 @@
-html,
-body,
-.loader-container {
-    height: 100%;
-}
-
-body {
-    min-width: 0;
-    display: table;
-    margin: 0 auto;
-    @include gradient-three-diagonal-color($loader-body-bg, $loader-top-bg, $loader-middle-bg, $loader-bottom-bg);
-    color: #fff;
-    font: 1.4rem/1.8rem "Trebuchet MS", Arial, sans-serif;
-    -webkit-text-size-adjust: 100%;
-}
-
-.loader-container {
-    display: table-cell;
-    max-width: 60rem;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.loader-message {
-    display: none;
-}
-
 /* Loader */
-#loader {
-    position: relative;
-    width: 16rem;
-    height: 1.4rem;
-    margin: 2rem auto 3rem;
+.loader {
+    &-container {
+        position: relative;
+        width: 160px;
+        height: 14px;
+        margin: -7px auto 30px;
+    }
 
-    .loader {
+    .ray {
         position: absolute;
         top: 0;
         background-color: #ffc600;
-        width: 1.6rem;
-        height: 1.6rem;
+        width: 16px;
+        height: 16px;
         @include animation-name(bounce_loader);
         @include animation-duration(1.3s);
         @include animation-iteration-count(infinite);
         @include animation-direction(normal);
         @include scale(0.5);
-        border-radius: 0.9rem;
+        border-radius: 9px;
     }
 
-    #loader-0 {
+    #ray-0 {
         left: 0;
         @include animation-delay(0.01s);
     }
 
-    #loader-1 {
-        left: 1.6rem;
+    #ray-1 {
+        left: 16px;
         @include animation-delay(0.14s);
     }
 
-    #loader-2 {
-        left: 3.2rem;
+    #ray-2 {
+        left: 32px;
         @include animation-delay(0.27s);
     }
 
-    #loader-3 {
-        left: 4.8rem;
+    #ray-3 {
+        left: 48px;
         @include animation-delay(0.4s);
     }
 
-    #loader-4 {
-        left: 6.4rem;
+    #ray-4 {
+        left: 64px;
         @include animation-delay(0.53s);
     }
 
-    #loader-5 {
-        left: 8rem;
+    #ray-5 {
+        left: 80px;
         @include animation-delay(0.66s);
     }
 
-    #loader-6 {
-        left: 9.6rem;
+    #ray-6 {
+        left: 96px;
         @include animation-delay(0.79s);
     }
 
-    #loader-7 {
-        left: 11.2rem;
+    #ray-7 {
+        left: 112px;
         @include animation-delay(0.92s);
     }
 
-    #loader-8 {
-        left: 12.8rem;
+    #ray-8 {
+        left: 128px;
         @include animation-delay(1.05s);
     }
 
-    #loader-9 {
-        left: 14.4rem;
+    #ray-9 {
+        left: 144px;
         @include animation-delay(1.18s);
     }
 
@@ -120,17 +95,17 @@ body {
         }
     }
 
-    @-ms-keyframes bounce_loader {
-        0% {
-            -ms-transform: scale(0.9);
-            background-color: #ffc600;
-        }
+    // @-ms-keyframes bounce_loader {
+    //     0% {
+    //         -ms-transform: scale(0.9);
+    //         background-color: #ffc600;
+    //     }
 
-        100% {
-            -ms-transform: scale(0.5);
-            background-color: #fff;
-        }
-    }
+    //     100% {
+    //         -ms-transform: scale(0.5);
+    //         background-color: #fff;
+    //     }
+    // }
 
     @-webkit-keyframes bounce_loader {
         0% {
@@ -153,6 +128,29 @@ body {
         100% {
             -moz-transform: scale(0.5);
             background-color: #fff;
+        }
+    }
+
+    // For loader overlay
+    &-overlay {
+        position: relative;
+
+        .loader {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 15;
+            background: rgba(0, 0, 0, 0.75);
+
+            &-container {
+                @include translate(-50%, -50%);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin: 0;
+            }
         }
     }
 }
