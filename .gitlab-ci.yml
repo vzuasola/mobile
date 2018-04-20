@@ -3,7 +3,7 @@ variables:
 
 stages:
   - tests
-  - package`
+  - package
   - deploy-dev
   - integration-tests-development
   - performance-tests-development
