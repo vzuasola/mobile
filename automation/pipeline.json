@@ -560,14 +560,14 @@
                 "docker-image-suffix": "-yarn",
                 "options": [
                     "--env",
-                    "DIRPATH=/app/devtool/"
+                    "DIRPATH=/app"
                 ],
                 "command": [
                     "yarn",
                     "install"
                 ],
                 "volumes": [
-                    "$PWD:/app/devtool"
+                    "$PWD:/app"
                 ]
             },
             "yarn-dist": {
@@ -575,7 +575,7 @@
                 "docker-image-suffix": "-yarn",
                 "options": [
                     "--env",
-                    "DIRPATH=/app/devtool/"
+                    "DIRPATH=/app"
                 ],
                 "command": [
                     "yarn",
@@ -583,7 +583,7 @@
                     "dist"
                 ],
                 "volumes": [
-                    "$PWD:/app/devtool"
+                    "$PWD:/app"
                 ]
             },
             "package": {

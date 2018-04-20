@@ -1,2 +1,2 @@
 FROM kkarczmarczyk/node-yarn:6.9
-WORKDIR /app/devtool
+WORKDIR /app
