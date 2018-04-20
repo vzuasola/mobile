@@ -23,13 +23,7 @@ class FooterComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = [
-            'about_text' => 'About Dafabet',
-            'about_blurb' => 'Welcome to Dafabet, Asia`s leading online betting site and home to some of the best gaming products on the web that includes Sports Betting, Online Casino, Live Casino Games, Online Poker, Flash Games and an array of world class online betting games.',
-            'copyright' => 'Copyright © 2018 | Dafabet | All Rights Reserved',
-        ];
-
-        $data['authenticated'] = $_SESSION['isLogin'] ?? false;
+        $data = [];
 
         return $data;
     }
