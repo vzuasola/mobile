@@ -7,6 +7,7 @@
             "w"
         ],
         "instances": [
+            "http://mdc-co-nex01.msgreen.dom:8081/repository/$CI_PROJECT_NAME",
             "http://trc-ptc-afact01.msred.dom:8081/artifactory/$CI_PROJECT_NAME"
         ]
     },

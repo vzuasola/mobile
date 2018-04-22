@@ -63,6 +63,8 @@ create package:
       - .node-cache/
       - .composer-cache/
       - .yarn-cache/
+  tags:
+    - devrunner
 
 dev:
   stage: deploy-dev
