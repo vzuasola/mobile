@@ -1,3 +1,34 @@
+{% set copy = {
+	en: 'Copyright',
+	eu: 'Copyright',
+	sc: '版权',
+	ch: '版權',
+	th: 'ลิขสิทธิ์',
+	vn: 'Bản Quyền',
+	id: 'Hak cipta',
+	jp: 'Copyright',
+	kr: 'Copyright',
+	in: 'Copyright',
+	gr: 'Πνευματική Ιδιοκτησία',
+	pl: 'Copyright',
+} %}
+
+{% set all_rights_reserved = {
+	en: 'All Rights Reserved',
+	eu: 'All Rights Reserved',
+	sc: '版权所有',
+	ch: '版權所有',
+	th: 'สงวนลิขสิทธิ์',
+	vn: 'Tất Cả Các Quyền Được Bảo Hộ',
+	id: 'Semua hak dilindungi',
+	jp: 'All Rights Reserved',
+	kr: 'All Rights Reserved',
+	in: 'All Rights Reserved',
+	gr: 'Όλα τα Δικαιώματα Κατοχυρωμένα',
+	pl: 'Wszystkie prawa zastrzeżone',
+} %}
+
 <div class="copyright clear">
-    <p class="container text-center">{{ 'Copyright' }} &copy; {{ now | date('Y') }} | Dafabet | {{ 'All Rights Reserved' }}</p>
+    <p class="container text-center">{{ copy[app.lang] }} &copy; {{ now | date('Y') }} | Dafabet | {{ all_rights_reserved[app.lang] }}</p>
 </div>
+

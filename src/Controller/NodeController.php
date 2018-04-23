@@ -15,6 +15,6 @@ class NodeController extends Base
         $data['data'] = $node;
         $data['title'] = $node['title'][0]['value'];
 
-        return $this->view->render($response, '@site/page.html.twig', $data);
+        return $this->widgets->render($response, '@site/page.html.twig', $data);
     }
 }

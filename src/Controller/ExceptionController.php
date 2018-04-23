@@ -14,7 +14,7 @@ class ExceptionController extends BaseController
     {
         $data['title'] = '404';
 
-        return $this->view->render($response, '@site/404.html.twig', $data);
+        return $this->widgets->render($response, '@site/404.html.twig', $data);
     }
 
     /**
@@ -25,6 +25,6 @@ class ExceptionController extends BaseController
         $data['title'] = '500';
         $data['configs']['exception_messages'] = $this->get('translation_manager')->getTranslations('exception');
 
-        return $this->view->render($response, '@site/500.html.twig', $data)->withStatus(500);
+        return $this->widgets->render($response, '@site/500.html.twig', $data)->withStatus(500);
     }
 }

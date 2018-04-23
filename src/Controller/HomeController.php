@@ -13,6 +13,6 @@ class HomeController extends BaseController
     {
         $data['title'] = 'Home';
 
-        return $this->view->render($response, '@site/page.html.twig', $data);
+        return $this->widgets->render($response, '@site/page.html.twig', $data);
     }
 }

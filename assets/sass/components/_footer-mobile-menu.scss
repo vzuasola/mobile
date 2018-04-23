@@ -1,7 +1,6 @@
 .footer-mobile-menu {
     ul {        
         @extend .clearfix;
-        max-width: $tablet-breakpoint;
         list-style-type: none;
         margin: 0 auto;
         padding: 0;

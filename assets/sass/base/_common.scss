@@ -6,6 +6,7 @@
 
 // Base Style
 @import "default";
+@import "buttons";
 @import "helper";
 
 // Grid
@@ -13,10 +14,12 @@
 @import "grid";
 
 // Common Components
-@import "buttons";
 @import "table";
 @import "../section/header";
 @import "../section/footer";
 
 @import "../components/mobile-menu";
-@import "../components/language-lightbox";
+@import "../components/checkbox-styler";
+@import "../components/modal";
+@import "../components/login-lightbox";
+@import "../components/loader";
