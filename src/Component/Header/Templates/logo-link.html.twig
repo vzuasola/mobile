@@ -1,0 +1,31 @@
+{% set logoAltText = {
+        en: 'Home',
+        eu: 'Home',
+        sc: '主页',
+        ch: '主頁',
+        th: 'หน้าแรก',
+        vn: 'Trang chủ',
+        id: 'Dafabet Indonesia : Bandar Bola, Agen Bola Terpercaya, Taruhan Bola, Judi Online',
+        jp: ' ホーム',
+        kr: '홈',
+        in: 'Home',
+        gr: 'Αρχική',
+        pl: 'Home',
+    }
+%}
+
+{% set logoUri = header.logo_uri is defined ? header.logo_uri : url('/') %}
+
+{% if app.lang == "ch" %}
+    <a href="{{ logoUri }}" hreflang="ch" rel="{{ logoAltText[app.lang] }}" title="{{ logoAltText[app.lang] }}">
+        {{ include('@component/Header/Templates/logo-image.html.twig') }}
+    </a>
+{% elseif app.lang == "sc" %}
+    <a href="{{ logoUri }}" hreflang="sc" rel="{{ logoAltText[app.lang] }}" title="{{ logoAltText[app.lang] }}">
+        {{ include('@component/Header/Templates/logo-image.html.twig') }}
+    </a>
+{% else %}
+    <a href="{{ logoUri }}" title="{{ logoAltText[app.lang] }}">
+        {{ include('@component/Header/Templates/logo-image.html.twig') }}
+    </a>
+{% endif %}
