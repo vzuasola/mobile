@@ -1,0 +1,6 @@
+{% if show_announcement %}
+<span>{{ announcement['name'] }}</span>
+<span>{{ announcement['text']| raw }}</span>
+<a>Dismiss</a>
+<a>See all</a>
+{% endif %}
