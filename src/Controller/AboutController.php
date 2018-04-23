@@ -13,6 +13,6 @@ class AboutController extends BaseController
     {
         $data['title'] = 'About';
 
-        return $this->view->render($response, '@site/page.html.twig', $data);
+        return $this->widgets->render($response, '@site/page.html.twig', $data);
     }
 }
