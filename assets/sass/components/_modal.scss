@@ -64,6 +64,7 @@
         z-index: 1022;
         width: $modal-width;
         max-width: 90%;
+        min-width: 2.8rem;
         max-height: 90%;
         margin: 0 auto;
         padding: $modal-padding;
@@ -86,14 +87,5 @@
 
     .btn {
         min-width: 10rem;
-    }
-}
-
-// Hide spacific modals for mobile/tablets
-.announcement--lightbox {
-    display: none;
-
-    @include media(">=desktop") {
-        display: block;
     }
 }

@@ -16,7 +16,7 @@
         </div> #}
 
         <span class="mobile-action-button">
-            <a href="#" class="btn btn-yellow btn-small btn-mobile-login">
+            <a href="#login-lightbox" class="modal-trigger btn btn-yellow btn-small btn-mobile-login">
                 <span class="visible-mobile">Login/ Join</span>
                 <span class="hidden-mobile">Login</span>
             </a>
@@ -24,6 +24,37 @@
                 Join
             </a>
         </span>
+
+        <div id="login-lightbox" class="modal login">
+            <div class="modal-content login-content">
+                <div class="modal-body">
+                    <img src="{{ asset('images/dafabet_logo.png') }}" alt="" class="login-logo mb-20">
+                    <form action="" class="login-form text-center">
+                        {# <p class="login-notification">Account details incorrect - please check</p> #}
+                        <div class="login-field mb-20">
+                            <input type="text" class="input-block-level" name="username" placeholder="Username">
+                            <svg viewBox="0 0 126.091 131.802" class="login-field-icon">
+                                <path d="M65.351 79.302a36.53 36.53 0 0 1-31.303-21.419h62.606a36.524 36.524 0 0 1-31.303 21.419M63.154 0C38.89 0 19.22 19.67 19.22 43.934s19.67 43.934 43.934 43.934c24.262 0 43.932-19.67 43.932-43.934S87.417 0 63.154 0m26.363 93.909a53.714 53.714 0 0 1-26.362 6.59 53.684 53.684 0 0 1-26.359-6.59C19.77 98.3 6.042 108.735 0 131.802h126.091c-6.041-23.066-19.22-33.501-36.796-37.893"/>
+                            </svg>
+                        </div>
+                        <div class="login-field">
+                            <input type="password" class="input-block-level" name="password" placeholder="Password">
+                            <svg viewBox="0 0 81.906 99.812" class="login-field-icon">
+                                <path d="M24.945 27.219c-.256-8.229 6.199-15.113 14.428-15.384h1.539c8.229-.497 15.302 5.771 15.799 13.999v19.263H24.945V27.219zm43.657 17.878V27.219C68.975 12.583 57.417.413 42.783.028h-1.456c-14.455-.66-26.723 10.493-27.44 24.946v19.832H0v55.006h81.906V45.097H68.602z"/>
+                            </svg>
+                        </div>
+                        {# <p class="login-error">Invalid password format, only 6-10 characters are allowed in this field.</p> #}
+                        <label class="login-remember-username block mt-10 mb-15 text-left">
+                            <input type="checkbox"> Remember Username
+                        </label>
+                        <input type="submit" value="Login" class="btn btn-gray login-submit input-block-level mb-10">
+                        <p class="mb-30"><a href="#" class="login-help-link">Can't Login?</a></p>
+                        <p class="mb-10">Not yet a Dafabet member?</p>
+                        <a href="#" class="btn btn-yellow input-block-level">Join Now</a>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         {{ widget('header_menu') }}
     </div>
