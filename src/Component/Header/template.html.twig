@@ -1,19 +1,10 @@
 <header class="header">
     <div class="container clearfix">
-        <h1 class="logo">
-            <a
-                href="{{ url('/') }}"
+        {% block logoSection %}
+            {{ include('@component/Header/templates/logo.html.twig') }}
+        {% endblock %}
 
-                data-router="true"
-                data-router-refresh="main"
 
-                hreflang=""
-                rel=""
-                title=""
-            >
-                <img src="{{ asset('images/dafabet_logo.png') }}" alt="">
-            </a>
-        </h1>
 
         {# <div class="account-balance">
             <a href="#" target="_blank">

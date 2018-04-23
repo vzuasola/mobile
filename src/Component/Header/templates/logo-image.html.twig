@@ -1,0 +1,5 @@
+{% if app.lang == "ch" or app.lang == "sc" %}
+    <img src="{{ asset('images/dafabet_logo_chinese.png') }}" alt="{{ header.logo_title }}">
+{% else %}
+    <img src="{{ asset('images/dafabet_logo.png') }}" alt="{{ header.logo_title }}">
+{% endif %}
