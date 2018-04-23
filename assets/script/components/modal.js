@@ -41,8 +41,7 @@ export function modal(options) {
     }
 
     // initiate variables
-    var bodyTag = document.body,
-        $this = this;
+    var bodyTag = document.body;
 
     /**
      * modal-active modal window function
