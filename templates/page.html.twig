@@ -8,15 +8,15 @@
     {{ widget('header') }}
 {% endblock header %}
 
-{% block footer %}
-    {{ widget('footer') }}
-{% endblock footer %}
-
 {% block body %}
     {% block main %}
         {{ widget('main') }}
     {% endblock main %}
 {% endblock body %}
+
+{% block footer %}
+    {{ widget('footer') }}
+{% endblock footer %}
 
 {% block script %}
 <script src="{{ asset('app.js') }}"></script>
