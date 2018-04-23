@@ -47,9 +47,9 @@ class HeaderComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
-        $header_configs = $this->configs->getGeneralConfigById('header_configuration');
+        $headerConfigs = $this->configs->getGeneralConfigById('header_configuration');
         $data['is_front'] = true;
-        $data['header']['logo_title'] = $header_configs['logo_title'];
+        $data['logo_title'] = $headerConfigs['logo_title'];
 
         return $data;
     }

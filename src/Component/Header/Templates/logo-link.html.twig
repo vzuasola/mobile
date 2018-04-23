@@ -1,5 +1,5 @@
 {% set logoUri = header.logo_uri is defined ? header.logo_uri : url('/') %}
 
-<a href="{{ logoUri }}" hreflang="{{ app.lang }}" rel="{{ header.logo_title }}" title="{{ header.logo_title }}">
+<a href="{{ logoUri }}" hreflang="{{ app.lang }}" rel="{{ logo_title }}" title="{{ logo_title }}">
     {{ include('@component/Header/Templates/logo-image.html.twig') }}
 </a>
