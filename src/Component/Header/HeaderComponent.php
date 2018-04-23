@@ -6,6 +6,29 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class HeaderComponent implements ComponentWidgetInterface
 {
+     /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $configs;
+
+    /**
+     *
+     */
+    public static function create($container)
+    {
+        return new static(
+            $container->get('config_fetcher')
+        );
+    }
+
+    /**
+     * Public constructor
+     */
+    public function __construct($configs)
+    {
+        $this->configs = $configs;
+    }
+
     /**
      * Defines the template path
      *
@@ -24,6 +47,9 @@ class HeaderComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+        $header_configs = $this->configs->getGeneralConfigById('header_configuration');
+        $data['is_front'] = true;
+        $data['header']['logo_title'] = $header_configs['logo_title'];
 
         return $data;
     }
