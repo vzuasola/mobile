@@ -11,10 +11,10 @@
 
             class="icon-thumbnail-link"
             >
-            <svg data-name="Layer 1" viewBox="0 0 209.59 209.59">
-                <path d="M104.79 0a104.8 104.8 0 1 0 104.8 104.79A104.91 104.91 0 0 0 104.79 0zm26 195.52l-26-18.88-26 18.89a94.74 94.74 0 0 1-52.46-38.29l9.37-28.88-25.15-18.27c-.1-1.75-.16-3.52-.16-5.3a93.91 93.91 0 0 1 19.26-57h32.44l10.25-31.65a94.32 94.32 0 0 1 61.37-1.2l11.94 36.71h37.1a93.81 93.81 0 0 1 16.44 53.16c0 .83 0 1.64-.06 2.46l-29.08 21.13 10.58 32.53a94.63 94.63 0 0 1-49.84 34.59zM123 83.08h12.19l-11.51 46.76h-14.94l-4.48-20.37c-.21-.85-.55-2.55-1-5.09s-.8-4.65-1-6.36c-.17 1.39-.45 3.11-.83 5.16s-.76 3.95-1.14 5.68-1.92 8.72-4.65 21H80.69L69.12 83.08H81.3l5.09 23.45q1.73 7.77 2.36 12.37c.28-2.17.78-5.13 1.49-8.86s1.38-6.82 2-9.27l4.12-17.69h11.71l4 17.69q1 4.26 2.08 9.82t1.4 8.31q.42-3.54 2.27-12.31zm-20.85-44.51a67.9 67.9 0 1 0 67.9 67.89 67.88 67.88 0 0 0-67.9-67.89zm0 123.49a55.6 55.6 0 1 1 55.6-55.6 55.59 55.59 0 0 1-55.6 55.6z"/>
-            </svg>
-            <span class="icon-thumbnail-label">{{ product.name[0].value }}</span>
+
+            {% include '@app/web/images/svg/products/'~product.field_product_lobby_class[0].value~'.svg' ignore missing %}
+
+            <span class="icon-thumbnail-label">{{ product.field_product_lobby_title[0].value }}</span>
             {% if product.field_product_lobby_tag[0].value %}
                 <span class="icon-thumbnail-new-tag">
                     <span>{{ config_new_text }}</span>
