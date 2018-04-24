@@ -8,6 +8,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
 {
 
     private $viewsFetcher;
+    private $playerSession;
     /**
      *  Defines the container that can be used to fetch data 
      *  from Drupal
@@ -15,7 +16,8 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static (
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('player_session')
         );
     }
 
@@ -23,9 +25,10 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
      *  Defines the container that can be used to fetch data 
      *  from Drupal
      */
-    public function __construct($viewsFetcher)
+    public function __construct($viewsFetcher, $playerSession)
     {
         $this->viewsFetcher = $viewsFetcher;
+        $this->playerSession = $playerSession;
         
     }
     
@@ -48,39 +51,42 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
     {
         try {
             $contents = $this->viewsFetcher->getViewById('announcements');
-            $announcements = $this->formatAnnouncement($contents);
+            
+            $announcement = $this->formatAnnouncement($contents);
 
-            $data['announcement'] = count($announcements) ? $announcements[0] : [];
+            $data['announcement'] = $announcement;
+            $data['show_announcement'] = true;
+            $isLogin = $this->playerSession->isLogin();
+            
+
+            if ($announcement['availability'] == '0' && $isLogin)
+            {
+                $data['show_announcement']  = false;
+            } else if ($announcement['availability'] == '1' && !$isLogin) {
+                $data['show_announcement']  = false;
+            }
+            
 
         } catch (\Exception $e) {
             $data['announcement'] = [];
         }
-       
-        $data['show_announcement'] = true; //@todo
 
         return $data;
     }
 
     private function formatAnnouncement($contents)
     {
-        $announcements = [];
+        $announcement = [];
 
-        foreach ($contents as $item) {
-            $announcements[] = [
-                'nid' => $item['id'][0]['value'],
-                'name' => $item['name'][0]['value'],
-                'text' => $item['field_body'][0]['value'],
-            ];            
-        }
-
-        return $announcements;
+        if (isset($contents[0])) {
+            $announcement = [
+                'nid' =>  $contents[0]['id'][0]['value'],
+                'name' => $contents[0]['name'][0]['value'],
+                'text' => $contents[0]['field_body'][0]['value'],
+                'availability' => $contents[0]['field_availability'][0]['value'],
+            ]; 
+        }        
+        
+        return $announcement;
     }
-
-
-
-    /**
-     * 
-     */
-
-
 }
