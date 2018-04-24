@@ -18,23 +18,30 @@ class ProductsComponent implements ComponentWidgetInterface
     private $productTiles;
 
     /**
+     * @var App\Player\PlayerSession
+     */
+    private $playerSession;
+
+    /**
      *
      */
     public static function create($container)
     {
         return new static(
             $container->get('views_fetcher'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($productTiles, $config)
+    public function __construct($productTiles, $config, $playerSession)
     {
         $this->productTiles = $productTiles;
         $this->config = $config;
+        $this->playerSession = $playerSession;
     }
 
 
@@ -56,7 +63,7 @@ class ProductsComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
-        $data['is_logged_in'] = false;
+        $data['is_logged_in'] = $this->playerSession->isLogin();
 
         try {
             $data['product_tiles'] = $this->productTiles
