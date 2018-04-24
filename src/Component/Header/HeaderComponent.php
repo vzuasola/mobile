@@ -6,10 +6,15 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class HeaderComponent implements ComponentWidgetInterface
 {
-     /**
+    /**
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
     private $configs;
+
+    /**
+     * @var App\Player\PlayerSession
+     */
+    private $playerSession;
 
     /**
      *
@@ -17,16 +22,18 @@ class HeaderComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs)
+    public function __construct($configs, $playerSession)
     {
         $this->configs = $configs;
+        $this->playerSession = $playerSession;
     }
 
     /**
@@ -47,9 +54,12 @@ class HeaderComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+
         $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+
         $data['is_front'] = true;
-        $data['logo_title'] = $headerConfigs['logo_title'];
+        $data['logo_title'] = $headerConfigs['logo_title'] ?? 'Dafabet';
+        $data['is_login'] = $this->playerSession->isLogin();
 
         return $data;
     }
