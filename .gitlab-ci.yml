@@ -49,7 +49,7 @@ sensiolabs security checker:
 create package:
   stage: package
   script:
-    - python -u automation/run.py --stage package
+    - python -u automation/run.py --stage package-v2
   artifacts:
     paths:
       - "*.tar.gz"
@@ -59,10 +59,10 @@ create package:
   cache:
     key: v2
     paths:
-      - devtool/.bower-cache/
-      - devtool/.node-cache/
+      - .bower-cache/
+      - .node-cache/
       - .composer-cache/
-      - devtool/.yarn-cache/
+      - .yarn-cache/
   tags:
     - devrunner
 

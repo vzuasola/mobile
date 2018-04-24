@@ -17,7 +17,7 @@ ComponentManager.setComponents({
     'header_menu': new MenuComponent(),
 });
 
-let loader = new Loader(document.querySelector(".main"), true);
+let loader = new Loader(document.body, true);
 
 Router.on(RouterClass.beforeNavigate, (event) => {
     loader.show();
@@ -28,9 +28,8 @@ Router.on(RouterClass.afterNavigate, (event) => {
 });
 
 Router.on(RouterClass.navigateError, (event) => {
-    console.log("Error occured...");
+    loader.hide();
 });
-
 
 ComponentManager.init();
 Router.init();

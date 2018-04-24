@@ -10,6 +10,7 @@ $col-spacing:         1.5rem; // 20px column spacing
 
 // Images ----------------------------------------
 $base-sprite:  "../../core/core/assets/images/sprite.png";
+$sprite-mobile:  "../images/sprite-mobile.png";
 $sprite-responsive:  "../../core/core/assets/responsive/images/sprite-responsive.png";
 $base-default-image:  "../../core/core/assets/images/default_image.png";
 $base-balance-loader-white: "../../core/core/assets/images/balance-loader-white.gif";
@@ -126,7 +127,7 @@ $slider-light-gold: #c99f4d;
 
 // Modal -------------------------------------------
 $modal-padding: 2rem;
-$modal-width: 80rem;
+$modal-width: 34rem;
 $modal-bg: #f7f7f7;
 $modal-overlay-bg: rgba(0, 0, 0, 0.8);
 $modal-radius: 1.5rem;
