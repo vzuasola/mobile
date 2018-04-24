@@ -1,7 +1,4 @@
 .mount-announcement{
-    // position: absolute;
-    left: 0;
-    z-index: 11;
     .announcement {
         display: flex;
         flex-wrap: wrap;
@@ -11,10 +8,10 @@
 
         // List element
         &-list {
-            display: block;
+            display: flex;
             padding: 1rem;
             background: $modal-bg;
-            display: flex;
+            width: 100%;
             align-items: center;
             justify-content: center;
 
@@ -27,7 +24,7 @@
                 fill: $red;
             }
 
-                    // Link/anchor element
+            // Link/anchor element
             &-content {
                 position: relative;
                 display: block;
