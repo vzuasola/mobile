@@ -12,28 +12,21 @@ class FooterComponent implements ComponentWidgetInterface
     private $menuFetcher;
 
     /**
-     * @var App\Player\PlayerSession
-     */
-    private $playerSession;
-
-    /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('menu_fetcher'),
-            $container->get('player_session')
+            $container->get('menu_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menuFetcher, $playerSession)
+    public function __construct($menuFetcher)
     {
         $this->menuFetcher = $menuFetcher;
-        $this->playerSession = $playerSession;
     }
 
 
