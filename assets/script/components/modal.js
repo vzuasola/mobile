@@ -10,7 +10,10 @@ import scrollbot from '@app/assets/script/vendor/scrollbot';
 var closeOverlayId = [],
     escapeCloseId = [];
 
-export function modal(options) {
+export function Modal(options) {
+    // stores the current modal instance
+    var $modal = {};
+
     // Default options
     var defaults = {
         selector: ".modal-trigger", // selector to trigger modal
@@ -43,6 +46,14 @@ export function modal(options) {
     // initiate variables
     var bodyTag = document.body;
 
+    this.open = function () {
+        openModal();
+    };
+
+    this.close = function () {
+        closeModalWindow($modal.elem, $modal.target);
+    };
+
     /**
      * modal-active modal window function
      */
@@ -73,6 +84,9 @@ export function modal(options) {
                     if (modalWindow) {
                         utility.triggerEvent(modalWindow, 'modal.open');
                         utility.addClass(modalWindow, "modal-active");
+
+                        $modal.elem = modalWindow;
+                        $modal.target = target;
 
                         // Avoid scrolling when modal is displayed
                         bodyTag.style.overflow = "hidden";
