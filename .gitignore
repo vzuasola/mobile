@@ -10,6 +10,7 @@ node_modules/
 /web/*
 !/web/app.php
 !/web/index.php
+!/web/data.json
 !/web/.htaccess
 
 # files created by the build process
