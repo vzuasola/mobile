@@ -70,6 +70,9 @@ export class HeaderComponent implements ComponentInterface {
                 ComponentManager.refreshComponent('header', () => {
                   this.loader.hide();
                 });
+                ComponentManager.refreshComponent('main', () => {
+                  this.loader.hide();
+                });
             });
         });
     }
@@ -90,6 +93,9 @@ export class HeaderComponent implements ComponentInterface {
                     method: 'get',
                 }).always(() => {
                     ComponentManager.refreshComponent('header', () => {
+                        this.loader.hide();
+                    });
+                    ComponentManager.refreshComponent('main', () => {
                         this.loader.hide();
                     });
                 });
