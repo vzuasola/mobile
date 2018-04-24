@@ -12,7 +12,7 @@
             class="icon-thumbnail-link"
             >
 
-            {% include '@app/web/images/svg/products/'~product.field_product_lobby_class[0].value~'.html.twig' ignore missing %}
+            {% include '@app/web/images/svg/products/'~product.field_product_lobby_class[0].value~'.svg' ignore missing %}
 
             <span class="icon-thumbnail-label">{{ product.field_product_lobby_title[0].value }}</span>
             {% if product.field_product_lobby_tag[0].value %}
