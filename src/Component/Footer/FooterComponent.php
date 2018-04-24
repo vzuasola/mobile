@@ -55,7 +55,6 @@ class FooterComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
-        $data['is_logged_in'] = $this->playerSession->isLogin();
 
         try {
             $data['footer_menu'] = $this->menuFetcher
