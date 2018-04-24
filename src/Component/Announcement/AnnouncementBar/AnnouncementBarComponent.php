@@ -8,7 +8,6 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
 {
 
     private $viewsFetcher;
-
     /**
      *  Defines the container that can be used to fetch data 
      *  from Drupal
@@ -45,12 +44,18 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
      *
      * @return array
      */
-    public function getData()    
-    {        
-        $contents = $this->viewsFetcher->getViewById('announcements');
-        $announcements = $this->formatAnnouncement($contents);
+    public function getData()
+    {
+        try {
+            $contents = $this->viewsFetcher->getViewById('announcements');
+            $announcements = $this->formatAnnouncement($contents);
 
-        $data['announcement'] = count($announcements) ? $announcements[0] : array();
+            $data['announcement'] = count($announcements) ? $announcements[0] : [];
+
+        } catch (\Exception $e) {
+            $data['announcement'] = [];
+        }
+       
         $data['show_announcement'] = true; //@todo
 
         return $data;
@@ -65,7 +70,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
                 'nid' => $item['id'][0]['value'],
                 'name' => $item['name'][0]['value'],
                 'text' => $item['field_body'][0]['value'],
-            ];
+            ];            
         }
 
         return $announcements;
