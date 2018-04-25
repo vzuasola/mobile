@@ -7,9 +7,9 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 class FooterComponent implements ComponentWidgetInterface
 {
     /**
-     * @var App\Fetcher\Drupal\MenuFetcher
+     * @var App\Fetcher\Drupal\menus
      */
-    private $menuFetcher;
+    private $menus;
 
     /**
      *
@@ -24,9 +24,9 @@ class FooterComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($menuFetcher)
+    public function __construct($menus)
     {
-        $this->menuFetcher = $menuFetcher;
+        $this->menus = $menus;
     }
 
 
@@ -50,8 +50,7 @@ class FooterComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
-            $data['footer_menu'] = $this->menuFetcher
-                ->getMultilingualMenu('mobile-footer');
+            $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
         }

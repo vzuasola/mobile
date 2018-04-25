@@ -1,0 +1,53 @@
+<style type="text/css">
+    .profiler {
+        position: fixed;
+        bottom: 0;
+        right: 100px;
+        z-index: 1000;
+
+        color: black;
+    }
+
+    .profiler-button {
+        border: none;
+        background: #373737;
+        color: #fff;
+        padding: 6px 30px;
+        border-radius: 4px 4px 0 0;
+    }
+
+    .profiler-button:focus {
+        outline: none;
+    }
+
+    .profiler-button.active {
+        color: #5e5e5e;
+        background: #d3d3d3;
+    }
+
+    .profiler-content {
+        position: fixed;
+        bottom: 40px;
+        right: 100px;
+        max-height: 90%;
+        width: 80%;
+        border-radius: 10px;
+        box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+        background-color: #fff;
+    }
+
+    .profiler-content-inner {
+        height: 100%;
+        overflow-y: scroll;
+        padding: 20px;
+    }
+
+    .profiler-content .trace {
+        display: none;
+        padding-left: 20px;
+    }
+
+    .profiler-content .trace.active {
+        display: block;
+    }
+</style>

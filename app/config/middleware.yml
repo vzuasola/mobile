@@ -4,4 +4,6 @@ middlewares:
     bootstrap: App\Middleware\Request\Bootstrap
     session: App\Middleware\Request\Session
 
-  response: []
+  response:
+    token: App\Middleware\Response\Token
+    lazy_token: App\Middleware\Response\LazyToken
