@@ -56,9 +56,12 @@ class HeaderComponent implements ComponentWidgetInterface
         $data = [];
 
         $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+        $loginConfigs = $this->configs->getConfig('webcomposer_config.login_configuration');
 
         $data['is_front'] = true;
         $data['logo_title'] = $headerConfigs['logo_title'] ?? 'Dafabet';
+        $data['join_now_text'] = $headerConfigs['join_now_text'] ?? 'Join';
+        $data['login_bottom_label'] = $loginConfigs['login_bottom_label'] ?? 'Login';
         $data['is_login'] = $this->playerSession->isLogin();
 
         return $data;
