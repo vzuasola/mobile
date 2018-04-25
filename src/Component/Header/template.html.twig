@@ -16,11 +16,11 @@
         {% else %}
             <span class="mobile-action-button">
                 <a href="#login-lightbox" class="modal-trigger btn btn-yellow btn-small btn-mobile-login">
-                    <span class="visible-mobile">Login/ Join</span>
-                    <span class="hidden-mobile">Login</span>
+                    <span class="visible-mobile">{{ login_bottom_label }}/ {{ join_now_text }}</span>
+                    <span class="hidden-mobile">{{ login_bottom_label }}</span>
                 </a>
                 <a href="#" class="btn btn-yellow btn-small ml-5 btn-mobile-join-now">
-                    Join
+                    {{ join_now_text }}
                 </a>
             </span>
 

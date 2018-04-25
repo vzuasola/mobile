@@ -6,11 +6,16 @@
         padding: 0;
     }
 
+
     li {
         float: left;
         text-align: center;
         width: 33.33333333333333%;
         height: 6.5rem;
+
+        &.half {
+            width: 50%;
+        }
 
         a {
             display: block;
