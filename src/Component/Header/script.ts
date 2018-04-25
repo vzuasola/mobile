@@ -26,7 +26,7 @@ export class HeaderComponent implements ComponentInterface {
         this.bindLogout(attachments);
     }
 
-    onReload(element: HTMLElement, attachments: {}) {
+    onReload(element: HTMLElement, attachments: {}) {        
         this.activateLogin(element);
         this.bindLoginForm(element);
         this.bindLogout(attachments);

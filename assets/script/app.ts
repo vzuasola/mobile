@@ -6,6 +6,7 @@ import {FooterComponent} from '@app/src/Component/Footer/script';
 import {SliderComponent} from '@app/src/Component/Main/Home/Slider/script';
 import {ProductsComponent} from '@app/src/Component/Main/Home/Products/script';
 import {MenuComponent} from '@app/src/Component/Header/Menu/script';
+import {AnnouncementBarComponent} from '@app/src/Component/Announcement/AnnouncementBar/script';
 
 import {Loader} from '@app/assets/script/components/loader';
 
@@ -15,6 +16,7 @@ ComponentManager.setComponents({
     'home_slider': new SliderComponent(),
     'home_products': new ProductsComponent(),
     'header_menu': new MenuComponent(),
+    'announcement_bar': new AnnouncementBarComponent(),
 });
 
 let loader = new Loader(document.body, true);
