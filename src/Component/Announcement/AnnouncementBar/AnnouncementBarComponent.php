@@ -66,7 +66,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
             if ($announcement['availability'] == '0' && $isLogin
                 || ($announcement['availability'] == '1' && !$isLogin)) {
                 $data['show_announcement']  = false;
-            } 
+            }
         } catch (\Exception $e) {
             $data['announcement'] = [];
         }
