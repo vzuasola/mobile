@@ -36,6 +36,7 @@ class HeaderComponentAsync implements AsyncComponentInterface
     {
         return [
             $this->configs->getConfig('webcomposer_config.header_configuration'),
+            $this->configs->getConfig('webcomposer_config.login_configuration'),
         ];
     }
 }
