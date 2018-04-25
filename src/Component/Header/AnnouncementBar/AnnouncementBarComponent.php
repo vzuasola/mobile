@@ -64,7 +64,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
             $isLogin = $this->playerSession->isLogin();
 
             if ($announcement['availability'] == '0' && $isLogin) {
-                $data['show_announcement']  = false;            
+                $data['show_announcement']  = false;
             } elseif ($announcement['availability'] == '1' && !$isLogin) {
                 $data['show_announcement']  = false;
             }
@@ -86,7 +86,6 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
                 'availability' => $contents[0]['field_availability'][0]['value'],
             ];
         }
-        
         return $announcement;
     }
 }
