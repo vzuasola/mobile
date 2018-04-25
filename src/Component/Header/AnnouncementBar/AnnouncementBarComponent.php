@@ -1,14 +1,21 @@
 <?php
 
-namespace App\MobileEntry\Component\Announcement\AnnouncementBar;
+namespace App\MobileEntry\Component\Header\AnnouncementBar;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class AnnouncementBarComponent implements ComponentWidgetInterface
 {
 
+    /**
+     * @var App\Fetcher\Drupal\ViewsFetcher
+     */
     private $viewsFetcher;
+    /**
+     * @var App\Player\PlayerSession
+     */
     private $playerSession;
+    
     /**
      *  Defines the container that can be used to fetch data 
      *  from Drupal
@@ -39,7 +46,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Announcement/AnnouncementBar/template.html.twig';
+        return '@component/Header/AnnouncementBar/template.html.twig';
     }
 
     /**
@@ -85,7 +92,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
                 'text' => $contents[0]['field_body'][0]['value'],
                 'availability' => $contents[0]['field_availability'][0]['value'],
             ]; 
-        }        
+        }
         
         return $announcement;
     }
