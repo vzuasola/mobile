@@ -26,5 +26,4 @@ components:
     parent: header
 
   announcement_bar:
-    class: App\MobileEntry\Component\Header\AnnouncementBar\AnnouncementBarComponent
-    parent: header
+    class: App\MobileEntry\Component\Announcement\AnnouncementBar\AnnouncementBarComponent

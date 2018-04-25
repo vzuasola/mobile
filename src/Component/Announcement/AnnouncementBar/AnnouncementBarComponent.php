@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Header\AnnouncementBar;
+namespace App\MobileEntry\Component\Announcement\AnnouncementBar;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
@@ -45,7 +45,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Header/AnnouncementBar/template.html.twig';
+        return '@component/Announcement/AnnouncementBar/template.html.twig';
     }
 
     /**

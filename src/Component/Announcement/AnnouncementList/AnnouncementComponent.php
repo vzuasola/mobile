@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Announcement;
+namespace App\MobileEntry\Component\Announcement\AnnouncementList;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
@@ -36,7 +36,7 @@ class AnnouncementComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Announcement/template.html.twig';
+        return '@component/Announcement/AnnouncementList/template.html.twig';
     }
 
     /**
