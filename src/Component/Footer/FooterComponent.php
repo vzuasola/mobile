@@ -12,21 +12,28 @@ class FooterComponent implements ComponentWidgetInterface
     private $menus;
 
     /**
+     * @var App\Fetcher\Drupal\views
+     */
+    private $sponsors;
+
+    /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('menu_fetcher')
+            $container->get('menu_fetcher'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus)
+    public function __construct($menus, $sponsors)
     {
         $this->menus = $menus;
+        $this->sponsors = $sponsors;
     }
 
 
@@ -48,6 +55,13 @@ class FooterComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+
+        try {
+            $data['sponsors'] = $this->sponsors->getViewById('mobile_sponsor_list');
+        } catch (\Exception $e) {
+            $data['sponsors'] = [];
+        }
+        d($data['sponsors']);
 
         try {
             $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');

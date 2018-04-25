@@ -1,4 +1,22 @@
+{% if sponsors %}
 <div class="sponsors mb-20">
+    {% for sponsor in sponsors %}
+        <ul class="mb-0">
+            {% for icon in sponsor.field_sponsors_row %}
+                <li class="mb-10 desktop-mb-20">
+                    <a href="{{ url(icon.field_mobile_sponsor_image_link.uri) }}" target="{{ icon.field_mobile_sponsor_link_target[0].value }}">
+                        <picture>
+                            <source media="(max-width: 767px)" srcset="{{ asset(icon.field_mobile_sponsor_image[0].url) }}">
+                            <img src="{{ asset(icon.field_mobile_sponsor_image[0].url) }}" alt="">
+                        </picture>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <p class="sponsors-main-desc visible-mobile mt-5 mb-20 text-center text-16">
+            {{ sponsor.field_sponsors_row_title[0].value }}
+        </p>
+    {% endfor %}
     <ul class="mb-0">
         <li class="mb-10 desktop-mb-20">
             <a href="#" target="#">
@@ -65,3 +83,4 @@
         </li>
     </ul>
 </div> 
+{% endif %}
