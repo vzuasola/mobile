@@ -57,18 +57,15 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
     {
         try {
             $contents = $this->viewsFetcher->getViewById('announcements');
-            
             $announcement = $this->formatAnnouncement($contents);
 
             $data['announcement'] = $announcement;
             $data['show_announcement'] = true;
             $isLogin = $this->playerSession->isLogin();
-            
 
-            if ($announcement['availability'] == '0' && $isLogin)
-            {
-                $data['show_announcement']  = false;
-            } else if ($announcement['availability'] == '1' && !$isLogin) {
+            if ($announcement['availability'] == '0' && $isLogin) {
+                $data['show_announcement']  = false;            
+            } elseif ($announcement['availability'] == '1' && !$isLogin) {
                 $data['show_announcement']  = false;
             }
         } catch (\Exception $e) {
@@ -87,8 +84,9 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
                 'name' => $contents[0]['name'][0]['value'],
                 'text' => $contents[0]['field_body'][0]['value'],
                 'availability' => $contents[0]['field_availability'][0]['value'],
-            ]; 
-        }        
+            ];
+        }
+        
         return $announcement;
     }
 }

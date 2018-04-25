@@ -21,7 +21,7 @@ class AnnouncementComponent implements ComponentWidgetInterface
     }
 
     /**
-     *  Defines the container that can be used to fetch data 
+     *  Defines the container that can be used to fetch data
      *  from Drupal
      */
     public function __construct($views_fetcher)
@@ -44,11 +44,10 @@ class AnnouncementComponent implements ComponentWidgetInterface
      *
      * @return array
      */
-    public function getData()    
-    {           
+    public function getData()
+    {
         $data = $this->viewsFetcher->getViewById('announcements');
 
         return $data;
     }
-
 }
