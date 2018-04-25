@@ -6,16 +6,15 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class ProductsComponent implements ComponentWidgetInterface
 {
-
     /**
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
     private $config;
 
     /**
-     * @var App\Fetcher\Drupal\MenuFetcher
+     * @var App\Fetcher\Drupal\ViewsFetcher
      */
-    private $productTiles;
+    private $views;
 
     /**
      * @var App\Player\PlayerSession
@@ -37,9 +36,9 @@ class ProductsComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($productTiles, $config, $playerSession)
+    public function __construct($views, $config, $playerSession)
     {
-        $this->productTiles = $productTiles;
+        $this->views = $views;
         $this->config = $config;
         $this->playerSession = $playerSession;
     }
@@ -66,8 +65,7 @@ class ProductsComponent implements ComponentWidgetInterface
         $data['is_logged_in'] = $this->playerSession->isLogin();
 
         try {
-            $data['product_tiles'] = $this->productTiles
-                ->getViewById('product_lobby_tiles_entity');
+            $data['product_tiles'] = $this->views->getViewById('product_lobby_tiles_entity');
         } catch (\Exception $e) {
             $data['product_tiles'] = [];
         }
