@@ -10,7 +10,7 @@ class AnnouncementComponent implements ComponentWidgetInterface
     private $viewsFetcher;
 
     /**
-     *  Defines the container that can be used to fetch data 
+     *  Defines the container that can be used to fetch data
      *  from Drupal
      */
     public static function create($container)
@@ -27,9 +27,8 @@ class AnnouncementComponent implements ComponentWidgetInterface
     public function __construct($views_fetcher)
     {
         $this->viewsFetcher = $views_fetcher;
-        
     }
-    
+
     /**
      * Defines the template path
      *

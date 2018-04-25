@@ -15,9 +15,9 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
      * @var App\Player\PlayerSession
      */
     private $playerSession;
-    
+
     /**
-     *  Defines the container that can be used to fetch data 
+     *  Defines the container that can be used to fetch data
      *  from Drupal
      */
     public static function create($container)
@@ -29,16 +29,15 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
     }
 
     /**
-     *  Defines the container that can be used to fetch data 
+     *  Defines the container that can be used to fetch data
      *  from Drupal
      */
     public function __construct($viewsFetcher, $playerSession)
     {
         $this->viewsFetcher = $viewsFetcher;
         $this->playerSession = $playerSession;
-        
     }
-    
+
     /**
      * Defines the template path
      *
@@ -72,12 +71,9 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
             } else if ($announcement['availability'] == '1' && !$isLogin) {
                 $data['show_announcement']  = false;
             }
-            
-
         } catch (\Exception $e) {
             $data['announcement'] = [];
         }
-
         return $data;
     }
 
@@ -92,8 +88,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
                 'text' => $contents[0]['field_body'][0]['value'],
                 'availability' => $contents[0]['field_availability'][0]['value'],
             ]; 
-        }
-        
+        }        
         return $announcement;
     }
 }
