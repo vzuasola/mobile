@@ -15,7 +15,7 @@ class AnnouncementComponent implements ComponentWidgetInterface
      */
     public static function create($container)
     {
-        return new static (
+        return new static(
             $container->get('views_fetcher')
         );
     }
@@ -46,8 +46,6 @@ class AnnouncementComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = $this->viewsFetcher->getViewById('announcements');
-
-        return $data;
+        return $this->viewsFetcher->getViewById('announcements');
     }
 }

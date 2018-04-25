@@ -22,7 +22,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
      */
     public static function create($container)
     {
-        return new static (
+        return new static(
             $container->get('views_fetcher'),
             $container->get('player_session')
         );
@@ -63,11 +63,10 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
             $data['show_announcement'] = true;
             $isLogin = $this->playerSession->isLogin();
 
-            if ($announcement['availability'] == '0' && $isLogin) {
+            if ($announcement['availability'] == '0' && $isLogin 
+                || ($announcement['availability'] == '1' && !$isLogin)) {
                 $data['show_announcement']  = false;
-            } elseif ($announcement['availability'] == '1' && !$isLogin) {
-                $data['show_announcement']  = false;
-            }
+            } 
         } catch (\Exception $e) {
             $data['announcement'] = [];
         }
