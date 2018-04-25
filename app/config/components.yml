@@ -7,6 +7,9 @@ components:
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
 
+  profiler:
+    class: App\MobileEntry\Component\Profiler\ProfilerComponent
+
   home:
     class: App\MobileEntry\Component\Main\Home\HomeComponent
 
