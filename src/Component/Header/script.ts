@@ -4,6 +4,8 @@ import * as xhr from '@core/assets/js/vendor/reqwest';
 import {ComponentManager, ComponentInterface} from '@plugins/ComponentWidget/asset/component';
 import {Router} from '@plugins/ComponentWidget/asset/router';
 
+import {Session} from './scripts/session';
+
 import {Loader} from '@app/assets/script/components/loader';
 import {CheckboxStyler} from '@app/assets/script/components/checkbox-styler';
 import {Modal} from '@app/assets/script/components/modal';
@@ -14,22 +16,27 @@ import {Modal} from '@app/assets/script/components/modal';
 export class HeaderComponent implements ComponentInterface {
     private modal: Modal;
     private loader: Loader;
+    private session: Session;
 
     constructor() {
         this.modal = new Modal();
         this.loader = new Loader(document.body, true);
     }
 
-    onLoad(element: HTMLElement, attachments: {}) {
+    onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.activateLogin(element);
         this.bindLoginForm(element);
         this.bindLogout(attachments);
+        this.bindSession(attachments);
+
+        this.listenLogout(attachments);
     }
 
-    onReload(element: HTMLElement, attachments: {}) {        
+    onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.activateLogin(element);
         this.bindLoginForm(element);
         this.bindLogout(attachments);
+        this.bindSession(attachments);
     }
 
     /**
@@ -67,6 +74,9 @@ export class HeaderComponent implements ComponentInterface {
             }).then(response => {
                 this.modal.close();
                 this.loader.show();
+
+                utility.invoke(document, 'session.login');
+
                 ComponentManager.refreshComponent('announcement_bar');
                 ComponentManager.refreshComponent('header', () => {
                   this.loader.hide();
@@ -81,27 +91,50 @@ export class HeaderComponent implements ComponentInterface {
     /**
      * Binds any logout click event to logout the site
      */
-    private bindLogout(attachments) {
+    private bindLogout(attachments: {authenticated: boolean}) {
         if (attachments.authenticated) {
             utility.delegate(document, '.btn-logout', 'click', (event, src) => {
                 event.preventDefault();
 
-                this.loader.show();
-
-                xhr({
-                    url: Router.generateRoute('header', 'logout'),
-                    type: 'json',
-                    method: 'get',
-                }).always(() => {
-                    ComponentManager.refreshComponent('announcement_bar');
-                    ComponentManager.refreshComponent('header', () => {
-                        this.loader.hide();
-                    });
-                    ComponentManager.refreshComponent('main', () => {
-                        this.loader.hide();
-                    });
-                });
+                utility.invoke(document, 'session.logout');
             }, true);
         }
+    }
+
+    /**
+     * Bind the session handler object
+     */
+    private bindSession(attachments: {authenticated: boolean}) {
+        if (attachments.authenticated && !this.session) {
+            this.session = new Session(10);
+            this.session.init();
+        }
+    }
+
+    /**
+     * Listeners
+     *
+     */
+
+    /**
+     * Listen for logout events
+     */
+    private listenLogout(attachments) {
+        utility.listen(document, 'session.logout', event => {
+            this.loader.show();
+
+            xhr({
+                url: Router.generateRoute('header', 'logout'),
+                type: 'json',
+                method: 'get',
+            }).always(() => {
+                ComponentManager.refreshComponent('header', () => {
+                    this.loader.hide();
+                });
+                ComponentManager.refreshComponent('main', () => {
+                    this.loader.hide();
+                });
+            });
+        });
     }
 }
