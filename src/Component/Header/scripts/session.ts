@@ -73,12 +73,16 @@ export class Session
             this.counter.reset();
         });
 
-        // document.onscroll = () => {
-        //     this.counter.restart();
-        // };
+        utility.listen(document, 'scroll', event => {
+            this.counter.reset();
+        });
 
-        // document.onkeypress = () => {
-        //     this.counter.restart();
-        // };
+        utility.listen(document, 'keypress', event => {
+            this.counter.reset();
+        });
+
+        utility.listen(document, 'touchstart', event => {
+            this.counter.reset();
+        });
     }
 }
