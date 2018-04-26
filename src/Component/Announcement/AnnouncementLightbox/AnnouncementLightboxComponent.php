@@ -12,6 +12,11 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
     private $viewsFetcher;
 
     /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $configFetcher;
+
+    /**
      * @var App\Player\PlayerSession
      */
     private $playerSession;
@@ -23,17 +28,19 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('views_fetcher'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      *
      */
-    public function __construct($viewsFetcher, $playerSession)
+    public function __construct($viewsFetcher, $playerSession, $configFetcher)
     {        
         $this->viewsFetcher = $viewsFetcher;
         $this->playerSession = $playerSession;
+        $this->configFetcher = $configFetcher;
     }
 
     /**
@@ -50,11 +57,16 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
     public function getData()
     {
         try {
+            $announcementConfigs = $this->configFetcher
+                ->getConfig('webcomposer_config.announcements_configuration');
+            
             $isLogin = $this->playerSession->isLogin();
             $contents = $this->viewsFetcher->getViewById('announcements');
             $announcements = $this->formatAnnouncement($contents, $isLogin);
             
             $data['announcements'] = $announcements;
+            $data['title'] = $announcementConfigs['title'];
+            $data['default_message'] = $announcementConfigs['default_message'];
         } catch (\Exception $e) {
             $data['announcement'] = [];
         }

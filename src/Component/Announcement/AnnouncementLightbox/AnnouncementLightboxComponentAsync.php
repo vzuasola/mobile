@@ -11,13 +11,15 @@ class AnnouncementLightboxComponentAsync implements AsyncComponentInterface
      */
     private $viewsFetcher;
 
+
     /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('views_fetcher_async')
+            $container->get('views_fetcher_async'),
+            $container->get('config_fetcher')
         );
     }
 
