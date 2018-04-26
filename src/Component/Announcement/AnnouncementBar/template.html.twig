@@ -2,15 +2,15 @@
 <div class="mount-announcement">
     <ul class="announcement clearfix">
         <li class="announcement-list" data="{{ announcement.nid }}">
+            <div class="announcement-list-content">
             {% include '@app/web/images/svg/announcement/announcement-news.svg' %}
-
-            <div class="announcement-list-content col-10">
+            <p>
                 {% set text = announcement.text|striptags %}
 
                 <strong class="text-red">{{ announcement.name }}</strong>
 
                 {{ text|length > 80 ? text|slice(0, 80) ~ '...' : text }}
-
+            </p>
                 <span class="announcement-list-content-bottom">
                 <a href="#" class="btn-dismiss">
                     <strong>dismiss</strong>
