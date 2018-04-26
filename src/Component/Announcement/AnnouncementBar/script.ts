@@ -33,6 +33,8 @@ export class AnnouncementBarComponent implements ComponentInterface {
 
             if (readItems.length > 0 && readItems.indexOf(activeItem) > -1) {
                 element.querySelector('.mount-announcement').style.display = 'none';
+            } else {
+                element.querySelector('.mount-announcement').style.display = 'block';
             }
         }
     }
