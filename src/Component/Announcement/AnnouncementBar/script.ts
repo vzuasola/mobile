@@ -45,7 +45,7 @@ export class AnnouncementBarComponent implements ComponentInterface {
     private bindDismissButton(element) {
         let activeItem = element.querySelector('.announcement-list');
         if (activeItem) {
-            utility.delegate(document, '.btn-dismiss', 'click', (event, src) => {
+            utility.delegate(element, '.btn-dismiss', 'click', (event, src) => {
                 event.preventDefault();
                 
                 activeItem = activeItem.getAttribute('data');
@@ -77,9 +77,7 @@ export class AnnouncementBarComponent implements ComponentInterface {
 
         prevReadItems = this.getReadItems();
         prevReadItems.push(newItem);
-        if (readItems.length > 0 && readItems.indexOf(activeItem) > -1) {
-            this.storage.set('ReadItems', JSON.stringify(prevReadItems));
-        }
+        this.storage.set('ReadItems', JSON.stringify(prevReadItems));
         
     }
 }

@@ -61,7 +61,7 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
         let prevReadItems = [];
 
         prevReadItems = this.getReadItems();        
-        if (prevReadItems.indexOf(newItem) < 0)) {
+        if (prevReadItems.indexOf(newItem) < 0) {
 			prevReadItems.push(newItem);
 			this.storage.set('ReadItems', JSON.stringify(prevReadItems));
 		}
