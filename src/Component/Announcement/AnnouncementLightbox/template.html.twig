@@ -1,0 +1,19 @@
+<div id="announcement-lightbox" class="modal announcement">
+    <div class="modal-content login-content">
+        <div class="modal-body">
+            <ul>
+                {% for announcement in announcements %}
+                    {% if announcement.show %}
+                    <li data="{{ announcement.nid }}">
+                        {% set text = announcement.text|striptags %}
+                        <strong class="text-red">{{ announcement.name }}</strong>
+                        {{ text|length > 80 ? text|slice(0, 80) ~ '...' : text }}
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+

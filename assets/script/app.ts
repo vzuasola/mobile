@@ -7,6 +7,7 @@ import {SliderComponent} from '@app/src/Component/Main/Home/Slider/script';
 import {ProductsComponent} from '@app/src/Component/Main/Home/Products/script';
 import {MenuComponent} from '@app/src/Component/Header/Menu/script';
 import {AnnouncementBarComponent} from '@app/src/Component/Announcement/AnnouncementBar/script';
+import {AnnouncementLightboxComponent} from '@app/src/Component/Announcement/AnnouncementLightbox/script';
 
 import {Loader} from '@app/assets/script/components/loader';
 
@@ -17,6 +18,7 @@ ComponentManager.setComponents({
     'home_products': new ProductsComponent(),
     'header_menu': new MenuComponent(),
     'announcement_bar': new AnnouncementBarComponent(),
+    'announcement_lightbox': new AnnouncementLightboxComponent(),
 });
 
 let loader = new Loader(document.body, true);

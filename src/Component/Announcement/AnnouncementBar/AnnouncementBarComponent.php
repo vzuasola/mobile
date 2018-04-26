@@ -54,7 +54,6 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
             $announcement = $this->formatAnnouncement($contents);
 
             $isLogin = $this->playerSession->isLogin();
-
             $data['announcement'] = $announcement;
             $data['show_announcement'] = count($announcement) > 0;
 
