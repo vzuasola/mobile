@@ -26,8 +26,8 @@ export class AnnouncementBarComponent implements ComponentInterface {
     private activateAnnouncementBar(element) {
         let readItems = [];
         let activeItem = element.querySelector('.announcement-list');
-
-        if (activeItem) {
+        
+        if (activeItem != null) {
             readItems = this.getReadItems();
             activeItem = activeItem.getAttribute('data');
 
@@ -41,14 +41,16 @@ export class AnnouncementBarComponent implements ComponentInterface {
      * Mark announcement as read     
      */
     private bindDismissButton(element) {
-        utility.delegate(document, '.btn-dismiss', 'click', (event, src) => {
-            event.preventDefault();
-
-            let activeItem = element.querySelector('.announcement-list').getAttribute('data');
-            this.setReadItems(activeItem);
-
-            ComponentManager.refreshComponent('announcement_bar');
-        }, true);
+        let activeItem = element.querySelector('.announcement-list');
+        if (activeItem != null) {
+            utility.delegate(document, '.btn-dismiss', 'click', (event, src) => {
+                event.preventDefault();
+                
+                activeItem = activeItem.getAttribute('data');
+                this.setReadItems(activeItem);
+                ComponentManager.refreshComponent('announcement_bar');
+            }, true);
+        }
     }
 
     /**
