@@ -27,14 +27,14 @@ export class AnnouncementBarComponent implements ComponentInterface {
         let readItems = [];
         let activeItem = element.querySelector('.announcement-list');
         
-        if (activeItem != null) {
+        if (activeItem) {
             readItems = this.getReadItems();
             activeItem = activeItem.getAttribute('data');
 
             if (readItems.length > 0 && readItems.indexOf(activeItem) > -1) {
-                element.querySelector('.mount-announcement').style.display = 'none';
+                utility.addClass(element.querySelector('.mount-announcement'), "hidden");
             } else {
-                element.querySelector('.mount-announcement').style.display = 'block';
+                utility.removeClass(element.querySelector('.mount-announcement'), "hidden");
             }
         }
     }
@@ -44,7 +44,7 @@ export class AnnouncementBarComponent implements ComponentInterface {
      */
     private bindDismissButton(element) {
         let activeItem = element.querySelector('.announcement-list');
-        if (activeItem != null) {
+        if (activeItem) {
             utility.delegate(document, '.btn-dismiss', 'click', (event, src) => {
                 event.preventDefault();
                 
