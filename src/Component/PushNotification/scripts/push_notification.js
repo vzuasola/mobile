@@ -2,15 +2,14 @@ import * as utility from '@core/assets/js/components/utility';
 
 import pushNotification from "@core/assets/js/components/push-notification";
 
-import {pushnxExpiredMessage} from "@app/src/Component/PushNotification/templates/handlebars/pushnx/expired.message.handlebars";
-import {pushnxExpirationDate} from "@app/src/Component/PushNotification/templates/handlebars/pushnx/expiration.date.handlebars";
-import {pushnxBody} from "@app/src/Component/PushNotification/templates/handlebars/pushnx/body.handlebars";
-import {pushnxAction} from "@app/src/Component/PushNotification/templates//handlebars/pushnx/action.handlebars";
-import {pushnxMessage} from "@app/src/Component/PushNotification/templates/handlebars/pushnx/message.handlebars";
-import {pushnxDismissMessage} from "@app/src/Component/PushNotification/templates/handlebars/pushnx/dismiss.message.handlebars";
+import pushnxExpiredMessage from "@app/src/Component/PushNotification/templates/handlebars/pushnx/expired.message.handlebars";
+import pushnxExpirationDate from "@app/src/Component/PushNotification/templates/handlebars/pushnx/expiration.date.handlebars";
+import pushnxBody from "@app/src/Component/PushNotification/templates/handlebars/pushnx/body.handlebars";
+import pushnxAction from "@app/src/Component/PushNotification/templates//handlebars/pushnx/action.handlebars";
+import pushnxMessage from "@app/src/Component/PushNotification/templates/handlebars/pushnx/message.handlebars";
+import pushnxDismissMessage from "@app/src/Component/PushNotification/templates/handlebars/pushnx/dismiss.message.handlebars";
 
 export default function push_notification(component, attachments) {
-    console.log(attachments);
     var pushNx = new pushNotification({
         lang: 'en',
         islogin: attachments.authenticated,
