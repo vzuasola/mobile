@@ -78,10 +78,18 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
         $announcement = [];
 
         if (isset($contents[0])) {
+            $text = $contents[0]['field_body'][0]['value'];
+
+            $paragraphs = explode("<p>", $text);
+            if (isset($paragraphs[1])) {
+                $paragraphs[1] = '<strong class="text-red">'.$contents[0]['name'][0]['value']
+                ."</strong>&nbsp". $paragraphs[1];
+            }
+            
             $announcement = [
                 'nid' =>  $contents[0]['id'][0]['value'],
                 'name' => $contents[0]['name'][0]['value'],
-                'text' => $contents[0]['field_body'][0]['value'],
+                'text' => implode("<p>", $paragraphs),
                 'availability' => $contents[0]['field_availability'][0]['value'],
             ];
         }

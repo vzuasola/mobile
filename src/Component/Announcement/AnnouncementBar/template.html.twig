@@ -3,7 +3,6 @@
     <ul class="announcement clearfix">
         <li class="announcement-list" data="{{ announcement.nid }}">
             {% include '@app/web/images/svg/announcement/announcement-news.svg' %}
-            <strong class="text-red">{{ announcement.name }}</strong>
             {{ announcement.text|raw }}
         </li>
     </ul>
