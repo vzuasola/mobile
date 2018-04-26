@@ -61,7 +61,6 @@ class FooterComponent implements ComponentWidgetInterface
         } catch (\Exception $e) {
             $data['sponsors'] = [];
         }
-        d($data['sponsors']);
 
         try {
             $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
