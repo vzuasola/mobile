@@ -3,25 +3,34 @@
     {% for sponsor in sponsors %}
         {% if sponsor.field_mobile_sponsor_row_enable[0].value %}
             {% set fullClass = (sponsor.field_mobile_full_row[0].value) ? 'sponsors-full col-12' : 'sponsors-half col-6' %}
-            <div class="{{ fullClass }}">
-                <ul class="mb-0">
-                {% for icon in sponsor.field_sponsors_row %}
-                    {% if icon.field_mobile_sponsor_enable[0].value %}
-                        <li class="mb-10">
-                            <a href="{{ url(icon.field_mobile_sponsor_image_link.uri) }}" target="{{ icon.field_mobile_sponsor_link_target[0].value }}">
-                                <img src="{{ asset(icon.field_mobile_sponsor_image[0].url) }}" alt="">
-                                {% if icon.field_sponsors_column_title[0].value %}
-                                    <span>{{ icon.field_sponsors_column_title[0].value }}</span>
-                                {% endif %}
-                            </a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-                </ul>
-                <p class="sponsors-main-desc p-0 m-0 text-center text-16">
-                    {{ sponsor.field_sponsors_row_title[0].value }}
-                </p>
-            </div>
+
+            {% if sponsor.leaf_class == 'left' %}
+                <div class="col-12">
+            {% endif %}
+
+                    <div class="{{ fullClass }}">
+                        <ul class="mb-0">
+                        {% for icon in sponsor.field_sponsors_row %}
+                            {% if icon.field_mobile_sponsor_enable[0].value %}
+                                <li class="mb-10">
+                                    <a href="{{ url(icon.field_mobile_sponsor_image_link.uri) }}" target="{{ icon.field_mobile_sponsor_link_target[0].value }}">
+                                        <img src="{{ asset(icon.field_mobile_sponsor_image[0].url) }}" alt="">
+                                        {% if icon.field_sponsors_column_title[0].value %}
+                                            <span>{{ icon.field_sponsors_column_title[0].value }}</span>
+                                        {% endif %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                        <p class="sponsors-main-desc p-0 m-0 text-center text-16">
+                            {{ sponsor.field_sponsors_row_title[0].value }}
+                        </p>
+                    </div>
+
+            {% if sponsor.leaf_class == 'right' %}
+                </div>
+            {% endif %}
         {% endif %} 
     {% endfor %}
 {% endif %}
