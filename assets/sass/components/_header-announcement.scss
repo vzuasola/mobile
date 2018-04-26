@@ -31,6 +31,10 @@
                 fill: $red;
             }
 
+            p {
+                width: 80%;
+            }
+
             // Link/anchor element
             &-content {
                 &:nth-child(1),

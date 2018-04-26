@@ -1,7 +1,7 @@
 <div id="announcement-lightbox" class="modal announcement">
-    <div class="modal-content login-content">
-        <div class="modal-body">
-            {{title}}
+    <div class="modal-content announcement-content">
+        <p class="announcement-title">{{title}}</p>
+        <div class="modal-body announcement-body">
             {% if announcements|length %}
             <ul>
                 {% for announcement in announcements %}
