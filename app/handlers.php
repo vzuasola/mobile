@@ -1,4 +1,5 @@
 <?php
+use App\MobileEntry\Controller\ExceptionController;
 
 require APP_ROOT . '/core/app/handlers.php';
 

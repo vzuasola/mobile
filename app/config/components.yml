@@ -30,3 +30,6 @@ components:
 
   announcement_bar:
     class: App\MobileEntry\Component\Announcement\AnnouncementBar\AnnouncementBarComponent
+
+  push_notification:
+    class: App\MobileEntry\Component\PushNotification\PushNotificationComponent
