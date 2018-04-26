@@ -2,13 +2,11 @@
 <div class="mount-announcement hidden">
     <ul class="announcement clearfix">
         <li class="announcement-list" data="{{ announcement.nid }}">
-            <div class="announcement-list-content">
             {% include '@app/web/images/svg/announcement/announcement-news.svg' %}
-            <p>
-                <strong class="text-red">{{ announcement.name }}</strong>
-                {{ announcement.text | raw }}
-            </p>
-            </div>
+                    <strong class="text-red">{{ announcement.name }}</strong>
+                    {{ announcement.text | raw }}
+        </li>
+    </ul>
             <div class="announcement-list-content-bottom">
             <a href="#" class="btn-dismiss">
                 <strong>dismiss</strong>
@@ -17,7 +15,5 @@
                 <strong>see all</strong>
             </a>
             </div>
-        </li>
-    </ul>
 </div>
 {% endif %}

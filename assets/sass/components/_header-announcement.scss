@@ -1,16 +1,23 @@
 .mount-announcement{
+    background: $announcement-bg;
+    padding: 1rem;
+
     .announcement {
         display: flex;
         flex-wrap: wrap;
         margin: 0;
         padding-left: 0;
         list-style-type: none;
+        position: relative;
+        width: 100%;
+        display: block;
+        text-align: left;
+        color: $gray;
+        padding: 1rem 0 0;
 
         // List element
         &-list {
             display: flex;
-            padding: 1rem;
-            background: $modal-bg;
             width: 100%;
             align-items: center;
             justify-content: center;
@@ -27,13 +34,6 @@
 
             // Link/anchor element
             &-content {
-                position: relative;
-                width: 100%;
-                display: block;
-                text-align: left;
-                color: $gray;
-                padding: 1rem 0 0;
-
                 &:nth-child(1),
                 &:nth-child(4),
                 &:nth-child(7),
@@ -59,12 +59,6 @@
                     text-transform: uppercase;
                     margin: 0 1rem 0 0;
                 }
-            }
-
-            p {
-                max-width: 24rem;
-                display: inline-block;
-                vertical-align: top;
             }
 
             }
