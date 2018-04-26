@@ -3024,7 +3024,7 @@
                 "symfony/form": "<3.3",
                 "symfony/security-csrf": "^3.2",
                 "symfony/twig-bridge": "^3.2",
-                "symfony/yaml": "^3.2",
+                "symfony/yaml": "^4.0",
                 "willdurand/negotiation": "^2.2",
                 "zeuxisoo/slim-whoops": "0.6.*"
             },
@@ -3048,7 +3048,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2018-04-25T05:10:32+00:00"
+            "time": "2018-04-25 05:10:32"
         },
         {
             "name": "willdurand/negotiation",
