@@ -51,14 +51,13 @@
     }
 
     .btn {
-            max-width: 9.5rem;
-            min-width: 7.5rem;
+            max-width: 7.5rem;
             padding: 0.2rem 0.3rem;
             border-radius: 0.3rem;
             font-size: 1.3rem;
 
-            @include media("<tablet") {
-                font-size: 1rem;
+            @include media(">tablet") {
+                max-width: 15.5rem;
             }
     }
 }
