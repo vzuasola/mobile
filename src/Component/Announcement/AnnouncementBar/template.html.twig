@@ -1,19 +1,27 @@
 {% if show_announcement %}
 <div class="mount-announcement">
-  <ul class="announcement clearfix">
-    <li class="announcement-list" data="{{announcement.nid}}">
-        {% include '@app/web/images/svg/announcement/announcement-news.svg' %}
-        <div class="announcement-list-content col-10">
-          {% set text = announcement.text|striptags %}
-            <strong class="text-red">{{ announcement.name }} </strong> 
-            {{ text|length > 80 ? text|slice(0, 80) ~ '...' : text }}
-	        <span class="announcement-list-content-bottom">
-	          <a href="#" class="btn-dismiss"><strong>dismiss</strong></a>
-	          <a href="#announcement-lightbox" class="modal-trigger btn-see-announcement"><strong>see all</strong></a>
-	        </span>
-        </div>
-    </li>
-  </ul>
+    <ul class="announcement clearfix">
+        <li class="announcement-list" data="{{ announcement.nid }}">
+            {% include '@app/web/images/svg/announcement/announcement-news.svg' %}
+
+            <div class="announcement-list-content col-10">
+                {% set text = announcement.text|striptags %}
+
+                <strong class="text-red">{{ announcement.name }}</strong>
+
+                {{ text|length > 80 ? text|slice(0, 80) ~ '...' : text }}
+
+                <span class="announcement-list-content-bottom">
+                <a href="#" class="btn-dismiss">
+                    <strong>dismiss</strong>
+                </a>
+                <a href="#announcement-lightbox" class="modal-trigger btn-see-announcement">
+                    <strong>see all</strong>
+                </a>
+                </span>
+            </div>
+        </li>
+    </ul>
 </div>
-{{ include('@component/Announcement/AnnouncementList/template.html.twig') }}
+{{ include('@component/Announcement/AnnouncementBar/templates/lightbox.html.twig') }}
 {% endif %}

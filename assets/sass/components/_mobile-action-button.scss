@@ -1,15 +1,11 @@
 // Mobile/Tablet buttons
 .mobile-action-button {
     position: absolute;
-    top: 0.7rem;
+    top: 50%;
     right: $container-gutter-xs;
     text-transform: uppercase;
     line-height: normal;
-
-    @include media(">=tablet") {
-        @include translateY(-50%);
-        top: 50%;
-    }
+    @include translateY(-50%);
 
     .btn-mobile-login {
         max-width: 8rem;
@@ -54,17 +50,14 @@
 
     }
 
-    .btn-mobile-join-now {
-        @include media("<tablet") {
-            display: none;
-        }
-    }
-
     .btn {
-        @include media(">=tablet") {
-            max-width: none;
-            min-width: 7.5rem;
-            padding: 0.2rem 1.3rem;
-        }
+            max-width: 7.5rem;
+            padding: 0.2rem 0.3rem;
+            border-radius: 0.3rem;
+            font-size: 1.3rem;
+
+            @include media(">tablet") {
+                max-width: 15.5rem;
+            }
     }
 }

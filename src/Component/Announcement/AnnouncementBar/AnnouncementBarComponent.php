@@ -6,19 +6,18 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class AnnouncementBarComponent implements ComponentWidgetInterface
 {
-
     /**
      * @var App\Fetcher\Drupal\ViewsFetcher
      */
     private $viewsFetcher;
+
     /**
      * @var App\Player\PlayerSession
      */
     private $playerSession;
 
     /**
-     *  Defines the container that can be used to fetch data
-     *  from Drupal
+     *
      */
     public static function create($container)
     {
@@ -29,8 +28,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
     }
 
     /**
-     *  Defines the container that can be used to fetch data
-     *  from Drupal
+     *
      */
     public function __construct($viewsFetcher, $playerSession)
     {
@@ -39,9 +37,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
     }
 
     /**
-     * Defines the template path
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getTemplate()
     {
@@ -49,9 +45,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
     }
 
     /**
-     * Defines the data to be passed to the twig template
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getData()
     {
@@ -59,20 +53,27 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
             $contents = $this->viewsFetcher->getViewById('announcements');
             $announcement = $this->formatAnnouncement($contents);
 
-            $data['announcement'] = $announcement;
-            $data['show_announcement'] = (count($announcement) > 0);
             $isLogin = $this->playerSession->isLogin();
 
-            if ($announcement['availability'] == '0' && $isLogin
-                || ($announcement['availability'] == '1' && !$isLogin)) {
+            $data['announcement'] = $announcement;
+            $data['show_announcement'] = count($announcement) > 0;
+
+            if ($announcement['availability'] == '0' &&
+                $isLogin
+                || ($announcement['availability'] == '1' && !$isLogin)
+            ) {
                 $data['show_announcement']  = false;
             }
         } catch (\Exception $e) {
             $data['announcement'] = [];
         }
+
         return $data;
     }
 
+    /**
+     *
+     */
     private function formatAnnouncement($contents)
     {
         $announcement = [];
@@ -85,6 +86,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
                 'availability' => $contents[0]['field_availability'][0]['value'],
             ];
         }
+
         return $announcement;
     }
 }
