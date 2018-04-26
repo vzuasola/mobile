@@ -77,6 +77,7 @@ export class HeaderComponent implements ComponentInterface {
 
                 utility.invoke(document, 'session.login');
 
+                ComponentManager.refreshComponent('announcement_bar');
                 ComponentManager.refreshComponent('header', () => {
                   this.loader.hide();
                 });
