@@ -2,19 +2,20 @@ import * as utility from '@core/assets/js/components/utility';
 
 import pushNotification from "@core/assets/js/components/push-notification";
 
-import {pushnxExpiredMessage} from "@app/src/Component/PushNotification/templates/pushnx/expired.message.handlebars";
-import {pushnxExpirationDate} from "@app/src/Component/PushNotification/templates/pushnx/expiration.date.handlebars";
-import {pushnxBody} from "@app/src/Component/PushNotification/templates/pushnx/body.handlebars";
-import {pushnxAction} from "@app/src/Component/PushNotification/templates/pushnx/action.handlebars";
-import {pushnxMessage} from "@app/src/Component/PushNotification/templates/pushnx/message.handlebars";
-import {pushnxDismissMessage} from "@app/src/Component/PushNotification/templates/pushnx/dismiss.message.handlebars";
+import {pushnxExpiredMessage} from "@app/src/Component/PushNotification/templates/handlebars/pushnx/expired.message.handlebars";
+import {pushnxExpirationDate} from "@app/src/Component/PushNotification/templates/handlebars/pushnx/expiration.date.handlebars";
+import {pushnxBody} from "@app/src/Component/PushNotification/templates/handlebars/pushnx/body.handlebars";
+import {pushnxAction} from "@app/src/Component/PushNotification/templates//handlebars/pushnx/action.handlebars";
+import {pushnxMessage} from "@app/src/Component/PushNotification/templates/handlebars/pushnx/message.handlebars";
+import {pushnxDismissMessage} from "@app/src/Component/PushNotification/templates/handlebars/pushnx/dismiss.message.handlebars";
 
 export default function push_notification(component, attachments) {
+    console.log(attachments);
     var pushNx = new pushNotification({
         lang: 'en',
-        islogin: true,
+        islogin: attachments.authenticated,
         enable: false, // start pushnx - default value true
-        modal: false, // use modal - default value true
+        modal: true, // use modal - default value true
         template: { // override templates
             body: pushnxBody, // body
             action: pushnxAction, // action

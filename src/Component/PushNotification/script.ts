@@ -1,3 +1,5 @@
+// import * as utility from '@core/assets/js/components/utility';
+
 import {ComponentInterface} from '@plugins/ComponentWidget/asset/component';
 
 import pushnx from './scripts/push_notification';
