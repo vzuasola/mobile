@@ -26,13 +26,15 @@ export class AnnouncementBarComponent implements ComponentInterface {
     private activateAnnouncementBar(element) {
         let readItems = [];
         let activeItem = element.querySelector('.announcement-list');
-
+        
         if (activeItem) {
             readItems = this.getReadItems();
             activeItem = activeItem.getAttribute('data');
 
             if (readItems.length > 0 && readItems.indexOf(activeItem) > -1) {
-                element.querySelector('.mount-announcement').style.display = 'none';
+                utility.addClass(element.querySelector('.mount-announcement'), "hidden");
+            } else {
+                utility.removeClass(element.querySelector('.mount-announcement'), "hidden");
             }
         }
     }
@@ -41,14 +43,16 @@ export class AnnouncementBarComponent implements ComponentInterface {
      * Mark announcement as read     
      */
     private bindDismissButton(element) {
-        utility.delegate(document, '.btn-dismiss', 'click', (event, src) => {
-            event.preventDefault();
-
-            let activeItem = element.querySelector('.announcement-list').getAttribute('data');
-            this.setReadItems(activeItem);
-
-            ComponentManager.refreshComponent('announcement_bar');
-        }, true);
+        let activeItem = element.querySelector('.announcement-list');
+        if (activeItem) {
+            utility.delegate(document, '.btn-dismiss', 'click', (event, src) => {
+                event.preventDefault();
+                
+                activeItem = activeItem.getAttribute('data');
+                this.setReadItems(activeItem);
+                ComponentManager.refreshComponent('announcement_bar');
+            }, true);
+        }
     }
 
     /**

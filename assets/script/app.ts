@@ -8,6 +8,7 @@ import {ProductsComponent} from '@app/src/Component/Main/Home/Products/script';
 import {MenuComponent} from '@app/src/Component/Header/Menu/script';
 import {AnnouncementBarComponent} from '@app/src/Component/Announcement/AnnouncementBar/script';
 import {AnnouncementLightboxComponent} from '@app/src/Component/Announcement/AnnouncementLightbox/script';
+import {PushNotificationComponent} from '@app/src/Component/PushNotification/script';
 
 import {Loader} from '@app/assets/script/components/loader';
 
@@ -19,6 +20,7 @@ ComponentManager.setComponents({
     'header_menu': new MenuComponent(),
     'announcement_bar': new AnnouncementBarComponent(),
     'announcement_lightbox': new AnnouncementLightboxComponent(),
+    'push_notification': new PushNotificationComponent()
 });
 
 let loader = new Loader(document.body, true);

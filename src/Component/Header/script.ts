@@ -67,7 +67,7 @@ export class HeaderComponent implements ComponentInterface {
             }).then(response => {
                 this.modal.close();
                 this.loader.show();
-
+                ComponentManager.refreshComponent('announcement_bar');
                 ComponentManager.refreshComponent('header', () => {
                   this.loader.hide();
                 });
@@ -93,6 +93,7 @@ export class HeaderComponent implements ComponentInterface {
                     type: 'json',
                     method: 'get',
                 }).always(() => {
+                    ComponentManager.refreshComponent('announcement_bar');
                     ComponentManager.refreshComponent('header', () => {
                         this.loader.hide();
                     });

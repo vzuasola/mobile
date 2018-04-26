@@ -33,3 +33,6 @@ components:
 
   announcement_lightbox:
     class: App\MobileEntry\Component\Announcement\AnnouncementLightbox\AnnouncementLightboxComponent
+
+  push_notification:
+    class: App\MobileEntry\Component\PushNotification\PushNotificationComponent
