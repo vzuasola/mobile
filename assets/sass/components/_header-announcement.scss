@@ -1,0 +1,66 @@
+.mount-announcement{
+    background: $announcement-bg;
+    padding: 1rem;
+
+    .announcement {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0;
+        padding-left: 0;
+        list-style-type: none;
+        position: relative;
+        width: 100%;
+        display: block;
+        text-align: left;
+        color: $gray;
+        padding: 1rem 0 0;
+
+        // List element
+        &-list {
+            display: flex;
+            width: 100%;
+            align-items: center;
+
+            svg {
+                display: inline-block;
+                width: 4.2rem;
+                margin: 0 1rem 0 0;
+            }
+
+            path {
+                fill: $red;
+            }
+
+            // Link/anchor element
+            &-content {
+                &:nth-child(1),
+                &:nth-child(4),
+                &:nth-child(7),
+                &:nth-child(10) {
+                    border-left: none;
+                }
+
+                &:nth-child(3),
+                &:nth-child(6),
+                &:nth-child(9),
+                &:nth-child(12) {
+                    border-right: none;
+                }
+
+            &-bottom {
+                position: relative;
+                display: block;
+                padding-top: 0.5rem;
+                border-top: 0.1rem solid #eaeaea;
+                text-align: right;
+
+                a {
+                    text-transform: uppercase;
+                    margin: 0 1rem 0 0;
+                }
+            }
+
+            }
+        }
+    }
+}

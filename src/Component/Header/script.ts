@@ -26,7 +26,7 @@ export class HeaderComponent implements ComponentInterface {
         this.bindLogout(attachments);
     }
 
-    onReload(element: HTMLElement, attachments: {}) {
+    onReload(element: HTMLElement, attachments: {}) {        
         this.activateLogin(element);
         this.bindLoginForm(element);
         this.bindLogout(attachments);
@@ -39,7 +39,8 @@ export class HeaderComponent implements ComponentInterface {
         let rememberUsername: HTMLElement = element.querySelector('.login-remember-username input');
 
         if (rememberUsername) {
-            new CheckboxStyler(rememberUsername);
+            let checkbox = new CheckboxStyler(rememberUsername);
+            checkbox.init();
         }
     }
 
@@ -66,7 +67,7 @@ export class HeaderComponent implements ComponentInterface {
             }).then(response => {
                 this.modal.close();
                 this.loader.show();
-
+                ComponentManager.refreshComponent('announcement_bar');
                 ComponentManager.refreshComponent('header', () => {
                   this.loader.hide();
                 });
@@ -92,6 +93,7 @@ export class HeaderComponent implements ComponentInterface {
                     type: 'json',
                     method: 'get',
                 }).always(() => {
+                    ComponentManager.refreshComponent('announcement_bar');
                     ComponentManager.refreshComponent('header', () => {
                         this.loader.hide();
                     });

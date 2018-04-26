@@ -27,3 +27,9 @@ components:
   header_menu:
     class: App\MobileEntry\Component\Header\Menu\MenuComponent
     parent: header
+
+  announcement_bar:
+    class: App\MobileEntry\Component\Announcement\AnnouncementBar\AnnouncementBarComponent
+
+  push_notification:
+    class: App\MobileEntry\Component\PushNotification\PushNotificationComponent

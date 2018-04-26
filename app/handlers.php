@@ -1,11 +1,11 @@
 <?php
+use App\MobileEntry\Controller\ExceptionController;
 
 require APP_ROOT . '/core/app/handlers.php';
 
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
-        $controller = $c['resolver']['App\Web\Controller\ExceptionController'];
-        return $controller->exceptionNotFound($request, $response);
+        return $c['resolver'][ExceptionController::class]->exceptionNotFound($request, $response);
     };
 };
 
@@ -14,8 +14,8 @@ $container['notFoundHandler'] = function ($c) {
  */
 $container['errorHandler'] = function ($c) {
     return function ($request, $response, $exception) use ($c) {
-        $controller = $c['resolver']['App\Web\Controller\ExceptionController'];
-        return $controller->exceptionInternal($request, $response, $exception);
+        return $c['resolver'][ExceptionController::class]
+                ->exceptionInternal($request, $response, $exception);
     };
 };
 
@@ -24,7 +24,7 @@ $container['errorHandler'] = function ($c) {
  */
 $container['phpErrorHandler'] = function ($c) {
     return function ($request, $response, $exception) use ($c) {
-        $controller = $c['resolver']['App\Web\Controller\ExceptionController'];
-        return $controller->exceptionInternal($request, $response, $exception);
+        return $c['resolver'][ExceptionController::class]
+               ->exceptionInternal($request, $response, $exception);
     };
 };

@@ -1,0 +1,19 @@
+{% if show_announcement %}
+<div class="mount-announcement hidden">
+    <ul class="announcement clearfix">
+        <li class="announcement-list" data="{{ announcement.nid }}">
+            {% include '@app/web/images/svg/announcement/announcement-news.svg' %}
+            <strong class="text-red">{{ announcement.name }}</strong>
+            {{ announcement.text|raw }}
+        </li>
+    </ul>
+    <div class="announcement-list-content-bottom">
+        <a href="#" class="btn-dismiss">
+            <strong>dismiss</strong>
+        </a>
+        <a href="#announcement-lightbox" class="modal-trigger btn-see-announcement">
+            <strong>see all</strong>
+        </a>
+    </div>
+</div>
+{% endif %}

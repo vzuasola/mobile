@@ -4,6 +4,7 @@
         list-style-type: none;
         margin: 0 auto;
         padding: 0;
+        display: flex;
     }
 
 
@@ -11,7 +12,6 @@
         float: left;
         text-align: center;
         width: 33.33333333333333%;
-        height: 6.5rem;
 
         &.half {
             width: 50%;
@@ -21,7 +21,8 @@
             display: block;
             width: 100%;
             height: 100%;
-            padding-top: 1.5rem;
+            padding-top: 0.8rem;
+            padding-bottom: 0.8rem;
             border-top: 0.1rem solid $fire-red;
             border-right: 0.1rem solid $darker-red;
             border-left: 0.1rem solid $fire-red;

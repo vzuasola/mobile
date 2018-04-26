@@ -11,6 +11,8 @@
     "clean-webpack-plugin": "^0.1.19",
     "ts-loader": "^3.5.0",
     "typescript": "^2.8.1",
-    "webpack-mix": "^2.0.2"
+    "webpack-mix": "^2.0.2",
+    "handlebars": "^4.0.11",
+    "handlebars-loader": "^1.7.0"
   }
 }

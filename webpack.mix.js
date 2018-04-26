@@ -11,6 +11,15 @@ mix.webpackConfig({
         })
     ],
 
+    module: {
+        rules: [
+            {
+                test: /\.handlebars?$/,
+                loader: 'handlebars-loader'
+            }
+        ]
+    },
+
     resolve: {
         symlinks: false,
 
@@ -23,6 +32,7 @@ mix.webpackConfig({
             // legacy bindings
             "Base": path.resolve(__dirname, './core/core/assets/js/components/'),
             "BaseVendor": path.resolve(__dirname, './core/core/assets/js/vendor/'),
+            "BaseTemplate": path.resolve(__dirname, "./core/core/templates/dafabet"),
         }
     },
 });

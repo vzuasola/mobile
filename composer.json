@@ -26,6 +26,9 @@
         "int": [
             "@composer install",
             "@composer update webcomposer/fe-core"
+        ],
+        "upd": [
+            "@composer update webcomposer/fe-core"
         ]
     },
     "config": {

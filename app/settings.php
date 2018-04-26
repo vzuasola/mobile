@@ -4,7 +4,6 @@
 
 require APP_ROOT . '/core/app/settings.php';
 
-$settings['settings']['debug'] = true;
 $settings['settings']['configurations']['inheritance'] = false;
 
 $settings['settings']['renderer']['template_path']['app'] = __DIR__ . '/../';
