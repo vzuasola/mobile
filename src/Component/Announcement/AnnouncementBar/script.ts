@@ -73,7 +73,9 @@ export class AnnouncementBarComponent implements ComponentInterface {
 
         prevReadItems = this.getReadItems();
         prevReadItems.push(newItem);
-
-        this.storage.set('ReadItems', JSON.stringify(prevReadItems));
+        if (readItems.length > 0 && readItems.indexOf(activeItem) > -1) {
+            this.storage.set('ReadItems', JSON.stringify(prevReadItems));
+        }
+        
     }
 }

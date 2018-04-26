@@ -2,12 +2,15 @@ import * as utility from '@core/assets/js/components/utility';
 import Storage from '@core/assets/js/components/utils/storage';
 
 import {ComponentManager, ComponentInterface} from '@plugins/ComponentWidget/asset/component';
+import {Modal} from '@app/assets/script/components/modal';
 
 export class AnnouncementLightboxComponent implements ComponentInterface {
     private storage: Storage;
+    private modal: Modal;
 
     constructor() {
         this.storage = new Storage();
+        this.modal = new Modal();
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
@@ -19,11 +22,22 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
     }
 
     private markAllRead(element) {
-    	utility.forEach(element.querySelectorAll('.announcement-item'), function (item) {
-    		activeItem = item.getAttribute('data');
-    		
+    	utility.listen(document.body, 'click', (event, src) => {
+    		let modalEl:HTMLElement = document.getElementById('announcement-lightbox');
+            let modalOverlay:HTMLElement = modalEl.querySelector('.modal-overlay');
+            let negativeClass:HTMLElement = modalEl.querySelector('.modal-close');
+            
+            let e = event || window.event;
+            let target = e.target || e.srcElement;
+
+            if (negativeClass === target || modalOverlay === target) {
+               for(let item of element.querySelectorAll('.announcement-item')) {
+		        	let activeItem = item.getAttribute('data');
+		        	this.setReadItems(activeItem);
+		        	ComponentManager.refreshComponent('announcement_bar');
+	        	}
+            }
         });
-    	
     }
 
      /**
@@ -46,10 +60,11 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
     private setReadItems(newItem) {
         let prevReadItems = [];
 
-        prevReadItems = this.getReadItems();
-        prevReadItems.push(newItem);
-
-        this.storage.set('ReadItems', JSON.stringify(prevReadItems));
+        prevReadItems = this.getReadItems();        
+        if (prevReadItems.indexOf(newItem) < 0)) {
+			prevReadItems.push(newItem);
+			this.storage.set('ReadItems', JSON.stringify(prevReadItems));
+		}
     }
 
 }

@@ -6,7 +6,7 @@
             <ul>
                 {% for announcement in announcements %}
                     {% if announcement.show %}
-                    <li class = "announcement-item"  data="nid-{{ announcement.nid }}">
+                    <li class = "announcement-item"  data="{{ announcement.nid }}">
                         <strong class="text-red">{{ announcement.name }}</strong>
                         {{ announcement.text|raw }}
                     </li>
