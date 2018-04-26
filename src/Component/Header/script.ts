@@ -39,7 +39,8 @@ export class HeaderComponent implements ComponentInterface {
         let rememberUsername: HTMLElement = element.querySelector('.login-remember-username input');
 
         if (rememberUsername) {
-            new CheckboxStyler(rememberUsername);
+            let checkbox = new CheckboxStyler(rememberUsername);
+            checkbox.init();
         }
     }
 
