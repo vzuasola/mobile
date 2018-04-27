@@ -46,11 +46,10 @@ export class AnnouncementBarComponent implements ComponentInterface {
         let activeItem = element.querySelector('.announcement-list');
         if (activeItem) {
             utility.delegate(element, '.btn-dismiss', 'click', (event, src) => {
-                event.preventDefault();
-                
                 activeItem = activeItem.getAttribute('data');
                 this.setReadItems(activeItem);
                 ComponentManager.refreshComponent('announcement_bar');
+                ComponentManager.refreshComponent('announcement_lightbox');
             }, true);
         }
     }

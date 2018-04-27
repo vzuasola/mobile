@@ -2,31 +2,41 @@ import * as utility from '@core/assets/js/components/utility';
 import Storage from '@core/assets/js/components/utils/storage';
 
 import {ComponentManager, ComponentInterface} from '@plugins/ComponentWidget/asset/component';
-import {Modal} from '@app/assets/script/components/modal';
 
 export class AnnouncementLightboxComponent implements ComponentInterface {
-    private storage: Storage;
-    private modal: Modal;
+    private storage: Storage;    
 
     constructor() {
         this.storage = new Storage();
-        this.modal = new Modal();
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
     	this.getUnread(element);
     	this.markAllRead(element);
-
+    	this.autoRefreshCounter(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+    	this.getUnread(element);
         this.markAllRead(element);
+        this.autoRefreshCounter(element);
     }
+
+     /**
+     * Refresh announcements on background
+     */
+    private autoRefreshCounter (element) {
+        setInterval(function () {
+            if (!utility.hasClass(element.querySelector('#announcement-lightbox'), 'modal-active')) {
+                ComponentManager.refreshComponent('announcement_lightbox');
+            }
+        }, 300000);
+    };
 
     private markAllRead(element) {
     	
     	utility.listen(document.body, 'click', (event, src) => {
-			let modalEl:HTMLElement = document.getElementById('announcement-lightbox');
+			let modalEl:HTMLElement = element.querySelector('#announcement-lightbox');
 			let modalOverlay:HTMLElement = modalEl.querySelector('.modal-overlay');
 			let negativeClass:HTMLElement = modalEl.querySelector('.modal-close');
 	            
@@ -34,33 +44,32 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
 	        let target = e.target || e.srcElement;
 
 			if (negativeClass === target || modalOverlay === target) {
-				let counter:number = 0;
-				let currentCount:number = document.getElementById('announcement-count').innerHTML;
-
 				for(let item of element.querySelectorAll('.announcement-item')) {
 					let activeItem = item.getAttribute('data');
 					this.setReadItems(activeItem);
-					counter++;
 		        }
-		        
+
 		        ComponentManager.refreshComponent('announcement_bar');
 		        ComponentManager.refreshComponent('announcement_lightbox');
 	        }
         });
     }
 
+	/**
+	 * Get number of unread announcement and update announcement balloon counter
+	 */
     private getUnread(element) {
     	let readItems = [];
-    	let counter:number = 0;
+    	let counter = 0;
     	for(let item of element.querySelectorAll('.announcement-item')) {
 			let activeItem = item.getAttribute('data');
 			readItems = this.getReadItems();
-			if (readItems.indexOf(activeItem)  < 1) {
+			if (readItems.indexOf(activeItem)  < 0) {
 				counter++;
 			}
 		}
 
-		document.getElementById('announcement-count').innerHTML = counter;
+		document.getElementById('announcement-count').innerHTML = counter.toString();
     }
 
      /**
