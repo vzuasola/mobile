@@ -83,9 +83,10 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
 
         foreach ($contents as $content) {
             $showItem = true;
-            $availability= $content['field_availability'][0]['value'];
+            $availability= count($content['field_availability']) > 1 ? $content['field_availability'] :
+                $content['field_availability'][0]['value'];
 
-            if (($availability == '0' && $isLogin)
+            if (!is_array($availability) && ($availability == '0' && $isLogin)
                 || ($availability == '1' && !$isLogin)) {
                 $showItem  = false;
             }
@@ -97,6 +98,7 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
                 'show' => $showItem,
             ];
         }
+
         return $announcement;
     }
 }
