@@ -63,7 +63,7 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
             $isLogin = $this->playerSession->isLogin();
             $contents = $this->viewsFetcher->getViewById('announcements');
             $announcements = $this->formatAnnouncement($contents, $isLogin);
-            
+
             $data['announcements'] = $announcements;
             $data['title'] = $announcementConfigs['title'];
             $data['default_message'] = $announcementConfigs['default_message'];
@@ -82,7 +82,6 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
         $announcement = [];
 
         foreach ($contents as $content) {
-
             $showItem = true;
             $availability= $content['field_availability'][0]['value'];
 

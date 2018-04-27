@@ -85,7 +85,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
                 $paragraphs[1] = '<strong class="text-red">'.$contents[0]['name'][0]['value']
                 ."</strong>&nbsp". $paragraphs[1];
             }
-            
+
             $announcement = [
                 'nid' =>  $contents[0]['id'][0]['value'],
                 'name' => $contents[0]['name'][0]['value'],
