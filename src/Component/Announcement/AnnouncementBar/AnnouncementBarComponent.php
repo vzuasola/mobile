@@ -56,8 +56,8 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
             $isLogin = $this->playerSession->isLogin();
             $data['announcement'] = $announcement;
             $data['show_announcement'] = count($announcement) > 0;
-
-            if ($announcement['availability'] == '0' &&
+            
+            if (!is_array($announcement['availability']) && $announcement['availability'] == '0' &&
                 $isLogin
                 || ($announcement['availability'] == '1' && !$isLogin)
             ) {
@@ -90,7 +90,8 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
                 'nid' =>  $contents[0]['id'][0]['value'],
                 'name' => $contents[0]['name'][0]['value'],
                 'text' => implode("<p>", $paragraphs),
-                'availability' => $contents[0]['field_availability'][0]['value'],
+                'availability' => count($contents[0]['field_availability']) > 1 ? $contents[0]['field_availability'] :
+                    $contents[0]['field_availability'][0]['value'],
             ];
         }
 

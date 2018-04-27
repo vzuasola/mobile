@@ -102,7 +102,7 @@ export class HeaderComponent implements ComponentInterface {
     private bindLogout(attachments: {authenticated: boolean}) {
         if (attachments.authenticated) {
             utility.delegate(document, '.btn-logout', 'click', (event, src) => {
-                event.preventDefault();
+                //event.preventDefault();
 
                 utility.invoke(document, 'session.logout');
             }, true);
