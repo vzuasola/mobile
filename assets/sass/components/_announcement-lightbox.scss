@@ -1,7 +1,8 @@
 .announcement {
     // Content
     &-content {
-        top: 20%;
+        @include translate(0, 5%);
+        top: 0;
         width: 95%;
         max-width: 95%;
         background: transparent;
@@ -9,10 +10,6 @@
         border: 0;
         border-radius: 0;
         margin-bottom: 0.8rem;
-
-        @include media("<tablet") {
-             top: 25%;
-         }
 
         ul {
             display: block;
