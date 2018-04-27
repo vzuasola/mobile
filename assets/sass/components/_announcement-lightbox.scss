@@ -2,7 +2,7 @@
     // Content
     &-content {
         @include translate(0, 5%);
-        top: 0;
+        top: 1rem;
         width: 95%;
         max-width: 95%;
         background: transparent;
@@ -68,12 +68,12 @@
             top: 0;
             right: 0;
             outline: none;
-            border: 1px solid $dark-gray;
+            border: 1px solid #8c8c8c;
             border-radius: 0.4rem;
             cursor: pointer;
 
             path {
-                fill: $dark-gray;
+                fill: #8c8c8c;
             }
 
             rect {
