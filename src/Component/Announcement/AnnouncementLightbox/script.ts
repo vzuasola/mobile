@@ -4,7 +4,8 @@ import Storage from '@core/assets/js/components/utils/storage';
 import {ComponentManager, ComponentInterface} from '@plugins/ComponentWidget/asset/component';
 
 export class AnnouncementLightboxComponent implements ComponentInterface {
-    private storage: Storage;    
+    private storage: Storage;
+    private interval:number = 300000;
 
     constructor() {
         this.storage = new Storage();
@@ -30,7 +31,7 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
             if (!utility.hasClass(element.querySelector('#announcement-lightbox'), 'modal-active')) {
                 ComponentManager.refreshComponent('announcement_lightbox');
             }
-        }, 300000);
+        }, this.interval);
     };
 
     private markAllRead(element) {
@@ -49,8 +50,8 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
 					this.setReadItems(activeItem);
 		        }
 
-		        ComponentManager.refreshComponent('announcement_bar');
-		        ComponentManager.refreshComponent('announcement_lightbox');
+		         ComponentManager.refreshComponent('announcement_bar');
+		         ComponentManager.refreshComponent('announcement_lightbox');
 	        }
         });
     }
@@ -59,6 +60,7 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
 	 * Get number of unread announcement and update announcement balloon counter
 	 */
     private getUnread(element) {
+    	let counterBadge = document.getElementById('announcement-count');
     	let readItems = [];
     	let counter = 0;
     	for(let item of element.querySelectorAll('.announcement-item')) {
@@ -68,8 +70,13 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
 				counter++;
 			}
 		}
-
-		document.getElementById('announcement-count').innerHTML = counter.toString();
+		
+		if (counter <= 0) {
+			 utility.addClass(counterBadge, "hidden");
+		} else {
+			utility.removeClass(counterBadge, "hidden");
+		}
+		counterBadge.innerHTML = counter.toString();
     }
 
      /**
