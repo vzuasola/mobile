@@ -13,8 +13,8 @@
                         {% for icon in sponsor.field_sponsors_row %}
                             {% if icon.field_mobile_sponsor_enable[0].value %}
                                 <li class="mb-10">
-                                    <a href="{{ url(icon.field_mobile_sponsor_image_link.uri) }}" target="{{ icon.field_mobile_sponsor_link_target[0].value }}">
-                                        <img src="{{ asset(icon.field_mobile_sponsor_image[0].url) }}" alt="">
+                                    <a href="{{ url(icon.field_mobile_sponsor_image_link[0].uri) }}" target="{{ icon.field_mobile_sponsor_link_target[0].value }}">
+                                        <img src="{{ asset(icon.field_mobile_sponsor_image[0].url) }}" alt="{{ icon.field_mobile_sponsor_image.alt }}">
                                         {% if icon.field_sponsors_column_title[0].value %}
                                             <span>{{ icon.field_sponsors_column_title[0].value }}</span>
                                         {% endif %}
