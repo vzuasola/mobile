@@ -85,7 +85,6 @@ export class HeaderComponent implements ComponentInterface {
                 utility.invoke(document, 'session.login');
 
                 ComponentManager.refreshComponent('announcement_bar');
-                ComponentManager.refreshComponent('announcement_lightbox');
                 ComponentManager.refreshComponent('header', () => {
                   this.loader.hide();
                 });
@@ -136,8 +135,6 @@ export class HeaderComponent implements ComponentInterface {
                 type: 'json',
                 method: 'get',
             }).always(() => {
-                ComponentManager.refreshComponent('announcement_bar');
-                ComponentManager.refreshComponent('announcement_lightbox');
                 ComponentManager.refreshComponent('header', () => {
                     this.loader.hide();
                 });
