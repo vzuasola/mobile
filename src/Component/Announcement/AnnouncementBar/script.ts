@@ -11,7 +11,6 @@ export class AnnouncementBarComponent implements ComponentInterface {
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
-        console.log("loaded")
         this.activateAnnouncementBar(element);
         this.bindDismissButton(element);
     }
