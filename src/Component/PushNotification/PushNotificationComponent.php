@@ -53,8 +53,6 @@ class PushNotificationComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = [];
-
-        return $data;
+        return [];
     }
 }
