@@ -13,12 +13,15 @@ export class AnnouncementBarComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.activateAnnouncementBar(element);
         this.bindDismissButton(element);
+        this.announcementBarClose(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.activateAnnouncementBar(element);
         this.bindDismissButton(element);
+        this.announcementBarClose(element);
     }
+
 
     /**
      * Show announcement bar     
@@ -53,6 +56,13 @@ export class AnnouncementBarComponent implements ComponentInterface {
             }, true);
         }
     }
+
+    private announcementBarClose(element) {
+        utility.listen(document, 'announcementbar.close', event => {            
+            utility.addClass(element.querySelector('.mount-announcement'), "hidden");
+       });
+    }
+
 
     /**
      *  Get all Read Items
