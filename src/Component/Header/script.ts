@@ -113,7 +113,7 @@ export class HeaderComponent implements ComponentInterface {
      */
     private bindSession(attachments: {authenticated: boolean}) {
         if (attachments.authenticated && !this.session) {
-            this.session = new Session(10);
+            this.session = new Session(300);
             this.session.init();
         }
     }
