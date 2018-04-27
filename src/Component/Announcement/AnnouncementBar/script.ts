@@ -11,6 +11,7 @@ export class AnnouncementBarComponent implements ComponentInterface {
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
+        console.log("loaded")
         this.activateAnnouncementBar(element);
         this.bindDismissButton(element);
     }
@@ -46,7 +47,7 @@ export class AnnouncementBarComponent implements ComponentInterface {
         let activeItem = element.querySelector('.announcement-list');
         if (activeItem) {
             utility.delegate(element, '.btn-dismiss', 'click', (event, src) => {
-                event.preventDefault();
+               // event.preventDefault();
                 
                 activeItem = activeItem.getAttribute('data');
                 this.setReadItems(activeItem);
