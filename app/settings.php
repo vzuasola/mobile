@@ -12,4 +12,5 @@ $settings['settings']['renderer']['template_path']['component'] = __DIR__ . '/..
 
 $settings['settings']['product'] = 'mobile-entrypage';
 
+$settings['settings']['asset']['prefixed'] = false;
 $settings['settings']['asset']['prefixed_drupal'] = true;
