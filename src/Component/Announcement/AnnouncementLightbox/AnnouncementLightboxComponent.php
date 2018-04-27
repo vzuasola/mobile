@@ -80,7 +80,7 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
     private function formatAnnouncement($contents, $isLogin)
     {
         $announcement = [];
-        
+
         foreach ($contents as $content) {
             $showItem = true;
             $availability= count($content['field_availability']) > 1 ? $content['field_availability'] :
@@ -89,7 +89,7 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
             if (!is_array($availability) && ($availability == '0' && $isLogin)
                 || ($availability == '1' && !$isLogin)) {
                 $showItem  = false;
-            } 
+            }
 
             $announcement[] = [
                 'nid' =>  $content['id'][0]['value'],
@@ -97,7 +97,6 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
                 'text' => $content['field_body'][0]['value'],
                 'show' => $showItem,
             ];
-
         }
 
         return $announcement;

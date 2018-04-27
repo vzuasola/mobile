@@ -56,7 +56,7 @@ class AnnouncementBarComponent implements ComponentWidgetInterface
             $isLogin = $this->playerSession->isLogin();
             $data['announcement'] = $announcement;
             $data['show_announcement'] = count($announcement) > 0;
-            
+
             if (!is_array($announcement['availability']) && $announcement['availability'] == '0' &&
                 $isLogin
                 || ($announcement['availability'] == '1' && !$isLogin)
