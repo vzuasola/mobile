@@ -1,6 +1,6 @@
 .mount-announcement{
     background: $announcement-bg;
-    padding: 1rem;
+    padding: 0.3rem 1rem;
 
     .announcement {
         display: flex;
@@ -12,8 +12,8 @@
         width: 100%;
         display: block;
         text-align: left;
-        color: $gray;
-        padding: 1rem 0 0;
+        color: $announcement-text;
+        padding: 0.8rem 0 0;
 
         // List element
         &-list {
@@ -37,33 +37,19 @@
 
             // Link/anchor element
             &-content {
-                &:nth-child(1),
-                &:nth-child(4),
-                &:nth-child(7),
-                &:nth-child(10) {
-                    border-left: none;
+                &-bottom {
+                    position: relative;
+                    display: block;
+                    padding-top: 0.3rem;
+                    margin-top: 0.3rem;
+                    border-top: 0.1rem solid #a3a3a3;
+                    text-align: right;
+
+                    a {
+                        text-transform: uppercase;
+                        margin: 0 1rem 0 0;
+                    }
                 }
-
-                &:nth-child(3),
-                &:nth-child(6),
-                &:nth-child(9),
-                &:nth-child(12) {
-                    border-right: none;
-                }
-
-            &-bottom {
-                position: relative;
-                display: block;
-                padding-top: 0.5rem;
-                border-top: 0.1rem solid #eaeaea;
-                text-align: right;
-
-                a {
-                    text-transform: uppercase;
-                    margin: 0 1rem 0 0;
-                }
-            }
-
             }
         }
     }
