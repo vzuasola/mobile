@@ -37,7 +37,7 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
      *
      */
     public function __construct($viewsFetcher, $playerSession, $configFetcher)
-    {        
+    {
         $this->viewsFetcher = $viewsFetcher;
         $this->playerSession = $playerSession;
         $this->configFetcher = $configFetcher;
@@ -59,7 +59,7 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
         try {
             $announcementConfigs = $this->configFetcher
                 ->getConfig('webcomposer_config.announcements_configuration');
-            
+
             $isLogin = $this->playerSession->isLogin();
             $contents = $this->viewsFetcher->getViewById('announcements');
             $announcements = $this->formatAnnouncement($contents, $isLogin);
@@ -97,7 +97,7 @@ class AnnouncementLightboxComponent implements ComponentWidgetInterface
                 'text' => $content['field_body'][0]['value'],
                 'show' => $showItem,
             ];
-        }        
+        }
         return $announcement;
     }
 }
