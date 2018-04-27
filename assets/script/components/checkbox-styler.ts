@@ -1,3 +1,5 @@
+import * as utility from '@core/assets/js/components/utility';
+
 /**
  * Checkbox Styler
  *
@@ -6,11 +8,9 @@
  * @param Node el checkbox form element
  * @param String className class of the checkbox use for styling
  */
-import * as utility from '@core/assets/js/components/utility';
-
 export class CheckboxStyler {
 
-    constructor(private el, private className: string = "checkbox-styler") {}
+    constructor(private el, private className: string = 'checkbox-styler') {}
 
     init() {
         this.generateMarkup();

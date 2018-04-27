@@ -1,18 +1,21 @@
-// import * as utility from '@core/assets/js/components/utility';
-
 import {ComponentInterface} from '@plugins/ComponentWidget/asset/component';
 
-import pushnx from './scripts/push_notification';
+import {PushNotification} from './scripts/push-notification';
 
 /**
  *
  */
 export class PushNotificationComponent implements ComponentInterface {
+    private pushnx;
+
     onLoad(element: HTMLElement, attachments: {}) {
-        pushnx(element, attachments);
+        this.bindInstance(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        pushnx(element, attachments);
+    }
+
+    private bindInstance(element, attachments) {
+        this.pushnx = new PushNotification(element, attachments);
     }
 }
