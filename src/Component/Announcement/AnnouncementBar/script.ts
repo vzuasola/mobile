@@ -40,7 +40,7 @@ export class AnnouncementBarComponent implements ComponentInterface {
     }
 
     /**
-     * Mark announcement as read     
+     * Mark announcement as read 
      */
     private bindDismissButton(element) {
         let activeItem = element.querySelector('.announcement-list');
