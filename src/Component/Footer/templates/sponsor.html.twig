@@ -2,10 +2,10 @@
 {% if sponsors %}
     {% for sponsor in sponsors %}
         {% if sponsor.field_mobile_sponsor_row_enable[0].value %}
-            {% set fullClass = (sponsor.field_mobile_full_row[0].value) ? 'sponsors-full col-12' : 'sponsors-half col-6' %}
+            {% set fullClass = (sponsor.field_mobile_full_row[0].value) ? 'sponsors-full col-12' : 'col-6' %}
 
             {% if sponsor.leaf_class == 'left' %}
-                <div class="col-12">
+                <div class="sponsors-half col-12">
             {% endif %}
 
                     <div class="{{ fullClass }}">
