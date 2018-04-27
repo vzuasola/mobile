@@ -9,6 +9,7 @@ import {Session} from './scripts/session';
 import {Loader} from '@app/assets/script/components/loader';
 import {CheckboxStyler} from '@app/assets/script/components/checkbox-styler';
 import {Modal} from '@app/assets/script/components/modal';
+import {passwordMask} from '@app/assets/script/components/password-mask';
 
 /**
  *
@@ -28,6 +29,7 @@ export class HeaderComponent implements ComponentInterface {
         this.bindLoginForm(element);
         this.bindLogout(attachments);
         this.bindSession(attachments);
+        this.activatePasswordMask(element);
 
         this.listenLogout(attachments);
     }
@@ -37,6 +39,11 @@ export class HeaderComponent implements ComponentInterface {
         this.bindLoginForm(element);
         this.bindLogout(attachments);
         this.bindSession(attachments);
+        this.activatePasswordMask(element);
+    }
+
+    private activatePasswordMask(element) {
+        passwordMask(element.querySelector('.login-field-password'));
     }
 
     /**
