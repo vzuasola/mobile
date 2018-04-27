@@ -13,6 +13,7 @@ export class PushNotificationComponent implements ComponentInterface {
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+        this.bindInstance(element, attachments);
     }
 
     private bindInstance(element, attachments) {

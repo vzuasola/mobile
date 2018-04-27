@@ -11,5 +11,3 @@ $settings['settings']['renderer']['template_path']['site'] = __DIR__ . '/../temp
 $settings['settings']['renderer']['template_path']['component'] = __DIR__ . '/../src/Component';
 
 $settings['settings']['product'] = 'mobile-entrypage';
-
-$settings['settings']['asset']['prefixed'] = false;

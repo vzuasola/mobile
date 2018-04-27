@@ -20,6 +20,19 @@
             path {
                 fill: $yellow;
             }
+
+            &:nth-child(1) a,
+            &:nth-child(2) a,
+            &:nth-child(4) a,
+            &:nth-child(5) a,
+            &:nth-child(7) a,
+            &:nth-child(8) a,
+            &:nth-child(10) a,
+            &:nth-child(11) a,
+            &:nth-child(13) a,
+            &:nth-child(14) a {
+                border-right: 0.1rem solid $darker-red;
+            }
         }
 
         .product-games {
@@ -39,22 +52,6 @@
             padding: 1rem;
             border-bottom: 0.1rem solid $darker-red;
             border-top: 0.1rem solid $fire-red;
-            border-right: 0.1rem solid $darker-red;
-            border-left: 0.1rem solid $fire-red;
-
-            &:nth-child(1),
-            &:nth-child(4),
-            &:nth-child(7),
-            &:nth-child(10) {
-                border-left: none;
-            }
-
-            &:nth-child(3),
-            &:nth-child(6),
-            &:nth-child(9),
-            &:nth-child(12) {
-                border-right: none;
-            }
         }
 
         // Lable/text
