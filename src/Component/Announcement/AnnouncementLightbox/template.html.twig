@@ -1,0 +1,21 @@
+<div id="announcement-lightbox" class="modal announcement">
+    <div class="modal-content announcement-content">
+        <p class="announcement-title">{{title}}</p>
+        <div class="modal-body announcement-body">
+            {% if announcements|length %}
+            <ul>
+                {% for announcement in announcements %}
+                    {% if announcement.show %}
+                    <li class = "announcement-item"  data="{{ announcement.nid }}">
+                        <strong class="text-red">{{ announcement.name }}</strong>
+                        {{ announcement.text|raw }}
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p>{{ default_message }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
