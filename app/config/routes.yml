@@ -15,6 +15,11 @@ routes:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:route
 
+    # temporary - fetch config using core
+    /ajax/pushnx/config:
+        method: GET
+        action: App\Controller\PushNotificationController:getPushConfig
+
     /*.*:
         method: ANY
         action: App\MobileEntry\Controller\NodeController:viewNodeByType

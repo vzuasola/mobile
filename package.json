@@ -5,12 +5,16 @@
     "dist": "NODE_ENV=production node_modules/.bin/webpack --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js"
   },
   "devDependencies": {
+    "@types/handlebars": "^4.0.37",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "browser-sync": "^2.23.6",
     "browser-sync-webpack-plugin": "^2.2.2",
     "clean-webpack-plugin": "^0.1.19",
+    "handlebars": "^4.0.11",
+    "handlebars-loader": "^1.7.0",
     "ts-loader": "^3.5.0",
     "typescript": "^2.8.1",
     "webpack-mix": "^2.0.2"
-  }
+  },
+  "dependencies": {}
 }
