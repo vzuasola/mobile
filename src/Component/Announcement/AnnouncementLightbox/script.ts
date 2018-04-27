@@ -47,7 +47,7 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
                     this.setReadItems(activeItem);
                 }
 
-                ComponentManager.refreshComponent('announcement_bar');
+                utility.invoke(document, 'announcementbar.close');
                 ComponentManager.refreshComponent('announcement_lightbox');
             }
         });
@@ -70,8 +70,7 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
             }
         }
 
-        // TODO please no cross component DOM manipulation
-        document.getElementById('announcement-count').innerHTML = counter.toString();
+       	utility.invoke(document, 'announcement.update.count', {count: counter});
     }
 
     /**
