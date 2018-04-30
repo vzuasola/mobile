@@ -1,10 +1,10 @@
 <?php
 
-namespace App\MobileEntry\Component\Announcement\AnnouncementBar;
+namespace App\MobileEntry\Component\Announcement;
 
 use App\Plugins\ComponentWidget\AsyncComponentInterface;
 
-class AnnouncementBarComponentAsync implements AsyncComponentInterface
+class AnnouncementComponentAsync implements AsyncComponentInterface
 {
     /**
      * @var App\Fetcher\Drupal\ViewsFetcher

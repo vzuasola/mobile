@@ -45,7 +45,7 @@ export class Session
     }
 
     private onCounterCount(counter: Counter, time: number) {
-        console.log(`Session Count is ${time}`);
+        //console.log(`Session Count is ${time}`);
     }
 
     /**

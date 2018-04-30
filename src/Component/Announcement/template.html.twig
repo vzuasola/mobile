@@ -1,9 +1,9 @@
-{% if show_announcement %}
+{% if announcements[0] is defined and announcements[0].show %}
 <div class="mount-announcement hidden">
     <ul class="announcement clearfix">
-        <li class="announcement-list" data="{{ announcement.nid }}">
+        <li class="announcement-list" data="{{ announcements[0].nid }}">
             {% include '@app/web/images/svg/announcement/announcement-news.svg' %}
-            {{ announcement.text|raw }}
+            {{ announcements[0].text_with_title|raw }}
         </li>
     </ul>
     <div class="announcement-list-content-bottom">
@@ -16,3 +16,4 @@
     </div>
 </div>
 {% endif %}
+{{ include('@component/Announcement/templates/lightbox.html.twig') }}
