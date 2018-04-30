@@ -8,7 +8,8 @@
         "indent": [true, "spaces", 4],
         "member-access": [true, "no-public"],
         "no-trailing-whitespace": true,
-        "no-empty": [true, "allow-empty-catch"]
+        "no-empty": [true, "allow-empty-catch"],
+        "object-literal-sort-keys": false
     },
     "rulesDirectory": []
 }
