@@ -1,12 +1,11 @@
-import * as utility from '@core/assets/js/components/utility';
-import Storage from '@core/assets/js/components/utils/storage';
+import * as utility from "@core/assets/js/components/utility";
+import Storage from "@core/assets/js/components/utils/storage";
 
-import {ComponentManager, ComponentInterface} from '@plugins/ComponentWidget/asset/component';
+import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 export class AnnouncementComponent implements ComponentInterface {
     private storage: Storage;
     private refreshInterval: number = 300000;
-
 
     constructor() {
         this.storage = new Storage();
@@ -32,36 +31,35 @@ export class AnnouncementComponent implements ComponentInterface {
         this.autoRefreshCounter(element);
     }
 
-
     /**
-     * Show announcement bar     
+     * Show announcement bar
      */
     private activateAnnouncementBar(element) {
         let readItems = [];
-        let activeItem = element.querySelector('.announcement-list');
-        
+        let activeItem = element.querySelector(".announcement-list");
+
         if (activeItem) {
             readItems = this.getReadItems();
-            activeItem = activeItem.getAttribute('data');
+            activeItem = activeItem.getAttribute("data");
 
             if (readItems.length > 0 && readItems.indexOf(activeItem) > -1) {
-                utility.addClass(element.querySelector('.mount-announcement'), "hidden");
+                utility.addClass(element.querySelector(".mount-announcement"), "hidden");
             } else {
-                utility.removeClass(element.querySelector('.mount-announcement'), "hidden");
+                utility.removeClass(element.querySelector(".mount-announcement"), "hidden");
             }
         }
     }
 
     /**
-     * Mark announcement as read 
+     * Mark announcement as read
      */
     private bindDismissButton(element) {
-        let activeItem = element.querySelector('.announcement-list');
+        let activeItem = element.querySelector(".announcement-list");
         if (activeItem) {
-            utility.delegate(element, '.btn-dismiss', 'click', (event, src) => {
-                activeItem = activeItem.getAttribute('data');
+            utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
+                activeItem = activeItem.getAttribute("data");
                 this.setReadItems(activeItem);
-                ComponentManager.refreshComponent('announcement');
+                ComponentManager.refreshComponent("announcement");
             }, true);
         }
     }
@@ -69,32 +67,31 @@ export class AnnouncementComponent implements ComponentInterface {
     /**
      * Refresh announcements on background
      */
-    private autoRefreshCounter (element) {
-        setInterval(function () {
-            if (!utility.hasClass(element.querySelector('#announcement-lightbox'), 'modal-active')) {
-                ComponentManager.refreshComponent('announcement');
+    private autoRefreshCounter(element) {
+        setInterval(() => {
+            if (!utility.hasClass(element.querySelector("#announcement-lightbox"), "modal-active")) {
+                ComponentManager.refreshComponent("announcement");
             }
         }, this.refreshInterval);
-    };
+    }
 
     private markAllRead(element) {
-        utility.listen(document.body, 'click', (event, src) => {
-            let modalEl: HTMLElement = element.querySelector('#announcement-lightbox');
+        utility.listen(document.body, "click", (event, src) => {
+            const modalEl: HTMLElement = element.querySelector("#announcement-lightbox");
 
-            let modalOverlay: HTMLElement = modalEl.querySelector('.modal-overlay');
-            let negativeClass: HTMLElement = modalEl.querySelector('.modal-close');
-           
-            if (negativeClass === src || modalOverlay === src || src.className.baseVal === negativeClass 
-                || src.className.baseVal === 'modal-close') {
-                for (let item of element.querySelectorAll('.announcement-item')) {
-                    let activeItem = item.getAttribute('data');
+            const modalOverlay: HTMLElement = modalEl.querySelector(".modal-overlay");
+            const negativeClass: HTMLElement = modalEl.querySelector(".modal-close");
+
+            if (negativeClass === src || modalOverlay === src || src.className.baseVal === negativeClass
+                || src.className.baseVal === "modal-close") {
+                for (const item of element.querySelectorAll(".announcement-item")) {
+                    const activeItem = item.getAttribute("data");
                     this.setReadItems(activeItem);
                 }
-                ComponentManager.refreshComponent('announcement');
+                ComponentManager.refreshComponent("announcement");
             }
         });
     }
-
 
     /**
      * Get number of unread announcement and update announcement balloon counter
@@ -103,8 +100,8 @@ export class AnnouncementComponent implements ComponentInterface {
         let readItems = [];
         let counter = 0;
 
-        for (let item of element.querySelectorAll('.announcement-item')) {
-            let activeItem = item.getAttribute('data');
+        for (const item of element.querySelectorAll(".announcement-item")) {
+            const activeItem = item.getAttribute("data");
 
             readItems = this.getReadItems();
 
@@ -112,18 +109,17 @@ export class AnnouncementComponent implements ComponentInterface {
                 counter++;
             }
         }
-           utility.invoke(document, 'announcement.update.count', {count: counter});
+        utility.invoke(document, "announcement.update.count", {count: counter});
     }
 
-
    /**
-     * Get all Read Items
-     */
+    * Get all Read Items
+    */
     private getReadItems() {
         let data = [];
 
-        if (this.storage.get('ReadItems')) {
-            data = JSON.parse(this.storage.get('ReadItems'));
+        if (this.storage.get("ReadItems")) {
+            data = JSON.parse(this.storage.get("ReadItems"));
         }
 
         return data;
@@ -136,9 +132,10 @@ export class AnnouncementComponent implements ComponentInterface {
         let prevReadItems = [];
 
         prevReadItems = this.getReadItems();
+
         if (prevReadItems.indexOf(newItem) < 0) {
             prevReadItems.push(newItem);
-            this.storage.set('ReadItems', JSON.stringify(prevReadItems));
+            this.storage.set("ReadItems", JSON.stringify(prevReadItems));
         }
     }
 }

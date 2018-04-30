@@ -16,6 +16,14 @@ mix.webpackConfig({
             {
                 test: /\.handlebars?$/,
                 loader: 'handlebars-loader'
+            },
+            {
+                test: /\.ts$/,
+                enforce: 'pre',
+                loader: 'tslint-loader',
+                options: {
+                    emitErrors: true,
+                }
             }
         ]
     },

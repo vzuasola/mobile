@@ -18,9 +18,19 @@ export class CheckboxStyler {
         this.checker();
     }
 
+    checker() {
+        if (this.el.checked) {
+            utility.addClass(this.el.parentNode, "checked");
+            utility.removeClass(this.el.parentNode, "unchecked");
+        } else {
+            utility.addClass(this.el.parentNode, "unchecked");
+            utility.removeClass(this.el.parentNode, "checked");
+        }
+    }
+
     private generateMarkup() {
-        const wrapper = document.createElement("span"),
-            hand = document.createElement("span");
+        const wrapper = document.createElement("span");
+        const hand = document.createElement("span");
 
         utility.addClass(wrapper, this.className);
 
@@ -34,15 +44,5 @@ export class CheckboxStyler {
         utility.addEventListener(this.el, "click", (e) =>  {
             this.checker();
         });
-    }
-
-    checker() {
-        if (this.el.checked) {
-            utility.addClass(this.el.parentNode, "checked");
-            utility.removeClass(this.el.parentNode, "unchecked");
-        } else {
-            utility.addClass(this.el.parentNode, "unchecked");
-            utility.removeClass(this.el.parentNode, "checked");
-        }
     }
 }
