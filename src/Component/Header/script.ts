@@ -81,13 +81,10 @@ export class HeaderComponent implements ComponentInterface {
             }).then((response) => {
                 this.modal.close();
                 this.loader.show();
-
-                utility.invoke(document, "session.login");
-
-                ComponentManager.refreshComponent("announcement_bar");
-                ComponentManager.refreshComponent("announcement_lightbox");
-                ComponentManager.refreshComponent("header", () => {
+                utility.invoke(document, 'session.login');
+                ComponentManager.refreshComponent('header', () => {
                   this.loader.hide();
+                  ComponentManager.refreshComponent('announcement');
                 });
                 ComponentManager.refreshComponent("main", () => {
                   this.loader.hide();
@@ -134,12 +131,12 @@ export class HeaderComponent implements ComponentInterface {
                 type: "json",
                 method: "get",
             }).always(() => {
-                ComponentManager.refreshComponent("announcement_lightbox");
-                ComponentManager.refreshComponent("announcement_bar");
-                ComponentManager.refreshComponent("header", () => {
+                ComponentManager.refreshComponent('header', () => {
                     this.loader.hide();
+                    ComponentManager.refreshComponent('announcement');
                 });
-                ComponentManager.refreshComponent("main", () => {
+
+                ComponentManager.refreshComponent('main', () => {
                     this.loader.hide();
                 });
             });
