@@ -91,7 +91,7 @@ class AnnouncementComponent implements ComponentWidgetInterface
                 ."</strong>&nbsp". $paragraphs[1];
             }
 
-            if (!is_array($availability) && ($availability == '0' && $isLogin)
+            if (($availability == '0' && $isLogin)
                 || ($availability == '1' && !$isLogin)) {
                 $showItem  = false;
             }
