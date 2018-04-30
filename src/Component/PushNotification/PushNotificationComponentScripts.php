@@ -48,8 +48,16 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($request, $response, $parameters, $config, $user, $playerSession, $session_fetcher, $block_utils)
-    {
+    public function __construct(
+        $request,
+        $response,
+        $parameters,
+        $config,
+        $user,
+        $playerSession,
+        $session_fetcher,
+        $block_utils
+    ) {
         $this->request = $request;
         $this->response = $response;
         $this->parameters = $parameters;
