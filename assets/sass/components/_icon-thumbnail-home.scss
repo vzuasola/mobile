@@ -19,28 +19,15 @@
             }
 
             &:nth-child(1) a,
-            &:nth-child(4) a,
-            &:nth-child(7) a,
-            &:nth-child(10) a,
-            &:nth-child(12) a {
-                border-left: none;
-                border-right: 0.1rem solid $darker-red;
-            }
             &:nth-child(2) a,
+            &:nth-child(4) a,
             &:nth-child(5) a,
+            &:nth-child(7) a,
             &:nth-child(8) a,
             &:nth-child(10) a,
-            &:nth-child(13) a {
-                border-right: 0.1rem solid $darker-red;
-            }
-            &:nth-child(3) a,
-            &:nth-child(6) a,
-            &:nth-child(9) a,
             &:nth-child(11) a,
+            &:nth-child(13) a,
             &:nth-child(14) a {
-                border-right: none;
-            }
-            &:last-child a {
                 border-right: 0.1rem solid $darker-red;
             }
         }
