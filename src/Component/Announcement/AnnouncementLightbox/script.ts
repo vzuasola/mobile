@@ -40,18 +40,19 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
 
             let modalOverlay: HTMLElement = modalEl.querySelector('.modal-overlay');
             let negativeClass: HTMLElement = modalEl.querySelector('.modal-close');
-
-            if (negativeClass === src || modalOverlay === src) {
+           
+            if (negativeClass === src || modalOverlay === src || src.className.baseVal === negativeClass 
+            	|| src.className.baseVal === 'modal-close') {
                 for (let item of element.querySelectorAll('.announcement-item')) {
                     let activeItem = item.getAttribute('data');
                     this.setReadItems(activeItem);
-                }
-
+                }                
                 utility.invoke(document, 'announcementbar.close');
                 ComponentManager.refreshComponent('announcement_lightbox');
             }
         });
     }
+
 
     /**
      * Get number of unread announcement and update announcement balloon counter
