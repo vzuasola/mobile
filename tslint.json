@@ -6,7 +6,8 @@
     "jsRules": {},
     "rules": {
         "indent": [true, "spaces", 4],
-        "member-access": [true, "no-public"]
+        "member-access": [true, "no-public"],
+        "no-trailing-whitespace": true
     },
     "rulesDirectory": []
 }
