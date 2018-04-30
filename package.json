@@ -3,7 +3,7 @@
     "watch": "NODE_ENV=development node_modules/.bin/webpack --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js --watch",
     "dev": "NODE_ENV=development node_modules/.bin/webpack --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js",
     "dist": "NODE_ENV=production node_modules/.bin/webpack --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js",
-    "lint": "tslint -c tslint.json src/**/*.ts app/**/**.ts"
+    "lint": "tslint -c tslint.json **/*.ts"
   },
   "devDependencies": {
     "@types/handlebars": "^4.0.37",

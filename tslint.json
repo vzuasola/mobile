@@ -11,5 +11,16 @@
         "no-empty": [true, "allow-empty-catch"],
         "object-literal-sort-keys": false
     },
-    "rulesDirectory": []
+    "rulesDirectory": [],
+    "linterOptions": {
+        "exclude": [
+            "automation/**",
+            "core/**",
+            "cache/**",
+            "logs/**",
+            "node_modules/**",
+            "vendor/**",
+            "web/**"
+        ]
+    }
 }
