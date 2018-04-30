@@ -22,18 +22,16 @@ class PushNotificationComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
-            $container->get('config_fetcher'),
-            $container->get('player_session')
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession)
+    public function __construct($configs)
     {
         $this->configs = $configs;
-        $this->playerSession = $playerSession;
     }
 
     /**

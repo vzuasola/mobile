@@ -10,11 +10,13 @@ import * as dismissTemplate from "./../handlebars/pushnx/dismiss.message.handleb
 export class PushNotification {
     private pushnx;
 
-    constructor(element, attachments: {authenticated: boolean}) {
+    constructor(element, attachments: {authenticated: boolean, pushnx: object}) {
+        console.log(attachments);
         this.pushnx = new PushNX({
             lang: 'en',
             islogin: attachments.authenticated,
-            enable: false, // start pushnx - default value true
+            enable: true, // start pushnx - default value true
+            scrollbot: false, // use default scrollbot library
             modal: true, // use modal - default value true
             dismiss: true, // dismiss all message - default value false
             counter: true, // message counter custom event "pnxCountMessage"
@@ -28,6 +30,7 @@ export class PushNotification {
                 expiredMessage: expireMessageTemplate, // expired error message
                 dismissAllMessage: dismissTemplate // dismiss all message
             },
+            // config: attachments.pushnx
         });
 
         this.pushnx.enable();
