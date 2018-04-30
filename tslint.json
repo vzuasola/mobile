@@ -1,0 +1,28 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "indent": [true, "spaces", 4],
+        "member-access": [true, "no-public"],
+        "no-trailing-whitespace": true,
+        "no-empty": [true, "allow-empty-catch"],
+        "object-literal-sort-keys": false,
+        "interface-name": false,
+        "no-console": false
+    },
+    "rulesDirectory": [],
+    "linterOptions": {
+        "exclude": [
+            "automation/**",
+            "core/**",
+            "cache/**",
+            "logs/**",
+            "node_modules/**",
+            "vendor/**",
+            "web/**"
+        ]
+    }
+}

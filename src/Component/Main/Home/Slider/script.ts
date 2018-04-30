@@ -1,15 +1,15 @@
-import {ComponentInterface} from '@plugins/ComponentWidget/asset/component';
+import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 
-import Xlider from './scripts/xlider';
+import Xlider from "./scripts/xlider";
 
 /**
  *
  */
 export class SliderComponent implements ComponentInterface {
     private slider = new Xlider({
-        selector: '#main-banner',
-        innerSelector: '.banner-slides',
-        childClassSelector: 'banner-slides-item',
+        selector: "#main-banner",
+        innerSelector: ".banner-slides",
+        childClassSelector: "banner-slides-item",
         auto: true,
         controls: true,
         pager: false,

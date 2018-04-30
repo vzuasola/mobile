@@ -1,9 +1,8 @@
-import * as utility from '@core/assets/js/components/utility';
+import * as utility from "@core/assets/js/components/utility";
 
-import Counter from '@core/assets/js/components/utils/counter';
+import Counter from "@core/assets/js/components/utils/counter";
 
-export class Session
-{
+export class Session {
     private timeout: number;
     private counter: Counter;
 
@@ -11,9 +10,9 @@ export class Session
         this.timeout = timeout;
 
         this.counter = new Counter(timeout, {
+            onCount: this.onCounterCount,
             onRestart: this.onCounterRestart,
             onStop: this.onCounterStop,
-            onCount: this.onCounterCount,
         });
     }
 
@@ -36,16 +35,15 @@ export class Session
      */
 
     private onCounterRestart() {
-        console.log('Counter Reset');
+        // placeholder for logs
     }
 
     private onCounterStop() {
-        console.log('Counter Stop');
-        utility.invoke(document, 'session.logout');
+        utility.invoke(document, "session.logout");
     }
 
     private onCounterCount(counter: Counter, time: number) {
-        //console.log(`Session Count is ${time}`);
+        // placeholder for logs
     }
 
     /**
@@ -55,33 +53,30 @@ export class Session
 
     private attachEvents() {
         utility.ready(() => {
-            console.log('Session Init');
             this.counter.restart();
         });
 
-        utility.listen(document, 'session.login', event => {
-            console.log('Restarting Session');
+        utility.listen(document, "session.login", (event) => {
             this.counter.restart();
         });
 
-        utility.listen(document, 'session.logout', event => {
-            console.log('Killing Session');
+        utility.listen(document, "session.logout", (event) => {
             this.counter.kill();
         });
 
-        utility.listen(document, 'click', event => {
+        utility.listen(document, "click", (event) => {
             this.counter.reset();
         });
 
-        utility.listen(document, 'scroll', event => {
+        utility.listen(document, "scroll", (event) => {
             this.counter.reset();
         });
 
-        utility.listen(document, 'keypress', event => {
+        utility.listen(document, "keypress", (event) => {
             this.counter.reset();
         });
 
-        utility.listen(document, 'touchstart', event => {
+        utility.listen(document, "touchstart", (event) => {
             this.counter.reset();
         });
     }
