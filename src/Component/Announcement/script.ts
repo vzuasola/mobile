@@ -3,24 +3,67 @@ import Storage from '@core/assets/js/components/utils/storage';
 
 import {ComponentManager, ComponentInterface} from '@plugins/ComponentWidget/asset/component';
 
-export class AnnouncementLightboxComponent implements ComponentInterface {
+export class AnnouncementComponent implements ComponentInterface {
     private storage: Storage;
     private refreshInterval: number = 300000;
+
 
     constructor() {
         this.storage = new Storage();
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
+        this.activateAnnouncementBar(element);
+        this.bindDismissButton(element);
+
+        // lightbox
         this.getUnread(element);
         this.markAllRead(element);
         this.autoRefreshCounter(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+        this.activateAnnouncementBar(element);
+        this.bindDismissButton(element);
+
+         // lightbox
         this.getUnread(element);
         this.markAllRead(element);
         this.autoRefreshCounter(element);
+    }
+
+
+    /**
+     * Show announcement bar     
+     */
+    private activateAnnouncementBar(element) {
+        let readItems = [];
+        let activeItem = element.querySelector('.announcement-list');
+        
+        if (activeItem) {
+            readItems = this.getReadItems();
+            activeItem = activeItem.getAttribute('data');
+
+            if (readItems.length > 0 && readItems.indexOf(activeItem) > -1) {
+                utility.addClass(element.querySelector('.mount-announcement'), "hidden");
+            } else {
+                utility.removeClass(element.querySelector('.mount-announcement'), "hidden");
+            }
+        }
+    }
+
+    /**
+     * Mark announcement as read 
+     */
+    private bindDismissButton(element) {
+        let activeItem = element.querySelector('.announcement-list');
+        if (activeItem) {
+            utility.delegate(element, '.btn-dismiss', 'click', (event, src) => {
+                activeItem = activeItem.getAttribute('data');
+                this.setReadItems(activeItem);
+                ComponentManager.refreshComponent('announcement');
+            }, true);
+        }
     }
 
     /**
@@ -29,7 +72,7 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
     private autoRefreshCounter (element) {
         setInterval(function () {
             if (!utility.hasClass(element.querySelector('#announcement-lightbox'), 'modal-active')) {
-                ComponentManager.refreshComponent('announcement_lightbox');
+                ComponentManager.refreshComponent('announcement');
             }
         }, this.refreshInterval);
     };
@@ -42,13 +85,12 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
             let negativeClass: HTMLElement = modalEl.querySelector('.modal-close');
            
             if (negativeClass === src || modalOverlay === src || src.className.baseVal === negativeClass 
-            	|| src.className.baseVal === 'modal-close') {
+                || src.className.baseVal === 'modal-close') {
                 for (let item of element.querySelectorAll('.announcement-item')) {
                     let activeItem = item.getAttribute('data');
                     this.setReadItems(activeItem);
-                }                
-                utility.invoke(document, 'announcementbar.close');
-                ComponentManager.refreshComponent('announcement_lightbox');
+                }
+                ComponentManager.refreshComponent('announcement');
             }
         });
     }
@@ -70,11 +112,11 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
                 counter++;
             }
         }
-
-       	utility.invoke(document, 'announcement.update.count', {count: counter});
+           utility.invoke(document, 'announcement.update.count', {count: counter});
     }
 
-    /**
+
+   /**
      * Get all Read Items
      */
     private getReadItems() {
@@ -99,5 +141,4 @@ export class AnnouncementLightboxComponent implements ComponentInterface {
             this.storage.set('ReadItems', JSON.stringify(prevReadItems));
         }
     }
-
 }

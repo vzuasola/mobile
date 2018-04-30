@@ -18,7 +18,7 @@ export class MenuComponent implements ComponentInterface {
     }
 
     private updateAnnouncementCount(element) {
-		utility.listen(document, 'announcement.update.count', event => {			
+		utility.listen(document, 'announcement.update.count', event => {
 			element.querySelector('#announcement-count').innerHTML = event.customData.count;
 			if (event.customData.count > 0) {
 				utility.removeClass(element.querySelector('#announcement-count'), "hidden");
