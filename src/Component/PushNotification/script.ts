@@ -1,6 +1,6 @@
-import {ComponentInterface} from '@plugins/ComponentWidget/asset/component';
+import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 
-import {PushNotification} from './scripts/push-notification';
+import {PushNotification} from "./scripts/push-notification";
 
 /**
  *

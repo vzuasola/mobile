@@ -1,7 +1,7 @@
-import {Router, RouterClass} from '@plugins/ComponentWidget/asset/router';
-import {Loader} from '@app/assets/script/components/loader';
+import {Loader} from "@app/assets/script/components/loader";
+import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
-let loader = new Loader(document.body, true);
+const loader = new Loader(document.body, true);
 
 Router.on(RouterClass.beforeNavigate, (event) => {
     loader.show();

@@ -1,11 +1,11 @@
 import PushNX from "@core/assets/js/components/push-notification";
 
-import * as expireMessageTemplate from "./../handlebars/pushnx/expired.message.handlebars";
-import * as expireDateTemplate from "./../handlebars/pushnx/expiration.date.handlebars";
-import * as bodyTemplate from "./../handlebars/pushnx/body.handlebars";
 import * as actionTemplate from "./../handlebars/pushnx/action.handlebars";
-import * as messageTemplate from "./../handlebars/pushnx/message.handlebars";
+import * as bodyTemplate from "./../handlebars/pushnx/body.handlebars";
 import * as dismissTemplate from "./../handlebars/pushnx/dismiss.message.handlebars";
+import * as expireDateTemplate from "./../handlebars/pushnx/expiration.date.handlebars";
+import * as expireMessageTemplate from "./../handlebars/pushnx/expired.message.handlebars";
+import * as messageTemplate from "./../handlebars/pushnx/message.handlebars";
 
 export class PushNotification {
     private pushnx;
@@ -13,7 +13,7 @@ export class PushNotification {
     constructor(element, attachments: {authenticated: boolean, pushnx: object}) {
         console.log(attachments);
         this.pushnx = new PushNX({
-            lang: 'en',
+            lang: "en",
             islogin: attachments.authenticated,
             enable: true, // start pushnx - default value true
             scrollbot: false, // use default scrollbot library
@@ -21,7 +21,7 @@ export class PushNotification {
             dismiss: true, // dismiss all message - default value false
             counter: true, // message counter custom event "pnxCountMessage"
             notify: true, // new message indicator custom event "pnxNewMessage"
-            action: false, // bind message action buttons - default value true - you can also override by using custom event "pnxAction"
+            action: true, // bind message action buttons - default value true - you can also override by using custom event "pnxAction"
             template: { // override templates
                 body: bodyTemplate, // body
                 action: actionTemplate, // action
@@ -30,10 +30,10 @@ export class PushNotification {
                 expiredMessage: expireMessageTemplate, // expired error message
                 dismissAllMessage: dismissTemplate // dismiss all message
             },
-            // config: attachments.pushnx
+            config: attachments.pushnx
         });
 
-        this.pushnx.enable();
-        this.pushnx.bindAction();
+        // this.pushnx.enable();
+        // this.pushnx.bindAction();
     }
 }
