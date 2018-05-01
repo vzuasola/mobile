@@ -1,0 +1,362 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - tests
+  - package
+  - deploy-dev
+  - integration-tests-development
+  - performance-tests-development
+  - security-tests-development
+  - deploy-test
+  - integration-tests-test
+  - performance-tests-test
+  - security-tests-test
+  - testing-signoff
+  - deploy-staging
+  - integration-tests-staging
+  - performance-tests-staging
+  - security-tests-staging
+  - staging-signoff
+  - deploy-production
+
+cache:
+  paths:
+  - public/
+
+static code analysis:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage phpunit-sonarqube
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+
+php code sniffer:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage phpcs
+
+es linter:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage eslinter
+
+sensiolabs security checker:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage sensiolab-security-checker
+  allow_failure: true
+
+create package:
+  stage: package
+  script:
+    - python -u automation/run.py --stage package-v2
+  artifacts:
+    paths:
+      - "*.tar.gz"
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  when: manual
+  cache:
+    key: v2
+    paths:
+      - .bower-cache/
+      - .node-cache/
+      - .composer-cache/
+      - .yarn-cache/
+  tags:
+    - devrunner
+
+dev:
+  stage: deploy-dev
+  environment:
+    name: development
+  script:
+    - python -u automation/run.py --stage deploy-development
+  when: manual
+  dependencies:
+    - create package
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+.selenium tests development:
+  stage: integration-tests-development
+  script:
+    - python -u automation/run.py --stage integration-tests-development
+  when: manual
+  dependencies:
+    - dev
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+.jmeter development:
+  stage: performance-tests-development
+  script:
+    - python -u automation/run.py --stage performance-tests-dev
+  when: manual
+  dependencies:
+    - dev
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  tags:
+    - jmeter
+
+qa1:
+  stage: deploy-test
+  environment:
+    name: testing
+  script:
+    - python -u automation/run.py --stage deploy-testing
+  when: manual
+  dependencies:
+    - dev
+    - create package
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+.selenium tests qa1:
+  stage: integration-tests-test
+  script:
+    - python -u automation/run.py --stage integration-tests-test
+  when: manual
+  dependencies:
+    - qa1
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+hp fortify scan qa1:
+  stage: security-tests-test
+  script:
+    - python -u automation/run.py --stage code-scan-testing
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  allow_failure: true
+
+.jmeter qa1:
+  stage: performance-tests-test
+  script:
+    - python -u automation/run.py --stage performance-tests-test
+  when: manual
+  dependencies:
+    - qa1
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  tags:
+    - jmeter
+
+tct:
+  stage: deploy-test
+  environment:
+    name: tct
+  script:
+    - python -u automation/run.py --stage deploy-tct
+  when: manual
+  dependencies:
+    - dev
+    - create package
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+.selenium tests tct:
+  stage: integration-tests-test
+  script:
+    - python -u automation/run.py --stage integration-tests-tct
+  when: manual
+  dependencies:
+    - tct
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+.jmeter tct:
+  stage: performance-tests-test
+  script:
+    - python -u automation/run.py --stage performance-tests-tct
+  when: manual
+  dependencies:
+    - tct
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  tags:
+    - jmeter
+
+testing signoff:
+  stage: testing-signoff
+  script:
+    - python -u automation/run.py --stage testing-signoff
+  when: manual
+  dependencies:
+    - qa1
+    - tct
+    - hp fortify scan qa1
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+uat:
+  stage: deploy-staging
+  environment:
+    name: uat
+  script:
+    - python -u automation/run.py --stage deploy-uat
+  when: manual
+  dependencies:
+    - testing signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+.selenium tests uat:
+  stage: integration-tests-staging
+  script:
+    - python -u automation/run.py --stage integration-tests-uat
+  when: manual
+  dependencies:
+    - uat
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+.jmeter uat:
+  stage: performance-tests-staging
+  script:
+    - python -u automation/run.py --stage performance-tests-uat
+  when: manual
+  dependencies:
+    - uat
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+  tags:
+    - jmeter
+
+staging:
+  stage: deploy-staging
+  environment:
+    name: staging
+  script:
+    - python -u automation/run.py --stage deploy-staging
+  when: manual
+  dependencies:
+    - testing signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+.selenium tests staging:
+  stage: integration-tests-staging
+  script:
+    - python -u automation/run.py --stage integration-tests-stg
+  when: manual
+  dependencies:
+    - staging
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+.jmeter staging:
+  stage: performance-tests-staging
+  script:
+    - python -u automation/run.py --stage performance-tests-staging
+  when: manual
+  dependencies:
+    - staging
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+  tags:
+    - jmeter
+
+.acunetix staging:
+  stage: security-tests-staging
+  script:
+    - python -u automation/run.py --stage acunetix-scan
+  when: manual
+  dependencies:
+    - staging
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+staging signoff:
+  stage: staging-signoff
+  script:
+    - python -u automation/run.py --stage staging-signoff
+  when: manual
+  dependencies:
+    - staging
+    - uat
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+production:
+  stage: deploy-production
+  environment:
+    name: production
+  script:
+    - python -u automation/run.py --stage deploy-production
+  when: manual
+  dependencies:
+   - staging signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
