@@ -35,13 +35,13 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('request'),
-            $container->get('response'),
             $container->get('parameters'),
             $container->get('config_fetcher'),
             $container->get('user_fetcher'),
             $container->get('player_session'),
             $container->get('session_fetcher'),
-            $container->get('block_utils')
+            $container->get('block_utils'),
+            $container->get('lang')
         );
     }
 
@@ -50,16 +50,15 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
      */
     public function __construct(
         $request,
-        $response,
         $parameters,
         $config,
         $user,
         $playerSession,
         $session_fetcher,
-        $block_utils
+        $block_utils,
+        $lang
     ) {
         $this->request = $request;
-        $this->response = $response;
         $this->parameters = $parameters;
         $this->config = $config;
         $this->user = $user;
@@ -67,6 +66,7 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
         $this->playerSession = $playerSession;
         $this->sessionFetcher = $session_fetcher;
         $this->blockUtils = $block_utils;
+        $this->lang = $lang;
     }
 
     /**
@@ -122,12 +122,12 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
         $domain = $this->pnxconfig['domain'] ?? '';
 
         // websocket
-        $data['connection']['socket']['eventBus'] = $this->getURI(true, $this->response, $domain)[self::EVENTBUS];
-        $data['connection']['socket']['replyUri'] = $this->getURI(true, $this->response, $domain)[self::REPLY];
+        $data['connection']['socket']['eventBus'] = $this->getURI(true, $domain)[self::EVENTBUS];
+        $data['connection']['socket']['replyUri'] = $this->getURI(true, $domain)[self::REPLY];
 
         // no websocket
-        $data['connection']['fallback']['eventBus'] = $this->getURI(false, $this->response, $domain)[self::EVENTBUS];
-        $data['connection']['fallback']['replyUri'] = $this->getURI(false, $this->response, $domain)[self::REPLY];
+        $data['connection']['fallback']['eventBus'] = $this->getURI(false, $domain)[self::EVENTBUS];
+        $data['connection']['fallback']['replyUri'] = $this->getURI(false, $domain)[self::REPLY];
 
         $data['dateformat'] = [
             'format' => $this->getConfigByPlayerLocale('date_format'),
@@ -195,7 +195,7 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
     /**
      * Get eventbus and reply URI
      */
-    private function getURI($hasWebsocket, $response, $domainConfig)
+    private function getURI($hasWebsocket, $domainConfig)
     {
         $replyPrefix = $this->parameters['pushnx.api.reply.prefix'];
         $eventbusPrefix = $this->parameters['pushnx.api.eventbus.prefix'];
@@ -204,8 +204,7 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
         // Get the domain from configuration if not empty, else from parameters
         $domain = empty($domainConfig) ? $this->parameters['pushnx.server'] : $domainConfig;
         // If browser has no web socket, use fallback path
-        // $lang = $response->getHeader('Content-Language');
-        $lang = 'en';
+        $lang = $this->lang;
         $domain = $hasWebsocket === false ? "/$lang$fallbackPrefix" : $domain;
 
         return [
