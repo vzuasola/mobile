@@ -1,3 +1,5 @@
+import * as utility from "@core/assets/js/components/utility";
+
 import PushNX from "@core/assets/js/components/push-notification";
 
 import * as actionTemplate from "./../handlebars/pushnx/action.handlebars";
@@ -35,5 +37,10 @@ export class PushNotification {
 
         // this.pushnx.enable();
         // this.pushnx.bindAction();
+
+        // listen to session
+        utility.listen(document, "session.logout", (event) => {
+            this.pushnx.bindCloseService(); // close socket connection
+        });
     }
 }

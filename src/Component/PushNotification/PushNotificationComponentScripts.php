@@ -96,12 +96,13 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
 
         // second checkpoint is player logged-in
         if (!$this->playerDetails) {
-            return ['enabled' => false];
+            return ['enabled' => false, 'player' => $this->playerDetails];
         }
 
         // third checkpoint is current page excluded
-        if ($this->blockUtils->isVisibleOn($this->pnxconfig['exclude_pages'])) {
-            return ['enabled' => false];
+        if (!empty($this->pnxconfig['exclude_pages'])
+            && $this->blockUtils->isVisibleOn($this->pnxconfig['exclude_pages'])) {
+            return ['enabled' => false, 'excluded' => true];
         }
 
         $data['enabled'] = $this->isPushnxEnabled();
