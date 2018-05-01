@@ -86,6 +86,7 @@ export class HeaderComponent implements ComponentInterface {
 
                 ComponentManager.refreshComponent('announcement_bar');
                 ComponentManager.refreshComponent('announcement_lightbox');
+                ComponentManager.refreshComponent('push_notification');
                 ComponentManager.refreshComponent('header', () => {
                   this.loader.hide();
                 });
@@ -138,6 +139,7 @@ export class HeaderComponent implements ComponentInterface {
             }).always(() => {
                 ComponentManager.refreshComponent('announcement_lightbox');
                 ComponentManager.refreshComponent('announcement_bar');
+                ComponentManager.refreshComponent('push_notification');
                 ComponentManager.refreshComponent('header', () => {
                     this.loader.hide();
                 });

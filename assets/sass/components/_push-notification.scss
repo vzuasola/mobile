@@ -31,6 +31,14 @@
         }
     }
 
+    .debug-active {
+        color: #5cb730;
+    }
+
+    .debug-expired, .expired {
+        color: #cc0505;
+    }
+
     .modal-overlay {
         // Overlay
         &:before {
