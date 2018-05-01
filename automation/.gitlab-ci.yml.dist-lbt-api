@@ -60,6 +60,8 @@ create package:
     key: v2
     paths:
       - .composer-cache/
+  tags:
+    - devrunner
 
 dev:
   stage: deploy-dev
