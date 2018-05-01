@@ -12,21 +12,35 @@ class MenuComponent implements ComponentWidgetInterface
     private $playerSession;
 
     /**
+     * @var App\Fetcher\Drupal\ViewsFetcher
+     */
+    private $views;
+
+    /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $config;
+
+    /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('views_fetcher'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession)
+    public function __construct($playerSession, $views, $config)
     {
         $this->playerSession = $playerSession;
+        $this->views = $views;
+        $this->config = $config;
     }
 
     /**
@@ -47,6 +61,20 @@ class MenuComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+
+        try {
+            $data['product_menu'] = $this->views->getViewById('mobile_product_menu');
+        } catch (\Exception $e) {
+            $data['product_menu'] = [];
+        }
+
+        try {
+            $data['config_new_text'] = $this->config
+                ->getConfig('webcomposer_config.header_configuration')['product_menu_new_tag'];
+        } catch (\Exception $e) {
+            $data['config_new_text'] = [];
+        }
+
 
         // post login specific data
 
