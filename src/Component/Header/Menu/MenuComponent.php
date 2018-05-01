@@ -17,6 +17,12 @@ class MenuComponent implements ComponentWidgetInterface
     private $views;
 
     /**
+     * @var App\Fetcher\Drupal\menus
+     */
+    private $menus;
+
+
+    /**
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
     private $config;
@@ -29,6 +35,7 @@ class MenuComponent implements ComponentWidgetInterface
         return new static(
             $container->get('player_session'),
             $container->get('views_fetcher'),
+            $container->get('menu_fetcher'),
             $container->get('config_fetcher')
         );
     }
@@ -36,10 +43,11 @@ class MenuComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $config)
+    public function __construct($playerSession, $views, $menus, $config)
     {
         $this->playerSession = $playerSession;
         $this->views = $views;
+        $this->menus = $menus;
         $this->config = $config;
     }
 
@@ -66,6 +74,12 @@ class MenuComponent implements ComponentWidgetInterface
             $data['product_menu'] = $this->views->getViewById('mobile_product_menu');
         } catch (\Exception $e) {
             $data['product_menu'] = [];
+        }
+
+        try {
+            $data['quicklinks'] = $this->menus->getMultilingualMenu('quicklinks');
+        } catch (\Exception $e) {
+            $data['quicklinks'] = [];
         }
 
         try {
