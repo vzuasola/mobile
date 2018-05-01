@@ -60,7 +60,7 @@ export class PushNotification {
     private listenSessionLogin() {
         utility.listen(document, "session.login", (event) => {
             this.setCookie('pnxInitialLogin', true, 7);
-            this.openModal();
+            // this.openModal();
         });
     }
 
