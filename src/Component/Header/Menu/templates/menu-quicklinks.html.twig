@@ -1,0 +1,22 @@
+{% if quicklinks %}
+<h3 class="mobile-menu-internal-header"><span>Links</span></h3>
+<div class="menu-display menu-display-internal">
+    <ul class="icon-thumbnail clearfix">
+        {% for menu in quicklinks %}
+
+            <li class="icon-thumbnail-item {{ menu.attributes.class }}">
+                <a
+                href="{{ url(menu.uri) }}"
+                class="icon-thumbnail-link"
+                >
+
+                {% include '@app/web/images/svg/quicklinks/'~menu.attributes.class~'.svg' ignore missing %}
+
+                <span class="icon-thumbnail-label">{{ menu.title }}</span>
+                </a>
+            </li>
+
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

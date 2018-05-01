@@ -83,6 +83,12 @@ class MenuComponent implements ComponentWidgetInterface
         }
 
         try {
+            $data['otherlinks'] = $this->menus->getMultilingualMenu('secondary-menu');
+        } catch (\Exception $e) {
+            $data['otherlinks'] = [];
+        }
+
+        try {
             $data['config_new_text'] = $this->config
                 ->getConfig('webcomposer_config.header_configuration')['product_menu_new_tag'];
         } catch (\Exception $e) {
