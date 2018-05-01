@@ -1,0 +1,14 @@
+{% if otherlinks %}
+<ul class="mobile-menu-footer clearfix">
+    {% for menu in otherlinks %}
+            <li class="mobile-menu-item {{ menu.attributes.class }}">
+                <a
+                href="{{ url(menu.uri) }}"
+                class="mobile-menu-link"
+                >
+                <span>{{ menu.title }}</span>
+                </a>
+            </li>
+        {% endfor %}
+</ul>
+{% endif %}

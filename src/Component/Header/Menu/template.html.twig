@@ -31,22 +31,10 @@
 
             {# Internal Links #}
             {{ include('@component/Header/Menu/templates/menu-quicklinks.html.twig') }}
-
+                
             {# Mobile menu footer #}
-            <ul class="mobile-menu-footer clearfix">
-                <li class="mobile-menu-item">
-                    <a href="#" class="mobile-menu-link"><span>About Us</span></a>
-                </li>
-                <li class="mobile-menu-item">
-                    <a href="#" class="mobile-menu-link"><span>Privacy Policy</span></a>
-                </li>
-                <li class="mobile-menu-item">
-                    <a href="#" class="mobile-menu-link"><span>Terms and Conditions</span></a>
-                </li>
-                <li class="mobile-menu-item">
-                    <a href="#" class="mobile-menu-link"><span>Security</span></a>
-                </li>
-            </ul>
+            {{ include('@component/Header/Menu/templates/menu-otherlinks.html.twig') }}
+            
         </div>
     </nav>
 </section>
