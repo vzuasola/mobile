@@ -1,0 +1,33 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - tests
+
+static code analysis:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage phpunit-sonarqube
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+
+php code sniffer:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage phpcs
+
+es linter:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage eslinter
+
+sensiolabs security checker:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage sensiolab-security-checker
+  allow_failure: true
+
+hp fortify scan:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage code-scan-testing
+  allow_failure: true
