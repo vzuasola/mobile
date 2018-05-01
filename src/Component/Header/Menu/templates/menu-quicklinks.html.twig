@@ -6,7 +6,7 @@
             <li class="icon-thumbnail-item {{ menu.attributes.class }}">
                 <a
                 href="{{ url(menu.uri) }}"
-                class="icon-thumbnail-link"
+                class="icon-thumbnail-link {{ menu.attributes.title }}"
                 >
 
                 {% include '@app/web/images/svg/quicklinks/'~menu.attributes.class~'.svg' ignore missing %}
