@@ -210,7 +210,7 @@
             },
             "sonarqube-scanner-preview": {
                 "dockerfile": "automation/Dockerfile.sonarqube",
-                "docker-image-suffix": "-sonarqube",
+                "docker-image-suffix": "-sonarqube-v2",
                 "options": [],
                 "command": [
                     "/sonar-scanner/bin/sonar-scanner",
@@ -239,7 +239,7 @@
             },
             "sonarqube-scanner": {
                 "dockerfile": "automation/Dockerfile.sonarqube",
-                "docker-image-suffix": "-sonarqube",
+                "docker-image-suffix": "-sonarqube-v2",
                 "options": [
                     "--env",
                     "SONARQUBE_URL=$SONARQUBE_URL",
