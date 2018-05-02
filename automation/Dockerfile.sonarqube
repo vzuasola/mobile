@@ -1,5 +1,5 @@
 FROM java:alpine
-
+FROM node:10.0-alpine
 RUN apk add --no-cache curl
 RUN curl -o /sonar-scanner-cli.zip -OL https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778.zip
 RUN unzip sonar-scanner-cli.zip
