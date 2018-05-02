@@ -6,6 +6,11 @@
         font-size: 0;
         text-align: center;
         list-style-type: none;
+
+        ul {
+            width: 50%;
+            clear: none;
+        }
     }
 
     li {
@@ -50,8 +55,7 @@
         &:nth-child(13),
         &:nth-child(14),
         &:nth-child(15) {
-            padding-top: 1.5rem;
-            border-top: 0.1rem solid $dark-red;
+            border-bottom: 0.1rem solid $dark-red;
         }
 
         &:last-child {
@@ -88,7 +92,6 @@
         &:nth-child(13),
         &:nth-child(14),
         &:nth-child(15) {
-            padding-top: 1.5rem;
             border-bottom: 0.1rem solid $dark-red;
         }
 

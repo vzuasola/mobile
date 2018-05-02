@@ -1,25 +1,22 @@
 <section>
-    <svg class="mobile-menu-icon" viewBox="0 0 237.285 150.247">
-        <path d="M237.285,25.744H0V0h237.285v25.283V25.744z M237.285,62.979H0V88.23h237.285V62.486 V62.979z M237.285,124.499H0v25.749h237.285V124.499z"/>
-    </svg>
+    {% include '@app/web/images/svg/burger-menu.svg' %}
 
     <nav class="mobile-menu">
-        <h2 class="mobile-menu-header">
-            {% if is_login %}
-                <svg viewBox="0 0 106.648 88.482" class="user-icon">
-                <path d="M13.169 88.482C-6.219 66.274-3.934 32.555 18.273 13.167A53.38 53.38 0 0 1 54.692.016a51.801 51.801 0 0 1 29.273 9.805c18.599 13.073 26.875 36.494 20.621 58.351a52.209 52.209 0 0 1-11.011 20.254 25.51 25.51 0 0 0-1.181-2.274 22.484 22.484 0 0 0-7.642-7.192 47.954 47.954 0 0 0-6.939-3.651l-7.893-3.174a17.734 17.734 0 0 1-3.88-2.107 3.314 3.314 0 0 1-1.261-2.584 7.579 7.579 0 0 1 1.487-4.638c1.124-1.655 2.388-3.229 3.541-4.888a33.416 33.416 0 0 0 3.848-7.724 39.313 39.313 0 0 0 1.881-6.855c.156-.93.262-1.867.31-2.811V37.27a27.521 27.521 0 0 0-1.601-9.354 21.661 21.661 0 0 0-3.625-6.434 20.456 20.456 0 0 0-12.644-7.416c-1.035.081-2.08.081-3.116 0a25.3 25.3 0 0 0-3.091 0c-2.979.17-5.902.884-8.625 2.106a19.948 19.948 0 0 0-6.518 4.805 20.31 20.31 0 0 0-4.663 8.681 31.078 31.078 0 0 0-.9 4.69 36.11 36.11 0 0 0 0 5.62c.125 1.994.408 3.977.844 5.927a44.773 44.773 0 0 0 1.769 5.62 32.989 32.989 0 0 0 1.827 3.875 43.69 43.69 0 0 0 3.988 6.125 21.076 21.076 0 0 1 2.135 3.118 3.793 3.793 0 0 1-1.361 5.19c-.004 0-.009.005-.015.008l-.282.141c-1.517.816-3.146 1.377-4.691 2.107-1.545.73-3.625 1.714-5.394 2.612-1.124.563-2.192 1.18-3.288 1.77a56.245 56.245 0 0 0-7.783 5.031 18.768 18.768 0 0 0-4.578 4.859l-1.065 2.131z"/>
-            </svg>
-            {{ username }}
-            {% else %}
-                LOGO
-            {% endif %}
-            <span class="mobile-menu-close-button">
-                <svg viewBox="0 0 154.822 148.768">
-                    <path id="icon-close" d="M113.652,148.768l-38.057-48.436l-34.598,48.436H0l57.086-76.113L4.324,0H44.11
-                    l31.138,45.84L109.844,0h39.792L92.548,72.654l62.273,76.113h-41.518H113.652z"/>
-                </svg>
-            </span>
-        </h2>
+        {% if is_login %}
+            <h2 class="mobile-menu-header">
+                {% include '@app/web/images/svg/user-profile.svg' %}
+                {{ username }}
+                {% include '@app/web/images/svg/closed.svg' %}
+            </h2>
+        {% else %}
+            <h2 class="mobile-menu-header">
+                {% block logoSection %}
+                    {{ include('@component/Header/templates/logo.html.twig') }}
+                {% endblock %}
+                {% include '@app/web/images/svg/closed.svg' %}
+            </h2>
+        {% endif %}
+
 
         <div class="mobile-menu-body">
             {% if is_login %}
@@ -29,11 +26,14 @@
                 </ul>
             {% endif %}
             
-            {{ include('@component/Header/Menu/templates/product-menu.html.twig') }}
+            <div class="menu-display menu-display-product">
+                {{ widget('home_products') }}
+            </div>
 
             {# Internal Links #}
-            {{ include('@component/Header/Menu/templates/menu-quicklinks.html.twig') }}
-                
+            <h3 class="mobile-menu-internal-header"><span>Links</span></h3>
+            {{ include('@component/Header/templates/links.html.twig') }}
+
             {# Mobile menu footer #}
             {{ include('@component/Header/Menu/templates/menu-otherlinks.html.twig') }}
             

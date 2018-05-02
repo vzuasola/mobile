@@ -7,6 +7,11 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 class MenuComponent implements ComponentWidgetInterface
 {
     /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $menus;
+
+    /**
      * @var App\Player\PlayerSession
      */
     private $playerSession;
@@ -45,6 +50,7 @@ class MenuComponent implements ComponentWidgetInterface
      */
     public function __construct($playerSession, $views, $menus, $config)
     {
+        $this->menus = $menus;
         $this->playerSession = $playerSession;
         $this->views = $views;
         $this->menus = $menus;
@@ -104,6 +110,12 @@ class MenuComponent implements ComponentWidgetInterface
 
         if ($isLogin) {
             $data['username'] = $this->playerSession->getUsername();
+        }
+
+        try {
+            $data['secondary_menu'] = $this->menus->getMultilingualMenu('secondary-menu');
+        } catch (\Exception $e) {
+            $data['secondary_menu'] = [];
         }
 
         return $data;
