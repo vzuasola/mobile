@@ -3,7 +3,6 @@
         padding: 0;
         clear: both;
         overflow: hidden;
-        font-size: 0;
         text-align: center;
         list-style-type: none;
     }
@@ -11,6 +10,14 @@
     li {
         display: inline-block;
         margin: 0 .6rem;
+
+        a {
+            color: $white;
+        }
+
+        span {
+            display: block;
+        }
     }
 
     // Main Club sponsor
@@ -50,8 +57,8 @@
         &:nth-child(13),
         &:nth-child(14),
         &:nth-child(15) {
-            padding-top: 1.5rem;
-            border-top: 0.1rem solid $dark-red;
+            padding-bottom: 1.5rem;
+            border-bottom: 0.1rem solid $dark-red;
         }
 
         &:last-child {
