@@ -50,7 +50,8 @@
                 "options": [],
                 "command": [
                     "tslint",
-                    "-c tslint.json",
+                    "-c",
+                    "tslint.json",
                     "**/*.ts"
                 ],
                 "volumes": [
