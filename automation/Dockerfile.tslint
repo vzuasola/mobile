@@ -1,4 +1,4 @@
 FROM kkarczmarczyk/node-yarn:6.9
-RUN npm install -g babel-eslint && npm install -g eslint
+RUN npm install -g typescript && npm install -g tslint
 WORKDIR /app
 ENTRYPOINT []

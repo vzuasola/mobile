@@ -1,2 +1,4 @@
 vendor
+web/*.js
+node_modules
 *.min.js

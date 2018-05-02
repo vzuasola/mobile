@@ -42,6 +42,24 @@
             }
         }
     },
+    "tslinter": {
+        "steps": {
+            "scan": {
+                "dockerfile": "automation/Dockerfile.tslint",
+                "docker-image-suffix": "-tslint",
+                "options": [],
+                "command": [
+                    "tslint",
+                    "-c",
+                    "tslint.json",
+                    "**/*.ts"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
     "phpmd": {
         "steps": {
             "phpmd": {
