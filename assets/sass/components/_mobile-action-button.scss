@@ -1,0 +1,63 @@
+// Mobile/Tablet buttons
+.mobile-action-button {
+    position: absolute;
+    top: 50%;
+    right: $container-gutter-xs;
+    text-transform: uppercase;
+    line-height: normal;
+    @include translateY(-50%);
+
+    .btn-mobile-login {
+        max-width: 8rem;
+        padding: 0.5rem;
+        white-space: inherit;
+
+        span:first-child {
+            line-height: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        // Language specific (mobile only)
+        @include media("<tablet") {
+            .sc &,
+            .ch & {
+                max-width: 5.5rem;
+            }
+
+            .th & {
+                max-width: 8rem;
+            }
+
+            .vn &,
+            .pl & {
+                max-width: 9.5rem;
+            }
+
+            .id & {
+                max-width: 7rem;
+                margin-top: 0.6rem;
+            }
+
+            .jp &,
+            .gr & {
+                max-width: 7.5rem;
+            }
+
+            .kr & {
+                max-width: 6.5rem
+            }
+        }
+
+    }
+
+    .btn {
+            max-width: 9.5rem;
+            padding: 0.2rem 0.3rem;
+            border-radius: 0.3rem;
+            font-size: 1.3rem;
+
+            @include media(">tablet") {
+                max-width: 15.5rem;
+            }
+    }
+}

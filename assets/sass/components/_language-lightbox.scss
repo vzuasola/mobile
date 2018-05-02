@@ -1,0 +1,166 @@
+.language-lightbox {
+    .modal-overlay {
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+        min-width: 28rem;
+        max-width: 60%;
+        width: auto;
+        padding-bottom: 1rem;
+        background: $dark-gray;
+        border-radius: 0.3rem;
+        box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-body {
+        margin-right: -2rem;
+        margin-left: -2rem;
+    }
+
+    // close button
+    .modal-close-button {
+        width: 2.1rem;
+        height: 2.1rem;
+        background-position: -64rem -12rem;
+    }
+
+    // Heading text
+    h3 {
+        margin: -0.7rem 1rem 1rem;
+        padding-bottom: 1.3rem;
+        border-bottom: 0.1rem solid $gray;
+        color: $white;
+        font-size: 1.6rem;
+        font-weight: 600;
+    }
+
+    // Dropdown
+    ul {
+        margin: 0;
+        padding: 0;
+        text-align: left;
+        z-index: 20;
+        list-style-type: none;
+    }
+
+    li {
+        display: inline;
+
+        a {
+            position: relative;
+            display: block;
+            padding: 0.7rem 3rem;
+            color: $white;
+            cursor: pointer;
+            font-size: 1.4rem;
+        }
+        
+        // active/hover state
+        &.active a,
+        a:hover {
+            background: #2b2829;
+        }
+
+        // active icon indicator
+        .icon-active-lang {
+            position: absolute;
+            top: 1rem;
+            right: 6rem;
+            width: 2.3rem;
+            height: 2.3rem;
+
+            &.lazy-loaded {
+                background-position: -28rem -40rem;
+                @extend %lazy-loaded;
+            }
+        }
+
+        // Arrow icon 
+        a:after {
+            @include image-replacement($sprite-responsive, -66rem, -10rem, 1rem, 1.8rem);
+            position: absolute;
+            top: 1.3rem;
+            right: 3rem;
+            content: "";
+        }
+    }
+
+    // Flag icons
+    a:before {
+        @include image-replacement($sprite-responsive, -10rem, -28rem, 3.1rem, 3.1rem);
+        margin-right: 1rem;
+        content: "";
+    }
+
+    .eu a:before,
+    a.eu:before {
+        background-position: -10rem -32rem;
+    }
+
+    .zh-hans a:before,
+    a.zh-hans:before {
+        background-position: -10rem -36rem;
+    }
+
+    .zh-hant a:before,
+    a.zh-hant:before {
+        background-position: -10rem -40rem;
+    }
+
+    .th a:before,
+    a.th:before {
+        background-position: -10rem -44rem;
+    }
+
+    .vi a:before,
+    a.vi:before {
+        background-position: -10rem -48rem;
+    }
+
+    .id a:before,
+    a.id:before {
+        background-position: -10rem -52rem;
+    }
+
+    .ja a:before,
+    a.ja:before {
+        background-position: -10rem -56rem;
+    }
+
+    .ko a:before,
+    a.ko:before {
+        background-position: -10rem -60rem;
+    }
+
+    .hi a:before,
+    a.hi:before {
+        background-position: -14rem -28rem;
+    }
+
+    .el a:before,
+    a.el:before {
+        background-position: -14rem -32rem;
+    }
+
+    .pl a:before,
+    a.pl:before {
+        background-position: -14rem -36rem;
+    }
+
+    @include media(">=tablet") {
+        .modal-content {
+            min-width: 58rem;
+            max-width: 75%;
+        }
+
+        ul {
+            float: left;
+            width: 50%;
+
+            &.batch-1 {
+                border-right: 0.1rem solid $gray;
+            }
+        }
+    }
+}

@@ -1,0 +1,161 @@
+@import "../vendor/pure-form";
+@import "./form-annotation";
+
+// Variables
+$default-form-border-color: #ccc;
+$default-form-field-color: #ccc;
+
+// Validation icons
+.icon {
+    &-validation {
+        @extend %lazy-loaded;
+        position: absolute;
+        top: 0.3rem;
+        right: 0;
+        display: none;
+        background-image: url($base-sprite);
+        width: 2.3rem;
+        height: 2.3rem;
+    }
+
+    .has-error &-validation,
+    .has-success &-validation {
+        display: inline-block;
+    }
+
+    .has-error &-validation {
+        background-position: -24rem -40rem;
+    }
+
+    .has-success &-validation {
+        background-position: -28rem -40rem;
+    }
+}
+
+// Overwrite pure-form default form element styles
+.pure-form input[type="text"],
+.pure-form input[type="password"],
+.pure-form input[type="email"],
+.pure-form input[type="url"],
+.pure-form input[type="date"],
+.pure-form input[type="month"],
+.pure-form input[type="time"],
+.pure-form input[type="datetime"],
+.pure-form input[type="datetime-local"],
+.pure-form input[type="week"],
+.pure-form input[type="number"],
+.pure-form input[type="search"],
+.pure-form input[type="tel"],
+.pure-form input[type="color"],
+.pure-form select,
+.pure-form textarea {
+    padding: 0.5rem 1rem;
+    display: inline-block;
+    border: 0.1rem solid $default-form-border-color;
+    box-shadow: none;
+    vertical-align: middle;
+    box-sizing: border-box;
+    border-radius: 0;
+}
+
+// Vertical form
+.form-vertical {
+    padding: 2rem 2rem 0.1rem;
+    background: $white no-repeat center center;
+    background-size: cover;
+
+    .form-item {
+        @extend %clearfix;
+        position: relative;
+    }
+
+    // Label
+    .form-label {
+        position: relative;
+        float: left;
+        width: 33.33333%;
+        margin-top: 0;
+        margin-bottom: 2rem;
+        padding-top: 0.3rem;
+        padding-right: 2rem;
+        line-height: normal;
+        text-align: right;
+
+        .required-field {
+            position: absolute;
+            display: block;
+            top: 0.5rem;
+            right: 0.9rem;
+        }
+    }
+
+    .form-field {
+        float: right;
+        width: 66.66667%;
+        margin-bottom: 2rem;
+        padding-right: 3.2rem;
+
+        // Form field elements (text, textarea, select etc)
+        &-element {
+            width: 100%;
+        }
+    }
+
+    // .form-radio,
+    // .form-checkbox {
+
+    // }
+
+    // Help text
+    .form-help-block {
+        display: none;
+        margin-top: 0.5rem;
+    }
+
+    // Help text - has-error
+    & .has-error .form-help-block {
+        display: block;
+        color: $red;
+    }
+
+    // form description (legend like in fieldset)
+    .form-description {
+        clear: both;
+        margin-bottom: 1rem;
+        color: #58595b;
+    }
+
+    // Inline form items (use for buttons)
+    .form-item-inline {
+        @extend %clearfix;
+
+        .form-item:before,
+        .form-item:after {
+            display: inline;
+            line-height: normal;
+            clear: none;
+        }
+
+        .form-item,
+        .form-field {
+            float: left;
+            width: auto;
+            display: inline;
+        }
+
+        .form-field {
+            padding-right: 0;
+        }
+
+        .form-item:first-child {
+            margin-left: 33.33333%;
+        }
+    }
+}
+
+.form-optin {
+    width: 42rem;
+    // background-image: url(../../assets/images/temp/1080-x-1920-HD-Background-Vertical.jpg);
+    // background-image: url(../../assets/images/temp/stock-photo-wood-frame-isolated-on-white-94504426.jpg);
+    // background-image: url(../../assets/images/temp/stock-vector--d-picture-frame-design-vector-for-a-image-or-text-125064911.jpg);
+}

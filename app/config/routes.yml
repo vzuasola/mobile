@@ -1,0 +1,25 @@
+routes:
+    /:
+        method: GET
+        action: App\MobileEntry\Controller\HomeController:view
+        components:
+          main: home
+
+    /about:
+        method: GET
+        action: App\MobileEntry\Controller\AboutController:view
+        components:
+          main: basic
+
+    /api/plugins/component/route/{id}/{method}:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:route
+
+    # temporary - fetch config using core
+    /ajax/pushnx/config:
+        method: GET
+        action: App\Controller\PushNotificationController:getPushConfig
+
+    /*.*:
+        method: ANY
+        action: App\MobileEntry\Controller\NodeController:viewNodeByType

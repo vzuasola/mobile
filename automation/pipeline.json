@@ -7,8 +7,8 @@
             "w"
         ],
         "instances": [
-            "http://mdc-co-nex01.msgreen.dom:8081/repository/$CI_PROJECT_NAME",
-            "http://trc-ptc-afact01.msred.dom:8081/artifactory/$CI_PROJECT_NAME"
+            "http://trc-ptc-afact01.msred.dom:8081/artifactory/$CI_PROJECT_NAME",
+            "http://mdc-co-nex01.msgreen.dom:8081/repository/$CI_PROJECT_NAME"
         ]
     },
     "phpcs": {
@@ -35,6 +35,24 @@
                 "command": [
                     "eslint",
                     "$ESLINT_SRC"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
+    "tslinter": {
+        "steps": {
+            "scan": {
+                "dockerfile": "automation/Dockerfile.tslint",
+                "docker-image-suffix": "-tslint",
+                "options": [],
+                "command": [
+                    "tslint",
+                    "-c",
+                    "tslint.json",
+                    "**/*.ts"
                 ],
                 "volumes": [
                     "$PWD:/app"
@@ -192,7 +210,7 @@
             },
             "sonarqube-scanner-preview": {
                 "dockerfile": "automation/Dockerfile.sonarqube",
-                "docker-image-suffix": "-sonarqube",
+                "docker-image-suffix": "-sonarqube-v2",
                 "options": [],
                 "command": [
                     "/sonar-scanner/bin/sonar-scanner",
@@ -221,7 +239,7 @@
             },
             "sonarqube-scanner": {
                 "dockerfile": "automation/Dockerfile.sonarqube",
-                "docker-image-suffix": "-sonarqube",
+                "docker-image-suffix": "-sonarqube-v2",
                 "options": [
                     "--env",
                     "SONARQUBE_URL=$SONARQUBE_URL",
@@ -489,6 +507,93 @@
                 "options": [
                     "--env",
                     "DIRPATH=/app/devtool/"
+                ],
+                "command": [
+                    "yarn",
+                    "run",
+                    "dist"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            },
+            "package": {
+                "dockerfile": "automation/Dockerfile.package",
+                "docker-image-suffix": "-package",
+                "options": [
+                    "--env", "CI_PROJECT_NAME=$CI_PROJECT_NAME",
+                    "--env", "VERSION=$VERSION",
+                    "--env", "CI_PIPELINE_ID=$CI_PIPELINE_ID",
+                    "--env", "ARTIFACTORY_PASSWORD=$ARTIFACTORY_PASSWORD"
+                ],
+                "command": [
+                    "python",
+                    "/app/automation/package.py",
+                    "--configuration-file",
+                    "/app/pipeline-package.json"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            },
+            "mark as complete": {
+                "dockerfile": "automation/Dockerfile.authorize",
+                "docker-image-suffix": "-mark-as-complete",
+                "options": [
+                    "--env",
+                    "USER=$GITLAB_USER_EMAIL"
+                ],
+                "command": [
+                    "python",
+                    "/app/automation/mark_as_complete.py"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
+    "package-v2": {
+        "steps": {
+            "composer": {
+                "dockerfile": "automation/Dockerfile.composer",
+                "docker-image-suffix": "-composer",
+                "options": [
+                    "--env",
+                    "SYMFONY_ENV=prod"
+                ],
+                "command": [
+                    "install",
+                    "-v",
+                    "--no-interaction",
+                    "--no-dev",
+                    "--optimize-autoloader"
+                ],
+                "volumes": [
+                    "$PWD:/var/www/html/app"
+                ]
+            },
+            "yarn-install": {
+                "dockerfile": "automation/Dockerfile.yarn-mobile",
+                "docker-image-suffix": "-yarn",
+                "options": [
+                    "--env",
+                    "DIRPATH=/app"
+                ],
+                "command": [
+                    "yarn",
+                    "install"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            },
+            "yarn-dist": {
+                "dockerfile": "automation/Dockerfile.yarn-mobile",
+                "docker-image-suffix": "-yarn",
+                "options": [
+                    "--env",
+                    "DIRPATH=/app"
                 ],
                 "command": [
                     "yarn",

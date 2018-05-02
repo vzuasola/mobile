@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "watch": "NODE_ENV=development node_modules/.bin/webpack --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js --watch",
+    "dev": "NODE_ENV=development node_modules/.bin/webpack --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js",
+    "dist": "NODE_ENV=production node_modules/.bin/webpack --progress --hide-modules --config=node_modules/webpack-mix/setup/webpack.config.js",
+    "lint": "yarn eslint && yarn tslint",
+    "eslint": "eslint **/*.js",
+    "tslint": "tslint -c tslint.json **/*.ts"
+  },
+  "devDependencies": {
+    "@types/handlebars": "^4.0.37",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "browser-sync": "^2.23.6",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "clean-webpack-plugin": "^0.1.19",
+    "eslint": "^4.19.1",
+    "handlebars": "^4.0.11",
+    "handlebars-loader": "^1.7.0",
+    "ts-loader": "^3.5.0",
+    "tslint": "^5.9.1",
+    "tslint-loader": "^3.6.0",
+    "typescript": "^2.8.1",
+    "webpack-mix": "^2.0.2"
+  },
+  "dependencies": {}
+}

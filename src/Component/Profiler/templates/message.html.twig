@@ -1,0 +1,14 @@
+{% import "@component/Profiler/templates/trace.html.twig" as macros %}
+
+{% for value in messages %}
+    <div class="message-wrapper">
+        {% if value.trace %}
+            <p><a class="message" href="#">{{ value.message|raw }}</a></p>
+            <div class="trace">
+                {{ macros.trace(value.trace) }}
+            </div>
+        {% else %}
+            <p>{{ value.message|raw }}</p>
+        {% endif %}
+    </div>
+{% endfor %}

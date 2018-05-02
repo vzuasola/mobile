@@ -1,0 +1,95 @@
+const mix = require('webpack-mix').mix;
+const path = require('path');
+
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+mix.webpackConfig({
+    plugins: [
+        new CleanWebpackPlugin(['web'], {
+            verbose: false,
+            exclude: ['app.php', 'index.php', '.htacess', 'data.json'],
+        })
+    ],
+
+    module: {
+        rules: [
+            {
+                test: /\.handlebars?$/,
+                loader: 'handlebars-loader'
+            },
+            {
+                test: /\.ts$/,
+                enforce: 'pre',
+                loader: 'tslint-loader',
+                options: {
+                    emitErrors: true,
+                }
+            }
+        ]
+    },
+
+    resolve: {
+        symlinks: false,
+
+        alias: {
+            // ts bindings
+            "@app": path.resolve(__dirname, './'),
+            "@core": path.resolve(__dirname, './core/core/'),
+            "@plugins": path.resolve(__dirname, './core/core/src/Plugins'),
+
+            // legacy bindings
+            "Base": path.resolve(__dirname, './core/core/assets/js/components/'),
+            "BaseVendor": path.resolve(__dirname, './core/core/assets/js/vendor/'),
+            "BaseTemplate": path.resolve(__dirname, "./core/core/templates/dafabet"),
+        }
+    },
+});
+
+if (!mix.inProduction()) {
+    mix.webpackConfig({
+        devtool: 'source-map',
+    }).sourceMaps();
+}
+
+mix
+    .setPublicPath('web')
+    .copy('assets/images', 'web/images')
+    .ts('assets/script/app.ts', 'web/app.js')
+    .sass('assets/sass/app.scss', 'web/')
+;
+
+// Full API
+// mix.js(src, output);
+// mix.react(src, output); <-- Identical to mix.js(), but registers React Babel compilation.
+// mix.preact(src, output); <-- Identical to mix.js(), but registers Preact compilation.
+// mix.coffee(src, output); <-- Identical to mix.js(), but registers CoffeeScript compilation.
+// mix.ts(src, output); <-- TypeScript support. Requires tsconfig.json to exist in the same folder as webpack.mix.js
+// mix.extract(vendorLibs);
+// mix.sass(src, output);
+// mix.standaloneSass('src', output); <-- Faster, but isolated from Webpack.
+// mix.fastSass('src', output); <-- Alias for mix.standaloneSass().
+// mix.less(src, output);
+// mix.stylus(src, output);
+// mix.postCss(src, output, [require('postcss-some-plugin')()]);
+// mix.browserSync('my-site.test');
+// mix.combine(files, destination);
+// mix.babel(files, destination); <-- Identical to mix.combine(), but also includes Babel compilation.
+// mix.copy(from, to);
+// mix.copyDirectory(fromDir, toDir);
+// mix.minify(file);
+// mix.sourceMaps(); // Enable sourcemaps
+// mix.version(); // Enable versioning.
+// mix.disableNotifications();
+// mix.setPublicPath('path/to/public');
+// mix.setResourceRoot('prefix/for/resource/locators');
+// mix.autoload({}); <-- Will be passed to Webpack's ProvidePlugin.
+// mix.webpackConfig({}); <-- Override webpack.config.js, without editing the file directly.
+// mix.babelConfig({}); <-- Merge extra Babel configuration (plugins, etc.) with Mix's default.
+// mix.then(function () {}) <-- Will be triggered each time Webpack finishes building.
+// mix.extend(name, handler) <-- Extend Mix's API with your own components.
+// mix.options({
+//   processCssUrls: true, // Process/optimize relative stylesheet url()'s. Set to false, if you don't want them touched.
+//   purifyCss: false, // Remove unused CSS selectors.
+//   uglify: {}, // Uglify-specific options. https://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
+//   postCss: [] // Post-CSS options: https://github.com/postcss/postcss/blob/master/docs/plugins.md
+// });

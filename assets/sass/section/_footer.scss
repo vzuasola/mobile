@@ -1,0 +1,17 @@
+.footer {
+    padding-top: 0.5rem;
+    border-top: 0.1rem solid $dark-red;
+    font-size: 1.2rem;
+    color: $white;
+
+    h4 {
+        font-size: 1.8rem;
+        font-weight: bold;
+        line-height: 2.4rem;
+    }
+}
+
+@import "../components/app-download";
+@import "../components/footer-sponsor";
+@import "../components/footer-mobile-menu";
+@import "../components/footer-copyright";

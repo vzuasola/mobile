@@ -1,0 +1,32 @@
+{
+        "include_directories": [
+            "app",
+            "src",
+            "vendor",
+            "web",
+            "var",
+            "bin"
+        ],
+        "exclude_directories": [
+            ".git",
+            ".svn",
+            "build",
+            "deploy",
+            "example",
+            "test",
+            "tests",
+            "prod"
+        ],
+        "exclude_extensions": [
+            "txt",
+            "TXT",
+            "CHANGELOG.md",
+            "README",
+            "README.md",
+            "LICENSE",
+            "example.settings.local.php",
+            "example.sites.php",
+            ".gitkeep",
+            "composer.json"
+        ]
+}

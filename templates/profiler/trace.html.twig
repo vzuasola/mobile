@@ -1,0 +1,35 @@
+{% macro trace(links) %}
+    {% import _self as macros %}
+    <ul>
+        {% for link in links %}
+            {% if
+                link.class matches '/^Slim.*/'
+                or
+                link.class matches '/^Twig.*/'
+                or
+                link.class matches '/^_Twig.*/'
+                or
+                link.class matches '/^__Twig.*/'
+                or
+                link.class matches '/^App\\\\Profiler\\\\Profiler.*/'
+                or
+                link.function matches '/^twig.*/'
+                or
+                link.function == "call_user_func_array" or link.function == "call_user_func"
+            %}
+
+            {% else %}
+                <li>
+                    <p class="mb-10">
+                        <strong>{{ link.class }}{{ link.type }}{{ link.function }}</strong>
+                        {% if link.line %}
+                            <br>
+
+                            Line {{ link.line }}
+                        {% endif %}
+                    </p>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endmacro %}

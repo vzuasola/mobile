@@ -1,0 +1,163 @@
+/* stylelint-disable */
+// Vendor Prefixes
+
+// Box Shadow
+// Box sizing
+// Transitions
+// User select
+
+// Box Shadow
+@mixin box-shadow($shadow: 0 1px 3px rgba(0, 0, 0, .25)) {
+    -webkit-box-shadow: $shadow; // iOS <4.3 & Android <4.1
+    box-shadow: $shadow;
+}
+
+// Box sizing
+@mixin box-sizing($boxmodel: border-box) {
+    -webkit-box-sizing: $boxmodel;
+    -moz-box-sizing: $boxmodel;
+    box-sizing: $boxmodel;
+}
+
+// Transitions
+@mixin transition($transition...) {
+    -webkit-transition: $transition;
+    -o-transition: $transition;
+    transition: $transition;
+}
+
+@mixin transition-property($transition-property...) {
+    -webkit-transition-property: $transition-property;
+    transition-property: $transition-property;
+}
+
+@mixin transition-delay($transition-delay) {
+    -webkit-transition-delay: $transition-delay;
+    transition-delay: $transition-delay;
+}
+
+@mixin transition-duration($transition-duration...) {
+    -webkit-transition-duration: $transition-duration;
+    transition-duration: $transition-duration;
+}
+
+@mixin transition-timing-function($timing-function) {
+    -webkit-transition-timing-function: $timing-function;
+    transition-timing-function: $timing-function;
+}
+
+@mixin transition-transform($transition...) {
+    -webkit-transition: -webkit-transform $transition;
+    -moz-transition: -moz-transform $transition;
+    -o-transition: -o-transform $transition;
+    transition: transform $transition;
+}
+
+// User select
+// For selecting text on the page
+@mixin user-select($select) {
+    -webkit-user-select: $select;
+    -moz-user-select: $select;
+    -ms-user-select: $select; // IE10+
+    user-select: $select;
+}
+
+// Animations
+@mixin animation($anim: name 1s infinite linear) {
+    -webkit-animation: $anim;
+       -moz-transform: $anim;
+        -ms-transform: $anim;
+         -o-animation: $anim;
+            animation: $anim;
+}
+
+@mixin animation-name($anim-name) {
+    -webkit-animation-name: $anim-name;
+       -moz-transform-name: $anim-name;
+        -ms-transform-name: $anim-name;
+         -o-animation-name: $anim-name;
+            animation-name: $anim-name;
+}
+
+@mixin animation-duration($anim-duration) {
+    -webkit-animation-duration: $anim-duration;
+       -moz-transform-duration: $anim-duration;
+        -ms-transform-duration: $anim-duration;
+         -o-animation-duration: $anim-duration;
+            animation-duration: $anim-duration;
+}
+
+@mixin animation-iteration-count($anim-count) {
+    -webkit-animation-iteration-count: $anim-count;
+       -moz-transform-iteration-count: $anim-count;
+        -ms-transform-iteration-count: $anim-count;
+         -o-animation-iteration-count: $anim-count;
+            animation-iteration-count: $anim-count;
+}
+
+@mixin animation-direction($anim-direction) {
+    -webkit-animation-direction: $anim-direction;
+       -moz-transform-direction: $anim-direction;
+        -ms-transform-direction: $anim-direction;
+         -o-animation-direction: $anim-direction;
+            animation-direction: $anim-direction;
+}
+
+@mixin animation-delay($time) {
+    -webkit-animation-delay: $time;
+         -o-animation-delay: $time;
+            animation-delay: $time;
+}
+
+// Transform
+@mixin transform($transforms) {
+    -webkit-transform: $transforms;
+       -moz-transform: $transforms;
+        -ms-transform: $transforms;
+         -o-transform: $transforms;
+            transform: $transforms;
+}
+
+// rotate
+@mixin rotate($deg) {
+    @include transform(rotate(#{$deg}deg));
+}
+
+// scale
+@mixin scale($scale) {
+    @include transform(scale($scale));
+}
+
+// scale3d
+@mixin scale3d($x, $y, $z) {
+    @include transform(scale3d($x, $y, $z));
+}
+
+// translate
+@mixin translate($x, $y) {
+    @include transform(translate($x, $y));
+}
+
+@mixin translateX($x) {
+    @include transform(translateX($x));
+}
+
+@mixin translateY($y) {
+    @include transform(translateY($y));
+}
+
+// skew
+@mixin skew ($x, $y) {
+    @include transform(skew(#{$x}deg, #{$y}deg));
+}
+
+@mixin transform-origin($origin) {
+    -webkit-transform-origin: $origin;
+        -ms-transform-origin: $origin;
+            transform-origin: $origin;
+}
+@mixin appearance($value) {
+    -webkit-appearance: $value;
+       -moz-appearance: $value;
+            appearance: $value;
+}

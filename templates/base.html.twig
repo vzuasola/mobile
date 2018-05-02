@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ title }}</title>
+    {% block css %}{% endblock %}
+</head>
+<body class="{{ app.lang }}" >
+    {% block header %}{% endblock header %}
+
+    <main class="main">
+        {% block body %}{% endblock body %}
+    </main>
+
+    {% block footer %}{% endblock footer %}
+
+    {% block script %}{% endblock %}
+</body>
+</html>

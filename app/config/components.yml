@@ -1,0 +1,35 @@
+# Component list
+
+components:
+  header:
+    class: App\MobileEntry\Component\Header\HeaderComponent
+
+  footer:
+    class: App\MobileEntry\Component\Footer\FooterComponent
+
+  profiler:
+    class: App\MobileEntry\Component\Profiler\ProfilerComponent
+
+  home:
+    class: App\MobileEntry\Component\Main\Home\HomeComponent
+
+  home_slider:
+    class: App\MobileEntry\Component\Main\Home\Slider\SliderComponent
+    parent: home
+
+  home_products:
+    class: App\MobileEntry\Component\Main\Home\Products\ProductsComponent
+    parent: home
+
+  basic:
+    class: App\MobileEntry\Component\Main\Basic\BasicComponent
+
+  header_menu:
+    class: App\MobileEntry\Component\Header\Menu\MenuComponent
+    parent: header
+
+  announcement:
+    class: App\MobileEntry\Component\Announcement\AnnouncementComponent
+
+  push_notification:
+    class: App\MobileEntry\Component\PushNotification\PushNotificationComponent

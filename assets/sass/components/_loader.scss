@@ -1,0 +1,156 @@
+/* Loader */
+.loader {
+    &-container {
+        position: relative;
+        width: 160px;
+        height: 14px;
+        margin: -7px auto 30px;
+    }
+
+    .ray {
+        position: absolute;
+        top: 0;
+        background-color: #ffc600;
+        width: 16px;
+        height: 16px;
+        @include animation-name(bounce_loader);
+        @include animation-duration(1.3s);
+        @include animation-iteration-count(infinite);
+        @include animation-direction(normal);
+        @include scale(0.5);
+        border-radius: 9px;
+    }
+
+    #ray-0 {
+        left: 0;
+        @include animation-delay(0.01s);
+    }
+
+    #ray-1 {
+        left: 16px;
+        @include animation-delay(0.14s);
+    }
+
+    #ray-2 {
+        left: 32px;
+        @include animation-delay(0.27s);
+    }
+
+    #ray-3 {
+        left: 48px;
+        @include animation-delay(0.4s);
+    }
+
+    #ray-4 {
+        left: 64px;
+        @include animation-delay(0.53s);
+    }
+
+    #ray-5 {
+        left: 80px;
+        @include animation-delay(0.66s);
+    }
+
+    #ray-6 {
+        left: 96px;
+        @include animation-delay(0.79s);
+    }
+
+    #ray-7 {
+        left: 112px;
+        @include animation-delay(0.92s);
+    }
+
+    #ray-8 {
+        left: 128px;
+        @include animation-delay(1.05s);
+    }
+
+    #ray-9 {
+        left: 144px;
+        @include animation-delay(1.18s);
+    }
+
+    @keyframes bounce_loader {
+        0% {
+            transform: scale(0.9);
+            background-color: #ffc600;
+        }
+
+        100% {
+            transform: scale(0.5);
+            background-color: #fff;
+        }
+    }
+
+    @-o-keyframes bounce_loader {
+        0% {
+            -o-transform: scale(0.9);
+            background-color: #ffc600;
+        }
+
+        100% {
+            -o-transform: scale(0.5);
+            background-color: #fff;
+        }
+    }
+
+    // @-ms-keyframes bounce_loader {
+    //     0% {
+    //         -ms-transform: scale(0.9);
+    //         background-color: #ffc600;
+    //     }
+
+    //     100% {
+    //         -ms-transform: scale(0.5);
+    //         background-color: #fff;
+    //     }
+    // }
+
+    @-webkit-keyframes bounce_loader {
+        0% {
+            -webkit-transform: scale(0.9);
+            background-color: #ffc600;
+        }
+
+        100% {
+            -webkit-transform: scale(0.5);
+            background-color: #fff;
+        }
+    }
+
+    @-moz-keyframes bounce_loader {
+        0% {
+            -moz-transform: scale(0.9);
+            background-color: #ffc600;
+        }
+
+        100% {
+            -moz-transform: scale(0.5);
+            background-color: #fff;
+        }
+    }
+
+    // For loader overlay
+    &-overlay {
+        position: relative;
+
+        .loader {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 15;
+            background: rgba(0, 0, 0, 0.75);
+
+            &-container {
+                @include translate(-50%, -50%);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin: 0;
+            }
+        }
+    }
+}

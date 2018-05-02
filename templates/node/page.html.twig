@@ -1,0 +1,8 @@
+{% extends '@site/page.html.twig' %}
+
+{% block main %}
+    <div class="container mt-40">
+        <h2>{{ data.title[0].value }}</h2>
+        <p>{{ data.body[0].value|raw }}</p>
+    </div>
+{% endblock main %}

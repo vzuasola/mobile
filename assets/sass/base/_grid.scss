@@ -1,0 +1,19 @@
+%container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: $container-gap;
+    padding-left: $container-gap;
+}
+
+.container {
+    @extend %container;
+}
+
+@include grid-generator(12);
+
+// Grid Modifiers, adjust spacing
+// Default is 20px spacing
+
+@include grid-modifier("grid-gap");
+
+@include grid-offset(12, offset);

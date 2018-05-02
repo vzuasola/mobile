@@ -1,0 +1,15 @@
+// Image Replacement
+@mixin image-replacement($background-url: null, $x: 0, $y: 0, $width: 100%, $height: 100%, $line-height: $height) {
+    display: inline-block;
+    width: $width;
+    height: $height;
+    line-height: $line-height;
+    vertical-align: middle;
+    // Don't add background-image property in generated css when $background-url variable has no value
+    @if ($background-url) {
+        background-image: url($background-url);
+    }
+    background-repeat: no-repeat;
+    background-position: $x $y;
+    text-indent: -9999px;
+}

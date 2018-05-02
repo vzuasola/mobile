@@ -1,0 +1,56 @@
+@import "../vendor/pure-form";
+
+.pure-form input[type="text"],
+.pure-form input[type="password"],
+.pure-form input[type="email"],
+.pure-form input[type="url"],
+.pure-form input[type="date"],
+.pure-form input[type="month"],
+.pure-form input[type="time"],
+.pure-form input[type="datetime"],
+.pure-form input[type="datetime-local"],
+.pure-form input[type="week"],
+.pure-form input[type="number"],
+.pure-form input[type="search"],
+.pure-form input[type="tel"],
+.pure-form input[type="color"],
+.pure-form select,
+.pure-form textarea {
+    padding: 0.5rem 0.7rem;
+    border-radius: 0;
+    box-shadow: none;
+    border: 0.1rem solid #999;
+    font-size: 1.6rem;
+}
+
+.pure-form select {
+    height: auto;
+}
+
+.pure-form input[type="text"][disabled],
+.pure-form input[type="password"][disabled],
+.pure-form input[type="email"][disabled],
+.pure-form input[type="url"][disabled],
+.pure-form input[type="date"][disabled],
+.pure-form input[type="month"][disabled],
+.pure-form input[type="time"][disabled],
+.pure-form input[type="datetime"][disabled],
+.pure-form input[type="datetime-local"][disabled],
+.pure-form input[type="week"][disabled],
+.pure-form input[type="number"][disabled],
+.pure-form input[type="search"][disabled],
+.pure-form input[type="tel"][disabled],
+.pure-form input[type="color"][disabled],
+.pure-form select[disabled],
+.pure-form textarea[disabled] {
+    background-color: $disabled-field-gray;
+    color: $disabled-text-gray;
+    border: none;
+    -webkit-text-fill-color: $disabled-text-gray;
+    padding: 0.5rem 1rem;
+}
+
+.pure-form legend {
+    border-bottom: 0.1rem solid $legend-border;
+    padding: 0 1.5rem 0.8rem;
+}

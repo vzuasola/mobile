@@ -1,0 +1,28 @@
+{% if product_tiles %}
+<ul class="icon-thumbnail clearfix">
+    {% for product in product_tiles %}
+        {% if product.field_product_lobby_enable[0].value %}
+            <li class="icon-thumbnail-item {{ product.field_product_lobby_class[0].value }}">
+            <a
+            href="{{ (is_logged_in) ? url(product.field_product_lobby_url_post_log[0].uri) : url(product.field_product_lobby_url_pre_log[0].uri) }}"
+
+            data-router="true"
+            data-router-refresh="main"
+
+            class="icon-thumbnail-link"
+            >
+
+            {% include '@app/web/images/svg/products/'~product.field_product_lobby_class[0].value~'.svg' ignore missing %}
+
+            <span class="icon-thumbnail-label">{{ product.field_product_lobby_title[0].value }}</span>
+            {% if product.field_product_lobby_tag[0].value %}
+                <span class="icon-thumbnail-new-tag">
+                    <span>{{ config_new_text }}</span>
+                </span>
+            {% endif %}
+        </a>
+        </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
