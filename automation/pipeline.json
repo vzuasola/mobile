@@ -51,7 +51,7 @@
                 "command": [
                     "tslint",
                     "-c tslint.json",
-                    "tslint.json"
+                    "**/*.ts"
                 ],
                 "volumes": [
                     "$PWD:/app"
