@@ -61,11 +61,13 @@ class AnnouncementComponent implements ComponentWidgetInterface
             $contents = $this->viewsFetcher->getViewById('announcements');
             $announcements = $this->formatAnnouncement($contents, $isLogin);
 
-            $data['announcements'] = $announcements;
+            $data['announcements'] = $announcements['list'];
+            $data['announcement_count'] = $announcements['count'];
             $data['title'] = $announcementConfigs['title'];
             $data['default_message'] = $announcementConfigs['default_message'];
         } catch (\Exception $e) {
             $data['announcements'] = [];
+            $data['announcement_count'] = 0;
         }
 
         return $data;
@@ -77,6 +79,8 @@ class AnnouncementComponent implements ComponentWidgetInterface
     private function formatAnnouncement($contents, $isLogin)
     {
         $announcement = [];
+        $announcement['list'] = [];
+        $announcementCount = 0;
 
         foreach ($contents as $content) {
             $showItem = true;
@@ -94,9 +98,11 @@ class AnnouncementComponent implements ComponentWidgetInterface
             if (($availability == '0' && $isLogin)
                 || ($availability == '1' && !$isLogin)) {
                 $showItem  = false;
+            } else {
+                $announcementCount++;
             }
 
-            $announcement[] = [
+            $announcement['list'][] = [
                 'nid' =>  $content['id'][0]['value'],
                 'name' => $content['name'][0]['value'],
                 'text' => $content['field_body'][0]['value'],
@@ -104,6 +110,8 @@ class AnnouncementComponent implements ComponentWidgetInterface
                 'show' => $showItem,
             ];
         }
+
+        $announcement['count'] = $announcementCount;
 
         return $announcement;
     }
