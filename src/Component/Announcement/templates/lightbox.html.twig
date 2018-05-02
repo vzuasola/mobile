@@ -2,7 +2,7 @@
     <div class="modal-content announcement-content">
         <p class="announcement-title">{{title}}</p>
         <div class="modal-body announcement-body">
-            {% if announcements|length %}
+            {% if announcement_count %}
             <ul>
                 {% for announcement in announcements %}
                     {% if announcement.show %}

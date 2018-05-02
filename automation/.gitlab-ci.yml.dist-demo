@@ -14,15 +14,15 @@ stages:
   - security-tests-test
   - testing-signoff
 
-cache:
-  paths:
-  - public/
-
 static code analysis:
   stage: tests
   script:
     - python -u automation/run.py --stage phpunit-sonarqube
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+  cache:
+    key: v2
+    paths:
+      - .composer-cache/
 
 php code sniffer:
   stage: tests
@@ -46,14 +46,12 @@ create package:
     - python -u automation/run.py --stage package
   artifacts:
     paths:
-      - "*.tar.gz"
       - automation/deployed/*.jsonl
     expire_in: 1 month
   when: manual
   cache:
     key: v2
     paths:
-      - devtool/.bower-cache/
       - devtool/.node-cache/
       - .composer-cache/
       - devtool/.yarn-cache/
