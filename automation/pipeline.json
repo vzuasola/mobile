@@ -33,8 +33,7 @@
                 "docker-image-suffix": "-eslint",
                 "options": [],
                 "command": [
-                    "eslint",
-                    "$ESLINT_SRC"
+                    "yarn lint",
                 ],
                 "volumes": [
                     "$PWD:/app"
