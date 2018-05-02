@@ -34,11 +34,7 @@ php code sniffer:
   stage: tests
   script:
     - python -u automation/run.py --stage phpcs
-
-es linter:
-  stage: tests
-  script:
-    - python -u automation/run.py --stage eslinter
+  allow_failure: true
 
 sensiolabs security checker:
   stage: tests
@@ -58,9 +54,7 @@ create package:
   cache:
     key: v2
     paths:
-      - devtool/.node-cache/
       - .composer-cache/
-      - devtool/.yarn-cache/
   tags:
     - devrunner
 
@@ -70,6 +64,34 @@ dev:
     name: development
   script:
     - python -u automation/run.py --stage deploy-development
+  when: manual
+  dependencies:
+    - create package
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+dev-mobile-stack:
+  stage: deploy-dev
+  environment:
+    name: development
+  script:
+    - DEPLOY_DEVELOPMENT=$DEPLOY_DEVELOPMENT_MOBILE python -u automation/run.py --stage deploy-development 
+  when: manual
+  dependencies:
+    - create package
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+dev-japan-stack:
+  stage: deploy-dev
+  environment:
+    name: development
+  script:
+    - DEPLOY_DEVELOPMENT=$DEPLOY_DEVELOPMENT_JAPAN python -u automation/run.py --stage deploy-development 
   when: manual
   dependencies:
     - create package
@@ -110,6 +132,36 @@ qa1:
     name: testing
   script:
     - python -u automation/run.py --stage deploy-testing
+  when: manual
+  dependencies:
+    - dev
+    - create package
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+qa1-mobile-stack:
+  stage: deploy-test
+  environment:
+    name: testing
+  script:
+    - DEPLOY_QA=$DEPLOY_QA_MOBILE python -u automation/run.py --stage deploy-testing
+  when: manual
+  dependencies:
+    - dev
+    - create package
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+qa1-japan-stack:
+  stage: deploy-test
+  environment:
+    name: testing
+  script:
+    - DEPLOY_QA=$DEPLOY_QA_JAPAN python -u automation/run.py --stage deploy-testing
   when: manual
   dependencies:
     - dev
@@ -161,6 +213,36 @@ tct:
     name: tct
   script:
     - python -u automation/run.py --stage deploy-tct
+  when: manual
+  dependencies:
+    - dev
+    - create package
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+tct-mobile-stack:
+  stage: deploy-test
+  environment:
+    name: tct
+  script:
+    - DEPLOY_TCT=$DEPLOY_TCT_MOBILE python -u automation/run.py --stage deploy-tct
+  when: manual
+  dependencies:
+    - dev
+    - create package
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+
+tct-japan-stack:
+  stage: deploy-test
+  environment:
+    name: tct
+  script:
+    - DEPLOY_TCT=$DEPLOY_TCT_JAPAN python -u automation/run.py --stage deploy-tct
   when: manual
   dependencies:
     - dev

@@ -78,7 +78,7 @@ dev:
       - automation/deployed/*.jsonl
     expire_in: 1 month
 
-.selenium tests development:
+selenium tests development:
   stage: integration-tests-development
   script:
     - python -u automation/run.py --stage integration-tests-development
@@ -90,7 +90,7 @@ dev:
       - automation/deployed/*.jsonl
     expire_in: 1 month
 
-.jmeter development:
+jmeter development:
   stage: performance-tests-development
   script:
     - python -u automation/run.py --stage performance-tests-dev
@@ -119,7 +119,7 @@ qa1:
       - automation/deployed/*.jsonl
     expire_in: 1 month
 
-.selenium tests qa1:
+selenium tests qa1:
   stage: integration-tests-test
   script:
     - python -u automation/run.py --stage integration-tests-test
@@ -141,7 +141,7 @@ hp fortify scan qa1:
     expire_in: 1 month
   allow_failure: true
 
-.jmeter qa1:
+jmeter qa1:
   stage: performance-tests-test
   script:
     - python -u automation/run.py --stage performance-tests-test
@@ -170,7 +170,7 @@ tct:
       - automation/deployed/*.jsonl
     expire_in: 1 month
 
-.selenium tests tct:
+selenium tests tct:
   stage: integration-tests-test
   script:
     - python -u automation/run.py --stage integration-tests-tct
@@ -182,7 +182,7 @@ tct:
       - automation/deployed/*.jsonl
     expire_in: 1 month
 
-.jmeter tct:
+jmeter tct:
   stage: performance-tests-test
   script:
     - python -u automation/run.py --stage performance-tests-tct
@@ -230,7 +230,7 @@ uat:
     - /^release-.*$/
     - tags
 
-.selenium tests uat:
+selenium tests uat:
   stage: integration-tests-staging
   script:
     - python -u automation/run.py --stage integration-tests-uat
@@ -245,7 +245,7 @@ uat:
     - /^release-.*$/
     - tags
 
-.jmeter uat:
+jmeter uat:
   stage: performance-tests-staging
   script:
     - python -u automation/run.py --stage performance-tests-uat
@@ -279,7 +279,7 @@ staging:
     - /^release-.*$/
     - tags
 
-.selenium tests staging:
+selenium tests staging:
   stage: integration-tests-staging
   script:
     - python -u automation/run.py --stage integration-tests-stg
@@ -294,7 +294,7 @@ staging:
     - /^release-.*$/
     - tags
 
-.jmeter staging:
+jmeter staging:
   stage: performance-tests-staging
   script:
     - python -u automation/run.py --stage performance-tests-staging
