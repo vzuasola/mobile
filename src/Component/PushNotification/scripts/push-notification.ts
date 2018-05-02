@@ -20,7 +20,7 @@ export class PushNotification {
             scrollbot: false, // use default scrollbot library
             modal: {
                 enable: true, // default value true
-                control: true // default value true
+                control: false, // default value true
             },
             dismiss: true, // dismiss all message - default value false
             counter: true, // message counter custom event "pnxCountMessage"
@@ -41,6 +41,7 @@ export class PushNotification {
         this.attachAction(attachments.authenticated);
         this.listenSessionLogin();
         this.listenSessionLogout();
+        this.listenMenu();
     }
 
     private attachAction(islogin: boolean) {
@@ -59,25 +60,40 @@ export class PushNotification {
 
     private listenSessionLogin() {
         utility.listen(document, "session.login", (event) => {
-            this.setCookie('pnxInitialLogin', true, 7);
-            // this.openModal();
+            this.setCookie("pnxInitialLogin", true, 7);
+            this.readyMessage();
         });
     }
 
-    private openModal() {
-        var self = this;
-
-        utility.addEventListener(document, 'pnxMessage', function (e) {
-            if (e.customData.ready) {
-                self.pushnx.openModal();
+    private readyMessage() {
+        utility.listen(document, "pnxMessageReady", (event) => {
+            if (event.customData.ready) {
+                this.modalProcess(event.customData.ready);
             }
         });
     }
 
+    private modalProcess(status: boolean) {
+        const initial = utility.getCookie("pnxInitialLogin");
+
+        if (initial) {
+            this.pushnx.openModal();
+            utility.removeCookie("pnxInitialLogin");
+        }
+    }
+
+    private listenMenu() {
+        const menuNotif = document.querySelector(".menu-notification");
+
+        utility.listen(menuNotif, "click", (event) => {
+            this.pushnx.openModal();
+        });
+    }
+
     private setCookie(cname: string, cvalue: boolean, days: number) {
-        var d = new Date();
+        const d = new Date();
         d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-        var expires = "expires=" + d.toUTCString();
+        const expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 }
