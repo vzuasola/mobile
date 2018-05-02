@@ -1,5 +1,4 @@
-FROM node:10.0-alpine
-FROM java:alpine
+FROM openjdk:8-jre-alpine3.7
 RUN apk add --no-cache curl
 RUN curl -o /sonar-scanner-cli.zip -OL https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778.zip
 RUN unzip sonar-scanner-cli.zip
@@ -8,4 +7,9 @@ RUN cd /usr/bin && ln -s /sonar-scanner/bin/sonar-scanner sonar-scanner
 RUN rm -rf /sonar-scanner-cli.zip
 RUN apk del curl
 WORKDIR /app
+RUN apk add --update nodejs \
+    && npm install tslint -g \
+    && npm install tslint-sonarts -g \
+    && npm install typescript@2.8.3 -g
+ENV NODE_PATH=/usr/lib/node_modules
 CMD ['/usr/bin/sonar-scanner']
