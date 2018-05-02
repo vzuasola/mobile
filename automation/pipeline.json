@@ -33,7 +33,25 @@
                 "docker-image-suffix": "-eslint",
                 "options": [],
                 "command": [
-                    "lint"
+                    "eslint",
+                    "$ESLINT_SRC"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
+    "tslinter": {
+        "steps": {
+            "scan": {
+                "dockerfile": "automation/Dockerfile.tslint",
+                "docker-image-suffix": "-tslint",
+                "options": [],
+                "command": [
+                    "tslint",
+                    "-c tslint.json",
+                    "tslint.json"
                 ],
                 "volumes": [
                     "$PWD:/app"

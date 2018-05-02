@@ -40,6 +40,11 @@ es linter:
   script:
     - python -u automation/run.py --stage eslinter
 
+ts linter:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage tslinter
+
 sensiolabs security checker:
   stage: tests
   script:
