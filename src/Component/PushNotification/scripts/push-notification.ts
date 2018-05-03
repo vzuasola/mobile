@@ -33,7 +33,7 @@ export class PushNotification {
             dismiss: true, // dismiss all message - default value false
             counter: true, // message counter custom event "pnxCountMessage"
             notify: true, // new message indicator custom event "pnxNewMessage"
-            action: false, // bind message action buttons default value true custom event "pnxAction"
+            action: false, // bind message action buttons default value true custom event "pushnx.action"
             template: { // override templates
                 body: bodyTemplate, // body
                 action: actionTemplate, // action
@@ -87,7 +87,7 @@ export class PushNotification {
      * listen to message ready (rendered) status
      */
     private readyMessage() {
-        utility.listen(document, "pnxMessageReady", (event) => {
+        utility.listen(document, "pushnx.message.ready", (event) => {
             if (event.customData.ready) {
                 this.initialProcess(event.customData.ready);
             }
@@ -113,7 +113,7 @@ export class PushNotification {
     private listenMenu() {
         const menuNotif = document.querySelector(".quicklinks-notification");
 
-        utility.listen(menuNotif, "click", (event) => {
+        utility.listen(menuNotif, "click", (e) => {
             this.pushnx.openModal();
         });
     }
@@ -133,15 +133,14 @@ export class PushNotification {
      * listen to message counter
      */
     private listenMessageCounter() {
-        utility.listen(document, "pnxCountMessage", (event) => {
+        utility.listen(document, "pushnx.count.message", (event) => {
             if (!event.customData.count) {
                 this.pushnx.closeModal();
             }
 
             this.listenModal();
-
             // update badge message counter
-            // this.badgeMessageCounter();
+            this.renderMessageCounter(event.customData.count);
         });
     }
 
@@ -149,12 +148,22 @@ export class PushNotification {
      * listen to new message
      */
     private listenNewMessage() {
-        utility.listen(document, "pnxNewMessage", (event) => {
+        utility.listen(document, "pushnx.new.message", (event) => {
             if (event.customData.count) {
                 // display the indicator
                 // this.messageIndicator();
             }
         });
+    }
+
+    private renderMessageCounter(ctr) {
+        const notifCount = document.getElementById("notification-count");
+        if (notifCount && ctr > 0) {
+            utility.removeClass(notifCount, "hidden");
+            notifCount.innerHTML = ctr;
+        } else {
+            utility.addClass(notifCount, "hidden");
+        }
     }
 
     /**
