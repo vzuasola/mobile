@@ -13,6 +13,20 @@
     pl: 'Links',
 } %}
 
+{% set logout = {
+    en: 'Logout',
+    eu: 'Logout',
+    sc: '退出登录',
+    ch: '退出登錄',
+    th: 'ออกจากระบบ',
+    vn: 'Đăng Xuất',
+    id: 'Logout',
+    jp: 'ログアウト',
+    kr: '로그아웃',
+    in: 'Logout',
+    gr: 'Αποσύνδεση',
+    pl: 'Wyloguj',
+} %}
 
 {% if quicklinks %}
 <h3 class="mobile-menu-internal-header"><span>{{ links[app.lang] }}</span></h3>
@@ -41,7 +55,7 @@
             <li class="icon-thumbnail-item  menu-logout ">
                 <a href="#" class="icon-thumbnail-link btn-logout">
                     {% include '@app/web/images/svg/quicklinks/quicklinks-logout.svg' %}
-                    <span class="icon-thumbnail-label">Logout</span>
+                    <span class="icon-thumbnail-label">{{ logout[app.lang] }}</span>
                 </a>
             </li>
         {% endif %}
