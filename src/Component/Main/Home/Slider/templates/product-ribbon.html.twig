@@ -1,0 +1,9 @@
+ {% if product_ribbon_tag %}
+	{% if slide['field_product']['0']['name'][0]['value'] %}
+	<span class="product-tag tag-{{ product_ribbon_tag|replace({' ':'-'})|lower }}">
+	{% else %}
+	<span class="product-tag" style="background-color: {{ bg_color }}; color: {{ text_color }}">
+	{% endif %}
+		{{ product_ribbon_tag }}
+	</span>
+{% endif %}
