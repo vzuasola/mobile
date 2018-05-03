@@ -1,0 +1,7 @@
+{% if post_menu %}
+    <ul class="mobile-menu-button clearfix">
+    {% for menu in post_menu %}
+        <li><a href="{{ url(menu.uri) }}" target="_blank" class="btn btn-small btn-yellow">{{ menu.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}

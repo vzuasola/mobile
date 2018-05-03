@@ -5,7 +5,7 @@
             {% if product.field_product_menu_enable[0].value %}
                 <li class="icon-thumbnail-item {{ product.field_product_menu_class[0].value }}">
                 <a
-                href="{{ (is_logged_in) ? url(product.field_product_menu_url_post_log[0].uri) : url(product.field_product_menu_url_pre_log[0].uri) }}"
+                href="{{ (is_login ) ? url(product.field_product_menu_url_post_log[0].uri) : url(product.field_product_menu_url_pre_log[0].uri) }}"
 
                 data-router="true"
                 data-router-refresh="main"
