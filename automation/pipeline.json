@@ -234,7 +234,8 @@
                     "-Dsonar.leak.period=$LEAK_PERIOD"
                 ],
                 "volumes": [
-                    "$PWD:/app"
+                    "$PWD:/app",
+                    "$PWD/.sonar-cache:/root/.sonar/cache"
                 ]
             },
             "sonarqube-scanner": {
@@ -257,7 +258,8 @@
                     "-Dsonar.php.tests.reportPath=$PHPUNIT_TESTS_REPORT_PATH"
                 ],
                 "volumes": [
-                    "$PWD:/app"
+                    "$PWD:/app",
+                    "$PWD/.sonar-cache:/root/.sonar/cache"
                 ]
             }
         }
