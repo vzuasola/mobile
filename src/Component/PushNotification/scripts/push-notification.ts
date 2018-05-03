@@ -152,6 +152,9 @@ export class PushNotification {
             if (event.customData.count) {
                 // display the indicator
                 // this.messageIndicator();
+                const indicator = document.querySelector(".mobile-menu-indicator");
+
+                utility.removeClass(indicator, "hidden");
             }
         });
     }

@@ -1,8 +1,6 @@
 <section>
-    <div>
-        {% include '@app/web/images/svg/burger-menu.svg' %}
-        <span id="new-notif"></span>
-    </div>
+    {% include '@app/web/images/svg/burger-menu.svg' %}
+    <span class="mobile-menu-indicator hidden"></span>
 
     <nav class="mobile-menu">
         {% if is_login %}
