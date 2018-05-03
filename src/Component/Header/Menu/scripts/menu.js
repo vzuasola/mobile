@@ -16,7 +16,7 @@ export default function menu(component) {
 
         if (target === mobileIcon || target.parentNode === mobileIcon) {
             openMenu();
-        } else if (target === menuOverlay || target === closeButton || utility.findParent(target, ".mobile-menu-close-button")) {
+        } else if (target.className.baseVal === closeButton || target.className.baseVal === 'close-svg') {
             closeMenu();
         }
     });

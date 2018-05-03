@@ -6,24 +6,21 @@
             <h2 class="mobile-menu-header">
                 {% include '@app/web/images/svg/user-profile.svg' %}
                 {{ username }}
-                {% include '@app/web/images/svg/closed.svg' %}
+                {% include '@app/web/images/svg/menu/closed.svg' %}
             </h2>
         {% else %}
             <h2 class="mobile-menu-header">
                 {% block logoSection %}
                     {{ include('@component/Header/templates/logo.html.twig') }}
                 {% endblock %}
-                {% include '@app/web/images/svg/closed.svg' %}
+                {% include '@app/web/images/svg/menu/closed.svg' %}
             </h2>
         {% endif %}
 
 
         <div class="mobile-menu-body">
             {% if is_login %}
-                <ul class="mobile-menu-button clearfix">
-                    <li><a href="#" target="_blank" class="btn btn-small btn-yellow">Cashier</a></li>
-                    <li><a href="#" class="btn btn-small btn-yellow">My Account</a></li>
-                </ul>
+                {{ include('@component/Header/Menu/templates/menu-postloggedin.html.twig') }}
             {% endif %}
             
             <div class="menu-display menu-display-product">
