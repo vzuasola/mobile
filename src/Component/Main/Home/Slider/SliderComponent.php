@@ -65,6 +65,7 @@ class SliderComponent implements ComponentWidgetInterface
             $data['slides'] = [];
         }
 
+        $data['is_login'] = $this->playerSession->isLogin();
         return $data;
     }
 }
