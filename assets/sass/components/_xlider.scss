@@ -4,10 +4,6 @@
 .banner {
     z-index: 10;
 
-    .banner-blurb {
-        padding: 2rem $slider-inner-gap;
-    }
-
     .slides-item {
         @include transition(opacity 1s);
         position: absolute;

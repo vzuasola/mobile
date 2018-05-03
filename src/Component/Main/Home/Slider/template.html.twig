@@ -11,12 +11,8 @@
         <div class="banner-slides-item">
             <a href="{{slide['field_banner_link'][0]['value'] }}" 
             target="{{slide['field_banner_link_target'][0]['value']}}">
-                <picture>
-                    <source media="(max-width: 767px)" 
-                    srcset="{{ asset(slide['field_banner_image'][0]['url']) }}">
                     <img src="{{ asset(slide['field_banner_image'][0]['url']) }}" 
                     alt="{{ asset(slide['field_banner_image'][0]['alt']) }}" class="w-100">
-                </picture>
             </a>
             <div class="banner-blurb {{slide['field_content_position'][0]['value'] }}">
                 {{ include('@component/Main/Home/Slider/templates/product-ribbon.html.twig') }}
@@ -27,12 +23,8 @@
         <div class="banner-slides-item">
             <a href="{{slide['field_post_banner_link'][0]['value'] }}" 
             target="{{slide['field_post_banner_link_target'][0]['value']}}">
-                <picture>
-                    <source media="(max-width: 767px)" 
-                    srcset="{{ asset(slide['field_post_banner_image'][0]['url']) }}">
                     <img src="{{ asset(slide['field_post_banner_image'][0]['url']) }}" 
                     alt="{{ asset(slide['field_post_banner_image'][0]['alt']) }}" class="w-100">
-                </picture>
             </a>
             <div class="banner-blurb {{slide['field_post_content_position'][0]['value'] }}">
                 {{ include('@component/Main/Home/Slider/templates/product-ribbon.html.twig') }}
