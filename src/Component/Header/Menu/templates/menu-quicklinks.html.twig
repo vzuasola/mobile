@@ -1,0 +1,64 @@
+{% set links = {
+    en: 'Links',
+    eu: 'Links',
+    sc: '链接',
+    ch: '鏈接',
+    th: 'ลิงก์',
+    vn: 'ĐƯỜNG DẪN',
+    id: 'Links',
+    jp: 'リンク',
+    kr: '링크',
+    in: 'Links',
+    gr: 'ΣΥΝΔΕΣΜΟΙ',
+    pl: 'Links',
+} %}
+
+{% set logout = {
+    en: 'Logout',
+    eu: 'Logout',
+    sc: '退出登录',
+    ch: '退出登錄',
+    th: 'ออกจากระบบ',
+    vn: 'Đăng Xuất',
+    id: 'Logout',
+    jp: 'ログアウト',
+    kr: '로그아웃',
+    in: 'Logout',
+    gr: 'Αποσύνδεση',
+    pl: 'Wyloguj',
+} %}
+
+{% if quicklinks %}
+<h3 class="mobile-menu-internal-header"><span>{{ links[app.lang] }}</span></h3>
+<div class="menu-display menu-display-internal">
+    <ul class="icon-thumbnail clearfix">
+        {% for menu in quicklinks %}
+            <li class="icon-thumbnail-item {{ menu.attributes.class }}">
+                <a
+                href="{{ (menu.attributes.class == 'quicklinks-announcement') ? '#announcement-lightbox': url(menu.uri) }}"
+                class="icon-thumbnail-link {{ menu.attributes.title }}"
+                >
+
+                {% include '@app/web/images/svg/quicklinks/'~menu.attributes.class~'.svg' ignore missing %}
+
+                <span class="icon-thumbnail-label">{{ menu.title }}</span>
+
+                {% if menu.attributes.class == 'quicklinks-announcement' %}
+                    <span id="announcement-count" class="icon-balloon-counter">0</span>
+                {% endif %}
+
+                </a>
+            </li>
+
+        {% endfor %}
+        {% if is_login %}
+            <li class="icon-thumbnail-item  menu-logout ">
+                <a href="#" class="icon-thumbnail-link btn-logout">
+                    {% include '@app/web/images/svg/quicklinks/quicklinks-logout.svg' %}
+                    <span class="icon-thumbnail-label">{{ logout[app.lang] }}</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}

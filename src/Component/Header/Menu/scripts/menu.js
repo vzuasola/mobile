@@ -2,8 +2,7 @@ import * as utility from '@core/assets/js/components/utility';
 
 export default function menu(component) {
     // Global vars
-    var html = document.documentElement,
-        mobileIcon = component.querySelector('.mobile-menu-icon'),
+    var mobileIcon = component.querySelector('.mobile-menu-icon'),
         mobileMenu = component.querySelector('.mobile-menu');
 
     // Detect touch support
