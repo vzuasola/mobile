@@ -111,7 +111,7 @@ export class PushNotification {
      * listen to "click" event on left nav pushnx menu
      */
     private listenMenu() {
-        const menuNotif = document.querySelector(".menu-notification");
+        const menuNotif = document.querySelector(".quicklinks-notification");
 
         utility.listen(menuNotif, "click", (event) => {
             this.pushnx.openModal();
