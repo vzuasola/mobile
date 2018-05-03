@@ -5,13 +5,18 @@
         {% for menu in quicklinks %}
             <li class="icon-thumbnail-item {{ menu.attributes.class }}">
                 <a
-                href="{{ url(menu.uri) }}"
+                href="{{ (menu.attributes.class == 'quicklinks-announcement') ? '#announcement-lightbox': url(menu.uri) }}"
                 class="icon-thumbnail-link {{ menu.attributes.title }}"
                 >
 
                 {% include '@app/web/images/svg/quicklinks/'~menu.attributes.class~'.svg' ignore missing %}
 
                 <span class="icon-thumbnail-label">{{ menu.title }}</span>
+
+                {% if menu.attributes.class == 'quicklinks-announcement' %}
+                    <span id="announcement-count" class="icon-balloon-counter">0</span>
+                {% endif %}
+
                 </a>
             </li>
 
