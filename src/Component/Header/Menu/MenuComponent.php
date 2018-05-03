@@ -44,7 +44,6 @@ class MenuComponent implements ComponentWidgetInterface
      */
     public function __construct($playerSession, $views, $menus, $config)
     {
-        $this->menus = $menus;
         $this->playerSession = $playerSession;
         $this->views = $views;
         $this->menus = $menus;
