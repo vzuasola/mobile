@@ -1,10 +1,10 @@
- {% if product_ribbon_tag %}
+{% if product_ribbon_tag %}
 	<div class="product-tag">
-		{% if slide['field_product']['0']['name'][0]['value'] %}
+	{% if slide['field_product']['0']['name'][0]['value'] %}
 		<span class="tag-{{ product_ribbon_tag|replace({' ':'-'})|lower }}">
-		{% else %}
+	{% else %}
 		<span style="background-color: {{ bg_color }}; color: {{ text_color }}">
-		{% endif %}
+	{% endif %}
 			{{ product_ribbon_tag }}
 		</span>
 	</div>
