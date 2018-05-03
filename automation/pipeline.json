@@ -184,8 +184,8 @@
                 "options": [],
                 "command": [
                     "install",
-                    "-v",
-                    "--no-interaction"
+                    "--no-interaction",
+                    "--profile"
                 ],
                 "volumes": [
                     "$PWD:/var/www/html/app"
@@ -479,10 +479,10 @@
                 ],
                 "command": [
                     "install",
-                    "-v",
                     "--no-interaction",
                     "--no-dev",
-                    "--optimize-autoloader"
+                    "--optimize-autoloader",
+                    "--profile"
                 ],
                 "volumes": [
                     "$PWD:/var/www/html/app"
@@ -566,10 +566,10 @@
                 ],
                 "command": [
                     "install",
-                    "-v",
                     "--no-interaction",
                     "--no-dev",
-                    "--optimize-autoloader"
+                    "--optimize-autoloader",
+                    "--profile"
                 ],
                 "volumes": [
                     "$PWD:/var/www/html/app"
