@@ -13,6 +13,7 @@ static code analysis:
     key: v2
     paths:
       - .composer-cache/
+      - .sonar-cache/
 
 php code sniffer:
   stage: tests

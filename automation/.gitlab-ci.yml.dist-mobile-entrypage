@@ -29,6 +29,7 @@ static code analysis:
     key: v2
     paths:
       - .composer-cache/
+      - .sonar-cache/
 
 php code sniffer:
   stage: tests
@@ -39,6 +40,11 @@ es linter:
   stage: tests
   script:
     - python -u automation/run.py --stage eslinter
+
+ts linter:
+  stage: tests
+  script:
+    - python -u automation/run.py --stage tslinter
 
 sensiolabs security checker:
   stage: tests
