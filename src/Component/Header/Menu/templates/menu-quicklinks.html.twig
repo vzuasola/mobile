@@ -1,5 +1,21 @@
+{% set links = {
+    en: 'Links',
+    eu: 'Links',
+    sc: '链接',
+    ch: '鏈接',
+    th: 'ลิงก์',
+    vn: 'ĐƯỜNG DẪN',
+    id: 'Links',
+    jp: 'リンク',
+    kr: '링크',
+    in: 'Links',
+    gr: 'ΣΥΝΔΕΣΜΟΙ',
+    pl: 'Links',
+} %}
+
+
 {% if quicklinks %}
-<h3 class="mobile-menu-internal-header"><span>Links</span></h3>
+<h3 class="mobile-menu-internal-header"><span>{{ links[app.lang] }}</span></h3>
 <div class="menu-display menu-display-internal">
     <ul class="icon-thumbnail clearfix">
         {% for menu in quicklinks %}
