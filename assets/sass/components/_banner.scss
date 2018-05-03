@@ -1,3 +1,5 @@
+$banner-blurb-background: #000000;
+
 .banner {
     position: relative;
     width: 100%;
@@ -12,12 +14,14 @@
 
     // Blurb
     &-blurb {
+        background-color: $banner-blurb-background;
+        opacity: 0.9;
         position: absolute;
         top: 0;
         right: 0;
         width: 50%;
         height: 100%;
-        padding: 2rem $container-gap;
+        padding: 0.5rem;
 
         &-outer {
             display: table;

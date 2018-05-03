@@ -1,0 +1,159 @@
+$slider-product-owsports-background: #edb200;
+$slider-product-owsports-foreground: $dark-gray;
+
+$slider-product-dafasports-background: #ffe000;
+$slider-product-dafasports-foreground: #363638;
+
+$slider-product-poker-background: #01485c;
+$slider-product-poker-foreground: $white;
+
+$slider-product-livedealer-background: #5e007c;
+$slider-product-livedealer-foreground: $white;
+
+$slider-product-casino-background: #af0001;
+$slider-product-casino-foreground: $white;
+
+$slider-product-games-background: #2b6510;
+$slider-product-games-foreground: $white;
+
+$slider-product-fish-hunter-background: #04a5dc;
+$slider-product-fish-hunter-foreground: $white;
+
+$slider-product-casino-gold-background: #fedead;
+$slider-product-casino-gold-foreground: #352808;
+
+$slider-product-keno-background: #FF9100;
+$slider-product-keno-foreground: #373737;
+
+$slider-product-featured-background: #ffe001;
+$slider-product-featured-foreground: #363638;
+
+$slider-product-virtuals-background: #C5C0C1;
+$slider-product-virtuals-foreground: #AF0000;
+
+.product-tag {
+    position: relative;
+    display: inline-block;
+    top: -1.6rem;
+    left: 0;
+    z-index: 1;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    width: 100%;
+
+    span {
+        padding: 0.5rem 1.5rem;
+    }
+}
+
+
+.tag-dafa-sports {
+    background-color: #ffe001;
+    color: #363638;
+
+    &:before {
+        border-right-color: #7d6c04;
+        border-bottom-color: #7d6c04;
+    }
+}
+
+.tag-casino {
+    background-color: #af0001;
+    color: #fff;
+
+    &:before {
+        border-right-color: #920000;
+        border-bottom-color: #920000;
+    }
+}
+
+.tag-sports {
+    background-color: #edb200;
+    color: #373737;
+
+    &:before {
+        border-right-color: #c59006;
+        border-bottom-color: #c59006;
+    }
+}
+
+.tag-live-dealer {
+    background-color: #5e007c;
+    color: #fff;
+
+    &:before {
+        border-right-color: #2d123d;
+        border-bottom-color: #2d123d;
+    }
+}
+
+.tag-fish-hunter {
+    background-color: #04a5dc;
+    color: #fff;
+
+    &:before {
+        border-right-color: #067f9e;
+        border-bottom-color: #067f9e;
+    }
+}
+
+.tag-poker {
+    background-color: #01485c;
+    color: #fff;
+
+    &:before {
+        border-right-color: #002329;
+        border-bottom-color: #002329;
+    }
+}
+
+.tag-casino-gold {
+    background-color: #fedead;
+    color: #352808;
+
+    &:before {
+        border-right-color: #886a34;
+        border-bottom-color: #886a34;
+    }
+}
+
+.tag-games {
+    background-color: #2b6510;
+    color: #fff;
+
+    &:before {
+        border-right-color: #164205;
+        border-bottom-color: #164205;
+    }
+}
+
+.tag-keno {
+    background-color: $slider-product-keno-background;
+    color: $slider-product-keno-foreground;
+
+    &:before {
+        border-right-color: #720d0a;
+        border-bottom-color: #720d0a;
+    }
+}
+
+.tag-virtuals {
+    background-color: $slider-product-virtuals-background;
+    color: $slider-product-virtuals-foreground;
+
+    &:before {
+        border-right-color: #4e4c4d;
+        border-bottom-color: #4e4c4d;
+    }
+}
+
+.tag-exchange {
+    background-color: $dark-gray;
+    color: $yellow;
+
+    &:before {
+        border-right-color: $black;
+        border-bottom-color: $black;
+    }
+}
