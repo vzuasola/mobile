@@ -21,7 +21,6 @@ class MenuComponent implements ComponentWidgetInterface
      */
     private $views;
 
-
     /**
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
