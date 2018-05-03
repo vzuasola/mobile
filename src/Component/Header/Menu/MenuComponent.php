@@ -70,6 +70,12 @@ class MenuComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
+            $data['post_menu'] = $this->menus->getMultilingualMenu('mobile-post-login');
+        } catch (\Exception $e) {
+            $data['post_menu'] = [];
+        }
+
+        try {
             $data['product_menu'] = $this->views->getViewById('mobile_product_menu');
         } catch (\Exception $e) {
             $data['product_menu'] = [];
