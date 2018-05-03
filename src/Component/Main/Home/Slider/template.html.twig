@@ -1,9 +1,10 @@
 <section class="banner slider pagination-right" id="main-banner">
     <div class="banner-slides">
     {% for slide in slides %} 
-        {% set showBoth = (slide['field_log_in_state']|length > 1) %}
-            {{slide['field_banner_image'][0]['url']}}
-        {% if (showBoth or (slide['field_log_in_state'][0]['value'] == '0' and not is_login)) %}
+        {% set show_both = (slide['field_log_in_state']|length > 1) %}
+        {% set product_tag = slide['field_product']['0']['name'][0]['value'] %}
+
+        {% if show_both or (slide['field_log_in_state'][0]['value'] == '0' and not is_login) %}
         <div class="banner-slides-item">
             <a href="{{slide['field_banner_link'][0]['value'] }}" 
             target="{{slide['field_banner_link_target'][0]['value']}}">
@@ -15,13 +16,15 @@
                 </picture>
             </a>
             <div class="banner-blurb {{slide['field_content_position'][0]['value'] }}">
-                {% if slide['field_product'][0]['name']['value'] %}
-                <span class="product-tag ">{{slide['field_product'][0]['name']['value']}}</span>
+                {% if product_tag %}
+                <span class="product-tag tag-{{ product_tag|replace({' ':'-'})|lower }}">
+                    {{ product_tag }}
+                </span>
                 {% endif %}
                 {{ slide['field_banner_blurb'][0]['value']|raw }}
             </div>
         </div>
-        {% elseif (showBoth or (slide['field_log_in_state'][0]['value'] == '1' and is_login)) %}
+        {% elseif show_both or (slide['field_log_in_state'][0]['value'] == '1' and is_login) %}
         <div class="banner-slides-item">
             <a href="{{slide['field_post_banner_link'][0]['value'] }}" 
             target="{{slide['field_post_banner_link_target'][0]['value']}}">
@@ -33,8 +36,10 @@
                 </picture>
             </a>
             <div class="banner-blurb {{slide['field_post_content_position'][0]['value'] }}">
-                {% if slide['field_product'][0]['name']['value'] %}
-                <span class="product-tag ">{{slide['field_post_product'][0]['name']['value']}}</span>
+                {% if product_tag %}
+                <span class="product-tag tag-{{ product_tag|replace({' ':'-'})|lower }}">
+                    {{ product_tag }}
+                </span>
                 {% endif %}
                 {{ slide['field_post_banner_blurb'][0]['value']|raw }}
             </div>

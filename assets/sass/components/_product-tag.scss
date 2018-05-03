@@ -34,34 +34,14 @@ $slider-product-virtuals-foreground: #AF0000;
 .product-tag {
     position: relative;
     display: inline-block;
-    top: -11px;
+    top: -34px;
     left: 0;
     z-index: 1;
     min-width: 120px;
     padding: 5px;
     text-align: center;
     font-weight: 600;
-
-    &:before,
-    &:after {
-        content: " ";
-        display: block;
-        border-width: 6px;
-        border-style: solid;
-        border-top-color: rgba(0, 0, 0, 0);
-        border-left-color: rgba(0, 0, 0, 0);
-        width: 0;
-        position: absolute;
-        top: 0;
-        left: -12px;
-    }
-
-    &:after {
-        border-right-color: #353535;
-        border-right-color: rgba(0, 0, 0, 0.4);
-        border-bottom-color: #353535;
-        border-bottom-color: rgba(0, 0, 0, 0.4);
-    }
+    text-transform: uppercase;
 }
 
 
