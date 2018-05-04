@@ -1,4 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
+
+import {Modal} from "@app/assets/script/components/modal";
+
 import Storage from "@core/assets/js/components/utils/storage";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
@@ -16,6 +19,7 @@ export class AnnouncementComponent implements ComponentInterface {
         this.bindDismissButton(element);
 
         // lightbox
+        this.bindAnnouncementLightbox();
         this.getUnread(element);
         this.markAllRead(element);
         this.autoRefreshCounter(element);
@@ -27,8 +31,6 @@ export class AnnouncementComponent implements ComponentInterface {
 
          // lightbox
         this.getUnread(element);
-        this.markAllRead(element);
-        this.autoRefreshCounter(element);
     }
 
     /**
@@ -55,6 +57,7 @@ export class AnnouncementComponent implements ComponentInterface {
      */
     private bindDismissButton(element) {
         let activeItem = element.querySelector(".announcement-list");
+
         if (activeItem) {
             utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
                 activeItem = activeItem.getAttribute("data");
@@ -82,13 +85,26 @@ export class AnnouncementComponent implements ComponentInterface {
             const modalOverlay: HTMLElement = modalEl.querySelector(".modal-overlay");
             const negativeClass: HTMLElement = modalEl.querySelector(".modal-close");
 
-            if (negativeClass === src || modalOverlay === src || src.className.baseVal === negativeClass
-                || src.className.baseVal === "modal-close") {
+            if (negativeClass === src ||  modalOverlay === src ||
+                utility.hasClass(src, negativeClass) || utility.hasClass(src, "modal-close")
+            ) {
                 for (const item of element.querySelectorAll(".announcement-item")) {
                     const activeItem = item.getAttribute("data");
                     this.setReadItems(activeItem);
                 }
                 ComponentManager.refreshComponent("announcement");
+            }
+        });
+    }
+
+    private bindAnnouncementLightbox() {
+        utility.listen(document, "click", (event, src) => {
+            if (!utility.hasClass(src, "announcement-trigger")) {
+                src = utility.findParent(src, ".announcement-trigger", 2);
+            }
+            if (utility.hasClass(src, "announcement-trigger")) {
+                event.preventDefault();
+                Modal.open("#announcement-lightbox");
             }
         });
     }
@@ -109,6 +125,7 @@ export class AnnouncementComponent implements ComponentInterface {
                 counter++;
             }
         }
+
         utility.invoke(document, "announcement.update.count", {count: counter});
     }
 
