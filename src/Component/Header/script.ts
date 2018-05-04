@@ -30,6 +30,7 @@ export class HeaderComponent implements ComponentInterface {
         this.bindSession(attachments);
         this.activatePasswordMask(element);
 
+        this.listenLogin();
         this.listenLogout(attachments);
     }
 
@@ -82,13 +83,10 @@ export class HeaderComponent implements ComponentInterface {
                 this.loader.show();
 
                 utility.invoke(document, "session.login");
-                ComponentManager.refreshComponent("header", () => {
-                  this.loader.hide();
-                  ComponentManager.refreshComponent("announcement");
-                  ComponentManager.refreshComponent("push_notification");
-                });
-                ComponentManager.refreshComponent("main", () => {
-                  this.loader.hide();
+
+                ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
+                () => {
+                    this.loader.hide();
                 });
             });
         });
@@ -120,6 +118,12 @@ export class HeaderComponent implements ComponentInterface {
      *
      */
 
+    private listenLogin() {
+        utility.listen(document, "header.login", (event, src) => {
+            Modal.open("#login-lightbox");
+        });
+    }
+
     /**
      * Listen for logout events
      */
@@ -132,13 +136,9 @@ export class HeaderComponent implements ComponentInterface {
                 type: "json",
                 method: "get",
             }).always(() => {
-                ComponentManager.refreshComponent("header", () => {
-                    this.loader.hide();
-                    ComponentManager.refreshComponent("announcement");
-                    ComponentManager.refreshComponent("push_notification");
-                });
-
-                ComponentManager.refreshComponent("main", () => {
+                ComponentManager.refreshComponent(
+                ["header", "main", "announcement", "push_notification"],
+                () => {
                     this.loader.hide();
                 });
             });
