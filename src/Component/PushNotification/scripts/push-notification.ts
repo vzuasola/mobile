@@ -124,7 +124,7 @@ export class PushNotification {
      * listen to "click" event on close modal
      */
     private listenModal() {
-        const closeModal = this.element.getElementById("pushnx-close");
+        const closeModal = this.element.querySelector("#pushnx-close");
 
         utility.listen(closeModal, "click", (event) => {
             this.closeModal();
@@ -161,7 +161,7 @@ export class PushNotification {
      * @param ctr [number of messages]
      */
     private renderMessageCounter(ctr) {
-        const notifCount = this.element.getElementById("notification-count");
+        const notifCount = this.element.querySelector("#notification-count");
         if (notifCount && ctr > 0) {
             utility.removeClass(notifCount, "hidden");
             notifCount.innerHTML = ctr;
