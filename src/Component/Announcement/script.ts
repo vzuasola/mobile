@@ -100,7 +100,7 @@ export class AnnouncementComponent implements ComponentInterface {
     private bindAnnouncementLightbox() {
         utility.listen(document, "click", (event, src) => {
             if (!utility.hasClass(src, "announcement-trigger")) {
-                src = utility.findParent(src, ".announcement-trigger");
+                src = utility.findParent(src, ".announcement-trigger", 2);
             }
             if (utility.hasClass(src, "announcement-trigger")) {
                 event.preventDefault();
