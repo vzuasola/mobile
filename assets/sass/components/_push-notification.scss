@@ -85,10 +85,6 @@
             padding: 0.6rem 1rem;
             margin-bottom: 2.6rem;
 
-            strong {
-                margin-left: 4.2rem;
-            }
-
             svg {
                     width: 3.5rem;
                     height: 3.5rem;
@@ -97,7 +93,7 @@
                     left: 1.2rem;
                     outline: none;
                     border: 0;
-                    border-radius: 0;
+                    border-radius: 0.2rem;
                     padding: 0.3rem;
                     cursor: pointer;
                     background: $yellow;
@@ -148,9 +144,10 @@
             border-left: 0;
             text-align: left;
             padding-bottom: 0.2rem;
+            margin-left: 4.2rem;
 
             &-time {
-                color: $dark-gray;
+                color: $gray;
                 font-size: 1rem;
             }
         }
