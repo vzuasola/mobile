@@ -16,6 +16,7 @@ export class AnnouncementComponent implements ComponentInterface {
         this.bindDismissButton(element);
 
         // lightbox
+        this.bindAnnouncementLightbox();
         this.getUnread(element);
         this.markAllRead(element);
         this.autoRefreshCounter(element);
@@ -26,6 +27,7 @@ export class AnnouncementComponent implements ComponentInterface {
         this.bindDismissButton(element);
 
          // lightbox
+        this.bindAnnouncementLightbox();
         this.getUnread(element);
         this.markAllRead(element);
         this.autoRefreshCounter(element);
@@ -70,7 +72,9 @@ export class AnnouncementComponent implements ComponentInterface {
     private autoRefreshCounter(element) {
         setInterval(() => {
             if (!utility.hasClass(element.querySelector("#announcement-lightbox"), "modal-active")) {
-                ComponentManager.refreshComponent("announcement");
+                ComponentManager.refreshComponent("announcement", () => {
+                    utility.addClass(element.querySelector(".mount-announcement"), "hidden");
+                });
             }
         }, this.refreshInterval);
     }
@@ -89,6 +93,15 @@ export class AnnouncementComponent implements ComponentInterface {
                     this.setReadItems(activeItem);
                 }
                 ComponentManager.refreshComponent("announcement");
+            }
+        });
+    }
+
+    private bindAnnouncementLightbox() {
+        utility.listen(document, "click", (event, src) => {
+            if (utility.hasClass(src, "announcement-trigger")) {
+                utility.preventDefault();
+                Modal.open("#announcement-lightbox");
             }
         });
     }
