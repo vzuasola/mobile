@@ -2,7 +2,8 @@
     <div class="banner-slides">
     {% for slide in slides %} 
         {% set show_both = slide['field_log_in_state']|length > 1 %}
-        {% set product_ribbon_tag = (slide['field_ribbon_product_label']['0']['value']) ? slide['field_ribbon_product_label']['0']['value']  
+        {% set product_ribbon_tag = (slide['field_ribbon_product_label']['0']['value']) 
+                ? slide['field_ribbon_product_label']['0']['value']  
                 : slide['field_product']['0']['name'][0]['value'] %}
         {% set bg_color = slide['field_ribbon_background_color']['0']['color'] %}
         {% set text_color = slide['field_ribbon_label_color']['0']['color'] %}
