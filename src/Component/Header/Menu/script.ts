@@ -9,21 +9,18 @@ import menu from "./scripts/menu";
 export class MenuComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         menu(element);
-        this.updateAnnouncementCount(element);
+        this.listenAnnouncementCount(element);
         this.listenPushnxModal(element);
-        this.updatePushnxCount(element);
+        this.listenPushnxCount(element);
         this.listenNewMessage(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         menu(element);
-        this.updateAnnouncementCount(element);
         this.listenPushnxModal(element);
-        this.updatePushnxCount(element);
-        this.listenNewMessage(element);
     }
 
-    private updateAnnouncementCount(element) {
+    private listenAnnouncementCount(element) {
         utility.listen(document, "announcement.update.count", (event) => {
             element.querySelector("#announcement-count").innerHTML = event.customData.count;
             if (event.customData.count > 0) {
@@ -41,6 +38,7 @@ export class MenuComponent implements ComponentInterface {
         const menuNotif = element.querySelector(".quicklinks-notification");
 
         utility.listen(menuNotif, "click", (e) => {
+            utility.preventDefault();
             utility.invoke(document, "pushnx.open.modal");
             this.hideIndicator(element);
         });
@@ -49,7 +47,7 @@ export class MenuComponent implements ComponentInterface {
     /**
      * listen to message counter
      */
-    private updatePushnxCount(element) {
+    private listenPushnxCount(element) {
         utility.listen(document, "pushnx.count.message", (event) => {
             if (!event.customData.count) {
                 utility.invoke(document, "pushnx.close.modal");

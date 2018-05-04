@@ -1,6 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 
 import PushNX from "@core/assets/js/components/push-notification";
+import {Modal} from "@app/assets/script/components/modal";
 
 import * as actionTemplate from "./../handlebars/pushnx/action.handlebars";
 import * as bodyTemplate from "./../handlebars/pushnx/body.handlebars";
@@ -124,7 +125,7 @@ export class PushNotification {
      * close modal
      */
     private closeModal() {
-        this.pushnx.closeModal();
+        Modal.close("#pushnxLightbox");
     }
 
     /**
@@ -140,7 +141,7 @@ export class PushNotification {
      * open modal
      */
     private openModal() {
-        this.pushnx.openModal();
+        Modal.open('#pushnxLightbox');
         this.listenModal();
     }
 
