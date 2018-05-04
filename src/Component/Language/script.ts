@@ -16,7 +16,6 @@ export class LanguageComponent implements ComponentInterface {
 
     onReload(element: HTMLElement, attachments: {currentLanguage: string}) {
         this.generateLanguageUrl(element, attachments.currentLanguage);
-        this.bindLanguageLightbox();
     }
 
     private generateLanguageUrl(element, currentLanguage) {
@@ -26,7 +25,7 @@ export class LanguageComponent implements ComponentInterface {
 
             utility.listen(wrapper, "click", (event, src) => {
                 if (utility.hasClass(src, "language-link")) {
-                    utility.preventDefault();
+                    event.preventDefault();
 
                     const selectedLang = src.getAttribute("data-lang");
                     // Replacing the current language to the language selected by user from the Langauge Selector.
@@ -35,7 +34,7 @@ export class LanguageComponent implements ComponentInterface {
                     const redirectionUrl = window.location
                         .href.replace(regexp, hostname + "/" + selectedLang + "$1");
                     Modal.close("#language-lightbox");
-                    Router.navigate(redirectionUrl, ["main", "footer", "language"]);
+                    Router.navigate(redirectionUrl, ["main", "header", "announcement", "footer", "language"]);
                 }
             });
         }
@@ -44,7 +43,7 @@ export class LanguageComponent implements ComponentInterface {
     private bindLanguageLightbox() {
         utility.listen(document, "click", (event, src) => {
             if (utility.hasClass(src, "language-trigger")) {
-                utility.preventDefault();
+                event.preventDefault();
                 Modal.open("#language-lightbox");
             }
         });
