@@ -84,35 +84,43 @@
             background: $light-gray;
             padding: 0.6rem 1rem;
             margin-bottom: 2.6rem;
+
+            strong {
+                margin-left: 4.2rem;
+            }
+
+            svg {
+                    width: 3.5rem;
+                    height: 3.5rem;
+                    position: absolute;
+                    top: -0.6rem;
+                    left: 1.2rem;
+                    outline: none;
+                    border: 0;
+                    border-radius: 0;
+                    padding: 0.3rem;
+                    cursor: pointer;
+                    background: $yellow;
+
+                    path {
+                        fill: $red;
+                    }
+                }
+        }
+
+        .product-generic {
+            svg {
+                    background: $red;
+
+                    path {
+                        fill: $yellow;
+                    }
+                }
         }
 
         p {
             color: $dark-gray;
             margin-bottom: 0;
-        }
-
-        svg {
-            width: 2.5rem;
-            height: 2.5rem;
-            position: absolute;
-            top: 0;
-            right: 0;
-            outline: none;
-            border: 1px solid #8c8c8c;
-            border-radius: 0.4rem;
-            cursor: pointer;
-
-            path {
-                fill: #8c8c8c;
-            }
-
-            rect {
-                fill: #000;
-                width: 100%;
-                height: 100%;
-                rx: 10.81;
-                ry: 10.81;
-            }
         }
     }
 
