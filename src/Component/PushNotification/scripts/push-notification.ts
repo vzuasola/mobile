@@ -1,6 +1,5 @@
 import * as utility from "@core/assets/js/components/utility";
 
-import {Modal} from "@app/assets/script/components/modal";
 import PushNX from "@core/assets/js/components/push-notification";
 
 import * as actionTemplate from "./../handlebars/pushnx/action.handlebars";
@@ -11,18 +10,11 @@ import * as expireMessageTemplate from "./../handlebars/pushnx/expired.message.h
 import * as messageTemplate from "./../handlebars/pushnx/message.handlebars";
 
 export class PushNotification {
-    private modal: Modal;
     private pushnx;
     private element;
 
     constructor(element, attachments: {authenticated: boolean, pushnx: object}) {
         this.element = element;
-        // override modal
-        this.modal = new Modal({
-            closeOverlayClick: false,
-            escapeClose: false,
-            id : "pushnxLightbox",
-        });
 
         this.pushnx = new PushNX({
             islogin: attachments.authenticated,

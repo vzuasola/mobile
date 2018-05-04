@@ -9,18 +9,17 @@ import {Session} from "./scripts/session";
 import {CheckboxStyler} from "@app/assets/script/components/checkbox-styler";
 import {Loader} from "@app/assets/script/components/loader";
 import {Modal} from "@app/assets/script/components/modal";
+
 import {passwordMask} from "@app/assets/script/components/password-mask";
 
 /**
  *
  */
 export class HeaderComponent implements ComponentInterface {
-    private modal: Modal;
     private loader: Loader;
     private session: Session;
 
     constructor() {
-        this.modal = new Modal();
         this.loader = new Loader(document.body, true);
     }
 
@@ -79,7 +78,7 @@ export class HeaderComponent implements ComponentInterface {
                       password,
                   },
             }).then((response) => {
-                this.modal.close();
+                Modal.close("#login-lightbox");
                 this.loader.show();
 
                 utility.invoke(document, "session.login");
