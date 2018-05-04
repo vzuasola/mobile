@@ -84,7 +84,7 @@ export class HeaderComponent implements ComponentInterface {
 
                 utility.invoke(document, "session.login");
 
-                ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
+                ComponentManager.refreshComponent(["header", "main", "announcement", "push_notification"],
                 () => {
                     this.loader.hide();
                 });
