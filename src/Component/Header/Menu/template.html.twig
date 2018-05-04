@@ -7,14 +7,14 @@
             <h2 class="mobile-menu-header">
                 {% include '@app/web/images/svg/user-profile.svg' %}
                 {{ username }}
-                {% include '@app/web/images/svg/closed.svg' %}
+                {% include '@app/web/images/svg/menu/closed.svg' %}
             </h2>
         {% else %}
             <h2 class="mobile-menu-header">
                 {% block logoSection %}
                     {{ include('@component/Header/templates/logo.html.twig') }}
                 {% endblock %}
-                {% include '@app/web/images/svg/closed.svg' %}
+                {% include '@app/web/images/svg/menu/closed.svg' %}
             </h2>
         {% endif %}
 
