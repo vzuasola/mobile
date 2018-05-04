@@ -65,9 +65,14 @@
             border-bottom: 0.1rem solid $dark-red;
         }
 
+        &:first-child {
+            border-bottom: 0.1rem solid $dark-red;
+        }
+
         &:last-child {
             border-bottom: none;
         }
+
 
     }
 

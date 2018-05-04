@@ -14,13 +14,13 @@
 }
 
 .mobile-menu-indicator {
-    width: 0.7rem;
-    height: 0.7rem;
     position: absolute;
     top: 1.8rem;
+    left: 3.8rem;
+    width: 0.8rem;
+    height: 0.8rem;
     border-radius: 1.7rem;
-    background: $light-gold;
-    left: 3.5rem;
+    background: $yellow;
 }
 
 .mobile-menu-overlay {
