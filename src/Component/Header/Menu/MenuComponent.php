@@ -70,12 +70,6 @@ class MenuComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
-            $data['post_menu'] = $this->menus->getMultilingualMenu('mobile-post-login');
-        } catch (\Exception $e) {
-            $data['post_menu'] = [];
-        }
-
-        try {
             $data['product_menu'] = $this->views->getViewById('mobile_product_menu');
         } catch (\Exception $e) {
             $data['product_menu'] = [];
@@ -105,10 +99,21 @@ class MenuComponent implements ComponentWidgetInterface
 
         $isLogin = $this->playerSession->isLogin();
 
+        try {
+            $data['top_menu'] = $this->menus->getMultilingualMenu('mobile-pre-login');
+        } catch (\Exception $e) {
+            $data['top_menu'] = [];
+        }
+
         $data['is_login'] = $isLogin;
 
         if ($isLogin) {
             $data['username'] = $this->playerSession->getUsername();
+            try {
+                $data['top_menu'] = $this->menus->getMultilingualMenu('mobile-post-login');
+            } catch (\Exception $e) {
+                $data['top_menu'] = [];
+            }
         }
 
         try {

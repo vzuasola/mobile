@@ -20,10 +20,7 @@
 
 
         <div class="mobile-menu-body">
-            {% if is_login %}
-                {{ include('@component/Header/Menu/templates/menu-postloggedin.html.twig') }}
-            {% endif %}
-            
+            {{ include('@component/Header/Menu/templates/menu-top.html.twig') }}
             <div class="menu-display menu-display-product">
                 {{ include('@component/Header/Menu/templates/menu-product.html.twig') }}
             </div>
