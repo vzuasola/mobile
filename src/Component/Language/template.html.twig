@@ -1,0 +1,19 @@
+<div id="language-lightbox" class="modal language">
+    <div class="modal-content language-content">
+        <div class="modal-body">
+            <ul class="menu">
+                {% for key,lang in language %}
+                    {% set isActive = lang.prefix == currentLanguage ? "active" : "" %}
+                    <li class="{{ lang.id }} {{ isActive }}">
+                        <a href="#" class="language-link" data-lang="{{ lang.prefix }}">
+                        {{ lang.name }}
+                            {% if isActive %}
+                                <span class="icon-active-lang lazy-load" data-src="{{ asset('images/sprite-responsive.png') }}"></span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
