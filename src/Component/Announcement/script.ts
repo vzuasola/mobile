@@ -79,15 +79,8 @@ export class AnnouncementComponent implements ComponentInterface {
     }
 
     private markAllRead(element) {
-        utility.listen(document.body, "click", (event, src) => {
-            const modalEl: HTMLElement = element.querySelector("#announcement-lightbox");
-
-            const modalOverlay: HTMLElement = modalEl.querySelector(".modal-overlay");
-            const negativeClass: HTMLElement = modalEl.querySelector(".modal-close");
-
-            if (negativeClass === src ||  modalOverlay === src ||
-                utility.hasClass(src, negativeClass) || utility.hasClass(src, "modal-close")
-            ) {
+        utility.listen(document, "modal.close", (event, src) => {
+            if (utility.hasClass(event.customData, "announcement")) {
                 for (const item of element.querySelectorAll(".announcement-item")) {
                     const activeItem = item.getAttribute("data");
                     this.setReadItems(activeItem);
