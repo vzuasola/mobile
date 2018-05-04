@@ -1,4 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
+
+import {Modal} from "@app/assets/script/components/modal";
+
 import Storage from "@core/assets/js/components/utils/storage";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
@@ -16,6 +19,7 @@ export class AnnouncementComponent implements ComponentInterface {
         this.bindDismissButton(element);
 
         // lightbox
+        this.bindAnnouncementLightbox();
         this.getUnread(element);
         this.markAllRead(element);
         this.autoRefreshCounter(element);
@@ -27,8 +31,6 @@ export class AnnouncementComponent implements ComponentInterface {
 
          // lightbox
         this.getUnread(element);
-        this.markAllRead(element);
-        this.autoRefreshCounter(element);
     }
 
     /**
@@ -91,6 +93,18 @@ export class AnnouncementComponent implements ComponentInterface {
                     this.setReadItems(activeItem);
                 }
                 ComponentManager.refreshComponent("announcement");
+            }
+        });
+    }
+
+    private bindAnnouncementLightbox() {
+        utility.listen(document, "click", (event, src) => {
+            if (!utility.hasClass(src, "announcement-trigger")) {
+                src = utility.findParent(src, ".announcement-trigger", 2);
+            }
+            if (utility.hasClass(src, "announcement-trigger")) {
+                event.preventDefault();
+                Modal.open("#announcement-lightbox");
             }
         });
     }
