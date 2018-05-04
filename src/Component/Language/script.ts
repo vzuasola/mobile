@@ -11,10 +11,12 @@ import {Modal} from "@app/assets/script/components/modal";
 export class LanguageComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {currentLanguage: string}) {
         this.generateLanguageUrl(element, attachments.currentLanguage);
+        this.bindLanguageLightbox();
     }
 
     onReload(element: HTMLElement, attachments: {currentLanguage: string}) {
         this.generateLanguageUrl(element, attachments.currentLanguage);
+        this.bindLanguageLightbox();
     }
 
     private generateLanguageUrl(element, currentLanguage) {
@@ -37,5 +39,14 @@ export class LanguageComponent implements ComponentInterface {
                 }
             });
         }
+    }
+
+    private bindLanguageLightbox() {
+        utility.listen(document, "click", (event, src) => {
+            if (utility.hasClass(src, "language-trigger")) {
+                utility.preventDefault();
+                Modal.open("#language-lightbox");
+            }
+        });
     }
 }
