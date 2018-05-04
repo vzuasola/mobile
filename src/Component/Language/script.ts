@@ -42,10 +42,10 @@ export class LanguageComponent implements ComponentInterface {
 
     private bindLanguageLightbox() {
         utility.listen(document, "click", (event, src) => {
-            if (!utility.hasClass(src, "language-trigger")) {
-                src = utility.findParent(src, ".language-trigger");
+            if (src && !utility.hasClass(src, "language-trigger")) {
+                src = utility.findParent(src, ".language-trigger", 2);
             }
-            if (utility.hasClass(src, "language-trigger")) {
+            if (src && utility.hasClass(src, "language-trigger")) {
                 event.preventDefault();
                 Modal.open("#language-lightbox");
             }
