@@ -36,7 +36,7 @@ export class MenuComponent implements ComponentInterface {
      */
     private listenPushnxModal(element) {
         let src = element.querySelector(".notification-trigger");
-        console.log(src);
+
         // const menuNotif = element.querySelector(".quicklinks-notification");
         if (!utility.hasClass(element, ".notification-trigger")) {
             src = utility.findParent(element, ".notification-trigger", 2);
