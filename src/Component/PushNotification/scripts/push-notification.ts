@@ -13,8 +13,10 @@ import * as messageTemplate from "./../handlebars/pushnx/message.handlebars";
 export class PushNotification {
     private modal: Modal;
     private pushnx;
+    private element;
 
     constructor(element, attachments: {authenticated: boolean, pushnx: object}) {
+        this.element = element;
         // override modal
         this.modal = new Modal({
             closeOverlayClick: false,
@@ -31,9 +33,9 @@ export class PushNotification {
                 control: false, // default value true
             },
             dismiss: true, // dismiss all message - default value false
-            counter: true, // message counter custom event "pnxCountMessage"
-            notify: true, // new message indicator custom event "pnxNewMessage"
-            action: false, // bind message action buttons default value true custom event "pnxAction"
+            counter: true, // message counter custom event "pushnx.count.message"
+            notify: true, // new message indicator custom event "pushnx.new.message"
+            action: false, // bind message action buttons default value true custom event "pushnx.action"
             template: { // override templates
                 body: bodyTemplate, // body
                 action: actionTemplate, // action
@@ -87,7 +89,7 @@ export class PushNotification {
      * listen to message ready (rendered) status
      */
     private readyMessage() {
-        utility.listen(document, "pnxMessageReady", (event) => {
+        utility.listen(document, "pushnx.message.ready", (event) => {
             if (event.customData.ready) {
                 this.initialProcess(event.customData.ready);
             }
@@ -102,7 +104,7 @@ export class PushNotification {
         const initial = utility.getCookie("pnxInitialLogin");
 
         if (initial) {
-            this.pushnx.openModal();
+            this.openModal();
             utility.removeCookie("pnxInitialLogin");
         }
     }
@@ -111,10 +113,10 @@ export class PushNotification {
      * listen to "click" event on left nav pushnx menu
      */
     private listenMenu() {
-        const menuNotif = document.querySelector(".quicklinks-notification");
+        const menuNotif = this.element.querySelector(".quicklinks-notification");
 
-        utility.listen(menuNotif, "click", (event) => {
-            this.pushnx.openModal();
+        utility.listen(menuNotif, "click", (e) => {
+            this.openModal();
         });
     }
 
@@ -122,10 +124,10 @@ export class PushNotification {
      * listen to "click" event on close modal
      */
     private listenModal() {
-        const closeModal = document.getElementById("pushnx-close");
+        const closeModal = this.element.querySelector("#pushnx-close");
 
         utility.listen(closeModal, "click", (event) => {
-            this.pushnx.closeModal();
+            this.closeModal();
         });
     }
 
@@ -133,15 +135,13 @@ export class PushNotification {
      * listen to message counter
      */
     private listenMessageCounter() {
-        utility.listen(document, "pnxCountMessage", (event) => {
+        utility.listen(document, "pushnx.count.message", (event) => {
             if (!event.customData.count) {
-                this.pushnx.closeModal();
+                this.closeModal();
             }
 
             this.listenModal();
-
-            // update badge message counter
-            // this.badgeMessageCounter();
+            this.renderMessageCounter(event.customData.count);
         });
     }
 
@@ -149,12 +149,58 @@ export class PushNotification {
      * listen to new message
      */
     private listenNewMessage() {
-        utility.listen(document, "pnxNewMessage", (event) => {
+        utility.listen(document, "pushnx.new.message", (event) => {
             if (event.customData.count) {
-                // display the indicator
-                // this.messageIndicator();
+                this.showIndicator();
             }
         });
+    }
+
+    /**
+     * update message counter
+     * @param ctr [number of messages]
+     */
+    private renderMessageCounter(ctr) {
+        const notifCount = this.element.querySelector("#notification-count");
+        if (notifCount && ctr > 0) {
+            utility.removeClass(notifCount, "hidden");
+            notifCount.innerHTML = ctr;
+        } else {
+            utility.addClass(notifCount, "hidden");
+        }
+    }
+
+    /**
+     * display indicator for new message
+     */
+    private showIndicator() {
+        const indicator = this.element.querySelector(".mobile-menu-indicator");
+        utility.removeClass(indicator, "hidden");
+    }
+
+    /**
+     * hide indicator after pushnx modal has opened
+     */
+    private hideIndicator() {
+        const indicator = this.element.querySelector(".mobile-menu-indicator");
+        utility.addClass(indicator, "hidden");
+    }
+
+    /**
+     * close modal
+     * bind events pre/post close modal
+     */
+    private closeModal() {
+        this.hideIndicator();
+        this.pushnx.closeModal();
+    }
+
+    /**
+     * open modal
+     * bind events pre/post open modal
+     */
+    private openModal() {
+        this.pushnx.openModal();
     }
 
     /**
