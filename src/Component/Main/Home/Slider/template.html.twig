@@ -1,28 +1,48 @@
 <section class="banner slider pagination-right" id="main-banner">
     <div class="banner-slides">
+    {% for slide in slides %} 
+        {% set show_both = slide['field_log_in_state']|length > 1 %}
+        {% set product_ribbon_tag = (slide['field_ribbon_product_label']['0']['value']) 
+                ? slide['field_ribbon_product_label']['0']['value']  
+                : slide['field_product']['0']['name'][0]['value'] %}
+        {% set bg_color = slide['field_ribbon_background_color']['0']['color'] %}
+        {% set text_color = slide['field_ribbon_label_color']['0']['color'] %}
+
+        {% if show_both or (slide['field_log_in_state'][0]['value'] == '0' and not is_login) %}
         <div class="banner-slides-item">
-            <a href="#">
-                <picture>
-                    <source media="(max-width: 767px)" srcset="{{ asset('images/sliders/slider_mobile_1.jpg') }}">
-                    <img src="{{ asset('images/sliders/slider_tablet_1.jpg') }}" alt="" class="w-100">
-                </picture>
+            <a 
+                href="{{ slide['field_banner_link'][0]['value'] }}" 
+                target="{{ slide['field_banner_link_target'][0]['value']}}"
+            >
+                    <img 
+                        src="{{ asset(slide['field_banner_image'][0]['url']) }}" 
+                        alt="{{ asset(slide['field_banner_image'][0]['alt']) }}" 
+                        class="w-100"
+                    >
             </a>
+            <div class="banner-blurb {{slide['field_content_position'][0]['value'] }}">
+                {{ include('@component/Main/Home/Slider/templates/product-ribbon.html.twig') }}
+                {{ slide['field_banner_blurb'][0]['value']|raw }}
+            </div>
         </div>
+        {% elseif show_both or (slide['field_log_in_state'][0]['value'] == '1' and is_login) %}
         <div class="banner-slides-item">
-            <a href="#">
-                <picture>
-                    <source media="(max-width: 767px)" srcset="{{ asset('images/sliders/slider_mobile_2.jpg') }}">
-                    <img src="{{ asset('images/sliders/slider_tablet_2.jpg') }}" alt="" class="w-100">
-                </picture>
+            <a 
+                href="{{ slide['field_post_banner_link'][0]['value'] }}" 
+                target="{{ slide['field_post_banner_link_target'][0]['value']}}"
+            >
+                    <img 
+                        src="{{ asset(slide['field_post_banner_image'][0]['url']) }}" 
+                        alt="{{ asset(slide['field_post_banner_image'][0]['alt']) }}" 
+                        class="w-100"
+                    >
             </a>
+            <div class="banner-blurb {{slide['field_post_content_position'][0]['value'] }}">
+                {{ include('@component/Main/Home/Slider/templates/product-ribbon.html.twig') }}
+                {{ slide['field_post_banner_blurb'][0]['value']|raw }}
+            </div>
         </div>
-        <div class="banner-slides-item">
-            <a href="#">
-                <picture>
-                    <source media="(max-width: 767px)" srcset="{{ asset('images/sliders/slider_mobile_1.jpg') }}">
-                    <img src="{{ asset('images/sliders/slider_tablet_1.jpg') }}" alt="" class="w-100">
-                </picture>
-            </a>
-        </div>
+        {% endif %}
+    {% endfor %}
     </div>
 </section>

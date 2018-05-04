@@ -55,6 +55,7 @@ export class AnnouncementComponent implements ComponentInterface {
      */
     private bindDismissButton(element) {
         let activeItem = element.querySelector(".announcement-list");
+
         if (activeItem) {
             utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
                 activeItem = activeItem.getAttribute("data");
@@ -82,8 +83,9 @@ export class AnnouncementComponent implements ComponentInterface {
             const modalOverlay: HTMLElement = modalEl.querySelector(".modal-overlay");
             const negativeClass: HTMLElement = modalEl.querySelector(".modal-close");
 
-            if (negativeClass === src || modalOverlay === src || src.className.baseVal === negativeClass
-                || src.className.baseVal === "modal-close") {
+            if (negativeClass === src ||  modalOverlay === src ||
+                utility.hasClass(src, negativeClass) || utility.hasClass(src, "modal-close")
+            ) {
                 for (const item of element.querySelectorAll(".announcement-item")) {
                     const activeItem = item.getAttribute("data");
                     this.setReadItems(activeItem);
@@ -109,6 +111,7 @@ export class AnnouncementComponent implements ComponentInterface {
                 counter++;
             }
         }
+
         utility.invoke(document, "announcement.update.count", {count: counter});
     }
 

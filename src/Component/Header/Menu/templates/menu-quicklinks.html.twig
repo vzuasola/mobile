@@ -28,6 +28,11 @@
     pl: 'Wyloguj',
 } %}
 
+{% set modal = {
+    'quicklinks-announcement': '#announcement-lightbox',
+    'quicklinks-notification': '#pushnxLightbox',
+} %}
+
 {% if quicklinks %}
 <h3 class="mobile-menu-internal-header"><span>{{ links[app.lang] }}</span></h3>
 <div class="menu-display menu-display-internal">
@@ -35,7 +40,7 @@
         {% for menu in quicklinks %}
             <li class="icon-thumbnail-item {{ menu.attributes.class }}">
                 <a
-                href="{{ (menu.attributes.class == 'quicklinks-announcement') ? '#announcement-lightbox': url(menu.uri) }}"
+                href="{{ (menu.attributes.class in modal|keys) ? modal[menu.attributes.class] : url(menu.uri) }}"
                 class="icon-thumbnail-link {{ menu.attributes.title }}"
                 >
 
@@ -45,6 +50,10 @@
 
                 {% if menu.attributes.class == 'quicklinks-announcement' %}
                     <span id="announcement-count" class="icon-balloon-counter">0</span>
+                {% endif %}
+
+                {% if menu.attributes.class == 'quicklinks-notification' %}
+                    <span id="notification-count" class="icon-balloon-counter hidden">0</span>
                 {% endif %}
 
                 </a>

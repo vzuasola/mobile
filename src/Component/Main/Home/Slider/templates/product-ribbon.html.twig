@@ -1,0 +1,11 @@
+{% if product_ribbon_tag %}
+<div class="product-tag">
+	{% if slide['field_ribbon_product_label']['0']['value'] %}
+	<div style="background-color: {{ bg_color }}; color: {{ text_color }}">
+	{% else %}
+	<div class="tag-{{ slide['field_product']['0']['field_product_id'][0]['value']|lower }}">
+	{% endif %}
+		{{ product_ribbon_tag }}
+	</div>
+</div>
+{% endif %}
