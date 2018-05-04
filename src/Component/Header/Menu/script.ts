@@ -10,16 +10,23 @@ export class MenuComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         menu(element);
         this.listenAnnouncementCount(element);
-        this.listenPushnxModal(element);
         this.listenPushnxCount(element);
         this.listenNewMessage(element);
+
+        this.listenPushnxModal(element);
+        this.listenLogin(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         menu(element);
+
         this.listenPushnxModal(element);
+        this.listenLogin(element);
     }
 
+    /**
+     * Listen to announcement pushes
+     */
     private listenAnnouncementCount(element) {
         utility.listen(document, "announcement.update.count", (event) => {
             element.querySelector("#announcement-count").innerHTML = event.customData.count;
@@ -30,6 +37,30 @@ export class MenuComponent implements ComponentInterface {
             }
         });
     }
+
+    /**
+     * Listen to login handlers
+     */
+    private listenLogin(element) {
+        utility.listen(element, "click", (event, src) => {
+            const selector = "login-trigger";
+
+            if (!utility.hasClass(src, selector)) {
+                src = utility.findParent(src, `.${selector}`, 2);
+            }
+
+            if (utility.hasClass(src, selector)) {
+                utility.invoke(document, "header.login");
+                event.preventDefault();
+            }
+        });
+    }
+
+    /**
+     * Pushnx listeners
+     *
+     * TODO Move this to it's own script in /scripts
+     */
 
     /**
      * listen to "click" event on left nav pushnx menu
