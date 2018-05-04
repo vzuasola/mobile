@@ -105,7 +105,6 @@ export class PushNotification {
      */
     private listenModal() {
         const closeModal = this.element.querySelector("#pushnx-close");
-        console.log(closeModal);
 
         utility.listen(closeModal, "click", (event) => {
             this.closeModal();
