@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 
-import PushNX from "@core/assets/js/components/push-notification";
 import {Modal} from "@app/assets/script/components/modal";
+import PushNX from "@core/assets/js/components/push-notification";
 
 import * as actionTemplate from "./../handlebars/pushnx/action.handlebars";
 import * as bodyTemplate from "./../handlebars/pushnx/body.handlebars";
