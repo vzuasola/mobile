@@ -13,8 +13,10 @@ import * as messageTemplate from "./../handlebars/pushnx/message.handlebars";
 export class PushNotification {
     private modal: Modal;
     private pushnx;
+    private element;
 
     constructor(element, attachments: {authenticated: boolean, pushnx: object}) {
+        this.element = element;
         // override modal
         this.modal = new Modal({
             closeOverlayClick: false,
@@ -111,7 +113,7 @@ export class PushNotification {
      * listen to "click" event on left nav pushnx menu
      */
     private listenMenu() {
-        const menuNotif = document.querySelector(".quicklinks-notification");
+        const menuNotif = this.element.querySelector(".quicklinks-notification");
 
         utility.listen(menuNotif, "click", (e) => {
             this.openModal();
@@ -122,7 +124,7 @@ export class PushNotification {
      * listen to "click" event on close modal
      */
     private listenModal() {
-        const closeModal = document.getElementById("pushnx-close");
+        const closeModal = this.element.getElementById("pushnx-close");
 
         utility.listen(closeModal, "click", (event) => {
             this.closeModal();
@@ -159,7 +161,7 @@ export class PushNotification {
      * @param ctr [number of messages]
      */
     private renderMessageCounter(ctr) {
-        const notifCount = document.getElementById("notification-count");
+        const notifCount = this.element.getElementById("notification-count");
         if (notifCount && ctr > 0) {
             utility.removeClass(notifCount, "hidden");
             notifCount.innerHTML = ctr;
@@ -172,7 +174,7 @@ export class PushNotification {
      * display indicator for new message
      */
     private showIndicator() {
-        const indicator = document.querySelector(".mobile-menu-indicator");
+        const indicator = this.element.querySelector(".mobile-menu-indicator");
         utility.removeClass(indicator, "hidden");
     }
 
@@ -180,7 +182,7 @@ export class PushNotification {
      * hide indicator after pushnx modal has opened
      */
     private hideIndicator() {
-        const indicator = document.querySelector(".mobile-menu-indicator");
+        const indicator = this.element.querySelector(".mobile-menu-indicator");
         utility.addClass(indicator, "hidden");
     }
 
