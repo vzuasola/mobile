@@ -11,7 +11,6 @@ export default function menu(component) {
     // Event
     utility.addEventListener(document, eventType, function (e) {
         var target = utility.getTarget(e),
-            menuOverlay = component.querySelector('.mobile-menu-overlay'),
             closeButton = component.querySelector('.mobile-menu-close-button');
 
         if (target === mobileIcon || target.parentNode === mobileIcon) {
