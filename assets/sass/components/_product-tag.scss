@@ -22,8 +22,8 @@ $slider-product-fish-hunter-foreground: $white;
 $slider-product-casino-gold-background: #fedead;
 $slider-product-casino-gold-foreground: #352808;
 
-$slider-product-keno-background: #FF9100;
-$slider-product-keno-foreground: #373737;
+$slider-product-keno-background: #ee3300;
+$slider-product-keno-foreground: #fff;
 
 $slider-product-featured-background: #ffe001;
 $slider-product-featured-foreground: #363638;
@@ -34,7 +34,7 @@ $slider-product-virtuals-foreground: #AF0000;
 .product-tag {
     position: relative;
     display: inline-block;
-    top: -1.6rem;
+    top: -2.3rem;
     left: 0;
     z-index: 1;
     font-weight: 600;
@@ -42,8 +42,10 @@ $slider-product-virtuals-foreground: #AF0000;
     text-align: center;
     width: 100%;
 
-    span {
+    div {
+        margin: 0 auto;
         padding: 0.5rem 1.5rem;
+        width: 13rem;
     }
 }
 
@@ -68,9 +70,9 @@ $slider-product-virtuals-foreground: #AF0000;
     }
 }
 
-.tag-sports {
-    background-color: #edb200;
-    color: #373737;
+.tag-ow-sports {
+    background-color: $slider-product-owsports-background;
+    color: $slider-product-owsports-foreground;
 
     &:before {
         border-right-color: #c59006;
@@ -157,3 +159,14 @@ $slider-product-virtuals-foreground: #AF0000;
         border-bottom-color: $black;
     }
 }
+
+.tag-ow-sports {
+    background-color: $slider-product-owsports-background;
+    color: $slider-product-owsports-foreground;
+
+    &:before {
+        border-right-color: $black;
+        border-bottom-color: $black;
+    }
+}
+
