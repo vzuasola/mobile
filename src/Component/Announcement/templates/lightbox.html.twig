@@ -14,7 +14,9 @@
                 {% endfor %}
             </ul>
             {% else %}
-                <p>{{ default_message }}</p>
+                <ul>
+                    <li class="text-red">{{ default_message }}</li>
+                </ul>
             {% endif %}
             {% include '@app/web/images/svg/announcement/announcement-closed.svg' %}
         </div>
