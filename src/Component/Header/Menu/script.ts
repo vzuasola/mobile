@@ -35,10 +35,16 @@ export class MenuComponent implements ComponentInterface {
      * listen to "click" event on left nav pushnx menu
      */
     private listenPushnxModal(element) {
-        const menuNotif = element.querySelector(".quicklinks-notification");
+        let src = element.querySelector(".notification-trigger");
+        console.log(src);
+        // const menuNotif = element.querySelector(".quicklinks-notification");
+        if (!utility.hasClass(element, ".notification-trigger")) {
+            src = utility.findParent(element, ".notification-trigger", 2);
+        }
+        console.log(src);
 
-        utility.listen(menuNotif, "click", (e) => {
-            utility.preventDefault();
+        utility.listen(src, "click", (e) => {
+            e.preventDefault();
             utility.invoke(document, "pushnx.open.modal");
             this.hideIndicator(element);
         });
