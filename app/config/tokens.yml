@@ -1,0 +1,18 @@
+# Define tokens here
+# Key value pair of token key and token class
+tokens:
+  # User
+  auth.token: App\Token\AuthToken
+  auth.credentials: App\Token\AuthCredentials
+  username: App\Token\Username
+
+  # Language
+  lang: App\Token\Language
+
+  legacy.credentials: App\Token\LegacyToken
+  credentials.params: App\Token\CredentialsToken
+  tracking: App\Token\TrackingToken
+  tracking.creferer: App\Token\TrackingCrefererToken
+
+  # Special Tokens
+  legacy.revamp.token: App\Token\LegacyRevampToken
