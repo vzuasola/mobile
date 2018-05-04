@@ -3,7 +3,8 @@
         {% set menuLength = (footer_menu|length == 2) ? 'half' : '' %}
         {% for menu in footer_menu %}
             <li class="{{ menuLength }} {{ menu.attributes.class }}">
-                <a href="{{ url(menu.uri) }}">
+                <a href="{{ (menu.attributes.class == 'footer-language') ? '#language-lightbox': url(menu.uri) }}"
+                class="{{ menu.attributes.title }}">
                     {% include '@app/web/images/svg/footer/'~menu.attributes.class~'.svg' ignore missing %}
                     {{ menu.title }}
                 </a>

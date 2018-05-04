@@ -11,22 +11,27 @@ class LanguageComponent implements ComponentWidgetInterface
      */
     private $language;
 
+    private $currentLanguage;
+
+
     /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('language_fetcher')
+            $container->get('language_fetcher'),
+            $container->get('lang')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($language)
+    public function __construct($language, $currentLanguage)
     {
         $this->language = $language;
+        $this->currentLanguage = $currentLanguage;
     }
 
 
@@ -48,7 +53,7 @@ class LanguageComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
-
+        $data['currentLanguage'] = $this->currentLanguage;
         try {
             $data['language'] = $this->language->getLanguages();
             unset($data['language']['default']);

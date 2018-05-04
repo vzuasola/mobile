@@ -1,6 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {Modal} from "@app/assets/script/components/modal";
 
@@ -8,21 +9,33 @@ import {Modal} from "@app/assets/script/components/modal";
  *
  */
 export class LanguageComponent implements ComponentInterface {
-    private modal: Modal;
-
-    constructor() {
-        this.modal = new Modal({
-            closeOverlayClick: false,
-            escapeClose: false,
-            id : "language-lightbox",
-        });
+    onLoad(element: HTMLElement, attachments: {currentLanguage: string}) {
+        this.generateLanguageUrl(element, attachments.currentLanguage);
     }
 
-    onLoad(element: HTMLElement, attachments: {}) {
-        this.modal.open();
+    onReload(element: HTMLElement, attachments: {currentLanguage: string}) {
+        this.generateLanguageUrl(element, attachments.currentLanguage);
     }
 
-    onReload(element: HTMLElement, attachments: {}) {
-        //
+    private generateLanguageUrl(element, currentLanguage) {
+        const wrapper = element.querySelector("#language-lightbox");
+
+        if (wrapper) {
+
+            utility.listen(wrapper, "click", (event, src) => {
+                if (utility.hasClass(src, "language-link")) {
+                    utility.preventDefault();
+
+                    const selectedLang = src.getAttribute("data-lang");
+                    // Replacing the current language to the language selected by user from the Langauge Selector.
+                    const hostname = window.location.hostname;
+                    const regexp = new RegExp(hostname + "\/" + currentLanguage + "(\/?.*)$", "i");
+                    const redirectionUrl = window.location
+                        .href.replace(regexp, hostname + "/" + selectedLang + "$1");
+                    Modal.close("#language-lightbox");
+                    Router.navigate(redirectionUrl, ["main", "footer", "language"]);
+                }
+            });
+        }
     }
 }
