@@ -50,9 +50,8 @@ export class PushNotification {
         this.attachAction(attachments.authenticated);
         this.listenSessionLogin();
         this.listenSessionLogout();
-        this.listenMenu();
-        this.listenMessageCounter();
-        this.listenNewMessage();
+        this.listenOpenModal();
+        this.listenCloseModal();
     }
 
     /**
@@ -110,21 +109,11 @@ export class PushNotification {
     }
 
     /**
-     * listen to "click" event on left nav pushnx menu
-     */
-    private listenMenu() {
-        const menuNotif = this.element.querySelector(".quicklinks-notification");
-
-        utility.listen(menuNotif, "click", (e) => {
-            this.openModal();
-        });
-    }
-
-    /**
      * listen to "click" event on close modal
      */
     private listenModal() {
         const closeModal = this.element.querySelector("#pushnx-close");
+        console.log(closeModal);
 
         utility.listen(closeModal, "click", (event) => {
             this.closeModal();
@@ -132,75 +121,36 @@ export class PushNotification {
     }
 
     /**
-     * listen to message counter
+     * listen close modal
      */
-    private listenMessageCounter() {
-        utility.listen(document, "pushnx.count.message", (event) => {
-            if (!event.customData.count) {
-                this.closeModal();
-            }
-
-            this.listenModal();
-            this.renderMessageCounter(event.customData.count);
+    private listenCloseModal() {
+        utility.listen(document, "pushnx.close.modal", (e) => {
+            this.closeModal();
         });
-    }
-
-    /**
-     * listen to new message
-     */
-    private listenNewMessage() {
-        utility.listen(document, "pushnx.new.message", (event) => {
-            if (event.customData.count) {
-                this.showIndicator();
-            }
-        });
-    }
-
-    /**
-     * update message counter
-     * @param ctr [number of messages]
-     */
-    private renderMessageCounter(ctr) {
-        const notifCount = this.element.querySelector("#notification-count");
-        if (notifCount && ctr > 0) {
-            utility.removeClass(notifCount, "hidden");
-            notifCount.innerHTML = ctr;
-        } else {
-            utility.addClass(notifCount, "hidden");
-        }
-    }
-
-    /**
-     * display indicator for new message
-     */
-    private showIndicator() {
-        const indicator = this.element.querySelector(".mobile-menu-indicator");
-        utility.removeClass(indicator, "hidden");
-    }
-
-    /**
-     * hide indicator after pushnx modal has opened
-     */
-    private hideIndicator() {
-        const indicator = this.element.querySelector(".mobile-menu-indicator");
-        utility.addClass(indicator, "hidden");
     }
 
     /**
      * close modal
-     * bind events pre/post close modal
      */
     private closeModal() {
-        this.hideIndicator();
         this.pushnx.closeModal();
     }
 
     /**
+     * listen open modal
+     */
+    private listenOpenModal() {
+        utility.listen(document, "pushnx.open.modal", (e) => {
+            this.openModal();
+        });
+    }
+
+    /**
      * open modal
-     * bind events pre/post open modal
      */
     private openModal() {
         this.pushnx.openModal();
+        this.listenModal();
     }
 
     /**
