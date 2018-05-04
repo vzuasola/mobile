@@ -31,5 +31,8 @@ components:
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
 
+  language:
+    class: App\MobileEntry\Component\Language\LanguageComponent
+
   push_notification:
     class: App\MobileEntry\Component\PushNotification\PushNotificationComponent

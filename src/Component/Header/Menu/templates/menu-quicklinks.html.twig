@@ -29,7 +29,6 @@
 } %}
 
 {% set modal = {
-    'quicklinks-announcement': '#announcement-lightbox',
     'quicklinks-notification': '#pushnxLightbox',
 } %}
 
@@ -39,10 +38,7 @@
     <ul class="icon-thumbnail clearfix">
         {% for menu in quicklinks %}
             <li class="icon-thumbnail-item {{ menu.attributes.class }}">
-                <a
-                href="{{ (menu.attributes.class in modal|keys) ? modal[menu.attributes.class] : url(menu.uri) }}"
-                class="icon-thumbnail-link {{ menu.attributes.title }}"
-                >
+                <a href="{{ url(menu.uri) }}" class="icon-thumbnail-link {{ menu.attributes.title }}">
 
                 {% include '@app/web/images/svg/quicklinks/'~menu.attributes.class~'.svg' ignore missing %}
 
