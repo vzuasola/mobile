@@ -40,12 +40,12 @@ $slider-product-virtuals-foreground: #AF0000;
     font-weight: 600;
     text-transform: uppercase;
     text-align: center;
-    width: 100%;
 
     div {
         margin: 0 auto;
         padding: 0.5rem 1.5rem;
-        width: 13rem;
+        min-width: 13rem;
+        max-width: 100%;
     }
 }
 

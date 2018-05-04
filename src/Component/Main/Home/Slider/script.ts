@@ -17,14 +17,16 @@ export class SliderComponent implements ComponentInterface {
     });
 
     onLoad(element: HTMLElement, attachments: {}) {
-        this.activateSlider();
+        this.activateSlider(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        this.activateSlider();
+        this.activateSlider(element);
     }
 
-    private activateSlider() {
-        this.slider.init();
+    private activateSlider(element) {
+        if (element.querySelector(".banner-slides-item")) {
+            this.slider.init();
+        }
     }
 }
