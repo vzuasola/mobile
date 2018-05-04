@@ -141,7 +141,7 @@ export class PushNotification {
      * open modal
      */
     private openModal() {
-        Modal.open('#pushnxLightbox');
+        Modal.open("#pushnxLightbox");
         this.listenModal();
     }
 
