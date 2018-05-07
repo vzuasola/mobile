@@ -2,10 +2,10 @@
     <ul class="menu">
         {% set menuLength = (footer_menu|length == 2) ? 'half' : '' %}
         {% for menu in footer_menu %}
-            <li class="{{ menuLength }} {{ menu.attributes.class }}">
+            <li class="{{ menuLength }}">
                 <a href="{{ url(menu.uri) }}"
-                class="{{ menu.attributes.title }}">
-                    {% include '@app/web/images/svg/footer/'~menu.attributes.class~'.svg' ignore missing %}
+                class="{{ menu.attributes.class }}">
+                    {% include '@app/web/images/svg/footer/'~menu.attributes.svg~'.svg' ignore missing %}
                     {{ menu.title }}
                 </a>
             </li>
