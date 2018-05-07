@@ -86,42 +86,36 @@
                 width: 2.9rem;
             }
 
-            &.menu-live-dealer {
+            .product-live-dealer {
                 svg {
                     width: 2.5rem;
                 }
             }
 
-            &.menu-games {
+            .product-games {
                 svg {
-                    width: 3.7rem;
+                    margin-top: 1.5rem;
+                    width: 5rem;
                 }
             }
 
-            &.menu-fish-hunter {
-                svg {
-                    width: 3.2rem;
-                }
-            }
-
-            &.menu-exchange {
+            .product-fish-hunter {
                 svg {
                     width: 3.2rem;
                 }
             }
 
-            &.menu-lottery {
+            .product-exchange {
+                svg {
+                    width: 3.2rem;
+                }
+            }
+
+            .product-lottery {
                 svg {
                     margin-top: 1.5rem;
                     width: 3.2rem;
                 }
-            }
-        }
-
-        .product-games {
-            svg {
-                margin-top: 1.5rem;
-                width: 5rem;
             }
         }
     }
@@ -147,25 +141,25 @@
                 top: 3.1rem;
             }
 
-            &.quicklinks-download {
+            .quicklinks-download {
                 svg {
                     width: 1.5rem;
                 }
             }
 
-            &.quicklinks-payment {
+            .quicklinks-payment {
                 svg {
                     width: 2.8rem;
                 }
             }
 
-            &.quicklinks-notification {
+            .quicklinks-notification {
                 svg {
                     width: 1.7rem;
                 }
             }
 
-            &.quicklinks-logout {
+            .quicklinks-logout {
                 svg {
                     width: 1.8rem;
                 }
