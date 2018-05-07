@@ -11,7 +11,7 @@
         {% if ((show_both or slide['field_log_in_state'][0]['value'] == '0') and not is_login) %}
         <div class="banner-slides-item">
             <a 
-                href="{{ slide['field_banner_link'][0]['value'] }}" 
+                href="{{ slide['field_banner_link'][0]['uri'] }}" 
                 target="{{ slide['field_banner_link_target'][0]['value']}}"
             >
                     <img 
@@ -28,7 +28,7 @@
         {% elseif ((show_both or slide['field_log_in_state'][0]['value'] == '1') and is_login) %}
         <div class="banner-slides-item">
             <a 
-                href="{{ slide['field_post_banner_link'][0]['value'] }}" 
+                href="{{ slide['field_post_banner_link'][0]['uri'] }}" 
                 target="{{ slide['field_post_banner_link_target'][0]['value']}}"
             >
                     <img 
