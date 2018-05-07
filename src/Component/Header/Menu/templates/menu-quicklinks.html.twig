@@ -37,6 +37,8 @@
 <div class="menu-display menu-display-internal">
     <ul class="icon-thumbnail clearfix">
         {% for menu in quicklinks %}
+            {% if (not is_login and menu.attributes.class == 'quicklinks-notification') %}
+            {% else %}
             <li class="icon-thumbnail-item {{ menu.attributes.class }}">
                 <a href="{{ url(menu.uri) }}" class="icon-thumbnail-link {{ menu.attributes.title }}">
 
@@ -54,7 +56,7 @@
 
                 </a>
             </li>
-
+            {% endif %} 
         {% endfor %}
         {% if is_login %}
             <li class="icon-thumbnail-item  menu-logout ">
