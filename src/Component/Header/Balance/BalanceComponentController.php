@@ -101,6 +101,9 @@ class BalanceComponentController
     private function includedBalance($balanceMapConfig, $balances)
     {
         $balanceMap = Config::parse($balanceMapConfig);
+        if (!$balanceMap) {
+            return $balances;
+        }
         return array_intersect_key($balances, $balanceMap);
     }
 
@@ -110,6 +113,9 @@ class BalanceComponentController
     private function currencyFilter($currency, $currencyMapConfig, $balances)
     {
         $currencyMap = Config::parseCommaDelimited($currencyMapConfig);
+        if (!$currencyMap) {
+            return $balances;
+        }
         $map = [];
         foreach ($currencyMap as $key => $currencies) {
             if (in_array(strtoupper($currency), $currencies)) {
