@@ -81,7 +81,7 @@ class HeaderComponent implements ComponentWidgetInterface
             try {
                 $balances = $this->balance->getBalances()['balance'];
                 $balance = array_sum($balances);
-                $data['balance'] = number_format($balance, 2, '.', '');
+                $data['balance'] = number_format($balance, 2, '.', ',');
             } catch(\Exception $e) {
                 $data['balance'] = 'N/A';
             }

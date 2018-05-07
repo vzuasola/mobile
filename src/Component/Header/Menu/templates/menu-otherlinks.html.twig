@@ -4,7 +4,10 @@
             <li class="mobile-menu-item {{ menu.attributes.class }}">
                 <a
                 href="{{ url(menu.uri) }}"
-                class="mobile-menu-link"
+                class="mobile-menu-link {{ menu.attributes.title }}"
+                target="{{ menu.attributes.target }}"
+                data-router="true"
+                data-router-refresh="main"
                 >
                 <span>{{ menu.title }}</span>
                 </a>
