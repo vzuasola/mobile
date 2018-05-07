@@ -120,8 +120,8 @@
 
         .product-games {
             svg {
-                margin-top: 1.9rem;
-                width: 3.7rem;
+                margin-top: 1.5rem;
+                width: 5rem;
             }
         }
     }
@@ -147,25 +147,25 @@
                 top: 3.1rem;
             }
 
-            &.menu-download {
+            &.quicklinks-download {
                 svg {
                     width: 1.5rem;
                 }
             }
 
-            &.menu-payment {
+            &.quicklinks-payment {
                 svg {
                     width: 2.8rem;
                 }
             }
 
-            &.menu-notification {
+            &.quicklinks-notification {
                 svg {
                     width: 1.7rem;
                 }
             }
 
-            &.menu-logout {
+            &.quicklinks-logout {
                 svg {
                     width: 1.8rem;
                 }

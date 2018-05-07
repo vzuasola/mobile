@@ -68,7 +68,7 @@
 
         &:hover path,
         &:active path {
-            fill: $yellow;
+            fill: $white;
         }
 
         @include media(">=tablet") {
