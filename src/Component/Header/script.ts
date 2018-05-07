@@ -84,7 +84,7 @@ export class HeaderComponent implements ComponentInterface {
 
                 utility.invoke(document, "session.login");
 
-                ComponentManager.refreshComponent(["header", "main", "announcement", "push_notification"],
+                ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
                 () => {
                     this.loader.hide();
                 });
@@ -149,7 +149,7 @@ export class HeaderComponent implements ComponentInterface {
                 type: "json",
                 method: "get",
             }).always(() => {
-                ComponentManager.refreshComponent(
+                ComponentManager.refreshComponents(
                 ["header", "main", "announcement", "push_notification"],
                 () => {
                     this.loader.hide();
