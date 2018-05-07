@@ -46,7 +46,7 @@ class BalanceComponentController
                 $balances = $this->balance->getBalances()['balance'];
                 $totalBalance = array_sum($balances);
                 $data['balance'] = number_format($totalBalance, 2, '.', ',');
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $data['balance'] = 'N/A';
             }
         }
