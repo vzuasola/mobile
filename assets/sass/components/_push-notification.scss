@@ -152,6 +152,12 @@
                 font-size: 1rem;
             }
         }
+
+        .expired {
+            color: $pushnx-action-expired-color;
+            display: block;
+            text-align: right;
+        }
     }
 
     &-btn-ok,
