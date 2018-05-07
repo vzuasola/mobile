@@ -122,6 +122,19 @@ export class HeaderComponent implements ComponentInterface {
         utility.listen(document, "header.login", (event, src) => {
             Modal.open("#login-lightbox");
         });
+
+        utility.listen(document, "click", (event, src) => {
+            const selector = "login-trigger";
+
+            if (!utility.hasClass(src, selector)) {
+                src = utility.findParent(src, `.${selector}`, 2);
+            }
+
+            if (utility.hasClass(src, selector)) {
+                utility.invoke(document, "header.login");
+                event.preventDefault();
+            }
+        });
     }
 
     /**

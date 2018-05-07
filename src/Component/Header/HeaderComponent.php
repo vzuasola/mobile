@@ -17,30 +17,23 @@ class HeaderComponent implements ComponentWidgetInterface
     private $playerSession;
 
     /**
-     * @var App\Player\Balance
-     */
-    private $balance;
-
-    /**
      *
      */
     public static function create($container)
     {
         return new static(
             $container->get('config_fetcher'),
-            $container->get('player_session'),
-            $container->get('balance_fetcher')
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession, $balance)
+    public function __construct($configs, $playerSession)
     {
         $this->configs = $configs;
         $this->playerSession = $playerSession;
-        $this->balance = $balance;
     }
 
     /**
@@ -78,13 +71,6 @@ class HeaderComponent implements ComponentWidgetInterface
 
         if ($isLogin) {
             $data['username'] = $this->playerSession->getUsername();
-            try {
-                $balances = $this->balance->getBalances()['balance'];
-                $balance = array_sum($balances);
-                $data['balance'] = number_format($balance, 2, '.', ',');
-            } catch(\Exception $e) {
-                $data['balance'] = 'N/A';
-            }
         }
         return $data;
     }
