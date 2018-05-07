@@ -32,6 +32,7 @@ export class HeaderComponent implements ComponentInterface {
 
         this.listenLogin();
         this.listenLogout(attachments);
+        this.getBalance(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
@@ -40,6 +41,7 @@ export class HeaderComponent implements ComponentInterface {
         this.bindLogout(attachments);
         this.bindSession(attachments);
         this.activatePasswordMask(element);
+        this.getBalance(element, attachments);
     }
 
     private activatePasswordMask(element) {
@@ -156,5 +158,20 @@ export class HeaderComponent implements ComponentInterface {
                 });
             });
         });
+    }
+
+    private getBalance(element, attachments) {
+        if (attachments.authenticated) {
+            xhr({
+                url: Router.generateRoute("balance", "balances"),
+                type: "json",
+            }).then((response) => {
+                const headerBalance = element.querySelector(".account-balance-amount");
+                headerBalance.innerHTML = response.balance;
+            }).fail((error, message) => {
+              // do something
+            });
+
+        }
     }
 }
