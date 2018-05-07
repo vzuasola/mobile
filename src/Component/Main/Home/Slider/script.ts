@@ -1,6 +1,6 @@
 import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 
-import Xlider from "./scripts/xlider";
+import Xlider from "@app/assets/script/components/xlider";
 
 /**
  *
@@ -10,7 +10,8 @@ export class SliderComponent implements ComponentInterface {
         selector: "#main-banner",
         innerSelector: ".banner-slides",
         childClassSelector: "banner-slides-item",
-        auto: true,
+        effect: "slide",
+        auto: false,
         controls: true,
         pager: false,
         speed: 8000,

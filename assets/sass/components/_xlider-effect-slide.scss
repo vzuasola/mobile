@@ -1,0 +1,13 @@
+.banner.slider-effect-slide {
+    overflow: hidden;
+
+    .banner-slides {
+        transition: transform .5s ease-in-out;
+    }
+
+    .banner-slides-item {
+        float: left;
+        // display: inline-block;
+        // margin-right: -4px; // remove space with inline-block
+    }
+}
