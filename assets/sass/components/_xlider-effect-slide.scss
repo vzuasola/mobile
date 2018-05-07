@@ -1,0 +1,11 @@
+.banner.slider-effect-slide {
+    overflow: hidden;
+
+    .banner-slides {
+        transition: transform .5s ease-in-out;
+    }
+
+    .banner-slides-item {
+        float: left;
+    }
+}

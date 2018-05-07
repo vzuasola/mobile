@@ -193,6 +193,7 @@ hp fortify scan qa1:
       - automation/deployed/*.jsonl
     expire_in: 1 month
   allow_failure: true
+  when: manual
 
 .jmeter qa1:
   stage: performance-tests-test

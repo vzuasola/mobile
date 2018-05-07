@@ -1,7 +1,11 @@
 {% if top_menu %}
     <ul class="mobile-menu-button clearfix">
     {% for menu in top_menu %}
+<<<<<<< HEAD
         <li><a href="{{ url(menu.uri) }}" target="{{menu.attributes.target}}" class="btn btn-small btn-{{ menu.attributes.class }} {{ menu.attributes.title }} ">{{ menu.title }}</a></li>
+=======
+        <li><a href="{{ url(menu.uri) }}" target="{{ menu.attributes.target }}" class="btn btn-small btn-{{ menu.attributes.class }} ">{{ menu.title }}</a></li>
+>>>>>>> working
     {% endfor %}
     </ul>
 {% endif %}

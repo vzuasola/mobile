@@ -1,6 +1,7 @@
-<div id="language-lightbox" class="modal language">
+<div id="language-lightbox" class="modal language language-lightbox">
     <div class="modal-content language-content">
         <div class="modal-body">
+            <h3>Select Language</h3>
             <ul class="menu">
                 {% for key,lang in language %}
                     {% set isActive = lang.prefix == currentLanguage ? "active" : "" %}
@@ -15,5 +16,6 @@
                 {% endfor %}
             </ul>
         </div>
+        {% include '@app/web/images/svg/closed.svg' %}
     </div>
 </div>

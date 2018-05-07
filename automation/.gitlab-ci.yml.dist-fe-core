@@ -36,3 +36,4 @@ hp fortify scan:
   script:
     - python -u automation/run.py --stage code-scan-testing
   allow_failure: true
+  when: manual

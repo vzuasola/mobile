@@ -60,7 +60,6 @@ class LanguageComponent implements ComponentWidgetInterface
         } catch (\Exception $e) {
             $data['language'] = [];
         }
-
         return $data;
     }
 }

@@ -8,6 +8,7 @@ import * as utility from '@core/assets/js/components/utility';
  *     selector: The parent wrapper of slider items
  *     innerSelector: Inner selector between the slider parent wrapper and slider items.
  *     childClassSelector: child slider class selector
+ *     effect: "fade" / "slide" (default: fade)
  *     auto: for automatic start of transition
  *     controls: for adding of controls(prev and next) to slider
  *     pager: for adding of pager/ticker selector to slider
@@ -23,7 +24,8 @@ export default function Slider(options) {
         $next,
         slideInterval = null,
         $selector,
-        $slides;
+        $slides,
+        $slideAmount = 0;
 
     /**
      * Initiate Functions
@@ -37,6 +39,22 @@ export default function Slider(options) {
         utility.forEach($slides, function (elem) {
             elem.className = $this.options.childClassSelector + " slides-item";
         });
+
+        if ($this.options.effect === "slide") {
+            // Add slide effect specific class for styling
+            utility.addClass($selector, "slider-effect-slide");
+
+            // Add width to individual slider item
+            utility.forEach($slides, function (elem) {
+                elem.style.width = $selector.clientWidth + "px";
+            });
+
+            // Add width to slides holder item
+            addSliderHolderWidth($selector.querySelector(".banner-slides"));
+        } else {
+            // Add slide effect specific class for styling
+            utility.addClass($selector, "slider-effect-fade");
+        }
 
         $slides[$this.options.currentSlide].className = $this.options.childClassSelector + " slides-item showing slides-item--showNext";
 
@@ -68,6 +86,7 @@ export default function Slider(options) {
             selector: ".banner",
             innerSelector: ".banner-slides",
             childClassSelector: "banner-slides-item",
+            effect: "fade",
             auto: true,
             controls: true,
             pager: true,
@@ -83,6 +102,32 @@ export default function Slider(options) {
                 $this.options[name] = $this.defaults[name];
             }
         }
+    }
+
+    function addSliderHolderWidth(holderElem) {
+        var totalWidth = getTotalWidth($selector.querySelectorAll(".banner-slides-item")),
+            holderWidth = holderElem.clientWidth;
+
+        holderElem.style.width = totalWidth + "px";
+    }
+
+    function getTotalWidth(nodes) {
+        // convert nodelist to array
+        var thumbItemsArr = Array.prototype.slice.call(nodes),
+            thumbItemWidths,
+            totalWidth;
+
+        thumbItemWidths = thumbItemsArr.map(function (item) {
+            return item.clientWidth;
+        });
+
+        totalWidth = thumbItemWidths.reduce(function (prev, current) {
+            return prev + current;
+        }, 0);
+
+        console.log("totalWidth (getTotalWidth)", totalWidth);
+
+        return totalWidth;
     }
 
     /**
@@ -114,13 +159,13 @@ export default function Slider(options) {
     function onclickControls() {
         utility.addEventListener($next, "click", function (e) {
             pauseSlideshow();
-            nextSlide();
+            nextSlide(e);
             playSlideshow();
             utility.preventDefault(e);
         });
         utility.addEventListener($previous, "click", function (e) {
             pauseSlideshow();
-            previousSlide();
+            previousSlide(e);
             playSlideshow();
             utility.preventDefault(e);
         });
@@ -160,18 +205,18 @@ export default function Slider(options) {
     }
 
     // Next Slide
-    function nextSlide() {
-        goToSlide($this.options.currentSlide + 1);
+    function nextSlide(e) {
+        goToSlide($this.options.currentSlide + 1, e);
     }
 
     // Previous Slide
-    function previousSlide() {
-        goToSlide($this.options.currentSlide - 1);
+    function previousSlide(e) {
+        goToSlide($this.options.currentSlide - 1, e);
     }
 
     // Go to nth slide
     // Add relevant classes for current and previous slides
-    function goToSlide(n) {
+    function goToSlide(n, e) {
         if ($this.options.pager) {
             utility.forEach($pagerSelector, function (elem) {
                 utility.removeClass(elem, "active");
@@ -191,6 +236,42 @@ export default function Slider(options) {
         // Fix out of bounds for previous slide index when current slide is 0
         var prevIndex = (($this.options.currentSlide) === 0) ? ($slides.length - 1) : ($this.options.currentSlide - 1);
         $slides[prevIndex].className = $this.options.childClassSelector + " slides-item slides-item--hidePrevious";
+
+        // Sliding effect spacific script
+        slidingEffect(n, e);
+    }
+
+    // Sliding effect (add transform translateX to slider holder element)
+    function slidingEffect(index, e) {
+        if ($this.options.effect === "slide") {
+            var target = utility.getTarget(e),
+                span = utility.hasClass(target, "slider-button") ? target : utility.findParent(target, ".slider-button"),
+                prev = utility.hasClass(span, "btn-prev"),
+                next = utility.hasClass(span, "btn-next"),
+                slideHolder = $selector.querySelector(".banner-slides"),
+                sliderWidth = $selector.clientWidth,
+                totalWidth = getTotalWidth($selector.querySelectorAll(".banner-slides-item"));
+
+            if (prev) {
+                if (index === -1) {
+                    index = $slides.length - 1;
+                    $slideAmount = -Math.abs(totalWidth - sliderWidth);
+                } else {
+                    $slideAmount = $slideAmount + sliderWidth;
+                }
+            }
+
+            if (next) {
+                if (index === $slides.length) {
+                    index = 0;
+                    $slideAmount = 0;
+                } else {
+                    $slideAmount = $slideAmount - sliderWidth;
+                }
+            }
+
+            slideHolder.style.transform = "translateX(" + $slideAmount + "px)";
+        }
     }
 
     // Pauses slideshow when triggered
