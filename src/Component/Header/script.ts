@@ -84,7 +84,7 @@ export class HeaderComponent implements ComponentInterface {
 
                 utility.invoke(document, "session.login");
 
-                ComponentManager.refreshComponent(["header", "main", "announcement", "push_notification"],
+                ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
                 () => {
                     this.loader.hide();
                 });
@@ -122,6 +122,19 @@ export class HeaderComponent implements ComponentInterface {
         utility.listen(document, "header.login", (event, src) => {
             Modal.open("#login-lightbox");
         });
+
+        utility.listen(document, "click", (event, src) => {
+            const selector = "login-trigger";
+
+            if (!utility.hasClass(src, selector)) {
+                src = utility.findParent(src, `.${selector}`, 2);
+            }
+
+            if (utility.hasClass(src, selector)) {
+                utility.invoke(document, "header.login");
+                event.preventDefault();
+            }
+        });
     }
 
     /**
@@ -136,7 +149,7 @@ export class HeaderComponent implements ComponentInterface {
                 type: "json",
                 method: "get",
             }).always(() => {
-                ComponentManager.refreshComponent(
+                ComponentManager.refreshComponents(
                 ["header", "main", "announcement", "push_notification"],
                 () => {
                     this.loader.hide();
