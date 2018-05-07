@@ -170,3 +170,13 @@ $slider-product-virtuals-foreground: #AF0000;
     }
 }
 
+.tag-arcade {
+    background-color: #04a5dc;
+    color: #fff;
+
+    &:before {
+        border-right-color: #067f9e;
+        border-bottom-color: #067f9e;
+    }
+}
+
