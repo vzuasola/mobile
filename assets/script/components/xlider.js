@@ -44,13 +44,7 @@ export default function Slider(options) {
             // Add slide effect specific class for styling
             utility.addClass($selector, "slider-effect-slide");
 
-            // Add width to individual slider item
-            utility.forEach($slides, function (elem) {
-                elem.style.width = $selector.clientWidth + "px";
-            });
-
-            // Add width to slides holder item
-            addSliderHolderWidth($selector.querySelector(".banner-slides"));
+            adjustSliderWidth();
         } else {
             // Add slide effect specific class for styling
             utility.addClass($selector, "slider-effect-fade");
@@ -75,6 +69,9 @@ export default function Slider(options) {
             // Init the main slider. We set the first dot and slide to be shown onload.
             $slides[$slides.length - 1].className = $this.options.childClassSelector + " slides-item slides-item--hidePrevious";
         }
+
+        // Resize event
+        utility.addEventListener(window, "resize", adjustSliderWidth);
     }
 
     /**
@@ -104,6 +101,16 @@ export default function Slider(options) {
         }
     }
 
+    function adjustSliderWidth() {
+        // Add width to individual slider item
+        utility.forEach($slides, function (elem) {
+            elem.style.width = $selector.clientWidth + "px";
+        });
+
+        // Add width to slides holder item
+        addSliderHolderWidth($selector.querySelector(".banner-slides"));
+    }
+
     function addSliderHolderWidth(holderElem) {
         var totalWidth = getTotalWidth($selector.querySelectorAll(".banner-slides-item")),
             holderWidth = holderElem.clientWidth;
@@ -124,8 +131,6 @@ export default function Slider(options) {
         totalWidth = thumbItemWidths.reduce(function (prev, current) {
             return prev + current;
         }, 0);
-
-        console.log("totalWidth (getTotalWidth)", totalWidth);
 
         return totalWidth;
     }
