@@ -2,10 +2,9 @@
         "include_directories": [
             "app",
             "src",
-            "vendor",
-            "web",
             "var",
-            "bin"
+            "vendor",
+            "web"
         ],
         "exclude_directories": [
             ".git",
