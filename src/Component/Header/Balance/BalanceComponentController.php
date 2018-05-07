@@ -34,7 +34,7 @@ class BalanceComponentController
     /**
      *
      */
-    public function balances($request, $response)
+    public function balances()
     {
         $data = [];
         $isLogin = $this->playerSession->isLogin();
