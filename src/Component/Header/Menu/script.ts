@@ -14,14 +14,12 @@ export class MenuComponent implements ComponentInterface {
         this.listenNewMessage(element);
 
         this.listenPushnxModal(element);
-        this.listenLogin(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         menu(element);
 
         this.listenPushnxModal(element);
-        this.listenLogin(element);
     }
 
     /**
@@ -34,24 +32,6 @@ export class MenuComponent implements ComponentInterface {
                 utility.removeClass(element.querySelector("#announcement-count"), "hidden");
             } else {
                 utility.addClass(element.querySelector("#announcement-count"), "hidden");
-            }
-        });
-    }
-
-    /**
-     * Listen to login handlers
-     */
-    private listenLogin(element) {
-        utility.listen(element, "click", (event, src) => {
-            const selector = "login-trigger";
-
-            if (!utility.hasClass(src, selector)) {
-                src = utility.findParent(src, `.${selector}`, 2);
-            }
-
-            if (utility.hasClass(src, selector)) {
-                utility.invoke(document, "header.login");
-                event.preventDefault();
             }
         });
     }

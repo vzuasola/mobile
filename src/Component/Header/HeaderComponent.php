@@ -72,7 +72,6 @@ class HeaderComponent implements ComponentWidgetInterface
         if ($isLogin) {
             $data['username'] = $this->playerSession->getUsername();
         }
-
         return $data;
     }
 }

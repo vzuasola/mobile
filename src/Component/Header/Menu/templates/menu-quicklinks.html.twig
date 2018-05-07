@@ -37,18 +37,22 @@
 <div class="menu-display menu-display-internal">
     <ul class="icon-thumbnail clearfix">
         {% for menu in quicklinks %}
-            <li class="icon-thumbnail-item {{ menu.attributes.class }}">
-                <a href="{{ url(menu.uri) }}" class="icon-thumbnail-link {{ menu.attributes.title }}">
+            <li class="icon-thumbnail-item">
+                <a href="{{ url(menu.uri) }}" class="icon-thumbnail-link {{ menu.attributes.class }}"
+                target="{{ menu.attributes.target }}"
+                data-router="true"
+                data-router-refresh="main"
+                >
 
-                {% include '@app/web/images/svg/quicklinks/'~menu.attributes.class~'.svg' ignore missing %}
+                {% include '@app/web/images/svg/quicklinks/'~menu.attributes.svg~'.svg' ignore missing %}
 
                 <span class="icon-thumbnail-label">{{ menu.title }}</span>
 
-                {% if menu.attributes.class == 'quicklinks-announcement' %}
+                {% if menu.attributes.class == 'announcement-trigger' %}
                     <span id="announcement-count" class="icon-balloon-counter">0</span>
                 {% endif %}
 
-                {% if menu.attributes.class == 'quicklinks-notification' %}
+                {% if menu.attributes.class == 'notification-trigger' %}
                     <span id="notification-count" class="icon-balloon-counter hidden">0</span>
                 {% endif %}
 
