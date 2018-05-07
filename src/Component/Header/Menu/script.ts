@@ -20,14 +20,15 @@ export class MenuComponent implements ComponentInterface {
         menu(element);
         this.pushNotification.handleOnLoad(element, attachments);
 
-        this.getBalance(element, attachments);
         this.listenAnnouncementCount(element);
+        this.getBalance(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         menu(element);
-        this.getBalance(element, attachments);
         this.pushNotification.handleOnReload(element, attachments);
+
+        this.getBalance(element, attachments);
     }
 
     /**
@@ -48,16 +49,18 @@ export class MenuComponent implements ComponentInterface {
             }
         });
     }
+
     private getBalance(element, attachments) {
         if (attachments.authenticated) {
             xhr({
                 url: Router.generateRoute("balance", "balances"),
                 type: "json",
             }).then((response) => {
-                headerBalance.innerHTML = response.balance;
                 const headerBalance = element.querySelector(".mobile-menu-amount");
+
+                headerBalance.innerHTML = response.balance;
             }).fail((error, message) => {
-              // do something
+                // do something
             });
         }
     }
