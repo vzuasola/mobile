@@ -37,6 +37,8 @@
 <div class="menu-display menu-display-internal">
     <ul class="icon-thumbnail clearfix">
         {% for menu in quicklinks %}
+            {% if (not is_login and menu.attributes.class == 'quicklinks-notification') %}
+            {% else %}
             <li class="icon-thumbnail-item">
                 <a href="{{ url(menu.uri) }}" class="icon-thumbnail-link {{ menu.attributes.class }}"
                 target="{{ menu.attributes.target }}"
