@@ -108,11 +108,7 @@ export default function Slider(options) {
         var totalWidth = getTotalWidth($selector.querySelectorAll(".banner-slides-item")),
             holderWidth = holderElem.clientWidth;
 
-            console.log("totalWidth (addSliderHolderWidth) ", totalWidth);
-
-        // if (totalWidth > holderWidth) {
-            holderElem.style.width = totalWidth + "px";
-        // }
+        holderElem.style.width = totalWidth + "px";
     }
 
     function getTotalWidth(nodes) {
@@ -218,9 +214,9 @@ export default function Slider(options) {
         goToSlide($this.options.currentSlide - 1, e);
     }
 
-    // Go to slide for Fade effect
+    // Go to nth slide
     // Add relevant classes for current and previous slides
-    function goToSlide(index, e) {
+    function goToSlide(n, e) {
         if ($this.options.pager) {
             utility.forEach($pagerSelector, function (elem) {
                 utility.removeClass(elem, "active");
@@ -231,7 +227,7 @@ export default function Slider(options) {
             elem.className = $this.options.childClassSelector + " slides-item";
         });
 
-        $this.options.currentSlide = (index + $slides.length) % $slides.length;
+        $this.options.currentSlide = (n + $slides.length) % $slides.length;
         $slides[$this.options.currentSlide].className = $this.options.childClassSelector + " slides-item showing slides-item--showNext";
 
         if ($this.options.pager) {
@@ -242,7 +238,7 @@ export default function Slider(options) {
         $slides[prevIndex].className = $this.options.childClassSelector + " slides-item slides-item--hidePrevious";
 
         // Sliding effect spacific script
-        slidingEffect(index, e);
+        slidingEffect(n, e);
     }
 
     // Sliding effect (add transform translateX to slider holder element)
@@ -273,17 +269,6 @@ export default function Slider(options) {
                     $slideAmount = $slideAmount - sliderWidth;
                 }
             }
-
-            console.log("index ", index);
-            console.log("$slideAmount ", $slideAmount);
-            console.log("sliderWidth ", sliderWidth);
-            // console.log("totalWidth ", totalWidth);
-            // console.log("e ", e);
-            // console.log("target ", target);
-            // console.log("span ", span);
-            // console.log("prev ", prev);
-            // console.log("next ", next);
-            console.log("-----------------------");
 
             slideHolder.style.transform = "translateX(" + $slideAmount + "px)";
         }
