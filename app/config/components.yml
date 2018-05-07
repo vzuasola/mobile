@@ -28,6 +28,10 @@ components:
     class: App\MobileEntry\Component\Header\Menu\MenuComponent
     parent: header
 
+  balance:
+    class: App\MobileEntry\Component\Header\Balance\BalanceComponent
+    parent: header
+
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
 

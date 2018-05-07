@@ -2,6 +2,7 @@ import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 import {AnnouncementComponent} from "@app/src/Component/Announcement/script";
 import {FooterComponent} from "@app/src/Component/Footer/script";
+import {BalanceComponent} from "@app/src/Component/Header/Balance/script";
 import {MenuComponent} from "@app/src/Component/Header/Menu/script";
 import {HeaderComponent} from "@app/src/Component/Header/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
@@ -18,6 +19,7 @@ ComponentManager.setComponents({
     announcement: new AnnouncementComponent(),
     push_notification: new PushNotificationComponent(),
     language: new LanguageComponent(),
+    balance: new BalanceComponent(),
 });
 
 ComponentManager.init();

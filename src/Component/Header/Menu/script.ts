@@ -1,5 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
+import * as xhr from "@core/assets/js/vendor/reqwest";
 import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import menu from "./scripts/menu";
 
@@ -14,12 +16,14 @@ export class MenuComponent implements ComponentInterface {
         this.listenNewMessage(element);
 
         this.listenPushnxModal(element);
+        this.getBalance(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         menu(element);
 
         this.listenPushnxModal(element);
+        this.getBalance(element, attachments);
     }
 
     /**
@@ -107,5 +111,19 @@ export class MenuComponent implements ComponentInterface {
     private hideIndicator(element) {
         const indicator = element.querySelector(".mobile-menu-indicator");
         utility.addClass(indicator, "hidden");
+    }
+
+    private getBalance(element, attachments) {
+        if (attachments.authenticated) {
+            xhr({
+                url: Router.generateRoute("balance", "balances"),
+                type: "json",
+            }).then((response) => {
+                const headerBalance = element.querySelector(".mobile-menu-amount");
+                headerBalance.innerHTML = response.balance;
+            }).fail((error, message) => {
+              // do something
+            });
+        }
     }
 }
