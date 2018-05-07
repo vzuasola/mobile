@@ -44,7 +44,7 @@ export default function Slider(options) {
             // Add slide effect specific class for styling
             utility.addClass($selector, "slider-effect-slide");
 
-            addresponsiveWidth();
+            adjustSliderWidth();
         } else {
             // Add slide effect specific class for styling
             utility.addClass($selector, "slider-effect-fade");
@@ -71,7 +71,7 @@ export default function Slider(options) {
         }
 
         // Resize event
-        utility.addEventListener(window, "resize", addresponsiveWidth)
+        utility.addEventListener(window, "resize", adjustSliderWidth);
     }
 
     /**
@@ -101,7 +101,7 @@ export default function Slider(options) {
         }
     }
 
-    function addresponsiveWidth() {
+    function adjustSliderWidth() {
         // Add width to individual slider item
         utility.forEach($slides, function (elem) {
             elem.style.width = $selector.clientWidth + "px";
