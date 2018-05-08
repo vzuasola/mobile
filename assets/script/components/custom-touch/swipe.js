@@ -6,37 +6,37 @@ export default function Swipe(element) {
 	var $this = this;
 
 	// These events for firefox and webkit-based browsers
-	this.element.addEventListener('touchstart', function (evt) {
-		$this.start.call($this, evt);
+	utility.addEventListener(this.element, 'touchstart', function (e) {
+		$this.start.call($this, e);
 	});
-	this.element.addEventListener('touchmove', function (evt) {
-		$this.move.call($this, evt);
+	utility.addEventListener(this.element, 'touchmove', function (e) {
+		$this.move.call($this, e);
 	});
-	this.element.addEventListener('touchend', function (evt) {
-		$this.end.call($this, evt);
+	utility.addEventListener(this.element, 'touchend', function (e) {
+		$this.end.call($this, e);
 	});
 
 	// If we want to support pointer events, we need to make sure mouse events are disabled.
 	if (window.navigator.msPointerEnabled) {
-		this.element.addEventListener('MSPointerDown', function (evt) {
-			$this.start.call($this, evt);
+		utility.addEventListener(this.element, 'MSPointerDown', function (e) {
+			$this.start.call($this, e);
 		});
-		this.element.addEventListener('MSPointerMove', function (evt) {
-			$this.move.call($this, evt);
+		utility.addEventListener(this.element, 'MSPointerMove', function (e) {
+			$this.move.call($this, e);
 		});
-		this.element.addEventListener('MSPointerUp', function (evt) {
-			$this.end.call($this, evt);
+		utility.addEventListener(this.element, 'MSPointerUp', function (e) {
+			$this.end.call($this, e);
 		});
 	} else {
 		//These events for all browsers that support mouse events
-		this.element.addEventListener('mousedown', function (evt) {
-			$this.start.call($this, evt);
+		utility.addEventListener(this.element, 'mousedown', function (e) {
+			$this.start.call($this, e);
 		});
-		this.element.addEventListener('mousemove', function (evt) {
-			$this.move.call($this, evt);
+		utility.addEventListener(this.element, 'mousemove', function (e) {
+			$this.move.call($this, e);
 		});
-		this.element.addEventListener('mouseup', function (evt) {
-			$this.end.call($this, evt);
+		utility.addEventListener(this.element, 'mouseup', function (e) {
+			$this.end.call($this, e);
 		});
 	}
 
@@ -45,9 +45,9 @@ export default function Swipe(element) {
 }
 
 Swipe.prototype.start = function (evt) {
-	//We need to know where we started from later to make decisions on the nature of the event.
+	// Get initial coordinate position
 	this.initialLocation = this.getPosition(evt);
-	console.log("this.initialLocation ", this.initialLocation);
+
 	this.inProgress = true;
 	this.startTime = new Date();
 }
@@ -57,8 +57,8 @@ Swipe.prototype.move = function (evt) {
 		return false;
 	}
 
-	var currentLocation = this.getPosition(evt, this.element);
-	var verticalDelta = Math.abs(currentLocation.y - this.initialLocation.y);
+	var currentLocation = this.getPosition(evt, this.element),
+		verticalDelta = Math.abs(currentLocation.y - this.initialLocation.y);
 
 	if (verticalDelta > 50) {
 		this.inProgress = false;
@@ -76,8 +76,8 @@ Swipe.prototype.end = function (evt) {
 		return;
 	}
 
-	var currentLocation = this.getPosition(evt, this.element);
-	var delta = Math.abs(currentLocation.x - this.initialLocation.x);
+	var currentLocation = this.getPosition(evt, this.element),
+		delta = Math.abs(currentLocation.x - this.initialLocation.x);
 
 	if (delta < 100)
 		return;
