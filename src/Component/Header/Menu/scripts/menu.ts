@@ -16,7 +16,6 @@ export class Menu {
 
     private bindEvents(event: string) {
         utility.listen(document, event, (src, target) => {
-            const close = this.element.querySelector(".mobile-menu-close-button");
             const icon = this.element.querySelector(".mobile-menu-icon");
 
             if (target === icon || target.parentNode === icon) {
