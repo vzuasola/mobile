@@ -10,7 +10,7 @@ export class SliderComponent implements ComponentInterface {
         selector: "#main-banner",
         innerSelector: ".banner-slides",
         childClassSelector: "banner-slides-item",
-        effect: "slide",
+        effect: "fade",
         auto: false,
         controls: true,
         pager: false,

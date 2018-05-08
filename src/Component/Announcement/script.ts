@@ -118,9 +118,7 @@ export class AnnouncementComponent implements ComponentInterface {
                 counter++;
             }
         }
-        setTimeout(() => {
-            utility.invoke(document, "announcement.update.count", {count: counter});
-        }, 500);
+        utility.invoke(document, "announcement.update.count", {count: counter});
     }
 
    /**
