@@ -21,7 +21,7 @@ export class Menu {
 
             if (target === icon || target.parentNode === icon) {
                 this.openMenu();
-            } else if (target === close || utility.hasClass(target, "close-svg")) {
+            } else if (utility.hasClass(target, "close-svg") || utility.hasClass(target, "mobile-menu-overlay")) {
                 this.closeMenu();
             }
         });
