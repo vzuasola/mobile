@@ -57,6 +57,12 @@ class FooterComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
+            $data['downloads_menu'] = $this->menus->getMultilingualMenu('mobile-downloads');
+        } catch (\Exception $e) {
+            $data['downloads_menu'] = [];
+        }
+
+        try {
             $data['sponsors'] = $this->sponsors->getViewById('mobile_sponsor_list');
         } catch (\Exception $e) {
             $data['sponsors'] = [];
