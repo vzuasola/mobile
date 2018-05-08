@@ -62,9 +62,9 @@
             {% endif %} 
         {% endfor %}
         {% if is_login %}
-            <li class="icon-thumbnail-item  quicklinks-logout ">
-                <a href="#" class="icon-thumbnail-link btn-logout">
-                {% include '@app/web/images/svg/quicklinks/'~menu.attributes.svg~'.svg' ignore missing %}
+            <li class="icon-thumbnail-item">
+                <a href="#" class="icon-thumbnail-link btn-logout quicklinks-logout">
+                {% include '@app/web/images/svg/quicklinks/quicklinks-logout.svg' %}
                     <span class="icon-thumbnail-label">{{ logout[app.lang] }}</span>
                 </a>
             </li>
