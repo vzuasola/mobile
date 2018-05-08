@@ -1,9 +1,10 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
+
 import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-import menu from "./scripts/menu";
+import {Menu} from "./scripts/menu";
 import {PushNotification} from "./scripts/push-notification";
 
 /**
@@ -17,7 +18,7 @@ export class MenuComponent implements ComponentInterface {
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
-        menu(element);
+        this.activateMenu(element);
         this.pushNotification.handleOnLoad(element, attachments);
 
         this.listenAnnouncementCount(element);
@@ -25,10 +26,18 @@ export class MenuComponent implements ComponentInterface {
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        menu(element);
+        this.activateMenu(element);
         this.pushNotification.handleOnReload(element, attachments);
 
         this.getBalance(element, attachments);
+    }
+
+    /**
+     * Enable menu slide behavior
+     */
+    private activateMenu(element) {
+        const menu = new Menu(element);
+        menu.activate();
     }
 
     /**

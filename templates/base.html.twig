@@ -7,7 +7,7 @@
     <title>{{ title }}</title>
     {% block css %}{% endblock %}
 </head>
-<body class="{{ app.lang }}" >
+<body class="{{ app.lang }}" data-language="{{ app.lang }}" >
     {% block header %}{% endblock header %}
 
     <main class="main">
