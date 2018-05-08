@@ -28,7 +28,7 @@ export default function Swipe(element) {
 			$this.end.call($this, e);
 		});
 	} else {
-		//These events for all browsers that support mouse events
+		// Browsers that support mouse events
 		utility.addEventListener(this.element, 'mousedown', function (e) {
 			$this.start.call($this, e);
 		});
