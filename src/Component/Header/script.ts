@@ -18,6 +18,7 @@ import {passwordMask} from "@app/assets/script/components/password-mask";
 export class HeaderComponent implements ComponentInterface {
     private loader: Loader;
     private session: Session;
+    private lastClickedEl: HTMLElement;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -83,8 +84,8 @@ export class HeaderComponent implements ComponentInterface {
             }).then((response) => {
                 Modal.close("#login-lightbox");
                 this.loader.show();
-
-                utility.invoke(document, "session.login");
+                this.lastClickedEl = src;
+                utility.invoke(document, "session.login", this.lastClickedEl);
 
                 ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
                 () => {
