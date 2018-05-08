@@ -1,15 +1,17 @@
 <div id="login-lightbox" class="modal login">
     <div class="modal-content login-content">
         <div class="modal-body">
-            <img src="{{ asset('images/dafabet_logo.png') }}" alt="" class="login-logo mb-20">
+            {% block logoSection %}
+                {{ include('@component/Header/templates/logo.html.twig') }}
+            {% endblock %}
             <form action="" class="login-form text-center">
                 {# <p class="login-notification">Account details incorrect - please check</p> #}
                 <div class="login-field mb-20">
-                    <input type="text" class="login-field-username input-block-level" name="username" placeholder="Username">
+                    <input type="text" class="login-field-username input-block-level" name="username" placeholder="{{ username_placeholder }}">
                     {% include '@app/web/images/svg/user-login.svg' %}
                 </div>
                 <div class="login-field">
-                    <input type="password" class="login-field-password input-block-level password-mask-enabled" name="password" placeholder="Password">
+                    <input type="password" class="login-field-password input-block-level password-mask-enabled" name="password" placeholder="{{ password_placeholder }}">
                     {% include '@app/web/images/svg/user-password.svg' %}
                     {% set passwordClass = true ? " password-mask-enabled" : "" %}
                     <span class="hidden password-mask-icon mask">
@@ -22,9 +24,9 @@
                     <input type="checkbox"> Remember Username
                 </label>
                 <input type="submit" value="Login" class="btn btn-gray login-submit input-block-level mb-10">
-                <p class="mb-30"><a href="#" class="login-help-link">Can't Login?</a></p>
-                <p class="mb-10">Not yet a Dafabet member?</p>
-                <a href="#" class="btn btn-yellow input-block-level">Join Now</a>
+                <p class="mb-30"><a href="{{ login_issue_link }}" class="login-help-link">{{ join_now_text }}</a></p>
+                <p class="mb-10">{{ lightbox_blurb }}</p>
+                <a href="#" class="btn btn-yellow input-block-level">{{ join_now_text }}</a>
             </form>
         </div>
         {% include '@app/web/images/svg/closed.svg' %}
