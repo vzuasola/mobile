@@ -93,24 +93,31 @@
 
     // Header
     .mobile-menu-header {
-        height: 6rem;
         margin: 0;
         padding: $container-gutter-xs;
         background: $red;
-        font-size: 1.6rem;
-        font-weight: 600;
-        line-height: 3rem;
+
+        &-username {
+            font-size: 1.6rem;
+            font-weight: 600;
+            line-height: 3rem;
+            margin: 0;
+        }
+
+        &-amount {
+            margin: -2.5rem 0 0 4.3rem;
+            font-size: 1.2rem;
+
+            span {
+                font-weight: 600;
+            }
+        }
 
         // Icon
         .user-icon {
-            width: 2.6rem;
-            margin: -0.4rem 0.8rem 0 0;
+            width: 3.4rem;
             vertical-align: top;
-            margin-top: 1rem;
-
-            path {
-                fill: $white;
-            }
+            margin-right: 0.5rem;
         }
 
         .logo {
