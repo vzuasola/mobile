@@ -74,9 +74,6 @@ export default function Slider(options) {
         // Resize event
         utility.addEventListener(window, "resize", adjustSliderWidth);
 
-        console.log("this ", this);
-        console.log("$selector ", $selector);
-
         // Initialize swipe for slider element
         new Swipe($selector);
 
