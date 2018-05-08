@@ -16,6 +16,9 @@ class HeaderComponent implements ComponentWidgetInterface
      */
     private $playerSession;
 
+
+    private $menu;
+
     /**
      *
      */
@@ -23,17 +26,19 @@ class HeaderComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('config_fetcher'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('menu_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession)
+    public function __construct($configs, $playerSession, $menu)
     {
         $this->configs = $configs;
         $this->playerSession = $playerSession;
+        $this->menu = $menu;
     }
 
     /**
@@ -81,6 +86,7 @@ class HeaderComponent implements ComponentWidgetInterface
 
         if ($isLogin) {
             $data['username'] = $this->playerSession->getUsername();
+            $data['cashier_link'] = $this->menu->getMultilingualMenu('cashier-menu')[0];
         }
         return $data;
     }
