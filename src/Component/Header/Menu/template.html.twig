@@ -1,5 +1,5 @@
 <section>
-    {% include '@app/web/images/svg/burger-menu.svg' %}
+    <span class="mobile-menu-icon">{% include '@app/web/images/svg/burger-menu.svg' %}</span>
     <span class="mobile-menu-indicator hidden"></span>
 
     <nav class="mobile-menu">
@@ -19,7 +19,9 @@
                 {% block logoSection %}
                     {{ include('@component/Header/templates/logo.html.twig') }}
                 {% endblock %}
-                {% include '@app/web/images/svg/menu/closed.svg' %}
+                <span class="menu-content-button close-svg">
+                    {% include '@app/web/images/svg/menu/closed.svg' %}
+                </span>
             </div>
         {% endif %}
 
