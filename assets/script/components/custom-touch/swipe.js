@@ -83,10 +83,10 @@ Swipe.prototype.end = function (evt) {
 		return;
 
 	if (currentLocation.x > this.initialLocation.x) {
-		//If you end to the right of where you started, you swipe right.
+		// If you end to the right of where you started, you swipe right.
 		this.element.dispatchEvent(this.swipeRightEvent, evt);
 	} else if (currentLocation.x < this.initialLocation.x) {
-		//If you end to the left of where you started, you swipe left.
+		// If you end to the left of where you started, you swipe left.
 		this.element.dispatchEvent(this.swipeLeftEvent, evt);
 	}
 }
@@ -95,11 +95,11 @@ Swipe.prototype.getPosition = function(evt) {
 	var pageX, pageY;
 
 	if (evt.touches) {
-		//If this is a touch event
+		// If this is a touch event
 		pageX = evt.changedTouches[0].pageX;
 		pageY = evt.changedTouches[0].pageY;
 	} else {
-		//If this is a mouse or pointer event
+		// If this is a mouse or pointer event
 		pageX = evt.pageX;
 		pageY = evt.pageY;
 	}
