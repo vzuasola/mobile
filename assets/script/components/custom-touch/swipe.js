@@ -5,7 +5,7 @@ export default function Swipe(element) {
 	this.element = element;
 	var $this = this;
 
-	// These events for firefox and webkit-based browsers
+	// firefox and webkit-based browsers
 	utility.addEventListener(this.element, 'touchstart', function (e) {
 		$this.start.call($this, e);
 	});
@@ -16,7 +16,7 @@ export default function Swipe(element) {
 		$this.end.call($this, e);
 	});
 
-	// If we want to support pointer events, we need to make sure mouse events are disabled.
+	// Support for pointer events
 	if (window.navigator.msPointerEnabled) {
 		utility.addEventListener(this.element, 'MSPointerDown', function (e) {
 			$this.start.call($this, e);
