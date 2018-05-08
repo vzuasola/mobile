@@ -163,7 +163,7 @@ class BalanceComponentController
     }
 
 
-        /**
+    /**
      * Translate currency depending on current langauge
      *
      * @param string $currency Registered currency of the player
