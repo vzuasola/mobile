@@ -10,12 +10,11 @@ export default function menu(component) {
 
     // Event
     utility.addEventListener(document, eventType, function (e) {
-        var target = utility.getTarget(e),
-            closeButton = component.querySelector('.mobile-menu-close-button');
+        var target = utility.getTarget(e);
 
         if (target === mobileIcon || target.parentNode === mobileIcon) {
             openMenu();
-        } else if (target === closeButton || utility.hasClass(target, "close-svg")) {
+        } else if (utility.hasClass(target, "close-svg") || utility.hasClass(target, "mobile-menu-overlay")) {
             closeMenu();
         }
     });
