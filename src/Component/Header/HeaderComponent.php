@@ -65,6 +65,7 @@ class HeaderComponent implements ComponentWidgetInterface
         $data['join_now_text'] = $headerConfigs['join_now_text'] ?? 'Join Now';
         $data['login_issue_text'] = $headerConfigs['login_issue_text'] ?? 'Cant login?';
         $data['login_issue_link'] = $headerConfigs['login_issue_link'] ?? '';
+        $data['mobile_remember'] = $headerConfigs['mobile_remember'] ?? 'Remember Username';
 
         // Login Configs
         $data['login_bottom_label'] = $loginConfigs['login_bottom_label'] ?? 'Login';
