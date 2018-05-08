@@ -66,8 +66,11 @@ export class MenuComponent implements ComponentInterface {
                 type: "json",
             }).then((response) => {
                 const headerBalance = element.querySelector(".mobile-menu-amount");
-
-                headerBalance.innerHTML = response.balance;
+                let formatedBalance: string;
+                formatedBalance = response.format;
+                formatedBalance = formatedBalance.replace("{currency}", response.currency);
+                formatedBalance = formatedBalance.replace("{total}", response.balance);
+                headerBalance.innerHTML = formatedBalance;
             }).fail((error, message) => {
                 // do something
             });

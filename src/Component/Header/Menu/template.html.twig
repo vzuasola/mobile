@@ -4,19 +4,23 @@
 
     <nav class="mobile-menu">
         {% if is_login %}
-            <h2 class="mobile-menu-header">
-                {% include '@app/web/images/svg/user-profile.svg' %}
-                {{ username }}
+            <div class="mobile-menu-header">
+                <p class="mobile-menu-header-username">
+                    {% include '@app/web/images/svg/user-profile.svg' %}
+                    {{ username }}
+                </p>
+                <p class="mobile-menu-header-amount">
+                    Total Balance: <span class="mobile-menu-amount"></span>
+                </p>
+            </div>
                 {% include '@app/web/images/svg/menu/closed.svg' %}
-            </h2>
-            <span class="mobile-menu-amount"></span>
         {% else %}
-            <h2 class="mobile-menu-header">
+            <div class="mobile-menu-header">
                 {% block logoSection %}
                     {{ include('@component/Header/templates/logo.html.twig') }}
                 {% endblock %}
                 {% include '@app/web/images/svg/menu/closed.svg' %}
-            </h2>
+            </div>
         {% endif %}
 
 
