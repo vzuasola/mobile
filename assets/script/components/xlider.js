@@ -77,8 +77,10 @@ export default function Slider(options) {
         console.log("this ", this);
         console.log("$selector ", $selector);
 
+        // Initialize swipe for slider element
         new Swipe($selector);
 
+        // Add swipe listener to slider element
         $selector.addEventListener('swipeleft', nextSlide);
         $selector.addEventListener('swiperight', previousSlide);
     }
