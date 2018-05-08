@@ -86,12 +86,12 @@ class BalanceComponentController
                 $balances = $this->balance->getBalances()['balance'];
                 $bonuses = $this->balance->getBonusBalances()['balance'];
 
-                $balance = $this->manageBalance(
+                $sumBalance = $this->manageBalance(
                     $balances, $balanceMap, $currency, $currencyMap, $territory, $territoriesMap);
-                $bonus = $this->manageBalance(
+                $sumBonus = $this->manageBalance(
                     $bonuses, $balanceMap, $currency, $currencyMap, $territory, $territoriesMap);
 
-                $totalBalance = $balance + $bonus;
+                $totalBalance = $sumBalance + $sumBonus;
                 $data['balance'] = number_format($totalBalance, 2, '.', ',');
                 $data['format'] = $this->totalBalanceFormat($currency);
                 $data['currency'] = $this->currencyTranslation($currency);
