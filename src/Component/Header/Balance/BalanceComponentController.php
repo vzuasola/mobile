@@ -155,18 +155,10 @@ class BalanceComponentController
     private function totalBalanceFormat($currency)
     {
         $format = '{currency} {total}';
-
         // Format the balance display via current language
-        switch (strtoupper($currency)) {
-            case 'RMB':
-                if (in_array($this->lang, ['sc','ch'])) {
-                    $format = '{total} {currency}';
-                }
-                break;
-            default:
-                break;
+        if (strtoupper($currency) == 'RMB' && in_array($this->lang, ['sc','ch'])) {
+            $format = '{total} {currency}';
         }
-
         return $format;
     }
 
