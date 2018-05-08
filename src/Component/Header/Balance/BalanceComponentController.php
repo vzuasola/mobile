@@ -84,12 +84,12 @@ class BalanceComponentController
 
             try {
                 $balances = $this->balance->getBalances()['balance'];
+                $bonuses = $this->balance->getBonusBalances()['balance'];
 
-                $balances = $this->includedBalance($balanceMap, $balances);
-                $balances = $this->currencyFilter($currency, $currencyMap, $balances);
-                $balances = $this->territoryFilter($territoriesMap, $territory, $balances);
+                $balance = $this->manageBalance($balances, $balanceMap, $currency, $currencyMap, $territory, $territoriesMap);
+                $bonus = $this->manageBalance($bonuses, $balanceMap, $currency, $currencyMap, $territory, $territoriesMap);
 
-                $totalBalance = array_sum($balances);
+                $totalBalance = $balance + $bonus;
                 $data['balance'] = number_format($totalBalance, 2, '.', ',');
                 $data['format'] = $this->totalBalanceFormat($currency);
                 $data['currency'] = $this->currencyTranslation($currency);
@@ -100,6 +100,15 @@ class BalanceComponentController
         }
 
         return $data;
+    }
+
+    private function manageBalance($balances, $balanceMap, $currency, $currencyMap, $territory, $territoriesMap)
+    {
+        $balances = $this->includedBalance($balanceMap, $balances);
+        $balances = $this->currencyFilter($currency, $currencyMap, $balances);
+        $balances = $this->territoryFilter($territoriesMap, $territory, $balances);
+
+        return array_sum($balances);
     }
 
     /**
@@ -138,6 +147,9 @@ class BalanceComponentController
      */
     private function territoryFilter($territoriesMapConfig, $territory, $balances)
     {
+        if (!$territoriesMapConfig) {
+            return $balances;
+        }
         foreach ($territoriesMapConfig as $key => $territories) {
             if (in_array($territory, $territories) && isset($balances[$key])) {
                 unset($balances[$key]);
