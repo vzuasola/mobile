@@ -9,42 +9,42 @@ export default class Swipe {
 
     constructor(private element) {
         // firefox and webkit-based browsers
-        utility.addEventListener(this.element, "touchstart", e => {
+        utility.addEventListener(this.element, "touchstart", (e) => {
             this.start(e);
         });
 
-        utility.addEventListener(this.element, "touchmove", e => {
+        utility.addEventListener(this.element, "touchmove", (e) => {
             this.move(e);
         });
 
-        utility.addEventListener(this.element, "touchend", e => {
+        utility.addEventListener(this.element, "touchend", (e) => {
             this.end(e);
         });
 
         // Support for pointer events
         if (window.navigator.msPointerEnabled) {
-            utility.addEventListener(this.element, "MSPointerDown", e => {
+            utility.addEventListener(this.element, "MSPointerDown", (e) => {
                 this.start(e);
             });
 
-            utility.addEventListener(this.element, "MSPointerMove", e => {
+            utility.addEventListener(this.element, "MSPointerMove", (e) => {
                 this.move(e);
             });
 
-            utility.addEventListener(this.element, "MSPointerUp", e => {
+            utility.addEventListener(this.element, "MSPointerUp", (e) => {
                 this.end(e);
             });
         } else {
             // Browsers that support mouse events
-            utility.addEventListener(this.element, "mousedown", e => {
+            utility.addEventListener(this.element, "mousedown", (e) => {
                 this.start(e);
             });
 
-            utility.addEventListener(this.element, "mousemove", e => {
+            utility.addEventListener(this.element, "mousemove", (e) => {
                 this.move(e);
             });
 
-            utility.addEventListener(this.element, "mouseup", e => {
+            utility.addEventListener(this.element, "mouseup", (e) => {
                 this.end(e);
             });
         }
