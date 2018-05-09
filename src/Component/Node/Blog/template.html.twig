@@ -1,0 +1,17 @@
+<h1 class="page-title">
+    <span class="page-title-text">{{ node.title.0.value }}</span>
+    <a href="#" class="page-title-back-button">
+        <svg viewBox="0 0 53.251 99.846">
+            <path d="M53.251 91.525l-9.985 8.32L0 49.922 43.101 0l10.15 8.32-36.194 41.602 36.194 41.603z"/>
+        </svg>
+    </a>
+</h1>
+
+<picture class="block mb-10">
+    <source media="(max-width: 767px)" srcset="{{ asset('images/banner/banner_mobile_4.jpg') }}">
+    <img src="{{ asset('images/banner/banner_tablet_4.jpg') }}" alt="" class="w-100">
+</picture>
+
+<div class="container">
+    {{ node.body.0.value|raw }}
+</div>

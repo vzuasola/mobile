@@ -12,9 +12,10 @@
 {% block body %}
     {% block main %}
         {{ widget('main') }}
-        {{ widget('push_notification') }}
-        {{ widget('language') }}
     {% endblock main %}
+
+    {{ widget('language') }}
+    {{ widget('push_notification') }}
 {% endblock body %}
 
 {% block footer %}
