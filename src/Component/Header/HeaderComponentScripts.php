@@ -53,6 +53,6 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
             'error_message_service_not_available' => $config['error_message_service_not_available'],
             'error_message_account_suspended' => $config['error_message_account_suspended'],
             'error_message_account_locked' => $config['error_message_account_locked']
-    ];
+        ];
     }
 }
