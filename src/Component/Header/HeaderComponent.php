@@ -60,26 +60,47 @@ class HeaderComponent implements ComponentWidgetInterface
     {
         $data = [];
 
-        $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
-        $loginConfigs = $this->configs->getConfig('webcomposer_config.login_configuration');
+        try {
+            $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+
+            // Header Configs
+            $data['logo_title'] = $headerConfigs['logo_title'];
+            $data['join_now_text'] = $headerConfigs['join_now_text'];
+            $data['login_issue_text'] = $headerConfigs['login_issue_text'];
+            $data['login_issue_link'] = $headerConfigs['login_issue_link'];
+            $data['mobile_remember'] = $headerConfigs['mobile_remember'];
+            $data['mobile_login_reg'] = $headerConfigs['mobile_login_reg'];
+
+        } catch (\Exception $e) {
+            $data['logo_title'] = 'Dafabet';
+            $data['join_now_text'] = 'Join Now';
+            $data['login_issue_text'] = 'Cant login?';
+            $data['login_issue_link'] = [];
+            $data['mobile_remember'] = 'Remember Username';
+            $data['mobile_login_reg'] = 'login/join';
+
+        }
+
+        try {
+            $loginConfigs = $this->configs->getConfig('webcomposer_config.login_configuration');
+
+            // Login Configs
+            $data['login_bottom_label'] = $loginConfigs['login_bottom_label'];
+            $data['username_placeholder'] = $loginConfigs['username_placeholder'];
+            $data['password_placeholder'] = $loginConfigs['password_placeholder'];
+            $data['lightbox_blurb'] = $loginConfigs['lightbox_blurb'];
+
+        } catch (\Exception $e) {
+            $data['login_bottom_label'] = 'Login';
+            $data['username_placeholder'] = 'Username';
+            $data['password_placeholder'] = 'Password';
+            $data['lightbox_blurb'] = 'Not yet a Dafabet member?';
+
+        }
 
         $data['is_front'] = true;
 
-        // Header Configs
-        $data['logo_title'] = $headerConfigs['logo_title'] ?? 'Dafabet';
-        $data['join_now_text'] = $headerConfigs['join_now_text'] ?? 'Join Now';
-        $data['login_issue_text'] = $headerConfigs['login_issue_text'] ?? 'Cant login?';
-        $data['login_issue_link'] = $headerConfigs['login_issue_link'] ?? '';
-        $data['mobile_remember'] = $headerConfigs['mobile_remember'] ?? 'Remember Username';
-
-        // Login Configs
-        $data['login_bottom_label'] = $loginConfigs['login_bottom_label'] ?? 'Login';
-        $data['username_placeholder'] = $loginConfigs['username_placeholder'] ?? 'Username';
-        $data['password_placeholder'] = $loginConfigs['password_placeholder'] ?? 'Password';
-        $data['lightbox_blurb'] = $loginConfigs['lightbox_blurb'] ?? 'Not yet a Dafabet member?';
-
         // post login specific data
-
         $isLogin = $this->playerSession->isLogin();
 
         $data['is_login'] = $isLogin;
