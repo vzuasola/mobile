@@ -157,8 +157,6 @@ export class PushNotification {
      * listen to "click" event on close modal
      */
     private listenModal() {
-        const closeModal = this.element.querySelector("#pushnx-close");
-
         ComponentManager.subscribe("click", (event) => {
             this.closeModal();
         });
