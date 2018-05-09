@@ -199,7 +199,13 @@ export class HeaderComponent implements ComponentInterface {
 
                 const form = utility.getTarget(event);
                 form.querySelector(".login-error").innerHTML = errors[0].message;
-
+                console.log(errors);
+                for (const key in errors) {
+                    if (errors.hasOwnProperty(key)) {
+                        const error = errors[key];
+                        console.log(error);
+                    }
+                }
             }
         });
 
