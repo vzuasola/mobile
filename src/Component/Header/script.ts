@@ -216,12 +216,11 @@ export class HeaderComponent implements ComponentInterface {
             return value.length <= param[0];
         });
         validator.registerCallback("check_mobile_format", (value) => {
-            const pattern =  /^(?!\s)[0-9\.\+\-\(\)]*$/;
-            return pattern.test(value);
+            return true;
         });
 
         validator.setMessage("min_length", "Min Lenght");
         validator.setMessage("max_length", "Max Lenght");
-        validator.setMessage("check_mobile_format", "Format Error");
+        validator.setMessage("check_format", "Format Error");
     }
 }
