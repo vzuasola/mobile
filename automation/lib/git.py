@@ -124,6 +124,8 @@ def get_sonar_sha():
 
     commit_sha = git_log(addtl_options)
     final_commit_sha = commit_sha.replace('\n', ',')
+    if final_commit_sha == '':
+        final_commit_sha = os.environ['CI_COMMIT_SHA']
     
     logger.debug('Commit SHA for SonarQube: {0}'.format(final_commit_sha))
     os.environ['SONAR_COMMIT_SHA'] = final_commit_sha

@@ -6,7 +6,7 @@
 
         {% if is_login %}
             <div class="account-balance">
-                <a href="#" target="_blank">
+                <a href="{{ url(cashier_link.uri) }}" target="{{ cashier_link.attributes.target }}">
                     {% include '@app/web/images/svg/amount-balance.svg' %}
                     <span class="account-balance-amount"></span>
                 </a>

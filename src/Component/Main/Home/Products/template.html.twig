@@ -2,7 +2,7 @@
 <ul class="icon-thumbnail clearfix">
     {% for product in product_tiles %}
         {% if product.field_product_lobby_enable[0].value %}
-            <li class="icon-thumbnail-item">
+            <li class="icon-thumbnail-item product-box">
             <a
             href="{{ (is_logged_in) ? url(product.field_product_lobby_url_post_log[0].uri) : url(product.field_product_lobby_url_pre_log[0].uri) }}"
             target="{{ product.field_product_lobby_target[0].value }}"

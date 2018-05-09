@@ -17,4 +17,6 @@ routes:
 
     /*.*:
         method: ANY
-        action: App\MobileEntry\Controller\NodeController:viewNodeByType
+        action: App\MobileEntry\Controller\NodeController:view
+        components:
+          main: node

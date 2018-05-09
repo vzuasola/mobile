@@ -10,10 +10,12 @@
                     {{ username }}
                 </p>
                 <p class="mobile-menu-header-amount">
-                    Total Balance: <span class="mobile-menu-amount"></span>
+                    {{ config_total_balance_text }} <span class="mobile-menu-amount"></span>
                 </p>
             </div>
+            <span class="menu-content-button close-svg">
                 {% include '@app/web/images/svg/menu/closed.svg' %}
+            </span>
         {% else %}
             <div class="mobile-menu-header">
                 {% block logoSection %}

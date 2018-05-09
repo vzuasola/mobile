@@ -16,12 +16,11 @@ export class Menu {
 
     private bindEvents(event: string) {
         utility.listen(document, event, (src, target) => {
-            const close = this.element.querySelector(".mobile-menu-close-button");
             const icon = this.element.querySelector(".mobile-menu-icon");
 
             if (target === icon || target.parentNode === icon) {
                 this.openMenu();
-            } else if (target === close || utility.hasClass(target, "close-svg")) {
+            } else if (utility.hasClass(target, "close-svg") || utility.hasClass(target, "mobile-menu-overlay")) {
                 this.closeMenu();
             }
         });
