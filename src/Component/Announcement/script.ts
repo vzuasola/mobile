@@ -1,8 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
+import Storage from "@core/assets/js/components/utils/storage";
 
 import {Modal} from "@app/assets/script/components/modal";
-
-import Storage from "@core/assets/js/components/utils/storage";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
@@ -79,8 +78,8 @@ export class AnnouncementComponent implements ComponentInterface {
     }
 
     private markAllRead(element) {
-        utility.listen(document, "modal.close", (event, src) => {
-            if (utility.hasClass(event.customData, "announcement")) {
+        ComponentManager.subscribe("modal.close", (event, src, data) => {
+            if (utility.hasClass(data, "announcement")) {
                 for (const item of element.querySelectorAll(".announcement-item")) {
                     const activeItem = item.getAttribute("data");
                     this.setReadItems(activeItem);
@@ -91,11 +90,8 @@ export class AnnouncementComponent implements ComponentInterface {
     }
 
     private bindAnnouncementLightbox() {
-        utility.listen(document, "click", (event, src) => {
-            if (!utility.hasClass(src, "announcement-trigger")) {
-                src = utility.findParent(src, ".announcement-trigger", 2);
-            }
-            if (utility.hasClass(src, "announcement-trigger")) {
+        ComponentManager.subscribe("click", (event, src) => {
+            if (utility.hasClass(src, "announcement-trigger", true)) {
                 event.preventDefault();
                 Modal.open("#announcement-lightbox");
             }
@@ -118,7 +114,8 @@ export class AnnouncementComponent implements ComponentInterface {
                 counter++;
             }
         }
-        utility.invoke(document, "announcement.update.count", {count: counter});
+
+        ComponentManager.broadcast("announcement.update.count", {count: counter});
     }
 
    /**

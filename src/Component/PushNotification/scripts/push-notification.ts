@@ -1,7 +1,10 @@
 import * as utility from "@core/assets/js/components/utility";
 
-import {Modal} from "@app/assets/script/components/modal";
+import {ComponentManager } from "@plugins/ComponentWidget/asset/component";
+
 import PushNX from "@core/assets/js/components/push-notification";
+
+import {Modal} from "@app/assets/script/components/modal";
 
 import * as actionTemplate from "./../handlebars/pushnx/action.handlebars";
 import * as bodyTemplate from "./../handlebars/pushnx/body.handlebars";
@@ -96,7 +99,8 @@ export class PushNotification {
     }
 
     /**
-     * attach message action
+     * Attach message action
+     *
      * @param {boolean} islogin
      */
     private attachAction(islogin: boolean) {
@@ -107,29 +111,29 @@ export class PushNotification {
     }
 
     /**
-     * listen to session logout
+     * Listen to session logout
      */
     private listenSessionLogout() {
-        utility.listen(document, "session.logout", (event) => {
+        ComponentManager.subscribe("session.logout", (event) => {
             this.pushnx.bindCloseService(); // close socket connection
         });
     }
 
     /**
-     * listen to session login
+     * Listen to session login
      */
     private listenSessionLogin(login: boolean) {
-        utility.listen(document, "session.login", (event) => {
+        ComponentManager.subscribe("session.login", (event) => {
             this.setCookie("pnxInitialLogin", true, 7);
             this.readyMessage(login);
         });
     }
 
     /**
-     * listen to message ready (rendered) status
+     * Listen to message ready (rendered) status
      */
     private readyMessage(login: boolean) {
-        utility.listen(document, "pushnx.message.ready", (event) => {
+        ComponentManager.subscribe("pushnx.message.ready", (event) => {
             if (event.customData.ready) {
                 this.initialProcess(event.customData.ready, login);
             }
@@ -137,7 +141,8 @@ export class PushNotification {
     }
 
     /**
-     * process pushnx on initial login
+     * Process pushnx on initial login
+     *
      * @param {boolean} status [messages is ready and rendered]
      */
     private initialProcess(status: boolean, login: boolean) {
@@ -154,38 +159,38 @@ export class PushNotification {
     private listenModal() {
         const closeModal = this.element.querySelector("#pushnx-close");
 
-        utility.listen(closeModal, "click", (event) => {
+        ComponentManager.subscribe("click", (event) => {
             this.closeModal();
         });
     }
 
     /**
-     * listen close modal
+     * Listen close modal
      */
     private listenCloseModal() {
-        utility.listen(document, "pushnx.close.modal", (e) => {
+        ComponentManager.subscribe("pushnx.close.modal", (e) => {
             this.closeModal();
         });
     }
 
     /**
-     * close modal
+     * Close modal
      */
     private closeModal() {
         Modal.close("#pushnxLightbox");
     }
 
     /**
-     * listen open modal
+     * Listen open modal
      */
     private listenOpenModal(login: boolean) {
-        utility.listen(document, "pushnx.open.modal", (e) => {
+        ComponentManager.subscribe("pushnx.open.modal", (e) => {
             this.openModal(login);
         });
     }
 
     /**
-     * open modal
+     * Open modal
      */
     private openModal(login: boolean) {
         if (this.isconnected) {
@@ -195,10 +200,10 @@ export class PushNotification {
     }
 
     /**
-     * listen to socket connection
+     * Listen to socket connection
      */
     private socketConnected() {
-        utility.listen(document, "pushnx.connected", (e) => {
+        ComponentManager.subscribe("pushnx.connected", (e) => {
             if (e.customData.status) {
                 this.isconnected = e.customData.status;
             }
@@ -206,7 +211,7 @@ export class PushNotification {
     }
 
     /**
-     * create cookie
+     * Create cookie
      */
     private setCookie(cname: string, cvalue: boolean, days: number) {
         const d = new Date();
