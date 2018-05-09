@@ -40,13 +40,13 @@ class MenuComponentController
                 $productMenus = $this->viewFetcher->getViewById('mobile_product_menu');
 
                 foreach ($productMenus as $productMenu) {
-                    if (isset($productMenu['field_product_menu_id'][0]['value']) && $productMenu['field_product_menu_id'][0]['value'] == $body['product']) {
+                    if (isset($productMenu['field_product_menu_id'][0]['value']) 
+                        && $productMenu['field_product_menu_id'][0]['value'] == $body['product']) {
                         $data['lobby_url'] = $productMenu['field_product_menu_url_post_log'][0]['uri'];
                         break;
                     }
                 }
             }
-            
         } catch (\Exception $e) {
             $data['lobby_url'] = '';
         }

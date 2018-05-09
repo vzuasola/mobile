@@ -48,7 +48,6 @@ class ProductsComponentController
                     }
                 }
             }
-            
         } catch (\Exception $e) {
             $data['lobby_url'] = '';
         }
