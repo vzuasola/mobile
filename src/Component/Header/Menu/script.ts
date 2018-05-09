@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
-import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {Menu} from "./scripts/menu";
@@ -12,20 +12,23 @@ import {PushNotification} from "./scripts/push-notification";
  */
 export class MenuComponent implements ComponentInterface {
     private pushNotification: PushNotification;
+    private element: HTMLElement;
 
     constructor() {
         this.pushNotification = new PushNotification();
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
+        this.element = element;
         this.activateMenu(element);
         this.pushNotification.handleOnLoad(element, attachments);
 
-        this.listenAnnouncementCount(element);
+        this.listenAnnouncementCount();
         this.getBalance(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+        this.element = element;
         this.activateMenu(element);
         this.pushNotification.handleOnReload(element, attachments);
 
@@ -43,26 +46,27 @@ export class MenuComponent implements ComponentInterface {
     /**
      * Listen to announcement pushes
      */
-    private listenAnnouncementCount(element) {
-        utility.listen(document, "announcement.update.count", (event, target, data) => {
-            const countElement = element.querySelector("#announcement-count");
+    private listenAnnouncementCount() {
+        ComponentManager.subscribe("announcement.update.count", (event, target, data) => {
+            const countElement = this.element.querySelector("#announcement-count");
 
             if (countElement) {
                 countElement.innerHTML = data.count;
 
-                if (data.count > 0) {
+                if (parseInt(data.count, 10) > 0) {
                     utility.removeClass(countElement, "hidden");
-                    utility.removeClass(element.querySelector(".mobile-menu-indicator"), "hidden");
+                    utility.removeClass(this.element.querySelector(".mobile-menu-indicator"), "hidden");
                 } else {
-                    const notifCountElement = element.querySelector("#notification-count");
+                    const notifCountElement = this.element.querySelector("#notification-count");
+
                     if (notifCountElement) {
                         const notifCount = notifCountElement.innerHTML;
 
-                        if (notifCount <= 0) {
-                            utility.addClass(element.querySelector(".mobile-menu-indicator"), "hidden");
+                        if (parseInt(notifCount, 10) <= 0) {
+                            utility.addClass(this.element.querySelector(".mobile-menu-indicator"), "hidden");
                         }
                     } else {
-                        utility.addClass(element.querySelector(".mobile-menu-indicator"), "hidden");
+                        utility.addClass(this.element.querySelector(".mobile-menu-indicator"), "hidden");
                     }
                     utility.addClass(countElement, "hidden");
                 }

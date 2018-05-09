@@ -84,7 +84,7 @@ export class HeaderComponent implements ComponentInterface {
                 Modal.close("#login-lightbox");
                 this.loader.show();
 
-                utility.invoke(document, "session.login");
+                ComponentManager.broadcast("session.login");
 
                 ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
                 () => {
@@ -100,7 +100,7 @@ export class HeaderComponent implements ComponentInterface {
     private bindLogout(attachments: {authenticated: boolean}) {
         if (attachments.authenticated) {
             utility.delegate(document, ".btn-logout", "click", (event, src) => {
-                utility.invoke(document, "session.logout");
+                ComponentManager.broadcast("session.logout");
             }, true);
         }
     }
@@ -121,19 +121,15 @@ export class HeaderComponent implements ComponentInterface {
      */
 
     private listenLogin() {
-        utility.listen(document, "header.login", (event, src) => {
+        ComponentManager.subscribe("header.login", (event, src) => {
             Modal.open("#login-lightbox");
         });
 
-        utility.listen(document, "click", (event, src) => {
+        ComponentManager.subscribe("click", (event, src) => {
             const selector = "login-trigger";
 
-            if (!utility.hasClass(src, selector)) {
-                src = utility.findParent(src, `.${selector}`, 2);
-            }
-
-            if (utility.hasClass(src, selector)) {
-                utility.invoke(document, "header.login");
+            if (utility.hasClass(src, selector, true)) {
+                ComponentManager.broadcast("header.login");
                 event.preventDefault();
             }
         });
@@ -143,7 +139,7 @@ export class HeaderComponent implements ComponentInterface {
      * Listen for logout events
      */
     private listenLogout(attachments) {
-        utility.listen(document, "session.logout", (event) => {
+        ComponentManager.subscribe("session.logout", (event) => {
             this.loader.show();
 
             xhr({

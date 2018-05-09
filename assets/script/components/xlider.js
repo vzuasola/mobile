@@ -1,4 +1,5 @@
 import * as utility from '@core/assets/js/components/utility';
+import Swipe from '@app/assets/script/components/custom-touch/swipe';
 
 /**
  * Slider
@@ -72,6 +73,13 @@ export default function Slider(options) {
 
         // Resize event
         utility.addEventListener(window, "resize", adjustSliderWidth);
+
+        // Initialize swipe for slider element
+        new Swipe($selector);
+
+        // Add swipe listener to slider element
+        $selector.addEventListener('swipeleft', nextSlide);
+        $selector.addEventListener('swiperight', previousSlide);
     }
 
     /**
@@ -257,7 +265,7 @@ export default function Slider(options) {
                 sliderWidth = $selector.clientWidth,
                 totalWidth = getTotalWidth($selector.querySelectorAll(".banner-slides-item"));
 
-            if (prev) {
+            if (prev || e.type === "swiperight") {
                 if (index === -1) {
                     index = $slides.length - 1;
                     $slideAmount = -Math.abs(totalWidth - sliderWidth);
@@ -266,7 +274,7 @@ export default function Slider(options) {
                 }
             }
 
-            if (next) {
+            if (next || e.type === "swipeleft") {
                 if (index === $slides.length) {
                     index = 0;
                     $slideAmount = 0;

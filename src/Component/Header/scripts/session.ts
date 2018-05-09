@@ -1,6 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 
 import Counter from "@core/assets/js/components/utils/counter";
+import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 export class Session {
     private timeout: number;
@@ -39,7 +40,7 @@ export class Session {
     }
 
     private onCounterStop() {
-        utility.invoke(document, "session.logout");
+        ComponentManager.broadcast("session.logout");
     }
 
     private onCounterCount(counter: Counter, time: number) {
@@ -56,27 +57,27 @@ export class Session {
             this.counter.restart();
         });
 
-        utility.listen(document, "session.login", (event) => {
+        ComponentManager.subscribe("session.login", (event) => {
             this.counter.restart();
         });
 
-        utility.listen(document, "session.logout", (event) => {
+        ComponentManager.subscribe("session.logout", (event) => {
             this.counter.kill();
         });
 
-        utility.listen(document, "click", (event) => {
+        ComponentManager.subscribe("click", (event) => {
             this.counter.reset();
         });
 
-        utility.listen(document, "scroll", (event) => {
+        ComponentManager.subscribe("scroll", (event) => {
             this.counter.reset();
         });
 
-        utility.listen(document, "keypress", (event) => {
+        ComponentManager.subscribe("keypress", (event) => {
             this.counter.reset();
         });
 
-        utility.listen(document, "touchstart", (event) => {
+        ComponentManager.subscribe("touchstart", (event) => {
             this.counter.reset();
         });
     }
