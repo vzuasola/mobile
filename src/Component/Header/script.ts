@@ -19,12 +19,35 @@ import {passwordMask} from "@app/assets/script/components/password-mask";
 export class HeaderComponent implements ComponentInterface {
     private loader: Loader;
     private session: Session;
+    private errorMessageBlankUsername: string;
+    private errorMessageBlankPassword: string;
+    private errorMessageBlankPassname: string;
+    private errorMessageInvalidPassname: string;
+    private errorMessageServiceNotAvailable: string;
+    private errorMessageAccountSuspended: string;
+    private errorMessageAccountLocked: string;
 
     constructor() {
         this.loader = new Loader(document.body, true);
     }
 
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onLoad(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        error_message_blank_username: string,
+        error_message_blank_password: string,
+        error_message_blank_passname: string,
+        error_message_invalid_passname: string,
+        error_message_service_not_available: string,
+        error_message_account_suspended: string,
+        error_message_account_locked: string,
+    }) {
+        this.errorMessageBlankUsername = attachments.error_message_blank_username;
+        this.errorMessageBlankPassword = attachments.error_message_blank_password;
+        this.errorMessageBlankPassname = attachments.error_message_blank_passname;
+        this.errorMessageInvalidPassname = attachments.error_message_invalid_passname;
+        this.errorMessageServiceNotAvailable = attachments.error_message_service_not_available;
+        this.errorMessageAccountSuspended = attachments.error_message_account_suspended;
+        this.errorMessageAccountLocked = attachments.error_message_account_locked;
         this.bindLoginValidation();
         this.activateLogin(element);
         this.bindLoginForm(element);
@@ -37,7 +60,23 @@ export class HeaderComponent implements ComponentInterface {
         this.getBalance(element, attachments);
     }
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onReload(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        error_message_blank_username: string,
+        error_message_blank_password: string,
+        error_message_blank_passname: string,
+        error_message_invalid_passname: string,
+        error_message_service_not_available: string,
+        error_message_account_suspended: string,
+        error_message_account_locked: string,
+    }) {
+        this.errorMessageBlankUsername = attachments.error_message_blank_username;
+        this.errorMessageBlankPassword = attachments.error_message_blank_password;
+        this.errorMessageBlankPassname = attachments.error_message_blank_passname;
+        this.errorMessageInvalidPassname = attachments.error_message_invalid_passname;
+        this.errorMessageServiceNotAvailable = attachments.error_message_service_not_available;
+        this.errorMessageAccountSuspended = attachments.error_message_account_suspended;
+        this.errorMessageAccountLocked = attachments.error_message_account_locked;
         this.bindLoginValidation();
         this.activateLogin(element);
         this.bindLoginForm(element);
@@ -198,11 +237,12 @@ export class HeaderComponent implements ComponentInterface {
                 event.stopPropagation();
 
                 const form = utility.getTarget(event);
+                let errorMessage: string;
                 form.querySelector(".login-error").innerHTML = errors[0].message;
-                console.log(errors);
                 for (const key in errors) {
                     if (errors.hasOwnProperty(key)) {
                         const error = errors[key];
+                        errorMessage = error.message;
                         console.log(error);
                     }
                 }
@@ -219,6 +259,7 @@ export class HeaderComponent implements ComponentInterface {
             return true;
         });
 
+        validator.setMessage("required", this.errorMessageBlankUsername);
         validator.setMessage("min_length", "Min Lenght");
         validator.setMessage("max_length", "Max Lenght");
         validator.setMessage("check_format", "Format Error");
