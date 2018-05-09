@@ -18,7 +18,7 @@ import {passwordMask} from "@app/assets/script/components/password-mask";
 export class HeaderComponent implements ComponentInterface {
     private loader: Loader;
     private session: Session;
-    private lastClickedEl: HTMLElement;
+    private loginOrigin: HTMLElement;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -31,7 +31,7 @@ export class HeaderComponent implements ComponentInterface {
         this.bindSession(attachments);
         this.activatePasswordMask(element);
 
-        this.listenLogin();
+        this.listenLogin(attachments);
         this.listenLogout(attachments);
         this.getBalance(element, attachments);
     }
@@ -84,8 +84,8 @@ export class HeaderComponent implements ComponentInterface {
             }).then((response) => {
                 Modal.close("#login-lightbox");
                 this.loader.show();
-                this.lastClickedEl = src;
-                utility.invoke(document, "session.login", this.lastClickedEl);
+
+                utility.invoke(document, "session.login", this.loginOrigin);
 
                 ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
                 () => {
@@ -121,23 +121,26 @@ export class HeaderComponent implements ComponentInterface {
      *
      */
 
-    private listenLogin() {
+    private listenLogin(attachments: {authenticated: boolean}) {
         utility.listen(document, "header.login", (event, src) => {
             Modal.open("#login-lightbox");
         });
 
-        utility.listen(document, "click", (event, src) => {
-            const selector = "login-trigger";
+        if (!attachments.authenticated) {
+            utility.listen(document, "click", (event, src) => {
+                const selector = "login-trigger";
+                console.log("triggered");
+                if (!utility.hasClass(src, selector)) {
+                    src = utility.findParent(src, `.${selector}`, 2);
+                }
 
-            if (!utility.hasClass(src, selector)) {
-                src = utility.findParent(src, `.${selector}`, 2);
-            }
-
-            if (utility.hasClass(src, selector)) {
-                utility.invoke(document, "header.login");
-                event.preventDefault();
-            }
-        });
+                if (utility.hasClass(src, selector)) {
+                    this.loginOrigin = src;
+                    utility.invoke(document, "header.login");
+                    event.preventDefault();
+                }
+            });
+        }
     }
 
     /**
