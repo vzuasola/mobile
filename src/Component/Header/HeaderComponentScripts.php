@@ -40,7 +40,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
     {
         try {
             $config = $this->loginCOnfig->getConfig('webcomposer_config.login_configuration');
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $config = [];
         }
 
