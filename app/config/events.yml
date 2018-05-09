@@ -1,0 +1,10 @@
+# Subscribers
+# 
+# Under each event, you can have the following
+# - arguments The array of argument to accept
+# - hooks These are the classes that will subscribe to this event
+subscribers:
+  login_success:
+    arguments: [username, password]
+    hooks:
+      - App\Handlers\Login\LegacyAuthentication
