@@ -62,7 +62,7 @@ export class MenuComponent implements ComponentInterface {
                     if (notifCountElement) {
                         const notifCount = notifCountElement.innerHTML;
 
-                        if (parseInt(data.count, 10) <= 0) {
+                        if (parseInt(notifCount, 10) <= 0) {
                             utility.addClass(this.element.querySelector(".mobile-menu-indicator"), "hidden");
                         }
                     } else {
