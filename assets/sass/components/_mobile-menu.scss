@@ -9,17 +9,22 @@
     outline: none;
     border: 0;
     cursor: pointer;
+    z-index: 1;
+}
 
-    svg {
-        width: 2.5rem;
-        margin-left: 1.5rem;
-        outline: none;
-        border: 0;
-        cursor: pointer;
+.mobile-menu-burger-icon {
+    position: absolute;
+    top: 2.1rem;
+    left: 0;
+    width: 2.5rem;
+    margin-left: 1.5rem;
+    outline: none;
+    border: 0;
+    cursor: pointer;
+    z-index: 0;
 
-        path {
-            fill: $white;
-        }
+    path {
+        fill: $white;
     }
 }
 
