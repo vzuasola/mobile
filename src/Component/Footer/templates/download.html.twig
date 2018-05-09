@@ -5,14 +5,14 @@
             <div class="{{ menuLength }}">
                 <a
                     href="{{ url(menu.uri) }}"
-                    class="{{ menu.attributes.class }}"
+                    class="{{ menu.attributes.class }} download-box"
                     target="{{ menu.attributes.target }}"
                     data-router="true"
                     data-router-refresh="main"
                     >
                     {% include '@app/web/images/svg/products/'~menu.attributes.svg~'.svg' ignore missing %}
                     <span class="app-download-text">
-                        <strong>{{ menu.title }}</strong>
+                        {{ menu.title }}
                     </span>
                 </a>
             </div>
