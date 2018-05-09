@@ -1,5 +1,6 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
+import * as FormValidator from "@core/assets/js/vendor/validate";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
@@ -24,6 +25,7 @@ export class HeaderComponent implements ComponentInterface {
     }
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.bindLoginValidation();
         this.activateLogin(element);
         this.bindLoginForm(element);
         this.bindLogout(attachments);
@@ -36,6 +38,7 @@ export class HeaderComponent implements ComponentInterface {
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.bindLoginValidation();
         this.activateLogin(element);
         this.bindLoginForm(element);
         this.bindLogout(attachments);
@@ -68,29 +71,30 @@ export class HeaderComponent implements ComponentInterface {
 
         utility.listen(form, "submit", (event, src) => {
             event.preventDefault();
+            if (src.isValid) {
+                const username: string = src.querySelector('[name="username"]').value;
+                const password: string = src.querySelector('[name="password"]').value;
 
-            const username: string = src.querySelector('[name="username"]').value;
-            const password: string = src.querySelector('[name="password"]').value;
+                xhr({
+                      url: Router.generateRoute("header", "authenticate"),
+                      type: "json",
+                      method: "post",
+                      data: {
+                          username,
+                          password,
+                      },
+                }).then((response) => {
+                    Modal.close("#login-lightbox");
+                    this.loader.show();
 
-            xhr({
-                  url: Router.generateRoute("header", "authenticate"),
-                  type: "json",
-                  method: "post",
-                  data: {
-                      username,
-                      password,
-                  },
-            }).then((response) => {
-                Modal.close("#login-lightbox");
-                this.loader.show();
+                    ComponentManager.broadcast("session.login");
 
-                ComponentManager.broadcast("session.login");
-
-                ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
-                () => {
-                    this.loader.hide();
+                    ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
+                    () => {
+                        this.loader.hide();
+                    });
                 });
-            });
+            }
         });
     }
 
@@ -169,5 +173,55 @@ export class HeaderComponent implements ComponentInterface {
             });
 
         }
+    }
+
+    private bindLoginValidation() {
+        const mobileRules = "required|callback_check_mobile_format|callback_min_length|callback_max_length";
+
+        const validator = new FormValidator("login-form", [{
+            name: "username",
+            rules: mobileRules,
+            args: {
+                callback_max_length: ["50"],
+                callback_min_length: ["2"],
+            },
+        }, {
+            name: "password",
+            rules: mobileRules,
+            args: {
+                callback_max_length: ["50"],
+                callback_min_length: ["2"],
+            },
+        }], (errors, event) => {
+            if (errors.length > 0) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const form = utility.getTarget(event);
+                form.querySelector(".login-error").innerHTML = errors[0].message;
+                console.log(errors);
+                for (const key in errors) {
+                    if (errors.hasOwnProperty(key)) {
+                        const error = errors[key];
+                        console.log(error);
+                    }
+                }
+            }
+        });
+
+        validator.registerCallback("min_length", (value, param, field) => {
+            return value.length >= param[0];
+        });
+        validator.registerCallback("max_length", (value, param, field) => {
+            return value.length <= param[0];
+        });
+        validator.registerCallback("check_mobile_format", (value) => {
+            const pattern =  /^(?!\s)[0-9\.\+\-\(\)]*$/;
+            return pattern.test(value);
+        });
+
+        validator.setMessage("min_length", "Min Lenght");
+        validator.setMessage("max_length", "Max Lenght");
+        validator.setMessage("check_mobile_format", "Format Error");
     }
 }
