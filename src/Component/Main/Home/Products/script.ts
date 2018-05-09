@@ -6,13 +6,11 @@ import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
  */
 export class ProductsComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
-        // placeholder for on load event
         this.equalizeProductHeight();
         this.equalizeDownloadHeight();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        // placeholder for on reload event
         this.equalizeProductHeight();
         this.equalizeDownloadHeight();
     }

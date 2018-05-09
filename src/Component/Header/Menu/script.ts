@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
-import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {Menu} from "./scripts/menu";
@@ -44,7 +44,7 @@ export class MenuComponent implements ComponentInterface {
      * Listen to announcement pushes
      */
     private listenAnnouncementCount(element) {
-        utility.listen(document, "announcement.update.count", (event, target, data) => {
+        ComponentManager.subscribe("announcement.update.count", (event, target, data) => {
             const countElement = element.querySelector("#announcement-count");
 
             if (countElement) {
@@ -55,6 +55,7 @@ export class MenuComponent implements ComponentInterface {
                     utility.removeClass(element.querySelector(".mobile-menu-indicator"), "hidden");
                 } else {
                     const notifCountElement = element.querySelector("#notification-count");
+
                     if (notifCountElement) {
                         const notifCount = notifCountElement.innerHTML;
 
