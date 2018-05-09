@@ -72,12 +72,12 @@ class HeaderComponent implements ComponentWidgetInterface
             $data['mobile_login_reg'] = $headerConfigs['mobile_login_reg'];
 
         } catch (\Exception $e) {
-            $data['logo_title'] = 'Dafabet';
-            $data['join_now_text'] = 'Join Now';
-            $data['login_issue_text'] = 'Cant login?';
+            $data['logo_title'] = [];
+            $data['join_now_text'] = [];
+            $data['login_issue_text'] = [];
             $data['login_issue_link'] = [];
-            $data['mobile_remember'] = 'Remember Username';
-            $data['mobile_login_reg'] = 'login/join';
+            $data['mobile_remember'] = [];
+            $data['mobile_login_reg'] = [];
 
         }
 
@@ -91,10 +91,10 @@ class HeaderComponent implements ComponentWidgetInterface
             $data['lightbox_blurb'] = $loginConfigs['lightbox_blurb'];
 
         } catch (\Exception $e) {
-            $data['login_bottom_label'] = 'Login';
-            $data['username_placeholder'] = 'Username';
-            $data['password_placeholder'] = 'Password';
-            $data['lightbox_blurb'] = 'Not yet a Dafabet member?';
+            $data['login_bottom_label'] = [];
+            $data['username_placeholder'] = [];
+            $data['password_placeholder'] = [];
+            $data['lightbox_blurb'] = [];
 
         }
 
