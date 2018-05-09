@@ -77,7 +77,6 @@ class HeaderComponent implements ComponentWidgetInterface
             $data['login_issue_link'] = [];
             $data['mobile_remember'] = 'Remember Username';
             $data['mobile_login_reg'] = 'login/join';
-
         }
 
         try {
@@ -93,7 +92,6 @@ class HeaderComponent implements ComponentWidgetInterface
             $data['username_placeholder'] = 'Username';
             $data['password_placeholder'] = 'Password';
             $data['lightbox_blurb'] = 'Not yet a Dafabet member?';
-
         }
 
         $data['is_front'] = true;
