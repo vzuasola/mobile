@@ -8,23 +8,29 @@ import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/ass
 export class AnnouncementComponent implements ComponentInterface {
     private storage: Storage;
     private refreshInterval: number = 300000;
+    private element: HTMLElement;
 
     constructor() {
         this.storage = new Storage();
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
+        this.element = element;
+
         this.activateAnnouncementBar(element);
         this.bindDismissButton(element);
 
         // lightbox
-        this.bindAnnouncementLightbox();
+        this.listenAnnouncementLightbox();
+        this.listenModalClose();
+        this.listenAutoRefresh(element);
+
         this.getUnread(element);
-        this.markAllRead(element);
-        this.autoRefreshCounter(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+        this.element = element;
+
         this.activateAnnouncementBar(element);
         this.bindDismissButton(element);
 
@@ -69,7 +75,7 @@ export class AnnouncementComponent implements ComponentInterface {
     /**
      * Refresh announcements on background
      */
-    private autoRefreshCounter(element) {
+    private listenAutoRefresh(element) {
         setInterval(() => {
             if (!utility.hasClass(element.querySelector("#announcement-lightbox"), "modal-active")) {
                 ComponentManager.refreshComponent("announcement");
@@ -77,19 +83,28 @@ export class AnnouncementComponent implements ComponentInterface {
         }, this.refreshInterval);
     }
 
-    private markAllRead(element) {
+    private listenModalClose() {
         ComponentManager.subscribe("modal.close", (event, src, data) => {
             if (utility.hasClass(data, "announcement")) {
-                for (const item of element.querySelectorAll(".announcement-item")) {
-                    const activeItem = item.getAttribute("data");
-                    this.setReadItems(activeItem);
+                const items = this.element.querySelectorAll(".announcement-item");
+
+                if (items) {
+                    for (const key in items) {
+                        if (items.hasOwnProperty(key)) {
+                            const item = items[key];
+                            const activeItem = item.getAttribute("data");
+
+                            this.setReadItems(activeItem);
+                        }
+                    }
+
+                    ComponentManager.refreshComponent("announcement");
                 }
-                ComponentManager.refreshComponent("announcement");
             }
         });
     }
 
-    private bindAnnouncementLightbox() {
+    private listenAnnouncementLightbox() {
         ComponentManager.subscribe("click", (event, src) => {
             if (utility.hasClass(src, "announcement-trigger", true)) {
                 event.preventDefault();
@@ -110,7 +125,7 @@ export class AnnouncementComponent implements ComponentInterface {
 
             readItems = this.getReadItems();
 
-            if (readItems.indexOf(activeItem)  < 0) {
+            if (readItems.indexOf(activeItem) < 0) {
                 counter++;
             }
         }
