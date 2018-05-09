@@ -8,6 +8,13 @@ export default class Swipe {
     private swipeRightEvent;
 
     constructor(private element) {
+        this.bindEvent();
+
+        this.swipeLeftEvent = new CustomEvent("swipeleft");
+        this.swipeRightEvent = new CustomEvent("swiperight");
+    }
+
+    private bindEvent() {
         // firefox and webkit-based browsers
         utility.addEventListener(this.element, "touchstart", (e) => {
             this.start(e);
@@ -48,9 +55,6 @@ export default class Swipe {
                 this.end(e);
             });
         }
-
-        this.swipeLeftEvent = new CustomEvent("swipeleft");
-        this.swipeRightEvent = new CustomEvent("swiperight");
     }
 
     private start(e) {
