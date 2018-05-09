@@ -85,7 +85,7 @@ export class HeaderComponent implements ComponentInterface {
                 Modal.close("#login-lightbox");
                 this.loader.show();
 
-                utility.invoke(document, "session.login", this.loginOrigin);
+                ComponentManager.broadcast("session.login", this.loginOrigin);
 
                 ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
                 () => {
@@ -101,7 +101,7 @@ export class HeaderComponent implements ComponentInterface {
     private bindLogout(attachments: {authenticated: boolean}) {
         if (attachments.authenticated) {
             utility.delegate(document, ".btn-logout", "click", (event, src) => {
-                utility.invoke(document, "session.logout");
+                ComponentManager.broadcast("session.logout");
             }, true);
         }
     }
@@ -122,21 +122,21 @@ export class HeaderComponent implements ComponentInterface {
      */
 
     private listenLogin(attachments: {authenticated: boolean}) {
-        utility.listen(document, "header.login", (event, src) => {
+        ComponentManager.subscribe("header.login", (event, src) => {
             Modal.open("#login-lightbox");
         });
 
         if (!attachments.authenticated) {
-            utility.listen(document, "click", (event, src) => {
+            ComponentManager.subscribe("click", (event, src) => {
                 const selector = "login-trigger";
-                console.log("triggered");
+
                 if (!utility.hasClass(src, selector)) {
-                    src = utility.findParent(src, `.${selector}`, 2);
+                    src = utility.findParent(src, selector, 0);
                 }
 
-                if (utility.hasClass(src, selector)) {
+                if (utility.hasClass(src, selector, true)) {
                     this.loginOrigin = src;
-                    utility.invoke(document, "header.login");
+                    ComponentManager.broadcast("header.login");
                     event.preventDefault();
                 }
             });
@@ -147,7 +147,7 @@ export class HeaderComponent implements ComponentInterface {
      * Listen for logout events
      */
     private listenLogout(attachments) {
-        utility.listen(document, "session.logout", (event) => {
+        ComponentManager.subscribe("session.logout", (event) => {
             this.loader.show();
 
             xhr({

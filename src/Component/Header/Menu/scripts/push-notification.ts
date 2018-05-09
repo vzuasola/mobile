@@ -1,5 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 
+import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
+
 export class PushNotification {
     handleOnLoad(element: HTMLElement, attachments: {}) {
         this.listenPushnxCount(element);
@@ -20,7 +22,7 @@ export class PushNotification {
 
         utility.listen(src, "click", (e) => {
             e.preventDefault();
-            utility.invoke(document, "pushnx.open.modal");
+            ComponentManager.broadcast("pushnx.open.modal");
             this.hideIndicator(element);
         });
     }
@@ -29,9 +31,9 @@ export class PushNotification {
      * Listen to message counter
      */
     private listenPushnxCount(element) {
-        utility.listen(document, "pushnx.count.message", (event) => {
+        ComponentManager.subscribe("pushnx.count.message", (event) => {
             if (!event.customData.count) {
-                utility.invoke(document, "pushnx.close.modal");
+                ComponentManager.broadcast("pushnx.close.modal");
             }
 
             this.renderMessageCounter(element, event.customData.count);
@@ -55,7 +57,7 @@ export class PushNotification {
      * Listen to new pushnx message
      */
     private listenNewMessage(element) {
-        utility.listen(document, "pushnx.new.message", (event) => {
+        ComponentManager.subscribe("pushnx.new.message", (event) => {
             if (event.customData.count) {
                 this.showIndicator(element);
             }

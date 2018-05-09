@@ -110,9 +110,12 @@ class MenuComponent implements ComponentWidgetInterface
         if ($isLogin) {
             $data['username'] = $this->playerSession->getUsername();
             try {
+                $data['total_balance_label'] = $this->config
+                    ->getConfig('webcomposer_config.header_configuration')['mobile_total_balance'];
                 $data['top_menu'] = $this->menus->getMultilingualMenu('mobile-post-login');
             } catch (\Exception $e) {
                 $data['top_menu'] = [];
+                $data['total_balance_label'] = [];
             }
         }
 

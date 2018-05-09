@@ -1,5 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 
+import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
+
 export class Menu {
     constructor(private element: HTMLElement) {
     }
@@ -15,7 +17,7 @@ export class Menu {
     }
 
     private bindEvents(event: string) {
-        utility.listen(document, event, (src, target) => {
+        ComponentManager.subscribe(event, (src, target) => {
             const icon = this.element.querySelector(".mobile-menu-icon");
 
             if (target === icon || target.parentNode === icon) {

@@ -23,10 +23,10 @@
                 <label class="login-remember-username block mt-10 mb-15 text-left">
                     <input type="checkbox"> {{ mobile_remember }}
                 </label>
-                <input type="submit" value="Login" class="btn btn-gray login-submit input-block-level mb-10">
-                <p class="mb-30"><a href="{{ login_issue_link }}" class="login-help-link">{{ join_now_text }}</a></p>
+                <input type="submit" value="{{ login_bottom_label }}" class="btn btn-gray login-submit input-block-level mb-10">
+                <p class="mb-30"><a href="{{ url(login_issue_link) }}" class="login-help-link">{{ login_issue_text }}</a></p>
                 <p class="mb-10">{{ lightbox_blurb }}</p>
-                <a href="#" class="btn btn-yellow input-block-level">{{ join_now_text }}</a>
+                <a href="{{ url(join_now_link) }}" class="btn btn-yellow input-block-level">{{ join_now_text }}</a>
             </form>
         </div>
         {% include '@app/web/images/svg/closed.svg' %}

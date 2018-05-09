@@ -1,6 +1,6 @@
 import * as utility from "@core/assets/js/components/utility";
 
-import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {Modal} from "@app/assets/script/components/modal";
@@ -41,11 +41,8 @@ export class LanguageComponent implements ComponentInterface {
     }
 
     private bindLanguageLightbox() {
-        utility.listen(document, "click", (event, src) => {
-            if (src && !utility.hasClass(src, "language-trigger")) {
-                src = utility.findParent(src, ".language-trigger", 2);
-            }
-            if (src && utility.hasClass(src, "language-trigger")) {
+        ComponentManager.subscribe("click", (event, src) => {
+            if (src && utility.hasClass(src, "language-trigger", true)) {
                 event.preventDefault();
                 Modal.open("#language-lightbox");
             }

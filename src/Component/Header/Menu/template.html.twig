@@ -1,5 +1,5 @@
 <section>
-    <span class="mobile-menu-icon">{% include '@app/web/images/svg/burger-menu.svg' %}</span>
+    <span class="mobile-menu-icon"></span>{% include '@app/web/images/svg/burger-menu.svg' %}
     <span class="mobile-menu-indicator hidden"></span>
 
     <nav class="mobile-menu">
@@ -10,7 +10,7 @@
                     {{ username }}
                 </p>
                 <p class="mobile-menu-header-amount">
-                    Total Balance: <span class="mobile-menu-amount"></span>
+                    {{ total_balance_label }} <span class="mobile-menu-amount"></span>
                 </p>
             </div>
             <span class="menu-content-button close-svg">

@@ -14,15 +14,19 @@ utility.listen(document, "session.login", (event, target, data) => {
             url: Router.generateRoute(component, "lobby"),
             type: "json",
             method: "post",
-              data: {
-                  product,
-              },
+            data: {
+                product,
+            },
         }).then((response) => {
-           if (response.lobby_url) {
-               window.location.href = response.lobby_url;
-           }
+            if (response.lobby_url) {
+                if (utility.isExternal(response.lobby_url)) {
+                    window.location.href = response.lobby_url;
+                } else {
+                    Router.navigate(response.lobby_url, ["header", "main"]);
+                }
+            }
         }).fail((error, message) => {
-          // do something
+            // do something
         });
     }
 });

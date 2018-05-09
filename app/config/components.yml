@@ -3,12 +3,25 @@
 components:
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
+  
+  header_menu:
+    class: App\MobileEntry\Component\Header\Menu\MenuComponent
+    parent: header
 
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
 
   profiler:
     class: App\MobileEntry\Component\Profiler\ProfilerComponent
+
+  basic:
+    class: App\MobileEntry\Component\Main\Basic\BasicComponent
+
+  node:
+    class: App\MobileEntry\Component\Node\NodeComponent
+
+  node_blog:
+    class: App\MobileEntry\Component\Node\Blog\BlogComponent
 
   home:
     class: App\MobileEntry\Component\Main\Home\HomeComponent
@@ -20,13 +33,6 @@ components:
   home_products:
     class: App\MobileEntry\Component\Main\Home\Products\ProductsComponent
     parent: home
-
-  basic:
-    class: App\MobileEntry\Component\Main\Basic\BasicComponent
-
-  header_menu:
-    class: App\MobileEntry\Component\Header\Menu\MenuComponent
-    parent: header
 
   balance:
     class: App\MobileEntry\Component\Header\Balance\BalanceComponent

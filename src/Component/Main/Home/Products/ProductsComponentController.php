@@ -41,7 +41,8 @@ class ProductsComponentController
                 $productTiles = $this->viewFetcher->getViewById('product_lobby_tiles_entity');
 
                 foreach ($productTiles as $productTile) {
-                    if ($productTile['field_product_lobby_id'][0]['value'] == $body['product']) {
+                    if (isset($productTile['field_product_lobby_id'][0]['value']) &&
+                        $productTile['field_product_lobby_id'][0]['value'] == $body['product']) {
                         $data['lobby_url'] = $productTile['field_product_lobby_url_post_log'][0]['uri'];
                         break;
                     }

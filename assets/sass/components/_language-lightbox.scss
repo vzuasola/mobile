@@ -19,7 +19,7 @@
                 width: 2.5rem;
                 height: 2.5rem;
                 position: absolute;
-                top: 0.6rem;
+                top: 1rem;
                 right: 1.2rem;
                 outline: none;
                 border: 0.1rem solid #8c8c8c;
@@ -58,7 +58,7 @@
 
     // Heading text
     h3 {
-        margin: -0.7rem 1rem 1rem;
+        margin: 0rem 1rem 1rem;
         padding-bottom: 1.3rem;
         border-bottom: 0.1rem solid $gray;
         color: $white;
@@ -161,21 +161,21 @@
 
     .ko a:before,
     a.ko:before {
-        background-position: 0 -34.4rem;
+        background-position: 0 -34.6rem;
     }
 
     .hi a:before,
     a.hi:before {
-        background-position: 0 -38.8rem;
+        background-position: 0 -39.1rem;
     }
 
     .el a:before,
     a.el:before {
-        background-position: 0 -33.2rem;
+        background-position: 0 -43.4rem;
     }
 
     .pl a:before,
     a.pl:before {
-        background-position: 0 -37.4rem;
+        background-position: 0 -47.9rem;
     }
 }
