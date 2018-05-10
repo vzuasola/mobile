@@ -130,11 +130,11 @@ export class HeaderComponent implements ComponentInterface {
             ComponentManager.subscribe("click", (event, src) => {
                 const selector = "login-trigger";
 
-                if (!utility.hasClass(src, selector)) {
-                    src = utility.findParent(src, selector, 0);
-                }
-
                 if (utility.hasClass(src, selector, true)) {
+                    if (!utility.hasClass(src, selector)) {
+                        src = utility.findParent(src, selector, 0);
+                    }
+
                     this.loginOrigin = src;
                     ComponentManager.broadcast("header.login");
                     event.preventDefault();
