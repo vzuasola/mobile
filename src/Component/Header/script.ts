@@ -256,7 +256,7 @@ export class HeaderComponent implements ComponentInterface {
                 const form = utility.getTarget(event);
                 let errorMessage: string;
                 let userFlag = false;
-
+                let passFlag = false;
                 for (const key in errors) {
                     if (errors.hasOwnProperty(key)) {
 
@@ -265,9 +265,16 @@ export class HeaderComponent implements ComponentInterface {
                             errorMessage = error.message;
                             userFlag = true;
                         }
-
+                        if (error.rule === "pass_required") {
+                            errorMessage = error.message;
+                            passFlag = true;
+                        }
                         if (!userFlag) {
                             errorMessage = error.message;
+                        }
+
+                        if (userFlag && passFlag) {
+                            errorMessage = this.errorMessageBlankPassname;
                         }
                     }
                 }
