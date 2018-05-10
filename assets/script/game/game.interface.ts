@@ -1,8 +1,4 @@
-export interface GameLaunch {
-    /**
-     * List of supported events
-     */
-    events: {} = {};
+export interface GameInterface {
 
     /**
      * A custom init method that will be called on document ready

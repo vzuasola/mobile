@@ -1,19 +1,21 @@
 import * as utility from "@core/assets/js/components/utility";
-import {GameLaunch} from "./game-launch";
+
+import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
+
+import {GameInterface} from "./game.interface";
 
 export class GameLauncher {
-    private providers: {[name: string]: GameLaunch};
+    private providers: {[name: string]: GameInterface};
 
     /**
      *
      */
-    public setProvider(id: string, provider: GameLaunch) {
+    setProvider(id: string, provider: GameInterface) {
         this.providers[id] = provider;
-    };
+    }
 
-    
-    public launch(provider: string, options: {[name: string]: string} = {}) {
-        options["provider"] = provider;
+    launch(provider: string, options: {[name: string]: string} = {}) {
+        options.provider = provider;
 
         this.invoke(provider, "prelaunch", [options]);
         this.invoke(provider, "launch", [options]);
@@ -24,22 +26,24 @@ export class GameLauncher {
      */
     private init() {
         this.bindEvents();
-    };
+    }
 
     /**
      *
      */
     private bindEvents() {
-        utility.ready(function () {
+        utility.ready(() => {
             this.invokeAll("init");
         });
 
-        utility.addEventListener(document, "click", onClick);
+        ComponentManager.subscribe("click", (event, src) => {
+            this.onClick(event, src);
+        });
     }
 
     /**
-    *
-    */
+     *
+     */
     private invoke(id: string, method: string, args: any = []) {
         if (typeof this.providers[id][method] === "function") {
             this.providers[id][method].apply(this.providers[id], args);
@@ -61,7 +65,7 @@ export class GameLauncher {
      *
      */
     private getOptionsByElement(element) {
-        let options = {};
+        const options: any = {};
         const attributes = utility.getAttributes(element);
 
         for (const attr in attributes) {
@@ -77,20 +81,17 @@ export class GameLauncher {
     /**
      *
      */
-    private onClick(e) {
-        const target = utility.getTarget(e);
-
-        if (target.getAttribute("data-game-launch") === "true" &&
-            target.getAttribute("data-game-provider")
+    private onClick(e, src) {
+        if (src.getAttribute("data-game-launch") === "true" &&
+            src.getAttribute("data-game-provider")
         ) {
-            var provider = target.getAttribute("data-game-provider");
-            var options = this.getOptionsByElement(target);
+            const provider = src.getAttribute("data-game-provider");
+            const options = this.getOptionsByElement(src);
 
-            options["provider"] = provider;
+            options.provider = provider;
 
             this.invoke(provider, "prelaunch", [options]);
             this.invoke(provider, "launch", [options]);
         }
     }
-
 }
