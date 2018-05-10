@@ -66,7 +66,7 @@ export class GameLauncher {
 
         for (const attr in attributes) {
             if (attr.indexOf("data-game", 0) === 0) {
-                const key = attr.replace("data-game-", ");
+                const key = attr.replace("data-game-", "");
                 options[key] = attributes[attr];
             }
         }
