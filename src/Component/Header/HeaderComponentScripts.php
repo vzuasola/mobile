@@ -11,7 +11,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
-    private $loginCOnfig;
+    private $loginConfig;
 
     /**
      *
@@ -27,10 +27,10 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $loginCOnfig)
+    public function __construct($playerSession, $loginConfig)
     {
         $this->playerSession = $playerSession;
-        $this->loginCOnfig = $loginCOnfig;
+        $this->loginConfig = $loginConfig;
     }
 
     /**
@@ -39,7 +39,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $config = $this->loginCOnfig->getConfig('webcomposer_config.login_configuration');
+            $config = $this->loginConfig->getConfig('webcomposer_config.login_configuration');
         } catch (\Exception $e) {
             $config = [];
         }
