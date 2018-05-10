@@ -30,7 +30,7 @@ class MenuComponentController
         $this->viewFetcher = $viewFetcher;
     }
 
-    public function lobby($request, $response)
+    public function lobby($request)
     {
         $data = [];
         $body = $request->getParsedBody();

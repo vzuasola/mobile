@@ -20,16 +20,16 @@ stages:
   - staging-signoff
   - deploy-production
 
-static code analysis:
-  stage: tests
-  script:
-    - python -u automation/run.py --stage phpunit-sonarqube
-  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
-  cache:
-    key: v2
-    paths:
-      - .composer-cache/
-      - .sonar-cache/
+# static code analysis:
+#   stage: tests
+#   script:
+#     - python -u automation/run.py --stage phpunit-sonarqube
+#   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+#   cache:
+#     key: v2
+#     paths:
+#       - .composer-cache/
+#       - .sonar-cache/
 
 php code sniffer:
   stage: tests
