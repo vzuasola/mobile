@@ -64,7 +64,6 @@ class HeaderComponentController
                 }
                 $data['code'] = $e->getCode();
                 $data['reason'] = $e->getMessage();
-                
             }
         }
 
