@@ -61,6 +61,7 @@ export class HeaderComponent implements ComponentInterface {
         this.listenLogin(attachments);
         this.listenLogout(attachments);
         this.getBalance(element, attachments);
+        this.clearErrorMessage(element);
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -87,6 +88,17 @@ export class HeaderComponent implements ComponentInterface {
         this.bindSession(attachments);
         this.activatePasswordMask(element);
         this.getBalance(element, attachments);
+        this.clearErrorMessage(element);
+    }
+
+    private clearErrorMessage(element) {
+        const form: HTMLElement = element.querySelector(".login-form");
+
+        utility.listen(element, "click", (event, src) => {
+            if (utility.hasClass(src, "modal-overlay") || utility.hasClass(src, "modal-close")) {
+                form.querySelector(".login-error").innerHTML = "";
+            }
+        });
     }
 
     private activatePasswordMask(element) {
@@ -138,15 +150,14 @@ export class HeaderComponent implements ComponentInterface {
                     });
                 }).fail((error) => {
                     const resp = JSON.parse(error.response);
-                    const reason = JSON.parse(resp.reason.split("response:")[1]);
                     const errorMessage = {
-                        INT001: this.errorMessageServiceNotAvailable,
-                        INT003: this.errorMessageInvalidPassname,
-                        INT008: this.errorMessageAccountLocked,
-                        INT009: this.errorMessageAccountSuspended,
+                        401: this.errorMessageInvalidPassname,
+                        402: this.errorMessageAccountSuspended,
+                        403: this.errorMessageAccountLocked,
+                        500: this.errorMessageServiceNotAvailable,
                     };
-                    const code = reason.responseCode;
-                    form.querySelector(".login-error").innerHTML = errorMessage[code];
+
+                    form.querySelector(".login-error").innerHTML = errorMessage[error.status];
                 });
             }
         });

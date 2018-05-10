@@ -2,6 +2,9 @@
 
 namespace App\MobileEntry\Component\Header;
 
+use App\Fetcher\Integration\Exception\AccountLockedException;
+use App\Fetcher\Integration\Exception\AccountSuspendedException;
+
 /**
  *
  */
@@ -44,9 +47,23 @@ class HeaderComponentController
             try {
                 $data['success'] = $this->playerSession->login($username, $password);
             } catch (\Exception $e) {
+                if ($e instanceof AccountLockedException) {
+                    $response = $response->withStatus(403);
+                }
+
+                if ($e instanceof AccountSuspendedException) {
+                    $response = $response->withStatus(402);
+                }
+
+                if ($e->getCode() == 401) {
+                    $response = $response->withStatus(401);
+                }
+
+                if ($e->getCode() == 500) {
+                    $response = $response->withStatus(500);
+                }
                 $data['code'] = $e->getCode();
                 $data['reason'] = $e->getMessage();
-                $response = $response->withStatus($e->getCode());
             }
         }
 
