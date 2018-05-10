@@ -20,12 +20,35 @@ export class HeaderComponent implements ComponentInterface {
     private loader: Loader;
     private session: Session;
     private loginOrigin: HTMLElement;
+    private errorMessageBlankUsername: string;
+    private errorMessageBlankPassword: string;
+    private errorMessageBlankPassname: string;
+    private errorMessageInvalidPassname: string;
+    private errorMessageServiceNotAvailable: string;
+    private errorMessageAccountSuspended: string;
+    private errorMessageAccountLocked: string;
 
     constructor() {
         this.loader = new Loader(document.body, true);
     }
 
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onLoad(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        error_message_blank_username: string,
+        error_message_blank_password: string,
+        error_message_blank_passname: string,
+        error_message_invalid_passname: string,
+        error_message_service_not_available: string,
+        error_message_account_suspended: string,
+        error_message_account_locked: string,
+    }) {
+        this.errorMessageBlankUsername = attachments.error_message_blank_username;
+        this.errorMessageBlankPassword = attachments.error_message_blank_password;
+        this.errorMessageBlankPassname = attachments.error_message_blank_passname;
+        this.errorMessageInvalidPassname = attachments.error_message_invalid_passname;
+        this.errorMessageServiceNotAvailable = attachments.error_message_service_not_available;
+        this.errorMessageAccountSuspended = attachments.error_message_account_suspended;
+        this.errorMessageAccountLocked = attachments.error_message_account_locked;
         this.bindLoginValidation();
         this.activateLogin(element);
         this.bindLoginForm(element);
@@ -38,7 +61,23 @@ export class HeaderComponent implements ComponentInterface {
         this.getBalance(element, attachments);
     }
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onReload(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        error_message_blank_username: string,
+        error_message_blank_password: string,
+        error_message_blank_passname: string,
+        error_message_invalid_passname: string,
+        error_message_service_not_available: string,
+        error_message_account_suspended: string,
+        error_message_account_locked: string,
+    }) {
+        this.errorMessageBlankUsername = attachments.error_message_blank_username;
+        this.errorMessageBlankPassword = attachments.error_message_blank_password;
+        this.errorMessageBlankPassname = attachments.error_message_blank_passname;
+        this.errorMessageInvalidPassname = attachments.error_message_invalid_passname;
+        this.errorMessageServiceNotAvailable = attachments.error_message_service_not_available;
+        this.errorMessageAccountSuspended = attachments.error_message_account_suspended;
+        this.errorMessageAccountLocked = attachments.error_message_account_locked;
         this.bindLoginValidation();
         this.activateLogin(element);
         this.bindLoginForm(element);
@@ -95,6 +134,8 @@ export class HeaderComponent implements ComponentInterface {
                     () => {
                         this.loader.hide();
                     });
+                }).fail((error, message) => {
+                    console.log(error);
                 });
             }
         });
@@ -181,21 +222,21 @@ export class HeaderComponent implements ComponentInterface {
     }
 
     private bindLoginValidation() {
-        const mobileRules = "required|callback_check_mobile_format|callback_min_length|callback_max_length";
+        const mobileRules = "callback_check_mobile_format|callback_min_length|callback_max_length";
 
         const validator = new FormValidator("login-form", [{
             name: "username",
-            rules: mobileRules,
+            rules: "callback_user_required|" + mobileRules,
             args: {
-                callback_max_length: ["50"],
-                callback_min_length: ["2"],
+                callback_min_length: ["3"],
+                callback_max_length: ["15"],
             },
         }, {
             name: "password",
-            rules: mobileRules,
+            rules: "callback_pass_required|" + mobileRules,
             args: {
-                callback_max_length: ["50"],
-                callback_min_length: ["2"],
+                callback_min_length: ["6"],
+                callback_max_length: ["10"],
             },
         }], (errors, event) => {
             if (errors.length > 0) {
@@ -203,17 +244,33 @@ export class HeaderComponent implements ComponentInterface {
                 event.stopPropagation();
 
                 const form = utility.getTarget(event);
-                form.querySelector(".login-error").innerHTML = errors[0].message;
-                console.log(errors);
+                let errorMessage: string;
+                let userFlag = false;
+
                 for (const key in errors) {
                     if (errors.hasOwnProperty(key)) {
+
                         const error = errors[key];
-                        console.log(error);
+                        if (error.rule === "user_required") {
+                            errorMessage = error.message;
+                            userFlag = true;
+                        }
+
+                        if (!userFlag) {
+                            errorMessage = error.message;
+                        }
                     }
                 }
+                form.querySelector(".login-error").innerHTML = errorMessage;
             }
         });
 
+        validator.registerCallback("user_required", (value, param, field) => {
+            return (value !== null && value !== "");
+        });
+        validator.registerCallback("pass_required", (value, param, field) => {
+            return (value !== null && value !== "");
+        });
         validator.registerCallback("min_length", (value, param, field) => {
             return value.length >= param[0];
         });
@@ -221,11 +278,14 @@ export class HeaderComponent implements ComponentInterface {
             return value.length <= param[0];
         });
         validator.registerCallback("check_mobile_format", (value) => {
-            return true;
+            const pattern =  /^\w+$/i;
+            return pattern.test(value);
         });
 
-        validator.setMessage("min_length", "Min Lenght");
-        validator.setMessage("max_length", "Max Lenght");
-        validator.setMessage("check_format", "Format Error");
+        validator.setMessage("user_required", this.errorMessageBlankUsername);
+        validator.setMessage("pass_required", this.errorMessageBlankPassword);
+        validator.setMessage("min_length", this.errorMessageInvalidPassname);
+        validator.setMessage("max_length", this.errorMessageInvalidPassname);
+        validator.setMessage("check_mobile_format", this.errorMessageInvalidPassname);
     }
 }
