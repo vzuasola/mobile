@@ -7,22 +7,25 @@ namespace App\MobileEntry\Component\Header;
  */
 class HeaderComponentController
 {
+    private $rest;
     /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('rest')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession)
+    public function __construct($playerSession, $rest)
     {
         $this->playerSession = $playerSession;
+        $this->rest = $rest;
     }
 
     /**
@@ -45,7 +48,7 @@ class HeaderComponentController
             }
         }
 
-        return $data;
+        return $this->rest->output($response, $data);
     }
 
     /**
@@ -61,6 +64,6 @@ class HeaderComponentController
             // do nothing
         }
 
-        return $data;
+        return $this->rest->output($response, $data);
     }
 }
