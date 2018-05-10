@@ -46,8 +46,7 @@ class HeaderComponentController
             } catch (\Exception $e) {
                 $data['code'] = $e->getCode();
                 $data['reason'] = $e->getMessage();
-
-                $response = $response->withStatus(404);
+                $response = $response->withStatus($e->getCode());
             }
         }
 

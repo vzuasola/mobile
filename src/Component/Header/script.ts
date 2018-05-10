@@ -136,8 +136,17 @@ export class HeaderComponent implements ComponentInterface {
                     () => {
                         this.loader.hide();
                     });
-                }).fail((error, message) => {
-                    console.log(error);
+                }).fail((error) => {
+                    const resp = JSON.parse(error.response);
+                    const reason = JSON.parse(resp.reason.split("response:")[1]);
+                    const errorMessage = {
+                        INT001: this.errorMessageServiceNotAvailable,
+                        INT003: this.errorMessageInvalidPassname,
+                        INT008: this.errorMessageAccountLocked,
+                        INT009: this.errorMessageAccountSuspended,
+                    };
+                    const code = reason.responseCode;
+                    form.querySelector(".login-error").innerHTML = errorMessage[code];
                 });
             }
         });
