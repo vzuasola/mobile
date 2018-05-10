@@ -1,10 +1,12 @@
+import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
+
 import * as utility from "@core/assets/js/components/utility";
 
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-utility.listen(document, "session.login", (event, target, data) => {
+ComponentManager.subscribe("session.login", (event, target, data) => {
     if (data) {
         const product = data.getAttribute("product-id");
         const srcComponent = data.getAttribute("src-component");

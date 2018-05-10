@@ -128,7 +128,7 @@ export class HeaderComponent implements ComponentInterface {
                     Modal.close("#login-lightbox");
                     this.loader.show();
 
-                    ComponentManager.broadcast("session.login");
+                    ComponentManager.broadcast("session.login", this.loginOrigin);
 
                     ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
                     () => {

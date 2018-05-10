@@ -42,7 +42,8 @@ class ProductsComponentController
 
                 foreach ($productTiles as $productTile) {
                     if (isset($productTile['field_product_lobby_id'][0]['value']) &&
-                        $productTile['field_product_lobby_id'][0]['value'] == $body['product']) {
+                        $productTile['field_product_lobby_id'][0]['value'] == $body['product']
+                    ) {
                         $data['lobby_url'] = $productTile['field_product_lobby_url_post_log'][0]['uri'];
                         break;
                     }
