@@ -7,6 +7,7 @@ namespace App\MobileEntry\Component\Header;
  */
 class HeaderComponentController
 {
+    private $rest;
     /**
      *
      */
@@ -25,6 +26,7 @@ class HeaderComponentController
     {
         $this->rest = $rest;
         $this->playerSession = $playerSession;
+        $this->rest = $rest;
     }
 
     /**
@@ -65,6 +67,6 @@ class HeaderComponentController
             // do nothing
         }
 
-        return $data;
+        return $this->rest->output($response, $data);
     }
 }

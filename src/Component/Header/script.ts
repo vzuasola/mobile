@@ -21,6 +21,7 @@ import mobileBalance from "@app/assets/script/components/balance-mobile";
 export class HeaderComponent implements ComponentInterface {
     private loader: Loader;
     private session: Session;
+    private loginOrigin: HTMLElement;
     private errorMessageBlankUsername: string;
     private errorMessageBlankPassword: string;
     private errorMessageBlankPassname: string;
@@ -57,7 +58,7 @@ export class HeaderComponent implements ComponentInterface {
         this.bindSession(attachments);
         this.activatePasswordMask(element);
 
-        this.listenLogin();
+        this.listenLogin(attachments);
         this.listenLogout(attachments);
         this.getBalance(element, attachments);
     }
@@ -112,6 +113,7 @@ export class HeaderComponent implements ComponentInterface {
 
         utility.listen(form, "submit", (event, src) => {
             event.preventDefault();
+
             if (src.isValid) {
                 const username: string = src.querySelector('[name="username"]').value;
                 const password: string = src.querySelector('[name="password"]').value;
@@ -128,7 +130,7 @@ export class HeaderComponent implements ComponentInterface {
                     Modal.close("#login-lightbox");
                     this.loader.show();
 
-                    ComponentManager.broadcast("session.login");
+                    ComponentManager.broadcast("session.login", this.loginOrigin);
 
                     ComponentManager.refreshComponents(["header", "main", "announcement", "push_notification"],
                     () => {
@@ -167,19 +169,22 @@ export class HeaderComponent implements ComponentInterface {
      *
      */
 
-    private listenLogin() {
+    private listenLogin(attachments: {authenticated: boolean}) {
         ComponentManager.subscribe("header.login", (event, src) => {
             Modal.open("#login-lightbox");
         });
 
-        ComponentManager.subscribe("click", (event, src) => {
-            const selector = "login-trigger";
-
-            if (utility.hasClass(src, selector, true)) {
-                ComponentManager.broadcast("header.login");
-                event.preventDefault();
-            }
-        });
+        if (!attachments.authenticated) {
+            ComponentManager.subscribe("click", (event, src) => {
+                const selector = "login-trigger";
+                const el = utility.hasClass(src, selector, true);
+                if (el) {
+                    this.loginOrigin = el;
+                    ComponentManager.broadcast("header.login");
+                    event.preventDefault();
+                }
+            });
+        }
     }
 
     /**
