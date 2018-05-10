@@ -13,6 +13,8 @@ import {Modal} from "@app/assets/script/components/modal";
 
 import {passwordMask} from "@app/assets/script/components/password-mask";
 
+import mobileBalance from "@app/assets/script/components/balance-mobile";
+
 /**
  *
  */
@@ -207,8 +209,7 @@ export class HeaderComponent implements ComponentInterface {
                 url: Router.generateRoute("balance", "balances"),
                 type: "json",
             }).then((response) => {
-                const headerBalance = element.querySelector(".account-balance-amount");
-                headerBalance.innerHTML = response.balance;
+                mobileBalance(response.balance);
             }).fail((error, message) => {
               // do something
             });
