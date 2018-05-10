@@ -9,6 +9,7 @@ class ProductsComponentController
 {
     private $playerSession;
     private $viewFetcher;
+    private $rest;
 
     /**
      *
@@ -17,20 +18,22 @@ class ProductsComponentController
     {
         return new static(
             $container->get('player_session'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('rest')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $viewFetcher)
+    public function __construct($playerSession, $viewFetcher, $rest)
     {
         $this->playerSession = $playerSession;
         $this->viewFetcher = $viewFetcher;
+        $this->rest = $rest;
     }
 
-    public function lobby($request)
+    public function lobby($request, $response)
     {
         $data = [];
         $body = $request->getParsedBody();
@@ -53,6 +56,6 @@ class ProductsComponentController
             $data['lobby_url'] = '';
         }
 
-        return $data;
+        return $this->rest->output($response, $data);
     }
 }
