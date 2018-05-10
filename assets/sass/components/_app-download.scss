@@ -1,32 +1,42 @@
 .app-download {
     margin-bottom: 1rem;
 
-    a {
-        display: flex;
-        padding: 1rem;
-        background: $darker-red;
-        font-size: 1.4rem;
-        color: $yellow;
-        text-transform: uppercase;
-        border-radius: 0.3rem;
-        align-items: center;
-        justify-content: center;
-    }
+        a {
+            display: block;
+            padding: 1rem 0;
+            background: $darker-red;
+            color: $yellow;
+            text-transform: uppercase;
+            border-radius: 0.3rem;
+            align-items: center;
+            justify-content: center;
 
-    svg {
-        display: block;
-        width: 4.5rem;
-        margin: 0 1rem 0 0;
-
-        path {
-            fill: $yellow;
+            @include media(">=tablet") {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.7rem;
+            }
         }
-    }
 
-    &-text {
-        display: block;
-        text-align: left;
-        font-weight: 500;
-        line-height: 1.6rem;
-    }
+        svg {
+            display: block;
+            width: 4.5rem;
+            margin: 0 auto;
+
+            @include media(">=tablet") {
+                    width: 7rem;
+                    margin: 0 1rem 0 0;
+            }
+
+            path {
+                fill: $yellow;
+            }
+        }
+
+        &-text {
+            display: block;
+            text-align: center;
+        }
+
 }

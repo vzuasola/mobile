@@ -14,16 +14,17 @@ class HeaderComponentController
     public static function create($container)
     {
         return new static(
-            $container->get('player_session'),
-            $container->get('rest')
+            $container->get('rest'),
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $rest)
+    public function __construct($rest, $playerSession)
     {
+        $this->rest = $rest;
         $this->playerSession = $playerSession;
         $this->rest = $rest;
     }
@@ -45,6 +46,8 @@ class HeaderComponentController
             } catch (\Exception $e) {
                 $data['code'] = $e->getCode();
                 $data['reason'] = $e->getMessage();
+
+                $response = $response->withStatus(404);
             }
         }
 
