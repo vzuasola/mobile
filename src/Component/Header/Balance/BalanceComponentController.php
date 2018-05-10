@@ -10,16 +10,12 @@ use App\Translations\Currency;
  */
 class BalanceComponentController
 {
+    private $rest;
     private $config;
-
     private $playerSession;
-
     private $user;
-
     private $territories;
-
     private $balance;
-
     private $lang;
 
     /**
@@ -28,6 +24,7 @@ class BalanceComponentController
     public static function create($container)
     {
         return new static(
+            $container->get('rest'),
             $container->get('config_fetcher'),
             $container->get('player_session'),
             $container->get('user_fetcher'),
@@ -40,8 +37,16 @@ class BalanceComponentController
     /**
      * Public constructor
      */
-    public function __construct($config, $playerSession, $user, $territories, $balance, $lang)
-    {
+    public function __construct(
+        $rest,
+        $config,
+        $playerSession,
+        $user,
+        $territories,
+        $balance,
+        $lang
+    ) {
+        $this->rest = $rest;
         $this->config = $config;
         $this->playerSession = $playerSession;
         $this->user = $user;
@@ -53,7 +58,7 @@ class BalanceComponentController
     /**
      *
      */
-    public function balances($request)
+    public function balances($request, $response)
     {
         $data = [];
         $isLogin = $this->playerSession->isLogin();
@@ -113,7 +118,7 @@ class BalanceComponentController
             }
         }
 
-        return $data;
+        return $this->rest->output($response, $data);
     }
 
     private function manageBalance($balances, $balanceMap, $currency, $currencyMap, $territory, $territoriesMap)
