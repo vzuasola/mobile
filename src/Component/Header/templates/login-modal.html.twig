@@ -1,9 +1,7 @@
 <div id="login-lightbox" class="modal login">
     <div class="modal-content login-content">
         <div class="modal-body">
-            {% block logoSection %}
-                {{ include('@component/Header/templates/logo.html.twig') }}
-            {% endblock %}
+            {{ include('@component/Header/templates/logo-image.html.twig') }}
             <form action="" class="login-form text-center" name="login-form">
                 {# <p class="login-notification">Account details incorrect - please check</p> #}
                 <div class="login-field mb-20">
@@ -21,7 +19,7 @@
                 </div>
                 <p class="login-error"></p>
                 <label class="login-remember-username block mt-10 mb-15 text-left">
-                    <input type="checkbox"> {{ mobile_remember }}
+                    <input type="checkbox" name="remember"> {{ mobile_remember }}
                 </label>
                 <input type="submit" value="{{ login_bottom_label }}" class="btn btn-gray login-submit input-block-level mb-10">
                 <p class="mb-30"><a href="{{ url(login_issue_link) }}" class="login-help-link">{{ login_issue_text }}</a></p>

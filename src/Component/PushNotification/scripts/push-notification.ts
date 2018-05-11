@@ -154,21 +154,13 @@ export class PushNotification {
     }
 
     /**
-     * listen to "click" event on close modal
-     */
-    private listenModal() {
-        ComponentManager.subscribe("click", (event) => {
-            this.closeModal();
-        });
-    }
-
-    /**
      * Listen close modal
      */
     private listenCloseModal() {
-        ComponentManager.subscribe("pushnx.close.modal", (e) => {
+        ComponentManager.subscribe("modal.close", (event, src, data) => {
             this.closeModal();
         });
+
     }
 
     /**
@@ -182,8 +174,10 @@ export class PushNotification {
      * Listen open modal
      */
     private listenOpenModal(login: boolean) {
-        ComponentManager.subscribe("pushnx.open.modal", (e) => {
-            this.openModal(login);
+        ComponentManager.subscribe("click", (event, src) => {
+            if (utility.hasClass(src, "notification-trigger", true)) {
+                this.openModal(login);
+            }
         });
     }
 
@@ -193,7 +187,6 @@ export class PushNotification {
     private openModal(login: boolean) {
         if (this.isconnected) {
             Modal.open("#pushnxLightbox");
-            this.listenModal();
         }
     }
 
