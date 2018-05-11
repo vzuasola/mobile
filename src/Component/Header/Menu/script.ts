@@ -77,11 +77,12 @@ export class MenuComponent implements ComponentInterface {
     private getBalance(element, attachments) {
         if (attachments.authenticated) {
             xhr({
-                url: Router.generateRoute("balance", "balances"),
+                url: Router.generateModuleRoute("balance", "balances"),
                 type: "json",
             }).then((response) => {
                 const headerBalance = element.querySelector(".mobile-menu-amount");
                 let formatedBalance: string;
+
                 formatedBalance = response.format;
                 formatedBalance = formatedBalance.replace("{currency}", response.currency);
                 formatedBalance = formatedBalance.replace("{total}", response.balance);

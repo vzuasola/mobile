@@ -90,13 +90,13 @@ export class Login {
                     Modal.close("#login-lightbox");
                     this.loader.show();
 
-                    ComponentManager.broadcast("session.login", {
-                        src: this.srcElement,
-                    });
-
                     ComponentManager.refreshComponents(
                         ["header", "main", "announcement", "push_notification"],
                         () => {
+                            ComponentManager.broadcast("session.login", {
+                                src: this.srcElement,
+                            });
+
                             this.loader.hide();
                         },
                     );

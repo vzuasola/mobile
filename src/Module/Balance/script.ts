@@ -26,8 +26,7 @@ export class BalanceModule implements ModuleInterface {
             url: Router.generateModuleRoute("balance", "balances"),
             type: "json",
         }).then((response) => {
-            console.log(response);
-            if ("balance" in response) {
+            if (typeof response.balance !== "undefined") {
                 const wrapper = document.querySelector(".account-balance");
 
                 if (wrapper) {

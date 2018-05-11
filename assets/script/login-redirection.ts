@@ -1,17 +1,16 @@
-import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
-
 import * as utility from "@core/assets/js/components/utility";
-
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
+import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-ComponentManager.subscribe("session.login", (event, target, data) => {
-    if (data) {
-        const el = utility.hasClass(data, "product-integration", true);
+ComponentManager.subscribe("session.login", (event, target, data: any) => {
+    if (data && typeof data.src !== "undefined") {
+        const el = utility.hasClass(data.src, "product-integration", true);
+
         if (!el) {
-            const product = data.getAttribute("product-id");
-            const srcComponent = data.getAttribute("src-component");
+            const product = data.src.getAttribute("product-id");
+            const srcComponent = data.src.getAttribute("src-component");
 
             const component = (srcComponent  === "menu") ? "header_menu" : "home_products";
             xhr({
