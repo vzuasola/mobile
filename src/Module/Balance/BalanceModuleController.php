@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Header\Balance;
+namespace App\MobileEntry\Module\Balance;
 
 use App\Drupal\Config;
 use App\Translations\Currency;
@@ -8,7 +8,7 @@ use App\Translations\Currency;
 /**
  *
  */
-class BalanceComponentController
+class BalanceModuleController
 {
     private $rest;
     private $config;

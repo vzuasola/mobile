@@ -5,7 +5,7 @@ import * as utility from '@core/assets/js/components/utility';
  *
  * @param Node input password element
  */
-export function passwordMask(input) {
+export function PasswordMask(input) {
     if (input && utility.hasClass(input, "password-mask-enabled")) {
         var icon = utility.findSibling(input, '.password-mask-icon');
 

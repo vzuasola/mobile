@@ -8,8 +8,6 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Login} from "./scripts/login";
 import {Validation} from "./scripts/validation";
 
-import mobileBalance from "@app/assets/script/components/balance-mobile";
-
 /**
  *
  */
@@ -28,8 +26,6 @@ export class LoginComponent implements ComponentInterface {
     }) {
         this.loginService.handleOnLoad(element, attachments);
         this.validationService.handleOnLoad(element, attachments);
-
-        this.getBalance(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -38,25 +34,5 @@ export class LoginComponent implements ComponentInterface {
     }) {
         this.loginService.handleOnReload(element, attachments);
         this.validationService.handleOnReload(element, attachments);
-
-        this.getBalance(element, attachments);
-    }
-
-    /**
-     * TODO
-     * Move this to the balance component script.ts
-     */
-    private getBalance(element, attachments) {
-        if (attachments.authenticated) {
-            xhr({
-                url: Router.generateRoute("balance", "balances"),
-                type: "json",
-            }).then((response) => {
-                // TODO
-                // why put a component specific functionality to the generic library ?
-                // put the logic of this method into the balance component also
-                mobileBalance(response.balance);
-            });
-        }
     }
 }
