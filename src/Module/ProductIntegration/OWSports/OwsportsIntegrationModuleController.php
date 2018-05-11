@@ -49,7 +49,7 @@ class OwsportsIntegrationModuleController
                 $ismart = $owsportsConfig['smart_wap'] ?? '';
                 $iwap = $owsportsConfig['iwap'] ?? '';
                 $owParams = $owsportsConfig['owsports_param'] ?? '';
-                $data['lobby_url'] = $this->owsports($host, $agentsList, $userAgent, $ismart, $iwap, $owParams);
+                $data['lobby_url'] = $this->getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $owParams);
             }
         } catch (\Exception $e) {
             $data['lobby_url'] = '';
@@ -57,7 +57,17 @@ class OwsportsIntegrationModuleController
         return $this->rest->output($response, $data);
     }
 
-    private function owsports($host, $agentsList, $userAgent, $ismart, $iwap, $urlParams)
+    /**
+     * Return iwap / ismart url
+     * @param  string $host
+     * @param  string $agentsList
+     * @param  string $userAgent
+     * @param  string $ismart
+     * @param  string $iwap
+     * @param  string $urlParams
+     * @return string
+     */
+    private function getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $urlParams)
     {
         $mobileAgents = $this->createAgentfromList($agentsList);
 
@@ -74,7 +84,7 @@ class OwsportsIntegrationModuleController
 
     private function createAgentfromList($agentsList)
     {
-        $agents = explode("\r\n", $agentsList);
+        $agents = explode(PHP_EOL, $agentsList);
         $trimmedAgents = array_map('trim', $agents);
         end($trimmedAgents);
         $lastKey = key($trimmedAgents);
@@ -90,7 +100,6 @@ class OwsportsIntegrationModuleController
         } else {
             $mobileAgents = '!(windows|blackberry|symbian|symbianOS)!i';
         }
-
         return $mobileAgents;
     }
 }
