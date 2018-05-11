@@ -3,6 +3,10 @@
 modules:
   session:
     class: App\MobileEntry\Module\Session\SessionModule
+  product_integration:
+    class: App\MobileEntry\Module\ProductIntegration\ProductIntegrationModule
+  owsports_integration:
+    class: App\MobileEntry\Module\ProductIntegration\OWSports\OwsportsIntegrationModule
 
 components:
   header:
