@@ -12,13 +12,6 @@ export class PushNotification {
         this.listenPushnxModal(element);
     }
 
-    handleOnReload(element: HTMLElement, attachments: {}) {
-        this.listenPushnxCount(element);
-        this.listenNewMessage(element);
-
-        this.listenPushnxModal(element);
-    }
-
     /**
      * listen to "click" event on left nav pushnx menu
      */

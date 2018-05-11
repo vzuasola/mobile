@@ -30,7 +30,7 @@ export class MenuComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.activateMenu(element);
-        this.pushNotification.handleOnReload(element, attachments);
+        this.pushNotification.handleOnLoad(element, attachments);
 
         this.getBalance(element, attachments);
     }
