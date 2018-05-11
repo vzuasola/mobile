@@ -21,5 +21,3 @@ ComponentManager.setComponents({
     language: new LanguageComponent(),
     balance: new BalanceComponent(),
 });
-
-ComponentManager.init();

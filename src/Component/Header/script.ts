@@ -5,8 +5,6 @@ import * as FormValidator from "@core/assets/js/vendor/validate";
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-import {Session} from "./scripts/session";
-
 import {CheckboxStyler} from "@app/assets/script/components/checkbox-styler";
 import {Loader} from "@app/assets/script/components/loader";
 import {Modal} from "@app/assets/script/components/modal";
@@ -20,7 +18,6 @@ import mobileBalance from "@app/assets/script/components/balance-mobile";
  */
 export class HeaderComponent implements ComponentInterface {
     private loader: Loader;
-    private session: Session;
     private loginOrigin: HTMLElement;
     private errorMessageBlankUsername: string;
     private errorMessageBlankPassword: string;
@@ -55,7 +52,6 @@ export class HeaderComponent implements ComponentInterface {
         this.activateLogin(element);
         this.bindLoginForm(element);
         this.bindLogout(attachments);
-        this.bindSession(attachments);
         this.activatePasswordMask(element);
 
         this.listenLogin(attachments);
@@ -85,7 +81,6 @@ export class HeaderComponent implements ComponentInterface {
         this.activateLogin(element);
         this.bindLoginForm(element);
         this.bindLogout(attachments);
-        this.bindSession(attachments);
         this.activatePasswordMask(element);
         this.getBalance(element, attachments);
         this.clearErrorMessage(element);
@@ -185,16 +180,6 @@ export class HeaderComponent implements ComponentInterface {
             utility.delegate(document, ".btn-logout", "click", (event, src) => {
                 ComponentManager.broadcast("session.logout");
             }, true);
-        }
-    }
-
-    /**
-     * Bind the session handler object
-     */
-    private bindSession(attachments: {authenticated: boolean}) {
-        if (attachments.authenticated && !this.session) {
-            this.session = new Session(300);
-            this.session.init();
         }
     }
 
