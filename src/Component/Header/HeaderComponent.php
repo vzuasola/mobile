@@ -61,16 +61,16 @@ class HeaderComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
-            $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+            $configs = $this->configs->getConfig('webcomposer_config.header_configuration');
 
             // Header Configs
-            $data['logo_title'] = $headerConfigs['logo_title'];
-            $data['join_now_text'] = $headerConfigs['join_now_text'];
-            $data['login_issue_text'] = $headerConfigs['login_issue_text'];
-            $data['login_issue_link'] = $headerConfigs['login_issue_link'];
-            $data['mobile_remember'] = $headerConfigs['mobile_remember'];
-            $data['mobile_login_reg'] = $headerConfigs['mobile_login_reg'];
-            $data['join_now_link'] = $headerConfigs['join_now_link'];
+            $data['logo_title'] = $configs['logo_title'];
+            $data['join_now_text'] = $configs['join_now_text'];
+            $data['login_issue_text'] = $configs['login_issue_text'];
+            $data['login_issue_link'] = $configs['login_issue_link'];
+            $data['mobile_remember'] = $configs['mobile_remember'];
+            $data['mobile_login_reg'] = $configs['mobile_login_reg'];
+            $data['join_now_link'] = $configs['join_now_link'];
         } catch (\Exception $e) {
             $data['logo_title'] = 'Dafabet';
             $data['join_now_text'] = 'Join Now';
@@ -79,21 +79,6 @@ class HeaderComponent implements ComponentWidgetInterface
             $data['mobile_remember'] = 'Remember Username';
             $data['mobile_login_reg'] = 'login/join';
             $data['join_now_link'] = [];
-        }
-
-        try {
-            $loginConfigs = $this->configs->getConfig('webcomposer_config.login_configuration');
-
-            // Login Configs
-            $data['login_bottom_label'] = $loginConfigs['login_bottom_label'];
-            $data['username_placeholder'] = $loginConfigs['username_placeholder'];
-            $data['password_placeholder'] = $loginConfigs['password_placeholder'];
-            $data['lightbox_blurb'] = $loginConfigs['lightbox_blurb'];
-        } catch (\Exception $e) {
-            $data['login_bottom_label'] = 'Login';
-            $data['username_placeholder'] = 'Username';
-            $data['password_placeholder'] = 'Password';
-            $data['lightbox_blurb'] = 'Not yet a Dafabet member?';
         }
 
         $data['is_front'] = true;
