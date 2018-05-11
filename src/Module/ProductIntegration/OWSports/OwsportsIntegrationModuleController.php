@@ -81,7 +81,6 @@ class OwsportsIntegrationModuleController
         if ($agentsList) {
             $mobileAgents = '!(';
             foreach ($trimmedAgents as $key => $value) {
-
                 $mobileAgents .= rtrim($value, ' ');
                 if ($key != $lastKey) {
                     $mobileAgents .= '|';
@@ -94,5 +93,4 @@ class OwsportsIntegrationModuleController
 
         return $mobileAgents;
     }
-
 }
