@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 
 import Counter from "@core/assets/js/components/utils/counter";
-import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
+import { ComponentManager } from "@plugins/ComponentWidget/asset/component";
 
 export class Session {
     private timeout: number;

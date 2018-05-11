@@ -5,6 +5,10 @@ routes:
         components:
           main: home
 
+    /debug:
+        method: GET
+        action: App\Controller\DefaultController:debug
+
     /about:
         method: GET
         action: App\MobileEntry\Controller\AboutController:view
@@ -14,6 +18,10 @@ routes:
     /api/plugins/component/route/{id}/{method}:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:route
+
+    /api/plugins/module/route/{id}/{method}:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:module
 
     /*.*:
         method: ANY

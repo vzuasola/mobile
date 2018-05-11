@@ -1,5 +1,9 @@
 # Component list
 
+modules:
+  session:
+    class: App\MobileEntry\Module\Session\SessionModule
+
 components:
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
