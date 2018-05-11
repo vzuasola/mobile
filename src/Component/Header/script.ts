@@ -110,7 +110,12 @@ export class HeaderComponent implements ComponentInterface {
      */
     private activateLogin(element) {
         const rememberUsername: HTMLElement = element.querySelector(".login-remember-username input");
-
+        const username: HTMLInputElement = element.querySelector('[name="username"]');
+        const remember: HTMLInputElement = element.querySelector('[name="remember"]');
+        if (utility.getCookie("remember-username") && username && remember) {
+            username.value = utility.getCookie("remember-username");
+            remember.checked = true;
+        }
         if (rememberUsername) {
             const checkbox = new CheckboxStyler(rememberUsername);
             checkbox.init();
@@ -139,6 +144,15 @@ export class HeaderComponent implements ComponentInterface {
                           password,
                       },
                 }).then((response) => {
+                    const remember = src.querySelector('[name="remember"]');
+                    if (remember) {
+                        const isChecked = remember.checked;
+                        utility.removeCookie("remember-username");
+                        if (isChecked) {
+                            utility.setCookie("remember-username", username, null, "/");
+                        }
+                    }
+
                     Modal.close("#login-lightbox");
                     this.loader.show();
 
