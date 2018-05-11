@@ -225,7 +225,6 @@ export class HeaderComponent implements ComponentInterface {
     }
 
     private bindLoginValidation(attachments) {
-        console.log(attachments);
         const mobileRules = "callback_check_mobile_format|callback_min_length|callback_max_length";
         const validator = new FormValidator("login-form", [{
             name: "username",
