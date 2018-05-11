@@ -2,7 +2,8 @@
 
 namespace App\MobileEntry\Module\ProductIntegration\OWSports;
 
-class OwsportsIntegrationModuleController {
+class OwsportsIntegrationModuleController
+{
     private $playerSession;
     private $config;
     private $rest;
@@ -74,7 +75,7 @@ class OwsportsIntegrationModuleController {
     private function createAgentfromList($agentsList)
     {
         $agents = explode("\r\n", $agentsList);
-        $trimmedAgents = array_map('trim',$agents);
+        $trimmedAgents = array_map('trim', $agents);
         end($trimmedAgents);
         $lastKey = key($trimmedAgents);
         if ($agentsList) {
@@ -82,7 +83,7 @@ class OwsportsIntegrationModuleController {
             foreach ($trimmedAgents as $key => $value) {
 
                 $mobileAgents .= rtrim($value, ' ');
-                if($key != $lastKey) {
+                if ($key != $lastKey) {
                     $mobileAgents .= '|';
                 }
             }
