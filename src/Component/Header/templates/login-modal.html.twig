@@ -6,7 +6,7 @@
                 {# <p class="login-notification">Account details incorrect - please check</p> #}
                 <div class="login-field mb-20">
                     <input type="text" class="login-field-username input-block-level" name="username" placeholder="{{ username_placeholder }}">
-                    {% include '@app/web/images/svg/user-login.svg' %}
+                    {% include '@app/web/images/svg/user-login.svg' ignore missing %}
                 </div>
                 <div class="login-field">
                     <input type="password" class="login-field-password input-block-level password-mask-enabled" name="password" placeholder="{{ password_placeholder }}">

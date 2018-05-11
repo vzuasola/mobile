@@ -19,13 +19,6 @@ import mobileBalance from "@app/assets/script/components/balance-mobile";
 export class HeaderComponent implements ComponentInterface {
     private loader: Loader;
     private loginOrigin: HTMLElement;
-    private errorMessageBlankUsername: string;
-    private errorMessageBlankPassword: string;
-    private errorMessageBlankPassname: string;
-    private errorMessageInvalidPassname: string;
-    private errorMessageServiceNotAvailable: string;
-    private errorMessageAccountSuspended: string;
-    private errorMessageAccountLocked: string;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -41,16 +34,9 @@ export class HeaderComponent implements ComponentInterface {
         error_message_account_suspended: string,
         error_message_account_locked: string,
     }) {
-        this.errorMessageBlankUsername = attachments.error_message_blank_username;
-        this.errorMessageBlankPassword = attachments.error_message_blank_password;
-        this.errorMessageBlankPassname = attachments.error_message_blank_passname;
-        this.errorMessageInvalidPassname = attachments.error_message_invalid_passname;
-        this.errorMessageServiceNotAvailable = attachments.error_message_service_not_available;
-        this.errorMessageAccountSuspended = attachments.error_message_account_suspended;
-        this.errorMessageAccountLocked = attachments.error_message_account_locked;
-        this.bindLoginValidation();
+        this.bindLoginValidation(attachments);
         this.activateLogin(element);
-        this.bindLoginForm(element);
+        this.bindLoginForm(element, attachments);
         this.bindLogout(attachments);
         this.activatePasswordMask(element);
 
@@ -70,16 +56,9 @@ export class HeaderComponent implements ComponentInterface {
         error_message_account_suspended: string,
         error_message_account_locked: string,
     }) {
-        this.errorMessageBlankUsername = attachments.error_message_blank_username;
-        this.errorMessageBlankPassword = attachments.error_message_blank_password;
-        this.errorMessageBlankPassname = attachments.error_message_blank_passname;
-        this.errorMessageInvalidPassname = attachments.error_message_invalid_passname;
-        this.errorMessageServiceNotAvailable = attachments.error_message_service_not_available;
-        this.errorMessageAccountSuspended = attachments.error_message_account_suspended;
-        this.errorMessageAccountLocked = attachments.error_message_account_locked;
-        this.bindLoginValidation();
+        this.bindLoginValidation(attachments);
         this.activateLogin(element);
-        this.bindLoginForm(element);
+        this.bindLoginForm(element, attachments);
         this.bindLogout(attachments);
         this.activatePasswordMask(element);
         this.getBalance(element, attachments);
@@ -120,7 +99,7 @@ export class HeaderComponent implements ComponentInterface {
     /**
      * Binds the login form to send data to the login handler
      */
-    private bindLoginForm(element) {
+    private bindLoginForm(element, attachments) {
         const form: HTMLElement = element.querySelector(".login-form");
 
         utility.listen(form, "submit", (event, src) => {
@@ -160,10 +139,10 @@ export class HeaderComponent implements ComponentInterface {
                 }).fail((error) => {
                     const resp = JSON.parse(error.response);
                     const errorMessage = {
-                        401: this.errorMessageInvalidPassname,
-                        402: this.errorMessageAccountSuspended,
-                        403: this.errorMessageAccountLocked,
-                        500: this.errorMessageServiceNotAvailable,
+                        401: attachments.error_message_invalid_passname,
+                        402: attachments.error_message_account_suspended,
+                        403: attachments.error_message_account_locked,
+                        500: attachments.error_message_service_not_available,
                     };
 
                     form.querySelector(".login-error").innerHTML = errorMessage[error.status];
@@ -227,23 +206,26 @@ export class HeaderComponent implements ComponentInterface {
         });
     }
 
+    /**
+     * TODO
+     * Move this to the balance component script.ts
+     */
     private getBalance(element, attachments) {
         if (attachments.authenticated) {
             xhr({
                 url: Router.generateRoute("balance", "balances"),
                 type: "json",
             }).then((response) => {
+                // TODO
+                // why put a component specific functionality to the generic library ?
+                // put the logic of this method into the balance component also
                 mobileBalance(response.balance);
-            }).fail((error, message) => {
-              // do something
             });
-
         }
     }
 
-    private bindLoginValidation() {
+    private bindLoginValidation(attachments) {
         const mobileRules = "callback_check_mobile_format|callback_min_length|callback_max_length";
-
         const validator = new FormValidator("login-form", [{
             name: "username",
             rules: "callback_user_required|" + mobileRules,
@@ -267,6 +249,7 @@ export class HeaderComponent implements ComponentInterface {
                 let errorMessage: string;
                 let userFlag = false;
                 let passFlag = false;
+
                 for (const key in errors) {
                     if (errors.hasOwnProperty(key)) {
 
@@ -284,7 +267,7 @@ export class HeaderComponent implements ComponentInterface {
                         }
 
                         if (userFlag && passFlag) {
-                            errorMessage = this.errorMessageBlankPassname;
+                            errorMessage = attachments.error_message_blank_passname;
                         }
                     }
                 }
@@ -309,10 +292,10 @@ export class HeaderComponent implements ComponentInterface {
             return pattern.test(value);
         });
 
-        validator.setMessage("user_required", this.errorMessageBlankUsername);
-        validator.setMessage("pass_required", this.errorMessageBlankPassword);
-        validator.setMessage("min_length", this.errorMessageInvalidPassname);
-        validator.setMessage("max_length", this.errorMessageInvalidPassname);
-        validator.setMessage("check_mobile_format", this.errorMessageInvalidPassname);
+        validator.setMessage("user_required", attachments.error_message_blank_username);
+        validator.setMessage("pass_required", attachments.error_message_blank_password);
+        validator.setMessage("min_length", attachments.error_message_invalid_passname);
+        validator.setMessage("max_length", attachments.error_message_invalid_passname);
+        validator.setMessage("check_mobile_format", attachments.error_message_invalid_passname);
     }
 }
