@@ -1,9 +1,6 @@
 <header class="header">
     <div class="container clearfix">
-        {% block logoSection %}
-            {{ include('@component/Header/templates/logo.html.twig') }}
-        {% endblock %}
-
+        {{ include('@component/Header/templates/logo.html.twig') }}
         {% if is_login %}
             <div class="account-balance">
                 <a href="{{ url(cashier_link.uri) }}" target="{{ cashier_link.attributes.target }}" class="hidden">
