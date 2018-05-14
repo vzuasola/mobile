@@ -10,6 +10,9 @@ modules:
   owsports_integration:
     class: App\MobileEntry\Module\ProductIntegration\OWSports\OwsportsIntegrationModule
 
+  als_integration:
+    class: App\MobileEntry\Module\ProductIntegration\ALS\ALSIntegrationModule
+
 components:
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
