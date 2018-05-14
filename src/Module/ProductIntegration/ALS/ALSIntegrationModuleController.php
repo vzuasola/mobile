@@ -140,5 +140,4 @@ class ALSIntegrationModuleController
         // }
         return $dfbtAlsUrl;
     }
-
 }
