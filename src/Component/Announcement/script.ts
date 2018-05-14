@@ -129,8 +129,10 @@ export class AnnouncementComponent implements ComponentInterface {
                 counter++;
             }
         }
+        setTimeout (() => {
+            ComponentManager.broadcast("announcement.update.count", {count: counter});
+        }, 200);
 
-        ComponentManager.broadcast("announcement.update.count", {count: counter});
     }
 
    /**
