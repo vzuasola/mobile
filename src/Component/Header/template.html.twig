@@ -20,7 +20,7 @@
                     <div class="sk-circle10 sk-circle"></div>
                     <div class="sk-circle11 sk-circle"></div>
                     <div class="sk-circle12 sk-circle"></div>
-                  </div>
+                </div>
             </div>
         {% else %}
             <span class="mobile-action-button">
@@ -28,11 +28,9 @@
                     {{ mobile_login_reg }}
                 </a>
             </span>
-
-            {{ include('@component/Header/templates/login-modal.html.twig') }}
         {% endif %}
 
+        {{ widget('header_login') }}
         {{ widget('header_menu') }}
-        {{ widget('balance') }}
     </div>
 </header>

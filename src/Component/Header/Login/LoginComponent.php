@@ -1,10 +1,10 @@
 <?php
 
-namespace App\MobileEntry\Component\Header;
+namespace App\MobileEntry\Component\Header\Login;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
-class HeaderComponent implements ComponentWidgetInterface
+class LoginComponent implements ComponentWidgetInterface
 {
     /**
      * @var App\Fetcher\Drupal\ConfigFetcher
@@ -16,9 +16,6 @@ class HeaderComponent implements ComponentWidgetInterface
      */
     private $playerSession;
 
-
-    private $menu;
-
     /**
      *
      */
@@ -26,19 +23,17 @@ class HeaderComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('config_fetcher'),
-            $container->get('player_session'),
-            $container->get('menu_fetcher')
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession, $menu)
+    public function __construct($configs, $playerSession)
     {
         $this->configs = $configs;
         $this->playerSession = $playerSession;
-        $this->menu = $menu;
     }
 
     /**
@@ -48,7 +43,7 @@ class HeaderComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Header/template.html.twig';
+        return '@component/Header/Login/template.html.twig';
     }
 
     /**
@@ -58,38 +53,34 @@ class HeaderComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = [];
-
         try {
             $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
-            $cashierMenu = $this->menu->getMultilingualMenu('cashier-menu');
         } catch (\Exception $e) {
             $headerConfigs = [];
-            $cashierMenu = [];
         }
 
-        $data['logo_title'] = $headerConfigs['logo_title'] ?? 'Dafabet';
         $data['join_now_text'] = $headerConfigs['join_now_text'] ?? 'Join Now';
-        $data['login_issue_text'] = $headerConfigs['login_issue_text'] ?? 'Cant Login ?';
-        $data['login_issue_link'] = $headerConfigs['login_issue_link'] ?? [];
         $data['mobile_remember'] = $headerConfigs['mobile_remember'] ?? 'Remember Username';
-        $data['mobile_login_reg'] = $headerConfigs['mobile_login_reg'] ?? 'Login/Join';
-        $data['join_now_link'] = $headerConfigs['join_now_link'] ?? [];
+        $data['join_now_link'] = $headerConfigs['join_now_link'] ?? '';
+
+        try {
+            $loginConfigs = $this->configs->getConfig('webcomposer_config.login_configuration');
+        } catch (\Exception $e) {
+            $loginConfigs = [];
+        }
+
+        $data['login_bottom_label'] = $loginConfigs['login_bottom_label'] ?? 'Login';
+        $data['username_placeholder'] = $loginConfigs['username_placeholder'] ?? 'Username';
+        $data['password_placeholder'] = $loginConfigs['password_placeholder'] ?? 'Password';
+        $data['lightbox_blurb'] = $loginConfigs['lightbox_blurb'] ?? 'Not yet a Dafabet member ?';
 
         try {
             $isLogin = $this->playerSession->isLogin();
-            $username = $this->playerSession->getUsername();
         } catch (\Exception $e) {
             $isLogin = false;
-            $username = false;
         }
 
         $data['is_login'] = $isLogin;
-
-        if ($isLogin && $username) {
-            $data['username'] = $username;
-            $data['cashier_link'] = $cashierMenu[0] ?? [];
-        }
 
         return $data;
     }
