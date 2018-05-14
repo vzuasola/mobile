@@ -27,6 +27,11 @@ class MenuComponent implements ComponentWidgetInterface
     private $config;
 
     /**
+     * @var App\Fetcher\Drupal\PaymentFetcher
+     */
+    private $paymentFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -35,19 +40,21 @@ class MenuComponent implements ComponentWidgetInterface
             $container->get('player_session'),
             $container->get('views_fetcher'),
             $container->get('menu_fetcher'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('payment_account_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $menus, $config)
+    public function __construct($playerSession, $views, $menus, $config, $paymentFetcher)
     {
         $this->playerSession = $playerSession;
         $this->views = $views;
         $this->menus = $menus;
         $this->config = $config;
+        $this->paymentFetcher = $paymentFetcher;
     }
 
     /**
@@ -116,6 +123,13 @@ class MenuComponent implements ComponentWidgetInterface
             } catch (\Exception $e) {
                 $data['top_menu'] = [];
                 $data['total_balance_label'] = [];
+            }
+
+            try {
+                $data['is_provisioned'] = $this->paymentFetcher->hasAccount();
+
+            } catch (\Exception $e) {
+                $data['is_provisioned'] = false;
             }
         }
 
