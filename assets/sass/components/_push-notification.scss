@@ -58,8 +58,8 @@
         width: 2.5rem;
         height: 2.5rem;
         position: absolute;
-        top: 1rem;
-        right: 0;
+        top: 0.5rem;
+        right: 0.2rem;
         outline: none;
         border: .1rem solid #8c8c8c;
         border-radius: .4rem;
@@ -123,6 +123,15 @@
             color: $dark-gray;
             margin-bottom: 0;
         }
+    }
+
+    .no-notification {
+        position: relative;
+        border-radius: 0.5rem;
+        background: $light-gray;
+        padding: 0.6rem 1rem;
+        margin-bottom: 2.6rem;
+        color: $red;
     }
 
     &-message {
