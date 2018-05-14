@@ -58,14 +58,8 @@ export class MenuComponent implements ComponentInterface {
                     utility.removeClass(this.element.querySelector(".mobile-menu-indicator"), "hidden");
                 } else {
                     const notifCountElement = this.element.querySelector("#notification-count");
-
-                    if (notifCountElement) {
-                        const notifCount = notifCountElement.innerHTML;
-
-                        if (parseInt(notifCount, 10) <= 0) {
-                            utility.addClass(this.element.querySelector(".mobile-menu-indicator"), "hidden");
-                        }
-                    } else {
+                    const notifCount = (notifCountElement) ? parseInt(notifCountElement.innerHTML, 10) : 0;
+                    if ( notifCount <= 0) {
                         utility.addClass(this.element.querySelector(".mobile-menu-indicator"), "hidden");
                     }
                     utility.addClass(countElement, "hidden");
