@@ -48,17 +48,11 @@ class LoginComponentController
             } catch (\Exception $e) {
                 if ($e instanceof AccountLockedException) {
                     $response = $response->withStatus(403);
-                }
-
-                if ($e instanceof AccountSuspendedException) {
+                } elseif ($e instanceof AccountSuspendedException) {
                     $response = $response->withStatus(402);
-                }
-
-                if ($e->getCode() == 401) {
+                } elseif ($e->getCode() == 401) {
                     $response = $response->withStatus(401);
-                }
-
-                if ($e->getCode() == 500) {
+                } else {
                     $response = $response->withStatus(500);
                 }
 
