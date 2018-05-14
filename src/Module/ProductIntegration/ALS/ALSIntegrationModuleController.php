@@ -6,7 +6,6 @@ use App\Drupal\Config;
 use App\Cookies\Cookies;
 use App\Utils\Host;
 
-
 class ALSIntegrationModuleController
 {
     private $playerSession;
@@ -89,7 +88,7 @@ class ALSIntegrationModuleController
                     'http' => false,
                 ]);
                 break;
-            
+
             case 'destroy':
                 Cookies::set($name, $value, [
                     'expire' => time() - 3600,
@@ -120,7 +119,6 @@ class ALSIntegrationModuleController
             unset($segments[0]);
 
             $domain = implode('.', $segments);
-
         }
         return $domain;
     }
