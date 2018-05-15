@@ -1,17 +1,23 @@
 .pushnx-lightbox {
+    background: rgba(0, 0, 0, 1);
+
+    .modal-overlay {
+        background: transparent;
+    }
+
     // Content
     &-content {
         @include translate(0, 0%);
         top: 0;
-        width: 95%;
-        max-width: 95%;
+        height: 100%;
+        max-height: 95%;
+        width: 100%;
+        max-width: 100%;
         background: transparent;
-        padding: 0;
+        padding: 1.5rem;
         border: 0;
         border-radius: 0;
         margin-bottom: 0.8rem;
-        height: 100%;
-        max-height: 100%;
 
         ul {
             display: block;
@@ -50,7 +56,6 @@
             z-index: 15;
             display: block;
             content: "";
-            background: rgba(0, 0, 0, 1);
         }
     }
 
@@ -59,10 +64,10 @@
         height: 2.5rem;
         position: absolute;
         top: 0.5rem;
-        right: 0.2rem;
+        right: 1rem;
         outline: none;
-        border: .1rem solid #8c8c8c;
-        border-radius: .4rem;
+        border: 0.1rem solid #8c8c8c;
+        border-radius: 0.4rem;
         cursor: pointer;
 
         path {
