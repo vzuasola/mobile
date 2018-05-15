@@ -49,6 +49,7 @@ export class PushNotification {
             modal: {
                 enable: true, // default value true
                 control: false, // default value true
+                height: "auto", // custom height
             },
             dismiss: false, // dismiss all message - default value false
             counter: true, // message counter custom event "pushnx.count.message"
@@ -94,6 +95,7 @@ export class PushNotification {
         this.listenSessionLogin(attachments.authenticated);
         this.listenSessionLogout();
         this.socketConnected();
+        this.messageListener();
         this.listenOpenModal(attachments.authenticated);
         this.listenCloseModal();
     }
@@ -209,5 +211,25 @@ export class PushNotification {
         d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
         const expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    /**
+     * listen to number of messages and do other customization
+     */
+    private messageListener() {
+        ComponentManager.subscribe("pushnx.count.message", (event) => {
+            // validate messages
+            this.emptyMessage(event.customData.count);
+        });
+    }
+
+    private emptyMessage(ctr) {
+        const pushnx = this.element.querySelector("#push-notification");
+
+        if (ctr) {
+            utility.removeClass(pushnx, "no-notification");
+        } else {
+            utility.addClass(pushnx, "no-notification");
+        }
     }
 }
