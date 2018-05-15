@@ -42,7 +42,6 @@ class PushNotificationComponent implements ComponentWidgetInterface
     ) {
         $this->config = $config;
         $this->user = $user;
-        $this->playerDetails = false;
         $this->playerSession = $playerSession;
     }
 
@@ -66,8 +65,8 @@ class PushNotificationComponent implements ComponentWidgetInterface
         $this->pnxconfig = $this->config->getGeneralConfigById('pushnx_configuration');
 
         if ($this->playerSession->isLogin()) {
-            $this->playerDetails = $this->user->getPlayerDetails();
-            $this->playerLocale = strtolower($this->playerDetails['locale']);
+            $playerDetails = $this->user->getPlayerDetails();
+            $this->playerLocale = strtolower($playerDetails['locale']);
         }
 
         $translated = $this->parseTranslatedTexts($this->pnxconfig['translated_texts']);
