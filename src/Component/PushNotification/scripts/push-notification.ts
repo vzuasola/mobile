@@ -49,6 +49,7 @@ export class PushNotification {
             modal: {
                 enable: true, // default value true
                 control: false, // default value true
+                height: "auto", // custom height
             },
             dismiss: false, // dismiss all message - default value false
             counter: true, // message counter custom event "pushnx.count.message"
