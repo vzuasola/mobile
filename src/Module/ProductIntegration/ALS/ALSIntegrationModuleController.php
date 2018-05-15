@@ -77,27 +77,22 @@ class ALSIntegrationModuleController
     private function createCookie($action, $name, $value = '')
     {
         $domain = Host::getHostname();
-        switch ($action) {
-            case 'create':
-                Cookies::set($name, $value, [
-                    'expire' => 0,
-                    'path' => '/',
-                    'domain' => $domain,
-                    'secure' => false,
-                    'http' => false,
-                ]);
-                break;
+        $options = [
+            'path' => '/',
+            'domain' => $domain,
+            'secure' => false,
+            'http' => false,
+        ];
 
-            case 'destroy':
-                Cookies::set($name, $value, [
-                    'expire' => time() - 3600,
-                    'path' => '/',
-                    'domain' => $domain,
-                    'secure' => false,
-                    'http' => false,
-                ]);
-                break;
+        if ($action == 'create') {
+            $options['expire'] = 0;
         }
+
+        if ($action == 'destroy') {
+            $options['expire'] = time() - 3600;
+        }
+
+        Cookies::set($name, $value, $options);
     }
 
     /**
