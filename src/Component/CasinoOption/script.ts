@@ -14,10 +14,11 @@ export class CasinoOptionComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.listenCasinoOptionLightbox();
+        this.bindCasinoRadioButton();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        this.listenCasinoOptionLightbox();
+        this.bindCasinoRadioButton();
     }
 
     private listenCasinoOptionLightbox() {
@@ -28,4 +29,30 @@ export class CasinoOptionComponent implements ComponentInterface {
             }
         });
     }
+
+    private bindCasinoRadioButton() {
+        utility.delegate(document, ".casino-option", "click", (event, src) => {
+            console.log(src.value);
+            xhr({
+                url: Router.generateRoute("casino_option", "preference"),
+                type: "json",
+                method: "post",
+                data: {
+                    preferred_casino: src.value,
+                },
+            }).then((response) => {
+                if (response.casino_url) {
+                    if (utility.isExternal(response.casino_url)) {
+                        window.location.href = response.casino_url;
+                    } else {
+                        Router.navigate(response.casino_url, ["header", "main"]);
+                    }
+                }
+            }).fail((error, message) => {
+                // do something
+            });
+        }, true);
+
+    }
+
 }
