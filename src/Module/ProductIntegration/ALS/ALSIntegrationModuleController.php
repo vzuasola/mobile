@@ -149,9 +149,8 @@ class ALSIntegrationModuleController
 
             Cookies::set('extToken', $result['jwt'], $options);
             Cookies::set('extCurrency', $playerDetails['currency'], $options);
-
         } catch (\Exception $e) {
-
+            // Do nothing
         }
     }
 }

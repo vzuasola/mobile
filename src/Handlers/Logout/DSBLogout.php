@@ -24,7 +24,7 @@ class DSBLogout
             Cookies::remove('extToken', $options);
             Cookies::remove('extCurrency', $options);
         } catch (\Exception $e) {
-
+            // Do nothing
         }
     }
 }
