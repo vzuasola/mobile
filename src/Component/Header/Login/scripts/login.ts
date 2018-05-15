@@ -95,6 +95,8 @@ export class Login {
                         () => {
                             ComponentManager.broadcast("session.login", {
                                 src: this.srcElement,
+                                username,
+                                password,
                             });
 
                             this.loader.hide();
