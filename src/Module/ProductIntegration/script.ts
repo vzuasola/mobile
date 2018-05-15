@@ -1,26 +1,25 @@
 import * as utility from "@core/assets/js/components/utility";
-
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
+import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
-
 export class ProductIntegrationModule implements ModuleInterface {
-
     onLoad(attachments: {}) {
         this.bindToLogin();
         this.bindLaunchProduct();
     }
 
     private bindToLogin() {
-        ComponentManager.subscribe("session.login", (event, target, data) => {
-            if (data) {
+        ComponentManager.subscribe("session.login", (event, target, data: any) => {
+            if (data && typeof data.src !== "undefined") {
                 event.preventDefault();
-                const el = utility.hasClass(data, "product-integration", true);
+                const el = utility.hasClass(data.src, "product-integration", true);
+
                 if (el) {
-                    let product = data.getAttribute("product-id");
+                    let product = data.src.getAttribute("product-id");
                     product = product.replace("product-", "");
+
                     this.getProductLink(product);
                 }
             }
@@ -30,10 +29,12 @@ export class ProductIntegrationModule implements ModuleInterface {
     private bindLaunchProduct() {
         ComponentManager.subscribe("click", (event, target, data) => {
             const el = utility.hasClass(target, "product-integration", true);
+
             if (el) {
                 event.preventDefault();
                 let product = el.getAttribute("product-id");
                 product = product.replace("product-", "");
+
                 this.getProductLink(product);
             }
         });

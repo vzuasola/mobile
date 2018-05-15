@@ -179,15 +179,17 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
      */
     private function getConfigByPlayerLocale($index)
     {
-        $map = array_map('trim', explode(PHP_EOL, $this->pnxconfig[$index]));
-        foreach ($map as $value) {
-            list($lang, $text) = explode('|', $value);
-            if (strtolower($lang) == $this->playerLocale) {
-                return $text;
-            }
-            // Fallback for empty locale
-            if (!$this->playerLocale) {
-                return $text;
+        if (isset($this->pnxconfig[$index])) {
+            $map = array_map('trim', explode(PHP_EOL, $this->pnxconfig[$index]));
+            foreach ($map as $value) {
+                list($lang, $text) = explode('|', $value);
+                if (strtolower($lang) == $this->playerLocale) {
+                    return $text;
+                }
+                // Fallback for empty locale
+                if (!$this->playerLocale) {
+                    return $text;
+                }
             }
         }
     }

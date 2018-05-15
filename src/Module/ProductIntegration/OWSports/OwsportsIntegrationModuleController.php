@@ -59,12 +59,14 @@ class OwsportsIntegrationModuleController
 
     /**
      * Return iwap / ismart url
-     * @param  string $host
-     * @param  string $agentsList
-     * @param  string $userAgent
-     * @param  string $ismart
-     * @param  string $iwap
-     * @param  string $urlParams
+     *
+     * @param string $host
+     * @param string $agentsList
+     * @param string $userAgent
+     * @param string $ismart
+     * @param string $iwap
+     * @param string $urlParams
+     *
      * @return string
      */
     private function getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $urlParams)

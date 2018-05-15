@@ -1,8 +1,11 @@
-# Component list
+# Component listModule
 
 modules:
   session:
     class: App\MobileEntry\Module\Session\SessionModule
+
+  balance:
+    class: App\MobileEntry\Module\Balance\BalanceModule
 
   product_integration:
     class: App\MobileEntry\Module\ProductIntegration\ProductIntegrationModule
@@ -19,6 +22,10 @@ components:
   
   header_menu:
     class: App\MobileEntry\Component\Header\Menu\MenuComponent
+    parent: header
+
+  header_login:
+    class: App\MobileEntry\Component\Header\Login\LoginComponent
     parent: header
 
   footer:
@@ -46,10 +53,6 @@ components:
   home_products:
     class: App\MobileEntry\Component\Main\Home\Products\ProductsComponent
     parent: home
-
-  balance:
-    class: App\MobileEntry\Component\Header\Balance\BalanceComponent
-    parent: header
 
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent

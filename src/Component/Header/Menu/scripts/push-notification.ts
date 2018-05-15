@@ -76,10 +76,14 @@ export class PushNotification {
     }
 
     /**
-     * Hide indicator after pushnx modal has opened
+     * Hide indicator
      */
     private hideIndicator(element) {
+        const announcementCount = element.querySelector("#announcement-count");
         const indicator = element.querySelector(".mobile-menu-indicator");
-        utility.addClass(indicator, "hidden");
+
+        if (this.count <= 0 && announcementCount.innerHTML <= 0) {
+            utility.addClass(indicator, "hidden");
+        }
     }
 }
