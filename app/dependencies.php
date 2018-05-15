@@ -19,7 +19,7 @@ $container['cookie_service'] = function ($c) {
         'base_uri' => "$hostname:50982",
     ]);
 
-    return new \App\MobileEntry\Module\ProductIntegration\ALS\Cookie(
+    return new \App\MobileEntry\Services\CookieService\CookieService(
         $client,
         $c->get('logger')
     );

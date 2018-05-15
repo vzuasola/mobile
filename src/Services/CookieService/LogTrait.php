@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Module\ProductIntegration\ALS;
+namespace App\MobileEntry\Services\CookieService;
 
 /**
  * Trait for logging cookie service

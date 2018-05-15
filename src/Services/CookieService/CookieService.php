@@ -1,18 +1,18 @@
 <?php
 
-namespace App\MobileEntry\Module\ProductIntegration\ALS;
+namespace App\MobileEntry\Services\CookieService;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\ClientException;
-use App\MobileEntry\Module\ProductIntegration\ALS\LogTrait;
+use App\MobileEntry\Services\CookieService\LogTrait;
 
 /**
  * Cookie Service
  */
-class Cookie
+class CookieService
 {
     use LogTrait;
 
