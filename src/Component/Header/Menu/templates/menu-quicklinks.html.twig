@@ -38,7 +38,7 @@
     <ul class="icon-thumbnail clearfix">
         {% for menu in quicklinks %}
             {% if (not is_login and 'quicklinks-notification' in menu.attributes.class) %}
-            {% elseif (is_login and not is_provisioned and 
+            {% elseif ((not is_login or (is_login and not is_provisioned)) and 
             'quicklinks-settings' in menu.attributes.class) %}
             {% else %}
             <li class="icon-thumbnail-item">

@@ -29,7 +29,7 @@ class MenuComponent implements ComponentWidgetInterface
     /**
      * @var App\Fetcher\Drupal\PaymentFetcher
      */
-    private $paymentFetcher;
+    private $paymentAccount;
 
     /**
      *
@@ -48,13 +48,13 @@ class MenuComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $menus, $config, $paymentFetcher)
+    public function __construct($playerSession, $views, $menus, $config, $paymentAccount)
     {
         $this->playerSession = $playerSession;
         $this->views = $views;
         $this->menus = $menus;
         $this->config = $config;
-        $this->paymentFetcher = $paymentFetcher;
+        $this->paymentAccount = $paymentAccount;
     }
 
     /**
@@ -122,12 +122,11 @@ class MenuComponent implements ComponentWidgetInterface
                 $data['top_menu'] = $this->menus->getMultilingualMenu('mobile-post-login');
             } catch (\Exception $e) {
                 $data['top_menu'] = [];
-                $data['total_balance_label'] = [];
+                $data['total_balance_label'] = '';
             }
 
             try {
-                $data['is_provisioned'] = $this->paymentFetcher->hasAccount();
-                // ddd($this->paymentFetcher->hasAccount());
+                $data['is_provisioned'] = $this->paymentAccount->hasAccount('casino-gold');
 
             } catch (\Exception $e) {
                 $data['is_provisioned'] = false;
