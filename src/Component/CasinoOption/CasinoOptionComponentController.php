@@ -40,39 +40,71 @@ class CasinoOptionComponentController
     {
         $data = [];
 
-        try {
-            $body = $request->getParsedBody();
+        if ($this->playerSession->isLogin()) {
+            try {
+                $body = $request->getParsedBody();
 
-            if (!empty($body['preferred_casino'])) {
-                $this->preferences->savePreference('casino.preferred', $body['preferred_casino']);
-                $data['casino_url'] = $this->getCasinoConfig($body['preferred_casino']);
-                $data['casino_url'] = $this->getCasinoUrl($preferences['casino.preferred']);
+                if (!empty($body['product'])) {
+                    $this->preferences->savePreference('casino.preferred', $body['product']);
+                    $data['casino_url'] = $this->getCasinoUrl($body['product']);
 
-                return $this->rest->output($response, $data);
+                    return $this->rest->output($response, $data);
 
-            } else {
-                $preferences = $this->preferences->getPreferences();
-                $data['casino_url'] = $this->getCasinoUrl($preferences['casino.preferred']);
+                } else {
+                    $preferences = $this->preferences->getPreferences();
+
+                    if (!empty($preferences['casino.preferred'])) {
+                        $data['casino_url'] = $this->getCasinoUrl($preferences['casino.preferred']);
+                        
+                    } else {
+                        $data['casino_url'] = '';
+                    }
+
+                    return $this->rest->output($response, $data);
+                }
+
+            } catch (\Exception $e) {
+                $data['casino_url'] = '';
             }
-
-        } catch (\Exception $e) {
-            
         }
-        
+
+        return $data['casino_url'] = '';
+    }
+
+    public function get_preference($request, $response)
+    {
+        $data = [];
+
+        if ($this->playerSession->isLogin()) {
+            try {
+                $preferences = $this->preferences->getPreferences();
+                if (!empty($preferences['casino.preferred'])) {
+                    $data['casino_url'] = $this->getCasinoUrl($preferences['casino.preferred']);
+                    return $response->withStatus(200)->withHeader('Location', $data['casino_url']);
+                } else {
+                    $data['casino_url'] = '';
+                    return $this->rest->output($response, $data);
+                }
+
+            } catch (\Exception $e) {
+                $data['casino_url'] = '';
+            }
+        }
+
+        return $data['casino_url'] = '';
     }
 
     private function getCasinoUrl($product)
     {
-
         try {
-            $casinoConfigs = $this->config->getConfig('mobile_casino.casino_configuration');
+            $casinoConfigs = $this->configs->getConfig('mobile_casino.casino_configuration');
 
-            $casinoConfig['url'] = ($product == 'casino_gold') ? $casinoConfigs['casino_gold_url'] 
+            $casinoUrl = ($product == 'casino_gold') ? $casinoConfigs['casino_gold_url'] 
                 : $casinoConfigs['casino_url'];
         } catch (\Exception $e) {
-            $casinoConfig['url'] = '';
+            $casinoUrl = '';
         }
 
-        return $casinoConfig;
+        return $casinoUrl;
     }
 }

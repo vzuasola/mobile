@@ -15,6 +15,7 @@ class CasinoOptionComponent implements ComponentWidgetInterface
      * @var App\Player\PlayerSession
      */
     private $playerSession;
+    private $preferences;
 
     /**
      *
@@ -22,16 +23,18 @@ class CasinoOptionComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('preferences_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs)
+    public function __construct($configs, $preferences)
     {
         $this->configs = $configs;
+        $this->preferences = $preferences;
     }
     /**
      * Defines the template path
@@ -53,7 +56,13 @@ class CasinoOptionComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
+            $data['preferred'] = '';
             $casinoConfigs = $this->configs->getConfig('mobile_casino.casino_configuration');
+            $preferredCasino = $this->preferences->getPreferences();
+
+            if ($preferredCasino['casino.preferred']) {
+                $data['preferred'] = $preferredCasino['casino.preferred'];
+            }
 
             $data['title'] = $casinoConfigs['title'];
         } catch (\Exception $e) {

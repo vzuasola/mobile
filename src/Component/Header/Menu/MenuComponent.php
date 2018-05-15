@@ -127,7 +127,6 @@ class MenuComponent implements ComponentWidgetInterface
 
             try {
                 $data['is_provisioned'] = $this->paymentAccount->hasAccount('casino-gold');
-
             } catch (\Exception $e) {
                 $data['is_provisioned'] = false;
             }
