@@ -10,7 +10,6 @@ class ALSIntegrationModuleController
 {
     private $playerSession;
     private $config;
-    private $rest;
 
     /**
      *
@@ -19,19 +18,17 @@ class ALSIntegrationModuleController
     {
         return new static(
             $container->get('player_session'),
-            $container->get('config_fetcher'),
-            $container->get('rest')
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $rest)
+    public function __construct($playerSession, $config)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
-        $this->rest = $rest;
     }
 
     public function integrate($request, $response)
@@ -47,6 +44,8 @@ class ALSIntegrationModuleController
         try {
             $alsConfig = $this->config
                     ->getConfig('mobile_als.als_configuration');
+
+            $alsEnableDomain = $alsConfig['als_enable_domain'] ?? false;
             $alsUrl = $alsConfig['als_url'] ?? '';
             $alsCookiesPre = $alsConfig['als_cookie_url_pre'] ?? '';
             $alsCookiesPost = '';
@@ -58,7 +57,7 @@ class ALSIntegrationModuleController
         } catch (\Exception $e) {
             $data['lobby_url'] = '';
         }
-        return $response->withStatus(200)->withHeader('Location', $this->generateLobby($alsUrl));
+        return $response->withStatus(200)->withHeader('Location', $this->generateLobby($alsUrl, $alsEnableDomain));
     }
 
 
@@ -77,7 +76,7 @@ class ALSIntegrationModuleController
      */
     private function createCookie($action, $name, $value = '')
     {
-        $domain = $this->alsDomain();
+        $domain = Host::getHostname();
         switch ($action) {
             case 'create':
                 Cookies::set($name, $value, [
@@ -102,42 +101,18 @@ class ALSIntegrationModuleController
     }
 
     /**
-     * Function to get domain of the base url
-     */
-    private function alsDomain($url = '')
-    {
-        $baseUrl = Host::getDomain();
-        $domain = '';
-        $path = empty($url) ? $baseUrl : $url;
-        $parts = parse_url($path);
-        if (isset($parts['host']) && !empty($parts['host'])) {
-            $segments = explode('.', $parts['host']);
-            if (count($segments) < 2) {
-                return $parts['host'];
-            }
-            // Remove the subdomain
-            unset($segments[0]);
-
-            $domain = implode('.', $segments);
-        }
-        return $domain;
-    }
-
-    /**
      * Function to generate ALS domain base on the site domain
      */
-    private function generateLobby($alsUrl)
+    private function generateLobby($alsUrl, $alsEnableDomain)
     {
-        $dfbtAlsUrl = $alsUrl;
-
-        // if (variable_get('als_integration_domain_mapping', 1)) {
-        //     $als_domain = $this->alsDomain($dfbtAlsUrl);
-        //     $website_domain = $this->alsDomain();
-        //     if ($als_domain == $website_domain) {
-        //         return $dfbtAlsUrl;
-        //     }
-        //     return str_replace($als_domain, $website_domain, $dfbtAlsUrl);
-        // }
-        return $dfbtAlsUrl;
+        if ($alsEnableDomain) {
+            $alsDomain = Host::getDomainFromUri($alsUrl);
+            $websiteDomain = Host::getHostname();
+            if ($alsDomain == $websiteDomain) {
+                return $alsUrl;
+            }
+            return str_replace($alsDomain, $websiteDomain, $alsUrl);
+        }
+        return $alsUrl;
     }
 }
