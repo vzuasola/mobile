@@ -78,7 +78,7 @@ class OwsportsIntegrationModuleController
 
         // Retrieve the Top-level domain of a 3 or more level domain (e.g. www.domain.com)
         $tld = substr($host, stripos($host, '.') + 1);
-        $integrationUrl = $iwap ?? "http://ismart.$tld/Deposit_ProcessLogin.aspx";
+        $integrationUrl = $ismart ?? "http://ismart.$tld/Deposit_ProcessLogin.aspx";
 
         // Check user agents
         if (preg_match($mobileAgents, $userAgent)) {
