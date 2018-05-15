@@ -8,3 +8,6 @@ subscribers:
     arguments: [username, password]
     hooks:
       - App\Handlers\Login\LegacyAuthentication
+  logout:
+    hooks:
+      - App\MobileEntry\Handlers\Logout\DSBLogout
