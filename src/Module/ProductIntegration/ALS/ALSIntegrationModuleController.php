@@ -10,6 +10,7 @@ class ALSIntegrationModuleController
 {
     private $playerSession;
     private $config;
+    private $cookieService;
 
     /**
      *
@@ -18,23 +19,26 @@ class ALSIntegrationModuleController
     {
         return new static(
             $container->get('player_session'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('cookie_service')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config)
+    public function __construct($playerSession, $config, $cookieService)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
+        $this->cookieService = $cookieService;
     }
 
     public function integrate($request, $response)
     {
         $data = [];
         $alsUrl = '';
+
         try {
             $isLogin = $this->playerSession->isLogin();
         } catch (\Exception $e) {
@@ -53,21 +57,31 @@ class ALSIntegrationModuleController
                 $alsCookiesPost = $alsConfig['als_cookie_url_post'] ?? '';
             }
             $alsCookies = $alsCookiesPre . $alsCookiesPost;
-            $this->setCookie($alsCookies);
+            $this->setCookie($alsCookies, $isLogin);
         } catch (\Exception $e) {
             $data['lobby_url'] = '';
         }
+
         return $response->withStatus(200)->withHeader('Location', $this->generateLobby($alsUrl, $alsEnableDomain));
     }
 
 
-    private function setCookie($cookies)
+    private function setCookie($cookies, $isLogin)
     {
         if ($cookies) {
             $cookies = Config::Parse($cookies);
             foreach ($cookies as $key => $value) {
                 $this->createCookie('create', 'dafaUrl[' . $key . ']', $value);
             }
+        }
+
+        if (!$isLogin) {
+            $this->createCookie('destroy', 'extToken');
+            $this->createCookie('destroy', 'extCurrency');
+        }
+
+        if ($isLogin) {
+            $this->dsbLogin();
         }
     }
 
@@ -109,5 +123,34 @@ class ALSIntegrationModuleController
             return str_replace($alsDomain, $websiteDomain, $alsUrl);
         }
         return $alsUrl;
+    }
+
+    /**
+     * Share session JWT via cookie
+     */
+    private function dsbLogin()
+    {
+        try {
+            $playerDetails = $this->playerSession->getDetails();
+
+            $result = $this->cookieService->cut([
+                'username' => $playerDetails['username'],
+                'playerId' => $playerDetails['playerId'],
+                'sessionToken' => $this->playerSession->getToken(),
+            ]);
+
+            $options = [
+                'expire' => 0,
+                'path' => '/',
+                'domain' => Host::getDomain(),
+                'secure' => false,
+                'http' => false, // They need to read the cookie via javascript.
+            ];
+
+            Cookies::set('extToken', $result['jwt'], $options);
+            Cookies::set('extCurrency', $playerDetails['currency'], $options);
+        } catch (\Exception $e) {
+            // Do nothing
+        }
     }
 }
