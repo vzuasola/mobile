@@ -62,6 +62,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
         // Before login, check if there are cookies on PTs end
         iapiSetCallout("GetLoggedInPlayer", (response) => {
+
             if (this.verifyCookie(response)) {
                 iapiSetCallout("Logout", (resp) => {
                     iapiLogin(username, password, real, language);
@@ -134,7 +135,7 @@ export class PASModule implements ModuleInterface, GameInterface {
      * IMS default session timeout is configured to 30mins
      */
     private doKeepAlive() {
-        iapiSetCallout("GetLoggedInPlayer", function(response) {
+        iapiSetCallout("GetLoggedInPlayer", (response) => {
             if (this.verifyCookie(response)) {
                 iapiKeepAlive(1, this.keepSessionTime);
             }
@@ -167,7 +168,7 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Logs out the PAS session
      */
     private doLogout() {
-        iapiSetCallout("GetLoggedInPlayer", function(response) {
+        iapiSetCallout("GetLoggedInPlayer", (response) => {
             // Remove the session flag to avoid recurring calls
             this.store.remove(this.sessionFlag);
             if (this.verifyCookie(response)) {
@@ -196,7 +197,8 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Callback on login process
      */
     private onLogin(username) {
-        return function(response) {
+        return (response) => {
+
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
                 this.store.set(this.sessionFlag, "1");
