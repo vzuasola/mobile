@@ -10,9 +10,11 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
+
+import {GameInterface} from "./../scripts/game.interface";
+
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-import {GameInterface} from "@app/assets/script/game/game.interface";
 import Storage from "@core/assets/js/components/utils/storage";
 
 export class PASModule implements ModuleInterface, GameInterface {
@@ -28,8 +30,14 @@ export class PASModule implements ModuleInterface, GameInterface {
     private languageMap: any;
     private store = new Storage();
 
-    onLoad(attachments: {}) {
-        //
+    onLoad(attachments: {authenticated: boolean,
+        iapiconfOverride: {},
+        lang: string,
+        langguageMap: {[name: string]: string}}) {
+        this.isSessionAlive = attachments.authenticated;
+        this.iapiconfOverride = attachments.iapiconfOverride;
+        this.lang = attachments.lang;
+        this.languageMap = attachments.langguageMap;
     }
 
     init() {
