@@ -30,30 +30,33 @@ class OwsportsIntegrationModuleController
         $this->rest = $rest;
     }
 
+    /**
+     *
+     */
     public function integrate($request, $response)
     {
         $data = [];
-        try {
-            $isLogin = $this->playerSession->isLogin();
-        } catch (\Exception $e) {
-            $isLogin = false;
-        }
 
         try {
-            if ($isLogin) {
-                $owsportsConfig = $this->config
-                    ->getConfig('mobile_owsports.owsports_configuration');
-                $host = $request->getHeader('host')[0] ?? '';
-                $userAgent = $request->getHeader('user-agent')[0] ?? '';
-                $agentsList = $owsportsConfig['iwap_agents'] ?? '';
-                $ismart = $owsportsConfig['smart_wap'] ?? '';
-                $iwap = $owsportsConfig['iwap'] ?? '';
-                $owParams = $owsportsConfig['owsports_param'] ?? '';
-                $data['lobby_url'] = $this->getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $owParams);
-            }
+            $isLogin = $this->playerSession->isLogin();
+            $owsportsConfig = $this->config->getConfig('mobile_owsports.owsports_configuration');
         } catch (\Exception $e) {
-            $data['lobby_url'] = '';
+            $isLogin = false;
+            $owsportsConfig = [];
         }
+
+        if ($isLogin) {
+            $host = $request->getHeader('host')[0] ?? '';
+            $userAgent = $request->getHeader('user-agent')[0] ?? '';
+
+            $agentsList = $owsportsConfig['iwap_agents'] ?? '';
+            $ismart = $owsportsConfig['smart_wap'] ?? '';
+            $iwap = $owsportsConfig['iwap'] ?? '';
+            $owParams = $owsportsConfig['owsports_param'] ?? '';
+
+            $data['lobby_url'] = $this->getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $owParams);
+        }
+
         return $this->rest->output($response, $data);
     }
 
@@ -74,34 +77,43 @@ class OwsportsIntegrationModuleController
         $mobileAgents = $this->createAgentfromList($agentsList);
 
         // Retrieve the Top-level domain of a 3 or more level domain (e.g. www.domain.com)
-        $tld = substr($host, stripos($host, '.')+1);
-        $integrationUrl = $ismart ?? 'http://ismart.' . $tld . '/Deposit_ProcessLogin.aspx';
+        $tld = substr($host, stripos($host, '.') + 1);
+        $integrationUrl = $ismart ?? "http://ismart.$tld/Deposit_ProcessLogin.aspx";
 
         // Check user agents
         if (preg_match($mobileAgents, $userAgent)) {
-            $integrationUrl = $iwap ?? 'http://iwap.' . $tld . '/Deposit_ProcessLogin.aspx';
+            $integrationUrl = $iwap ?? "http://iwap.$tld/Deposit_ProcessLogin.aspx";
         }
+
         return $integrationUrl . $urlParams;
     }
 
+    /**
+     *
+     */
     private function createAgentfromList($agentsList)
     {
         $agents = explode(PHP_EOL, $agentsList);
         $trimmedAgents = array_map('trim', $agents);
         end($trimmedAgents);
         $lastKey = key($trimmedAgents);
+
         if ($agentsList) {
             $mobileAgents = '!(';
+
             foreach ($trimmedAgents as $key => $value) {
                 $mobileAgents .= rtrim($value, ' ');
+
                 if ($key != $lastKey) {
                     $mobileAgents .= '|';
                 }
             }
+
             $mobileAgents .= ')!i';
         } else {
             $mobileAgents = '!(windows|blackberry|symbian|symbianOS)!i';
         }
+
         return $mobileAgents;
     }
 }

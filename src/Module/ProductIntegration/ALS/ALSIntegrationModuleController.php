@@ -34,11 +34,11 @@ class ALSIntegrationModuleController
         $this->cookieService = $cookieService;
     }
 
+    /**
+     *
+     */
     public function integrate($request, $response)
     {
-        $data = [];
-        $alsUrl = '';
-
         try {
             $isLogin = $this->playerSession->isLogin();
         } catch (\Exception $e) {
@@ -46,56 +46,74 @@ class ALSIntegrationModuleController
         }
 
         try {
-            $alsConfig = $this->config
-                    ->getConfig('mobile_als.als_configuration');
-
-            $alsEnableDomain = $alsConfig['als_enable_domain'] ?? false;
-            $alsUrl = $alsConfig['als_url'] ?? '';
-            $alsCookiesPre = $alsConfig['als_cookie_url_pre'] ?? '';
-            $alsCookiesPost = '';
-            if ($isLogin) {
-                $alsCookiesPost = $alsConfig['als_cookie_url_post'] ?? '';
-            }
-            $alsCookies = $alsCookiesPre . $alsCookiesPost;
-            $this->setCookie($alsCookies, $isLogin);
+            $alsConfig = $this->config->getConfig('mobile_als.als_configuration');
         } catch (\Exception $e) {
-            $data['lobby_url'] = '';
+            $alsConfig = [];
         }
 
-        return $response->withStatus(200)->withHeader('Location', $this->generateLobby($alsUrl, $alsEnableDomain));
+        $enableDomain = $alsConfig['als_enable_domain'] ?? false;
+        $url = $alsConfig['als_url'] ?? '';
+        $cookies = $alsConfig['als_cookie_url_pre'] ?? '';
+
+        if ($isLogin) {
+            $cookies = $cookies . $alsConfig['als_cookie_url_post'] ?? '';
+        }
+
+        $this->setCookie($alsCookies, $isLogin);
+
+        $lobby = $this->generateLobby($url, $enableDomain);
+
+        return $response->withStatus(200)->withHeader('Location', $lobby);
     }
 
+    /**
+     * Function to generate ALS domain base on the site domain
+     */
+    private function generateLobby($url, $enableDomain)
+    {
+        if ($enableDomain) {
+            $domain = Host::getDomainFromUri($url);
+            $hostname = Host::getDomain();
 
+            if ($domain !== $hostname) {
+                $url = str_replace($domain, $hostname, $url);
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     *
+     */
     private function setCookie($cookies, $isLogin)
     {
         if ($cookies) {
-            $cookies = Config::Parse($cookies);
-            foreach ($cookies as $key => $value) {
-                $this->createCookie('create', 'dafaUrl[' . $key . ']', $value);
-            }
-        }
+            $cookies = Config::parse($cookies);
 
-        if (!$isLogin) {
-            $this->createCookie('destroy', 'extToken');
-            $this->createCookie('destroy', 'extCurrency');
+            foreach ($cookies as $key => $value) {
+                $this->createCookie('create', "dafaUrl[$key]", $value);
+            }
         }
 
         if ($isLogin) {
             $this->dsbLogin();
+        } else {
+            $this->createCookie('destroy', 'extToken');
+            $this->createCookie('destroy', 'extCurrency');
         }
     }
 
     /**
-     * Helper function for creating or destroying a cookie.
+     * Helper function for creating or destroying a cookie
      */
     private function createCookie($action, $name, $value = '')
     {
         $domain = Host::getDomain();
+
         $options = [
             'path' => '/',
             'domain' => $domain,
-            'secure' => false,
-            'http' => false,
         ];
 
         if ($action == 'create') {
@@ -110,47 +128,32 @@ class ALSIntegrationModuleController
     }
 
     /**
-     * Function to generate ALS domain base on the site domain
-     */
-    private function generateLobby($alsUrl, $alsEnableDomain)
-    {
-        if ($alsEnableDomain) {
-            $alsDomain = Host::getDomainFromUri($alsUrl);
-            $websiteDomain = Host::getDomain();
-            if ($alsDomain == $websiteDomain) {
-                return $alsUrl;
-            }
-            return str_replace($alsDomain, $websiteDomain, $alsUrl);
-        }
-        return $alsUrl;
-    }
-
-    /**
      * Share session JWT via cookie
      */
     private function dsbLogin()
     {
         try {
             $playerDetails = $this->playerSession->getDetails();
+            $token = $this->playerSession->getToken();
+        } catch (\Exception $e) {
+            $playerDetails = [];
+            $token = false;
+        }
 
+        if ($playerDetails && $token) {
             $result = $this->cookieService->cut([
                 'username' => $playerDetails['username'],
                 'playerId' => $playerDetails['playerId'],
-                'sessionToken' => $this->playerSession->getToken(),
+                'sessionToken' => $token,
             ]);
 
             $options = [
-                'expire' => 0,
                 'path' => '/',
                 'domain' => Host::getDomain(),
-                'secure' => false,
-                'http' => false, // They need to read the cookie via javascript.
             ];
 
             Cookies::set('extToken', $result['jwt'], $options);
             Cookies::set('extCurrency', $playerDetails['currency'], $options);
-        } catch (\Exception $e) {
-            // Do nothing
         }
     }
 }

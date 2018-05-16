@@ -11,7 +11,8 @@
         "no-empty": [true, "allow-empty-catch"],
         "object-literal-sort-keys": false,
         "interface-name": false,
-        "no-console": false
+        "no-console": false,
+        "only-arrow-functions": true
     },
     "rulesDirectory": [],
     "linterOptions": {
