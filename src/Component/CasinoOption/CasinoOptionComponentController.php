@@ -11,6 +11,7 @@ class CasinoOptionComponentController
     private $preferences;
     private $rest;
     private $configs;
+    private $paymentAccount;
 
     /**
      *
@@ -21,77 +22,62 @@ class CasinoOptionComponentController
             $container->get('player_session'),
             $container->get('preferences_fetcher'),
             $container->get('rest'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('payment_account_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $preferences, $rest, $configs)
+    public function __construct($playerSession, $preferences, $rest, $configs, $paymentAccount)
     {
         $this->playerSession = $playerSession;
         $this->preferences = $preferences;
         $this->rest = $rest;
         $this->configs = $configs;
+        $this->paymentAccount = $paymentAccount;
     }
 
     public function preference($request, $response)
     {
-        $data = [];
+        $data['success'] = false;
 
         if ($this->playerSession->isLogin()) {
+            $data['success'] = true;
+
             try {
-                $body = $request->getParsedBody();
+                $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
+            } catch (\Exception $e) {
+                $isProvisioned = false;
+            }
 
-                if (!empty($body['product'])) {
-                    $this->preferences->savePreference('casino.preferred', $body['product']);
-                    $data['casino_url'] = $this->getCasinoUrl($body['product']);
+            if ($isProvisioned) {
+                try {
+                    $body = $request->getParsedBody();
 
-                    return $this->rest->output($response, $data);
-
-                } else {
-                    $preferences = $this->preferences->getPreferences();
-
-                    if (!empty($preferences['casino.preferred'])) {
-                        $data['casino_url'] = $this->getCasinoUrl($preferences['casino.preferred']);
-                        
+                    if (!empty($body['product'])) {
+                        $this->preferences->savePreference('casino.preferred', $body['product']);
+                        $data['lobby_url'] = $this->getCasinoUrl($body['product']);
                     } else {
-                        $data['casino_url'] = '';
+                        $preferences = $this->preferences->getPreferences();
+
+                        if (!empty($preferences['casino.preferred'])) {
+                            $data['lobby_url'] = $this->getCasinoUrl($preferences['casino.preferred']);
+                            $this->preferences->removePreference(['casino.preferred']);
+                        } else {
+                            $data['lobby_url'] = '';
+                        }
                     }
-
-                    return $this->rest->output($response, $data);
+                } catch (\Exception $e) {
+                    $data['lobby_url'] = '';
                 }
-
-            } catch (\Exception $e) {
-                $data['casino_url'] = '';
+            } else {
+                $data['lobby_url'] = $this->getCasinoUrl('casino');
             }
         }
 
-        return $data['casino_url'] = '';
-    }
-
-    public function get_preference($request, $response)
-    {
-        $data = [];
-
-        if ($this->playerSession->isLogin()) {
-            try {
-                $preferences = $this->preferences->getPreferences();
-                if (!empty($preferences['casino.preferred'])) {
-                    $data['casino_url'] = $this->getCasinoUrl($preferences['casino.preferred']);
-                    return $response->withStatus(200)->withHeader('Location', $data['casino_url']);
-                } else {
-                    $data['casino_url'] = '';
-                    return $this->rest->output($response, $data);
-                }
-
-            } catch (\Exception $e) {
-                $data['casino_url'] = '';
-            }
-        }
-
-        return $data['casino_url'] = '';
+        return $this->rest->output($response, $data);;
     }
 
     private function getCasinoUrl($product)
