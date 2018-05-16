@@ -18,7 +18,7 @@ export class GameIntegrationModule implements ModuleInterface {
     }
     onLoad(attachments: {}) {
         const pas: any = ComponentManager.getModuleInstance("pas_integration");
-        console.log(pas);
+
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.init();
     }
