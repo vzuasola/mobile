@@ -12,7 +12,7 @@
         "object-literal-sort-keys": false,
         "interface-name": false,
         "no-console": false,
-        "only-arrow-functions": true
+        "only-arrow-functions": [true, "allow-declarations", "allow-named-functions"]
     },
     "rulesDirectory": [],
     "linterOptions": {
