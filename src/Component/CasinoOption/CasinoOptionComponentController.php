@@ -7,10 +7,25 @@ namespace App\MobileEntry\Component\CasinoOption;
  */
 class CasinoOptionComponentController
 {
-    private $playerSession;
-    private $preferences;
     private $rest;
+    /**
+     * @var App\Player\PlayerSession
+     */
+    private $playerSession;
+
+    /**
+     * @var App\Fetcher\Integration\PreferencesFetcher
+     */
+    private $preferences;
+
+    /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
     private $configs;
+
+    /**
+     * @var App\Fetcher\Integration\PaymentAccountFetcher
+     */
     private $paymentAccount;
 
     /**

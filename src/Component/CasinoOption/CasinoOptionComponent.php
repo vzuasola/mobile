@@ -12,9 +12,8 @@ class CasinoOptionComponent implements ComponentWidgetInterface
     private $configs;
 
     /**
-     * @var App\Player\PlayerSession
+     * @var \App\Fetcher\Integration\PreferencesFetcher
      */
-    private $playerSession;
     private $preferences;
 
     /**
@@ -36,6 +35,7 @@ class CasinoOptionComponent implements ComponentWidgetInterface
         $this->configs = $configs;
         $this->preferences = $preferences;
     }
+
     /**
      * Defines the template path
      *

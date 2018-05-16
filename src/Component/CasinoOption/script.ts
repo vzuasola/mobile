@@ -27,7 +27,6 @@ export class CasinoOptionComponent implements ComponentInterface {
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
-        this.bindToLogin();
         this.bindCasinoOptionLink(element);
     }
 
