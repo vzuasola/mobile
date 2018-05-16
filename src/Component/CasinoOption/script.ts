@@ -40,10 +40,7 @@ export class CasinoOptionComponent implements ComponentInterface {
             const el = utility.hasClass(src, "settings-trigger", true);
             if (el) {
                 event.preventDefault();
-                if (this.attachments.authenticated) {
-                    this.loader.hide();
-                    Modal.open("#casino-option-lightbox");
-                }
+                Modal.open("#casino-option-lightbox");
             }
         });
     }
