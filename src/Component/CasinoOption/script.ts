@@ -26,15 +26,17 @@ export class CasinoOptionComponent implements ComponentInterface {
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.bindToLogin();
         this.bindCasinoOptionLightbox(attachments);
         this.bindCasinoOptionLink(element);
     }
 
     private bindCasinoOptionLightbox(attachments) {
         ComponentManager.subscribe("click", (event, src) => {
-            if (utility.hasClass(src, "casino-option-trigger", true)) {
+            const el = utility.hasClass(src, "casino-option-trigger", true);
+            if (el) {
                 event.preventDefault();
-                const product = src.getAttribute("product-id");
+                const product = el.getAttribute("product-id");
                 if (attachments.authenticated) {
                     if (product === "product-casino") {
                         this.getPreferredCasino();
@@ -52,9 +54,8 @@ export class CasinoOptionComponent implements ComponentInterface {
             if (data && typeof data.src !== "undefined") {
                 event.preventDefault();
                 const el = utility.hasClass(data.src, "casino-option-trigger", true);
-
                 if (el) {
-                    this.getPreferredCasino();
+                     this.getPreferredCasino();
                 }
             }
         });
