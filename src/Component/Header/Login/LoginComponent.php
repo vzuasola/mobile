@@ -64,6 +64,7 @@ class LoginComponent implements ComponentWidgetInterface
         $data['join_now_link'] = $headerConfigs['join_now_link'] ?? '';
         $data['login_issue_text'] = $headerConfigs['login_issue_text'] ?? 'Cant Login ?';
         $data['login_issue_link'] = $headerConfigs['login_issue_link'] ?? '';
+        $data['logo_title'] = $headerConfigs['logo_title'] ?? 'Dafabet';
 
         try {
             $loginConfigs = $this->configs->getConfig('webcomposer_config.login_configuration');

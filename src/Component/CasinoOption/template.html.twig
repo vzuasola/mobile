@@ -1,6 +1,6 @@
 <div id="casino-option-lightbox" class="modal casino-option">
     <div class="modal-content casino-option-content">
-    <p class="casino title">{{title}}</p>
+    <p class="casino title">{{ title }}</p>
         <div class="modal-body casino-option-body">
             <div class="casino-option-body-select">
                 <a 
@@ -12,8 +12,8 @@
                     {% else %}
                         <img src="{{ asset('images/dafabet_logo.png') }}" alt="{{ logo_title }}">
                     {% endif %}
-                    <p>Casino Classic</p>
-                    <p class="in-maintenance">Under Maintenance</p>
+                    <p>{{ casino_text }}</p>
+                    <p class="in-maintenance">{{ maintenance_text }}</p>
                 </a>
                 <a 
                     href="#" data-preferred-casino="casino_gold" 
@@ -24,8 +24,8 @@
                     {% else %}
                         <img src="{{ asset('images/dafabet_gold_logo.png') }}" alt="{{ logo_title }}">
                     {% endif %}
-                    <p>Casino Gold</p>
-                    <p class="in-maintenance">Under Maintenance</p>
+                    <p>{{ casino_gold_text }}</p>
+                    <p class="in-maintenance">{{ maintenance_text }}</p>
                 </a>
             </div>
         </div>
