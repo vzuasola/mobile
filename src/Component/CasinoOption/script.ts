@@ -13,29 +13,32 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 export class CasinoOptionComponent implements ComponentInterface {
     private loader: Loader;
     private element: HTMLElement;
+    private attachments: {authenticated: boolean};
 
     constructor() {
         this.loader = new Loader(document.body, true);
     }
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.attachments = attachments;
+        this.element = element;
         this.listenToLogin();
-        this.listenCasinoOptionLightbox(attachments);
-        this.listenSettingsLightbox(attachments);
-        this.listenCasinoOptionLink(element);
+        this.listenCasinoOptionLightbox();
+        this.listenSettingsLightbox();
+        this.listenCasinoOptionLink();
         this.listenLogout();
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
-        // placeholder for reload
+        this.attachments = attachments;
     }
 
-    private listenSettingsLightbox(attachments) {
+    private listenSettingsLightbox() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "settings-trigger", true);
             if (el) {
                 event.preventDefault();
-                if (attachments.authenticated) {
+                if (this.attachments.authenticated) {
                     this.loader.hide();
                     Modal.open("#casino-option-lightbox");
                 }
@@ -43,13 +46,13 @@ export class CasinoOptionComponent implements ComponentInterface {
         });
     }
 
-    private listenCasinoOptionLightbox(attachments) {
+    private listenCasinoOptionLightbox() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "casino-option-trigger", true);
             if (el) {
                 event.preventDefault();
                 const product = el.getAttribute("product-id");
-                if (attachments.authenticated) {
+                if (this.attachments.authenticated) {
                     if (product === "product-casino") {
                         this.getPreferredCasino();
                     } else {
@@ -73,14 +76,14 @@ export class CasinoOptionComponent implements ComponentInterface {
         });
     }
 
-    private listenCasinoOptionLink(element) {
+    private listenCasinoOptionLink() {
         ComponentManager.subscribe("click", (event, src) => {
             if (utility.hasClass(src, "casino-option")) {
                 event.preventDefault();
                 const product = src.getAttribute("data-preferred-casino");
                 const unselectedProduct = (product === "casino_gold") ? ".casino-classic" : ".casino-gold";
                 utility.removeClass(src, "select-option-muted");
-                utility.addClass(element.querySelector(unselectedProduct), "select-option-muted");
+                utility.addClass(this.element.querySelector(unselectedProduct), "select-option-muted");
 
                 xhr({
                     url: Router.generateRoute("casino_option", "preference"),
@@ -117,9 +120,7 @@ export class CasinoOptionComponent implements ComponentInterface {
         }).then((response) => {
             if (response.success) {
                 if (!response.lobby_url) {
-                    this.loader.hide();
                     Modal.open("#casino-option-lightbox");
-                    console.log("no prefered");
                 } else {
                     if (utility.isExternal(response.lobby_url)) {
                         window.location.href = response.lobby_url;
@@ -128,8 +129,7 @@ export class CasinoOptionComponent implements ComponentInterface {
                     }
                 }
             } else {
-                this.loader.hide();
-                Modal.open("#login-lightbox");
+               ComponentManager.broadcast("header.login");
             }
         }).fail((error, message) => {
             // do something
