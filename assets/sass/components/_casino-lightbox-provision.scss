@@ -84,28 +84,8 @@
             }
 
             .casino-gold.select-option-muted:before {
-                border-radius: 0.5rem 0 0 0.5rem;
+                border-radius: 0 0.5rem 0.5rem 0;
                 background: rgba(91,54,56,0.8);
-            }
-
-
-            .casino-classic-logo,
-            .casino-gold-logo {
-                display: inline-block;
-                zoom: 1;
-                width: 11.3rem;
-                height: 2.7rem;
-                line-height: 2.7rem;
-                vertical-align: middle;
-                background: url('../images/dafabet_logo.png') no-repeat 0 0;
-                text-indent: -99rem;
-                margin-bottom: 2.4rem;
-                background-size: 100%
-            }
-
-            .casino-gold-logo {
-                background: url('../images/dafabet_gold_logo.png') no-repeat 0 0;
-                background-size: 100%;
             }
 
             .in-maintenance {
