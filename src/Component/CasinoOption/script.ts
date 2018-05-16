@@ -21,14 +21,27 @@ export class CasinoOptionComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.bindToLogin();
         this.bindCasinoOptionLightbox(attachments);
+        this.activateSettingsLightbox(attachments);
         this.bindCasinoOptionLink(element);
         this.bindLogout();
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.bindToLogin();
-        this.bindCasinoOptionLightbox(attachments);
         this.bindCasinoOptionLink(element);
+    }
+
+    private activateSettingsLightbox(attachments) {
+        ComponentManager.subscribe("click", (event, src) => {
+            const el = utility.hasClass(src, "settings-trigger", true);
+            if (el) {
+                event.preventDefault();
+                if (attachments.authenticated) {
+                    this.loader.hide();
+                    Modal.open("#casino-option-lightbox");
+                }
+            }
+        });
     }
 
     private bindCasinoOptionLightbox(attachments) {
@@ -41,8 +54,8 @@ export class CasinoOptionComponent implements ComponentInterface {
                     if (product === "product-casino") {
                         this.getPreferredCasino();
                     } else {
-                        Modal.open("#casino-option-lightbox");
                         this.loader.hide();
+                        Modal.open("#casino-option-lightbox");
                     }
                 }
             }
@@ -62,11 +75,14 @@ export class CasinoOptionComponent implements ComponentInterface {
     }
 
     private bindCasinoOptionLink(element) {
-
         ComponentManager.subscribe("click", (event, src) => {
-            if (utility.hasClass(src, "casino-option", true)) {
+            if (utility.hasClass(src, "casino-option")) {
                 event.preventDefault();
                 const product = src.getAttribute("data-preferred-casino");
+                const unselectedProduct = (product === "casino_gold") ? ".casino-classic" : ".casino-gold";
+                utility.removeClass(src, "select-option-muted");
+                utility.addClass(element.querySelector(unselectedProduct), "select-option-muted");
+
                 xhr({
                     url: Router.generateRoute("casino_option", "preference"),
                     type: "json",
@@ -102,8 +118,9 @@ export class CasinoOptionComponent implements ComponentInterface {
         }).then((response) => {
             if (response.success) {
                 if (!response.lobby_url) {
-                    Modal.open("#casino-option-lightbox");
                     this.loader.hide();
+                    Modal.open("#casino-option-lightbox");
+                    console.log("no prefered");
                 } else {
                     if (utility.isExternal(response.lobby_url)) {
                         window.location.href = response.lobby_url;
@@ -112,8 +129,8 @@ export class CasinoOptionComponent implements ComponentInterface {
                     }
                 }
             } else {
-                Modal.open("#login-lightbox");
                 this.loader.hide();
+                Modal.open("#login-lightbox");
             }
         }).fail((error, message) => {
             // do something
