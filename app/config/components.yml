@@ -68,3 +68,6 @@ components:
 
   push_notification:
     class: App\MobileEntry\Component\PushNotification\PushNotificationComponent
+
+  casino_option:
+    class: App\MobileEntry\Component\CasinoOption\CasinoOptionComponent
