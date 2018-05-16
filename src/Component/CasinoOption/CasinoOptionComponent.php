@@ -65,8 +65,14 @@ class CasinoOptionComponent implements ComponentWidgetInterface
             }
 
             $data['title'] = $casinoConfigs['title'];
+            $data['casino_text'] = $casinoConfigs['casino_text'];
+            $data['casino_gold_text'] = $casinoConfigs['casino_gold_text'];
+            $data['maintenance_text'] = $casinoConfigs['maintenance_text'];
         } catch (\Exception $e) {
-            $data['title'] = '';
+            $data['title'] = 'Please select your preferred casino';
+            $data['casino_text'] = 'Casino Classic';
+            $data['casino_gold_text'] = 'Casino Gold';
+            $data['maintenance_text'] = 'Under Maintenance';
         }
 
         try {
