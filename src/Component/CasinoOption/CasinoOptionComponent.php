@@ -68,6 +68,15 @@ class CasinoOptionComponent implements ComponentWidgetInterface
         } catch (\Exception $e) {
             $data['title'] = '';
         }
+
+        try {
+            $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+        } catch (\Exception $e) {
+            $headerConfigs = [];
+        }
+
+        $data['logo_title'] = $headerConfigs['logo_title'] ?? 'Dafabet';
+
         return $data;
     }
 }
