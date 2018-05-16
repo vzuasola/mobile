@@ -11,6 +11,9 @@ use App\Fetcher\Integration\Exception\AccountSuspendedException;
 class LoginComponentController
 {
     private $rest;
+    private $playerSession;
+    private $product;
+
     /**
      *
      */
@@ -18,17 +21,19 @@ class LoginComponentController
     {
         return new static(
             $container->get('rest'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('settings')['product']
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $playerSession)
+    public function __construct($rest, $playerSession, $product)
     {
         $this->rest = $rest;
         $this->playerSession = $playerSession;
+        $this->product = $product;
     }
 
     /**
@@ -43,8 +48,10 @@ class LoginComponentController
             $username = $body['username'];
             $password = $body['password'];
 
+            $options['Login-Product'] = $body['product'] ?? $this->product;
+
             try {
-                $data['success'] = $this->playerSession->login($username, $password);
+                $data['success'] = $this->playerSession->login($username, $password, $options);
             } catch (\Exception $e) {
                 if ($e instanceof AccountLockedException) {
                     $response = $response->withStatus(403);

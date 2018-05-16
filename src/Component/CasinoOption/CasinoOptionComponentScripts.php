@@ -1,19 +1,14 @@
 <?php
 
-namespace App\MobileEntry\Module\Session;
+namespace App\MobileEntry\Component\CasinoOption;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 
 /**
  *
  */
-class SessionModuleScripts implements ComponentAttachmentInterface
+class CasinoOptionComponentScripts implements ComponentAttachmentInterface
 {
-    /**
-     * @var App\Player\PlayerSession
-     */
-    private $playerSession;
-
     /**
      *
      */

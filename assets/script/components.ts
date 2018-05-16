@@ -1,6 +1,7 @@
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 import {AnnouncementComponent} from "@app/src/Component/Announcement/script";
+import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {FooterComponent} from "@app/src/Component/Footer/script";
 
 import {LoginComponent} from "@app/src/Component/Header/Login/script";
@@ -22,4 +23,5 @@ ComponentManager.setComponents({
     announcement: new AnnouncementComponent(),
     push_notification: new PushNotificationComponent(),
     language: new LanguageComponent(),
+    casino_option: new CasinoOptionComponent(),
 });

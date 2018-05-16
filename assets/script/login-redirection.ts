@@ -7,11 +7,11 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 ComponentManager.subscribe("session.login", (event, target, data: any) => {
     if (data && typeof data.src !== "undefined") {
         const el = utility.hasClass(data.src, "product-integration", true);
+        const el2 = utility.hasClass(data.src, "casino-option-trigger", true);
 
-        if (!el) {
-            const product = data.src.getAttribute("product-id");
+        if (!el && !el2) {
             const srcComponent = data.src.getAttribute("src-component");
-
+            const product = data.src.getAttribute("product-id");
             const component = (srcComponent  === "menu") ? "header_menu" : "home_products";
             xhr({
                 url: Router.generateRoute(component, "lobby"),

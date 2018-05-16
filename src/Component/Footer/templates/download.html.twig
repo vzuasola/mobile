@@ -1,6 +1,6 @@
 {% if downloads_menu %}
     <div class="grid grid-gap-10 app-download">
-        {% set menuLength = (downloads_menu|length == 2) ? 'col-6' : 'col-4' %}
+        {% set menuLength = (downloads_menu|length == 2 or downloads_menu|length == 4) ? 'col-6 mb-10' : 'col-4  mb-10' %}
         {% for menu in downloads_menu %}
             <div class="{{ menuLength }}">
                 <a
