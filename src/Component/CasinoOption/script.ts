@@ -19,18 +19,18 @@ export class CasinoOptionComponent implements ComponentInterface {
     }
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
-        this.bindToLogin();
-        this.bindCasinoOptionLightbox(attachments);
-        this.activateSettingsLightbox(attachments);
-        this.bindCasinoOptionLink(element);
-        this.bindLogout();
+        this.listenToLogin();
+        this.listenCasinoOptionLightbox(attachments);
+        this.listenSettingsLightbox(attachments);
+        this.listenCasinoOptionLink(element);
+        this.listenLogout();
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
-        this.bindCasinoOptionLink(element);
+        // placeholder for reload
     }
 
-    private activateSettingsLightbox(attachments) {
+    private listenSettingsLightbox(attachments) {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "settings-trigger", true);
             if (el) {
@@ -43,7 +43,7 @@ export class CasinoOptionComponent implements ComponentInterface {
         });
     }
 
-    private bindCasinoOptionLightbox(attachments) {
+    private listenCasinoOptionLightbox(attachments) {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "casino-option-trigger", true);
             if (el) {
@@ -61,7 +61,7 @@ export class CasinoOptionComponent implements ComponentInterface {
         });
     }
 
-    private bindToLogin() {
+    private listenToLogin() {
         ComponentManager.subscribe("session.login", (event, target, data: any) => {
             if (data && typeof data.src !== "undefined") {
                 event.preventDefault();
@@ -73,7 +73,7 @@ export class CasinoOptionComponent implements ComponentInterface {
         });
     }
 
-    private bindCasinoOptionLink(element) {
+    private listenCasinoOptionLink(element) {
         ComponentManager.subscribe("click", (event, src) => {
             if (utility.hasClass(src, "casino-option")) {
                 event.preventDefault();
@@ -104,7 +104,7 @@ export class CasinoOptionComponent implements ComponentInterface {
         });
     }
 
-    private bindLogout() {
+    private listenLogout() {
          ComponentManager.subscribe("session.logout", (event, target) => {
              Modal.close("#casino-option-lightbox");
          });
