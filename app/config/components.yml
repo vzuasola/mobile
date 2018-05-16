@@ -16,6 +16,12 @@ modules:
   als_integration:
     class: App\MobileEntry\Module\ProductIntegration\ALS\ALSIntegrationModule
 
+  game_integration:
+    class: App\MobileEntry\Module\GameIntegration\GameIntegrationModule
+
+  pas_integration:
+    class: App\MobileEntry\Module\GameIntegration\PAS\PASModule
+
 components:
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent

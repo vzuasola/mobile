@@ -39,6 +39,12 @@ export class GameLauncher {
         ComponentManager.subscribe("click", (event, src) => {
             this.onClick(event, src);
         });
+
+        ComponentManager.subscribe("session.login", (event, target, data: any) => {
+            if (data && data.username && data.password) {
+                this.invokeAll("login", [data.username, data.password]);
+            }
+        });
     }
 
     /**

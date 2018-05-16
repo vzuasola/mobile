@@ -16,23 +16,23 @@ export class LoginComponent implements ComponentInterface {
     private validationService: Validation;
 
     constructor() {
-        this.loginService = new Login();
         this.validationService = new Validation();
+        this.loginService = new Login();
     }
 
     onLoad(element: HTMLElement, attachments: {
         authenticated: boolean,
         error_messages: {[name: string]: string},
     }) {
-        this.loginService.handleOnLoad(element, attachments);
         this.validationService.handleOnLoad(element, attachments);
+        this.loginService.handleOnLoad(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {
         authenticated: boolean,
         error_messages: {[name: string]: string},
     }) {
-        this.loginService.handleOnReload(element, attachments);
         this.validationService.handleOnReload(element, attachments);
+        this.loginService.handleOnReload(element, attachments);
     }
 }

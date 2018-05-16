@@ -23,7 +23,6 @@ class BasicComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-
         return [];
     }
 }
