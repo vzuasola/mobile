@@ -59,7 +59,7 @@ class ALSIntegrationModuleController
             $cookies = $cookies . $alsConfig['als_cookie_url_post'] ?? '';
         }
 
-        $this->setCookie($alsCookies, $isLogin);
+        $this->setCookie($cookies, $isLogin);
 
         $lobby = $this->generateLobby($url, $enableDomain);
 
