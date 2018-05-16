@@ -13,7 +13,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 export class CasinoOptionComponent implements ComponentInterface {
     private loader: Loader;
     private element: HTMLElement;
-    private attachments: {authenticated: boolean};
+    private isLogin: boolean;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -21,7 +21,7 @@ export class CasinoOptionComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.element = element;
-        this.attachments = attachments;
+        this.isLogin = attachments.authenticated;
 
         this.listenToLogin();
         this.listenCasinoOptionLightbox();
@@ -32,7 +32,6 @@ export class CasinoOptionComponent implements ComponentInterface {
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.element = element;
-        this.attachments = attachments;
     }
 
     private listenSettingsLightbox() {
@@ -51,7 +50,7 @@ export class CasinoOptionComponent implements ComponentInterface {
             if (el) {
                 event.preventDefault();
                 const product = el.getAttribute("product-id");
-                if (this.attachments.authenticated) {
+                if (this.isLogin) {
                     if (product === "product-casino") {
                         this.getPreferredCasino();
                     } else {
@@ -65,6 +64,7 @@ export class CasinoOptionComponent implements ComponentInterface {
 
     private listenToLogin() {
         ComponentManager.subscribe("session.login", (event, target, data: any) => {
+            this.isLogin = true;
             if (data && typeof data.src !== "undefined") {
                 event.preventDefault();
                 const el = utility.hasClass(data.src, "casino-option-trigger", true);
