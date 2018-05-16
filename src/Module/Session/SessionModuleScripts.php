@@ -31,6 +31,7 @@ class SessionModuleScripts implements ComponentAttachmentInterface
     {
         $this->playerSession = $playerSession;
     }
+
     /**
      * @{inheritdoc}
      */
