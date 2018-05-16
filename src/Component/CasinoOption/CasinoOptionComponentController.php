@@ -8,6 +8,7 @@ namespace App\MobileEntry\Component\CasinoOption;
 class CasinoOptionComponentController
 {
     private $rest;
+
     /**
      * @var App\Player\PlayerSession
      */
