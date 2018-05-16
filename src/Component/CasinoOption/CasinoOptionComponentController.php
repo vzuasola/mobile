@@ -56,7 +56,6 @@ class CasinoOptionComponentController
                 $body = $request->getParsedBody();
 
                 $data['lobby_url'] = $this->getPreferenceProvisioned($body);
-                    
             } else {
                 $data['lobby_url'] = $this->getCasinoUrl('casino');
             }
