@@ -1,10 +1,28 @@
 <div id="casino-option-lightbox" class="modal casino-option">
-    <h2 class="casino title">{{title}}</h2>
-    
     <div class="modal-content casino-option-content">
+    <p class="casino title">{{title}}</p>
         <div class="modal-body casino-option-body">
-           	<a href="#" data-preferred-casino="casino" class="casino-option {{ preferred == 'casino' ? 'selected' : ''}}">Casino</a>
-            <a href="#" data-preferred-casino="casino_gold" class="casino-option {{ preferred == 'casino_gold' ? 'selected' : ''}}">Casino Gold</a>
+            <div class="casino-option-body-select">
+                <a href="#" data-preferred-casino="casino" class="casino-classic casino-option {{ preferred == 'casino' ? 'selected' : ''}}">
+                    {% if app.lang == "ch" or app.lang == "sc" %}
+                        <img src="{{ asset('images/dafabet_logo_chinese.png') }}" alt="{{ header.logo_title }}">
+                    {% else %}
+                        <img src="{{ asset('images/dafabet_logo.png') }}" alt="{{ header.logo_title }}">
+                    {% endif %}
+                    <p>Casino Classic</p>
+                    <p class="in-maintenance">Under Maintenance</p>
+                </a>
+                <a href="#" data-preferred-casino="casino_gold" class="casino-gold casino-option select-option-muted {{ preferred == 'casino_gold' ? 'selected' : ''}}">
+                    {% if app.lang == "ch" or app.lang == "sc" %}
+                        <img src="{{ asset('images/dafabet_gold_logo_sc.png') }}" alt="{{ header.logo_title }}">
+                    {% else %}
+                        <img src="{{ asset('images/dafabet_gold_logo.png') }}" alt="{{ header.logo_title }}">
+                    {% endif %}
+                    <p>Casino Gold</p>
+                    <p class="in-maintenance">Under Maintenance</p>
+                </a>
+            </div>
         </div>
+    {% include '@app/web/images/svg/announcement/announcement-closed.svg' %}
     </div>
 </div>
