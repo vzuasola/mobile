@@ -1,7 +1,7 @@
 {% extends '@site/base.html.twig' %}
 
 {% block css %}
-<link href="{{ asset('app.css') }}" rel="stylesheet">
+    <link href="{{ asset('app.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block header %}
@@ -24,5 +24,6 @@
 {% endblock footer %}
 
 {% block script %}
-<script src="{{ asset('app.js') }}"></script>
+    {{ parent() }}
+    <script src="{{ asset('app.js') }}"></script>
 {% endblock %}

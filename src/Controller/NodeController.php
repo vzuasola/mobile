@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Controller;
 
 use App\BaseController;
+use Slim\Exception\NotFoundException;
 
 class NodeController extends BaseController
 {
