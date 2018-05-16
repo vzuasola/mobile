@@ -21,6 +21,8 @@
 
     {% block footer %}{% endblock footer %}
 
-    {% block script %}{% endblock %}
+    {% block script %}
+        {{ module_scripts() }}
+    {% endblock %}
 </body>
 </html>
