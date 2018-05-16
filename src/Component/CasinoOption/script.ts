@@ -20,8 +20,9 @@ export class CasinoOptionComponent implements ComponentInterface {
     }
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
-        this.attachments = attachments;
         this.element = element;
+        this.attachments = attachments;
+
         this.listenToLogin();
         this.listenCasinoOptionLightbox();
         this.listenSettingsLightbox();
@@ -30,6 +31,7 @@ export class CasinoOptionComponent implements ComponentInterface {
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.element = element;
         this.attachments = attachments;
     }
 
