@@ -73,7 +73,7 @@ class ALSIntegrationModuleController
     {
         if ($enableDomain) {
             $domain = Host::getDomainFromUri($url);
-            $hostname = Host::getHostname();
+            $hostname = Host::getDomain();
 
             if ($domain !== $hostname) {
                 $url = str_replace($domain, $hostname, $url);
@@ -109,7 +109,7 @@ class ALSIntegrationModuleController
      */
     private function createCookie($action, $name, $value = '')
     {
-        $domain = Host::getHostname();
+        $domain = Host::getDomain();
 
         $options = [
             'path' => '/',
