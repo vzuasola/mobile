@@ -1,24 +1,17 @@
-declare var iapiConf: any;
-declare function iapiSetCallout(name: string, callback: any): any;
-declare function iapiKeepAlive(id: number, callback: any): any;
-declare function iapiGetLoggedInPlayer(id: number): any;
-declare function iapiLogout(id: number, pid: number): any;
-declare function iapiLogin(username: string, password: string, real: any, language: string): any;
-declare function iapiValidateTCVersion(response: any, id: number, pid: number): any;
-
 import * as utility from "@core/assets/js/components/utility";
+import Storage from "@core/assets/js/components/utils/storage";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 
-import {Router} from "@plugins/ComponentWidget/asset/router";
-
-import Storage from "@core/assets/js/components/utils/storage";
-
+/**
+ * Combined class implementation for the PAS module and the
+ * actual PAS
+ */
 export class PASModule implements ModuleInterface, GameInterface {
-
     private isSessionAlive: boolean;
     private iapiconfOverride: {} = {};
     private timer = null;
@@ -28,12 +21,14 @@ export class PASModule implements ModuleInterface, GameInterface {
     private sessionFlag = "pas.session.flag";
     private lang: string;
     private languageMap: any;
-    private store = new Storage();
+    private store: Storage = new Storage();
 
-    onLoad(attachments: {authenticated: boolean,
+    onLoad(attachments: {
+        authenticated: boolean,
         iapiconfOverride: {},
         lang: string,
-        langguageMap: {[name: string]: string}}) {
+        langguageMap: {[name: string]: string}},
+    ) {
         this.isSessionAlive = attachments.authenticated;
         this.iapiconfOverride = attachments.iapiconfOverride;
         this.lang = attachments.lang;
@@ -63,7 +58,6 @@ export class PASModule implements ModuleInterface, GameInterface {
 
         // Before login, check if there are cookies on PTs end
         iapiSetCallout("GetLoggedInPlayer", (response) => {
-
             if (this.verifyCookie(response)) {
                 iapiSetCallout("Logout", (resp) => {
                     iapiLogin(user, password, real, language);
@@ -80,11 +74,11 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     prelaunch() {
-        //
+        // not implemented
     }
 
     launch() {
-        //
+        // not implemented
     }
 
     logout() {
@@ -93,10 +87,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private setiApiConfOverride() {
         for (const k in iapiConf) {
-            if (typeof this.iapiconfOverride !== "undefined" &&
-                typeof this.iapiconfOverride[k] !== "undefined" &&
-                this.iapiconfOverride[k] !== undefined
-            ) {
+            if (typeof this.iapiconfOverride[k] !== "undefined") {
                 iapiConf[k] = this.iapiconfOverride[k];
             }
         }
@@ -123,6 +114,7 @@ export class PASModule implements ModuleInterface, GameInterface {
      */
     private sessionPersist() {
         this.doKeepAlive();
+
         if (this.timer === null) {
             this.timer = setTimeout(function() {
                 this.timer = null;
@@ -155,6 +147,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         ) {
             return true;
         }
+
         return false;
     }
 
@@ -199,7 +192,6 @@ export class PASModule implements ModuleInterface, GameInterface {
      */
     private onLogin(username) {
         return (response) => {
-
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
                 this.store.set(this.sessionFlag, "1");
@@ -210,9 +202,13 @@ export class PASModule implements ModuleInterface, GameInterface {
                     // Change the ValidateLoginSession callback to handle the TC validation
                     iapiSetCallout("ValidateLoginSession", this.onTCVersionValidation(username));
                     // Auto validate the TC version
-                    iapiValidateTCVersion(response.sessionValidationData
-                        .SessionValidationByTCVersionData[0].termVersionReference, 1, 1);
+                    iapiValidateTCVersion(
+                        response.sessionValidationData.SessionValidationByTCVersionData[0].termVersionReference,
+                        1,
+                        1,
+                    );
                 }
+
                 return;
             }
         };
