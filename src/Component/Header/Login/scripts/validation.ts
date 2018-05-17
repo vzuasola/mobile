@@ -18,7 +18,7 @@ export class Validation {
     }, {
         name: "password",
         rules: {
-            callback_user_required: [],
+            callback_pass_required: [],
             callback_check_mobile_format: [],
             callback_min_length: ["6"],
             callback_max_length: ["10"],
