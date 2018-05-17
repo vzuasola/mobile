@@ -11,10 +11,10 @@ import Storage from "@core/assets/js/components/utils/storage";
 export class Avaya {
     private store = new Storage();
     private flag = 0;
-    private avayaStorage = 'avaya.storage';
+    private avayaStorage = "avaya.storage";
     private storageData = {
         expires: 0,
-        token: ''
+        token: "",
     };
     private options: any = {};
 
@@ -27,19 +27,54 @@ export class Avaya {
             preFetch: false,
             postFetch: false,
             onSuccess: false,
-            onFail: false
+            onFail: false,
         };
 
         this.options = options || {};
 
-        for (var name in defaults) {
+        for (const name in defaults) {
             if (options[name] === undefined) {
                 options[name] = defaults[name];
             }
         }
 
         // Clear any avaya storage
-       this.store.remove(this.avayaStorage);
+        this.store.remove(this.avayaStorage);
+    }
+
+    /**
+     * Trigger the fetch token
+     *
+     * @return void
+     */
+    getAvayaToken($e) {
+        let token;
+
+        // Block the event when user is spamming
+        if (this.flag === 1) {
+            return false;
+        }
+
+        // Nonce is only created during post-login
+        if (this.options.nonce === false) {
+            this.store.remove(this.avayaStorage);
+            this.triggerCallback("onFail", ["invalid nonce"]);
+            return false;
+        }
+
+        this.triggerCallback("preFetch", []);
+
+        // Token is still in storage
+        token = this.checkStorage();
+        if (token !== false) {
+            this.triggerCallback("onSuccess", [token]);
+            this.flag = 0;
+            return false;
+        }
+
+        // Fetch a new token
+        this.flag = 1;
+        this.fetchToken();
     }
 
     /**
@@ -56,8 +91,8 @@ export class Avaya {
             contentType: "text/plain",
             crossOrigin: true,
             timeout: this.options.timeout,
-            data: this.options.nonce
-        }).then(function (response) {
+            data: this.options.nonce,
+        }).then(function(response) {
 
             if (response.s === undefined) {
                 this.triggerCallback("onFail", ["empty token"]);
@@ -67,9 +102,9 @@ export class Avaya {
             this.triggerCallback("onSuccess", [response.s]);
             this.storeToken(response.s);
 
-        }).fail(function (err, msg) {
+        }).fail(function(err, msg) {
             this.triggerCallback("onFail", [err, msg]);
-        }).always(function (response) {
+        }).always(function(response) {
             this.flag = 0;
             this.triggerCallback("postFetch", [response]);
         });
@@ -88,17 +123,16 @@ export class Avaya {
         }
     }
 
-
     /**
      * Store the fetched token and store it either in the current instance or in the browser
      *
      * @param  string token avaya chat token
      * @return Void
      */
-    private storeToken(token) {
+    private storeToken(jwttoken) {
         this.storageData = {
             expires: (this.options.validity * 1000),
-            token: token
+            token: jwttoken,
         };
 
         this.store.set(this.avayaStorage, JSON.stringify(this.storageData));
@@ -123,39 +157,4 @@ export class Avaya {
 
         return data.token;
     }
-
-        /**
-     * Trigger the fetch token
-     *
-     * @return void
-     */
-    getAvayaToken($e) {
-        let token;
-
-        // Block the event when user is spamming
-        if (this.flag === 1) {
-            return false;
-        }
-
-        // Nonce is only created during post-login
-        if (this.options.nonce === false) {
-            this.store.remove(this.avayaStorage);
-            this.triggerCallback("onFail", ["invalid nonce"]);
-            return false;
-        }
-
-        this.triggerCallback("preFetch", []);
-
-        // Token is still in storage
-        if ((token = this.checkStorage()) !== false) {
-            this.triggerCallback("onSuccess", [token]);
-            this.flag = 0;
-            return false;
-        }
-
-        // Fetch a new token
-        this.flag = 1;
-        this.fetchToken();
-    };
 }
-
