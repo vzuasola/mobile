@@ -1,0 +1,100 @@
+.promotions-body {
+    background: $dark-red;
+    padding-bottom: 1rem;
+
+    &-banner {
+        position: relative;
+
+        &-overlay {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: $white;
+            font-size: 1.2rem;
+            padding: 0.3rem 0;
+            background: rgba(0, 0, 0, 0.9);
+
+            svg {
+                width: 0.8rem;
+
+                path {
+                    fill: $white;
+                }
+            }
+        }
+    }
+
+    .promotions-content {
+        h2 {
+            margin: 0.5rem 0;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: $yellow;
+        }
+
+        p {
+            margin-bottom: 0;
+            width: 95%;
+            display: block;
+            float: left;
+            padding-right: 1rem;
+        }
+
+        svg {
+
+            path {
+                fill: $white;
+            }
+        }
+
+        &-links {
+            display: block;
+            width: 5%;
+            float: left;
+            align-self: center;
+            line-height: 1.4rem;
+        }
+    }
+}
+
+.dropdown-menu {
+    position: relative;
+    width: 15rem;
+    order: 3;
+    border-left: 0.1rem solid $red;
+
+    a {
+        color: $white;
+        display: block;
+        padding: 0.6rem 1rem;
+
+        svg {
+                width: 0.8rem;
+
+                path {
+                    fill: $white;
+                }
+            }
+    }
+
+    .dropdown-trigger.active {
+        background: gray;
+    }
+
+    ul {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 100vw;
+        margin: 0;
+        padding-left: 0;
+        list-style-type: none;
+        background: gray;
+        z-index: 9999999;
+
+        li {
+            text-align: left;
+        }
+    }
+}

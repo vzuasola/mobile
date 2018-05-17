@@ -129,17 +129,18 @@ h6,
     min-height: 3rem;
     margin-bottom: 0;
     background: $dark-red;
-    text-transform: uppercase;
-    color: $white;
-    font-size: 1.4rem;
-    font-weight: 600;
     text-align: center;
 
     &-text {
         order: 2;
         width: 100%;
+        margin-bottom: 0;
         padding: 0.6rem 1rem;
         border-left: 0.1rem solid $red;
+        text-transform: uppercase;
+        color: $white;
+        font-size: 1.4rem;
+        font-weight: 600;
     }
 
     &-back-button {
