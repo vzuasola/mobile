@@ -54,23 +54,24 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     login(username, password) {
+        const user = username.toUpperCase();
         const real = 1;
         const language = this.getLanguageMap(this.lang);
 
         // Set the callback for the PAS login
-        iapiSetCallout("Login", this.onLogin(username));
+        iapiSetCallout("Login", this.onLogin(user));
 
         // Before login, check if there are cookies on PTs end
         iapiSetCallout("GetLoggedInPlayer", (response) => {
 
             if (this.verifyCookie(response)) {
                 iapiSetCallout("Logout", (resp) => {
-                    iapiLogin(username, password, real, language);
+                    iapiLogin(user, password, real, language);
                 });
 
                 this.doLogout();
             } else {
-                iapiLogin(username, password, real, language);
+                iapiLogin(user, password, real, language);
             }
         });
 
