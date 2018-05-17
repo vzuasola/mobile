@@ -4,6 +4,9 @@ modules:
   session:
     class: App\MobileEntry\Module\Session\SessionModule
 
+  avaya:
+    class: App\MobileEntry\Module\Avaya\AvayaModule
+
   balance:
     class: App\MobileEntry\Module\Balance\BalanceModule
 
