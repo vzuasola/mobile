@@ -1,51 +1,66 @@
 
-<div class="page-title">
-    <h1 class="page-title-text">Promotions</h1>
+<div class="page-title promotions">
+    <h1 class="page-title-text promotions-title">Promotions</h1>
     <a href="#" class="page-title-back-button">
-        <svg viewBox="0 0 53.251 99.846">
-            <path d="M53.251 91.525l-9.985 8.32L0 49.922 43.101 0l10.15 8.32-36.194 41.602 36.194 41.603z"/>
-        </svg>
+        {% include '@app/web/images/svg/arrow.svg' %}
     </a>
     <div class="dropdown-menu">
         <a href="#" class="dropdown-trigger">Featured
-            <svg viewBox="0 0 53.251 99.846">
-                <path d="M53.251 91.525l-9.985 8.32L0 49.922 43.101 0l10.15 8.32-36.194 41.602 36.194 41.603z"/>
-            </svg>
+            {% include '@app/web/images/svg/arrow.svg' %}
         </a>
         <ul>
-            <li class="title">filter</li>
-            <li>featured</li>
-            <li>OW Sports</li>
-            <li>Dafa Sports</li>
-            <li>Casino</li>
-            <li>Casino Gold</li>
-            <li>Live Dealer</li>
-            <li>Poker</li>
-            <li>Games</li>
-            <li>Virtuals</li>
+            <li class="title">Filter</li>
+            <li class="active"><a href"#" class="product-link">Featured</a></li>
+            <li><a href"#" class="product-link">OW Sports</a></li>
+            <li><a href"#" class="product-link">Dafa Sports</a></li>
+            <li><a href"#" class="product-link">Casino</a></li>
+            <li><a href"#" class="product-link">Casino Gold</a></li>
+            <li><a href"#" class="product-link">Live Dealer</a></li>
+            <li><a href"#" class="product-link">Poker</a></li>
+            <li><a href"#" class="product-link">Games</a></li>
+            <li><a href"#" class="product-link">Virtuals</a></li>
         </ul>
     </div>
 </div>
 
 <div class="promotions-body">
     <div class="promotions-body-banner">
-        <a href="#" class="promotions-content-link">
+        <a href="#" class="promotions-body-banner-link">
+        <span class="promotions-body-product">
+            {% include '@app/web/images/svg/products/product-casino.svg' %}
+        </span>
         <img src="{{ asset('images/banner/promotion-banner.jpg') }}" alt="" class="w-100">
             <div class="promotions-body-banner-overlay">
-                <svg viewBox="0 0 53.251 99.846">
-                    <path d="M53.251 91.525l-9.985 8.32L0 49.922 43.101 0l10.15 8.32-36.194 41.602 36.194 41.603z"/>
-                </svg>
+                {% include '@app/web/images/svg/clock.svg' %}
             4 Days, 21 Hours remaining
             </div>
         </a>
     </div>
     <div class="container promotions-content clearfix">
     <h2 class="promotions-content-title">First Deposit Bonus</h2>
-        <p>Dafabet is a leading Asian online gaming website, offering sports betting, online casino, online poker and online games. We have been serving China and the Asia Pacific market since 2004. <span class="promotions-content-title-links">More Info</span></p>
+        <p>Dafabet is a leading Asian online gaming website, offering sports betting, online casino, online poker and online games. We have been serving China and the Asia Pacific market since 2004. <span class="promotions-content-info">More Info »</span></p>
         <a href="#" class="promotions-content-links">
-            <svg viewBox="0 0 53.251 99.846">
-            <path d="M53.251 91.525l-9.985 8.32L0 49.922 43.101 0l10.15 8.32-36.194 41.602 36.194 41.603z"/>
-        </svg>
+        {% include '@app/web/images/svg/arrow.svg' %}
+        </a>
+    </div>
+
+    <div class="promotions-body-banner">
+        <a href="#" class="promotions-body-banner-link">
+        <span class="promotions-body-product">
+            {% include '@app/web/images/svg/products/product-casino.svg' %}
+        </span>
+        <img src="{{ asset('images/banner/promotion-banner.jpg') }}" alt="" class="w-100">
+            <div class="promotions-body-banner-overlay">
+                {% include '@app/web/images/svg/clock.svg' %}
+            4 Days, 21 Hours remaining
+            </div>
+        </a>
+    </div>
+    <div class="container promotions-content clearfix">
+    <h2 class="promotions-content-title">First Deposit Bonus</h2>
+        <p>Dafabet is a leading Asian online gaming website, offering sports betting, online casino, online poker and online games. We have been serving China and the Asia Pacific market since 2004. <span class="promotions-content-info">More Info »</span></p>
+        <a href="#" class="promotions-content-links">
+        {% include '@app/web/images/svg/arrow.svg' %}
         </a>
     </div>
 </div>
