@@ -71,3 +71,6 @@ components:
 
   casino_option:
     class: App\MobileEntry\Component\CasinoOption\CasinoOptionComponent
+
+  promotions:
+    class: App\MobileEntry\Component\Main\Promotions\PromotionsComponent
