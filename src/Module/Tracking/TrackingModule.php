@@ -14,6 +14,7 @@ class TrackingModule implements ComponentModuleInterface
     {
         return new static(
             $container->get('views_fetcher'),
+            $container->get('config_fetcher'),
             $container->get('request')
         );
     }
@@ -21,9 +22,10 @@ class TrackingModule implements ComponentModuleInterface
     /**
      * Public constructor
      */
-    public function __construct($views, $request)
+    public function __construct($views, $configs, $request)
     {
         $this->views = $views;
+        $this->configs = $configs;
         $this->request = $request;
     }
 
@@ -32,6 +34,7 @@ class TrackingModule implements ComponentModuleInterface
         try {
             $cookies = $this->getCookies();
             $affiliates = $this->views->getViewById('affiliates');
+            $config = $this->configs->getConfig('webcomposer_config.affiliate_configuration');
 
             $params = $this->request->getParams();
 
@@ -41,14 +44,17 @@ class TrackingModule implements ComponentModuleInterface
                 }
             }
 
+            $time = $config['affiliate_expiration'] ?? 0;
+
             if (!empty($cookies)) {
                 Cookies::set('affiliates', http_build_query($cookies), [
+                    'expire' => time() + ($time * 60),
                     'http' => false,
                     'path' => '/',
                 ]);
             }
         } catch (\Exception $e) {
-                // do nothing
+            // do nothing
         }
     }
 
