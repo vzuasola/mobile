@@ -14,8 +14,6 @@ $settings['settings']['product'] = 'mobile-entrypage';
 
 $settings['settings']['asset']['prefixed'] = false;
 
-$settings['settings']['tracking']['enable'] = true;
-
 if (\App\Kernel::environment() !== 'DEV') {
     $settings['settings']['asset']['prefixed_drupal'] = true;
 }
