@@ -1,3 +1,9 @@
+# Define token extensions herre
+# Token extensions are classes that extend the token manager by modifying
+# the list of available tokens
+extensions:
+  - App\Extensions\Token\DomainTokens
+
 # Define tokens here
 # Key value pair of token key and token class
 tokens:

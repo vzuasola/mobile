@@ -7,6 +7,9 @@ modules:
   balance:
     class: App\MobileEntry\Module\Balance\BalanceModule
 
+  tracking:
+    class: App\MobileEntry\Module\Tracking\TrackingModule
+
   product_integration:
     class: App\MobileEntry\Module\ProductIntegration\ProductIntegrationModule
 

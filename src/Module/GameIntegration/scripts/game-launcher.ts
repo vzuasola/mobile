@@ -5,7 +5,7 @@ import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {GameInterface} from "./game.interface";
 
 export class GameLauncher {
-    private providers: {[name: string]: GameInterface};
+    private providers: {[name: string]: GameInterface} = {};
 
     /**
      *
@@ -24,7 +24,7 @@ export class GameLauncher {
     /**
      *
      */
-    private init() {
+    init() {
         this.bindEvents();
     }
 

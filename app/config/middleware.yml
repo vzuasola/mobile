@@ -3,7 +3,6 @@ middlewares:
     languages: App\Middleware\Request\Languages
     bootstrap: App\Middleware\Request\Bootstrap
     session: App\Middleware\Request\Session
-    tracking: App\Middleware\Request\Tracking
 
   response:
     token: App\Middleware\Response\Token

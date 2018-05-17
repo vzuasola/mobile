@@ -6,7 +6,6 @@ import {Modal} from "./components/modal";
 import "./components";
 import "./modules";
 
-import "./game/game-launcher";
 import "./loader";
 import "./login-redirection";
 

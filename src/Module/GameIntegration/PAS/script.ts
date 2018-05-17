@@ -10,9 +10,11 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
+
+import {GameInterface} from "./../scripts/game.interface";
+
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-import {GameInterface} from "@app/assets/script/game/game.interface";
 import Storage from "@core/assets/js/components/utils/storage";
 
 export class PASModule implements ModuleInterface, GameInterface {
@@ -28,8 +30,14 @@ export class PASModule implements ModuleInterface, GameInterface {
     private languageMap: any;
     private store = new Storage();
 
-    onLoad(attachments: {}) {
-        //
+    onLoad(attachments: {authenticated: boolean,
+        iapiconfOverride: {},
+        lang: string,
+        langguageMap: {[name: string]: string}}) {
+        this.isSessionAlive = attachments.authenticated;
+        this.iapiconfOverride = attachments.iapiconfOverride;
+        this.lang = attachments.lang;
+        this.languageMap = attachments.langguageMap;
     }
 
     init() {
@@ -46,22 +54,24 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     login(username, password) {
+        const user = username.toUpperCase();
         const real = 1;
         const language = this.getLanguageMap(this.lang);
 
         // Set the callback for the PAS login
-        iapiSetCallout("Login", this.onLogin(username));
+        iapiSetCallout("Login", this.onLogin(user));
 
         // Before login, check if there are cookies on PTs end
         iapiSetCallout("GetLoggedInPlayer", (response) => {
+
             if (this.verifyCookie(response)) {
                 iapiSetCallout("Logout", (resp) => {
-                    iapiLogin(username, password, real, language);
+                    iapiLogin(user, password, real, language);
                 });
 
                 this.doLogout();
             } else {
-                iapiLogin(username, password, real, language);
+                iapiLogin(user, password, real, language);
             }
         });
 
@@ -126,7 +136,7 @@ export class PASModule implements ModuleInterface, GameInterface {
      * IMS default session timeout is configured to 30mins
      */
     private doKeepAlive() {
-        iapiSetCallout("GetLoggedInPlayer", function(response) {
+        iapiSetCallout("GetLoggedInPlayer", (response) => {
             if (this.verifyCookie(response)) {
                 iapiKeepAlive(1, this.keepSessionTime);
             }
@@ -159,7 +169,7 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Logs out the PAS session
      */
     private doLogout() {
-        iapiSetCallout("GetLoggedInPlayer", function(response) {
+        iapiSetCallout("GetLoggedInPlayer", (response) => {
             // Remove the session flag to avoid recurring calls
             this.store.remove(this.sessionFlag);
             if (this.verifyCookie(response)) {
@@ -188,7 +198,8 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Callback on login process
      */
     private onLogin(username) {
-        return function(response) {
+        return (response) => {
+
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
                 this.store.set(this.sessionFlag, "1");
