@@ -7,7 +7,6 @@ import "./components";
 import "./modules";
 
 import "./loader";
-import "./login-redirection";
 
 ComponentManager.init();
 

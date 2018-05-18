@@ -5,13 +5,17 @@
             {% if product.field_product_menu_enable[0].value %}
                 <li class="icon-thumbnail-item">
                 <a
-                href="{{ (is_login ) ? url(product.field_product_menu_url_post_log[0].uri) : url(product.field_product_menu_url_pre_log[0].uri) }}"
-                target="{{ product.field_mobile_product_menu_target[0].value }}"
-                data-router="true"
-                data-router-refresh="main"
-                product-id="{{ product.field_product_menu_id[0].value }}"
-                src-component = "menu"
-                class="icon-thumbnail-link {{ product.field_product_menu_class[0].value }}"
+                    href="{{ (is_login ) ? url(product.field_product_menu_url_post_log[0].uri) : url(product.field_product_menu_url_pre_log[0].uri) }}"
+                    target="{{ product.field_mobile_product_menu_target[0].value }}"
+
+                    {% if "login-trigger" not in product.field_product_menu_class[0].value %}
+                        data-router="true"
+                        data-router-refresh="main"
+                    {% endif %}
+
+                    product-id="{{ product.field_product_menu_id[0].value }}"
+                    src-component = "menu"
+                    class="icon-thumbnail-link {{ product.field_product_menu_class[0].value }}"
                 >
 
                 {% include '@app/web/images/svg/products/'~product.field_product_menu_id[0].value~'.svg' ignore missing %}
