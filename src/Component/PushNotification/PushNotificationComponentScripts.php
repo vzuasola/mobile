@@ -117,7 +117,7 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
         $data['clientIP'] = IP::getIpAddress();
         $data['lang'] = $this->playerLocale;
 
-        $data['token'] = $this->sessionFetcher->getAuthToken();
+        $data['token'] = $this->playerSession->getToken();
 
         $domain = $this->pnxconfig['domain'] ?? '';
 

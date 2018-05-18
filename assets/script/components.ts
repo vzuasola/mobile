@@ -4,8 +4,7 @@ import {HeaderComponent} from "@app/src/Component/Header/script";
 import {MenuComponent} from "@app/src/Component/Header/Menu/script";
 import {LoginComponent} from "@app/src/Component/Header/Login/script";
 
-import {FooterComponent} from "@app/src/Component/Footer/script";
-import {AnnouncementComponent} from "@app/src/Component/Announcement/script";
+import {PromotionsComponent} from "@app/src/Component/Main/Promotions/script";
 import {PushNotificationComponent} from "@app/src/Component/PushNotification/script";
 import {SliderComponent} from "@app/src/Component/Main/Home/Slider/script";
 import {ProductsComponent} from "@app/src/Component/Main/Home/Products/script";
@@ -14,6 +13,7 @@ import {LanguageComponent} from "@app/src/Component/Language/script";
 
 ComponentManager.setComponents({
     header: new HeaderComponent(),
+    promotions: new PromotionsComponent(),
     header_menu: new MenuComponent(),
     header_login: new LoginComponent(),
     footer: new FooterComponent(),

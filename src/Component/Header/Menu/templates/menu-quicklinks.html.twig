@@ -42,7 +42,7 @@
             'quicklinks-settings' in menu.attributes.class) %}
             {% else %}
             <li class="icon-thumbnail-item">
-                <a href="{{ url(menu.uri) }}" class="icon-thumbnail-link {{ menu.attributes.class }}"
+                <a href="{{ url(menu.uri) }}" class="icon-thumbnail-link menu-item-internal {{ menu.attributes.class }}"
                 target="{{ menu.attributes.target }}"
                 data-router="true"
                 data-router-refresh="main"
@@ -65,7 +65,7 @@
         {% endfor %}
         {% if is_login %}
             <li class="icon-thumbnail-item">
-                <a href="#" class="icon-thumbnail-link btn-logout quicklinks-logout">
+                <a href="#" class="icon-thumbnail-link menu-item-internal btn-logout quicklinks-logout">
                 {% include '@app/web/images/svg/quicklinks/quicklinks-logout.svg' %}
                     <span class="icon-thumbnail-label">{{ logout[app.lang] }}</span>
                 </a>

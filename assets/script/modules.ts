@@ -1,5 +1,6 @@
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
+import {AvayaModule} from "@app/src/Module/Avaya/script";
 import {BalanceModule} from "@app/src/Module/Balance/script";
 import {SessionModule} from "@app/src/Module/Session/script";
 
@@ -12,6 +13,7 @@ import {ALSIntegrationModule} from "@app/src/Module/ProductIntegration/ALS/scrip
 import {OWSportsIntegrationModule} from "@app/src/Module/ProductIntegration/OWSports/script";
 
 ComponentManager.setModules({
+    avaya: new AvayaModule(),
     balance: new BalanceModule(),
     session: new SessionModule(),
     game_integration: new GameIntegrationModule(),
