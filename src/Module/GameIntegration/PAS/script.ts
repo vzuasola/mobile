@@ -184,7 +184,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private getLanguageMap(lang) {
         const map = this.languageMap;
 
-        return typeof map[lang] !== "undefined" ? map[lang] : lang;
+        return map && typeof map[lang] !== "undefined" ? map[lang] : lang;
     }
 
     /**

@@ -11,6 +11,7 @@ class ALSIntegrationModuleController
     private $playerSession;
     private $config;
     private $cookieService;
+    private $rest;
 
     /**
      *
@@ -20,18 +21,20 @@ class ALSIntegrationModuleController
         return new static(
             $container->get('player_session'),
             $container->get('config_fetcher'),
-            $container->get('cookie_service')
+            $container->get('cookie_service'),
+            $container->get('rest')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $cookieService)
+    public function __construct($playerSession, $config, $cookieService, $rest)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
         $this->cookieService = $cookieService;
+        $this->rest = $rest;
     }
 
     /**
@@ -61,9 +64,9 @@ class ALSIntegrationModuleController
 
         $this->setCookie($cookies, $isLogin);
 
-        $lobby = $this->generateLobby($url, $enableDomain);
+        $data['redirect'] = $this->generateLobby($url, $enableDomain);
 
-        return $response->withStatus(200)->withHeader('Location', $lobby);
+        return $this->rest->output($response, $data);
     }
 
     /**
