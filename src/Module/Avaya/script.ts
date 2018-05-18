@@ -105,12 +105,15 @@ export class AvayaModule implements ModuleInterface {
                         !this.windowObject.closed &&
                         this.windowObject.location.href !== "about:blank"
                     ) {
+                        console.log("test");
                         this.windowObject.focus();
                     } else {
+                        console.log("here");
                         this.windowObject = PopupWindow("", title, prop);
                     }
                 } catch (e) {
                     if (this.windowObject) {
+                        console.log(e);
                         this.windowObject.focus();
                     }
                 }

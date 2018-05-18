@@ -92,7 +92,7 @@ export class Avaya {
             crossOrigin: true,
             timeout: this.options.timeout,
             data: this.options.nonce,
-        }).then(function(response) {
+        }).then((response) => {
 
             if (response.s === undefined) {
                 this.triggerCallback("onFail", ["empty token"]);
@@ -102,9 +102,9 @@ export class Avaya {
             this.triggerCallback("onSuccess", [response.s]);
             this.storeToken(response.s);
 
-        }).fail(function(err, msg) {
+        }).fail((err, msg) => {
             this.triggerCallback("onFail", [err, msg]);
-        }).always(function(response) {
+        }).always((response) => {
             this.flag = 0;
             this.triggerCallback("postFetch", [response]);
         });
