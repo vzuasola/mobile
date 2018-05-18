@@ -6,6 +6,7 @@ import PushNX from "@core/assets/js/components/push-notification";
 
 import {Modal} from "@app/assets/script/components/modal";
 
+// Pushnx Site Templates
 import * as actionTemplate from "./../handlebars/pushnx/action.handlebars";
 import * as bodyTemplate from "./../handlebars/pushnx/body.handlebars";
 import * as dismissTemplate from "./../handlebars/pushnx/dismiss.message.handlebars";
@@ -14,6 +15,7 @@ import * as expireMessageTemplate from "./../handlebars/pushnx/expired.message.h
 import * as messageTemplate from "./../handlebars/pushnx/message.handlebars";
 import * as titleTemplate from "./../handlebars/pushnx/title.message.handlebars";
 
+// Pushnx SVG Templates
 import * as productArcade from "./../handlebars/svg/product-arcade.handlebars";
 import * as productCasinoGold from "./../handlebars/svg/product-casino-gold.handlebars";
 import * as productCasino from "./../handlebars/svg/product-casino.handlebars";
@@ -42,74 +44,71 @@ export class PushNotification {
         this.element = element;
         this.isconnected = false;
 
-        this.pushnx = new PushNX({
-            islogin: attachments.authenticated,
-            enable: true, // start pushnx - default value true
-            scrollbot: false, // use default scrollbot library
-            modal: {
-                enable: true, // default value true
-                control: false, // default value true
-                height: "auto", // custom height
-            },
-            dismiss: false, // dismiss all message - default value false
-            counter: true, // message counter custom event "pushnx.count.message"
-            notify: true, // new message indicator custom event "pushnx.new.message"
-            action: false, // bind message action buttons default value true custom event "pushnx.action"
-            buttons: {
-                OK: "btn btn-small btn-yellow pushnx-lightbox-btn-ok",
-                ACCEPT: "btn btn-small btn-medium btn-yellow pushnx-lightbox-btn-accept",
-                DECLINE: "btn btn-small btn-medium btn-red pushnx-lightbox-btn-decline",
-            },
-            icons: true,
-            iconsvg: {
-                arcade: productArcade,
-                casinogold: productCasinoGold,
-                casino: productCasino,
-                dafasports: productDafasports,
-                exchange: productExchange,
-                fishhunter: productFishHunter,
-                games: productGames,
-                generic: productGeneric,
-                keno: productKeno,
-                livedealer: productLiveDealer,
-                livechat: productLiveChat,
-                lottery: productLottery,
-                owsports: productOWSports,
-                poker: productPoker,
-                promotions: productPromotions,
-                virtuals: productVirtuals,
-            },
-            template: { // override templates
-                body: bodyTemplate, // body
-                action: actionTemplate, // action
-                message: messageTemplate, // message
-                title: titleTemplate, // title
-                expirationDate: expireDateTemplate, // expiration date
-                expiredMessage: expireMessageTemplate, // expired error message
-                dismissAllMessage: dismissTemplate, // dismiss all message
-            },
-            config: attachments.pushnx,
-        });
+        if (attachments.authenticated) {
+            this.pushnx = new PushNX({
+                islogin: attachments.authenticated,
+                enable: true, // start pushnx - default value true
+                scrollbot: false, // use default scrollbot library
+                modal: {
+                    enable: true, // default value true
+                    control: false, // default value true
+                    height: "auto", // custom height
+                },
+                dismiss: false, // dismiss all message - default value false
+                counter: true, // message counter custom event "pushnx.count.message"
+                notify: true, // new message indicator custom event "pushnx.new.message"
+                action: false, // bind message action buttons default value true custom event "pushnx.action"
+                buttons: {
+                    OK: "btn btn-small btn-yellow pushnx-lightbox-btn-ok",
+                    ACCEPT: "btn btn-small btn-medium btn-yellow pushnx-lightbox-btn-accept",
+                    DECLINE: "btn btn-small btn-medium btn-red pushnx-lightbox-btn-decline",
+                },
+                icons: true,
+                iconsvg: {
+                    arcade: productArcade,
+                    casinogold: productCasinoGold,
+                    casino: productCasino,
+                    dafasports: productDafasports,
+                    exchange: productExchange,
+                    fishhunter: productFishHunter,
+                    games: productGames,
+                    generic: productGeneric,
+                    keno: productKeno,
+                    livedealer: productLiveDealer,
+                    livechat: productLiveChat,
+                    lottery: productLottery,
+                    owsports: productOWSports,
+                    poker: productPoker,
+                    promotions: productPromotions,
+                    virtuals: productVirtuals,
+                },
+                template: { // override templates
+                    body: bodyTemplate, // body
+                    action: actionTemplate, // action
+                    message: messageTemplate, // message
+                    title: titleTemplate, // title
+                    expirationDate: expireDateTemplate, // expiration date
+                    expiredMessage: expireMessageTemplate, // expired error message
+                    dismissAllMessage: dismissTemplate, // dismiss all message
+                },
+                config: attachments.pushnx,
+            });
 
-        this.attachAction(attachments.authenticated);
-        this.listenSessionLogin(attachments.authenticated);
-        this.listenSessionLogout();
-        this.socketConnected();
-        this.messageListener();
-        this.listenOpenModal(attachments.authenticated);
-        this.listenCloseModal();
+            this.attachAction();
+            this.listenSessionLogin();
+            this.listenSessionLogout();
+            this.socketConnected();
+            this.messageListener();
+            this.listenOpenModal();
+            this.listenCloseModal();
+        }
     }
 
     /**
      * Attach message action
-     *
-     * @param {boolean} islogin
      */
-    private attachAction(islogin: boolean) {
-        //  bind action if login
-         if (islogin) {
-             this.pushnx.bindAction();
-         }
+    private attachAction() {
+         this.pushnx.bindAction();
     }
 
     /**
@@ -118,41 +117,42 @@ export class PushNotification {
     private listenSessionLogout() {
         ComponentManager.subscribe("session.logout", (event) => {
             this.pushnx.bindCloseService(); // close socket connection
+            this.isconnected = false;
         });
     }
 
     /**
      * Listen to session login
      */
-    private listenSessionLogin(login: boolean) {
+    private listenSessionLogin() {
         ComponentManager.subscribe("session.login", (event) => {
-            this.setCookie("pnxInitialLogin", true, 7);
-            this.readyMessage(login);
+            this.setCookie("pushnx.initial.login", true, 7);
+            this.readyMessage();
         });
     }
 
     /**
      * Listen to message ready (rendered) status
      */
-    private readyMessage(login: boolean) {
-        ComponentManager.subscribe("pushnx.message.ready", (event) => {
-            if (event.customData.ready) {
-                this.initialProcess(event.customData.ready, login);
-            }
-        });
+    private readyMessage() {
+        ComponentManager.subscribe("pushnx.message.ready", this.initialProcess.bind(this));
     }
 
     /**
      * Process pushnx on initial login
-     *
-     * @param {boolean} status [messages is ready and rendered]
      */
-    private initialProcess(status: boolean, login: boolean) {
-        const initial = utility.getCookie("pnxInitialLogin");
-        if (initial) {
-            this.openModal(login);
-            utility.removeCookie("pnxInitialLogin");
+    private initialProcess(event) {
+        const initial = utility.getCookie("pushnx.initial.login");
+
+        if (initial && event.customData.ready) {
+            utility.removeCookie("pushnx.initial.login");
+            this.isconnected = true;
+            this.openModal();
         }
+
+        setTimeout(() => {
+            utility.removeCookie("pushnx.initial.login");
+        }, 3000);
     }
 
     /**
@@ -175,10 +175,10 @@ export class PushNotification {
     /**
      * Listen open modal
      */
-    private listenOpenModal(login: boolean) {
+    private listenOpenModal() {
         ComponentManager.subscribe("click", (event, src) => {
             if (utility.hasClass(src, "notification-trigger", true)) {
-                this.openModal(login);
+                this.openModal();
             }
         });
     }
@@ -186,7 +186,7 @@ export class PushNotification {
     /**
      * Open modal
      */
-    private openModal(login: boolean) {
+    private openModal() {
         if (this.isconnected) {
             Modal.open("#pushnxLightbox");
         }
@@ -204,25 +204,18 @@ export class PushNotification {
     }
 
     /**
-     * Create cookie
-     */
-    private setCookie(cname: string, cvalue: boolean, days: number) {
-        const d = new Date();
-        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-        const expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-
-    /**
      * listen to number of messages and do other customization
      */
     private messageListener() {
         ComponentManager.subscribe("pushnx.count.message", (event) => {
-            // validate messages
             this.emptyMessage(event.customData.count);
         });
     }
 
+    /**
+     * add custom class if message is empty
+     * @param {[type]} ctr number of messages
+     */
     private emptyMessage(ctr) {
         const pushnx = this.element.querySelector("#push-notification");
 
@@ -231,5 +224,27 @@ export class PushNotification {
         } else {
             utility.addClass(pushnx, "no-notification");
         }
+    }
+
+    /**
+     * unbind all event listeners
+     */
+    private unbindEvents() {
+        if (this.pushnx) {
+            ComponentManager.unsubscribe("pushnx.count.message");
+            ComponentManager.unsubscribe("pushnx.connected");
+            ComponentManager.unsubscribe("pushnx.message.ready");
+            this.pushnx.unbindEvents();
+        }
+    }
+
+    /**
+     * Create cookie
+     */
+    private setCookie(cname: string, cvalue: boolean, days: number) {
+        const d = new Date();
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 }

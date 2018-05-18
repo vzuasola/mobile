@@ -19,10 +19,11 @@ export class PushNotificationComponent implements ComponentInterface {
     }
 
     private bindInstance(element, attachments) {
-        this.pushnx = new PushNotification(element, attachments);
-    }
+        if (this.pushnx) {
+            this.pushnx.unbindEvents();
+            delete this.pushnx;
+        }
 
-    private cleanCookie() {
-        utility.removeCookie("pnxInitialLogin");
+        this.pushnx = new PushNotification(element, attachments);
     }
 }
