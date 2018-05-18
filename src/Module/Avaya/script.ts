@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
-import * as PopupWindow from "@core/assets/js/components/utils/popup";
+import PopupWindow from "@core/assets/js/components/utils/popup";
 
 import {Avaya} from "./scripts/avaya";
 
@@ -13,11 +13,14 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  */
 export class AvayaModule implements ModuleInterface {
     private avayaClass: Avaya;
+
     private windowTitle: string = "avayaWindow";
     private openBehavior: string = "popup";
-    private windowObject = null;
-    private avayaLink: string = "";
+    private avayaLink: string;
+
+    private windowObject: any;
     private options: any = {};
+
     onLoad(attachments: {baseUrl: string,
         urlPost: string,
         postTimeout: number,
@@ -67,6 +70,7 @@ export class AvayaModule implements ModuleInterface {
 
     /**
      * Event listener for the avaya link
+     *
      * @param  object event
      * @return void/boolean
      */
@@ -79,7 +83,8 @@ export class AvayaModule implements ModuleInterface {
             target = target.parentNode;
         }
         // Check if the link should be changed to avaya link
-        if (target.href !== undefined && target.href.indexOf("linkto:avaya") !== -1
+        if (target.href !== undefined &&
+            target.href.indexOf("linkto:avaya") !== -1
         ) {
             evt.preventDefault();
 
@@ -100,6 +105,7 @@ export class AvayaModule implements ModuleInterface {
                 title = title || this.windowTitle;
 
                 const prop = this.popUpProperties(target);
+
                 try {
                     if (this.windowObject &&
                         !this.windowObject.closed &&
@@ -117,6 +123,7 @@ export class AvayaModule implements ModuleInterface {
             }
 
             this.avayaClass.getAvayaToken(target);
+
             return false;
         }
     }
@@ -129,18 +136,20 @@ export class AvayaModule implements ModuleInterface {
      */
     private popUpProperties(target) {
         const defaults = {
-                width: 360,
-                height: 720,
-                scrollbars: 1,
-                scrollable: 1,
-                resizable: 1,
-            };
+            width: 360,
+            height: 720,
+            scrollbars: 1,
+            scrollable: 1,
+            resizable: 1,
+        };
+
         const properties = {};
 
         // Check the properties and get all possible values
         for (const i in defaults) {
             if (defaults.hasOwnProperty(i)) {
                 const property = utility.getParameterByName(i, target.href) || defaults[i];
+
                 properties[i] = property;
             }
         }
