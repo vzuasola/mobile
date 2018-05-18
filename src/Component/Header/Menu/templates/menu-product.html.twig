@@ -6,6 +6,8 @@
                 <li class="icon-thumbnail-item">
                 <a
                     href="{{ (is_login ) ? url(product.field_product_menu_url_post_log[0].uri) : url(product.field_product_menu_url_pre_log[0].uri) }}"
+                    data-post-login-url="{{ product.field_post_login_url_encoded }}"
+
                     target="{{ product.field_mobile_product_menu_target[0].value }}"
 
                     {% if product.field_product_integration_id %}
@@ -15,7 +17,6 @@
                     {% else %}
                         {% if product.field_product_menu_url_post_log[0].value %}
                             data-product-require-post-login="true"
-                            data-post-login-url="{{ product.field_post_login_url_encoded }}"
                         {% else %}
                             data-router="true"
                             data-router-refresh="main"

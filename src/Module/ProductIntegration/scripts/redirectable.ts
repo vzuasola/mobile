@@ -43,7 +43,7 @@ export abstract class Redirectable implements ModuleInterface {
                 }
 
                 this.loader.show();
-                this.doRequest();
+                this.doRequest(src);
             }
         });
 
@@ -51,7 +51,7 @@ export abstract class Redirectable implements ModuleInterface {
             this.isLogin = true;
 
             if (data && typeof data.src !== "undefined" && data.src === this.element) {
-                this.doRequest();
+                this.doRequest(data.src);
             }
         });
 
@@ -60,7 +60,7 @@ export abstract class Redirectable implements ModuleInterface {
         });
     }
 
-    private doRequest() {
+    protected doRequest(src) {
         xhr({
             url: Router.generateModuleRoute(this.module, "integrate"),
             type: "json",
