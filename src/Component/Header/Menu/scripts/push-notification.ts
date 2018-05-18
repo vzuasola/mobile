@@ -4,26 +4,34 @@ import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 export class PushNotification {
     private count: 0;
+    private element;
 
-    handleOnLoad(element: HTMLElement, attachments: {}) {
-        this.listenPushnxCount(element);
-        this.listenNewMessage(element);
+    handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.element = element;
+        this.count = 0;
 
-        this.listenPushnxModal(element);
+        if (attachments.authenticated) {
+            this.listenPushnxCount();
+            this.listenNewMessage();
+
+            this.listenPushnxModal();
+        } else {
+            this.unbindListener();
+        }
     }
 
     /**
      * listen to "click" event on left nav pushnx menu
      */
-    private listenPushnxModal(element) {
-        const src = element.querySelector(".notification-trigger");
+    private listenPushnxModal() {
+        const src = this.element.querySelector(".notification-trigger");
 
         utility.listen(src, "click", (e) => {
             e.preventDefault();
             ComponentManager.broadcast("pushnx.open.modal");
 
             if (this.count <= 0) {
-                this.hideIndicator(element);
+                this.hideIndicator();
             }
         });
     }
@@ -31,27 +39,27 @@ export class PushNotification {
     /**
      * Listen to message counter
      */
-    private listenPushnxCount(element) {
+    private listenPushnxCount() {
         ComponentManager.subscribe("pushnx.count.message", (event) => {
             if (!event.customData.count) {
                 ComponentManager.broadcast("pushnx.close.modal");
             }
 
             this.count = event.customData.count;
-            this.renderMessageCounter(element, this.count);
+            this.renderMessageCounter(this.count);
         });
     }
 
     /**
      * Update message counter
      */
-    private renderMessageCounter(element, ctr) {
-        const notifCount = element.querySelector("#notification-count");
+    private renderMessageCounter( ctr) {
+        const notifCount = this.element.querySelector("#notification-count");
         if (notifCount && ctr > 0) {
             utility.removeClass(notifCount, "hidden");
             notifCount.innerHTML = ctr;
         } else {
-            this.hideIndicator(element);
+            this.hideIndicator();
             utility.addClass(notifCount, "hidden");
         }
     }
@@ -59,10 +67,10 @@ export class PushNotification {
     /**
      * Listen to new pushnx message
      */
-    private listenNewMessage(element) {
+    private listenNewMessage() {
         ComponentManager.subscribe("pushnx.new.message", (event) => {
             if (event.customData.count) {
-                this.showIndicator(element);
+                this.showIndicator();
             }
         });
     }
@@ -70,20 +78,25 @@ export class PushNotification {
     /**
      * Display indicator for new message
      */
-    private showIndicator(element) {
-        const indicator = element.querySelector(".mobile-menu-indicator");
+    private showIndicator() {
+        const indicator = this.element.querySelector(".mobile-menu-indicator");
         utility.removeClass(indicator, "hidden");
     }
 
     /**
      * Hide indicator
      */
-    private hideIndicator(element) {
-        const announcementCount = element.querySelector("#announcement-count");
-        const indicator = element.querySelector(".mobile-menu-indicator");
+    private hideIndicator() {
+        const announcementCount = this.element.querySelector("#announcement-count");
+        const indicator = this.element.querySelector(".mobile-menu-indicator");
 
         if (this.count <= 0 && announcementCount.innerHTML <= 0) {
             utility.addClass(indicator, "hidden");
         }
+    }
+
+    private unbindListener() {
+        ComponentManager.unsubscribe("pushnx.count.message");
+        ComponentManager.unsubscribe("pushnx.new.message");
     }
 }
