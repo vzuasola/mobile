@@ -10,15 +10,13 @@
         </a>
         <ul>
             <li class="title">Filter</li>
-            <li class="active"><a href"#" class="product-link">Featured</a></li>
-            <li><a href"#" class="product-link">OW Sports</a></li>
-            <li><a href"#" class="product-link">Dafa Sports</a></li>
-            <li><a href"#" class="product-link">Casino</a></li>
-            <li><a href"#" class="product-link">Casino Gold</a></li>
-            <li><a href"#" class="product-link">Live Dealer</a></li>
-            <li><a href"#" class="product-link">Poker</a></li>
-            <li><a href"#" class="product-link">Games</a></li>
-            <li><a href"#" class="product-link">Virtuals</a></li>
+            {% for promotions_filter in promotions_filters %}
+            <li>
+                <a href"#{{ promotions_filter['product_id'][0]['value'] }}" class="product-link">
+                {{ promotions_filter['name'][0]['value'] }}
+                </a>
+            </li>
+            {% endfor %}
         </ul>
     </div>
 </div>

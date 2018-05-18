@@ -6,6 +6,25 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class PromotionsComponent implements ComponentWidgetInterface
 {
+    private $views;
+    /**
+     *
+     */
+    public static function create($container)
+    {
+        return new static(
+            $container->get('views_fetcher')
+        );
+    }
+
+    /**
+     * Public constructor
+     */
+    public function __construct($views)
+    {
+        $this->views = $views;
+    }
+
     /**
      * Defines the template path
      *
@@ -23,6 +42,13 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        return [];
+        try {
+            $data['promotions_filters'] = $this->views->getViewById('promotion-filter');
+
+        } catch (\Exception $e) {
+            $data['promotions_filters'] = [];
+        }
+
+        return $data;
     }
 }
