@@ -3,7 +3,7 @@ declare function iapiSetCallout(name: string, callback: any): any;
 declare function iapiKeepAlive(id: number, callback: any): any;
 declare function iapiGetLoggedInPlayer(id: number): any;
 declare function iapiLogout(id: number, pid: number): any;
-declare function iapiLogin(username: string, password: string, real: any, language: string): any;
+declare function iapiLoginAndGetTempToken(username: string, password: string, real: any, language: string): any;
 declare function iapiValidateTCVersion(response: any, id: number, pid: number): any;
 
 import * as utility from "@core/assets/js/components/utility";
@@ -66,12 +66,12 @@ export class PASModule implements ModuleInterface, GameInterface {
 
             if (this.verifyCookie(response)) {
                 iapiSetCallout("Logout", (resp) => {
-                    iapiLogin(user, password, real, language);
+                    iapiLoginAndGetTempToken(user, password, real, language);
                 });
 
                 this.doLogout();
             } else {
-                iapiLogin(user, password, real, language);
+                iapiLoginAndGetTempToken(user, password, real, language);
             }
         });
 
