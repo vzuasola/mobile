@@ -15,6 +15,12 @@ routes:
         components:
           main: basic
 
+    /promotions:
+        method: GET
+        action: App\MobileEntry\Controller\PromotionsController:view
+        components:
+         main: promotions
+
     /api/plugins/component/route/{id}/{method}:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:route

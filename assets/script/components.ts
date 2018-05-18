@@ -11,12 +11,14 @@ import {HeaderComponent} from "@app/src/Component/Header/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
 import {ProductsComponent} from "@app/src/Component/Main/Home/Products/script";
 import {SliderComponent} from "@app/src/Component/Main/Home/Slider/script";
+import {PromotionsComponent} from "@app/src/Component/Main/Promotions/script";
 import {PushNotificationComponent} from "@app/src/Component/PushNotification/script";
 
 ComponentManager.setComponents({
     header: new HeaderComponent(),
     footer: new FooterComponent(),
     home_slider: new SliderComponent(),
+    promotions: new PromotionsComponent(),
     home_products: new ProductsComponent(),
     header_menu: new MenuComponent(),
     header_login: new LoginComponent(),
