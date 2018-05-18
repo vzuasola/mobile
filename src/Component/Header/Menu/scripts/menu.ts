@@ -22,9 +22,10 @@ export class Menu {
 
             if (target === icon || target.parentNode === icon) {
                 this.openMenu();
-            } else if (utility.hasClass(target, "close-svg")
-                || utility.hasClass(target, "menu-item-internal", true)
-                || utility.hasClass(target, "mobile-menu-overlay")) {
+            } else if (utility.hasClass(target, "close-svg") ||
+                utility.hasClass(target, "menu-item-internal", true) ||
+                utility.hasClass(target, "mobile-menu-overlay")
+            ) {
                 this.closeMenu();
             }
         });
