@@ -18,11 +18,33 @@ export class AvayaModule implements ModuleInterface {
     private windowObject = null;
     private avayaLink: string = "";
     private options: any = {};
-    onLoad(attachments: {authenticated: boolean}) {
+    onLoad(attachments: {baseUrl: string,
+        urlPost: string,
+        postTimeout: number,
+        jwtKey: string,
+        validity: number,
+    }) {
+        this.options = {
+            apiUrl: attachments.urlPost,
+            validity: attachments.validity,
+            nonce: attachments.jwtKey || false,
+            timeout: attachments.postTimeout || 5000,
+            onSuccess: (token) => {
+                // Add the token to the base url
+                this.updatePopupWindow(utility.addQueryParam(attachments.baseUrl, "s", token));
+            },
+            onFail: (error) => {
+                // Use the default avaya base url
+                this.updatePopupWindow(attachments.baseUrl);
+            },
+        };
+
         // Instantiate the avaya library
         this.avayaClass = new Avaya(this.options);
         // Add listen to everything
-        ComponentManager.subscribe("click", this.getAvayaToken);
+        ComponentManager.subscribe("click", (event, src, data) => {
+             this.getAvayaToken(event, src, data);
+        });
     }
 
     private updatePopupWindow(url) {
@@ -56,16 +78,13 @@ export class AvayaModule implements ModuleInterface {
         if (target.tagName !== "A" && (target.parentNode !== null && target.parentNode.tagName === "A")) {
             target = target.parentNode;
         }
-
         // Check if the link should be changed to avaya link
-        if (target.href !== undefined &&
-            (target.href.indexOf("linkto:avaya") !== -1 ||
-            target.getAttribute("data-avayalink") === "true")
+        if (target.href !== undefined && target.href.indexOf("linkto:avaya") !== -1
         ) {
             evt.preventDefault();
 
             target = utility.getParameterByName("target", target.href);
-            target = target || (target.getAttribute("data-avaya-target") || this.openBehavior);
+            target = target || this.openBehavior;
 
             if (target === "_self") {
                 // Same tab
@@ -78,7 +97,7 @@ export class AvayaModule implements ModuleInterface {
                 // We use a different data attribute for the popup,
                 // since popup-window.js is already using the target=window
                 let title = utility.getParameterByName("title", target.href);
-                title = title || (target.getAttribute("data-popup-title") || this.windowTitle);
+                title = title || this.windowTitle;
 
                 const prop = this.popUpProperties(target);
                 try {
@@ -121,8 +140,7 @@ export class AvayaModule implements ModuleInterface {
         // Check the properties and get all possible values
         for (const i in defaults) {
             if (defaults.hasOwnProperty(i)) {
-                const property = utility.getParameterByName(i, target.href) ||
-                (target.getAttribute("data-popup-" + i) || defaults[i]);
+                const property = utility.getParameterByName(i, target.href) || defaults[i];
                 properties[i] = property;
             }
         }
