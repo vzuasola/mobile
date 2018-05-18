@@ -16,6 +16,9 @@ modules:
   product_integration:
     class: App\MobileEntry\Module\ProductIntegration\ProductIntegrationModule
 
+  generic_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Generic\GenericIntegrationModule
+
   owsports_integration:
     class: App\MobileEntry\Module\ProductIntegration\OWSports\OWSportsIntegrationModule
 

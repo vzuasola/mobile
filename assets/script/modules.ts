@@ -9,6 +9,7 @@ import {PASModule} from "@app/src/Module/GameIntegration/PAS/script";
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
+import {GenericIntegrationModule} from "@app/src/Module/ProductIntegration/Generic/script";
 import {ALSIntegrationModule} from "@app/src/Module/ProductIntegration/ALS/script";
 import {OWSportsIntegrationModule} from "@app/src/Module/ProductIntegration/OWSports/script";
 
@@ -20,6 +21,7 @@ ComponentManager.setModules({
     pas_integration: new PASModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
+    generic_integration: new GenericIntegrationModule(),
     owsports_integration: new OWSportsIntegrationModule(),
     als_integration: new ALSIntegrationModule(),
 });
