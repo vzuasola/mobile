@@ -7,10 +7,10 @@
                 href="{{ (is_logged_in) ? url(product.field_product_lobby_url_post_log[0].uri) : url(product.field_product_lobby_url_pre_log[0].uri) }}"
                 target="{{ product.field_product_lobby_target[0].value }}"
 
-                data-product-lobby-id="{{ product.field_product_lobby_id[0].value }}"
-
                 {% if product.field_product_integration_id %}
                     data-product-integration-id="{{ product.field_product_integration_id[0].field_product_integration_id[0].value }}"
+                    data-product-login-via="{{ product.field_product_integration_id[0].field_product_login_via[0].value }}"
+                    data-product-reg-via="{{ product.field_product_integration_id[0].field_product_reg_via[0].value }}"
                 {% else %}
                     {% if product.field_require_post_login[0].value %}
                         data-product-require-post-login="true"

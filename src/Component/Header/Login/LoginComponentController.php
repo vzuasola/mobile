@@ -48,7 +48,11 @@ class LoginComponentController
             $username = $body['username'];
             $password = $body['password'];
 
-            $options['Login-Product'] = $body['product'] ?? $this->product;
+            $options = [];
+
+            if (!empty($body['product'])) {
+                $options['Login-Product'] = $body['product'];
+            }
 
             try {
                 $data['success'] = $this->playerSession->login($username, $password, $options);

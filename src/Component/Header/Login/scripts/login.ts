@@ -12,8 +12,11 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 export class Login {
     private loader: Loader;
-    private isLogin: boolean;
 
+    private isLogin: boolean;
+    private element: HTMLElement;
+
+    private productVia: any = false;
     private srcElement: HTMLElement;
     private action: any = false;
 
@@ -22,20 +25,19 @@ export class Login {
     }
 
     handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.element = element;
         this.isLogin = attachments.authenticated;
 
-        ComponentManager.subscribe("session.login", (event, src) => {
-            this.isLogin = true;
-        });
-
-        this.listenLogin(attachments);
-        this.listenLogout(attachments);
+        this.listenLogin();
+        this.listenLogout();
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
     }
 
     handleOnReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.element = element;
+
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
     }
@@ -75,15 +77,20 @@ export class Login {
                 const password: string = src.querySelector('[name="password"]').value;
                 const product = false;
 
+                const data: any = {
+                    username,
+                    password,
+                };
+
+                if (this.productVia) {
+                    data.product = this.productVia;
+                }
+
                 xhr({
                     url: Router.generateRoute("header_login", "authenticate"),
                     type: "json",
                     method: "post",
-                    data: {
-                        username,
-                        password,
-                        product,
-                    },
+                    data,
                 }).then((response) => {
                     const remember = src.querySelector('[name="remember"]');
 
@@ -149,13 +156,32 @@ export class Login {
     /**
      * Listen for login events
      */
-    private listenLogin(attachments: {authenticated: boolean}) {
+    private listenLogin() {
         ComponentManager.subscribe("header.login", (event, src, data: any) => {
+            this.productVia = false;
+
             this.srcElement = null;
             this.action = false;
 
+            // nullify join button since we are putting different reg via values
+            // on it
+            const btnJoin = this.element.querySelector(".btn-join");
+
+            if (btnJoin) {
+                btnJoin.setAttribute("href", btnJoin.getAttribute("data-join-url"));
+            }
+
             if (typeof data.src !== "undefined") {
                 this.srcElement = data.src;
+            }
+
+            if (typeof data.productVia !== "undefined") {
+                this.productVia = data.productVia;
+            }
+
+            if (typeof data.regVia !== "undefined") {
+                const href = btnJoin.getAttribute("data-join-url");
+                btnJoin.setAttribute("href", utility.addQueryParam(href, "regvia", data.regVia));
             }
 
             if (typeof data.action !== "undefined") {
@@ -163,6 +189,10 @@ export class Login {
             }
 
             Modal.open("#login-lightbox");
+        });
+
+        ComponentManager.subscribe("session.login", (event, src) => {
+            this.isLogin = true;
         });
 
         ComponentManager.subscribe("click", (event, src) => {
@@ -183,7 +213,7 @@ export class Login {
     /**
      * Listen for logout events
      */
-    private listenLogout(attachments) {
+    private listenLogout() {
         ComponentManager.subscribe("click", (event, src) => {
             if (this.isLogin) {
                 const element = utility.hasClass(src, "btn-logout", true);

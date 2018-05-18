@@ -86,8 +86,8 @@ class ProductsComponent implements ComponentWidgetInterface
         $tiles = $this->views->getViewById('product_lobby_tiles_entity');
 
         foreach ($tiles as $key => $tile) {
-            if (isset($tile['field_product_lobby_url_pre_log'][0]['uri'])) {
-                $encode = base64_encode($tile['field_product_lobby_url_pre_log'][0]['uri']);
+            if (isset($tile['field_product_lobby_url_post_log'][0]['uri'])) {
+                $encode = base64_encode($tile['field_product_lobby_url_post_log'][0]['uri']);
                 $tile['field_post_login_url_encoded'] = $encode;
             }
 
