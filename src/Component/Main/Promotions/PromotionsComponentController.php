@@ -71,6 +71,16 @@ class PromotionsComponentController
                 $productFilter = ($promotion['field_mark_as_featured'][0]['value'])
                     ? 'featured' : $promotion['field_product_category']['field_product_filter_id'][0]['value'];
 
+                $ribbonLabel = '';
+                if (isset($promotion['field_ribbon_label'][0]['value'])) {
+                    $ribbonLabel = $promotion['field_ribbon_label'][0]['value'];
+                }
+
+                $ribbonColor = '';
+                if (isset($promotion['field_ribbon_background_color'][0]['color'])) {
+                    $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'];
+                }
+
                 if ($isLogin && ($availability == '1' || is_array($availability))) {
                     if ($promotion['field_casino_gold_only'][0]['value'] && !$isProvisioned) {
                         continue;
@@ -85,6 +95,8 @@ class PromotionsComponentController
                         'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'],
                         'hide_countdown' => $promotion['field_post_hide_countdown'][0]['value'],
                         'hide_promotion' => $promotion['field_post_hide_promotion'][0]['value'],
+                        'ribbon_label' =>  $ribbonLabel,
+                        'ribbon_bg_color' => $ribbonColor
                     );
                 } else {
                     $promoPerProduct[$productFilter][] = array(
@@ -96,9 +108,10 @@ class PromotionsComponentController
                         'summary_blurb' => $promotion['field_summary_blurb'][0]['value'],
                         'hide_countdown' => $promotion['field_hide_countdown'][0]['value'],
                         'hide_promotion' => $promotion['field_hide_promotion'][0]['value'],
+                        'ribbon_label' => $ribbonLabel,
+                        'ribbon_bg_color' => $ribbonColor
                     );
                 }
-
             }
 
             $data['promotions'] = $promoPerProduct;
