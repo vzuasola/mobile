@@ -12,6 +12,7 @@ import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/scrip
 import {GenericIntegrationModule} from "@app/src/Module/ProductIntegration/Generic/script";
 import {ALSIntegrationModule} from "@app/src/Module/ProductIntegration/ALS/script";
 import {OWSportsIntegrationModule} from "@app/src/Module/ProductIntegration/OWSports/script";
+import {CasinoIntegrationModule} from "@app/src/Module/ProductIntegration/Casino/script";
 
 ComponentManager.setModules({
     avaya: new AvayaModule(),
@@ -24,4 +25,5 @@ ComponentManager.setModules({
     generic_integration: new GenericIntegrationModule(),
     owsports_integration: new OWSportsIntegrationModule(),
     als_integration: new ALSIntegrationModule(),
+    casino_integration: new CasinoIntegrationModule(),
 });

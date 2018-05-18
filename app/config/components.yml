@@ -28,6 +28,9 @@ modules:
   game_integration:
     class: App\MobileEntry\Module\GameIntegration\GameIntegrationModule
 
+  casino_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Casino\CasinoIntegrationModule
+
   pas_integration:
     class: App\MobileEntry\Module\GameIntegration\PAS\PASModule
 

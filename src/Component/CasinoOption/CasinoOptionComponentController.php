@@ -57,24 +57,28 @@ class CasinoOptionComponentController
 
     public function preference($request, $response)
     {
-        $data['success'] = false;
+        $data = [];
 
         if ($this->playerSession->isLogin()) {
-            $data['success'] = true;
+            $success = true;
 
             try {
                 $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
             } catch (\Exception $e) {
                 $isProvisioned = false;
+                $success = false;
             }
+
+            $body = $request->getParsedBody();
 
             if ($isProvisioned) {
-                $body = $request->getParsedBody();
-
-                $data['lobby_url'] = $this->getPreferenceProvisioned($body);
+                $redirect = $this->getPreferenceProvisioned($body);
             } else {
-                $data['lobby_url'] = $this->getCasinoUrl('casino');
+                $redirect = $this->getCasinoUrl('casino');
             }
+
+            $data['success'] = $success;
+            $data['redirect'] = $redirect;
         }
 
         return $this->rest->output($response, $data);
@@ -82,6 +86,8 @@ class CasinoOptionComponentController
 
     private function getPreferenceProvisioned($product)
     {
+        $preferredCasino = false;
+
         try {
             if (!empty($product['product'])) {
                 $this->preferences->savePreference('casino.preferred', $product['product']);
@@ -89,13 +95,12 @@ class CasinoOptionComponentController
             } else {
                 $userPreferences = $this->preferences->getPreferences();
 
-                $preferredCasino = '';
                 if (!empty($userPreferences['casino.preferred'])) {
                     $preferredCasino = $this->getCasinoUrl($userPreferences['casino.preferred']);
                 }
             }
         } catch (\Exception $e) {
-            $preferredCasino = '';
+            // do nothing
         }
 
         return $preferredCasino;
@@ -103,13 +108,13 @@ class CasinoOptionComponentController
 
     private function getCasinoUrl($product)
     {
+        $casinoUrl = false;
+
         try {
             $casinoConfigs = $this->configs->getConfig('mobile_casino.casino_configuration');
-
-            $casinoUrl = ($product == 'casino_gold') ? $casinoConfigs['casino_gold_url']
-                : $casinoConfigs['casino_url'];
+            $casinoUrl = $product == 'casino_gold' ? $casinoConfigs['casino_gold_url'] : $casinoConfigs['casino_url'];
         } catch (\Exception $e) {
-            $casinoUrl = '';
+            // do nothing
         }
 
         return $casinoUrl;
