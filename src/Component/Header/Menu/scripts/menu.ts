@@ -19,14 +19,14 @@ export class Menu {
     private bindEvents(event: string) {
         ComponentManager.subscribe(event, (src, target) => {
             const icon = this.element.querySelector(".mobile-menu-icon");
-            const targetQuicklink = utility.hasClass(target, "menu-item-internal")
+            const targetMenuInternal = utility.hasClass(target, "menu-item-internal")
                                     || utility.hasClass(target.parentNode, "menu-item-internal")
                                     || utility.hasClass(target.parentNode.parentNode, "menu-item-internal");
 
             if (target === icon || target.parentNode === icon) {
                 this.openMenu();
             } else if (utility.hasClass(target, "close-svg")
-                || targetQuicklink
+                || targetMenuInternal
                 || utility.hasClass(target, "mobile-menu-overlay")) {
                 this.closeMenu();
             }
