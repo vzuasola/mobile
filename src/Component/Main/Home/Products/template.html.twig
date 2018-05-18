@@ -4,24 +4,35 @@
         {% if product.field_product_lobby_enable[0].value %}
             <li class="icon-thumbnail-item product-box">
             <a
-            href="{{ (is_logged_in) ? url(product.field_product_lobby_url_post_log[0].uri) : url(product.field_product_lobby_url_pre_log[0].uri) }}"
-            target="{{ product.field_product_lobby_target[0].value }}"
-            data-router="true"
-            data-router-refresh="main"
-            product-id="{{ product.field_product_lobby_id[0].value }}"
-            src-component="products"
-            class="icon-thumbnail-link {{ product.field_product_lobby_class[0].value }}"
+                href="{{ (is_logged_in) ? url(product.field_product_lobby_url_post_log[0].uri) : url(product.field_product_lobby_url_pre_log[0].uri) }}"
+                target="{{ product.field_product_lobby_target[0].value }}"
+
+                {% if product.field_product_integration_id %}
+                    data-product-integration-id="{{ product.field_product_integration_id[0].field_product_integration_id[0].value }}"
+                    data-product-login-via="{{ product.field_product_integration_id[0].field_product_login_via[0].value }}"
+                    data-product-reg-via="{{ product.field_product_integration_id[0].field_product_reg_via[0].value }}"
+                {% else %}
+                    {% if product.field_require_post_login[0].value %}
+                        data-product-require-post-login="true"
+                        data-post-login-url="{{ product.field_post_login_url_encoded }}"
+                    {% else %}
+                        data-router="true"
+                        data-router-refresh="main"
+                    {% endif %}
+                {% endif %}
+
+                class="icon-thumbnail-link {{ product.field_product_lobby_class[0].value }}"
             >
+                {% include '@app/web/images/svg/products/'~product.field_product_lobby_id[0].value~'.svg' ignore missing %}
 
-            {% include '@app/web/images/svg/products/'~product.field_product_lobby_id[0].value~'.svg' ignore missing %}
+                <span class="icon-thumbnail-label">{{ product.field_product_lobby_title[0].value }}</span>
 
-            <span class="icon-thumbnail-label">{{ product.field_product_lobby_title[0].value }}</span>
-            {% if product.field_product_lobby_tag[0].value %}
-                <span class="icon-thumbnail-new-tag">
-                    <span>{{ config_new_text }}</span>
-                </span>
-            {% endif %}
-        </a>
+                {% if product.field_product_lobby_tag[0].value %}
+                    <span class="icon-thumbnail-new-tag">
+                        <span>{{ config_new_text }}</span>
+                    </span>
+                {% endif %}
+            </a>
         </li>
         {% endif %}
     {% endfor %}

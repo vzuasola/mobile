@@ -2,7 +2,7 @@
 
 namespace App\MobileEntry\Module\ProductIntegration\OWSports;
 
-class OwsportsIntegrationModuleController
+class OWSportsIntegrationModuleController
 {
     private $playerSession;
     private $config;
@@ -54,7 +54,7 @@ class OwsportsIntegrationModuleController
             $iwap = $owsportsConfig['iwap'] ?? '';
             $owParams = $owsportsConfig['owsports_param'] ?? '';
 
-            $data['lobby_url'] = $this->getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $owParams);
+            $data['redirect'] = $this->getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $owParams);
         }
 
         return $this->rest->output($response, $data);

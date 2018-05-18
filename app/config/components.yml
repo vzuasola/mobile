@@ -17,7 +17,7 @@ modules:
     class: App\MobileEntry\Module\ProductIntegration\ProductIntegrationModule
 
   owsports_integration:
-    class: App\MobileEntry\Module\ProductIntegration\OWSports\OwsportsIntegrationModule
+    class: App\MobileEntry\Module\ProductIntegration\OWSports\OWSportsIntegrationModule
 
   als_integration:
     class: App\MobileEntry\Module\ProductIntegration\ALS\ALSIntegrationModule
@@ -27,6 +27,9 @@ modules:
 
   pas_integration:
     class: App\MobileEntry\Module\GameIntegration\PAS\PASModule
+
+  login_redirect:
+    class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
 components:
   header:

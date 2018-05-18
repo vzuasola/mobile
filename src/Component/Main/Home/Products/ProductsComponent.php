@@ -65,7 +65,7 @@ class ProductsComponent implements ComponentWidgetInterface
         $data['is_logged_in'] = $this->playerSession->isLogin();
 
         try {
-            $data['product_tiles'] = $this->views->getViewById('product_lobby_tiles_entity');
+            $data['product_tiles'] = $this->getEntity();
         } catch (\Exception $e) {
             $data['product_tiles'] = [];
         }
@@ -78,5 +78,22 @@ class ProductsComponent implements ComponentWidgetInterface
         }
 
         return $data;
+    }
+
+    private function getEntity()
+    {
+        $result = [];
+        $tiles = $this->views->getViewById('product_lobby_tiles_entity');
+
+        foreach ($tiles as $key => $tile) {
+            if (isset($tile['field_product_lobby_url_post_log'][0]['uri'])) {
+                $encode = base64_encode($tile['field_product_lobby_url_post_log'][0]['uri']);
+                $tile['field_post_login_url_encoded'] = $encode;
+            }
+
+            $result[$key] = $tile;
+        }
+
+        return $result;
     }
 }
