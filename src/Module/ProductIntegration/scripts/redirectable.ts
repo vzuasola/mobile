@@ -10,8 +10,9 @@ export abstract class Redirectable implements ModuleInterface {
     protected isLoginOnly: boolean;
     protected module: string;
 
+    protected loader;
+
     private element;
-    private loader;
     private isLogin: boolean;
 
     constructor() {

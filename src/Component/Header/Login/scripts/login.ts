@@ -180,8 +180,10 @@ export class Login {
             }
 
             if (typeof data.regVia !== "undefined") {
-                const href = btnJoin.getAttribute("data-join-url");
-                btnJoin.setAttribute("href", utility.addQueryParam(href, "regvia", data.regVia));
+                if (btnJoin) {
+                    const href = btnJoin.getAttribute("data-join-url");
+                    btnJoin.setAttribute("href", utility.addQueryParam(href, "regvia", data.regVia));
+                }
             }
 
             if (typeof data.action !== "undefined") {
