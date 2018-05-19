@@ -2,6 +2,9 @@
 
 namespace App\MobileEntry\Component\CasinoOption;
 
+use App\Cookies\Cookies;
+use App\Utils\Host;
+
 /**
  *
  */
@@ -86,24 +89,33 @@ class CasinoOptionComponentController
 
     private function getPreferenceProvisioned($product)
     {
-        $preferredCasino = false;
+        $preferredCasinoUrl = false;
 
         try {
             if (!empty($product['product'])) {
-                $this->preferences->savePreference('casino.preferred', $product['product']);
-                $preferredCasino = $this->getCasinoUrl($product['product']);
+                $preferredCasino = $product['product'];
+                $this->preferences->savePreference('casino.preferred', $preferredCasino);
+                $preferredCasinoUrl = $this->getCasinoUrl($product['product']);
             } else {
-                $userPreferences = $this->preferences->getPreferences();
+                $preferredCasino = $this->preferences->getPreferences();
 
-                if (!empty($userPreferences['casino.preferred'])) {
-                    $preferredCasino = $this->getCasinoUrl($userPreferences['casino.preferred']);
+                if (!empty($preferredCasino['casino.preferred'])) {
+                    $preferredCasinoUrl = $this->getCasinoUrl($preferredCasino['casino.preferred']);
                 }
             }
+
+            $options = [
+                'path' => '/',
+                'domain' => Host::getDomain(),
+                'expire' => 0
+            ];
+
+            Cookies::set('mobile_revamp_casino_pref', $preferredCasino, $options);
         } catch (\Exception $e) {
             // do nothing
         }
 
-        return $preferredCasino;
+        return $preferredCasinoUrl;
     }
 
     private function getCasinoUrl($product)
