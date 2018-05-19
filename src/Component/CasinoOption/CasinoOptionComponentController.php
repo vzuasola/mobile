@@ -100,7 +100,7 @@ class CasinoOptionComponentController
                 $preferredCasino = $this->preferences->getPreferences();
 
                 if (!empty($preferredCasino['casino.preferred'])) {
-                    $preferredCasinoUrl = $this->getCasinoUrl($userPreferences['casino.preferred']);
+                    $preferredCasinoUrl = $this->getCasinoUrl($preferredCasino['casino.preferred']);
                 }
             }
 
