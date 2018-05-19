@@ -25,7 +25,13 @@
                 <input type="submit" value="{{ login_bottom_label }}" class="btn btn-gray login-submit input-block-level mb-10">
                 <p class="mb-30"><a href="{{ url(login_issue_link) }}" class="login-help-link">{{ login_issue_text }}</a></p>
                 <p class="mb-10">{{ lightbox_blurb }}</p>
-                <a href="{{ url(join_now_link) }}" class="btn btn-yellow input-block-level">{{ join_now_text }}</a>
+                <a
+                    href="{{ url(join_now_link) }}"
+                    class="btn-join btn btn-yellow input-block-level"
+                    data-join-url="{{ url(join_now_link) }}"
+                >
+                    {{ join_now_text }}
+                </a>
             </form>
         </div>
         {% include '@app/web/images/svg/closed.svg' %}
