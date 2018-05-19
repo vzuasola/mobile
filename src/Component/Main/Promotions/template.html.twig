@@ -5,30 +5,27 @@
         {% include '@app/web/images/svg/arrow.svg' %}
     </a>
     <div class="dropdown-menu">
-        {% set promotionId = "" %}
-        {% set promotionPrefix = "" %}
-
-        {% for promotions_filter in promotions_filters %}
-            {% if promotions_filter['name'][0]['value'] == promotions_filters[0]['name'][0]['value'] %}
-                {% set promotionId =  promotions_filter['field_product_category_id'][0]['value'] %}
-                {% set promotionPrefix = promotions_filter['name'][0]['value'] %}
-            {% endif %}
-        {% endfor %}
-
-        <a href="#" class="{{ promotionId }} dropdown-trigger promotion-link" data-current-promotion="{{ promotionPrefix }}">
-            {{ promotionPrefix }}
+        <a
+            href="#" class="dropdown-trigger promotion-link active-filter"
+            data-current-filter="{{ current_filter['field_product_filter_id'][0]['value'] }}"
+        >
+            <span class="current-filter">{{ current_filter['name'][0]['value'] }}</span>
             {% include '@app/web/images/svg/arrow.svg' %}
         </a>
 
         <ul>
             <li class="title">Filter</li>
             {% for promotions_filter in promotions_filters %}
-                {% set isActive = promotions_filter['name'][0]['value'] == promotions_filters[0]['name'][0]['value'] ? "active" : "" %}
-
-            <li class="{{ promotions_filter['field_product_category_id'][0]['value'] }} {{isActive}}" data-promotion="{{ promotions_filter['name'][0]['value'] }}">
-                <a href="#{{ promotions_filter['product_id'][0]['value'] }}" class="language-link">{{ promotions_filter['name'][0]['value'] }}</a>
+                {% set filterId = promotions_filter['field_product_filter_id'][0]['value'] %}
+                {% set isActive = filterId == current_filter['field_product_filter_id'][0]['value'] ? "active" : "" %}
+            <li class="{{isActive}}">
+                <a
+                 href="#"
+                 class="product-link"
+                 data-product-filter-id="{{ filterId }}"
+                 data-product-filter-name="{{ promotions_filter['name'][0]['value'] }}"
+                >{{ promotions_filter['name'][0]['value'] }}</a>
             </li>
-
             {% endfor %}
         </ul>
 
@@ -36,43 +33,5 @@
 </div>
 
 <div class="promotions-body">
-    <div class="promotions-body-banner">
-        <a href="#" class="promotions-body-banner-link">
-        <span class="promotions-body-product">
-            {% include '@app/web/images/svg/products/product-casino.svg' %}
-        </span>
-        <img src="{{ asset('images/banner/promotion-banner.jpg') }}" alt="" class="w-100">
-            <div class="promotions-body-banner-overlay">
-                {% include '@app/web/images/svg/clock.svg' %}
-            4 Days, 21 Hours remaining
-            </div>
-        </a>
-    </div>
-    <div class="container promotions-content clearfix">
-    <h2 class="promotions-content-title">First Deposit Bonus</h2>
-        <p>Dafabet is a leading Asian online gaming website, offering sports betting, online casino, online poker and online games. We have been serving China and the Asia Pacific market since 2004. <span class="promotions-content-info">More Info »</span></p>
-        <a href="#" class="promotions-content-links">
-        {% include '@app/web/images/svg/arrow.svg' %}
-        </a>
-    </div>
-
-    <div class="promotions-body-banner">
-        <a href="#" class="promotions-body-banner-link">
-        <span class="promotions-body-product">
-            {% include '@app/web/images/svg/products/product-casino.svg' %}
-        </span>
-        <img src="{{ asset('images/banner/promotion-banner.jpg') }}" alt="" class="w-100">
-            <div class="promotions-body-banner-overlay">
-                {% include '@app/web/images/svg/clock.svg' %}
-            4 Days, 21 Hours remaining
-            </div>
-        </a>
-    </div>
-    <div class="container promotions-content clearfix">
-    <h2 class="promotions-content-title">First Deposit Bonus</h2>
-        <p>Dafabet is a leading Asian online gaming website, offering sports betting, online casino, online poker and online games. We have been serving China and the Asia Pacific market since 2004. <span class="promotions-content-info">More Info »</span></p>
-        <a href="#" class="promotions-content-links">
-        {% include '@app/web/images/svg/arrow.svg' %}
-        </a>
-    </div>
+    
 </div>
