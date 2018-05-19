@@ -12,25 +12,34 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 export class Login {
     private loader: Loader;
+
+    private isLogin: boolean;
+    private element: HTMLElement;
+
+    private productVia: any = false;
     private srcElement: HTMLElement;
+    private action: any = false;
 
     constructor() {
         this.loader = new Loader(document.body, true);
     }
 
     handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
-        this.listenLogin(attachments);
-        this.listenLogout(attachments);
+        this.element = element;
+        this.isLogin = attachments.authenticated;
+
+        this.listenLogin();
+        this.listenLogout();
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
-        this.bindLogout(attachments);
     }
 
     handleOnReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.element = element;
+
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
-        this.bindLogout(attachments);
     }
 
     /**
@@ -66,15 +75,22 @@ export class Login {
             if (src.isValid) {
                 const username: string = src.querySelector('[name="username"]').value;
                 const password: string = src.querySelector('[name="password"]').value;
+                const product = false;
+
+                const data: any = {
+                    username,
+                    password,
+                };
+
+                if (this.productVia) {
+                    data.product = this.productVia;
+                }
 
                 xhr({
                     url: Router.generateRoute("header_login", "authenticate"),
                     type: "json",
                     method: "post",
-                    data: {
-                        username,
-                        password,
-                    },
+                    data,
                 }).then((response) => {
                     const remember = src.querySelector('[name="remember"]');
 
@@ -88,36 +104,48 @@ export class Login {
                     }
 
                     Modal.close("#login-lightbox");
-                    this.loader.show();
 
-                    ComponentManager.refreshComponents(
-                        ["header", "main", "announcement", "push_notification"],
-                        () => {
-                            ComponentManager.broadcast("session.login", {
-                                src: this.srcElement,
-                                username,
-                                password,
-                            });
+                    ComponentManager.broadcast("session.prelogin", {
+                        src: this.srcElement,
+                        username,
+                        password,
+                    });
 
-                            this.loader.hide();
-                        },
-                    );
+                    // the action property defines what to do when a login process
+                    // invoked, this is used if you want to override the after login
+                    // step
+                    if (this.action) {
+                        const handler = this.action;
+
+                        handler(this.srcElement, username, password);
+
+                        ComponentManager.broadcast("session.login", {
+                            src: this.srcElement,
+                            username,
+                            password,
+                        });
+                    } else {
+                        this.loader.show();
+
+                        ComponentManager.refreshComponents(
+                            ["header", "main", "announcement", "push_notification"],
+                            () => {
+                                ComponentManager.broadcast("session.login", {
+                                    src: this.srcElement,
+                                    username,
+                                    password,
+                                });
+
+                                this.loader.hide();
+                            },
+                        );
+                    }
+
                 }).fail((error) => {
                     ComponentManager.broadcast("session.failed", {error, form});
                 });
             }
         });
-    }
-
-    /**
-     * Binds any logout click event to logout the site
-     */
-    private bindLogout(attachments: {authenticated: boolean}) {
-        if (attachments.authenticated) {
-            utility.delegate(document, ".btn-logout", "click", (event, src) => {
-                ComponentManager.broadcast("session.logout");
-            }, true);
-        }
     }
 
     /**
@@ -128,30 +156,82 @@ export class Login {
     /**
      * Listen for login events
      */
-    private listenLogin(attachments: {authenticated: boolean}) {
-        ComponentManager.subscribe("header.login", (event, src) => {
+    private listenLogin() {
+        ComponentManager.subscribe("header.login", (event, src, data: any) => {
+            this.productVia = false;
+
+            this.srcElement = null;
+            this.action = false;
+
+            // nullify join button since we are putting different reg via values
+            // on it
+            const btnJoin = this.element.querySelector(".btn-join");
+
+            if (btnJoin) {
+                btnJoin.setAttribute("href", btnJoin.getAttribute("data-join-url"));
+            }
+
+            if (typeof data.src !== "undefined") {
+                this.srcElement = data.src;
+            }
+
+            if (typeof data.productVia !== "undefined") {
+                this.productVia = data.productVia;
+            }
+
+            if (typeof data.regVia !== "undefined") {
+                if (btnJoin) {
+                    const href = btnJoin.getAttribute("data-join-url");
+                    btnJoin.setAttribute("href", utility.addQueryParam(href, "regvia", data.regVia));
+                }
+            }
+
+            if (typeof data.action !== "undefined") {
+                this.action = data.action;
+            }
+
             Modal.open("#login-lightbox");
         });
 
-        if (!attachments.authenticated) {
-            ComponentManager.subscribe("click", (event, src) => {
+        ComponentManager.subscribe("session.login", (event, src) => {
+            this.isLogin = true;
+        });
+
+        ComponentManager.subscribe("click", (event, src) => {
+            if (!this.isLogin) {
                 const element = utility.hasClass(src, "login-trigger", true);
 
                 if (element) {
-                    this.srcElement = element;
-
-                    ComponentManager.broadcast("header.login");
                     event.preventDefault();
+
+                    ComponentManager.broadcast("header.login", {
+                        src: element,
+                    });
                 }
-            });
-        }
+            }
+        });
     }
 
     /**
      * Listen for logout events
      */
-    private listenLogout(attachments) {
+    private listenLogout() {
+        ComponentManager.subscribe("click", (event, src) => {
+            if (this.isLogin) {
+                const element = utility.hasClass(src, "btn-logout", true);
+
+                if (element) {
+                    event.preventDefault();
+
+                    ComponentManager.broadcast("session.logout", {
+                        src: element,
+                    });
+                }
+            }
+        });
+
         ComponentManager.subscribe("session.logout", (event) => {
+            this.isLogin = false;
             this.loader.show();
 
             xhr({

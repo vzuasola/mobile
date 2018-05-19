@@ -4,7 +4,7 @@ import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 export class Menu {
     constructor(private element: HTMLElement) {
-    }
+}
 
     activate() {
         const event = this.isTouch() ? "touchend" : "click";
@@ -22,7 +22,10 @@ export class Menu {
 
             if (target === icon || target.parentNode === icon) {
                 this.openMenu();
-            } else if (utility.hasClass(target, "close-svg") || utility.hasClass(target, "mobile-menu-overlay")) {
+            } else if (utility.hasClass(target, "close-svg") ||
+                utility.hasClass(target, "menu-item-internal", true) ||
+                utility.hasClass(target, "mobile-menu-overlay")
+            ) {
                 this.closeMenu();
             }
         });

@@ -18,7 +18,7 @@ export class MenuComponent implements ComponentInterface {
         this.pushNotification = new PushNotification();
     }
 
-    onLoad(element: HTMLElement, attachments: {}) {
+    onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.element = element;
         this.activateMenu(element);
         this.pushNotification.handleOnLoad(element, attachments);
@@ -27,7 +27,7 @@ export class MenuComponent implements ComponentInterface {
         this.getBalance(element, attachments);
     }
 
-    onReload(element: HTMLElement, attachments: {}) {
+    onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.element = element;
         this.activateMenu(element);
         this.pushNotification.handleOnLoad(element, attachments);

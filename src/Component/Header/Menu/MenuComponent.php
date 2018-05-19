@@ -77,7 +77,7 @@ class MenuComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
-            $data['product_menu'] = $this->views->getViewById('mobile_product_menu');
+            $data['product_menu'] = $this->getEntity();
         } catch (\Exception $e) {
             $data['product_menu'] = [];
         }
@@ -130,6 +130,8 @@ class MenuComponent implements ComponentWidgetInterface
             } catch (\Exception $e) {
                 $data['is_provisioned'] = false;
             }
+
+            $data['is_provisioned'] = true;
         }
 
         try {
@@ -139,5 +141,22 @@ class MenuComponent implements ComponentWidgetInterface
         }
 
         return $data;
+    }
+
+    private function getEntity()
+    {
+        $result = [];
+        $tiles = $this->views->getViewById('mobile_product_menu');
+
+        foreach ($tiles as $key => $tile) {
+            if (isset($tile['field_product_menu_url_post_log'][0]['uri'])) {
+                $encode = base64_encode($tile['field_product_menu_url_post_log'][0]['uri']);
+                $tile['field_post_login_url_encoded'] = $encode;
+            }
+
+            $result[$key] = $tile;
+        }
+
+        return $result;
     }
 }

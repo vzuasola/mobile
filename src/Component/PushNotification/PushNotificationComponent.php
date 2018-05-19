@@ -17,7 +17,7 @@ class PushNotificationComponent implements ComponentWidgetInterface
     private $playerSession;
 
     /**
-     * string
+     * @var string
      */
     private $playerLocale;
     /**
