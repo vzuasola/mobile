@@ -1,1 +1,21 @@
-<h1>{{title}}</h1>
+{{#each promotions}}
+<div class="promotions-body-banner">
+    <a href="#" class="promotions-body-banner-link">
+    <span class="promotions-body-product">
+        {% include '@app/web/images/svg/products/product-casino.svg' %}
+    </span>
+    <img src="{{ asset('images/banner/promotion-banner.jpg') }}" alt="" class="w-100">
+        <div class="promotions-body-banner-overlay">
+            {% include '@app/web/images/svg/clock.svg' %}
+        4 Days, 21 Hours remaining
+        </div>
+    </a>
+</div>
+<div class="container promotions-content clearfix">
+<h2 class="promotions-content-title">{{this.title}}</h2>
+	{{this.summary_blurb}}
+    <p><span class="promotions-content-info">More Info »</span></p>
+    <a href="{{this.summary_url}}" class="promotions-content-links">
+    </a>
+</div>
+{{/each}}

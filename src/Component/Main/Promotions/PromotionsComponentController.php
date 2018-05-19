@@ -118,7 +118,7 @@ class PromotionsComponentController
         } catch (\Exception $e) {
             $data['promotions'] = [];
         }
-        
+
         return $this->rest->output($response, $data);
     }
 
