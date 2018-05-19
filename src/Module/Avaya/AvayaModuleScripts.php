@@ -5,6 +5,7 @@ namespace App\MobileEntry\Module\Avaya;
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 
 use Firebase\JWT\JWT;
+
 /**
  *
  */
