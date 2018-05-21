@@ -55,7 +55,7 @@ class PromotionsComponentController
         $this->paymentAccount = $paymentAccount;
     }
 
-    public function list($request, $response)
+    public function promotions($request, $response)
     {
         try {
             $promoPerProduct = [];

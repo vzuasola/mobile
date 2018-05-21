@@ -69,7 +69,7 @@ export class PromotionsComponent implements ComponentInterface {
     private doRequest(callback) {
         if (!this.promotions) {
             xhr({
-                url: Router.generateRoute("promotions", "list"),
+                url: Router.generateRoute("promotions", "promotions"),
                 type: "json",
             }).then((response) => {
                 this.promotionLoader();
@@ -94,13 +94,15 @@ export class PromotionsComponent implements ComponentInterface {
 
                 // remove active previous
                 utility.removeClass(utility.findParent(prevFilterEl, "li"), "active");
+                utility.removeClass(element.querySelector(".active-filter"), prevFilter);
 
                 // set new active filter
                 utility.addClass(utility.findParent(src, "li"), "active");
                 element.querySelector(".current-filter").innerHTML =
                     src.getAttribute("data-product-filter-name");
                 element.querySelector(".active-filter")
-               .setAttribute("data-current-filter", src.getAttribute("data-product-filter-id"));
+                    .setAttribute("data-current-filter", src.getAttribute("data-product-filter-id"));
+                utility.addClass(element.querySelector(".active-filter"), src.getAttribute("data-product-filter-id"));
 
                 this.doRequest((response) => {
                     const productFilter = src.getAttribute("data-product-filter-id");
@@ -131,6 +133,8 @@ export class PromotionsComponent implements ComponentInterface {
                     currentFilter.getAttribute("data-product-filter-name");
                 element.querySelector(".active-filter")
                    .setAttribute("data-current-filter", currentFilter.getAttribute("data-product-filter-id"));
+                utility.addClass(element.querySelector(".active-filter"),
+                    currentFilter.getAttribute("data-product-filter-id"));
             }
         });
     }
