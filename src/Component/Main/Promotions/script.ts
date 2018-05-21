@@ -80,8 +80,8 @@ export class PromotionsComponent implements ComponentInterface {
                 // do something
             });
         } else {
-            this.promotionLoader();
-            callback(this.promotions);
+                this.promotionLoader();
+                callback(this.promotions);
         }
     }
 
@@ -104,7 +104,6 @@ export class PromotionsComponent implements ComponentInterface {
 
                 this.doRequest((response) => {
                     const productFilter = src.getAttribute("data-product-filter-id");
-
                     element.querySelector(".promotions-body").innerHTML =
                         promotionTemplate({promotions: response[productFilter]});
                 });
