@@ -42,6 +42,17 @@
             }
         }
 
+        &-tag {
+            position: absolute;
+            top: 0;
+            left: 1rem;
+            padding: 0.5rem 1rem;
+            color: $white;
+            outline: none;
+            border: 0.1rem;
+            border-radius: 0.1rem;
+        }
+
     }
 
     &-product {
