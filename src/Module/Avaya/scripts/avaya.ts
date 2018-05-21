@@ -44,6 +44,13 @@ export class Avaya {
     }
 
     /**
+     * Set JWT Token
+     */
+    setToken(token) {
+        this.options.nonce = token;
+    }
+
+    /**
      * Trigger the fetch token
      *
      * @return void
