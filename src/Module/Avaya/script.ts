@@ -6,7 +6,7 @@ import PopupWindow from "@core/assets/js/components/utils/popup";
 import {Avaya} from "./scripts/avaya";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 /**
  *
@@ -20,6 +20,8 @@ export class AvayaModule implements ModuleInterface {
 
     private windowObject: any;
     private options: any = {};
+    private prevUrl: string;
+    private baseUrl: string;
 
     onLoad(attachments: {baseUrl: string,
         urlPost: string,
@@ -27,6 +29,7 @@ export class AvayaModule implements ModuleInterface {
         jwtKey: string,
         validity: number,
     }) {
+        this.baseUrl = attachments.baseUrl;
         this.options = {
             apiUrl: attachments.urlPost,
             validity: attachments.validity,
@@ -34,11 +37,11 @@ export class AvayaModule implements ModuleInterface {
             timeout: attachments.postTimeout || 5000,
             onSuccess: (token) => {
                 // Add the token to the base url
-                this.updatePopupWindow(utility.addQueryParam(attachments.baseUrl, "s", token));
+                this.updatePopupWindow(utility.addQueryParam(this.baseUrl, "s", token));
             },
             onFail: (error) => {
                 // Use the default avaya base url
-                this.updatePopupWindow(attachments.baseUrl);
+                this.updatePopupWindow(this.baseUrl);
             },
         };
 
@@ -56,6 +59,10 @@ export class AvayaModule implements ModuleInterface {
         ComponentManager.subscribe("session.logout", (event, src) => {
            this.avayaClass.setToken(false);
         });
+
+        Router.on(RouterClass.afterNavigate, (event) => {
+            this.setJWT();
+        });
     }
 
     private setJWT() {
@@ -64,6 +71,14 @@ export class AvayaModule implements ModuleInterface {
             type: "json",
         }).then((response) => {
             this.avayaClass.setToken(response.jwt);
+            this.avayaClass.setOnSuccess((token) => {
+                // Add the token to the base url
+                this.updatePopupWindow(utility.addQueryParam(response.baseUrl, "s", token));
+            });
+            this.avayaClass.setOnFail((error) => {
+                // Use the default avaya base url
+                this.updatePopupWindow(response.baseUrl);
+            });
         }).fail((err, msg) => {
             // do nothing
         });
@@ -81,6 +96,11 @@ export class AvayaModule implements ModuleInterface {
                 this.windowObject.location.replace(url);
             }
         } catch (e) {
+            if (url !== this.avayaLink) {
+                this.avayaLink = url;
+                this.windowObject.location.replace(url);
+            }
+
             if (this.windowObject) {
                 this.windowObject.focus();
             }
