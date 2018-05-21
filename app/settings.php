@@ -12,6 +12,8 @@ $settings['settings']['renderer']['template_path']['component'] = __DIR__ . '/..
 
 $settings['settings']['product'] = 'mobile-entrypage';
 
+$settings['settings']['dafaconnect']['enable'] = true;
+
 $settings['settings']['asset']['prefixed'] = false;
 
 if (\App\Kernel::environment() !== 'DEV') {
