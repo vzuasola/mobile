@@ -54,12 +54,25 @@ export class PromotionsComponent implements ComponentInterface {
         dropdown.init();
     }
 
+    private promotionLoader() {
+        const wrapper = document.querySelector(".promotions-loader");
+
+        if (wrapper) {
+            const link = wrapper.querySelector(".promotions-body");
+            const loader = wrapper.querySelector(".mobile-promotions-loader");
+
+            utility.removeClass(link, "hidden");
+            utility.addClass(loader, "hidden");
+        }
+    }
+
     private doRequest(callback) {
         if (!this.promotions) {
             xhr({
                 url: Router.generateRoute("promotions", "list"),
                 type: "json",
             }).then((response) => {
+                this.promotionLoader();
                 this.promotions = response;
 
                 callback(response);
@@ -67,6 +80,7 @@ export class PromotionsComponent implements ComponentInterface {
                 // do something
             });
         } else {
+            this.promotionLoader();
             callback(this.promotions);
         }
     }
