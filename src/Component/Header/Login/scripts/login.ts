@@ -165,7 +165,12 @@ export class Login {
 
             // nullify join button since we are putting different reg via values
             // on it
+            const form: HTMLElement = this.element.querySelector(".login-form");
             const btnJoin = this.element.querySelector(".btn-join");
+
+            if (form) {
+                form.removeAttribute("data-login-via");
+            }
 
             if (btnJoin) {
                 btnJoin.setAttribute("href", btnJoin.getAttribute("data-join-url"));
@@ -177,12 +182,17 @@ export class Login {
 
             if (typeof data.productVia !== "undefined") {
                 this.productVia = data.productVia;
+
+                // this is not really necessary, just a flag to expose the
+                // product via to show inspect element
+                if (form) {
+                    form.setAttribute("data-login-via", this.productVia);
+                }
             }
 
-            if (typeof data.regVia !== "undefined") {
+            if (typeof data.regVia !== "undefined" && data.regVia) {
                 if (btnJoin) {
-                    const href = btnJoin.getAttribute("data-join-url");
-                    btnJoin.setAttribute("href", utility.addQueryParam(href, "regvia", data.regVia));
+                    btnJoin.setAttribute("href", data.regVia);
                 }
             }
 

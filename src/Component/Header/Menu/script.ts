@@ -12,7 +12,9 @@ import {PushNotification} from "./scripts/push-notification";
  */
 export class MenuComponent implements ComponentInterface {
     private pushNotification: PushNotification;
+
     private element: HTMLElement;
+    private isLogin: boolean;
 
     constructor() {
         this.pushNotification = new PushNotification();
@@ -20,19 +22,29 @@ export class MenuComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.element = element;
+        this.isLogin = attachments.authenticated;
+
         this.activateMenu(element);
         this.pushNotification.handleOnLoad(element, attachments);
 
         this.listenAnnouncementCount();
-        this.getBalance(element, attachments);
+        this.listenBalance();
+
+        ComponentManager.subscribe("session.prelogin", (event, src, data) => {
+            this.isLogin = true;
+        });
+
+        ComponentManager.subscribe("session.logout", (event) => {
+            this.isLogin = false;
+        });
+
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.element = element;
+
         this.activateMenu(element);
         this.pushNotification.handleOnLoad(element, attachments);
-
-        this.getBalance(element, attachments);
     }
 
     /**
@@ -43,6 +55,23 @@ export class MenuComponent implements ComponentInterface {
         menu.activate();
     }
 
+    private listenBalance() {
+        ComponentManager.subscribe("balance.fetch", (event, src, data: any) => {
+            if (this.isLogin && typeof data.balance !== "undefined") {
+                const headerBalance = this.element.querySelector(".mobile-menu-amount");
+                let formatedBalance: string;
+
+                formatedBalance = data.format;
+
+                if (formatedBalance) {
+                    formatedBalance = formatedBalance.replace("{currency}", data.currency);
+                    formatedBalance = formatedBalance.replace("{total}", data.balance);
+
+                    headerBalance.innerHTML = formatedBalance;
+                }
+            }
+        });
+    }
     /**
      * Listen to announcement pushes
      */
@@ -58,32 +87,14 @@ export class MenuComponent implements ComponentInterface {
                     utility.removeClass(this.element.querySelector(".mobile-menu-indicator"), "hidden");
                 } else {
                     const notifCountElement = this.element.querySelector("#notification-count");
-                    const notifCount = (notifCountElement) ? parseInt(notifCountElement.innerHTML, 10) : 0;
-                    if ( notifCount <= 0) {
+                    const notifCount = notifCountElement ? parseInt(notifCountElement.innerHTML, 10) : 0;
+
+                    if (notifCount <= 0) {
                         utility.addClass(this.element.querySelector(".mobile-menu-indicator"), "hidden");
                     }
                     utility.addClass(countElement, "hidden");
                 }
             }
         });
-    }
-
-    private getBalance(element, attachments) {
-        if (attachments.authenticated) {
-            xhr({
-                url: Router.generateModuleRoute("balance", "balances"),
-                type: "json",
-            }).then((response) => {
-                const headerBalance = element.querySelector(".mobile-menu-amount");
-                let formatedBalance: string;
-
-                formatedBalance = response.format;
-                formatedBalance = formatedBalance.replace("{currency}", response.currency);
-                formatedBalance = formatedBalance.replace("{total}", response.balance);
-                headerBalance.innerHTML = formatedBalance;
-            }).fail((error, message) => {
-                // do something
-            });
-        }
     }
 }
