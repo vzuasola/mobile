@@ -113,11 +113,13 @@ export class PromotionsComponent implements ComponentInterface {
 
             // set active filter
             const currentFilter = element.querySelectorAll(".product-link")[0];
-            utility.addClass(utility.findParent(currentFilter, "li"), "active");
-            element.querySelector(".current-filter").innerHTML =
-                currentFilter.getAttribute("data-product-filter-name");
-            element.querySelector(".active-filter")
-               .setAttribute("data-current-filter", currentFilter.getAttribute("data-product-filter-id"));
+            if (currentFilter) {
+                utility.addClass(utility.findParent(currentFilter, "li"), "active");
+                element.querySelector(".current-filter").innerHTML =
+                    currentFilter.getAttribute("data-product-filter-name");
+                element.querySelector(".active-filter")
+                   .setAttribute("data-current-filter", currentFilter.getAttribute("data-product-filter-id"));
+            }
         });
     }
 }
