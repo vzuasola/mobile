@@ -16,6 +16,25 @@ export class BalanceModule implements ModuleInterface {
         ComponentManager.subscribe("session.login", (event, src) => {
             this.getBalance();
         });
+
+        ComponentManager.subscribe("balance.fetch", (event, src, data: any) => {
+            if (typeof data.response.balance !== "undefined") {
+                const wrapper = document.querySelector(".account-balance");
+
+                if (wrapper) {
+                    const element = wrapper.querySelector(".account-balance-amount");
+                    const link = wrapper.querySelector("a");
+                    const loader = wrapper.querySelector("div");
+
+                    if (element) {
+                        element.innerHTML = data.response.balance;
+                    }
+
+                    utility.removeClass(link, "hidden");
+                    utility.addClass(loader, "hidden");
+                }
+            }
+        });
     }
 
     /**
@@ -26,22 +45,9 @@ export class BalanceModule implements ModuleInterface {
             url: Router.generateModuleRoute("balance", "balances"),
             type: "json",
         }).then((response) => {
-            if (typeof response.balance !== "undefined") {
-                const wrapper = document.querySelector(".account-balance");
-
-                if (wrapper) {
-                    const element = wrapper.querySelector(".account-balance-amount");
-                    const link = wrapper.querySelector("a");
-                    const loader = wrapper.querySelector("div");
-
-                    if (element) {
-                        element.innerHTML = response.balance;
-                    }
-
-                    utility.removeClass(link, "hidden");
-                    utility.addClass(loader, "hidden");
-                }
-            }
+            ComponentManager.broadcast("balance.fetch", {
+                response,
+            });
         });
     }
 }

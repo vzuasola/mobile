@@ -130,8 +130,6 @@ class MenuComponent implements ComponentWidgetInterface
             } catch (\Exception $e) {
                 $data['is_provisioned'] = false;
             }
-
-            $data['is_provisioned'] = true;
         }
 
         try {

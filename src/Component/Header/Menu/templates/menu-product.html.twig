@@ -13,7 +13,7 @@
                     {% if product.field_product_integration_id %}
                         data-product-integration-id="{{ product.field_product_integration_id[0].field_product_integration_id[0].value }}"
                         data-product-login-via="{{ product.field_product_integration_id[0].field_product_login_via[0].value }}"
-                        data-product-reg-via="{{ product.field_product_integration_id[0].field_product_reg_via[0].value }}"
+                        data-product-reg-via="{{ product.field_product_integration_id[0].field_registration_url[0].value }}"
                     {% else %}
                         {% if product.field_product_menu_url_post_log[0].value %}
                             data-product-require-post-login="true"
