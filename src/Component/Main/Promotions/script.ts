@@ -100,7 +100,7 @@ export class PromotionsComponent implements ComponentInterface {
                 element.querySelector(".current-filter").innerHTML =
                     src.getAttribute("data-product-filter-name");
                 element.querySelector(".active-filter")
-               .setAttribute("data-current-filter", src.getAttribute("data-product-filter-id"));
+                   .setAttribute("data-current-filter", src.getAttribute("data-product-filter-id"));
 
                 this.doRequest((response) => {
                     const productFilter = src.getAttribute("data-product-filter-id");
