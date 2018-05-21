@@ -69,22 +69,15 @@ class PromotionsComponentController
                     $promotion['field_promo_availability'] :
                     $promotion['field_promo_availability'][0]['value'];
 
-                $ribbonLabel = '';
-                if (isset($promotion['field_ribbon_label'][0]['value'])) {
-                    $ribbonLabel = $promotion['field_ribbon_label'][0]['value'];
-                }
+                $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';
+                $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
 
-                $ribbonColor = '';
-                if (isset($promotion['field_ribbon_background_color'][0]['color'])) {
-                    $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'];
-                }
-
-                $promoProperties = array(
+                $promoProperties = [
                     'title' => $promotion['title'][0]['value'],
                     'product' => $filterId,
                     'ribbon_label' =>  $ribbonLabel,
                     'ribbon_bg_color' => $ribbonColor,
-                );
+                ];
 
                 if ($isLogin && ($availability == '1' || is_array($availability))) {
                     $markIsFeatured = $promotion['field_post_mark_as_featured'][0]['value'];
@@ -93,47 +86,33 @@ class PromotionsComponentController
                         continue;
                     }
 
-                    $promoProperties = $promoProperties + array(
-                        'thumbnail'=> isset($promotion['field_post_thumbnail_image'][0]['url'])
-                            ? $promotion['field_post_thumbnail_image'][0]['url'] : '#',
-                        'summary_url' => isset($promotion['field_post_summary_url'])
-                            ? $promotion['field_post_summary_url']: array('uri' => '#', 'title' => ''),
-                        'summary_url_target'=> isset($promotion['field_post_summary_url_target'][0]['value'])
-                            ? $promotion['field_post_summary_url_target'][0]['value'] : '',
-                        'summary_blurb' => isset($promotion['field_post_summary_blurb'][0]['value'])
-                            ? $promotion['field_post_summary_blurb'][0]['value'] : '',
-                        'hide_countdown' => isset($promotion['field_post_hide_countdown'][0]['value'])
-                            ? $promotion['field_post_hide_countdown'][0]['value'] : true,
-                        'hide_promotion' => isset($promotion['field_post_hide_promotion'][0]['value'])
-                            ? $promotion['field_post_hide_countdown'][0]['value'] : true,
-                        'is_featured' => isset($promotion['field_post_mark_as_featured'][0]['value'])
-                            ? $promotion['field_post_mark_as_featured'][0]['value'] : false
-                    );
+                    $promoProperties = $promoProperties + [
+                        'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'] ?? '#',
+                        'summary_url' => $promotion['field_post_summary_url'] ?? ['uri' => '#', 'title' => ''],
+                        'summary_url_target'=> $promotion['field_post_summary_url_target'][0]['value'] ?? '',
+                        'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
+                        'hide_countdown' => $promotion['field_post_hide_countdown'][0]['value'] ?? true,
+                        'hide_promotion' => $promotion['field_post_hide_promotion'][0]['value'] ?? true,
+                        'is_featured' => $promotion['field_post_mark_as_featured'][0]['value'] ?? false
+                    ];
                 } else {
                     $markIsFeatured = $promotion['field_mark_as_featured'][0]['value'];
 
-                    $promoProperties = $promoProperties + array(
-                        'thumbnail'=> isset($promotion['field_thumbnail_image'][0]['url'])
-                            ? $promotion['field_thumbnail_image'][0]['url'] : '#',
-                        'summary_url' => isset($promotion['field_summary_url'])
-                            ? $promotion['field_summary_url'] : array('uri' => '#', 'title' => ''),
-                        'summary_url_target'=> isset($promotion['field_summary_url_target'][0]['value'])
-                            ? $promotion['field_summary_url_target'][0]['value'] : '',
-                        'summary_blurb' => isset($promotion['field_summary_blurb'][0]['value'])
-                            ? $promotion['field_summary_blurb'][0]['value'] : '',
-                        'hide_countdown' => isset($promotion['field_hide_countdown'][0]['value'])
-                            ? $promotion['field_hide_countdown'][0]['value'] : true,
-                        'hide_promotion' => isset($promotion['field_hide_promotion'][0]['value'])
-                            ? $promotion['field_hide_promotion'][0]['value'] : true,
-                        'is_featured' => isset($promotion['field_mark_as_featured'][0]['value'])
-                            ? $promotion['field_mark_as_featured'][0]['value'] : false
-                    );
+                    $promoProperties = $promoProperties + [
+                        'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'] ?? '#',
+                        'summary_url' => $promotion['field_summary_url'] ?? ['uri' => '#', 'title' => ''],
+                        'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
+                        'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
+                        'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
+                        'hide_promotion' => $promotion['field_hide_promotion'][0]['value'] ?? true,
+                        'is_featured' => $promotion['field_mark_as_featured'][0]['value'] ?? false
+                    ];
                 }
 
                 if ($markIsFeatured) {
-                    $promoPerProduct['featured'][] = $promoProperties + array('category' => 'featured');
+                    $promoPerProduct['featured'][] = $promoProperties + ['category' => 'featured'];
                 }
-                $promoPerProduct[$filterId][] = $promoProperties + array('category' => $filterId);
+                $promoPerProduct[$filterId][] = $promoProperties + ['category' => $filterId];
             }
 
             $data = $promoPerProduct;
