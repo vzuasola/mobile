@@ -71,8 +71,8 @@ class AvayaModuleController
                     null
                 );
             }
-
-            $data['jwt'] = $jwt ?? '';
+            $data['baseUrl'] = $avaya['base_url'] ?? '';
+            $data['jwt'] = $jwt ?? false;
         } catch (\Exception $e) {
             $data = [];
         }

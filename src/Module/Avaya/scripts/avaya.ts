@@ -51,6 +51,20 @@ export class Avaya {
     }
 
     /**
+     * Set On Success
+     */
+    setOnSuccess(success) {
+        this.options.onSuccess = success;
+    }
+
+    /**
+     * Set On Success
+     */
+    setOnFail(fail) {
+        this.options.onFail = fail;
+    }
+
+    /**
      * Trigger the fetch token
      *
      * @return void
