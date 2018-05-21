@@ -83,7 +83,7 @@ class PromotionsComponentController
                     'title' => $promotion['title'][0]['value'],
                     'product' => $filterId,
                     'ribbon_label' =>  $ribbonLabel,
-                    'ribbon_bg_color' => $ribbonColor
+                    'ribbon_bg_color' => $ribbonColor,
                 );
 
                 if ($isLogin && ($availability == '1' || is_array($availability))) {
@@ -131,9 +131,9 @@ class PromotionsComponentController
                 }
 
                 if ($markIsFeatured) {
-                    $promoPerProduct['featured'][] = $promoProperties;
+                    $promoPerProduct['featured'][] = $promoProperties + array('category' => 'featured');
                 }
-                $promoPerProduct[$filterId][] = $promoProperties;
+                $promoPerProduct[$filterId][] = $promoProperties + array('category' => $filterId);
             }
 
             $data = $promoPerProduct;

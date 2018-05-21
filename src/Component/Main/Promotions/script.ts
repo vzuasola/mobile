@@ -43,9 +43,8 @@ export class PromotionsComponent implements ComponentInterface {
     init(element) {
         this.doRequest((response) => {
             const productFilter = element.querySelector(".active-filter").getAttribute("data-current-filter");
-
             element.querySelector(".promotions-body").innerHTML =
-                promotionTemplate({ promotions: response[productFilter] });
+                promotionTemplate({promotions: response[productFilter]});
         });
 
     }
@@ -56,7 +55,6 @@ export class PromotionsComponent implements ComponentInterface {
     }
 
     private doRequest(callback) {
-        console.log(this.promotions);
         if (!this.promotions) {
             xhr({
                 url: Router.generateRoute("promotions", "list"),
@@ -95,7 +93,6 @@ export class PromotionsComponent implements ComponentInterface {
 
                     element.querySelector(".promotions-body").innerHTML =
                         promotionTemplate({promotions: response[productFilter]});
-                    console.log("change");
                 });
             }
         });
@@ -104,7 +101,6 @@ export class PromotionsComponent implements ComponentInterface {
 
     private filterProductCategory(element) {
         this.doRequest((response) => {
-            console.log("filter");
             const categories = Object.keys(response);
 
             for (const productCategoryEl of element.querySelectorAll(".product-link")) {
