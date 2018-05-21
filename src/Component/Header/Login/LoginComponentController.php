@@ -44,6 +44,7 @@ class LoginComponentController
         $data = [];
         $body = $request->getParsedBody();
 
+
         if (!empty($body['username']) && !empty($body['password'])) {
             $username = $body['username'];
             $password = $body['password'];
@@ -51,7 +52,7 @@ class LoginComponentController
             $options = [];
 
             if (!empty($body['product'])) {
-                $options['Login-Product'] = $body['product'];
+                $options['header']['Login-Product'] = $body['product'];
             }
 
             try {
