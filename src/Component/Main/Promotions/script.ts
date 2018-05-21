@@ -61,6 +61,15 @@ export class PromotionsComponent implements ComponentInterface {
                 type: "json",
             }).then((response) => {
                 this.promotions = response;
+                const wrapper = document.querySelector(".promotions-loader");
+
+                if (wrapper) {
+                    const link = wrapper.querySelector(".promotions-body");
+                    const loader = wrapper.querySelector(".mobile-promotions-loader");
+
+                    utility.removeClass(link, "hidden");
+                    utility.addClass(loader, "hidden");
+                }
 
                 callback(response);
             }).fail((error, message) => {
@@ -90,7 +99,6 @@ export class PromotionsComponent implements ComponentInterface {
 
                 this.doRequest((response) => {
                     const productFilter = src.getAttribute("data-product-filter-id");
-
                     element.querySelector(".promotions-body").innerHTML =
                         promotionTemplate({promotions: response[productFilter]});
                 });
