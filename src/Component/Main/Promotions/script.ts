@@ -109,7 +109,6 @@ export class PromotionsComponent implements ComponentInterface {
                 });
             }
         });
-
     }
 
     private filterProductCategory(element) {

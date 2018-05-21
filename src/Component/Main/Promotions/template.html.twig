@@ -18,11 +18,13 @@
             {% for promotions_filter in promotions_filters %}
             <li>
                 <a
-                 href="#"
-                 class="product-link filter-{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
-                 data-product-filter-id="{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
-                 data-product-filter-name="{{ promotions_filter['name'][0]['value'] }}"
-                >{{ promotions_filter['name'][0]['value'] }}</a>
+                    href="#"
+                    class="product-link filter-{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
+                    data-product-filter-id="{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
+                    data-product-filter-name="{{ promotions_filter['name'][0]['value'] }}"
+                >
+                    {{ promotions_filter['name'][0]['value'] }}
+                </a>
             </li>
             {% endfor %}
         </ul>
