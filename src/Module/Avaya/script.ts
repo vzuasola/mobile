@@ -48,6 +48,25 @@ export class AvayaModule implements ModuleInterface {
         ComponentManager.subscribe("click", (event, src, data) => {
              this.getAvayaToken(event, src, data);
         });
+
+        ComponentManager.subscribe("session.login", (event, src) => {
+            this.setJWT();
+        });
+
+        ComponentManager.subscribe("session.logout", (event, src) => {
+           this.avayaClass.setToken(false);
+        });
+    }
+
+    private setJWT() {
+        xhr({
+            url: Router.generateModuleRoute("avaya", "jwt"),
+            type: "json",
+        }).then((response) => {
+            this.avayaClass.setToken(response.jwt);
+        }).fail((err, msg) => {
+            // do nothing
+        });
     }
 
     private updatePopupWindow(url) {

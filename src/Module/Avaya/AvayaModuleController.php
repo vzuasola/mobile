@@ -2,15 +2,12 @@
 
 namespace App\MobileEntry\Module\Avaya;
 
-use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
-
 use Firebase\JWT\JWT;
 
-/**
- *
- */
-class AvayaModuleScripts implements ComponentAttachmentInterface
+class AvayaModuleController
 {
+    private $rest;
+
     /**
      * @var App\Player\PlayerSession
      */
@@ -24,6 +21,7 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
     public static function create($container)
     {
         return new static(
+            $container->get('rest'),
             $container->get('player_session'),
             $container->get('config_fetcher')
         );
@@ -32,8 +30,9 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $configFetcher)
+    public function __construct($rest, $playerSession, $configFetcher)
     {
+        $this->rest = $rest;
         $this->playerSession = $playerSession;
         $this->configFetcher = $configFetcher;
     }
@@ -41,7 +40,7 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
     /**
      * @{inheritdoc}
      */
-    public function getAttachments()
+    public function jwt($request, $response)
     {
         $data = [];
         try {
@@ -72,14 +71,12 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
                     null
                 );
             }
-            $data['baseUrl'] = $avaya['base_url'] ?? '';
-            $data['urlPost'] = $avaya['url_post'] ?? '';
-            $data['postTimeout'] = $avaya['url_post_timout'] ?? '';
-            $data['jwtKey'] = $jwt ?? '';
-            $data['validity'] = $validityTime ?? $avaya['validity_time'];
+
+            $data['jwt'] = $jwt ?? '';
         } catch (\Exception $e) {
             $data = [];
         }
-        return $data;
+
+        return $this->rest->output($response, $data);
     }
 }
