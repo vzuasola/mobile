@@ -18,7 +18,7 @@ export class BalanceModule implements ModuleInterface {
         });
 
         ComponentManager.subscribe("balance.fetch", (event, src, data: any) => {
-            if (typeof data.balance !== "undefined") {
+            if (typeof data.response.balance !== "undefined") {
                 const wrapper = document.querySelector(".account-balance");
 
                 if (wrapper) {
@@ -27,7 +27,7 @@ export class BalanceModule implements ModuleInterface {
                     const loader = wrapper.querySelector("div");
 
                     if (element) {
-                        element.innerHTML = data.balance;
+                        element.innerHTML = data.response.balance;
                     }
 
                     utility.removeClass(link, "hidden");
@@ -46,7 +46,7 @@ export class BalanceModule implements ModuleInterface {
             type: "json",
         }).then((response) => {
             ComponentManager.broadcast("balance.fetch", {
-                balance: response,
+                response,
             });
         });
     }

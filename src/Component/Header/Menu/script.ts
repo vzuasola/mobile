@@ -57,15 +57,15 @@ export class MenuComponent implements ComponentInterface {
 
     private listenBalance() {
         ComponentManager.subscribe("balance.fetch", (event, src, data: any) => {
-            if (this.isLogin && typeof data.balance !== "undefined") {
+            if (this.isLogin && typeof data.response.balance !== "undefined") {
                 const headerBalance = this.element.querySelector(".mobile-menu-amount");
                 let formatedBalance: string;
 
-                formatedBalance = data.format;
+                formatedBalance = data.response.format;
 
                 if (formatedBalance) {
-                    formatedBalance = formatedBalance.replace("{currency}", data.currency);
-                    formatedBalance = formatedBalance.replace("{total}", data.balance);
+                    formatedBalance = formatedBalance.replace("{currency}", data.response.currency);
+                    formatedBalance = formatedBalance.replace("{total}", data.response.balance);
 
                     headerBalance.innerHTML = formatedBalance;
                 }
