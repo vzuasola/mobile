@@ -54,12 +54,25 @@ export class PromotionsComponent implements ComponentInterface {
         dropdown.init();
     }
 
+    private promotionLoader() {
+        const wrapper = document.querySelector(".promotions-loader");
+
+        if (wrapper) {
+            const link = wrapper.querySelector(".promotions-body");
+            const loader = wrapper.querySelector(".mobile-promotions-loader");
+
+            utility.removeClass(link, "hidden");
+            utility.addClass(loader, "hidden");
+        }
+    }
+
     private doRequest(callback) {
         if (!this.promotions) {
             xhr({
                 url: Router.generateRoute("promotions", "list"),
                 type: "json",
             }).then((response) => {
+                this.promotionLoader();
                 this.promotions = response;
 
                 callback(response);
@@ -67,7 +80,8 @@ export class PromotionsComponent implements ComponentInterface {
                 // do something
             });
         } else {
-            callback(this.promotions);
+                this.promotionLoader();
+                callback(this.promotions);
         }
     }
 
@@ -90,7 +104,6 @@ export class PromotionsComponent implements ComponentInterface {
 
                 this.doRequest((response) => {
                     const productFilter = src.getAttribute("data-product-filter-id");
-
                     element.querySelector(".promotions-body").innerHTML =
                         promotionTemplate({promotions: response[productFilter]});
                 });
@@ -113,11 +126,13 @@ export class PromotionsComponent implements ComponentInterface {
 
             // set active filter
             const currentFilter = element.querySelectorAll(".product-link")[0];
-            utility.addClass(utility.findParent(currentFilter, "li"), "active");
-            element.querySelector(".current-filter").innerHTML =
-                currentFilter.getAttribute("data-product-filter-name");
-            element.querySelector(".active-filter")
-               .setAttribute("data-current-filter", currentFilter.getAttribute("data-product-filter-id"));
+            if (currentFilter) {
+                utility.addClass(utility.findParent(currentFilter, "li"), "active");
+                element.querySelector(".current-filter").innerHTML =
+                    currentFilter.getAttribute("data-product-filter-name");
+                element.querySelector(".active-filter")
+                   .setAttribute("data-current-filter", currentFilter.getAttribute("data-product-filter-id"));
+            }
         });
     }
 }
