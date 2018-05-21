@@ -44,9 +44,7 @@ class PromotionsComponent implements ComponentWidgetInterface
     {
         try {
             $data['promotions_filters'] = $this->views->getViewById('promotion-filter');
-            $data['current_filter'] = $data['promotions_filters'][0];
         } catch (\Exception $e) {
-            $data['current_filter'] = '';
             $data['promotions_filters'] = [];
         }
 

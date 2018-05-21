@@ -1,17 +1,21 @@
 {{#each promotions}}
 <div class="promotions-body-banner">
     <a href="#" class="promotions-body-banner-link">
+    {{#if this.is_featured}}
+        {{> promotion-product-tag.handlebars product=this.product}}
+    {{else}}
+        {{#if this.ribbon_label}}
+            <span style:"background-color={{this.ribbon_bg_color}}">{{this.ribbon_label}}</span>
+        {{/if}}
+    {{/if}}
     <img src="{{this.thumbnail}}" class="w-100">
-        <div class="promotions-body-banner-overlay">
-           clock
-        </div>
     </a>
 </div>
 <div class="container promotions-content clearfix">
 <h2 class="promotions-content-title">{{this.title}}</h2>
 	{{{this.summary_blurb}}}
-    <p><span class="text-yellow">More Info »</span></p>
-    <a href="{{this.summary_url.uri}}" title= {{this.summary_url.title}} class="promotions-content-links">
+    <p><span class="text-yellow">{{this.summary_url.title}}</span></p>
+    <a href="{{this.summary_url.uri}}" class="promotions-content-links">
         <svg viewBox="0 0 53.251 99.846">
             <path d="M53.251 91.525l-9.985 8.32L0 49.922 43.101 0l10.15 8.32-36.194 41.602 36.194 41.603z"/>
         </svg>
