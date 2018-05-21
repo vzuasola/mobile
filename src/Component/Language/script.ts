@@ -34,7 +34,13 @@ export class LanguageComponent implements ComponentInterface {
                     const redirectionUrl = window.location
                         .href.replace(regexp, hostname + "/" + selectedLang + "$1");
                     Modal.close("#language-lightbox");
-                    Router.navigate(redirectionUrl, ["main", "header", "announcement", "footer", "language"]);
+                    Router.navigate(
+                        redirectionUrl,
+                        ["main", "header", "announcement", "footer", "language"],
+                        {
+                            language: selectedLang,
+                        },
+                    );
                 }
             });
         }

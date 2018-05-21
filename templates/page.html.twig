@@ -1,5 +1,9 @@
 {% extends '@site/base.html.twig' %}
 
+{% block seo %}
+    {{ widget('seo') }}
+{% endblock %}
+
 {% block css %}
     <link href="{{ asset('app.css') }}" rel="stylesheet">
 {% endblock %}

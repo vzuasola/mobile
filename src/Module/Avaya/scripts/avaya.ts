@@ -12,11 +12,12 @@ export class Avaya {
     private store = new Storage();
     private flag = 0;
     private avayaStorage = "avaya.storage";
+    private options: any = {};
+
     private storageData = {
         expires: 0,
         token: "",
     };
-    private options: any = {};
 
     constructor(options) {
         const defaults = {
@@ -40,6 +41,27 @@ export class Avaya {
 
         // Clear any avaya storage
         this.store.remove(this.avayaStorage);
+    }
+
+    /**
+     * Set JWT Token
+     */
+    setToken(token) {
+        this.options.nonce = token;
+    }
+
+    /**
+     * Set On Success
+     */
+    setOnSuccess(success) {
+        this.options.onSuccess = success;
+    }
+
+    /**
+     * Set On Success
+     */
+    setOnFail(fail) {
+        this.options.onFail = fail;
     }
 
     /**
