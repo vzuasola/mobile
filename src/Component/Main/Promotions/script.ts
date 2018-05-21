@@ -50,8 +50,8 @@ export class PromotionsComponent implements ComponentInterface {
     }
 
     private activateDropdown() {
-        const dropdown = new Dropdown();
-        dropdown.init(".dropdown-trigger", 2, true, false, false);
+        const dropdown = new Dropdown({hideDropdownOnClick: true});
+        dropdown.init();
     }
 
     private doRequest(callback) {
