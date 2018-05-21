@@ -15,7 +15,12 @@ mix.webpackConfig({
         rules: [
             {
                 test: /\.handlebars?$/,
-                loader: 'handlebars-loader'
+                loader: 'handlebars-loader',
+                query: {
+                    precompileOptions: {
+                        knownHelpersOnly: false,
+                    },
+                }
             },
             {
                 test: /\.ts$/,
@@ -23,7 +28,7 @@ mix.webpackConfig({
                 loader: 'tslint-loader',
                 options: {
                     emitErrors: true,
-                }
+                },
             }
         ]
     },
