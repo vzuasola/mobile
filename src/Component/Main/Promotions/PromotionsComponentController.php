@@ -64,6 +64,7 @@ class PromotionsComponentController
             $isProvisioned = $this->isPlayerProvisioned();
 
             foreach ($promotions as $promotion) {
+                $filterId = $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'];
                 $availability = count($promotion['field_promo_availability']) > 1 ?
                     $promotion['field_promo_availability'] :
                     $promotion['field_promo_availability'][0]['value'];
@@ -80,14 +81,13 @@ class PromotionsComponentController
 
                 $promoProperties = array(
                     'title' => $promotion['title'][0]['value'],
-                    'product' => $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'],
+                    'product' => $filterId,
                     'ribbon_label' =>  $ribbonLabel,
                     'ribbon_bg_color' => $ribbonColor
                 );
 
                 if ($isLogin && ($availability == '1' || is_array($availability))) {
-                    $productFilter = ($promotion['field_post_mark_as_featured'][0]['value'])
-                    ? 'featured' : $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'];
+                    $markIsFeatured = $promotion['field_post_mark_as_featured'][0]['value'];
 
                     if ($promotion['field_casino_gold_only'][0]['value'] && !$isProvisioned) {
                         continue;
@@ -110,8 +110,7 @@ class PromotionsComponentController
                             ? $promotion['field_post_mark_as_featured'][0]['value'] : false
                     );
                 } else {
-                    $productFilter = ($promotion['field_mark_as_featured'][0]['value'])
-                    ? 'featured' : $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'];
+                    $markIsFeatured = $promotion['field_mark_as_featured'][0]['value'];
 
                     $promoProperties = $promoProperties + array(
                         'thumbnail'=> isset($promotion['field_thumbnail_image'][0]['url'])
@@ -131,7 +130,10 @@ class PromotionsComponentController
                     );
                 }
 
-                $promoPerProduct[$productFilter][] = $promoProperties;
+                if ($markIsFeatured) {
+                    $promoPerProduct['featured'][] = $promoProperties;
+                }
+                $promoPerProduct[$filterId][] = $promoProperties;
             }
 
             $data = $promoPerProduct;
