@@ -89,3 +89,6 @@ components:
 
   promotions:
     class: App\MobileEntry\Component\Main\Promotions\PromotionsComponent
+
+  seo:
+    class: App\MobileEntry\Component\SEO\SEOComponent
