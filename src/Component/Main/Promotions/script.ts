@@ -1,22 +1,8 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
+import * as Handlebars from "handlebars/runtime";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-
-import * as productFeatured from "./handlebars/svg/product-featured.handlebars";
-import * as productArcade from "./handlebars/svg/product-arcade.handlebars";
-import * as productCasinoGold from "./handlebars/svg/product-casino-gold.handlebars";
-import * as productCasino from "./handlebars/svg/product-casino.handlebars";
-import * as productDafasports from "./handlebars/svg/product-dafasports.handlebars";
-import * as productExchange from "./handlebars/svg/product-exchange.handlebars";
-import * as productFishHunter from "./handlebars/svg/product-fish-hunter.handlebars";
-import * as productGames from "./handlebars/svg/product-games.handlebars";
-import * as productKeno from "./handlebars/svg/product-keno.handlebars";
-import * as productLiveDealer from "./handlebars/svg/product-live-dealer.handlebars";
-import * as productLottery from "./handlebars/svg/product-lottery.handlebars";
-import * as productOWSports from "./handlebars/svg/product-owsports.handlebars";
-import * as productPoker from "./handlebars/svg/product-poker.handlebars";
-import * as productVirtuals from "./handlebars/svg/product-virtuals.handlebars";
 
 import * as promotionTemplate from "./handlebars/promotion.handlebars";
 
@@ -29,25 +15,15 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  */
 export class PromotionsComponent implements ComponentInterface {
     private promotions;
-    private productIcons;
 
     constructor() {
-        this.productIcons = {
-            arcade: productArcade(),
-            casinogold: productCasinoGold(),
-            casino: productCasino(),
-            dafasports: productDafasports(),
-            exchange: productExchange(),
-            fishhunter: productFishHunter(),
-            games: productGames(),
-            generic: productFeatured(),
-            keno: productKeno(),
-            livedealer: productLiveDealer(),
-            lottery: productLottery(),
-            owsports: productOWSports(),
-            poker: productPoker(),
-            virtuals: productVirtuals(),
-        };
+        Handlebars.registerHelper("equals", function(value, compare, options) {
+            if (value === compare) {
+                return options.fn(this);
+            } else {
+                return options.inverse(this);
+            }
+        });
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
@@ -66,15 +42,8 @@ export class PromotionsComponent implements ComponentInterface {
 
     init(element) {
         this.doRequest((response) => {
-            console.log("initialized");
             const productFilter = element.querySelector(".active-filter").getAttribute("data-current-filter");
-            // let count: number = 0;
 
-            // for (const promo of response[productFilter]) {
-            //     response[productFilter][count]["product_tag"] = this.productIcons.hasOwnProperty(promo.product)
-            //         ? this.productIcons[promo.product] : "generic";
-            //     count++;
-            // }
             element.querySelector(".promotions-body").innerHTML =
                 promotionTemplate({ promotions: response[productFilter] });
         });

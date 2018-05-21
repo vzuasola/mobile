@@ -2,10 +2,9 @@
 <div class="promotions-body-banner">
     <a href="#" class="promotions-body-banner-link">
     {{#if this.is_featured}}
-        {{this.product}}
-    {{[helpers/partial this.product]}}
+        {{> promotion-product-tag.handlebars product=this.product}}
     {{else}}
-        {{#if }}
+        {{#if this.ribbon_label}}
             <span style:"background-color={{this.ribbon_bg_color}}">{{this.ribbon_label}}</span>
         {{/if}}
     {{/if}}
