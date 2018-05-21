@@ -55,7 +55,7 @@ class PromotionsComponentController
         $this->paymentAccount = $paymentAccount;
     }
 
-    public function promo($request, $response)
+    public function list($request, $response)
     {
         try {
             $promoPerProduct = [];
@@ -69,7 +69,7 @@ class PromotionsComponentController
                     $promotion['field_promo_availability'][0]['value'];
 
                 $productFilter = ($promotion['field_mark_as_featured'][0]['value'])
-                    ? 'featured' : $promotion['field_product_category']['field_product_filter_id'][0]['value'];
+                    ? 'featured' : $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'];
 
                 $ribbonLabel = '';
                 if (isset($promotion['field_ribbon_label'][0]['value'])) {
@@ -81,44 +81,50 @@ class PromotionsComponentController
                     $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'];
                 }
 
+                $promoProperties = array(
+                    'title' => $promotion['title'][0]['value'],
+                    'product' => $productFilter,
+                    'ribbon_label' =>  $ribbonLabel,
+                    'ribbon_bg_color' => $ribbonColor
+                );
+
                 if ($isLogin && ($availability == '1' || is_array($availability))) {
                     if ($promotion['field_casino_gold_only'][0]['value'] && !$isProvisioned) {
                         continue;
                     }
 
-                    $promoPerProduct[$productFilter][] = array(
-                        'title' => $promotion['title'][0]['value'],
-                        'product' => $promotion['field_product_category'][0]['field_product_category_id']['value'],
+                    $promoProperties = $promoProperties + array(
                         'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'],
                         'summary_url' => $promotion['field_post_summary_url'],
                         'summary_url_target'=> $promotion['field_post_summary_url_target'][0]['value'],
                         'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'],
                         'hide_countdown' => $promotion['field_post_hide_countdown'][0]['value'],
-                        'hide_promotion' => $promotion['field_post_hide_promotion'][0]['value'],
-                        'ribbon_label' =>  $ribbonLabel,
-                        'ribbon_bg_color' => $ribbonColor
+                        'hide_promotion' => $promotion['field_post_hide_promotion'][0]['value']
                     );
                 } else {
-                    $promoPerProduct[$productFilter][] = array(
-                        'title' => $promotion['title'][0]['value'],
-                        'product' => $promotion['field_product_category'][0]['field_product_category_id'][0]['value'],
+                    $promoProperties = $promoProperties + array(
                         'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'],
-                        'summary_url' => $promotion['field_summary_url'],
-                        'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'],
-                        'summary_blurb' => $promotion['field_summary_blurb'][0]['value'],
-                        'hide_countdown' => $promotion['field_hide_countdown'][0]['value'],
-                        'hide_promotion' => $promotion['field_hide_promotion'][0]['value'],
-                        'ribbon_label' => $ribbonLabel,
-                        'ribbon_bg_color' => $ribbonColor
+                        'summary_url' => isset($promotion['field_summary_url']) ? $promotion['field_summary_url'] : '#',
+                        'summary_url_target'=> isset($promotion['field_summary_url_target'][0]['value'])
+                            ? $promotion['field_summary_url_target'][0]['value'] : '',
+                        'summary_blurb' => isset($promotion['field_summary_blurb'][0]['value'])
+                            ? $promotion['field_summary_blurb'][0]['value'] : '',
+                        'hide_countdown' => isset($promotion['field_hide_countdown'][0]['value'])
+                            ? $promotion['field_hide_countdown'][0]['value'] : true,
+                        'hide_promotion' => isset($promotion['field_hide_promotion'][0]['value'])
+                            ? $promotion['field_hide_promotion'][0]['value'] : true,
                     );
                 }
+
+                $promoPerProduct[$productFilter][] = $promoProperties;
             }
 
-            $data['promotions'] = $promoPerProduct;
+            $data = $promoPerProduct;
         } catch (\Exception $e) {
-            $data['promotions'] = [];
+            ~ddd($e);
+            $data = [];
         }
-        
+
         return $this->rest->output($response, $data);
     }
 
