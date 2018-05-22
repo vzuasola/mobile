@@ -58,6 +58,13 @@ class PromotionsComponentController
     public function promotions($request, $response)
     {
         try {
+            $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
+            $moreInfoText = $promoConfigs['more_info_link_text'];
+        } catch (\Exception $e) {
+            $moreInfoText = 'More Info';
+        }
+
+        try {
             $promoPerProduct = [];
             $promotions = $this->views->getViewById('promotions');
             $isLogin = $this->playerSession->isLogin();
@@ -69,14 +76,19 @@ class PromotionsComponentController
                     $promotion['field_promo_availability'] :
                     $promotion['field_promo_availability'][0]['value'];
 
+                $ribbonEnable = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
                 $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';
                 $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
+                $ribbonTextColor = $promotion['field_ribbon_text_color'][0]['color'] ?? '';
 
                 $promoProperties = [
                     'title' => $promotion['title'][0]['value'],
                     'product' => $filterId,
+                    'ribbon_enable' => $ribbonEnable,
                     'ribbon_label' =>  $ribbonLabel,
                     'ribbon_bg_color' => $ribbonColor,
+                    'ribbon_text_color' => $ribbonTextColor,
+                    'more_info_text' => $moreInfoText
                 ];
 
                 if ($isLogin && ($availability == '1' || is_array($availability))) {
