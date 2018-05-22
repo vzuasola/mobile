@@ -57,12 +57,6 @@ class PromotionsComponentController
 
     public function promotions($request, $response)
     {
-        try {
-            $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
-            $moreInfoText = $promoConfigs['more_info_link_text'];
-        } catch (\Exception $e) {
-            $moreInfoText = 'More Info';
-        }
 
         try {
             $promoPerProduct = [];
@@ -88,7 +82,7 @@ class PromotionsComponentController
                     'ribbon_label' =>  $ribbonLabel,
                     'ribbon_bg_color' => $ribbonColor,
                     'ribbon_text_color' => $ribbonTextColor,
-                    'more_info_text' => $moreInfoText
+                    'more_info_text' => $this->getPromoConfigs()
                 ];
 
                 if ($isLogin && ($availability == '1' || is_array($availability))) {
@@ -98,32 +92,16 @@ class PromotionsComponentController
                         continue;
                     }
 
-                    $promoProperties = $promoProperties + [
-                        'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'] ?? '#',
-                        'summary_url' => $promotion['field_post_summary_url'] ?? ['uri' => '#', 'title' => ''],
-                        'summary_url_target'=> $promotion['field_post_summary_url_target'][0]['value'] ?? '',
-                        'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
-                        'hide_countdown' => $promotion['field_post_hide_countdown'][0]['value'] ?? true,
-                        'hide_promotion' => $promotion['field_post_hide_promotion'][0]['value'] ?? true,
-                        'is_featured' => $promotion['field_post_mark_as_featured'][0]['value'] ?? false
-                    ];
+                    $promoProperties = $this->getPostLoginPromotions($promoProperties, $promotion);
                 } else {
                     $markIsFeatured = $promotion['field_mark_as_featured'][0]['value'];
-
-                    $promoProperties = $promoProperties + [
-                        'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'] ?? '#',
-                        'summary_url' => $promotion['field_summary_url'] ?? ['uri' => '#', 'title' => ''],
-                        'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
-                        'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
-                        'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
-                        'hide_promotion' => $promotion['field_hide_promotion'][0]['value'] ?? true,
-                        'is_featured' => $promotion['field_mark_as_featured'][0]['value'] ?? false
-                    ];
+                    $promoProperties = $this->getPreLoginPromotions($promoProperties, $promotion);
                 }
 
                 if ($markIsFeatured) {
                     $promoPerProduct['featured'][] = $promoProperties + ['category' => 'featured'];
                 }
+
                 $promoPerProduct[$filterId][] = $promoProperties + ['category' => $filterId];
             }
 
@@ -148,5 +126,48 @@ class PromotionsComponentController
         }
 
         return $isProvisioned;
+    }
+
+    private function getPromoConfigs()
+    {
+        try {
+            $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
+            $moreInfoText = $promoConfigs['more_info_link_text'];
+        } catch (\Exception $e) {
+            $moreInfoText = 'More Info';
+        }
+
+        return $moreInfoText;
+    }
+
+    private function getPreLoginPromotions($promoProperties, $promotion)
+    {
+
+        $promoProperties = $promoProperties + [
+            'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'] ?? '#',
+            'summary_url' => $promotion['field_summary_url'] ?? ['uri' => '#', 'title' => ''],
+            'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
+            'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
+            'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
+            'hide_promotion' => $promotion['field_hide_promotion'][0]['value'] ?? true,
+            'is_featured' => $promotion['field_mark_as_featured'][0]['value'] ?? false
+        ];
+
+        return $promoProperties;
+    }
+
+    private function getPostLoginPromotions($promoProperties, $promotion)
+    {
+        $promoProperties = $promoProperties + [
+            'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'] ?? '#',
+            'summary_url' => $promotion['field_post_summary_url'] ?? ['uri' => '#', 'title' => ''],
+            'summary_url_target'=> $promotion['field_post_summary_url_target'][0]['value'] ?? '',
+            'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
+            'hide_countdown' => $promotion['field_post_hide_countdown'][0]['value'] ?? true,
+            'hide_promotion' => $promotion['field_post_hide_promotion'][0]['value'] ?? true,
+            'is_featured' => $promotion['field_post_mark_as_featured'][0]['value'] ?? false
+        ];
+
+        return $promoProperties;
     }
 }
