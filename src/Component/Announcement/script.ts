@@ -105,7 +105,7 @@ export class AnnouncementComponent implements ComponentInterface {
     }
 
     private listenAnnouncementLightbox() {
-        ComponentManager.subscribe("click", (event, src) => {
+        ComponentManager.subscribe("click", (event: Event, src) => {
             if (utility.hasClass(src, "announcement-trigger", true)) {
                 event.preventDefault();
                 Modal.open("#announcement-lightbox");
@@ -136,9 +136,9 @@ export class AnnouncementComponent implements ComponentInterface {
 
     }
 
-   /**
-    * Get all Read Items
-    */
+    /**
+     * Get all Read Items
+     */
     private getReadItems() {
         let data = [];
 
