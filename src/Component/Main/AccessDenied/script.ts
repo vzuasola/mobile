@@ -17,8 +17,8 @@ export class AccessDeniedComponent implements ComponentInterface {
         //
     }
 
-    onReload(element: HTMLElement, attachments: {}) {
+    onReload(element: HTMLElement, attachments: {url: string}) {
         this.loader.show();
-        window.location.reload();
+        window.location.replace(attachments.url);
     }
 }
