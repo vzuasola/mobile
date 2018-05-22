@@ -58,9 +58,7 @@ class PromotionsComponentController
     public function promotions($request, $response)
     {
         try {
-            
             $promotions = $this->views->getViewById('promotions');
-            
         } catch (\Exception $e) {
             $promotions = [];
         }
@@ -102,7 +100,6 @@ class PromotionsComponentController
                 $markIsFeatured = $promotion['field_mark_as_featured'][0]['value'];
                 $promoProperties = $this->getPreLoginPromotions($promoProperties, $promotion);
             }
-
             if ($markIsFeatured) {
                 $promoPerProduct['featured'][] = $promoProperties + ['category' => 'featured'];
             }
