@@ -15,7 +15,7 @@ export class SliderComponent implements ComponentInterface {
     }
 
     private activateSlider() {
-        const slider = new Xlider({
+        new Xlider({
             selector: "#main-slider",
             loop: true,
             duration: 300,
