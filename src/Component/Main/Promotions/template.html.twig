@@ -1,6 +1,6 @@
 
 <div class="page-title promotions">
-    <h1 class="page-title-text promotions-title">Promotions</h1>
+    <h1 class="page-title-text promotions-title">{{ title }}</h1>
     <a href="#" class="page-title-back-button">
         {% include '@app/web/images/svg/arrow.svg' %}
     </a>
@@ -14,11 +14,11 @@
         </a>
 
         <ul>
-            <li class="title">Filter</li>
+            <li class="title">{{ filter_label }}</li>
             {% for promotions_filter in promotions_filters %}
             <li>
                 <a
-                    href="#"
+                    href="#{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
                     class="product-link filter-{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
                     data-product-filter-id="{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
                     data-product-filter-name="{{ promotions_filter['name'][0]['value'] }}"
