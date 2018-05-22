@@ -143,7 +143,7 @@ class PromotionsComponentController
     private function getPreLoginPromotions($promoProperties, $promotion)
     {
 
-        $promoProperties = $promoProperties + [
+        return $promoProperties + [
             'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'] ?? '#',
             'summary_url' => $promotion['field_summary_url'] ?? ['uri' => '#', 'title' => ''],
             'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
@@ -152,13 +152,11 @@ class PromotionsComponentController
             'hide_promotion' => $promotion['field_hide_promotion'][0]['value'] ?? true,
             'is_featured' => $promotion['field_mark_as_featured'][0]['value'] ?? false
         ];
-
-        return $promoProperties;
     }
 
     private function getPostLoginPromotions($promoProperties, $promotion)
     {
-        $promoProperties = $promoProperties + [
+        return $promoProperties + [
             'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'] ?? '#',
             'summary_url' => $promotion['field_post_summary_url'] ?? ['uri' => '#', 'title' => ''],
             'summary_url_target'=> $promotion['field_post_summary_url_target'][0]['value'] ?? '',
@@ -167,7 +165,5 @@ class PromotionsComponentController
             'hide_promotion' => $promotion['field_post_hide_promotion'][0]['value'] ?? true,
             'is_featured' => $promotion['field_post_mark_as_featured'][0]['value'] ?? false
         ];
-
-        return $promoProperties;
     }
 }
