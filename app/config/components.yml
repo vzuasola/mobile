@@ -38,6 +38,9 @@ modules:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
 components:
+  access_denied:
+    class: App\MobileEntry\Component\Main\AccessDenied\AccessDeniedComponent
+
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
   

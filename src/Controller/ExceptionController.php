@@ -14,7 +14,11 @@ class ExceptionController extends BaseController
     {
         $data['title'] = '404';
 
-        return $this->widgets->render($response, '@site/404.html.twig', $data);
+        return $this->widgets->render($response, '@site/page.html.twig', $data, [
+            'components_override' => [
+                'main' => 'access_denied',
+            ],
+        ]);
     }
 
     /**
@@ -22,9 +26,12 @@ class ExceptionController extends BaseController
      */
     public function exceptionInternal($request, $response, $exception)
     {
-        $data['title'] = '500';
-        $data['configs']['exception_messages'] = $this->get('translation_manager')->getTranslations('exception');
+        $data['title'] = '404';
 
-        return $this->widgets->render($response, '@site/500.html.twig', $data)->withStatus(500);
+        return $this->widgets->render($response, '@site/page.html.twig', $data, [
+            'components_override' => [
+                'main' => 'access_denied',
+            ],
+        ]);
     }
 }
