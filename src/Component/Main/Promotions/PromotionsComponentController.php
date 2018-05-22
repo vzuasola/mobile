@@ -29,6 +29,8 @@ class PromotionsComponentController
      */
     private $paymentAccount;
 
+    private $url;
+
     /**
      *
      */
@@ -39,20 +41,22 @@ class PromotionsComponentController
             $container->get('views_fetcher'),
             $container->get('rest'),
             $container->get('config_fetcher'),
-            $container->get('payment_account_fetcher')
+            $container->get('payment_account_fetcher'),
+            $container->get('uri')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $rest, $configs, $paymentAccount)
+    public function __construct($playerSession, $views, $rest, $configs, $paymentAccount, $url)
     {
         $this->playerSession = $playerSession;
         $this->views = $views;
         $this->rest = $rest;
         $this->configs = $configs;
         $this->paymentAccount = $paymentAccount;
+        $this->url = $url;
     }
 
     public function promotions($request, $response)
@@ -143,8 +147,10 @@ class PromotionsComponentController
 
         return $promoProperties + [
             'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'] ?? '#',
-            'summary_url' => $promotion['field_summary_url'] ?? ['uri' => '#', 'title' => ''],
+            'summary_url' => isset($promotion['field_summary_url'][0]['uri'])
+                ? $this->url->generateUri($promotion['field_summary_url'][0]['uri'], []) : ['uri' => '#'],
             'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
+            'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
             'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
             'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
             'hide_promotion' => $promotion['field_hide_promotion'][0]['value'] ?? true,
@@ -156,7 +162,9 @@ class PromotionsComponentController
     {
         return $promoProperties + [
             'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'] ?? '#',
-            'summary_url' => $promotion['field_post_summary_url'] ?? ['uri' => '#', 'title' => ''],
+            'summary_url' => isset($promotion['field_post_summary_url'][0]['uri'])
+                ? $this->url->generateUri($promotion['field_post_summary_url'][0]['uri'], []) : ['uri' => '#'],
+            'summary_url_title' => $promotion['field_post_summary_url'][0]['title'] ?? ['title' => ''],
             'summary_url_target'=> $promotion['field_post_summary_url_target'][0]['value'] ?? '',
             'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
             'hide_countdown' => $promotion['field_post_hide_countdown'][0]['value'] ?? true,

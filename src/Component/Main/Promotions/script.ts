@@ -116,6 +116,7 @@ export class PromotionsComponent implements ComponentInterface {
     private filterProductCategory(element) {
         this.doRequest((response) => {
             const categories = Object.keys(response);
+            const activeCategories = [];
 
             for (const productCategoryEl of element.querySelectorAll(".product-link")) {
                 // remove category filters that don't have promotion
@@ -123,19 +124,36 @@ export class PromotionsComponent implements ComponentInterface {
                     const disabledFilter = utility.findParent(productCategoryEl, "li");
                     disabledFilter.remove();
                 }
+
+                activeCategories.push(productCategoryEl.getAttribute("data-product-filter-id"));
             }
 
             // set active filter
-            const currentFilter = element.querySelectorAll(".product-link")[0];
-            if (currentFilter) {
-                utility.addClass(utility.findParent(currentFilter, "li"), "active");
-                element.querySelector(".current-filter").innerHTML =
-                    currentFilter.getAttribute("data-product-filter-name");
-                element.querySelector(".active-filter")
-                   .setAttribute("data-current-filter", currentFilter.getAttribute("data-product-filter-id"));
-                utility.addClass(element.querySelector(".active-filter"),
-                    currentFilter.getAttribute("data-product-filter-id"));
-            }
+            this.setInitialActiveFilter(element, activeCategories);
         });
+    }
+
+    private setInitialActiveFilter(element, activeCategories) {
+        const hashParam = utility.getHash(window.location.href);
+        let currentFilterId: string;
+        let currentFilter: HTMLElement;
+
+        if (hashParam && activeCategories.indexOf(hashParam) > 0) {
+            currentFilterId = hashParam;
+            currentFilter = element.querySelector(".filter-" + hashParam);
+        } else {
+            currentFilter = element.querySelectorAll(".product-link")[0];
+            if (currentFilter) {
+                currentFilterId = currentFilter.getAttribute("data-product-filter-id");
+            }
+        }
+        utility.addClass(utility.findParent(currentFilter, "li"), "active");
+        element.querySelector(".current-filter").innerHTML =
+                    currentFilter.getAttribute("data-product-filter-name");
+        element.querySelector(".active-filter")
+            .setAttribute("data-current-filter", currentFilterId);
+        utility.addClass(element.querySelector(".active-filter"),
+             currentFilterId);
+
     }
 }
