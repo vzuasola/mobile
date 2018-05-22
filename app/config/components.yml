@@ -67,6 +67,9 @@ components:
   node_blog:
     class: App\MobileEntry\Component\Node\Blog\BlogComponent
 
+  node_promotions:
+    class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
+
   home:
     class: App\MobileEntry\Component\Main\Home\HomeComponent
 
