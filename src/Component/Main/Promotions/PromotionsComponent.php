@@ -60,7 +60,7 @@ class PromotionsComponent implements ComponentWidgetInterface
         try {
             $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
         } catch (\Exception $e) {
-            promoConfigs = [];
+            $promoConfigs = [];
         }
 
         $data['title'] = $promoConfigs['title'] ?? 'Promotions';
