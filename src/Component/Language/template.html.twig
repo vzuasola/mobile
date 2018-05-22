@@ -8,9 +8,6 @@
                     <li class="{{ lang.id }} {{ isActive }}">
                         <a href="#" class="language-link" data-lang="{{ lang.prefix }}">
                         {{ lang.name }}
-                            {% if isActive %}
-                                <span class="icon-active-lang lazy-load" data-src="{{ asset('images/sprite-responsive.png') }}"></span>
-                            {% endif %}
                         </a>
                     </li>
                 {% endfor %}

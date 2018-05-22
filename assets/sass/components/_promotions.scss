@@ -1,3 +1,19 @@
+.promotions-loader {
+    .mobile-promotions-loader {
+        margin-top: -0.1rem;
+        padding: 4rem 0;
+        width: 100vw;
+        height: 120vw;
+        background: $red;
+        z-index: 1;
+
+        .sk-fading-circle {
+            margin-top: 15rem;
+            width: 6rem;
+            height: 6rem;
+        }
+    }
+}
 .promotions-body {
     background: $dark-red;
     padding-bottom: 1rem;
@@ -24,6 +40,17 @@
                     fill: $white;
                 }
             }
+        }
+
+        &-tag {
+            position: absolute;
+            top: 0;
+            left: 1rem;
+            padding: 0.5rem 1rem;
+            color: $white;
+            outline: none;
+            border: 0.1rem;
+            border-radius: 0.1rem;
         }
 
     }
@@ -66,6 +93,11 @@
         }
 
         p {
+            margin: 0;
+            display: initial;
+        }
+
+        &-blurb {
             margin-bottom: 0;
             width: 95%;
             display: block;
@@ -99,14 +131,34 @@
 
 .dropdown-menu {
     position: relative;
-    width: 15rem;
     order: 3;
     border-left: 0.1rem solid $red;
+
+    .arcade,
+    .casino,
+    .dafasports,
+    .exchange,
+    .games,
+    .keno,
+    .lottery,
+    
+    .poker,
+    .virtuals { 
+        width: 10rem; 
+    }
+
+    .live-dealer,
+    .casino-gold,
+    .owsports,
+    .fish-hunter {
+        width: 12rem; 
+    }
 
     a {
         color: $white;
         display: block;
         padding: 0.6rem 1rem;
+        width: 10rem;
 
         svg {
                 width: 0.8rem;
@@ -153,6 +205,7 @@
                 color: #d3d3d3;
                 cursor: pointer;
                 font-size: 1.4rem;
+                width: 95%;
             }
 
             // active/hover state

@@ -1,6 +1,6 @@
 <div class="footer-mobile-menu">
     <ul class="menu">
-        {% set menuLength = (footer_menu|length == 2) ? 'half' : '' %}
+        {% set menuLength = (footer_menu|length == 2) ? 'footer-mobile-item half' : 'footer-mobile-item' %}
         {% for menu in footer_menu %}
             <li class="{{ menuLength }}">
                 <a href="{{ url(menu.uri) }}"

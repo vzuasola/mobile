@@ -1,4 +1,1 @@
-declare module "*.handlebars" {
-    const _: string;
-    export default _;
-}
+declare module "*.handlebars";
