@@ -88,7 +88,6 @@ export class PromotionsComponent implements ComponentInterface {
     private listenChangeDropdown(element) {
         ComponentManager.subscribe("click", (event, src) => {
             if (utility.hasClass(src, "product-link")) {
-                event.preventDefault();
                 const prevFilter = element.querySelector(".active-filter").getAttribute("data-current-filter");
                 const prevFilterEl = element.querySelector(".filter-" + prevFilter);
 
