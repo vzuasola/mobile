@@ -120,8 +120,7 @@ export default function Slider(options) {
     }
 
     function addSliderHolderWidth(holderElem) {
-        var totalWidth = getTotalWidth($selector.querySelectorAll(".banner-slides-item")),
-            holderWidth = holderElem.clientWidth;
+        var totalWidth = getTotalWidth($selector.querySelectorAll(".banner-slides-item"));
 
         holderElem.style.width = totalWidth + "px";
     }

@@ -22,18 +22,20 @@ export class LanguageComponent implements ComponentInterface {
         const wrapper = element.querySelector("#language-lightbox");
 
         if (wrapper) {
-
             utility.listen(wrapper, "click", (event, src) => {
                 if (utility.hasClass(src, "language-link")) {
                     event.preventDefault();
 
-                    const selectedLang = src.getAttribute("data-lang");
                     // Replacing the current language to the language selected by user from the Langauge Selector.
+                    const selectedLang = src.getAttribute("data-lang");
                     const hostname = window.location.hostname;
                     const regexp = new RegExp(hostname + "\/" + currentLanguage + "(\/?.*)$", "i");
                     const redirectionUrl = window.location
-                        .href.replace(regexp, hostname + "/" + selectedLang + "$1");
+                        .href
+                        .replace(regexp, hostname + "/" + selectedLang + "$1");
+
                     Modal.close("#language-lightbox");
+
                     Router.navigate(
                         redirectionUrl,
                         ["main", "header", "announcement", "footer", "language"],
