@@ -41,6 +41,7 @@ export class PromotionsComponent implements ComponentInterface {
         this.element = element;
         this.filterProductCategory();
         this.init();
+        this.listenChangeDropdown();
         this.activateDropdown();
 
     }
@@ -91,7 +92,7 @@ export class PromotionsComponent implements ComponentInterface {
     }
 
     private listenChangeDropdown() {
-        ComponentManager.subscribe("click", (event, src) => {
+        utility.listen(this.element, "click", (event, src) => {
             if (utility.hasClass(src, "product-link")) {
                 const prevFilter = this.element.querySelector(".active-filter").getAttribute("data-current-filter");
                 const prevFilterEl = this.element.querySelector(".filter-" + prevFilter);
