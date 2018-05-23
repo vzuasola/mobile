@@ -114,7 +114,6 @@ export class PromotionsComponent implements ComponentInterface {
                 if (filter) {
                     this.doRequest((response) => {
                         this.setActiveFilter(filter);
-                        // this.removeUnusedFilters(response);
 
                         if (response && typeof response[filter] !== "undefined") {
                             const productFilter = src.getAttribute("data-product-filter-id");
