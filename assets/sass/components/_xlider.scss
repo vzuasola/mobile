@@ -4,7 +4,7 @@
     position: relative;
     z-index: 10;
     width: 100%;
-    height: auto;
+    height: 0; // Hide slider (script will adjust this to prevent unstyled component while loading)
     margin: auto;
     overflow: hidden;
 
