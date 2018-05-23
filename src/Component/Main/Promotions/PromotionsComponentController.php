@@ -145,7 +145,7 @@ class PromotionsComponentController
 
             $promoProperties = [
                 'title' => $promotion['title'][0]['value'],
-                'product' => $filterId,
+                'product' => $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'],
                 'ribbon_enable' => $ribbonEnable,
                 'ribbon_label' =>  $ribbonLabel,
                 'ribbon_bg_color' => $ribbonColor,
