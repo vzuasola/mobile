@@ -1,7 +1,7 @@
 
 <div class="page-title promotions">
     <h1 class="page-title-text promotions-title">{{ title }}</h1>
-    <a href="/" class="page-title-back-button">
+    <a href="#" onclick="history.back();" class="page-title-back-button">
         {% include '@app/web/images/svg/arrow.svg' %}
     </a>
     <div class="dropdown-menu">
@@ -21,9 +21,9 @@
                     href="#{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
                     class="product-link filter-{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
                     data-product-filter-id="{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
-                    data-product-filter-name="{{ promotions_filter['name'][0]['value'] }}"
+                    data-product-filter-name="{{ promotions_filter['field_filter_name'][0]['value'] }}"
                 >
-                    {{ promotions_filter['name'][0]['value'] }}
+                    {{ promotions_filter['field_filter_name'][0]['value'] }}
                 </a>
             </li>
             {% endfor %}
