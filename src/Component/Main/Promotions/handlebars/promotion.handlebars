@@ -1,6 +1,6 @@
 {{#each promotions}}
 <div class="promotions-body-banner">
-    <a href="#" class="promotions-body-banner-link">
+    <a href="{{this.summary_url}}" class="promotions-body-banner-link">
     {{#equals this.category "featured"}}
         {{> promotion-product-tag.handlebars product=this.product}}
     {{else}}

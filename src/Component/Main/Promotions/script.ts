@@ -28,6 +28,7 @@ export class PromotionsComponent implements ComponentInterface {
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
+        this.promotions = undefined;
         this.element = element;
         this.filterProductCategory();
         this.init();
@@ -36,6 +37,7 @@ export class PromotionsComponent implements ComponentInterface {
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+        this.promotions = undefined;
         this.element = element;
         this.filterProductCategory();
         this.init();

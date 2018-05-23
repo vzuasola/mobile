@@ -150,7 +150,7 @@ class PromotionsComponentController
                 'ribbon_label' =>  $ribbonLabel,
                 'ribbon_bg_color' => $ribbonColor,
                 'ribbon_text_color' => $ribbonTextColor,
-                'more_info_text' => $this->getPromoConfigs()
+                'more_info_text' => $this->getPromoConfigs(),
             ];
 
             if ($isLogin && ($availability == '1' || is_array($availability))) {
