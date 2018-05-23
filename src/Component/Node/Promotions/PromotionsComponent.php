@@ -11,7 +11,7 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     public function getTemplate($options = [])
     {
-        return '@component/Node/Blog/template.html.twig';
+        return '@component/Node/Promotions/template.html.twig';
     }
 
     /**
