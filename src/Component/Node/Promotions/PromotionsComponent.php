@@ -11,22 +11,26 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     private $playerSession;
 
+    private $url;
+
     /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('uri')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession)
+    public function __construct($playerSession, $url)
     {
         $this->playerSession = $playerSession;
+        $this->url = $url;
     }
 
     /**
@@ -43,47 +47,25 @@ class PromotionsComponent implements ComponentWidgetInterface
     public function getData($options = [])
     {
         try {
-            $isLogin = $this->playerSession->isLogin();
-            $data['node'] = $options['node'];
+            $node = $options['node'];
         } catch (\Exception $e) {
-            $isLogin = false;
-            $data['node'] = '';
+            $node = [];
         }
 
-        try {
-            $data['title'] = $options['node']['title'][0]['value'];
-        } catch (\Exception $e) {
-            $data['title'] = '';
+        $data['title'] = $options['node']['title'][0]['value'] ?? '';
+        if ($this->playerSession->isLogin()) {
+            $data['field_banner_image'] = $options['node']['field_post_banner_image'][0]['url'] ?? '';
+            $data['field_banner_link'] = isset($options['node']['field_post_banner_link'][0]['uri'])
+                ? $this->url->generateUri($options['node']['field_post_banner_link'][0]['uri'], []) : ['uri' => '#'];
+            $data['field_banner_link_target'] = $options['node']['field_post_banner_link_target'][0]['value'] ?? '';
+            $data['field_body'] = $options['node']['post_body'][0]['value'] ?? '';
+        } else {
+            $data['field_banner_image'] = $options['node']['field_banner_image'][0]['url'] ?? '';
+            $data['field_banner_link'] = isset($options['node']['field_banner_link'][0]['uri'])
+                ? $this->url->generateUri($options['node']['field_banner_link'][0]['uri'], []) : ['uri' => '#'];
+            $data['field_banner_link_target'] = $options['node']['field_banner_link_target'][0]['value'] ?? '';
+            $data['field_body'] = $options['node']['body'][0]['value'] ?? '';
         }
-
-        try {
-            $data['field_banner_image'] = $options['node']['field_banner_image'][0]['url'];
-        } catch (\Exception $e) {
-            $data['field_banner_image'] = '';
-        }
-
-        try {
-            $data['body'] = $options['node']['body'][0]['value'];
-        } catch (\Exception $e) {
-            $data['body'] = '';
-        }
-
-        $data['is_login'] = $isLogin;
-
-        if ($isLogin) {
-            try {
-                $data['field_post_banner_image'] = $options['node']['field_post_banner_image'][0]['url'];
-            } catch (\Exception $e) {
-                $data['field_post_banner_image'] = $options['node']['field_post_banner_image'][0]['url'] = '';
-            }
-
-            try {
-                $data['field_post_body'] = $options['node']['field_post_body'][0]['value'];
-            } catch (\Exception $e) {
-                $data['field_post_body'] = $options['node']['field_post_body'][0]['value'] = '';
-            }
-        }
-
 
         return $data;
     }
