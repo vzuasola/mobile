@@ -68,7 +68,7 @@ class PromotionsComponentController
         }
 
         $featured = $this->getPromotions($this->getFeatured(), 'featured');
-        $data[] = $featured + $this->getPromotions($promotions);
+        $data = $featured + $this->getPromotions($promotions);
 
         return $this->rest->output($response, $data);
     }
@@ -126,7 +126,7 @@ class PromotionsComponentController
         ];
     }
 
-    private function getPromotions($promotions, $category = NULL)
+    private function getPromotions($promotions, $category = null)
     {
         $promoPerProduct = [];
         $isLogin = $this->playerSession->isLogin();
