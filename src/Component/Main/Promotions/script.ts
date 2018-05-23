@@ -41,6 +41,7 @@ export class PromotionsComponent implements ComponentInterface {
         this.element = element;
         this.filterProductCategory();
         this.init();
+        this.listenChangeDropdown();
         this.activateDropdown();
 
     }
