@@ -1,13 +1,19 @@
 <div class="page-title">
         <h1 class="page-title-text">{{ node.title.0.value }}</h1>
     <a href="#" class="page-title-back-button">
-        <svg viewBox="0 0 53.251 99.846">
-            <path d="M53.251 91.525l-9.985 8.32L0 49.922 43.101 0l10.15 8.32-36.194 41.602 36.194 41.603z"/>
-        </svg>
+        {% include '@app/web/images/svg/arrow.svg' %}
     </a>
 </div>
-    <img src="{{ node.field_banner_image.0.url|raw }}" alt="" class="w-100">
+    {% if is_login %}
+        <img src="{{ field_post_banner_image }}" alt="" class="w-100">
+    {% else %}
+        <img src="{{ field_banner_image }}" alt="" class="w-100">
+    {% endif %}
 
 <div class="container">
-    {{ node.body.0.value|raw }}
+    {% if is_login %}
+        {{ field_post_body|raw }}
+    {% else %}
+        {{ body|raw }}
+    {% endif %}
 </div>
