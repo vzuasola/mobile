@@ -142,8 +142,6 @@ class PromotionsComponentController
             $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';
             $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
             $ribbonTextColor = $promotion['field_ribbon_text_color'][0]['color'] ?? '';
-            $isPost = $isLogin;
-            $available = $availability;
 
             $promoProperties = [
                 'title' => $promotion['title'][0]['value'],
