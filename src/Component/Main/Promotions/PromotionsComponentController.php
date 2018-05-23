@@ -160,11 +160,11 @@ class PromotionsComponentController
                 }
 
                 $promoProperties = $this->getPostLoginPromotions($promoProperties, $promotion);
-            } else {
+                $promoPerProduct[$filterId][] = $promoProperties + ['category' => $filterId];
+            } elseif (!$isLogin && ($availability == '0' || is_array($availability))) {
                 $promoProperties = $this->getPreLoginPromotions($promoProperties, $promotion);
+                $promoPerProduct[$filterId][] = $promoProperties + ['category' => $filterId];
             }
-
-            $promoPerProduct[$filterId][] = $promoProperties + ['category' => $filterId];
         }
 
         return $promoPerProduct;
