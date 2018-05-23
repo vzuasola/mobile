@@ -15,6 +15,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  */
 export class PromotionsComponent implements ComponentInterface {
     private promotions;
+    private element;
 
     constructor() {
         Handlebars.registerHelper("equals", function(value, compare, options) {
@@ -27,23 +28,28 @@ export class PromotionsComponent implements ComponentInterface {
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
-        this.filterProductCategory(element);
-        this.init(element);
-        this.listenChangeDropdown(element);
+        this.promotions = undefined;
+        this.element = element;
+        this.filterProductCategory();
+        this.init();
+        this.listenChangeDropdown();
         this.activateDropdown();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        this.filterProductCategory(element);
-        this.init(element);
+        this.promotions = undefined;
+        this.element = element;
+        this.filterProductCategory();
+        this.init();
+        this.listenChangeDropdown();
         this.activateDropdown();
 
     }
 
-    init(element) {
+    init() {
         this.doRequest((response) => {
-            const productFilter = element.querySelector(".active-filter").getAttribute("data-current-filter");
-            element.querySelector(".promotions-body").innerHTML =
+            const productFilter = this.element.querySelector(".active-filter").getAttribute("data-current-filter");
+            this.element.querySelector(".promotions-body").innerHTML =
                 promotionTemplate({promotions: response[productFilter]});
         });
 
@@ -85,57 +91,75 @@ export class PromotionsComponent implements ComponentInterface {
         }
     }
 
-    private listenChangeDropdown(element) {
-        ComponentManager.subscribe("click", (event, src) => {
+    private listenChangeDropdown() {
+        utility.listen(this.element, "click", (event, src) => {
             if (utility.hasClass(src, "product-link")) {
-                event.preventDefault();
-                const prevFilter = element.querySelector(".active-filter").getAttribute("data-current-filter");
-                const prevFilterEl = element.querySelector(".filter-" + prevFilter);
+                const prevFilter = this.element.querySelector(".active-filter").getAttribute("data-current-filter");
+                const prevFilterEl = this.element.querySelector(".filter-" + prevFilter);
 
                 // remove active previous
                 utility.removeClass(utility.findParent(prevFilterEl, "li"), "active");
-                utility.removeClass(element.querySelector(".active-filter"), prevFilter);
+                utility.removeClass(this.element.querySelector(".active-filter"), prevFilter);
 
                 // set new active filter
                 utility.addClass(utility.findParent(src, "li"), "active");
-                element.querySelector(".current-filter").innerHTML =
+                this.element.querySelector(".current-filter").innerHTML =
                     src.getAttribute("data-product-filter-name");
-                element.querySelector(".active-filter")
+                this.element.querySelector(".active-filter")
                     .setAttribute("data-current-filter", src.getAttribute("data-product-filter-id"));
-                utility.addClass(element.querySelector(".active-filter"), src.getAttribute("data-product-filter-id"));
+                utility.addClass(this.element.querySelector(".active-filter"),
+                    src.getAttribute("data-product-filter-id"));
 
                 this.doRequest((response) => {
                     const productFilter = src.getAttribute("data-product-filter-id");
-                    element.querySelector(".promotions-body").innerHTML =
+                    this.element.querySelector(".promotions-body").innerHTML =
                         promotionTemplate({promotions: response[productFilter]});
                 });
             }
         });
     }
 
-    private filterProductCategory(element) {
+    private filterProductCategory() {
         this.doRequest((response) => {
             const categories = Object.keys(response);
+            const activeCategories = [];
 
-            for (const productCategoryEl of element.querySelectorAll(".product-link")) {
+            for (const productCategoryEl of this.element.querySelectorAll(".product-link")) {
                 // remove category filters that don't have promotion
                 if (categories.indexOf(productCategoryEl.getAttribute("data-product-filter-id")) < 0) {
                     const disabledFilter = utility.findParent(productCategoryEl, "li");
                     disabledFilter.remove();
                 }
+
+                activeCategories.push(productCategoryEl.getAttribute("data-product-filter-id"));
             }
 
             // set active filter
-            const currentFilter = element.querySelectorAll(".product-link")[0];
-            if (currentFilter) {
-                utility.addClass(utility.findParent(currentFilter, "li"), "active");
-                element.querySelector(".current-filter").innerHTML =
-                    currentFilter.getAttribute("data-product-filter-name");
-                element.querySelector(".active-filter")
-                   .setAttribute("data-current-filter", currentFilter.getAttribute("data-product-filter-id"));
-                utility.addClass(element.querySelector(".active-filter"),
-                    currentFilter.getAttribute("data-product-filter-id"));
-            }
+            this.setInitialActiveFilter(this.element, activeCategories);
         });
+    }
+
+    private setInitialActiveFilter(element, activeCategories) {
+        const hashParam = utility.getHash(window.location.href);
+        let currentFilterId: string;
+        let currentFilter: HTMLElement;
+
+        if (hashParam && activeCategories.indexOf(hashParam) > 0) {
+            currentFilterId = hashParam;
+            currentFilter = element.querySelector(".filter-" + hashParam);
+        } else {
+            currentFilter = element.querySelectorAll(".product-link")[0];
+            if (currentFilter) {
+                currentFilterId = currentFilter.getAttribute("data-product-filter-id");
+            }
+        }
+        utility.addClass(utility.findParent(currentFilter, "li"), "active");
+        element.querySelector(".current-filter").innerHTML =
+                    currentFilter.getAttribute("data-product-filter-name");
+        element.querySelector(".active-filter")
+            .setAttribute("data-current-filter", currentFilterId);
+        utility.addClass(element.querySelector(".active-filter"),
+             currentFilterId);
+
     }
 }

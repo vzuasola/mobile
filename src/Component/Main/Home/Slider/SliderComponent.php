@@ -59,13 +59,18 @@ class SliderComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+
         try {
             $data['slides'] = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
         } catch (\Exception $e) {
             $data['slides'] = [];
         }
 
-        $data['is_login'] = $this->playerSession->isLogin();
+        try {
+            $data['is_login'] = $this->playerSession->isLogin();
+        } catch (\Exception $e) {
+            $data['is_login'] = false;
+        }
 
         return $data;
     }

@@ -18,6 +18,7 @@
     "rulesDirectory": [],
     "linterOptions": {
         "exclude": [
+            "assets/script/vendor/**",
             "automation/**",
             "core/**",
             "cache/**",
