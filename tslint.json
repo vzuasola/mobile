@@ -13,12 +13,12 @@
         "interface-name": false,
         "no-console": false,
         "only-arrow-functions": [true, "allow-declarations", "allow-named-functions"],
-        "ordered-imports": false,
-        "no-unused-expression": false
+        "ordered-imports": false
     },
     "rulesDirectory": [],
     "linterOptions": {
         "exclude": [
+            "assets/script/vendor/**",
             "automation/**",
             "core/**",
             "cache/**",
