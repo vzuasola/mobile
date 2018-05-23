@@ -1,6 +1,11 @@
 {{#each promotions}}
 <div class="promotions-body-banner">
-    <a href="{{this.summary_url}}" class="promotions-body-banner-link">
+    <a
+        href="{{this.summary_url}}"
+        target="{{this.summary_url_target}}"
+        title="{{this.summary_url_title}}"
+        class="promotions-body-banner-link"
+    >
     {{#equals this.category "featured"}}
         {{> promotion-product-tag.handlebars product=this.product}}
     {{else}}
@@ -20,7 +25,13 @@
 <h2 class="promotions-content-title">{{this.title}}</h2>
     <div class="promotions-content-blurb">
         {{{this.summary_blurb}}}
-        <a href="{{this.summary_url}}"><span class="text-yellow test">{{{this.more_info_text}}}</span></a>
+        <a
+            href="{{this.summary_url}}"
+            target="{{this.summary_url_target}}"
+            title="{{this.summary_url_title}}"
+        >
+            <span class="text-yellow test">{{{this.more_info_text}}}</span>
+        </a>
     </div>
     <a
         href="{{this.summary_url}}"
