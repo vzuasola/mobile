@@ -51,6 +51,12 @@ class PromotionsComponent implements ComponentWidgetInterface
         }
 
         try {
+            $data['title'] = $options['node']['title'][0]['value'];
+        } catch (\Exception $e) {
+            $data['title'] = '';
+        }
+
+        try {
             $data['field_banner_image'] = $options['node']['field_banner_image'][0]['url'];
         } catch (\Exception $e) {
             $data['field_banner_image'] = '';
