@@ -16,7 +16,6 @@
 }
 .promotions-body {
     background: $dark-red;
-    padding-bottom: 1rem;
 
     &-banner {
         position: relative;
@@ -83,7 +82,7 @@
     }
 
     .promotions-content {
-        margin-bottom: 1rem;
+        position: relative;
 
         h2 {
             margin: 0.5rem 0;
@@ -98,11 +97,7 @@
         }
 
         &-blurb {
-            margin-bottom: 0;
-            width: 95%;
-            display: block;
-            float: left;
-            padding-right: 1rem;
+            margin: 0 2rem 1rem 0;
         }
 
         &-info {
@@ -119,12 +114,10 @@
         }
 
         &-links {
-            display: block;
-            margin-top: 1rem;
-            width: 5%;
-            float: left;
-            align-self: center;
-            line-height: 1.4rem;
+            position: absolute;
+            @include translate(0, 50%);
+            bottom: 50%;
+            right: 0.5rem;
         }
     }
 }
@@ -241,4 +234,19 @@
     color: $gray;
     padding-top: 1rem;
     padding-bottom: 1rem;
+}
+
+.page-promotion-sticky {
+    padding-bottom: 0;
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+
+    &-full {
+        width: 100%;
+    }
+
+    &-half {
+        width: 49.8%;
+    }
 }

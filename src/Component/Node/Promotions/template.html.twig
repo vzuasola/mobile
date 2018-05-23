@@ -11,3 +11,17 @@
 <div class="container page-promotion-inner">
     {{ field_body|raw }}
 </div>
+{% if sticky_enabled_1 %}
+<div class="page-promotion-inner page-promotion-sticky">
+    <a href="{{ field_sticky_url }}" target="{{field_sticky_link_target}}" class="btn btn-medium page-promotion-sticky-{{ sticky_enabled_full ? 'full' : 'half' }}" style="background-color: {{ field_sticky_background_color }}; color: {{ field_sticky_text_color }};">
+    {{ field_sticky_url_text }}
+    </a>
+</div>
+{% endif %}
+{% if sticky_enabled_2 %}
+<div class="page-promotion-inner page-promotion-sticky">
+    <a href="{{ field_sticky_url2 }}" target="{{field_sticky_link_target2}}" class="btn btn-medium page-promotion-sticky-{{ sticky_enabled_full ? 'full' : 'half' }}" style="background-color: {{ field_sticky_background_color2 }}; color: {{ field_sticky_text_color2 }};">
+    {{ field_sticky_url_text2 }}
+    </a>
+</div>
+{% endif %}
