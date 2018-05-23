@@ -37,8 +37,8 @@ class AccessDeniedComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        $data['url'] = $this->url->generateUri('404', []);
-        $data['isMatch'] = trim($this->request->getUri()->getPath(), '/') === '404';
+        $data['url'] = $this->url->generateUri('page-not-found', []);
+        $data['isMatch'] = trim($this->request->getUri()->getPath(), '/') === 'page-not-found';
 
         return $data;
     }
