@@ -1,10 +1,10 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Home\Products;
+namespace App\MobileEntry\Component\Main\Home\Slider;
 
 use App\Plugins\ComponentWidget\AsyncComponentInterface;
 
-class ProductsComponentAsync implements AsyncComponentInterface
+class SliderComponentAsync implements AsyncComponentInterface
 {
     /**
      * @var App\Fetcher\AsyncDrupal\ConfigFetcher
@@ -42,8 +42,7 @@ class ProductsComponentAsync implements AsyncComponentInterface
     public function getDefinitions()
     {
         return [
-            $this->config->getConfig('webcomposer_config.header_configuration'),
-            $this->views->getViewById('product_lobby_tiles_entity'),
+            $this->views->getViewById('webcomposer_slider_v2'),
         ];
     }
 }

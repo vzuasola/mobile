@@ -23,7 +23,8 @@ export class AvayaModule implements ModuleInterface {
     private prevUrl: string;
     private baseUrl: string;
 
-    onLoad(attachments: {baseUrl: string,
+    onLoad(attachments: {
+        baseUrl: string,
         urlPost: string,
         postTimeout: number,
         jwtKey: string,
@@ -71,12 +72,14 @@ export class AvayaModule implements ModuleInterface {
             type: "json",
         }).then((response) => {
             this.avayaClass.setToken(response.jwt);
+
+            // Add the token to the base url
             this.avayaClass.setOnSuccess((token) => {
-                // Add the token to the base url
                 this.updatePopupWindow(utility.addQueryParam(response.baseUrl, "s", token));
             });
+
+            // Use the default avaya base url
             this.avayaClass.setOnFail((error) => {
-                // Use the default avaya base url
                 this.updatePopupWindow(response.baseUrl);
             });
         }).fail((err, msg) => {
@@ -110,31 +113,29 @@ export class AvayaModule implements ModuleInterface {
     /**
      * Event listener for the avaya link
      *
-     * @param  object event
+     * @param object event
      * @return void/boolean
      */
     private getAvayaToken(event, src, data) {
-        const evt = event || window.event;
-        let target = evt.target || evt.srcElement;
+        let target = src;
 
         // Get parent Anchor if target is inside of anchor
         if (target.tagName !== "A" && (target.parentNode !== null && target.parentNode.tagName === "A")) {
             target = target.parentNode;
         }
+
         // Check if the link should be changed to avaya link
         if (target.href !== undefined &&
             target.href.indexOf("linkto:avaya") !== -1
         ) {
-            evt.preventDefault();
+            event.preventDefault();
 
             target = utility.getParameterByName("target", target.href);
             target = target || this.openBehavior;
 
             if (target === "_self") {
-                // Same tab
                 this.windowObject = window;
             } else if (target === "_blank") {
-                // New tab
                 this.windowObject = window.open("", "_blank");
             } else {
                 // Popup
@@ -170,7 +171,7 @@ export class AvayaModule implements ModuleInterface {
     /**
      * Method to prepare the popup properties
      *
-     * @param  object $target Element to check
+     * @param object $target Element to check
      * @return object
      */
     private popUpProperties(target) {
@@ -195,5 +196,4 @@ export class AvayaModule implements ModuleInterface {
 
         return properties;
     }
-
 }

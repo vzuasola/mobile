@@ -62,7 +62,7 @@ class PushNotificationComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $this->pnxconfig = $this->config->getGeneralConfigById('pushnx_configuration');
+        $this->pnxconfig = $this->config->getConfig('webcomposer_config.pushnx_configuration');
 
         if ($this->playerSession->isLogin()) {
             $playerDetails = $this->user->getPlayerDetails();

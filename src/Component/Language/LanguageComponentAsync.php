@@ -1,10 +1,10 @@
 <?php
 
-namespace App\MobileEntry\Component\Announcement;
+namespace App\MobileEntry\Component\Language;
 
 use App\Plugins\ComponentWidget\AsyncComponentInterface;
 
-class AnnouncementComponentAsync implements AsyncComponentInterface
+class LanguageComponentAsync implements AsyncComponentInterface
 {
     /**
      * @var App\Fetcher\AsyncDrupal\ConfigFetcher
@@ -12,9 +12,9 @@ class AnnouncementComponentAsync implements AsyncComponentInterface
     private $configs;
 
     /**
-     * @var App\Fetcher\AsyncDrupal\ViewsFetcher
+     * @var App\Fetcher\AsyncDrupal\LanguageFetcher
      */
-    private $views;
+    private $languages;
 
     /**
      *
@@ -23,17 +23,17 @@ class AnnouncementComponentAsync implements AsyncComponentInterface
     {
         return new static(
             $container->get('config_fetcher_async'),
-            $container->get('views_fetcher_async')
+            $container->get('language_fetcher_async')
         );
     }
 
     /**
      *
      */
-    public function __construct($configs, $views)
+    public function __construct($configs, $languages)
     {
         $this->configs = $configs;
-        $this->views = $views;
+        $this->languages = $languages;
     }
 
     /**
@@ -42,8 +42,8 @@ class AnnouncementComponentAsync implements AsyncComponentInterface
     public function getDefinitions()
     {
         return [
-            $this->configs->getConfig('webcomposer_config.announcements_configuration'),
-            $this->views->getViewById('announcements'),
+            $this->configs->getConfig('webcomposer_config.footer_configuration'),
+            $this->languages->getLanguages(),
         ];
     }
 }

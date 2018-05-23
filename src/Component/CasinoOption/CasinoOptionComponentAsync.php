@@ -1,20 +1,20 @@
 <?php
 
-namespace App\MobileEntry\Component\Header;
+namespace App\MobileEntry\Component\CasinoOption;
 
 use App\Plugins\ComponentWidget\AsyncComponentInterface;
 
-class HeaderComponentAsync implements AsyncComponentInterface
+class CasinoOptionComponentAsync implements AsyncComponentInterface
 {
     /**
-     * @var App\Fetcher\Drupal\ConfigFetcher
+     * @var App\Fetcher\AsyncDrupal\ConfigFetcher
      */
     private $configs;
 
     /**
-     * @var App\Fetcher\AsyncDrupal\MenuFetcher
+     * @var App\Fetcher\AsyncIntegration\PreferencesFetcher
      */
-    private $menus;
+    private $preferences;
 
     /**
      *
@@ -23,17 +23,17 @@ class HeaderComponentAsync implements AsyncComponentInterface
     {
         return new static(
             $container->get('config_fetcher_async'),
-            $container->get('menu_fetcher_async')
+            $container->get('preferences_fetcher_async')
         );
     }
 
     /**
-     * Public constructor
+     *
      */
-    public function __construct($configs, $menus)
+    public function __construct($configs, $preferences)
     {
         $this->configs = $configs;
-        $this->menus = $menus;
+        $this->preferences = $preferences;
     }
 
     /**
@@ -42,9 +42,9 @@ class HeaderComponentAsync implements AsyncComponentInterface
     public function getDefinitions()
     {
         return [
+            $this->configs->getConfig('mobile_casino.casino_configuration'),
             $this->configs->getConfig('webcomposer_config.header_configuration'),
-            $this->configs->getConfig('webcomposer_config.login_configuration'),
-            $this->menus->getMultilingualMenu('cashier-menu'),
+            $this->preferences->getPreferences(),
         ];
     }
 }
