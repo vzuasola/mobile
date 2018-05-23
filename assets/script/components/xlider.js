@@ -16,6 +16,10 @@ export default class Xlider extends Siema {
     }
 
     initXlider() {
+        // Show slider once initialized (Slider height is 0 initially from CSS)
+        // this prevent unstyled component while loading
+        this.selector.style.height = "auto";
+
         // Add class to slides container
         this.selector.firstElementChild.classList.add("banner-slides");
 
