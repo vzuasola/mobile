@@ -54,8 +54,8 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
         $config,
         $user,
         $playerSession,
-        $session_fetcher,
-        $block_utils,
+        $sessionFetcher,
+        $blockUtils,
         $lang
     ) {
         $this->request = $request;
@@ -64,8 +64,8 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
         $this->user = $user;
         $this->playerDetails = false;
         $this->playerSession = $playerSession;
-        $this->sessionFetcher = $session_fetcher;
-        $this->blockUtils = $block_utils;
+        $this->sessionFetcher = $sessionFetcher;
+        $this->blockUtils = $blockUtils;
         $this->lang = $lang;
     }
 
@@ -82,7 +82,7 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
 
     public function getPushConfig()
     {
-        $this->pnxconfig = $this->config->getGeneralConfigById('pushnx_configuration');
+        $this->pnxconfig = $this->config->getConfig('webcomposer_config.pushnx_configuration');
 
         // first checkpoint is pushnx enabled
         if (!$this->isPushnxEnabled()) {

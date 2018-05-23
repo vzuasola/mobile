@@ -85,6 +85,7 @@ class FooterComponent implements ComponentWidgetInterface
     private function orderSponsors(&$sponsors)
     {
         $count = 1;
+
         foreach ($sponsors as $key => $sponsor) {
             if (!$sponsor['field_mobile_full_row'][0]['value']) {
                 if ($count == 1) {
@@ -94,6 +95,7 @@ class FooterComponent implements ComponentWidgetInterface
                 if ($count == 2) {
                     $sponsors[$key]['leaf_class'] = 'right';
                 }
+
                 $count++;
             }
 

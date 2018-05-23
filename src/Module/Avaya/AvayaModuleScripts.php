@@ -44,6 +44,7 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         $data = [];
+
         try {
             $isLogin = $this->playerSession->isLogin();
         } catch (\Exception $e) {
@@ -52,10 +53,12 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
 
         try {
             $avaya = $this->configFetcher->getConfig('webcomposer_config.avaya_configuration');
+
             if ($isLogin) {
                 $playerInfo = $this->playerSession->getDetails();
 
-                $validityTime = $avaya['validity_time'] ?? '';
+                $validityTime = $avaya['validity_time'] ?? 1200;
+
                 $userInfo = [
                     'username' => $playerInfo['username'],
                     'email' => $playerInfo['email'],
@@ -64,6 +67,7 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
                 ];
 
                 $data['validity_time'] = $userInfo['exp'];
+
                 $jwt = JWT::encode(
                     $userInfo,
                     $avaya['jwt_key'] ?? '',
@@ -72,6 +76,7 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
                     null
                 );
             }
+
             $data['baseUrl'] = $avaya['base_url'] ?? '';
             $data['urlPost'] = $avaya['url_post'] ?? '';
             $data['postTimeout'] = $avaya['url_post_timout'] ?? '';
@@ -80,6 +85,7 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
         } catch (\Exception $e) {
             $data = [];
         }
+
         return $data;
     }
 }

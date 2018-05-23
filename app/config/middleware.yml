@@ -1,5 +1,6 @@
 middlewares:
   request:
+    slashes: App\Middleware\Request\Slashes
     languages: App\Middleware\Request\Languages
     bootstrap: App\Middleware\Request\Bootstrap
     session: App\Middleware\Request\Session

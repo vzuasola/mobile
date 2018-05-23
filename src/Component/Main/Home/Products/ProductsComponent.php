@@ -62,20 +62,24 @@ class ProductsComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+
         $data['is_logged_in'] = $this->playerSession->isLogin();
 
         try {
-            $data['product_tiles'] = $this->getEntity();
+            $entities = $this->getEntity();
         } catch (\Exception $e) {
-            $data['product_tiles'] = [];
+            $entities = [];
         }
 
+        $data['product_tiles'] = $entities;
+
         try {
-            $data['config_new_text'] = $this->config
-                ->getConfig('webcomposer_config.header_configuration')['product_menu_new_tag'];
+            $headerConfigs = $this->config->getConfig('webcomposer_config.header_configuration');
         } catch (\Exception $e) {
-            $data['config_new_text'] = [];
+            $headerConfigs = [];
         }
+
+        $data['config_new_text'] = $headerConfigs['product_menu_new_tag'] ?? 'New';
 
         return $data;
     }

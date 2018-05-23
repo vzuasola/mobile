@@ -1,15 +1,15 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Home\Products;
+namespace App\MobileEntry\Module\Tracking;
 
 use App\Plugins\ComponentWidget\AsyncComponentInterface;
 
-class ProductsComponentAsync implements AsyncComponentInterface
+class TrackingModuleAsync implements AsyncComponentInterface
 {
     /**
      * @var App\Fetcher\AsyncDrupal\ConfigFetcher
      */
-    private $config;
+    private $configs;
 
     /**
      * @var App\Fetcher\AsyncDrupal\ViewsFetcher
@@ -30,20 +30,20 @@ class ProductsComponentAsync implements AsyncComponentInterface
     /**
      * Public constructor
      */
-    public function __construct($config, $views)
+    public function __construct($configs, $views)
     {
-        $this->config = $config;
+        $this->configs = $configs;
         $this->views = $views;
     }
 
     /**
-     * {@inheritdoc}
+     *
      */
     public function getDefinitions()
     {
         return [
-            $this->config->getConfig('webcomposer_config.header_configuration'),
-            $this->views->getViewById('product_lobby_tiles_entity'),
+            $this->configs->getConfig('webcomposer_config.affiliate_configuration'),
+            $this->views->getViewById('affiliates'),
         ];
     }
 }

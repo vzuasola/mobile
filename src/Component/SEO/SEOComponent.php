@@ -50,9 +50,11 @@ class SEOComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+
         try {
             $seo = $this->views->getViewById('metatag_entity');
             $result = [];
+
             if ($seo) {
                 foreach ($seo as $listing) {
                     $visibilty = $listing['field_per_page_visibility'][0]['value'] ?? 0;
