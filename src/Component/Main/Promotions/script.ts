@@ -128,7 +128,6 @@ export class PromotionsComponent implements ComponentInterface {
                         this.setActiveFilter(filter);
 
                         if (response && typeof response[filter] !== "undefined") {
-                            const productFilter = src.getAttribute("data-product-filter-id");
                             const template = promotionTemplate({
                                 promotions: response[filter],
                             });
