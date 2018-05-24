@@ -52,15 +52,41 @@ class PromotionsComponent implements ComponentWidgetInterface
             $data['node'] = [];
         }
 
-        $data['is_login'] = $this->playerSession->isLogin();
-        $data['field_sticky_url'] = isset($options['node']['field_sticky_url'][0]['uri'])
-                ? $this->url->generateUri($options['node']['field_sticky_url'][0]['uri'], []) : ['uri' => '#'];
-        $data['field_sticky_url2'] = isset($options['node']['field_sticky_url2'][0]['uri'])
-                ? $this->url->generateUri($options['node']['field_sticky_url2'][0]['uri'], []) : ['uri' => '#'];
-        $data['field_post_banner_link'] = isset($options['node']['field_post_banner_link'][0]['uri'])
-                ? $this->url->generateUri($options['node']['field_post_banner_link'][0]['uri'], []) : ['uri' => '#'];
-        $data['field_banner_link'] = isset($options['node']['field_banner_link'][0]['uri'])
-                ? $this->url->generateUri($options['node']['field_banner_link'][0]['uri'], []) : ['uri' => '#'];
+        try {
+            $data['field_sticky_url_pre'] = $options['node']['field_sticky_url_pre'][0]['uri'];
+        } catch (\Exception $e) {
+            $data['field_sticky_url_pre'] = [];
+        }
+
+        try {
+            $data['field_sticky_url_pre2'] = $options['node']['field_sticky_url_pre2'][0]['uri'];
+        } catch (\Exception $e) {
+            $data['field_sticky_url_pre2'] = [];
+        }
+
+        try {
+            $data['field_sticky_url_post'] = $options['node']['field_sticky_url_post'][0]['uri'];
+        } catch (\Exception $e) {
+            $data['field_sticky_url_post'] = [];
+        }
+
+        try {
+            $data['field_sticky_url_post2'] = $options['node']['field_sticky_url_post2'][0]['uri'];
+        } catch (\Exception $e) {
+            $data['field_sticky_url_post2'] = [];
+        }
+
+        try {
+            $data['field_post_banner_link'] = $options['node']['field_post_banner_link'][0]['uri'];
+        } catch (\Exception $e) {
+            $data['field_post_banner_link'] = [];
+        }
+
+        try {
+            $data['field_banner_link'] = $options['node']['field_banner_link'][0]['uri'];
+        } catch (\Exception $e) {
+            $data['field_banner_link'] = [];
+        }
 
         return $data;
     }
