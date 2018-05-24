@@ -15,6 +15,12 @@ routes:
         components:
           main: basic
 
+    /login:
+        method: GET
+        action: App\MobileEntry\Controller\HomeController:view
+        components:
+          main: authenticate
+
     /promotions:
         method: GET
         action: App\MobileEntry\Controller\PromotionsController:view

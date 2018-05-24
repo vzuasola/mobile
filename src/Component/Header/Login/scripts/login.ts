@@ -176,11 +176,11 @@ export class Login {
                 btnJoin.setAttribute("href", btnJoin.getAttribute("data-join-url"));
             }
 
-            if (typeof data.src !== "undefined") {
+            if (data && typeof data.src !== "undefined") {
                 this.srcElement = data.src;
             }
 
-            if (typeof data.productVia !== "undefined") {
+            if (data && typeof data.productVia !== "undefined") {
                 this.productVia = data.productVia;
 
                 // this is not really necessary, just a flag to expose the
@@ -190,13 +190,13 @@ export class Login {
                 }
             }
 
-            if (typeof data.regVia !== "undefined" && data.regVia) {
+            if (data && typeof data.regVia !== "undefined" && data.regVia) {
                 if (btnJoin) {
                     btnJoin.setAttribute("href", data.regVia);
                 }
             }
 
-            if (typeof data.action !== "undefined") {
+            if (data && typeof data.action !== "undefined") {
                 this.action = data.action;
             }
 

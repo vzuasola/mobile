@@ -52,6 +52,9 @@ components:
     class: App\MobileEntry\Component\Header\Login\LoginComponent
     parent: header
 
+  authenticate:
+    class: App\MobileEntry\Component\Main\Authenticate\AuthenticateComponent
+
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
 

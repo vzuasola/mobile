@@ -48,6 +48,30 @@ export abstract class Redirectable implements ModuleInterface {
             }
         });
 
+        // a very special event that allows use to set a product data
+        // programatically, used by the direct access login URL with
+        // login modal
+        ComponentManager.subscribe("redirectable.set.product", (event, src, data) => {
+            if (data && data.src && data.product === this.code) {
+                console.log(data);
+                if (!this.isLogin) {
+                    if (this.isLoginOnly) {
+                        this.element = data.src;
+                        ComponentManager.broadcast("header.login", {
+                            src: data.src,
+                            productVia: data.src.getAttribute("data-product-login-via"),
+                            regVia: data.src.getAttribute("data-product-reg-via"),
+                        });
+
+                        return;
+                    }
+                }
+
+                this.loader.show();
+                this.doRequest(data.src);
+            }
+        });
+
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
 
