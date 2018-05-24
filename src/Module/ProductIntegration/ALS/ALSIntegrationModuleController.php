@@ -12,6 +12,7 @@ class ALSIntegrationModuleController
     private $config;
     private $cookieService;
     private $rest;
+    private $parser;
 
     /**
      *
@@ -22,19 +23,21 @@ class ALSIntegrationModuleController
             $container->get('player_session'),
             $container->get('config_fetcher'),
             $container->get('cookie_service'),
-            $container->get('rest')
+            $container->get('rest'),
+            $container->get('token_parser')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $cookieService, $rest)
+    public function __construct($playerSession, $config, $cookieService, $rest, $parser)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
         $this->cookieService = $cookieService;
         $this->rest = $rest;
+        $this->parser = $parser;
     }
 
     /**
@@ -92,6 +95,7 @@ class ALSIntegrationModuleController
     private function setCookie($cookies, $isLogin)
     {
         if ($cookies) {
+            $cookies = $this->parser->processTokens($cookies);
             $cookies = Config::parse($cookies);
 
             foreach ($cookies as $key => $value) {

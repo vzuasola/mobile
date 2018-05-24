@@ -61,14 +61,19 @@ class PromotionsComponentController
 
     public function promotions($request, $response)
     {
+        $product_category = $request->getParsedBody();
+
         try {
-            $promotions = $this->views->getViewById('promotions');
+            $args = ['product_category' => $product_category['product_category']];
+            $promotions = $this->views->getViewById('promotions', $args);
         } catch (\Exception $e) {
             $promotions = [];
         }
-
-        $featured = $this->getPromotions($this->getFeatured(), 'featured');
-        $data = $featured + $this->getPromotions($promotions);
+        if ($product_category['product_category'] == 'featured') {
+            $data = $this->getPromotions($this->getFeatured(), 'featured');
+        } else {
+            $data = $this->getPromotions($promotions);
+        }
 
         return $this->rest->output($response, $data);
     }
