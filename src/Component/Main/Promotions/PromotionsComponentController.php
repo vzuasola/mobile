@@ -65,7 +65,7 @@ class PromotionsComponentController
 
         try {
             $promotions = $this->views->getViewById('promotions',
-                array('product_category' => $product_category['product_category']));
+                ['product_category' => $product_category['product_category']]);
         } catch (\Exception $e) {
             $promotions = [];
         }
