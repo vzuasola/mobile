@@ -64,9 +64,8 @@ class PromotionsComponentController
         $product_category = $request->getParsedBody();
 
         try {
-            $promotions = $this->views->getViewById('promotions',
-                ['product_category' => $product_category['product_category']]
-            );
+            $args = ['product_category' => $product_category['product_category']];
+            $promotions = $this->views->getViewById('promotions', $args);
         } catch (\Exception $e) {
             $promotions = [];
         }
