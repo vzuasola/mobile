@@ -65,6 +65,7 @@ class PromotionsComponent implements ComponentWidgetInterface
 
         $data['title'] = $promoConfigs['title'] ?? 'Promotions';
         $data['filter_label'] = $promoConfigs['filter_label'] ?? 'Filter';
+        $data['no_available_promotions'] = $promoConfigs['no_available_msg'] ?? '';
 
         return $data;
     }
