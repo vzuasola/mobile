@@ -11,6 +11,7 @@ import {PushNotificationComponent} from "@app/src/Component/PushNotification/scr
 import {SEOComponent} from "@app/src/Component/SEO/script";
 import {SliderComponent} from "@app/src/Component/Main/Home/Slider/script";
 import {ProductsComponent} from "@app/src/Component/Main/Home/Products/script";
+import {NodeComponent} from "@app/src/Component/Node/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
 
@@ -26,6 +27,7 @@ ComponentManager.setComponents({
     seo: new SEOComponent(),
     home_slider: new SliderComponent(),
     home_products: new ProductsComponent(),
+    node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
 });

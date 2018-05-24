@@ -237,16 +237,25 @@
 }
 
 .page-promotion-sticky {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
     padding-bottom: 0;
     position: -webkit-sticky;
     position: sticky;
     bottom: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
 
-    &-full {
+    &-full,
+    &-half {
         width: 100%;
+        border-radius: 0;
     }
 
-    &-half {
-        width: 49.8%;
+    a,
+    a:hover {
+        border-color: transparent;
     }
 }

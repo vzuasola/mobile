@@ -18,31 +18,67 @@
     </a>
 
 <div class="container page-promotion-inner">
-    {{ node.field_body.0.value|raw }}
+    {{ node.body.0.value|raw }}
 </div>
 {% endif %}
-{% set sticky_enabled_half = (node.field_enable_sticky_component2.0.value and node.field_enable_sticky_component2.0.value) %}
-{% if node.field_enable_sticky_component2.0.value %}
-<div class="page-promotion-inner page-promotion-sticky">
-    <a
-        href="{{ field_sticky_url }}"
-        target="{{ node.field_sticky_link_target.0.value }}"
-        class="btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
-        style="background-color: {{ field_sticky_background_color }}; color: {{ field_sticky_text_color }};"
-    >
-        {{ node.field_sticky_url_text.0.title }}
-    </a>
-</div>
-{% endif %}
-{% if node.field_enable_sticky_component2.0.value %}
-<div class="page-promotion-inner page-promotion-sticky">
-    <a
-        href="{{ field_sticky_url2 }}"
-        target="{{ node.field_sticky_link_target2.0.value }}"
-        class="btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
-        style="background-color: {{ field_sticky_background_color2 }}; color: {{ field_sticky_text_color2 }};"
-    >
-        {{ node.field_sticky_url_text2.0.title }}
-    </a>
-</div>
+{% if is_login %}
+    {% if node.field_enable_sticky_component.0.value or node.field_enable_sticky_component2.0.value  %}
+        <ul class="page-promotion-inner page-promotion-sticky">
+        {% set sticky_enabled_half = (node.field_enable_sticky_component.0.value and node.field_enable_sticky_component2.0.value) %}
+        {% if node.field_enable_sticky_component.0.value %}
+            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
+            <a
+                href="{{ field_sticky_url }}"
+                target="{{ node.field_sticky_link_target.0.value }}"
+                class="sticky-box btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
+                style="background-color: {{ node.field_sticky_background_color.0.color }}; color: {{ node.field_sticky_text_color.0.color }};"
+            >
+                {{ node.field_sticky_url.0.title }}
+            </a>
+            </li>
+        {% endif %}
+        {% if node.field_enable_sticky_component2.0.value %}
+            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
+            <a
+                href="{{ field_sticky_url2 }}"
+                target="{{ node.field_sticky_link_target2.0.value }}"
+                class="sticky-box btn btn-medium {{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}"
+                style="background-color: {{ node.field_sticky_background_color2.0.color }}; color: {{ node.field_sticky_text_color2.0.color }};"
+            >
+                {{ node.field_sticky_url2.0.title }}
+            </a>
+            </li>
+        {% endif %}
+        </ul>
+    {% endif %}
+{% else %}
+    {% if node.field_enable_sticky_pre.0.value or node.field_enable_sticky_pre2.0.value  %}
+        <ul class="page-promotion-inner page-promotion-sticky">
+        {% set sticky_enabled_half = (node.field_enable_sticky_pre.0.value and node.field_enable_sticky_pre2.0.value) %}
+        {% if node.field_enable_sticky_pre.0.value %}
+            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
+            <a
+                href="{{ field_sticky_url_pre }}"
+                target="{{ node.field_sticky_link_target.0.value }}"
+                class="sticky-box btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
+                style="background-color: {{ node.field_sticky_background_pre.0.color }}; color: {{ node.field_sticky_text_color_pre.0.color }};"
+            >
+                {{ node.field_sticky_url_pre.0.title }}
+            </a>
+            </li>
+        {% endif %}
+        {% if node.field_enable_sticky_pre2.0.value %}
+            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
+            <a
+                href="{{ field_sticky_url_pre2 }}"
+                target="{{ node.field_sticky_link_target2.0.value }}"
+                class="sticky-box btn btn-medium {{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}"
+                style="background-color: {{ node.field_sticky_background_pre2.0.color }}; color: {{ node.field_sticky_text_color_pre2.0.color }};"
+            >
+                {{ node.field_sticky_url_pre2.0.title }}
+            </a>
+            </li>
+        {% endif %}
+        </ul>
+    {% endif %}
 {% endif %}

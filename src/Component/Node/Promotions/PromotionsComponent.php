@@ -52,7 +52,7 @@ class PromotionsComponent implements ComponentWidgetInterface
             $data['node'] = [];
         }
 
-        $data['isLogin'] = $this->playerSession->isLogin();
+        $data['is_login'] = $this->playerSession->isLogin();
         $data['field_sticky_url'] = isset($options['node']['field_sticky_url'][0]['uri'])
                 ? $this->url->generateUri($options['node']['field_sticky_url'][0]['uri'], []) : ['uri' => '#'];
         $data['field_sticky_url2'] = isset($options['node']['field_sticky_url2'][0]['uri'])
