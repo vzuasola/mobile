@@ -13,23 +13,28 @@ export class GenericIntegrationModule extends Redirectable implements ModuleInte
     protected doRequest(src) {
         const url = src.getAttribute("data-post-login-url");
 
-        xhr({
-            url: Router.generateModuleRoute("login_redirect", "process"),
-            type: "json",
-            method: "post",
-            data: {
-                url,
-            },
-        }).then((response) => {
-            if (typeof response.url !== "undefined") {
-                if (utility.isExternal(response.url)) {
-                    window.location.href = response.url;
-                } else {
-                    Router.navigate(response.url, ["header", "main"]);
+        if (url) {
+            xhr({
+                url: Router.generateModuleRoute("login_redirect", "process"),
+                type: "json",
+                method: "post",
+                data: {
+                    url,
+                },
+            }).then((response) => {
+                if (typeof response.url !== "undefined") {
+                    if (utility.isExternal(response.url)) {
+                        window.location.href = response.url;
+                    } else {
+                        Router.navigate(response.url, ["header", "main"]);
+                    }
                 }
-            }
-        }).fail((error, message) => {
-            // do something
-        });
+            }).fail((error, message) => {
+                // do something
+            });
+        }
+
+        // post login url was not found
+        // generic application handling here
     }
 }

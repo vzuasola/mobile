@@ -44,7 +44,7 @@ export abstract class Redirectable implements ModuleInterface {
                 }
 
                 this.loader.show();
-                this.doRequest(src);
+                this.doRequest(el);
             }
         });
 
