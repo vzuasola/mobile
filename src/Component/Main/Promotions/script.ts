@@ -60,10 +60,14 @@ export class PromotionsComponent implements ComponentInterface {
                     });
 
                     this.element.querySelector(".promotions-body").innerHTML = template;
+                } else {
+                    this.handleError();
                 }
             }
 
             // error handling here
+        }, () => {
+            this.handleError();
         });
 
     }
@@ -97,6 +101,7 @@ export class PromotionsComponent implements ComponentInterface {
                 callback(response);
             }).fail((error, message) => {
                 if (errorCallback) {
+                    this.promotionLoader();
                     errorCallback(error, message);
                 }
             });
@@ -123,9 +128,13 @@ export class PromotionsComponent implements ComponentInterface {
 
                             this.element.querySelector(".promotions-body").innerHTML = template;
                             return;
+                        } else {
+                            this.handleError();
                         }
 
                         // error handling here
+                    }, () => {
+                        this.handleError();
                     });
                 }
             }
@@ -184,27 +193,25 @@ export class PromotionsComponent implements ComponentInterface {
 
         if (currentFilter) {
             currentFilterId = currentFilter.getAttribute("data-product-filter-id");
+            utility.addClass(utility.findParent(currentFilter, "li"), "active");
+
+            const currentFilterProduct = currentFilter.getAttribute("data-product-filter-name");
+            this.element.querySelector(".current-filter").innerHTML = currentFilterProduct;
+
+            this.element.querySelector(".active-filter").setAttribute(
+                "data-current-filter",
+                currentFilterId,
+            );
+
+            utility.addClass(
+                this.element.querySelector(".active-filter"),
+                currentFilterId,
+            );
         }
-
-        utility.addClass(utility.findParent(currentFilter, "li"), "active");
-
-        const currentFilterProduct = currentFilter.getAttribute("data-product-filter-name");
-        this.element.querySelector(".current-filter").innerHTML = currentFilterProduct;
-
-        this.element.querySelector(".active-filter").setAttribute(
-            "data-current-filter",
-            currentFilterId,
-        );
-
-        utility.addClass(
-            this.element.querySelector(".active-filter"),
-            currentFilterId,
-        );
     }
 
     private removeUnusedFilters(response) {
         const categories = Object.keys(response);
-        const activeCategories = [];
 
         for (const productCategoryEl of this.element.querySelectorAll(".product-link")) {
             // remove category filters that don't have promotion
@@ -212,8 +219,10 @@ export class PromotionsComponent implements ComponentInterface {
                 const disabledFilter = utility.findParent(productCategoryEl, "li");
                 disabledFilter.remove();
             }
-
-            activeCategories.push(productCategoryEl.getAttribute("data-product-filter-id"));
         }
+    }
+
+    private handleError() {
+        utility.removeClass(this.element.querySelector(".promotions-no-available"), "hidden");
     }
 }
