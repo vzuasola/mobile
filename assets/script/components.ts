@@ -12,8 +12,10 @@ import {SEOComponent} from "@app/src/Component/SEO/script";
 import {MarketingComponent} from "@app/src/Component/Marketing/script";
 import {SliderComponent} from "@app/src/Component/Main/Home/Slider/script";
 import {ProductsComponent} from "@app/src/Component/Main/Home/Products/script";
+import {NodeComponent} from "@app/src/Component/Node/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
+import {AuthenticateComponent} from "@app/src/Component/Main/Authenticate/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -27,7 +29,9 @@ ComponentManager.setComponents({
     seo: new SEOComponent(),
     home_slider: new SliderComponent(),
     home_products: new ProductsComponent(),
+    node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
     marketing: new MarketingComponent(),
+    authenticate: new AuthenticateComponent(),
 });

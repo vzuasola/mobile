@@ -1,0 +1,84 @@
+<div class="page-title">
+        <h1 class="page-title-text">{{ node.title.0.value }}</h1>
+    <a href="#" onclick="history.back();" class="page-title-back-button">
+        {% include '@app/web/images/svg/arrow.svg' %}
+    </a>
+</div>
+{% if is_login %}
+    <a href="{{ url(field_post_banner_link) }}" target="{{node.field_post_banner_link_target.0.value }}">
+        <img src="{{ node.field_post_banner_image.0.url }}" alt="" class="w-100">
+    </a>
+
+<div class="container page-promotion-inner">
+    {{ node.field_post_body.0.value|raw }}
+</div>
+{% else %}
+    <a href="{{ url(field_banner_link) }}" target="{{node.field_banner_link_target.0.value }}">
+        <img src="{{ node.field_banner_image.0.url }}" alt="" class="w-100">
+    </a>
+
+<div class="container page-promotion-inner">
+    {{ node.body.0.value|raw }}
+</div>
+{% endif %}
+{% if is_login %}
+    {% if node.field_field_enable_sticky_post.0.value or node.field_field_enable_sticky_post2.0.value  %}
+        <ul class="page-promotion-inner page-promotion-sticky">
+        {% set sticky_enabled_half = (node.field_field_enable_sticky_post.0.value and node.field_field_enable_sticky_post2.0.value) %}
+        {% if node.field_field_enable_sticky_post.0.value %}
+            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
+            <a
+                href="{{ url(node.field_sticky_url_post) }}"
+                target="{{ node.field_sticky_link_target_post.0.value }}"
+                class="sticky-box btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
+                style="background-color: {{ node.field_sticky_background_post.0.color }}; color: {{ node.field_sticky_text_color_post.0.color }};"
+            >
+                {{ node.field_sticky_url_post.0.title }}
+            </a>
+            </li>
+        {% endif %}
+        {% if node.field_field_enable_sticky_post2.0.value %}
+            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
+            <a
+                href="{{ url(node.field_sticky_url_post2) }}"
+                target="{{ node.field_sticky_link_target_post2.0.value }}"
+                class="sticky-box btn btn-medium {{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}"
+                style="background-color: {{ node.field_sticky_background_post2.0.color }}; color: {{ node.field_sticky_text_color_post2.0.color }};"
+            >
+                {{ node.field_sticky_url_post2.0.title }}
+            </a>
+            </li>
+        {% endif %}
+        </ul>
+    {% endif %}
+{% else %}
+    {% if node.field_field_enable_sticky_pre.0.value or node.field_field_enable_sticky_pre2.0.value %}
+        <ul class="page-promotion-inner page-promotion-sticky">
+        {% set sticky_enabled_half = (node.field_field_enable_sticky_pre.0.value and node.field_field_enable_sticky_pre2.0.value) %}
+        {% if node.field_field_enable_sticky_pre.0.value %}
+            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
+            <a
+                href="{{ url(field_sticky_url_pre) }}"
+                target="{{ node.field_sticky_link_target_pre.0.value }}"
+                class="sticky-box btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
+                style="background-color: {{ node.field_sticky_background_pre.0.color }}; color: {{ node.field_sticky_text_color_pre.0.color }};"
+            >
+                {{ node.field_sticky_url_pre.0.title }}
+            </a>
+            </li>
+        {% endif %}
+        {% if node.field_field_enable_sticky_pre2.0.value %}
+            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
+            <a
+                href="{{ url(field_sticky_url_pre2) }}"
+                target="{{ node.field_sticky_link_target_pre2.0.value }}"
+                class="sticky-box btn btn-medium {{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}"
+                style="background-color: {{ node.field_sticky_background_pre2.0.color }}; color: {{ node.field_sticky_text_color_pre2.0.color }};"
+            >
+                {{ node.field_sticky_url_pre2.0.title }}
+            </a>
+            </li>
+        {% endif %}
+        </ul>
+    {% endif %}
+{% endif %}

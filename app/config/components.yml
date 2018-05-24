@@ -52,6 +52,9 @@ components:
     class: App\MobileEntry\Component\Header\Login\LoginComponent
     parent: header
 
+  authenticate:
+    class: App\MobileEntry\Component\Main\Authenticate\AuthenticateComponent
+
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
 
@@ -66,6 +69,9 @@ components:
 
   node_blog:
     class: App\MobileEntry\Component\Node\Blog\BlogComponent
+
+  node_promotions:
+    class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
 
   home:
     class: App\MobileEntry\Component\Main\Home\HomeComponent
