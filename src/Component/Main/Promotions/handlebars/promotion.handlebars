@@ -19,28 +19,18 @@
         {{/if}}
     {{/equals}}
     <img src="{{this.thumbnail}}" class="w-100">
-    </a>
 </div>
 <div class="container promotions-content clearfix">
 <h2 class="promotions-content-title">{{this.title}}</h2>
     <div class="promotions-content-blurb">
         {{{this.summary_blurb}}}
-        <a
-            href="{{this.summary_url}}"
-            target="{{this.summary_url_target}}"
-            title="{{this.summary_url_title}}"
-        >
-            <span class="text-yellow test">{{{this.more_info_text}}}</span>
-        </a>
+        <span class="text-yellow test">{{{this.more_info_text}}}</span>
     </div>
-    <a
-        href="{{this.summary_url}}"
-        title="{{this.summary_url_title}}"
-        class="promotions-content-links"
-    >
+    <span class="promotions-content-links">
         <svg viewBox="0 0 53.251 99.846">
             <path d="M53.251 91.525l-9.985 8.32L0 49.922 43.101 0l10.15 8.32-36.194 41.602 36.194 41.603z"/>
         </svg>
+    </span>
     </a>
 </div>
 {{/each}}
