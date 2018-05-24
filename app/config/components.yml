@@ -101,3 +101,6 @@ components:
 
   seo:
     class: App\MobileEntry\Component\SEO\SEOComponent
+
+  marketing:
+    class: App\MobileEntry\Component\Marketing\MarketingComponent

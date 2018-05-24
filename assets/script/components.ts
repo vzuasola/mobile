@@ -9,6 +9,7 @@ import {FooterComponent} from "@app/src/Component/Footer/script";
 import {AnnouncementComponent} from "@app/src/Component/Announcement/script";
 import {PushNotificationComponent} from "@app/src/Component/PushNotification/script";
 import {SEOComponent} from "@app/src/Component/SEO/script";
+import {MarketingComponent} from "@app/src/Component/Marketing/script";
 import {SliderComponent} from "@app/src/Component/Main/Home/Slider/script";
 import {ProductsComponent} from "@app/src/Component/Main/Home/Products/script";
 import {NodeComponent} from "@app/src/Component/Node/script";
@@ -31,5 +32,6 @@ ComponentManager.setComponents({
     node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
+    marketing: new MarketingComponent(),
     authenticate: new AuthenticateComponent(),
 });
