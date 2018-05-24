@@ -3,6 +3,7 @@ middlewares:
     slashes: App\Middleware\Request\Slashes
     languages: App\Middleware\Request\Languages
     bootstrap: App\Middleware\Request\Bootstrap
+    legacy_auth: App\Middleware\Request\LegacyAuthentication
     session: App\Middleware\Request\Session
 
   response:

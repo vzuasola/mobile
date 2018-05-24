@@ -28,3 +28,41 @@ $container['phpErrorHandler'] = function ($c) {
         return $controller->exceptionInternal($request, $response, $exception);
     };
 };
+
+$container['event_legacy_login_success'] = function ($c) {
+    return function ($request, $response, $token) use ($c) {
+        $destination = $c->get('uri')->generateFromRequest($request, $request->getUri()->getPath());
+
+        // remove only token from the query parameters to preserve other
+        // queries
+        $params = $request->getQueryParams();
+        unset($params['token']);
+
+        $query = http_build_query($params);
+
+        if (!empty($query)) {
+            $destination = "$destination?$query";
+        }
+
+        return $response->withStatus(302)->withHeader('Location', $destination);
+    };
+};
+
+$container['event_legacy_login_failed'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        $destination = $c->get('uri')->generateFromRequest($request, $request->getUri()->getPath());
+
+        // remove only token from the query parameters to preserve other
+        // queries
+        $params = $request->getQueryParams();
+        unset($params['token']);
+
+        $query = http_build_query($params);
+
+        if (!empty($query)) {
+            $destination = "$destination?$query";
+        }
+
+        return $response->withStatus(302)->withHeader('Location', $destination);
+    };
+};
