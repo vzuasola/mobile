@@ -6,6 +6,29 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class AccessDeniedComponent implements ComponentWidgetInterface
 {
+    private $url;
+    private $request;
+
+    /**
+     *
+     */
+    public static function create($container)
+    {
+        return new static(
+            $container->get('uri'),
+            $container->get('router_request')
+        );
+    }
+
+    /**
+     * Public constructor
+     */
+    public function __construct($url, $request)
+    {
+        $this->url = $url;
+        $this->request = $request;
+    }
+
     /**
      * Defines the template path
      *
@@ -23,6 +46,8 @@ class AccessDeniedComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        return [];
+        $data['is_match'] = trim($this->request->getUri()->getPath(), '/') === 'page-not-found';
+
+        return $data;
     }
 }

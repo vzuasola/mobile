@@ -13,6 +13,7 @@ import {SliderComponent} from "@app/src/Component/Main/Home/Slider/script";
 import {ProductsComponent} from "@app/src/Component/Main/Home/Products/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
+import {AuthenticateComponent} from "@app/src/Component/Main/Authenticate/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -28,4 +29,5 @@ ComponentManager.setComponents({
     home_products: new ProductsComponent(),
     casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
+    authenticate: new AuthenticateComponent(),
 });
