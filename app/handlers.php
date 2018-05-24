@@ -31,7 +31,7 @@ $container['phpErrorHandler'] = function ($c) {
 
 $container['event_legacy_login_success'] = function ($c) {
     return function ($request, $response, $token) use ($c) {
-        $destination = $c->get('uri')->generateFromRequest($request, $request->getUri()->getPath());
+        $destination = $c->get('uri')->generateFromRequest($request, $request->getUri()->getPath(), []);
 
         // remove only token from the query parameters to preserve other
         // queries
@@ -50,7 +50,7 @@ $container['event_legacy_login_success'] = function ($c) {
 
 $container['event_legacy_login_failed'] = function ($c) {
     return function ($request, $response) use ($c) {
-        $destination = $c->get('uri')->generateFromRequest($request, $request->getUri()->getPath());
+        $destination = $c->get('uri')->generateFromRequest($request, $request->getUri()->getPath(), []);
 
         // remove only token from the query parameters to preserve other
         // queries

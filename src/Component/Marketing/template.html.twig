@@ -1,0 +1,5 @@
+{% if marketing %}
+    {% for script in marketing %}
+        {{ script.field_body[0].value |raw }}
+    {% endfor %}
+{% endif %}
