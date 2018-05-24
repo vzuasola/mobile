@@ -21,6 +21,10 @@ routes:
         components:
           main: authenticate
 
+    /logout:
+        method: GET
+        action: App\MobileEntry\Controller\LogoutController:view
+
     /promotions:
         method: GET
         action: App\MobileEntry\Controller\PromotionsController:view

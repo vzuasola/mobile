@@ -146,8 +146,8 @@
 
             &-container {
                 @include translate(-50%, -10%);
-                position: absolute;
-                top: 20%;
+                position: fixed;
+                top: 50%;
                 left: 50%;
                 margin: 0;
             }
