@@ -56,6 +56,7 @@ export class PromotionsComponent implements ComponentInterface {
 
             if (response) {
                 if (typeof response[filter] !== "undefined") {
+                    this.resetError();
                     const template = promotionTemplate({
                         promotions: response[filter],
                     });
@@ -128,6 +129,7 @@ export class PromotionsComponent implements ComponentInterface {
                         this.setActiveFilter(filter);
 
                         if (response && typeof response[filter] !== "undefined") {
+                            this.resetError();
                             const template = promotionTemplate({
                                 promotions: response[filter],
                             });
@@ -232,6 +234,12 @@ export class PromotionsComponent implements ComponentInterface {
     }
 
     private handleError() {
+        utility.addClass(this.element.querySelector(".promotions-body"), "hidden");
         utility.removeClass(this.element.querySelector(".promotions-no-available"), "hidden");
+    }
+
+    private resetError() {
+        utility.removeClass(this.element.querySelector(".promotions-body"), "hidden");
+        utility.addClass(this.element.querySelector(".promotions-no-available"), "hidden");
     }
 }
