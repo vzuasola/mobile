@@ -16,6 +16,8 @@ $settings['settings']['dafaconnect']['enable'] = true;
 
 $settings['settings']['asset']['prefixed'] = false;
 
+$settings['settings']['components']['async'] = false;
+
 if (\App\Kernel::environment() !== 'DEV') {
     $settings['settings']['asset']['prefixed_drupal'] = true;
 }
