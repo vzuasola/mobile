@@ -1,27 +1,48 @@
 <div class="page-title">
-        <h1 class="page-title-text">{{ title }}</h1>
+        <h1 class="page-title-text">{{ node.title.0.value }}</h1>
     <a href="#" onclick="history.back();" class="page-title-back-button">
         {% include '@app/web/images/svg/arrow.svg' %}
     </a>
 </div>
-    <a href="{{ field_banner_link }}" target="{{field_banner_link_target}}">
-        <img src="{{ field_banner_image }}" alt="" class="w-100">
+{% if is_login %}
+    <a href="{{ field_post_banner_link }}" target="{{node.field_post_banner_link_target.0.value }}">
+        <img src="{{ node.field_post_banner_image.0.url }}" alt="" class="w-100">
     </a>
 
 <div class="container page-promotion-inner">
-    {{ field_body|raw }}
+    {{ node.field_post_body.0.value|raw }}
 </div>
-{% if sticky_enabled_1 %}
+{% else %}
+    <a href="{{ field_banner_link }}" target="{{node.field_banner_link_target.0.value }}">
+        <img src="{{ node.field_banner_image.0.url }}" alt="" class="w-100">
+    </a>
+
+<div class="container page-promotion-inner">
+    {{ node.field_body.0.value|raw }}
+</div>
+{% endif %}
+{% set sticky_enabled_half = (node.field_enable_sticky_component2.0.value and node.field_enable_sticky_component2.0.value) %}
+{% if node.field_enable_sticky_component2.0.value %}
 <div class="page-promotion-inner page-promotion-sticky">
-    <a href="{{ field_sticky_url }}" target="{{field_sticky_link_target}}" class="btn btn-medium page-promotion-sticky-{{ sticky_enabled_full ? 'full' : 'half' }}" style="background-color: {{ field_sticky_background_color }}; color: {{ field_sticky_text_color }};">
-    {{ field_sticky_url_text }}
+    <a
+        href="{{ field_sticky_url }}"
+        target="{{ node.field_sticky_link_target.0.value }}"
+        class="btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
+        style="background-color: {{ field_sticky_background_color }}; color: {{ field_sticky_text_color }};"
+    >
+        {{ node.field_sticky_url_text.0.title }}
     </a>
 </div>
 {% endif %}
-{% if sticky_enabled_2 %}
+{% if node.field_enable_sticky_component2.0.value %}
 <div class="page-promotion-inner page-promotion-sticky">
-    <a href="{{ field_sticky_url2 }}" target="{{field_sticky_link_target2}}" class="btn btn-medium page-promotion-sticky-{{ sticky_enabled_full ? 'full' : 'half' }}" style="background-color: {{ field_sticky_background_color2 }}; color: {{ field_sticky_text_color2 }};">
-    {{ field_sticky_url_text2 }}
+    <a
+        href="{{ field_sticky_url2 }}"
+        target="{{ node.field_sticky_link_target2.0.value }}"
+        class="btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
+        style="background-color: {{ field_sticky_background_color2 }}; color: {{ field_sticky_text_color2 }};"
+    >
+        {{ node.field_sticky_url_text2.0.title }}
     </a>
 </div>
 {% endif %}
