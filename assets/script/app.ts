@@ -10,5 +10,7 @@ import "./loader";
 
 ComponentManager.init();
 
+Router.setOption("no-trailing-slashes", true);
 Router.init();
+
 Modal.listen(".modal-trigger");
