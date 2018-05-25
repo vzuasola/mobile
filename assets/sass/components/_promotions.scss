@@ -227,7 +227,6 @@
 
 .promotions-title {
     text-indent: 8rem;
-    text-transform: none;
 }
 
 .page-promotion-inner {
@@ -249,14 +248,17 @@
     display: -ms-flexbox;
     display: flex;
 
-    &-full,
+    &-full {
+        width: 100vw;
+    }
+
     &-half {
-        width: 100%;
-        border-radius: 0;
+        width: 50vw;
     }
 
     a,
     a:hover {
         border-color: transparent;
+        border-radius: 0;
     }
 }
