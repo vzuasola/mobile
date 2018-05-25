@@ -38,13 +38,14 @@ export class AuthenticateComponent implements ComponentInterface {
         const product = utility.getParameterByName("product");
 
         if (product) {
-            const el: HTMLElement = element.querySelector(`[data-product-integration-id="${product}"]`);
+            const el: HTMLElement = element.querySelector(`[data-product-instance-id="${product}"]`);
 
             if (el) {
                 setTimeout(() => {
                     ComponentManager.broadcast("redirectable.set.product", {
                         product,
                         src: el,
+                        onlyLogin: true,
                     });
                 }, 500);
 

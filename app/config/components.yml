@@ -69,9 +69,11 @@ components:
 
   node_blog:
     class: App\MobileEntry\Component\Node\Blog\BlogComponent
+    parent: node
 
   node_promotions:
     class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
+    parent: node
 
   home:
     class: App\MobileEntry\Component\Main\Home\HomeComponent
