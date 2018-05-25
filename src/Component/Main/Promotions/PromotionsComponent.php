@@ -40,7 +40,6 @@ class PromotionsComponent implements ComponentWidgetInterface
         $this->configs = $configs;
         $this->languages = $languages;
         $this->lang = $lang;
-
     }
 
     /**
@@ -60,16 +59,15 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $langs = $this->languages->getLanguages();
         try {
             foreach ($this->languages->getLanguages() as $language) {
                 if ($this->lang == $language['prefix']) {
-                    $lang = $language['id'];
+                    $currentLang = $language['id'];
                     break;
                 }
             }
 
-            $data['promotions_filters'] = $this->views->getViewById('promotion-filter', ['lang' => $lang]);
+            $data['promotions_filters'] = $this->views->getViewById('promotion-filter', ['lang' => $currentLang]);
         } catch (\Exception $e) {
             $data['promotions_filters'] = [];
         }
