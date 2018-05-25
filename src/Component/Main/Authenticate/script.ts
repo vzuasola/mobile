@@ -43,7 +43,7 @@ export class AuthenticateComponent implements ComponentInterface {
             if (el) {
                 setTimeout(() => {
                     ComponentManager.broadcast("redirectable.set.product", {
-                        product,
+                        product: el.getAttribute("data-product-integration-id"),
                         src: el,
                         onlyLogin: true,
                     });
