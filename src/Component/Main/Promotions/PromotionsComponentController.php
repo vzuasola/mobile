@@ -112,7 +112,8 @@ class PromotionsComponentController
     {
         return $promoProperties + [
             'thumbnail'=> isset($promotion['field_thumbnail_image'][0]['url'])
-                ? $this->asset->generateAssetUri($promotion['field_thumbnail_image'][0]['url']) : '',
+                ? $this->asset->generateAssetUri($promotion['field_thumbnail_image'][0]['url'])
+                : '',
             'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
         ];
     }
@@ -121,7 +122,8 @@ class PromotionsComponentController
     {
         return $promoProperties + [
             'thumbnail'=> isset($promotion['field_post_thumbnail_image'][0]['url'])
-                ? $this->asset->generateAssetUri($promotion['field_post_thumbnail_image'][0]['url']) : '',
+                ? $this->asset->generateAssetUri($promotion['field_post_thumbnail_image'][0]['url'])
+                : '',
             'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
         ];
     }
@@ -161,7 +163,7 @@ class PromotionsComponentController
 
     private function getPromoProperties($promotion)
     {
-            $uri = empty($promotion['field_summary_url'][0]['uri'])
+        $uri = empty($promotion['field_summary_url'][0]['uri'])
             ? $promotion['alias'][0]['value']
             : $promotion['field_summary_url'][0]['uri'];
 
