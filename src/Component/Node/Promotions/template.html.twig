@@ -58,7 +58,7 @@
         {% if node.field_field_enable_sticky_post.0.value %}
             <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
                 <a
-                    href="{{ url(node.field_sticky_url_post) }}"
+                    href="{{ url(node.field_sticky_url_post.0.uri) }}"
                     target="{{ node.field_sticky_link_target_post.0.value }}"
                     class="sticky-box btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
                     style="background-color: {{ node.field_sticky_background_post.0.color }}; color: {{ node.field_sticky_text_color_post.0.color }};"
@@ -74,7 +74,7 @@
         {% if node.field_field_enable_sticky_post2.0.value %}
             <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
                 <a
-                    href="{{ url(node.field_sticky_url_post2) }}"
+                    href="{{ url(node.field_sticky_url_post2.0.uri) }}"
                     target="{{ node.field_sticky_link_target_post2.0.value }}"
                     class="sticky-box btn btn-medium {{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}"
                     style="background-color: {{ node.field_sticky_background_post2.0.color }}; color: {{ node.field_sticky_text_color_post2.0.color }};"
@@ -95,7 +95,7 @@
         {% if node.field_field_enable_sticky_pre.0.value %}
             <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
                 <a
-                    href="{{ url(field_sticky_url_pre) }}"
+                    href="{{ url(node.field_sticky_url_pre.0.uri) }}"
                     target="{{ node.field_sticky_link_target_pre.0.value }}"
                     class="sticky-box btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
                     style="background-color: {{ node.field_sticky_background_pre.0.color }}; color: {{ node.field_sticky_text_color_pre.0.color }};"
@@ -110,7 +110,7 @@
         {% if node.field_field_enable_sticky_pre2.0.value %}
             <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
                 <a
-                    href="{{ url(field_sticky_url_pre2) }}"
+                    href="{{ url(node.field_sticky_url_pre2.0.uri) }}"
                     target="{{ node.field_sticky_link_target_pre2.0.value }}"
                     class="sticky-box btn btn-medium {{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}"
                     style="background-color: {{ node.field_sticky_background_pre2.0.color }}; color: {{ node.field_sticky_text_color_pre2.0.color }};"
