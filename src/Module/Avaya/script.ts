@@ -125,8 +125,8 @@ export class AvayaModule implements ModuleInterface {
         }
 
         // Check if the link should be changed to avaya link
-        if (target.href !== undefined &&
-            target.href &&
+        if (typeof target.href !== "undefined" &&
+            typeof target.indexOf !== "undefined" &&
             target.href.indexOf("linkto:avaya") !== -1
         ) {
             event.preventDefault();

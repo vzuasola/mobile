@@ -31,6 +31,28 @@ class CookieService
     private $logger;
 
     /**
+     * Container resolver
+     */
+    public static function create($container)
+    {
+        $baseUrl = $container->get('request')->getUri()->getBaseUrl();
+        $hostname = $container->get('parameters')['appsvc.origin.prd'];
+
+        if (preg_match('/https?:\/\/(?<env>[a-z0-9]+)-mobile/', $baseUrl, $matches)) {
+            $hostname = $c->get('parameters')['appsvc.origin.' . $matches['env']];
+        }
+
+        $client = new Client([
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+            'base_uri' => "$hostname:50982",
+        ]);
+
+        return new static($client, $container->get('logger'));
+    }
+
+    /**
      * Public constructor.
      *
      * @param Client $client A Guzzle client

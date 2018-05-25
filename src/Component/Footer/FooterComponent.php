@@ -26,7 +26,7 @@ class FooterComponent implements ComponentWidgetInterface
         return new static(
             $container->get('menu_fetcher'),
             $container->get('views_fetcher'),
-            $container->get('iddomain_service')
+            $container->get('id_domain')
         );
     }
 
@@ -73,12 +73,12 @@ class FooterComponent implements ComponentWidgetInterface
         }
 
         try {
-            $data['footer_menu'] =
-                $this->cleanFooterMenu($this->menus->getMultilingualMenu('mobile-footer'));
+            $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
         }
 
+        $this->cleanFooterMenu($data['footer_menu']);
         $this->orderSponsors($data['sponsors']);
 
         $data['copyright'] = 'Copyright';
@@ -110,16 +110,16 @@ class FooterComponent implements ComponentWidgetInterface
         }
     }
 
-    private function cleanFooterMenu($footerMenu)
+    private function cleanFooterMenu(&$footerMenu)
     {
         if ($footerMenu) {
             foreach ($footerMenu as $key => $link) {
-                if ($this->idDomain->checkIdDomain() &&
-                    strpos($link['attributes']['class'], 'language-trigger') !== false) {
+                if ($this->idDomain->isLangSelectorHidden() &&
+                    strpos($link['attributes']['class'], 'language-trigger') !== false
+                ) {
                     unset($footerMenu[$key]);
                 }
             }
         }
-        return $footerMenu;
     }
 }
