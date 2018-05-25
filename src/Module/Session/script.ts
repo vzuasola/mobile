@@ -8,8 +8,10 @@ export class SessionModule implements ModuleInterface {
     private session: Session;
     private isSessionStarted: boolean = false;
 
-    onLoad(attachments: {authenticated: boolean}) {
-        this.session = new Session(300);
+    onLoad(attachments: {authenticated: boolean, timeout: number}) {
+        const timeout = attachments.timeout ? attachments.timeout : 15;
+
+        this.session = new Session(timeout * 60);
 
         if (attachments.authenticated) {
             this.enableSession();

@@ -18,6 +18,8 @@ export class Session {
     }
 
     init() {
+        console.log(`Starting session count with ${this.timeout} seconds`);
+
         this.counter.start();
         this.attachEvents();
     }
