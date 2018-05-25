@@ -106,10 +106,6 @@ class PromotionsComponentController
 
     private function getPreLoginPromotions($promoProperties, $promotion)
     {
-        $uri = empty($promotion['field_summary_url'][0]['uri'])
-            ? $promotion['path'][0]['alias']
-            : $promotion['field_summary_url'][0]['uri'];
-
         return $promoProperties + [
             'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'] ?? '#',
             'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
@@ -118,10 +114,6 @@ class PromotionsComponentController
 
     private function getPostLoginPromotions($promoProperties, $promotion)
     {
-        $uri = empty($promotion['field_post_summary_url'][0]['uri'])
-            ? $promotion['path'][0]['alias']
-            : $promotion['field_post_summary_url'][0]['uri'];
-
         return $promoProperties + [
             'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'] ?? '#',
             'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
@@ -163,6 +155,11 @@ class PromotionsComponentController
 
     private function getPromoProperties($promotion)
     {
+
+        $uri = empty($promotion['field_summary_url'][0]['uri'])
+            ? $promotion['path'][0]['alias']
+            : $promotion['field_summary_url'][0]['uri'];
+
         $ribbonEnable = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
         $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';
         $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
@@ -177,7 +174,7 @@ class PromotionsComponentController
             'ribbon_text_color' => $ribbonTextColor,
             'more_info_text' => $this->getPromoConfigs(),
             'summary_url' => isset($promotion['field_summary_url'][0]['uri'])
-                ? $this->url->generateUri($promotion['field_summary_url'][0]['uri'], []) : ['uri' => '#'],
+                ? $this->url->generateUri($uri, []) : ['uri' => '#'],
             'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
             'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
             'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
