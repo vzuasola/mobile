@@ -28,7 +28,7 @@ class PromotionsComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $url, $request)
+    public function __construct($playerSession, $url)
     {
         $this->playerSession = $playerSession;
         $this->url = $url;
