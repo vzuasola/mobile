@@ -35,7 +35,7 @@ class NodeController extends BaseController
     private function checkAccess($node, $request, $response)
     {
         try {
-            $state = (integer)$this->playerSession->isLogin();
+            $state = (integer) $this->get('player_session')->isLogin();
         } catch (\Exception $e) {
             $state = 0;
         }
