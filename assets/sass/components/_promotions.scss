@@ -123,6 +123,13 @@
     }
 }
 
+.promotions-no-available {
+    p {
+        text-align: center;
+        padding: 2rem 0;
+    }
+}
+
 .dropdown-menu {
     position: relative;
     order: 3;
@@ -171,34 +178,27 @@
 
     ul {
         position: absolute;
-        top: 98%;
         right: 0;
-        margin: 0;
         width: 100vw;
         padding-left: 0;
         list-style-type: none;
         background: #2b2829;
         z-index: 1;
 
-        @include media(">=tablet") {
-            width: 99vw;
-        }
-
         li {
-            text-align: left;
-
             a {
                 position: relative;
                 display: block;
+                text-align: left;
                 background: #333031;
-                margin: 1rem 1.2rem;
+                margin: 1rem auto;
                 padding: 0.6rem 1rem;
                 border: .1rem solid #5f5e5e;
                 border-radius: .7rem;
                 color: #d3d3d3;
                 cursor: pointer;
                 font-size: 1.4rem;
-                width: 95%;
+                width: 95vw;
             }
 
             // active/hover state
