@@ -14,6 +14,10 @@ class PromotionsComponent implements ComponentWidgetInterface
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
     private $config;
+
+    private $languages;
+
+    private $lang;
     /**
      *
      */
@@ -21,17 +25,22 @@ class PromotionsComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('views_fetcher'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('language_fetcher'),
+            $container->get('lang')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($views, $configs)
+    public function __construct($views, $configs, $languages, $lang)
     {
         $this->views = $views;
         $this->configs = $configs;
+        $this->languages = $languages;
+        $this->lang = $lang;
+
     }
 
     /**
@@ -51,8 +60,16 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
+        $langs = $this->languages->getLanguages();
         try {
-            $data['promotions_filters'] = $this->views->getViewById('promotion-filter');
+            foreach ($this->languages->getLanguages() as $language) {
+                if ($this->lang == $language['prefix']) {
+                    $lang = $language['id'];
+                    break;
+                }
+            }
+
+            $data['promotions_filters'] = $this->views->getViewById('promotion-filter', ['lang' => $lang]);
         } catch (\Exception $e) {
             $data['promotions_filters'] = [];
         }
