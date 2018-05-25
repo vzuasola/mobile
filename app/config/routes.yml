@@ -19,7 +19,7 @@ routes:
         method: GET
         action: App\MobileEntry\Controller\HomeController:view
         components:
-          main: authenticate
+          main: home
 
     /logout:
         method: GET

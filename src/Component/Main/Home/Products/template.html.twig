@@ -10,6 +10,7 @@
                 target="{{ product.field_product_lobby_target[0].value }}"
 
                 {% if product.field_product_integration_id %}
+                    data-product-instance-id="{{ product.field_product_integration_id[0].field_product_instance_id[0].value }}"
                     data-product-integration-id="{{ product.field_product_integration_id[0].field_product_integration_id[0].value }}"
                     data-product-login-via="{{ product.field_product_integration_id[0].field_product_login_via[0].value }}"
                     data-product-reg-via="{{ product.field_product_integration_id[0].field_registration_url[0].value }}"
@@ -24,7 +25,10 @@
 
                 class="icon-thumbnail-link {{ product.field_product_lobby_class[0].value }}"
             >
-                {% include '@app/web/images/svg/products/'~product.field_product_lobby_id[0].value~'.svg' ignore missing %}
+
+                <svg viewBox="0 0 20 20">
+                    <use xlink:href="#{{ product.field_product_lobby_id[0].value }}" />
+                </svg>
 
                 <span class="icon-thumbnail-label">{{ product.field_product_lobby_title[0].value }}</span>
 

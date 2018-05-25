@@ -68,6 +68,11 @@ class PromotionsComponent implements ComponentWidgetInterface
             }
 
             $data['promotions_filters'] = $this->views->getViewById('promotion-filter', ['lang' => $currentLang]);
+
+            $filterFeatured = $this->views->getViewById('promotion-filter-featured', ['lang' => $currentLang]);
+            $featuredWeight = $filterFeatured[0]['weight'][0]['value'];
+
+            array_splice($data['promotions_filters'], $featuredWeight - 1, 0, $filterFeatured);
         } catch (\Exception $e) {
             $data['promotions_filters'] = [];
         }

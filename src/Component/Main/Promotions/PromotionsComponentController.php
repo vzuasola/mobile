@@ -106,6 +106,9 @@ class PromotionsComponentController
 
     private function getPreLoginPromotions($promoProperties, $promotion)
     {
+        $uri = empty($promotion['field_summary_url'][0]['uri'])
+            ? $promotion['path'][0]['alias']
+            : $promotion['field_summary_url'][0]['uri'];
 
         return $promoProperties + [
             'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'] ?? '#',
@@ -115,6 +118,10 @@ class PromotionsComponentController
 
     private function getPostLoginPromotions($promoProperties, $promotion)
     {
+        $uri = empty($promotion['field_post_summary_url'][0]['uri'])
+            ? $promotion['path'][0]['alias']
+            : $promotion['field_post_summary_url'][0]['uri'];
+
         return $promoProperties + [
             'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'] ?? '#',
             'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
@@ -129,14 +136,16 @@ class PromotionsComponentController
 
         foreach ($promotions as $promotion) {
             $filterId = $category ?? $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'];
-            $availability = count($promotion['field_promo_availability']) > 1 ?
-                $promotion['field_promo_availability'] :
-                $promotion['field_promo_availability'][0]['value'];
+
+            $availability = count($promotion['field_promo_availability']) > 1
+                ? $promotion['field_promo_availability']
+                : $promotion['field_promo_availability'][0]['value'];
 
             $promoProperties = $this->getPromoProperties($promotion);
 
             if ($isLogin && ($availability == '1' || is_array($availability))) {
                 $isCasinoOnly = $promotion['field_casino_gold_only'][0]['value'] ?? false;
+
                 if ($isCasinoOnly && !$isProvisioned) {
                     continue;
                 }

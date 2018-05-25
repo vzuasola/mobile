@@ -22,6 +22,8 @@ export abstract class Redirectable implements ModuleInterface {
     onLoad(attachments: {authenticated: boolean}) {
         this.isLogin = attachments.authenticated;
 
+        // whenever an element tagged as an integration has been clicked, it will do
+        // the integration specific behavior for that product
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.find(src, (element) => {
                 return element.getAttribute("data-product-integration-id") === this.code;
@@ -52,11 +54,20 @@ export abstract class Redirectable implements ModuleInterface {
         // programatically, used by the direct access login URL with
         // login modal
         ComponentManager.subscribe("redirectable.set.product", (event, src, data) => {
-            if (data && data.src && data.product === this.code) {
-                console.log(data);
+            if (data &&
+                data.src &&
+                data.product === this.code
+            ) {
                 if (!this.isLogin) {
-                    if (this.isLoginOnly) {
+                    let onlyLogin = this.isLoginOnly;
+
+                    if (typeof data.onlyLogin !== "undefined") {
+                        onlyLogin = data.onlyLogin;
+                    }
+
+                    if (onlyLogin) {
                         this.element = data.src;
+
                         ComponentManager.broadcast("header.login", {
                             src: data.src,
                             productVia: data.src.getAttribute("data-product-login-via"),

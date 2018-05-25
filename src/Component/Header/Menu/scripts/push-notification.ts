@@ -28,7 +28,7 @@ export class PushNotification {
 
         utility.listen(src, "click", (e) => {
             e.preventDefault();
-            ComponentManager.broadcast("pushnx.open.modal");
+            ComponentManager.broadcast("pushnx.modal.open");
 
             if (this.count <= 0) {
                 this.hideIndicator();
@@ -42,7 +42,7 @@ export class PushNotification {
     private listenPushnxCount() {
         ComponentManager.subscribe("pushnx.count.message", (event) => {
             if (!event.customData.count) {
-                ComponentManager.broadcast("pushnx.close.modal");
+                ComponentManager.broadcast("pushnx.modal.close");
             }
 
             this.count = event.customData.count;
@@ -56,8 +56,8 @@ export class PushNotification {
     private renderMessageCounter( ctr) {
         const notifCount = this.element.querySelector("#notification-count");
         if (notifCount && ctr > 0) {
-            utility.removeClass(notifCount, "hidden");
             notifCount.innerHTML = ctr;
+            utility.removeClass(notifCount, "hidden");
         } else {
             this.hideIndicator();
             utility.addClass(notifCount, "hidden");

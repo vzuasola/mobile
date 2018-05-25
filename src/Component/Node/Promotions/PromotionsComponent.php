@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\Node\Promotions;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
+use Slim\Exception\NotFoundException;
 
 class PromotionsComponent implements ComponentWidgetInterface
 {
@@ -50,42 +51,6 @@ class PromotionsComponent implements ComponentWidgetInterface
             $data['node'] = $options['node'];
         } catch (\Exception $e) {
             $data['node'] = [];
-        }
-
-        try {
-            $data['field_sticky_url_pre'] = $options['node']['field_sticky_url_pre'][0]['uri'];
-        } catch (\Exception $e) {
-            $data['field_sticky_url_pre'] = [];
-        }
-
-        try {
-            $data['field_sticky_url_pre2'] = $options['node']['field_sticky_url_pre2'][0]['uri'];
-        } catch (\Exception $e) {
-            $data['field_sticky_url_pre2'] = [];
-        }
-
-        try {
-            $data['field_sticky_url_post'] = $options['node']['field_sticky_url_post'][0]['uri'];
-        } catch (\Exception $e) {
-            $data['field_sticky_url_post'] = [];
-        }
-
-        try {
-            $data['field_sticky_url_post2'] = $options['node']['field_sticky_url_post2'][0]['uri'];
-        } catch (\Exception $e) {
-            $data['field_sticky_url_post2'] = [];
-        }
-
-        try {
-            $data['field_post_banner_link'] = $options['node']['field_post_banner_link'][0]['uri'];
-        } catch (\Exception $e) {
-            $data['field_post_banner_link'] = [];
-        }
-
-        try {
-            $data['field_banner_link'] = $options['node']['field_banner_link'][0]['uri'];
-        } catch (\Exception $e) {
-            $data['field_banner_link'] = [];
         }
 
         return $data;

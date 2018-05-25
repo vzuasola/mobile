@@ -9,13 +9,13 @@ import {FooterComponent} from "@app/src/Component/Footer/script";
 import {AnnouncementComponent} from "@app/src/Component/Announcement/script";
 import {PushNotificationComponent} from "@app/src/Component/PushNotification/script";
 import {SEOComponent} from "@app/src/Component/SEO/script";
+import {HomeComponent} from "@app/src/Component/Main/Home/script";
 import {MarketingComponent} from "@app/src/Component/Marketing/script";
 import {SliderComponent} from "@app/src/Component/Main/Home/Slider/script";
 import {ProductsComponent} from "@app/src/Component/Main/Home/Products/script";
 import {NodeComponent} from "@app/src/Component/Node/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
-import {AuthenticateComponent} from "@app/src/Component/Main/Authenticate/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -27,11 +27,11 @@ ComponentManager.setComponents({
     announcement: new AnnouncementComponent(),
     push_notification: new PushNotificationComponent(),
     seo: new SEOComponent(),
+    home: new HomeComponent(),
     home_slider: new SliderComponent(),
     home_products: new ProductsComponent(),
     node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
     marketing: new MarketingComponent(),
-    authenticate: new AuthenticateComponent(),
 });

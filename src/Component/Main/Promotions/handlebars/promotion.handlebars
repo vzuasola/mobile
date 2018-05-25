@@ -5,9 +5,14 @@
         target="{{this.summary_url_target}}"
         title="{{this.summary_url_title}}"
         class="promotions-body-banner-link"
+
+        data-router="true"
+        data-router-refresh="main"
     >
     {{#equals this.category "featured"}}
-        {{> promotion-product-tag.handlebars product=this.product}}
+    <svg viewBox="0 0 20 20">
+        <use xlink:href="#product-{{product}}" />
+    </svg>
     {{else}}
         {{#if this.ribbon_enable}}
             <span
@@ -20,8 +25,9 @@
     {{/equals}}
     <img src="{{this.thumbnail}}" class="w-100">
 </div>
+
 <div class="container promotions-content clearfix">
-<h2 class="promotions-content-title">{{this.title}}</h2>
+    <h2 class="promotions-content-title">{{this.title}}</h2>
     <div class="promotions-content-blurb">
         {{{this.summary_blurb}}}
         <span class="text-yellow">{{{this.more_info_text}}}</span>
