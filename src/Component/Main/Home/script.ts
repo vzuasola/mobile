@@ -1,12 +1,14 @@
 import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
+
 import {Loader} from "@app/assets/script/components/loader";
 
 /**
  *
  */
-export class AuthenticateComponent implements ComponentInterface {
+export class HomeComponent implements ComponentInterface {
     private loader: Loader;
     private isLogin: boolean = false;
 
@@ -35,24 +37,28 @@ export class AuthenticateComponent implements ComponentInterface {
     }
 
     private doLoginProcess(element) {
-        const product = utility.getParameterByName("product");
+        if (Router.route() === "/login" &&
+            !this.isLogin
+        ) {
+            const product = utility.getParameterByName("product");
 
-        if (product) {
-            const el: HTMLElement = element.querySelector(`[data-product-instance-id="${product}"]`);
+            if (product) {
+                const el: HTMLElement = element.querySelector(`[data-product-instance-id="${product}"]`);
 
-            if (el) {
-                setTimeout(() => {
-                    ComponentManager.broadcast("redirectable.set.product", {
-                        product: el.getAttribute("data-product-integration-id"),
-                        src: el,
-                        onlyLogin: true,
-                    });
-                }, 500);
+                if (el) {
+                    setTimeout(() => {
+                        ComponentManager.broadcast("redirectable.set.product", {
+                            product: el.getAttribute("data-product-integration-id"),
+                            src: el,
+                            onlyLogin: true,
+                        });
+                    }, 500);
 
-                return;
+                    return;
+                }
             }
-        }
 
-        ComponentManager.broadcast("header.login");
+            ComponentManager.broadcast("header.login");
+        }
     }
 }
