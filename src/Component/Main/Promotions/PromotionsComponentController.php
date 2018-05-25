@@ -106,13 +106,13 @@ class PromotionsComponentController
 
     private function getPreLoginPromotions($promoProperties, $promotion)
     {
-        $url = empty($promotion['field_summary_url'][0]['uri'])
+        $uri = empty($promotion['field_summary_url'][0]['uri'])
             ? $promotion['path'][0]['alias']
             : $promotion['field_summary_url'][0]['uri'];
 
         return $promoProperties + [
             'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'] ?? '#',
-            'summary_url' => $this->url->generateUri($url, []),
+            'summary_url' => $this->url->generateUri($uri, []),
             'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
             'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
             'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
@@ -122,13 +122,13 @@ class PromotionsComponentController
 
     private function getPostLoginPromotions($promoProperties, $promotion)
     {
-        $url = empty($promotion['field_post_summary_url'][0]['uri'])
+        $uri = empty($promotion['field_post_summary_url'][0]['uri'])
             ? $promotion['path'][0]['alias']
             : $promotion['field_post_summary_url'][0]['uri'];
 
         return $promoProperties + [
             'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'] ?? '#',
-            'summary_url' => $this->url->generateUri($url, []),
+            'summary_url' => $this->url->generateUri($uri, []),
             'summary_url_title' => $promotion['field_post_summary_url'][0]['title'] ?? ['title' => ''],
             'summary_url_target'=> $promotion['field_post_summary_url_target'][0]['value'] ?? '',
             'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
