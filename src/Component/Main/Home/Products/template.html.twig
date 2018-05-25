@@ -25,7 +25,10 @@
 
                 class="icon-thumbnail-link {{ product.field_product_lobby_class[0].value }}"
             >
-                {% include '@app/web/images/svg/products/'~product.field_product_lobby_id[0].value~'.svg' ignore missing %}
+
+                <svg viewBox="0 0 20 20">
+                    <use href="#{{ product.field_product_lobby_id[0].value }}" />
+                </svg>
 
                 <span class="icon-thumbnail-label">{{ product.field_product_lobby_title[0].value }}</span>
 

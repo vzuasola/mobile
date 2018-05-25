@@ -10,7 +10,9 @@
         data-router-refresh="main"
     >
     {{#equals this.category "featured"}}
-        {{> promotion-product-tag.handlebars product=this.product}}
+    <svg viewBox="0 0 20 20">
+        <use href="#product-{{product}}" />
+    </svg>
     {{else}}
         {{#if this.ribbon_enable}}
             <span
