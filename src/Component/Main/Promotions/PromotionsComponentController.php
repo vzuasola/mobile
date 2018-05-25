@@ -31,6 +31,8 @@ class PromotionsComponentController
 
     private $url;
 
+    private $asset;
+
     /**
      *
      */
@@ -42,14 +44,15 @@ class PromotionsComponentController
             $container->get('rest'),
             $container->get('config_fetcher'),
             $container->get('payment_account_fetcher'),
-            $container->get('uri')
+            $container->get('uri'),
+            $container->get('asset')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $rest, $configs, $paymentAccount, $url)
+    public function __construct($playerSession, $views, $rest, $configs, $paymentAccount, $url, $asset)
     {
         $this->playerSession = $playerSession;
         $this->views = $views;
@@ -57,6 +60,7 @@ class PromotionsComponentController
         $this->configs = $configs;
         $this->paymentAccount = $paymentAccount;
         $this->url = $url;
+        $this->asset = $asset;
     }
 
     public function promotions($request, $response)
@@ -106,33 +110,19 @@ class PromotionsComponentController
 
     private function getPreLoginPromotions($promoProperties, $promotion)
     {
-        $uri = empty($promotion['field_summary_url'][0]['uri'])
-            ? $promotion['path'][0]['alias']
-            : $promotion['field_summary_url'][0]['uri'];
-
         return $promoProperties + [
-            'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'] ?? '#',
-            'summary_url' => $this->url->generateUri($uri, []),
-            'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
-            'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
+            'thumbnail'=> isset($promotion['field_thumbnail_image'][0]['url'])
+                ? $this->asset->generateAssetUri($promotion['field_thumbnail_image'][0]['url']) : '',
             'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
-            'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
         ];
     }
 
     private function getPostLoginPromotions($promoProperties, $promotion)
     {
-        $uri = empty($promotion['field_post_summary_url'][0]['uri'])
-            ? $promotion['path'][0]['alias']
-            : $promotion['field_post_summary_url'][0]['uri'];
-
         return $promoProperties + [
-            'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'] ?? '#',
-            'summary_url' => $this->url->generateUri($uri, []),
-            'summary_url_title' => $promotion['field_post_summary_url'][0]['title'] ?? ['title' => ''],
-            'summary_url_target'=> $promotion['field_post_summary_url_target'][0]['value'] ?? '',
+            'thumbnail'=> isset($promotion['field_post_thumbnail_image'][0]['url'])
+                ? $this->asset->generateAssetUri($promotion['field_post_thumbnail_image'][0]['url']) : '',
             'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
-            'hide_countdown' => $promotion['field_post_hide_countdown'][0]['value'] ?? true,
         ];
     }
 
@@ -149,20 +139,7 @@ class PromotionsComponentController
                 ? $promotion['field_promo_availability']
                 : $promotion['field_promo_availability'][0]['value'];
 
-            $ribbonEnable = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
-            $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';
-            $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
-            $ribbonTextColor = $promotion['field_ribbon_text_color'][0]['color'] ?? '';
-
-            $promoProperties = [
-                'title' => $promotion['title'][0]['value'],
-                'product' => $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'],
-                'ribbon_enable' => $ribbonEnable,
-                'ribbon_label' =>  $ribbonLabel,
-                'ribbon_bg_color' => $ribbonColor,
-                'ribbon_text_color' => $ribbonTextColor,
-                'more_info_text' => $this->getPromoConfigs(),
-            ];
+            $promoProperties = $this->getPromoProperties($promotion);
 
             if ($isLogin && ($availability == '1' || is_array($availability))) {
                 $isCasinoOnly = $promotion['field_casino_gold_only'][0]['value'] ?? false;
@@ -180,6 +157,32 @@ class PromotionsComponentController
         }
 
         return $promoPerProduct;
+    }
+
+    private function getPromoProperties($promotion)
+    {
+            $uri = empty($promotion['field_summary_url'][0]['uri'])
+            ? $promotion['alias'][0]['value']
+            : $promotion['field_summary_url'][0]['uri'];
+
+        $ribbonEnable = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
+        $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';
+        $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
+        $ribbonTextColor = $promotion['field_ribbon_text_color'][0]['color'] ?? '';
+
+        return [
+            'title' => $promotion['title'][0]['value'],
+            'product' => $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'],
+            'ribbon_enable' => $ribbonEnable,
+            'ribbon_label' =>  $ribbonLabel,
+            'ribbon_bg_color' => $ribbonColor,
+            'ribbon_text_color' => $ribbonTextColor,
+            'more_info_text' => $this->getPromoConfigs(),
+            'summary_url' => $this->url->generateUri($uri, []),
+            'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
+            'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
+            'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
+        ];
     }
 
     private function getFeatured()
