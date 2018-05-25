@@ -16,6 +16,8 @@ class FooterComponent implements ComponentWidgetInterface
      */
     private $sponsors;
 
+    private $idDomain;
+
     /**
      *
      */
@@ -23,17 +25,19 @@ class FooterComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('menu_fetcher'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('iddomain_service')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $sponsors)
+    public function __construct($menus, $sponsors, $idDomain)
     {
         $this->menus = $menus;
         $this->sponsors = $sponsors;
+        $this->idDomain = $idDomain;
     }
 
 
@@ -69,7 +73,8 @@ class FooterComponent implements ComponentWidgetInterface
         }
 
         try {
-            $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
+            $data['footer_menu'] =
+                $this->cleanFooterMenu($this->menus->getMultilingualMenu('mobile-footer'));
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
         }
@@ -103,5 +108,18 @@ class FooterComponent implements ComponentWidgetInterface
                 $count = 1;
             }
         }
+    }
+
+    private function cleanFooterMenu($footerMenu)
+    {
+        if ($footerMenu) {
+            foreach ($footerMenu as $key => $link) {
+                if ($this->idDomain->checkIdDomain() &&
+                    strpos($link['attributes']['class'], 'language-trigger') !== false) {
+                    unset($footerMenu[$key]);
+                }
+            }
+        }
+        return $footerMenu;
     }
 }
