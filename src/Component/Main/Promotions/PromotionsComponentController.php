@@ -161,9 +161,8 @@ class PromotionsComponentController
 
     private function getPromoProperties($promotion)
     {
-
-        $uri = empty($promotion['field_summary_url'][0]['uri'])
-            ? $promotion['path'][0]['alias']
+            $uri = empty($promotion['field_summary_url'][0]['uri'])
+            ? $promotion['alias'][0]['value']
             : $promotion['field_summary_url'][0]['uri'];
 
         $ribbonEnable = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
