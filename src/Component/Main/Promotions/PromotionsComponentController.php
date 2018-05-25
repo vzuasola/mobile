@@ -109,12 +109,7 @@ class PromotionsComponentController
 
         return $promoProperties + [
             'thumbnail'=> $promotion['field_thumbnail_image'][0]['url'] ?? '#',
-            'summary_url' => isset($promotion['field_summary_url'][0]['uri'])
-                ? $this->url->generateUri($promotion['field_summary_url'][0]['uri'], []) : ['uri' => '#'],
-            'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
-            'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
             'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
-            'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
         ];
     }
 
@@ -122,12 +117,7 @@ class PromotionsComponentController
     {
         return $promoProperties + [
             'thumbnail'=> $promotion['field_post_thumbnail_image'][0]['url'] ?? '#',
-            'summary_url' => isset($promotion['field_post_summary_url'][0]['uri'])
-                ? $this->url->generateUri($promotion['field_post_summary_url'][0]['uri'], []) : ['uri' => '#'],
-            'summary_url_title' => $promotion['field_post_summary_url'][0]['title'] ?? ['title' => ''],
-            'summary_url_target'=> $promotion['field_post_summary_url_target'][0]['value'] ?? '',
             'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
-            'hide_countdown' => $promotion['field_post_hide_countdown'][0]['value'] ?? true,
         ];
     }
 
@@ -156,6 +146,11 @@ class PromotionsComponentController
                 'ribbon_bg_color' => $ribbonColor,
                 'ribbon_text_color' => $ribbonTextColor,
                 'more_info_text' => $this->getPromoConfigs(),
+                'summary_url' => isset($promotion['field_summary_url'][0]['uri'])
+                    ? $this->url->generateUri($promotion['field_summary_url'][0]['uri'], []) : ['uri' => '#'],
+                'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
+                'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
+                'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
             ];
 
             if ($isLogin && ($availability == '1' || is_array($availability))) {
