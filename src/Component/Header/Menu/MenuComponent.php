@@ -31,6 +31,8 @@ class MenuComponent implements ComponentWidgetInterface
      */
     private $paymentAccount;
 
+    private $idDomain;
+
     /**
      *
      */
@@ -41,20 +43,22 @@ class MenuComponent implements ComponentWidgetInterface
             $container->get('views_fetcher'),
             $container->get('menu_fetcher'),
             $container->get('config_fetcher'),
-            $container->get('payment_account_fetcher')
+            $container->get('payment_account_fetcher'),
+            $container->get('iddomain_service')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $menus, $config, $paymentAccount)
+    public function __construct($playerSession, $views, $menus, $config, $paymentAccount, $idDomain)
     {
         $this->playerSession = $playerSession;
         $this->views = $views;
         $this->menus = $menus;
         $this->config = $config;
         $this->paymentAccount = $paymentAccount;
+        $this->idDomain = $idDomain;
     }
 
     /**
@@ -83,7 +87,7 @@ class MenuComponent implements ComponentWidgetInterface
         }
 
         try {
-            $data['quicklinks'] = $this->menus->getMultilingualMenu('quicklinks');
+            $data['quicklinks'] = $this->cleanQuickLinks($this->menus->getMultilingualMenu('quicklinks'));
         } catch (\Exception $e) {
             $data['quicklinks'] = [];
         }
@@ -154,5 +158,18 @@ class MenuComponent implements ComponentWidgetInterface
         }
 
         return $result;
+    }
+
+    private function cleanQuickLinks($quicklinks)
+    {
+        if ($quicklinks) {
+            foreach ($quicklinks as $key => $link) {
+                if ($this->idDomain->checkIdDomain() &&
+                    strpos($link['attributes']['class'], 'language-trigger') !== false) {
+                    unset($quicklinks[$key]);
+                }
+            }
+        }
+        return $quicklinks;
     }
 }

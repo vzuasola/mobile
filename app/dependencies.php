@@ -24,3 +24,8 @@ $container['cookie_service'] = function ($c) {
         $c->get('logger')
     );
 };
+
+
+$container['iddomain_service'] = function ($c) {
+    return \App\MobileEntry\Services\IDDomainService\IDDomainService::create($c);
+};
