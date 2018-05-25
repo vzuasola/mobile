@@ -159,7 +159,7 @@ export class PushNotification {
      * Listen close modal
      */
     private listenCloseModal() {
-        ComponentManager.subscribe("modal.close", (event, src, data) => {
+        ComponentManager.subscribe("pushnx.modal.close", (event, src, data) => {
             this.closeModal();
         });
 
@@ -176,10 +176,8 @@ export class PushNotification {
      * Listen open modal
      */
     private listenOpenModal() {
-        ComponentManager.subscribe("click", (event, src) => {
-            if (utility.hasClass(src, "notification-trigger", true)) {
-                this.openModal();
-            }
+        ComponentManager.subscribe("pushnx.modal.open", (event, src) => {
+            this.openModal();
         });
     }
 
@@ -231,9 +229,11 @@ export class PushNotification {
      */
     private unbindEvents() {
         if (this.pushnx) {
-            ComponentManager.unsubscribe("pushnx.count.message");
             ComponentManager.unsubscribe("pushnx.connected");
             ComponentManager.unsubscribe("pushnx.message.ready");
+            ComponentManager.unsubscribe("pushnx.count.message");
+            ComponentManager.unsubscribe("pushnx.modal.open");
+            ComponentManager.unsubscribe("pushnx.modal.close");
             this.pushnx.unbindEvents();
         }
     }
