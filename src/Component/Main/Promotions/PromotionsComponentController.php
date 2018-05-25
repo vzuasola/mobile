@@ -133,25 +133,7 @@ class PromotionsComponentController
                 $promotion['field_promo_availability'] :
                 $promotion['field_promo_availability'][0]['value'];
 
-            $ribbonEnable = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
-            $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';
-            $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
-            $ribbonTextColor = $promotion['field_ribbon_text_color'][0]['color'] ?? '';
-
-            $promoProperties = [
-                'title' => $promotion['title'][0]['value'],
-                'product' => $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'],
-                'ribbon_enable' => $ribbonEnable,
-                'ribbon_label' =>  $ribbonLabel,
-                'ribbon_bg_color' => $ribbonColor,
-                'ribbon_text_color' => $ribbonTextColor,
-                'more_info_text' => $this->getPromoConfigs(),
-                'summary_url' => isset($promotion['field_summary_url'][0]['uri'])
-                    ? $this->url->generateUri($promotion['field_summary_url'][0]['uri'], []) : ['uri' => '#'],
-                'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
-                'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
-                'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
-            ];
+            $promoProperties = $this->getPromoProperties($promotion);
 
             if ($isLogin && ($availability == '1' || is_array($availability))) {
                 $isCasinoOnly = $promotion['field_casino_gold_only'][0]['value'] ?? false;
@@ -168,6 +150,31 @@ class PromotionsComponentController
         }
 
         return $promoPerProduct;
+    }
+
+    private function getPromoProperties($promotion)
+    {
+        $ribbonEnable = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
+        $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';
+        $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
+        $ribbonTextColor = $promotion['field_ribbon_text_color'][0]['color'] ?? '';
+
+        $promoProperties = [
+            'title' => $promotion['title'][0]['value'],
+            'product' => $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'],
+            'ribbon_enable' => $ribbonEnable,
+            'ribbon_label' =>  $ribbonLabel,
+            'ribbon_bg_color' => $ribbonColor,
+            'ribbon_text_color' => $ribbonTextColor,
+            'more_info_text' => $this->getPromoConfigs(),
+            'summary_url' => isset($promotion['field_summary_url'][0]['uri'])
+                ? $this->url->generateUri($promotion['field_summary_url'][0]['uri'], []) : ['uri' => '#'],
+            'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
+            'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
+            'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
+        ];
+
+        return $promoProperties;
     }
 
     private function getFeatured()
