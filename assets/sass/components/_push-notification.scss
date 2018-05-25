@@ -96,32 +96,27 @@
             margin-bottom: 2.6rem;
 
             svg {
-                    width: 3.5rem;
-                    height: 3.5rem;
-                    position: absolute;
-                    top: -0.6rem;
-                    left: 1.2rem;
-                    outline: none;
-                    border: 0;
-                    border-radius: 0.2rem;
-                    padding: 0.3rem;
-                    cursor: pointer;
-                    background: $yellow;
-
-                    path {
-                        fill: $red;
-                    }
-                }
+                width: 3.5rem;
+                height: 3.5rem;
+                position: absolute;
+                top: -0.6rem;
+                left: 1.2rem;
+                outline: none;
+                border: 0;
+                border-radius: 0.2rem;
+                padding: 0.3rem;
+                cursor: pointer;
+                background: $yellow;
+                padding: 0.5rem;
+                fill: $red;
+            }
         }
 
         .product-generic {
             svg {
-                    background: $red;
-
-                    path {
-                        fill: $yellow;
-                    }
-                }
+                background: $red;
+                fill: $yellow;
+            }
         }
 
         p {
