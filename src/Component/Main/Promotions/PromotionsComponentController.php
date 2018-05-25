@@ -159,7 +159,7 @@ class PromotionsComponentController
         $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
         $ribbonTextColor = $promotion['field_ribbon_text_color'][0]['color'] ?? '';
 
-        $promoProperties = [
+        return [
             'title' => $promotion['title'][0]['value'],
             'product' => $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'],
             'ribbon_enable' => $ribbonEnable,
@@ -173,8 +173,6 @@ class PromotionsComponentController
             'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
             'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
         ];
-
-        return $promoProperties;
     }
 
     private function getFeatured()
