@@ -65,21 +65,50 @@ class PromotionsComponentController
 
     public function promotions($request, $response)
     {
-        $product_category = $request->getParsedBody();
+        try {
+            $promotionsFilters = $this->views->getViewById('promotion-filter');
+        } catch (\Exception $e) {
+            $promotionsFilters = [];
+        }
 
         try {
-            $args = ['filter_product_category_id' => $product_category['product_category']];
-            $promotions = $this->views->getViewById('promotions', $args);
+            $promoProduct = [];
+            foreach ($promotionsFilters as $filters) {
+                $filterId = $filters['field_product_filter_id'][0]['value'];
+                if ($filterId === 'featured') {
+                    $featured = $this->getPromotions($this->getFeatured(), 'featured');
+                    if (count($featured)) {
+                        $promoProduct[$filterId] = $featured;
+                        $filterProperties[] = $this->getFilters($filters);
+                    }
+                } else {
+                    $args = ['filter_product_category_id' => $filters['tid'][0]['value']];
+                    $promotions = $this->views->getViewById('promotions', $args);
+                    $promoList = $this->getPromotions($promotions);
+                    if (count($promoList)) {
+                        $promoProduct[$filterId] = $promoList;
+                        $filterProperties[] = $this->getFilters($filters);
+                    }
+                }
+            }
+
+            $data['promotions'] = $promoProduct;
+            $data['filters'] = $filterProperties;
         } catch (\Exception $e) {
-            $promotions = [];
-        }
-        if ($product_category['product_category'] == 'featured') {
-            $data = $this->getPromotions($this->getFeatured(), 'featured');
-        } else {
-            $data = $this->getPromotions($promotions);
+            $data['promotions'] = [];
+            $data['filters'] = [];
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    private function getFilters($filters)
+    {
+        return [
+            'tid' => $filters['tid'][0]['value'],
+            'filter_id' => $filters['field_product_filter_id'][0]['value'],
+            'filter_name' =>  $filters['field_filter_name'][0]['value']
+        ];
     }
 
     private function isPlayerProvisioned()
@@ -151,10 +180,10 @@ class PromotionsComponentController
                 }
 
                 $promoProperties = $this->getPostLoginPromotions($promoProperties, $promotion);
-                $promoPerProduct[$filterId][] = $promoProperties + ['category' => $filterId];
+                $promoPerProduct[] = $promoProperties + ['category' => $filterId];
             } elseif (!$isLogin && ($availability == '0' || is_array($availability))) {
                 $promoProperties = $this->getPreLoginPromotions($promoProperties, $promotion);
-                $promoPerProduct[$filterId][] = $promoProperties + ['category' => $filterId];
+                $promoPerProduct[] = $promoProperties + ['category' => $filterId];
             }
         }
 
@@ -164,8 +193,8 @@ class PromotionsComponentController
     private function getPromoProperties($promotion)
     {
         $uri = empty($promotion['field_summary_url'][0]['uri'])
-            ? $promotion['alias'][0]['value']
-            : $promotion['field_summary_url'][0]['uri'];
+        ? ($promotion['alias'][0]['value'] ?? '#')
+        : $promotion['field_summary_url'][0]['uri'];
 
         $ribbonEnable = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
         $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';

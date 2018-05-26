@@ -15,9 +15,6 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     private $config;
 
-    private $languages;
-
-    private $lang;
     /**
      *
      */
@@ -25,21 +22,17 @@ class PromotionsComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('views_fetcher'),
-            $container->get('config_fetcher'),
-            $container->get('language_fetcher'),
-            $container->get('lang')
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($views, $configs, $languages, $lang)
+    public function __construct($views, $configs)
     {
         $this->views = $views;
         $this->configs = $configs;
-        $this->languages = $languages;
-        $this->lang = $lang;
     }
 
     /**
@@ -59,24 +52,6 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        try {
-            foreach ($this->languages->getLanguages() as $language) {
-                if ($this->lang == $language['prefix']) {
-                    $currentLang = $language['id'];
-                    break;
-                }
-            }
-
-            $data['promotions_filters'] = $this->views->getViewById('promotion-filter', ['lang' => $currentLang]);
-
-            $filterFeatured = $this->views->getViewById('promotion-filter-featured', ['lang' => $currentLang]);
-            $featuredWeight = $filterFeatured[0]['weight'][0]['value'];
-
-            array_splice($data['promotions_filters'], $featuredWeight - 1, 0, $filterFeatured);
-        } catch (\Exception $e) {
-            $data['promotions_filters'] = [];
-        }
-
         try {
             $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
         } catch (\Exception $e) {
