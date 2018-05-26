@@ -76,7 +76,7 @@ class PromotionsComponentController
                 $data = $this->getPromotions($promotions);
             }
         } catch (\Exception $e) {
-            $promotions = [];
+            $data = [];
         }
 
         return $this->rest->output($response, $data);
