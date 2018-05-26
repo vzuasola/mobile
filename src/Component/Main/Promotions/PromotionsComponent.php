@@ -15,9 +15,6 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     private $config;
 
-    private $languages;
-
-    private $lang;
     /**
      *
      */
@@ -25,21 +22,17 @@ class PromotionsComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('views_fetcher'),
-            $container->get('config_fetcher'),
-            $container->get('language_fetcher'),
-            $container->get('lang')
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($views, $configs, $languages, $lang)
+    public function __construct($views, $configs)
     {
         $this->views = $views;
         $this->configs = $configs;
-        $this->languages = $languages;
-        $this->lang = $lang;
     }
 
     /**
@@ -63,26 +56,6 @@ class PromotionsComponent implements ComponentWidgetInterface
             $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
         } catch (\Exception $e) {
             $promoConfigs = [];
-        }
-
-        $data['enable_featured'] = $promoConfigs['enable_featured'] ?? '';
-        try {
-            foreach ($this->languages->getLanguages() as $language) {
-                if ($this->lang == $language['prefix']) {
-                    $currentLang = $language['id'];
-                    break;
-                }
-            }
-
-            $data['promotions_filters'] = $this->views->getViewById('promotion-filter', ['langcode' => $currentLang]);
-            if ($data['enable_featured']) {
-                $featured['field_filter_name'][0]['value'] = $promoConfigs['featured_label'] ?? '';
-                $featured['field_product_filter_id'][0]['value'] = 'featured';
-                $featured['tid'][0]['value'] = 'featured';
-                array_unshift($data['promotions_filters'], $featured);
-            }
-        } catch (\Exception $e) {
-            $data['promotions_filters'] = [];
         }
 
         $data['title'] = $promoConfigs['title'] ?? 'Promotions';

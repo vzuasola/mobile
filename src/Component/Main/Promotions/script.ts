@@ -14,9 +14,8 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  *
  */
 export class PromotionsComponent implements ComponentInterface {
-    private promotions = [];
+    private promotions;
     private element;
-    private filterIds = [];
 
     constructor() {
         Handlebars.registerHelper("equals", function(value, compare, options) {
@@ -30,35 +29,32 @@ export class PromotionsComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.promotions = [];
+        this.promotions = undefined;
 
         this.init();
         this.listenChangeDropdown();
-        this.activateDropdown();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.promotions = [];
+        this.promotions = undefined;
 
         this.init();
         this.listenChangeDropdown();
-        this.activateDropdown();
 
     }
 
     init() {
-        const filter: any = this.getDefaultFilter();
-        this.doRequest(filter, (response) => {
-
+        this.doRequest((response) => {
+            this.setFilters(response.filters);
+            const filter: any = this.getDefaultFilter();
             this.setActiveFilter(filter);
-            // this.removeUnusedFilters(response);
 
             if (response) {
-                if (typeof response[filter] !== "undefined") {
+                if (typeof response.promotions[filter] !== "undefined") {
                     this.resetError();
                     const template = promotionTemplate({
-                        promotions: response[filter],
+                        promotions: response.promotions[filter],
                     });
 
                     this.element.querySelector(".promotions-body").innerHTML = template;
@@ -91,20 +87,14 @@ export class PromotionsComponent implements ComponentInterface {
         }
     }
 
-    private doRequest(filter, callback, errorCallback?) {
-        if (typeof this.promotions[filter] === "undefined" ) {
-            const filterId = (filter === "featured")
-                ? "featured" : this.filterIds[filter];
+    private doRequest(callback, errorCallback?) {
+        if (typeof this.promotions === "undefined" ) {
             xhr({
                 url: Router.generateRoute("promotions", "promotions"),
-                method: "post",
                 type: "json",
-                data: {
-                    product_category: filterId,
-                },
             }).then((response) => {
                 this.promotionLoader();
-                this.promotions[filter] = response;
+                this.promotions = response;
 
                 callback(response);
             }).fail((error, message) => {
@@ -115,7 +105,7 @@ export class PromotionsComponent implements ComponentInterface {
             });
         } else {
             this.promotionLoader();
-            callback(this.promotions[filter]);
+            callback(this.promotions);
         }
     }
 
@@ -125,13 +115,13 @@ export class PromotionsComponent implements ComponentInterface {
                 const filter = src.getAttribute("data-product-filter-id");
 
                 if (filter) {
-                    this.doRequest(filter, (response) => {
+                    this.doRequest((response) => {
                         this.setActiveFilter(filter);
 
-                        if (response && typeof response[filter] !== "undefined") {
+                        if (response && typeof response !== "undefined") {
                             this.resetError();
                             const template = promotionTemplate({
-                                promotions: response[filter],
+                                promotions: response.promotions[filter],
                             });
 
                             this.element.querySelector(".promotions-body").innerHTML = template;
@@ -166,13 +156,10 @@ export class PromotionsComponent implements ComponentInterface {
 
     private getFilters() {
         const filters = [];
-        const filterIdArr = [];
 
         for (const item of this.element.querySelectorAll(".product-link")) {
             filters.push(item.getAttribute("data-product-filter-id"));
-            filterIdArr[item.getAttribute("data-product-filter-id")] = item.getAttribute("data-product-filter-tid");
         }
-        this.filterIds = filterIdArr;
 
         return filters;
     }
@@ -221,16 +208,25 @@ export class PromotionsComponent implements ComponentInterface {
         }
     }
 
-    private removeUnusedFilters(response) {
-        const categories = Object.keys(response);
-
-        for (const productCategoryEl of this.element.querySelectorAll(".product-link")) {
-            // remove category filters that don't have promotion
-            if (categories.indexOf(productCategoryEl.getAttribute("data-product-filter-id")) < 0) {
-                const disabledFilter = utility.findParent(productCategoryEl, "li");
-                disabledFilter.remove();
+    private setFilters(response) {
+        const filterEl = this.element.querySelector("#promotion-filters");
+        for (const category in response) {
+            if (response.hasOwnProperty(category)) {
+                const filterCategory = response[category];
+                const li = document.createElement("li");
+                utility.append(filterEl, li);
+                const filterItem = document.createElement("a");
+                filterItem.innerHTML = filterCategory.filter_name;
+                filterItem.setAttribute("href", "#" + filterCategory.filter_id);
+                filterItem.setAttribute("class", "product-link filter-" + filterCategory.filter_id);
+                filterItem.setAttribute("data-product-filter-id", filterCategory.filter_id);
+                filterItem.setAttribute("data-product-filter-name", filterCategory.filter_name);
+                filterItem.setAttribute("data-product-filter-tid", "#" + filterCategory.tid);
+                utility.append(li, filterItem);
             }
         }
+
+        this.activateDropdown();
     }
 
     private handleError() {
