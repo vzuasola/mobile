@@ -79,7 +79,7 @@ class PromotionsComponentController
                     $featured = $this->getPromotions($this->getFeatured(), 'featured');
                     if (count($featured)) {
                         $promoProduct[$filterId] = $featured;
-                        $filterProperties[] = $this->setFilters($filters);
+                        $filterProperties[] = $this->getFilters($filters);
                     }
                 } else {
                     $args = ['filter_product_category_id' => $filters['tid'][0]['value']];
@@ -87,7 +87,7 @@ class PromotionsComponentController
                     $promoList = $this->getPromotions($promotions);
                     if (count($promoList)) {
                         $promoProduct[$filterId] = $promoList;
-                        $filterProperties[] = $this->setFilters($filters);
+                        $filterProperties[] = $this->getFilters($filters);
                     }
                 }
             }
@@ -102,7 +102,7 @@ class PromotionsComponentController
         return $this->rest->output($response, $data);
     }
 
-    private function setFilters($filters)
+    private function getFilters($filters)
     {
         return [
             'tid' => $filters['tid'][0]['value'],
