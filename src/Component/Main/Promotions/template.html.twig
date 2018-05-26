@@ -13,21 +13,8 @@
             {% include '@app/web/images/svg/arrow.svg' %}
         </a>
 
-        <ul>
+        <ul id="promotion-filters">
             <li class="title">{{ filter_label }}</li>
-            {% for promotions_filter in promotions_filters %}
-            <li>
-                <a
-                    href="#{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
-                    class="product-link filter-{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
-                    data-product-filter-id="{{ promotions_filter['field_product_filter_id'][0]['value'] }}"
-                    data-product-filter-name="{{ promotions_filter['field_filter_name'][0]['value'] }}"
-                    data-product-filter-tid="{{ promotions_filter['tid'][0]['value'] }}"
-                >
-                    {{ promotions_filter['field_filter_name'][0]['value'] }}
-                </a>
-            </li>
-            {% endfor %}
         </ul>
 
     </div>
