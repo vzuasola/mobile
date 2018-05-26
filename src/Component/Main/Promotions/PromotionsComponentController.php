@@ -66,7 +66,7 @@ class PromotionsComponentController
     public function promotions($request, $response)
     {
         try {
-           $promotionsFilters = $this->views->getViewById('promotion-filter');
+            $promotionsFilters = $this->views->getViewById('promotion-filter');
         } catch (\Exception $e) {
             $promotionsFilters = [];
         }
@@ -94,7 +94,6 @@ class PromotionsComponentController
 
             $data['promotions'] = $promoProduct;
             $data['filters'] = $filterProperties;
-
         } catch (\Exception $e) {
             $data['promotions'] = [];
             $data['filters'] = [];
