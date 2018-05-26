@@ -44,7 +44,7 @@ class MenuComponent implements ComponentWidgetInterface
             $container->get('menu_fetcher'),
             $container->get('config_fetcher'),
             $container->get('payment_account_fetcher'),
-            $container->get('iddomain_service')
+            $container->get('id_domain')
         );
     }
 
@@ -87,10 +87,12 @@ class MenuComponent implements ComponentWidgetInterface
         }
 
         try {
-            $data['quicklinks'] = $this->cleanQuickLinks($this->menus->getMultilingualMenu('quicklinks'));
+            $data['quicklinks'] = $this->menus->getMultilingualMenu('quicklinks');
         } catch (\Exception $e) {
             $data['quicklinks'] = [];
         }
+
+        $this->cleanQuickLinks($data['quicklinks']);
 
         try {
             $data['otherlinks'] = $this->menus->getMultilingualMenu('secondary-menu');
@@ -160,16 +162,16 @@ class MenuComponent implements ComponentWidgetInterface
         return $result;
     }
 
-    private function cleanQuickLinks($quicklinks)
+    private function cleanQuickLinks(&$quicklinks)
     {
         if ($quicklinks) {
             foreach ($quicklinks as $key => $link) {
-                if ($this->idDomain->checkIdDomain() &&
-                    strpos($link['attributes']['class'], 'language-trigger') !== false) {
+                if ($this->idDomain->isLangSelectorHidden() &&
+                    strpos($link['attributes']['class'], 'language-trigger') !== false
+                ) {
                     unset($quicklinks[$key]);
                 }
             }
         }
-        return $quicklinks;
     }
 }

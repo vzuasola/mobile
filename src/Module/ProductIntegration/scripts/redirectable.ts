@@ -26,7 +26,9 @@ export abstract class Redirectable implements ModuleInterface {
         // the integration specific behavior for that product
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.find(src, (element) => {
-                return element.getAttribute("data-product-integration-id") === this.code;
+                if (element) {
+                    return element.getAttribute("data-product-integration-id") === this.code;
+                }
             });
 
             if (el) {
