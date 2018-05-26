@@ -30,17 +30,20 @@ export class PASModule implements ModuleInterface, GameInterface {
     private lang: string;
     private languageMap: any;
     private store: Storage = new Storage();
+    private iapiConfs: any = {};
 
     onLoad(attachments: {
         authenticated: boolean,
         iapiconfOverride: {},
         lang: string,
-        langguageMap: {[name: string]: string}},
+        langguageMap: {[name: string]: string},
+        iapiConfigs: any},
     ) {
         this.isSessionAlive = attachments.authenticated;
         this.iapiconfOverride = attachments.iapiconfOverride;
         this.lang = attachments.lang;
         this.languageMap = attachments.langguageMap;
+        this.iapiConfs = attachments.iapiConfigs;
     }
 
     init() {
@@ -61,24 +64,32 @@ export class PASModule implements ModuleInterface, GameInterface {
         const real = 1;
         const language = this.getLanguageMap(this.lang);
 
-        // Set the callback for the PAS login
-        iapiSetCallout("Login", this.onLogin(user));
+        for (const key in this.iapiConfs) {
+            if (this.iapiConfs.hasOwnProperty(key)) {
+                return new Promise((resolve, reject) => {
+                    iapiConf = this.iapiConfs[key];
 
-        // Before login, check if there are cookies on PTs end
-        iapiSetCallout("GetLoggedInPlayer", (response) => {
-            if (this.verifyCookie(response)) {
-                iapiSetCallout("Logout", (resp) => {
-                    iapiLoginAndGetTempToken(user, password, real, language);
+                    // Set the callback for the PAS login
+                    iapiSetCallout("Login", this.onLogin(user));
+
+                    // Before login, check if there are cookies on PTs end
+                    iapiSetCallout("GetLoggedInPlayer", (response) => {
+                        if (this.verifyCookie(response)) {
+                            iapiSetCallout("Logout", (resp) => {
+                                iapiLoginAndGetTempToken(user, password, real, language);
+                            });
+
+                            this.doLogout();
+                        } else {
+                            iapiLoginAndGetTempToken(user, password, real, language);
+                        }
+                    });
+
+                    // Trigger the session check
+                    this.doCheckSession();
                 });
-
-                this.doLogout();
-            } else {
-                iapiLoginAndGetTempToken(user, password, real, language);
             }
-        });
-
-        // Trigger the session check
-        this.doCheckSession();
+        }
     }
 
     prelaunch() {
