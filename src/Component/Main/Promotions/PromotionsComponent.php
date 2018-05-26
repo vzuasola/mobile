@@ -81,7 +81,6 @@ class PromotionsComponent implements ComponentWidgetInterface
                 $featured['tid'][0]['value'] = 'featured';
                 array_unshift($data['promotions_filters'], $featured);
             }
-
         } catch (\Exception $e) {
             $data['promotions_filters'] = [];
         }
