@@ -68,15 +68,15 @@ class PromotionsComponentController
         $product_category = $request->getParsedBody();
 
         try {
-            $args = ['filter_product_category_id' => $product_category['product_category']];
-            $promotions = $this->views->getViewById('promotions', $args);
+            if ($product_category['product_category'] === 'featured') {
+                $data = $this->getPromotions($this->getFeatured(), 'featured');
+            } else {
+                $args = ['filter_product_category_id' => $product_category['product_category']];
+                $promotions = $this->views->getViewById('promotions', $args);
+                $data = $this->getPromotions($promotions);
+            }
         } catch (\Exception $e) {
             $promotions = [];
-        }
-        if ($product_category['product_category'] == 'featured') {
-            $data = $this->getPromotions($this->getFeatured(), 'featured');
-        } else {
-            $data = $this->getPromotions($promotions);
         }
 
         return $this->rest->output($response, $data);
