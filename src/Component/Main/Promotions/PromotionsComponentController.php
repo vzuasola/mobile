@@ -68,15 +68,15 @@ class PromotionsComponentController
         $product_category = $request->getParsedBody();
 
         try {
-            $args = ['filter_product_category_id' => $product_category['product_category']];
-            $promotions = $this->views->getViewById('promotions', $args);
+            if ($product_category['product_category'] === 'featured') {
+                $data = $this->getPromotions($this->getFeatured(), 'featured');
+            } else {
+                $args = ['filter_product_category_id' => $product_category['product_category']];
+                $promotions = $this->views->getViewById('promotions', $args);
+                $data = $this->getPromotions($promotions);
+            }
         } catch (\Exception $e) {
-            $promotions = [];
-        }
-        if ($product_category['product_category'] == 'featured') {
-            $data = $this->getPromotions($this->getFeatured(), 'featured');
-        } else {
-            $data = $this->getPromotions($promotions);
+            $data = [];
         }
 
         return $this->rest->output($response, $data);
@@ -164,8 +164,8 @@ class PromotionsComponentController
     private function getPromoProperties($promotion)
     {
         $uri = empty($promotion['field_summary_url'][0]['uri'])
-            ? $promotion['alias'][0]['value']
-            : $promotion['field_summary_url'][0]['uri'];
+        ? ($promotion['alias'][0]['value'] ?? '#')
+        : $promotion['field_summary_url'][0]['uri'];
 
         $ribbonEnable = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
         $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';

@@ -60,6 +60,13 @@ class PromotionsComponent implements ComponentWidgetInterface
     public function getData()
     {
         try {
+            $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
+        } catch (\Exception $e) {
+            $promoConfigs = [];
+        }
+
+        $data['enable_featured'] = $promoConfigs['enable_featured'] ?? '';
+        try {
             foreach ($this->languages->getLanguages() as $language) {
                 if ($this->lang == $language['prefix']) {
                     $currentLang = $language['id'];
@@ -67,20 +74,15 @@ class PromotionsComponent implements ComponentWidgetInterface
                 }
             }
 
-            $data['promotions_filters'] = $this->views->getViewById('promotion-filter', ['lang' => $currentLang]);
-
-            $filterFeatured = $this->views->getViewById('promotion-filter-featured', ['lang' => $currentLang]);
-            $featuredWeight = $filterFeatured[0]['weight'][0]['value'];
-
-            array_splice($data['promotions_filters'], $featuredWeight - 1, 0, $filterFeatured);
+            $data['promotions_filters'] = $this->views->getViewById('promotion-filter', ['langcode' => $currentLang]);
+            if ($data['enable_featured']) {
+                $featured['field_filter_name'][0]['value'] = $promoConfigs['featured_label'] ?? '';
+                $featured['field_product_filter_id'][0]['value'] = 'featured';
+                $featured['tid'][0]['value'] = 'featured';
+                array_unshift($data['promotions_filters'], $featured);
+            }
         } catch (\Exception $e) {
             $data['promotions_filters'] = [];
-        }
-
-        try {
-            $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
-        } catch (\Exception $e) {
-            $promoConfigs = [];
         }
 
         $data['title'] = $promoConfigs['title'] ?? 'Promotions';
