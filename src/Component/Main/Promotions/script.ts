@@ -5,6 +5,7 @@ import * as Handlebars from "handlebars/runtime";
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 import * as promotionTemplate from "./handlebars/promotion.handlebars";
+import * as promotionFilterTemplate from "./handlebars/promotion-filter.handlebars";
 
 import Dropdown from "@app/assets/script/components/dropdown";
 
@@ -48,6 +49,7 @@ export class PromotionsComponent implements ComponentInterface {
         this.doRequest((response) => {
             this.setFilters(response.filters);
             const filter: any = this.getDefaultFilter();
+
             this.setActiveFilter(filter);
 
             if (response) {
@@ -209,22 +211,11 @@ export class PromotionsComponent implements ComponentInterface {
     }
 
     private setFilters(response) {
-        const filterEl = this.element.querySelector("#promotion-filters");
-        for (const category in response) {
-            if (response.hasOwnProperty(category)) {
-                const filterCategory = response[category];
-                const li = document.createElement("li");
-                utility.append(filterEl, li);
-                const filterItem = document.createElement("a");
-                filterItem.innerHTML = filterCategory.filter_name;
-                filterItem.setAttribute("href", "#" + filterCategory.filter_id);
-                filterItem.setAttribute("class", "product-link filter-" + filterCategory.filter_id);
-                filterItem.setAttribute("data-product-filter-id", filterCategory.filter_id);
-                filterItem.setAttribute("data-product-filter-name", filterCategory.filter_name);
-                filterItem.setAttribute("data-product-filter-tid", "#" + filterCategory.tid);
-                utility.append(li, filterItem);
-            }
-        }
+        const template = promotionFilterTemplate({
+                    filters: response,
+              });
+        const filterEl = document.getElementById("promotion-filters");
+        filterEl.innerHTML = template;
 
         this.activateDropdown();
     }
