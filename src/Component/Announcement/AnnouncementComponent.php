@@ -65,6 +65,8 @@ class AnnouncementComponent implements ComponentWidgetInterface
         $data['announcement_count'] = $announcements['count'] ?? 0;
         $data['title'] = $announcementConfigs['title'] ?? 'Announcement';
         $data['default_message'] = $announcementConfigs['default_message'] ?? 'You have a notification';
+        $data['see_all'] = $announcementConfigs['see_all'] ?? 'See all';
+        $data['dismiss_all'] = $announcementConfigs['dismiss_all'] ?? 'Dismiss all';
 
         return $data;
     }
