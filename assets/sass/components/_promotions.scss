@@ -52,6 +52,14 @@
             border-radius: 0.1rem;
         }
 
+        .tag-generic {
+            svg {
+                background: $red;
+                fill: $yellow;
+            }
+
+        }
+
         svg {
             position: absolute;
             top: 0;
