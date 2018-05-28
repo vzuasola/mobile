@@ -37,12 +37,16 @@ class PASModuleController
     public function subaccounts($request, $response)
     {
         $data = [];
+
         try {
-            $data['provisioned'] =
-                $this->paymentAccount->hasAccount('casino-gold', $request->getQueryParam('username'));
+            $data['provisioned'] = $this->paymentAccount->hasAccount(
+                'casino-gold',
+                $request->getQueryParam('username')
+            );
         } catch (\Exception $e) {
             $data = [];
         }
+
         return $this->rest->output($response, $data);
     }
 }
