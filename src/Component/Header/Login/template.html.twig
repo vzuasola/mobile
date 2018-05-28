@@ -14,8 +14,8 @@
                     {% include '@app/web/images/svg/user-password.svg' %}
                     {% set passwordClass = true ? " password-mask-enabled" : "" %}
                     <span class="hidden password-mask-icon mask">
-                        {% include '@app/web/images/svg/password-mask.svg' %}
-                        {% include '@app/web/images/svg/password-unmask.svg' %}
+                        {% include '@app/web/images/svg/password-mask.svg' ignore missing %}
+                        {% include '@app/web/images/svg/password-unmask.svg' ignore missing %}
                     </span>
                 </div>
                 <p class="login-error"></p>
@@ -34,7 +34,7 @@
                 </a>
             </form>
         </div>
-        {% include '@app/web/images/svg/closed.svg' %}
+        {% include '@app/web/images/svg/closed.svg' ignore missing %}
     </div>
 </div>
 {% endif %}

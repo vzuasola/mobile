@@ -48,6 +48,7 @@ export class PromotionsComponent implements ComponentInterface {
     init() {
         this.doRequest((response) => {
             this.setFilters(response.filters);
+
             const filter: any = this.getDefaultFilter();
 
             this.setActiveFilter(filter);
@@ -64,8 +65,6 @@ export class PromotionsComponent implements ComponentInterface {
                     this.handleError();
                 }
             }
-
-            // error handling here
         }, () => {
             this.handleError();
         });
@@ -131,8 +130,6 @@ export class PromotionsComponent implements ComponentInterface {
                         } else {
                             this.handleError();
                         }
-
-                        // error handling here
                     }, () => {
                         this.handleError();
                     });
@@ -212,9 +209,10 @@ export class PromotionsComponent implements ComponentInterface {
 
     private setFilters(response) {
         const template = promotionFilterTemplate({
-                    filters: response,
-              });
+            filters: response,
+        });
         const filterEl = document.getElementById("promotion-filters");
+
         filterEl.innerHTML = template;
 
         this.activateDropdown();

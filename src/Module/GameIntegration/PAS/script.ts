@@ -20,25 +20,26 @@ import {GameInterface} from "./../scripts/game.interface";
  * actual PAS
  */
 export class PASModule implements ModuleInterface, GameInterface {
+    private store: Storage = new Storage();
+
     private isSessionAlive: boolean;
-    private iapiconfOverride: {} = {};
     private timer = null;
 
-    // milliseconds = (seconds * min) * number
-    private keepSessionTime = ((1000 * 60) * 15);
-    private sessionFlag = "pas.session.flag";
-    private lang: string;
-    private languageMap: any;
-    private store: Storage = new Storage();
+    private iapiconfOverride: {} = {};
     private iapiConfs: any = {};
+
+    private keepSessionTime = (1000 * 60) * 15;
+    private sessionFlag = "pas.session.flag";
+    private languageMap: any;
+    private lang: string;
 
     onLoad(attachments: {
         authenticated: boolean,
         iapiconfOverride: {},
         lang: string,
         langguageMap: {[name: string]: string},
-        iapiConfigs: any},
-    ) {
+        iapiConfigs: any,
+    }) {
         this.isSessionAlive = attachments.authenticated;
         this.iapiconfOverride = attachments.iapiconfOverride;
         this.lang = attachments.lang;
@@ -47,10 +48,8 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     init() {
-
         iapiSetCallout("Logout", this.onLogout);
         iapiSetCallout("KeepAlive", this.onKeepAlive);
-
     }
 
     login(username, password) {
