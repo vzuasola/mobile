@@ -78,7 +78,6 @@ export class PASModule implements ModuleInterface, GameInterface {
                         // Set the callback for the PAS login
                         iapiSetCallout("Login", this.onLogin(user));
                     }, 1 * 500 * ctr);
-
                 }
             }
         });
