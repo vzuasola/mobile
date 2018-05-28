@@ -23,11 +23,7 @@ export class GenericIntegrationModule extends Redirectable implements ModuleInte
                 },
             }).then((response) => {
                 if (typeof response.url !== "undefined") {
-                    if (utility.isExternal(response.url)) {
-                        window.location.href = response.url;
-                    } else {
-                        Router.navigate(response.url, ["header", "main"]);
-                    }
+                    window.location.href = response.url;
                 }
             }).fail((error, message) => {
                 // do something
