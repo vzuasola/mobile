@@ -1,3 +1,5 @@
+import "promise-polyfill/src/polyfill";
+
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
@@ -5,7 +7,6 @@ import {Modal} from "./components/modal";
 
 import "./components";
 import "./modules";
-
 import "./loader";
 
 ComponentManager.init();

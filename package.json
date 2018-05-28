@@ -22,5 +22,7 @@
     "typescript": "^2.8.1",
     "webpack-mix": "^2.0.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "promise-polyfill": "^7.1.2"
+  }
 }
