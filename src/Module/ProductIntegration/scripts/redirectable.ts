@@ -99,6 +99,8 @@ export abstract class Redirectable implements ModuleInterface {
     }
 
     protected doRequest(src) {
+        this.loader.show();
+
         xhr({
             url: Router.generateModuleRoute(this.module, "integrate"),
             type: "json",
@@ -106,9 +108,12 @@ export abstract class Redirectable implements ModuleInterface {
         }).then((response) => {
             if (typeof response.redirect !== "undefined") {
                 window.location.href = response.redirect;
+                return;
             }
+
+            this.loader.hide();
         }).fail((error, message) => {
-            // do something
+            this.loader.hide();
         });
     }
 }
