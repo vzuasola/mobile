@@ -53,12 +53,11 @@ table tr th a:focus {
 }
 
 table tbody tr th {
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 tr td,
 tr th {
-    padding: 0.4rem 0.9rem;
     border: 0.1rem solid #fff;
     text-align: left; /* LTR */
 }

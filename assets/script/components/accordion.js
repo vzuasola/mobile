@@ -17,14 +17,16 @@ export default function accordion(options) {
         collapsible: false
     };
 
+    var element = options.element;
+
     // create accordion functionality if the required elements exist is available.
-    var ckeditorAccordion = document.querySelectorAll('.ckeditor-accordion'),
-        doc = document.body,
+    var ckeditorAccordion = element.querySelectorAll('.ckeditor-accordion'),
+        doc = element,
         speed = 4;
 
     if (ckeditorAccordion.length > 0) {
         // extend options
-        options = options || {};
+        options = options.option || {};
 
         for (var name in defaults) {
             if (options[name] === undefined) {

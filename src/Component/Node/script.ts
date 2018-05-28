@@ -11,12 +11,12 @@ import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 export class NodeComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.equalizeStickyHeight();
-        this.accordion();
+        this.accordion(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.equalizeStickyHeight();
-        this.accordion();
+        this.accordion(element);
     }
 
     private equalizeStickyHeight() {
@@ -24,7 +24,10 @@ export class NodeComponent implements ComponentInterface {
         equalSticky.init();
     }
 
-    private accordion() {
-        const accordion = new Accordion();
+    private accordion(element) {
+        const options = {
+            element,
+        };
+        const accordion = new Accordion(options);
     }
 }
