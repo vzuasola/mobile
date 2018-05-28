@@ -11,7 +11,7 @@
                 </div>
                 <div class="login-field">
                     <input type="password" class="login-field-password input-block-level password-mask-enabled" name="password" placeholder="{{ password_placeholder }}">
-                    {% include '@app/web/images/svg/user-password.svg' %}
+                    {% include '@app/web/images/svg/user-password.svg' ignore missing %}
                     {% set passwordClass = true ? " password-mask-enabled" : "" %}
                     <span class="hidden password-mask-icon mask">
                         {% include '@app/web/images/svg/password-mask.svg' ignore missing %}

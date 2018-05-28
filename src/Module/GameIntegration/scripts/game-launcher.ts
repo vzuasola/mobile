@@ -26,6 +26,7 @@ export class GameLauncher {
      */
     init() {
         this.bindEvents();
+        this.activateLoginHooks();
     }
 
     /**
@@ -39,12 +40,24 @@ export class GameLauncher {
         ComponentManager.subscribe("click", (event, src) => {
             this.onClick(event, src);
         });
+    }
 
-        ComponentManager.subscribe("session.login", (event, target, data: any) => {
-            if (data && data.username && data.password) {
-                this.invokeAll("login", [data.username, data.password]);
+    private activateLoginHooks() {
+        setTimeout(() => {
+            for (const key in this.providers) {
+                if (this.providers.hasOwnProperty(key) &&
+                    typeof this.providers[key].login === "function"
+                ) {
+                    const provider = this.providers[key];
+
+                    ComponentManager.broadcast("session.events.push", {
+                        event: (username, password) => {
+                            return provider.login(username, password);
+                        },
+                    });
+                }
             }
-        });
+        }, 100);
     }
 
     /**
