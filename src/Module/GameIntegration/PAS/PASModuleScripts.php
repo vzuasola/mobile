@@ -51,7 +51,7 @@ class PASModuleScripts implements ComponentAttachmentInterface
             if ($iapiConfigs) {
                 $iapiConfigs = Config::parse($iapiConfigs);
                 foreach ($iapiConfigs as $key => $config) {
-                    $iapiConfigs[$key] = (array) json_decode($config);
+                    $iapiConfigs[$key] = json_decode($config, true);
                 }
             }
         } catch (\Exception $e) {

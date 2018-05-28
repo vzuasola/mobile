@@ -58,7 +58,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         const real = 1;
         const language = this.getLanguageMap(this.lang);
         let ctr = 0;
-        console.log(this.iapiConfs);
+
         for (const key in this.iapiConfs) {
             if (this.iapiConfs.hasOwnProperty(key)) {
                 ++ ctr;
