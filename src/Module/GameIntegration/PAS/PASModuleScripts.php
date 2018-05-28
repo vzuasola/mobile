@@ -46,15 +46,23 @@ class PASModuleScripts implements ComponentAttachmentInterface
     {
         try {
             $ptConfig = $this->config->getConfig('webcomposer_config.games_playtech_provider');
+
+            $iapiConfigs = $ptConfig['iapiconf_override'] ?? [];
+            if ($iapiConfigs) {
+                $iapiConfigs = Config::parse($iapiConfigs);
+                foreach ($iapiConfigs as $key => $config) {
+                    $iapiConfigs[$key] = json_decode($config, true);
+                }
+            }
         } catch (\Exception $e) {
             $ptConfig = [];
         }
-
         return [
             'authenticated' => $this->playerSession->isLogin(),
-            'iapiconfOverride' => $ptConfig['iapiconf_override'] ?? [],
+            'iapiconfOverride' => [],
             'lang' => $this->lang ?? 'en',
             'langguageMap' => Config::parse($ptConfig['languages']),
+            'iapiConfigs' => $iapiConfigs,
         ];
     }
 }
