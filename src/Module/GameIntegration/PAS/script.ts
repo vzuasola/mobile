@@ -57,22 +57,30 @@ export class PASModule implements ModuleInterface, GameInterface {
         const real = 1;
         const language = this.getLanguageMap(this.lang);
 
-        let ctr = 0;
+        xhr({
+            url: Router.generateModuleRoute("pas_integration", "subaccounts") +
+                "?username=" + user,
+        }).then((response) => {
+            let ctr = 0;
 
-        for (const key in this.iapiConfs) {
-            if (this.iapiConfs.hasOwnProperty(key)) {
-                ++ ctr;
+            for (const key in this.iapiConfs) {
+                if (this.iapiConfs.hasOwnProperty(key)) {
+                    if (key === "dafagold" && !response.provisioned) {
+                        break;
+                    }
 
-                setTimeout(() => {
-                    iapiConf = this.iapiConfs[key];
-                    iapiLogin(user, password, real, language);
+                    ++ ctr;
 
-                    // Set the callback for the PAS login
-                    iapiSetCallout("Login", this.onLogin(user));
-                }, 1 * 500 * ctr);
+                    setTimeout(() => {
+                        iapiConf = this.iapiConfs[key];
+                        iapiLogin(user, password, real, language);
 
+                        // Set the callback for the PAS login
+                        iapiSetCallout("Login", this.onLogin(user));
+                    }, 1 * 500 * ctr);
+                }
             }
-        }
+        });
     }
 
     prelaunch() {

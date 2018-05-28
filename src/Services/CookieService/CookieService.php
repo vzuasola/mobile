@@ -38,7 +38,7 @@ class CookieService
         $baseUrl = $container->get('request')->getUri()->getBaseUrl();
         $hostname = $container->get('parameters')['appsvc.origin.prd'];
 
-        if (preg_match('/https?:\/\/(?<env>[a-z0-9]+)-mobile/', $baseUrl, $matches)) {
+        if (preg_match('/https?:\/\/(?<env>[a-z0-9]+)-(mobile|m)/', $baseUrl, $matches)) {
             $hostname = $container->get('parameters')['appsvc.origin.' . $matches['env']];
         }
 
