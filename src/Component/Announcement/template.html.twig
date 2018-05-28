@@ -3,15 +3,15 @@
     <ul class="announcement clearfix">
         <li class="announcement-list" data="{{ announcements[0].nid }}">
             {% include '@app/web/images/svg/announcement/announcement-news.svg' %}
-            {{ announcements[0].text_with_title|raw }}
+            {{ announcements[0].text|raw }}
         </li>
     </ul>
     <div class="announcement-list-content-bottom">
         <a href="#" class="btn-dismiss">
-            <strong>dismiss</strong>
+            <strong>{{ dismiss_all }}</strong>
         </a>
         <a href="#announcement-lightbox" class="announcement-trigger btn-see-announcement">
-            <strong>see all</strong>
+            <strong>{{ see_all }}</strong>
         </a>
     </div>
 </div>
