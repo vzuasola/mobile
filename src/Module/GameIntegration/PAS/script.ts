@@ -3,7 +3,7 @@ declare function iapiSetCallout(name: string, callback: any): any;
 declare function iapiKeepAlive(id: number, callback: any): any;
 declare function iapiGetLoggedInPlayer(id: number): any;
 declare function iapiLogout(id: number, pid: number): any;
-declare function iapiLoginAndGetTempToken(username: string, password: string, real: any, language: string): any;
+declare function iapiLogin(username: string, password: string, real: any, language: string): any;
 declare function iapiValidateTCVersion(response: any, id: number, pid: number): any;
 
 import * as utility from "@core/assets/js/components/utility";
@@ -30,55 +30,48 @@ export class PASModule implements ModuleInterface, GameInterface {
     private lang: string;
     private languageMap: any;
     private store: Storage = new Storage();
+    private iapiConfs: any = {};
 
     onLoad(attachments: {
         authenticated: boolean,
         iapiconfOverride: {},
         lang: string,
-        langguageMap: {[name: string]: string}},
+        langguageMap: {[name: string]: string},
+        iapiConfigs: any},
     ) {
         this.isSessionAlive = attachments.authenticated;
         this.iapiconfOverride = attachments.iapiconfOverride;
         this.lang = attachments.lang;
         this.languageMap = attachments.langguageMap;
+        this.iapiConfs = attachments.iapiConfigs;
     }
 
     init() {
-        this.setiApiConfOverride();
+
         iapiSetCallout("Logout", this.onLogout);
         iapiSetCallout("KeepAlive", this.onKeepAlive);
 
-        if (this.isSessionAlive) {
-            // Persist session
-            this.sessionPersist();
-        } else if (this.store.get(this.sessionFlag) !== null) {
-            this.doLogout();
-        }
     }
 
     login(username, password) {
         const user = username.toUpperCase();
         const real = 1;
         const language = this.getLanguageMap(this.lang);
+        let ctr = 0;
 
-        // Set the callback for the PAS login
-        iapiSetCallout("Login", this.onLogin(user));
+        for (const key in this.iapiConfs) {
+            if (this.iapiConfs.hasOwnProperty(key)) {
+                ++ ctr;
+                setTimeout(() => {
+                    iapiConf = this.iapiConfs[key];
+                    iapiLogin(user, password, real, language);
 
-        // Before login, check if there are cookies on PTs end
-        iapiSetCallout("GetLoggedInPlayer", (response) => {
-            if (this.verifyCookie(response)) {
-                iapiSetCallout("Logout", (resp) => {
-                    iapiLoginAndGetTempToken(user, password, real, language);
-                });
+                    // Set the callback for the PAS login
+                    iapiSetCallout("Login", this.onLogin(user));
+                }, 1 * 500 * ctr);
 
-                this.doLogout();
-            } else {
-                iapiLoginAndGetTempToken(user, password, real, language);
             }
-        });
-
-        // Trigger the session check
-        this.doCheckSession();
+        }
     }
 
     prelaunch() {
