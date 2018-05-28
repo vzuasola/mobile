@@ -1,14 +1,8 @@
-declare var iapiConf: any;
-declare function iapiSetCallout(name: string, callback: any): any;
-declare function iapiKeepAlive(id: number, callback: any): any;
-declare function iapiGetLoggedInPlayer(id: number): any;
-declare function iapiLogout(id: number, pid: number): any;
-declare function iapiLogin(username: string, password: string, real: any, language: string): any;
-declare function iapiValidateTCVersion(response: any, id: number, pid: number): any;
+import * as Promise from "promise-polyfill";
 
 import * as utility from "@core/assets/js/components/utility";
-import Storage from "@core/assets/js/components/utils/storage";
 import * as xhr from "@core/assets/js/vendor/reqwest";
+import Storage from "@core/assets/js/components/utils/storage";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
@@ -53,33 +47,41 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     login(username, password) {
-        const user = username.toUpperCase();
-        const real = 1;
-        const language = this.getLanguageMap(this.lang);
+        return new Promise((resolve, reject) => {
+            const user = username.toUpperCase();
+            const real = 1;
+            const language = this.getLanguageMap(this.lang);
+            const uri = Router.generateModuleRoute("pas_integration", "subaccounts");
 
-        xhr({
-            url: Router.generateModuleRoute("pas_integration", "subaccounts") +
-                "?username=" + user,
-        }).then((response) => {
-            let ctr = 0;
+            xhr({
+                url: `${uri}?username=${user}`,
+            }).then((response) => {
+                let ctr = 0;
 
-            for (const key in this.iapiConfs) {
-                if (this.iapiConfs.hasOwnProperty(key)) {
-                    if (key === "dafagold" && !response.provisioned) {
-                        break;
+                for (const key in this.iapiConfs) {
+                    if (this.iapiConfs.hasOwnProperty(key)) {
+                        if (key === "dafagold" && !response.provisioned) {
+                            break;
+                        }
+
+                        ++ ctr;
+
+                        setTimeout(() => {
+                            iapiConf = this.iapiConfs[key];
+                            iapiLogin(user, password, real, language);
+
+                            // Set the callback for the PAS login
+                            iapiSetCallout("Login", this.onLogin(user, resolve));
+                        }, 1.5 * 500 * ctr);
                     }
-
-                    ++ ctr;
-
-                    setTimeout(() => {
-                        iapiConf = this.iapiConfs[key];
-                        iapiLogin(user, password, real, language);
-
-                        // Set the callback for the PAS login
-                        iapiSetCallout("Login", this.onLogin(user));
-                    }, 1 * 500 * ctr);
                 }
-            }
+            });
+
+            // after n seconds, nothing still happen, I'll let the other
+            // hooks to proceed
+            setTimeout(() => {
+                reject();
+            }, 15 * 1000);
         });
     }
 
@@ -200,7 +202,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     /**
      * Callback on login process
      */
-    private onLogin(username) {
+    private onLogin(username, resolve) {
         return (response) => {
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
@@ -210,28 +212,35 @@ export class PASModule implements ModuleInterface, GameInterface {
                     response.sessionValidationData.SessionValidationByTCVersionData !== undefined
                 ) {
                     // Change the ValidateLoginSession callback to handle the TC validation
-                    iapiSetCallout("ValidateLoginSession", this.onTCVersionValidation(username));
+                    iapiSetCallout("ValidateLoginSession", this.onTCVersionValidation(username, resolve));
                     // Auto validate the TC version
                     iapiValidateTCVersion(
                         response.sessionValidationData.SessionValidationByTCVersionData[0].termVersionReference,
                         1,
                         1,
                     );
+                } else {
+                    resolve();
                 }
 
                 return;
             }
+
+            resolve();
         };
     }
 
     /**
      * Handle the TCVersion response during login
      */
-    private onTCVersionValidation(username) {
+    private onTCVersionValidation(username, resolve) {
         return (response) => {
             if (0 === response.errorCode) {
+                resolve();
                 return;
             }
+
+            resolve();
         };
     }
 }
