@@ -38,7 +38,7 @@ class PASModuleController
     {
         $data = [];
         try {
-            $data['provisioned'] = 
+            $data['provisioned'] =
                 $this->paymentAccount->hasAccount('casino-gold', $request->getQueryParam('username'));
         } catch (\Exception $e) {
             $data = [];
