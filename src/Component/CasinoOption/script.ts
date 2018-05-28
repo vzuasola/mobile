@@ -67,11 +67,7 @@ export class CasinoOptionComponent implements ComponentInterface {
                     },
                 }).then((response) => {
                     if (response.redirect) {
-                        if (utility.isExternal(response.redirect)) {
-                            window.location.href = response.redirect;
-                        } else {
-                            Router.navigate(response.redirect, ["header", "main"]);
-                        }
+                        window.location.href = response.redirect;
                     }
                 }).fail((error, message) => {
                     // do something
