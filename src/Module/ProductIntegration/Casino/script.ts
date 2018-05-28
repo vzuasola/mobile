@@ -11,10 +11,10 @@ export class CasinoIntegrationModule extends Redirectable implements ModuleInter
     protected isLoginOnly = true;
 
     doRequest(src) {
-        this.getPreferredCasino();
+        this.getPreferredCasino(src);
     }
 
-    private getPreferredCasino() {
+    private getPreferredCasino(src) {
         xhr({
             url: Router.generateRoute("casino_option", "preference"),
             type: "json",
@@ -24,11 +24,7 @@ export class CasinoIntegrationModule extends Redirectable implements ModuleInter
                     ComponentManager.broadcast("casino.preference");
                     this.loader.hide();
                 } else {
-                    if (utility.isExternal(response.redirect)) {
-                        window.location.href = response.redirect;
-                    } else {
-                        Router.navigate(response.redirect, ["header", "main"]);
-                    }
+                    window.location.href = response.redirect;
                 }
             }
         }).fail((error, message) => {
