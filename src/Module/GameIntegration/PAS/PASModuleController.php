@@ -2,8 +2,6 @@
 
 namespace App\MobileEntry\Module\GameIntegration\PAS;
 
-
-
 class PASModuleController
 {
     private $rest;
@@ -40,8 +38,8 @@ class PASModuleController
     {
         $data = [];
         try {
-            $data['provisioned'] = $this->paymentAccount->hasAccount('casino-gold',
-                $request->getQueryParam('username'));
+            $data['provisioned'] = 
+                $this->paymentAccount->hasAccount('casino-gold', $request->getQueryParam('username'));
         } catch (\Exception $e) {
             $data = [];
         }
