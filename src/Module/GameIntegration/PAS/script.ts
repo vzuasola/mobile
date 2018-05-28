@@ -47,16 +47,10 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     init() {
-        this.setiApiConfOverride();
+
         iapiSetCallout("Logout", this.onLogout);
         iapiSetCallout("KeepAlive", this.onKeepAlive);
 
-        // if (this.isSessionAlive) {
-        //     // Persist session
-        //     this.sessionPersist();
-        // } else if (this.store.get(this.sessionFlag) !== null) {
-        //     this.doLogout();
-        // }
     }
 
     login(username, password) {
@@ -76,22 +70,6 @@ export class PASModule implements ModuleInterface, GameInterface {
                     // Set the callback for the PAS login
                     iapiSetCallout("Login", this.onLogin(user));
                 }, 1 * 500 * ctr);
-
-                // Before login, check if there are cookies on PTs end
-                // iapiSetCallout("GetLoggedInPlayer", (response) => {
-                //     if (this.verifyCookie(response)) {
-                //         iapiSetCallout("Logout", (resp) => {
-                //             iapiLogin(user, password, real, language);
-                //         });
-
-                //         this.doLogout();
-                //     } else {
-                //         iapiLogin(user, password, real, language);
-                //     }
-                // });
-
-                // Trigger the session check
-                // this.doCheckSession();
 
             }
         }
