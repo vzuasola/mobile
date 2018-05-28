@@ -19,12 +19,14 @@ export class SliderComponent implements ComponentInterface {
 
         if (slider && slider.querySelectorAll(".xlide-item").length > 0) {
             // tslint:disable-next-line:no-unused-expression
-            new Xlider({
+            const sliderObj = new Xlider({
                 selector: "#main-slider",
                 loop: true,
                 duration: 300,
                 controls: true,
             });
+
+            setInterval(() => sliderObj.next(), 5000);
         }
     }
 }
