@@ -121,6 +121,7 @@ class ALSIntegrationModuleController
         $options = [
             'path' => '/',
             'domain' => $domain,
+            'secure' => true
         ];
 
         if ($action == 'create') {
