@@ -64,7 +64,6 @@ export class PASModule implements ModuleInterface, GameInterface {
                 ++ ctr;
                 setTimeout(() => {
                     iapiConf = this.iapiConfs[key];
-                    console.log(iapiConf);
                     iapiLogin(user, password, real, language);
 
                     // Set the callback for the PAS login
