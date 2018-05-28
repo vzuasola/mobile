@@ -14,6 +14,8 @@ export class GenericIntegrationModule extends Redirectable implements ModuleInte
         const url = src.getAttribute("data-post-login-url");
 
         if (url) {
+            this.loader.show();
+
             xhr({
                 url: Router.generateModuleRoute("login_redirect", "process"),
                 type: "json",
@@ -24,13 +26,13 @@ export class GenericIntegrationModule extends Redirectable implements ModuleInte
             }).then((response) => {
                 if (typeof response.url !== "undefined") {
                     window.location.href = response.url;
+                    return;
                 }
+
+                this.loader.hide();
             }).fail((error, message) => {
-                // do something
+                this.loader.hide();
             });
         }
-
-        // post login url was not found
-        // generic application handling here
     }
 }
