@@ -15,20 +15,25 @@ export class CasinoIntegrationModule extends Redirectable implements ModuleInter
     }
 
     private getPreferredCasino(src) {
+        this.loader.show();
+
         xhr({
             url: Router.generateRoute("casino_option", "preference"),
             type: "json",
         }).then((response) => {
             if (response.success) {
-                if (!response.redirect) {
-                    ComponentManager.broadcast("casino.preference");
-                    this.loader.hide();
-                } else {
+                // redirect to URL
+                if (response.redirect) {
                     window.location.href = response.redirect;
+                    return;
                 }
+
+                ComponentManager.broadcast("casino.preference");
             }
+
+            this.loader.hide();
         }).fail((error, message) => {
-            // do something
+            this.loader.hide();
         });
     }
 }
