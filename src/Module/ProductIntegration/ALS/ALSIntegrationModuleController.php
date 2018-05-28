@@ -160,8 +160,8 @@ class ALSIntegrationModuleController
                 'domain' => Host::getDomain(),
             ];
 
-            Cookies::set('extToken', $result['jwt'], $options);
-            Cookies::set('extCurrency', $playerDetails['currency'], $options);
+            Cookies::set('dafaToken', $result['jwt'], $options);
+            Cookies::set('dafaCurrency', $playerDetails['currency'], $options);
         }
     }
 }
