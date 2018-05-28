@@ -31,9 +31,6 @@ export class AnnouncementComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
 
-        this.activateAnnouncementBar(element);
-        this.bindDismissButton(element);
-
          // lightbox
         this.getUnread(element);
     }
