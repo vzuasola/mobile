@@ -82,7 +82,7 @@ class BalanceModuleController
 
             try {
                 $territoriesMap = $this->territories->getRestrictedCountries();
-                $territory = $request->getHeader('HTTP_X_CUSTOM_LB_GEOIP_COUNTRY')[0] ?? '';
+                $territory = $request->getServerParams()['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY'] ?? '';
             } catch (\Exception $e) {
                 // Do nothing
             }
