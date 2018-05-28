@@ -11,15 +11,19 @@ export class Session {
         this.timeout = timeout;
 
         this.counter = new Counter(timeout, {
-            onCount: this.onCounterCount,
-            onRestart: this.onCounterRestart,
-            onStop: this.onCounterStop,
+            onCount: (counter: Counter, time: number) => {
+                this.onCounterCount(counter, time);
+            },
+            onRestart: () => {
+                this.onCounterRestart();
+            },
+            onStop: () => {
+                this.onCounterStop();
+            },
         });
     }
 
     init() {
-        console.log(`Starting session count with ${this.timeout} seconds`);
-
         this.counter.start();
         this.attachEvents();
     }
@@ -38,7 +42,7 @@ export class Session {
      */
 
     private onCounterRestart() {
-        // placeholder for logs
+        console.log(`Starting session count with ${this.timeout} seconds`);
     }
 
     private onCounterStop() {
