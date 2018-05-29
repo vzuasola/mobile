@@ -84,7 +84,7 @@ class LoginComponentController
         $data = [];
 
         try {
-            $this->playerSession->logout();
+            $data['success'] = $this->playerSession->logout();
         } catch (\Exception $e) {
             // do nothing
         }
