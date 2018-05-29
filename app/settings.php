@@ -28,7 +28,7 @@ $settings['settings']['components']['async'] = false;
 // Page Cache
 
 $settings['settings']['page_cache']['enable'] = true;
-$settings['settings']['page_cache']['default_timeout'] = 1000;
+$settings['settings']['page_cache']['default_timeout'] = 1800;
 
 // Environment Specific
 
