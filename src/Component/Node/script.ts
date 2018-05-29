@@ -25,9 +25,6 @@ export class NodeComponent implements ComponentInterface {
     }
 
     private accordion(element) {
-        const options = {
-            element,
-        };
-        const accordion = new Accordion(options);
+        const accordion = new Accordion(element);
     }
 }

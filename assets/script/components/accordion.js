@@ -9,15 +9,13 @@
  */
 import * as utility from "@core/assets/js/components/utility";
 
-export default function accordion(options) {
+export default function accordion(element, options) {
     "use strict";
 
     // Default options
     var defaults = {
         collapsible: false
     };
-
-    var element = options.element;
 
     // create accordion functionality if the required elements exist is available.
     var ckeditorAccordion = element.querySelectorAll('.ckeditor-accordion'),
@@ -26,7 +24,7 @@ export default function accordion(options) {
 
     if (ckeditorAccordion.length > 0) {
         // extend options
-        options = options.option || {};
+        options = options || {};
 
         for (var name in defaults) {
             if (options[name] === undefined) {
@@ -66,6 +64,13 @@ export default function accordion(options) {
                 item.style.transition = "height ." + speed + "s";
             });
 
+            // Set active accordion for <dt> with class "active" on doc ready
+            utility.forEach(dt, function (item) {
+                if (utility.hasClass(item, "active")) {
+                    setActive(item);
+                }
+            });
+
         });
 
         // Add click event to body once because quick edits & ajax calls might reset the HTML.
@@ -79,41 +84,43 @@ export default function accordion(options) {
             }
 
             if (target.tagName === 'DT') {
-                var active_dt = target,
-                    active_accordionWrapper = target.parentNode,
-                    active_dd = active_accordionWrapper.querySelector('dd'),
-                    active_dd_height = active_dd.scrollHeight,
-                    accordionWrapper = target.parentNode.parentNode.querySelectorAll('.ckeditor-wrapper');
-
-                if (options.collapsible) {
-                    if (!utility.hasClass(active_accordionWrapper, 'active')) {
-                        utility.forEach(accordionWrapper, function (item) {
-                            utility.removeClass(item, 'active');
-                            utility.removeClass(item.querySelector('dt'), 'active');
-                            utility.removeClass(item.querySelector('dd'), 'active');
-                            item.querySelector('dd').style.height = 0;
-                        });
-
-                        utility.addClass(active_accordionWrapper, 'active');
-                        utility.addClass(active_dt, 'active');
-                        utility.addClass(active_dd, 'active');
-                        active_dd.style.height = active_dd_height + 'px';
-                    }
-                } else {
-                    utility.toggleClass(active_accordionWrapper, 'active');
-                    utility.toggleClass(active_dt, 'active');
-                    utility.toggleClass(active_dd, 'active');
-
-                    if (active_dd_height === 0) {
-                        active_dd.style.height = active_dd_height + 'px';
-                    } else if (utility.hasClass(active_dd, 'active')) {
-                        active_dd.style.height = active_dd_height + 'px';
-                    } else {
-                        active_dd.style.height = 0;
-                    }
-                }
-
+                setActive(target);
             }
         });
+
+        function setActive(dt) {
+            var active_accordionWrapper = dt.parentNode,
+                active_dd = active_accordionWrapper.querySelector('dd'),
+                active_dd_height = active_dd.scrollHeight,
+                accordionWrapper = dt.parentNode.parentNode.querySelectorAll('.ckeditor-wrapper');
+
+            if (options.collapsible) {
+                if (!utility.hasClass(active_accordionWrapper, 'active')) {
+                    utility.forEach(accordionWrapper, function (item) {
+                        utility.removeClass(item, 'active');
+                        utility.removeClass(item.querySelector('dt'), 'active');
+                        utility.removeClass(item.querySelector('dd'), 'active');
+                        item.querySelector('dd').style.height = 0;
+                    });
+
+                    utility.addClass(active_accordionWrapper, 'active');
+                    utility.addClass(dt, 'active');
+                    utility.addClass(active_dd, 'active');
+                    active_dd.style.height = active_dd_height + 'px';
+                }
+            } else {
+                utility.toggleClass(active_accordionWrapper, 'active');
+                utility.toggleClass(dt, 'active');
+                utility.toggleClass(active_dd, 'active');
+
+                if (active_dd_height === 0) {
+                    active_dd.style.height = active_dd_height + 'px';
+                } else if (utility.hasClass(active_dd, 'active')) {
+                    active_dd.style.height = active_dd_height + 'px';
+                } else {
+                    active_dd.style.height = 0;
+                }
+            }
+        }
     }
 }
