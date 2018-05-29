@@ -80,25 +80,27 @@ export class Login {
         const form: HTMLElement = element.querySelector(".login-form");
 
         utility.listen(form, "submit", (event, src: any) => {
-            const username: string = src.querySelector('[name="username"]').value;
-            const password: string = src.querySelector('[name="password"]').value;
+            if (src.isValid) {
+                const username: string = src.querySelector('[name="username"]').value;
+                const password: string = src.querySelector('[name="password"]').value;
 
-            event.preventDefault();
+                event.preventDefault();
 
-            Modal.close("#login-lightbox");
-            this.loader.show();
+                Modal.close("#login-lightbox");
+                this.loader.show();
 
-            const events = this.loginEvents.slice(0);
+                const events = this.loginEvents.slice(0);
 
-            events.push(() => {
-                return new Promise((resolve, reject) => {
-                    this.doLoginRequest(form, src);
+                events.push(() => {
+                    return new Promise((resolve, reject) => {
+                        this.doLoginRequest(form, src);
 
-                    resolve();
+                        resolve();
+                    });
                 });
-            });
 
-            this.sync.executeWithArgs(events, [username, password]);
+                this.sync.executeWithArgs(events, [username, password]);
+            }
         });
     }
 
@@ -106,81 +108,79 @@ export class Login {
      * Do the actual login request
      */
     private doLoginRequest(form, src) {
-        if (src.isValid) {
-            const username: string = src.querySelector('[name="username"]').value;
-            const password: string = src.querySelector('[name="password"]').value;
-            const product = false;
+        const username: string = src.querySelector('[name="username"]').value;
+        const password: string = src.querySelector('[name="password"]').value;
+        const product = false;
 
-            const data: any = {
-                username,
-                password,
-            };
+        const data: any = {
+            username,
+            password,
+        };
 
-            if (this.productVia) {
-                data.product = this.productVia;
-            }
+        if (this.productVia) {
+            data.product = this.productVia;
+        }
 
-            xhr({
-                url: Router.generateRoute("header_login", "authenticate"),
-                type: "json",
-                method: "post",
-                data,
-            }).then((response) => {
-                if (response && response.success) {
-                    const remember = src.querySelector('[name="remember"]');
+        xhr({
+            url: Router.generateRoute("header_login", "authenticate"),
+            type: "json",
+            method: "post",
+            data,
+        }).then((response) => {
+            if (response && response.success) {
+                const remember = src.querySelector('[name="remember"]');
 
-                    if (remember) {
-                        const isChecked = remember.checked;
+                if (remember) {
+                    const isChecked = remember.checked;
 
-                        utility.removeCookie("remember-username");
+                    utility.removeCookie("remember-username");
 
-                        if (isChecked) {
-                            utility.setCookie("remember-username", username, null, "/");
-                        }
+                    if (isChecked) {
+                        utility.setCookie("remember-username", username, null, "/");
                     }
+                }
 
-                    ComponentManager.broadcast("session.prelogin", {
+                ComponentManager.broadcast("session.prelogin", {
+                    src: this.srcElement,
+                    username,
+                    password,
+                });
+
+                // the action property defines what to do when a login process
+                // invoked, this is used if you want to override the after login
+                // step
+                if (this.action) {
+                    const handler = this.action;
+
+                    handler(this.srcElement, username, password);
+
+                    ComponentManager.broadcast("session.login", {
                         src: this.srcElement,
                         username,
                         password,
                     });
+                } else {
+                    ComponentManager.refreshComponents(
+                        ["header", "main", "announcement", "push_notification"],
+                        () => {
+                            ComponentManager.broadcast("session.login", {
+                                src: this.srcElement,
+                                username,
+                                password,
+                            });
 
-                    // the action property defines what to do when a login process
-                    // invoked, this is used if you want to override the after login
-                    // step
-                    if (this.action) {
-                        const handler = this.action;
-
-                        handler(this.srcElement, username, password);
-
-                        ComponentManager.broadcast("session.login", {
-                            src: this.srcElement,
-                            username,
-                            password,
-                        });
-                    } else {
-                        ComponentManager.refreshComponents(
-                            ["header", "main", "announcement", "push_notification"],
-                            () => {
-                                ComponentManager.broadcast("session.login", {
-                                    src: this.srcElement,
-                                    username,
-                                    password,
-                                });
-
-                                this.loader.hide();
-                            },
-                        );
-                    }
+                            this.loader.hide();
+                        },
+                    );
                 }
-            }).fail((error) => {
-                Modal.open("#login-lightbox");
+            }
+        }).fail((error) => {
+            Modal.open("#login-lightbox");
 
-                ComponentManager.broadcast("session.failed", {error, form});
+            ComponentManager.broadcast("session.failed", {error, form});
 
-                this.loader.hide();
-            });
-        }
+            this.loader.hide();
+        });
     }
 
     /**

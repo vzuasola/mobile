@@ -53,6 +53,12 @@ class SessionModuleScripts implements ComponentAttachmentInterface
         }
 
         try {
+            $data['hash'] = md5($this->playerSession->getUsername());
+        } catch (\Exception $e) {
+            $data['hash'] = false;
+        }
+
+        try {
             $loginConfigs = $this->configs->getConfig('webcomposer_config.login_configuration');
         } catch (\Exception $e) {
             $loginConfigs = [];
