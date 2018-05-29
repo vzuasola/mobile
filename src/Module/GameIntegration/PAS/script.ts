@@ -80,8 +80,8 @@ export class PASModule implements ModuleInterface, GameInterface {
             // after n seconds, nothing still happen, I'll let the other
             // hooks to proceed
             setTimeout(() => {
-                reject();
-            }, 15 * 1000);
+                resolve();
+            }, 10 * 1000);
         });
     }
 
