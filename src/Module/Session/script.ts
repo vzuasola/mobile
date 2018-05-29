@@ -10,7 +10,7 @@ export class SessionModule implements ModuleInterface {
     private isSessionStarted: boolean = false;
     private isLogin: boolean = false;
 
-    onLoad(attachments: {authenticated: boolean, timeout: number}) {
+    onLoad(attachments: {authenticated: boolean, timeout: number, hash: string}) {
         const timeout = attachments.timeout ? attachments.timeout : 15;
 
         this.session = new Session(timeout * 60);
@@ -38,6 +38,10 @@ export class SessionModule implements ModuleInterface {
         Router.setOption("process-url-generators", (url: string, type: string) => {
             if (this.isLogin) {
                 url = utility.addQueryParam(url, "authenticated", "true");
+
+                if (attachments.hash) {
+                    url = utility.addQueryParam(url, "hash", attachments.hash);
+                }
             }
 
             return url;
