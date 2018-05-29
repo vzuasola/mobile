@@ -7,7 +7,7 @@
 
     dt {
         position: relative;
-        padding: 1.5rem 2rem 1.5rem 8.2rem;
+        padding: 1.5rem 2rem 1.5rem 7rem;
         color: $dark-gray;
         font-size: 2rem;
         font-weight: 600;
@@ -17,14 +17,14 @@
         .arrow {
             @include triangle(right, 1rem, $dark-red);
             position: absolute;
-            top: 1.9rem;
-            left: 4.5rem;
+            top: 1.5rem;
+            left: 3.5rem;
             content: "";
             border-left-width: 1.6rem;
         }
 
         &.active .arrow {
-            top: 2.2rem;
+            top: 1.7rem;
             border-top: 1rem solid #900000;
             border-right: 1rem solid transparent;
             border-left: 1rem solid transparent;
