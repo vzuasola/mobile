@@ -3,23 +3,27 @@ routes:
         method: GET
         action: App\MobileEntry\Controller\HomeController:view
         components:
-          main: home
+            main: home
+        headers:
+            Cache-Control: private, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
 
     /debug:
         method: GET
         action: App\Controller\DefaultController:debug
 
-    /about:
-        method: GET
-        action: App\MobileEntry\Controller\AboutController:view
-        components:
-          main: basic
-
     /login:
         method: GET
         action: App\MobileEntry\Controller\HomeController:view
         components:
-          main: home
+            main: home
+        headers:
+            Cache-Control: private, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
 
     /logout:
         method: GET
@@ -29,7 +33,27 @@ routes:
         method: GET
         action: App\MobileEntry\Controller\PromotionsController:view
         components:
-         main: promotions
+            main: promotions
+        headers:
+            Cache-Control: private, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+
+
+    # Definition of component controllers for cache control
+
+    /api/plugins/component/route/promotions/promotions:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: private, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+
+
+    # Standard component controllers
 
     /api/plugins/component/route/{id}/{method}:
         method: ANY
@@ -43,4 +67,9 @@ routes:
         method: ANY
         action: App\MobileEntry\Controller\NodeController:view
         components:
-          main: node
+            main: node
+        headers:
+            Cache-Control: private, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
