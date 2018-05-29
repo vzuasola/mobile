@@ -117,18 +117,16 @@ export class AvayaModule implements ModuleInterface {
      * @return void/boolean
      */
     private getAvayaToken(event, src, data) {
-        let target = src;
+        let target = utility.find(src, (el) => {
+            if (el.tagName === "A") {
+                const href = el.getAttribute("href");
 
-        // Get parent Anchor if target is inside of anchor
-        if (target.tagName !== "A" && (target.parentNode !== null && target.parentNode.tagName === "A")) {
-            target = target.parentNode;
-        }
+                return href.indexOf("linkto:avaya") !== -1;
+            }
+        });
 
         // Check if the link should be changed to avaya link
-        if (typeof target.href !== "undefined" &&
-            typeof target.indexOf !== "undefined" &&
-            target.href.indexOf("linkto:avaya") !== -1
-        ) {
+        if (target) {
             event.preventDefault();
 
             target = utility.getParameterByName("target", target.href);
