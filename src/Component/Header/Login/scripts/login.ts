@@ -170,6 +170,9 @@ export class Login {
 
                                 this.loader.hide();
                             },
+                            null,
+                            null,
+                            true,
                         );
                     }
                 }
@@ -278,7 +281,9 @@ export class Login {
                 this.action = data.action;
             }
 
-            Modal.open("#login-lightbox");
+            if (!this.isLogin) {
+                Modal.open("#login-lightbox");
+            }
         });
     }
 
@@ -308,12 +313,15 @@ export class Login {
                 url: Router.generateRoute("header", "logout"),
                 type: "json",
                 method: "get",
-            }).always(() => {
+            }).always((response) => {
                 ComponentManager.refreshComponents(
                     ["header", "main", "announcement", "push_notification"],
                     () => {
                         this.loader.hide();
                     },
+                    null,
+                    null,
+                    true,
                 );
             });
         });
