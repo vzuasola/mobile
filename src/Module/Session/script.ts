@@ -36,7 +36,7 @@ export class SessionModule implements ModuleInterface {
         // parameter flag. This allow us to properly set cache values for
         // post login pages
         Router.setOption("process-url-generators", (url: string, type: string) => {
-            if (type === "render" && this.isLogin) {
+            if (this.isLogin) {
                 url = utility.addQueryParam(url, "authenticated", "true");
             }
 
