@@ -4,8 +4,6 @@ routes:
         action: App\MobileEntry\Controller\HomeController:view
         components:
             main: home
-        headers:
-            Cache-Control: private, max-age=300
         page_cache:
             enabled: true
             expires: 1800
@@ -19,8 +17,6 @@ routes:
         action: App\MobileEntry\Controller\HomeController:view
         components:
             main: home
-        headers:
-            Cache-Control: private, max-age=300
         page_cache:
             enabled: true
             expires: 1800
@@ -68,8 +64,6 @@ routes:
         action: App\MobileEntry\Controller\NodeController:view
         components:
             main: node
-        headers:
-            Cache-Control: private, max-age=300
         page_cache:
             enabled: true
             expires: 1800

@@ -1,42 +1,12 @@
-# Component listModule
+# Component Configuration List
 
-modules:
-  session:
-    class: App\MobileEntry\Module\Session\SessionModule
+settings:
+  router:
+    # Controls the headers defined when accessing individual components
+    headers:
+      Cache-Control: private, max-age=300
 
-  avaya:
-    class: App\MobileEntry\Module\Avaya\AvayaModule
-
-  balance:
-    class: App\MobileEntry\Module\Balance\BalanceModule
-
-  tracking:
-    class: App\MobileEntry\Module\Tracking\TrackingModule
-
-  product_integration:
-    class: App\MobileEntry\Module\ProductIntegration\ProductIntegrationModule
-
-  generic_integration:
-    class: App\MobileEntry\Module\ProductIntegration\Generic\GenericIntegrationModule
-
-  owsports_integration:
-    class: App\MobileEntry\Module\ProductIntegration\OWSports\OWSportsIntegrationModule
-
-  als_integration:
-    class: App\MobileEntry\Module\ProductIntegration\ALS\ALSIntegrationModule
-
-  game_integration:
-    class: App\MobileEntry\Module\GameIntegration\GameIntegrationModule
-
-  casino_integration:
-    class: App\MobileEntry\Module\ProductIntegration\Casino\CasinoIntegrationModule
-
-  pas_integration:
-    class: App\MobileEntry\Module\GameIntegration\PAS\PASModule
-
-  login_redirect:
-    class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
-
+# Define components
 components:
   access_denied:
     class: App\MobileEntry\Component\Main\AccessDenied\AccessDeniedComponent
@@ -103,3 +73,42 @@ components:
 
   marketing:
     class: App\MobileEntry\Component\Marketing\MarketingComponent
+
+# Define modules
+modules:
+  session:
+    class: App\MobileEntry\Module\Session\SessionModule
+
+  avaya:
+    class: App\MobileEntry\Module\Avaya\AvayaModule
+
+  balance:
+    class: App\MobileEntry\Module\Balance\BalanceModule
+
+  tracking:
+    class: App\MobileEntry\Module\Tracking\TrackingModule
+
+  product_integration:
+    class: App\MobileEntry\Module\ProductIntegration\ProductIntegrationModule
+
+  generic_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Generic\GenericIntegrationModule
+
+  owsports_integration:
+    class: App\MobileEntry\Module\ProductIntegration\OWSports\OWSportsIntegrationModule
+
+  als_integration:
+    class: App\MobileEntry\Module\ProductIntegration\ALS\ALSIntegrationModule
+
+  game_integration:
+    class: App\MobileEntry\Module\GameIntegration\GameIntegrationModule
+
+  casino_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Casino\CasinoIntegrationModule
+
+  pas_integration:
+    class: App\MobileEntry\Module\GameIntegration\PAS\PASModule
+
+  login_redirect:
+    class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
+
