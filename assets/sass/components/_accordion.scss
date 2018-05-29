@@ -7,7 +7,7 @@
 
     dt {
         position: relative;
-        padding: 1.5rem 2rem 1.5rem 7rem;
+        padding: 1.5rem 2rem 1.5rem 4.5rem;
         color: $dark-gray;
         font-size: 2rem;
         font-weight: 600;
@@ -18,7 +18,7 @@
             @include triangle(right, 1rem, $dark-red);
             position: absolute;
             top: 1.5rem;
-            left: 3.5rem;
+            left: 1.5rem;
             content: "";
             border-left-width: 1.6rem;
         }
