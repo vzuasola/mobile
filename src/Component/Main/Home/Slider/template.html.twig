@@ -18,12 +18,13 @@
                         alt="{{ asset(slide['field_banner_image'][0]['alt']) }}" 
                         class="w-100"
                     >
+                    <div class="xlider-blurb {{slide['field_content_position'][0]['value'] }}">
+                        {{ include('@component/Main/Home/Slider/templates/product-ribbon.html.twig') }}
+                        {{ slide['field_banner_blurb'][0]['value']|raw }}
+                    </div>
                 </a>
-                <div class="xlider-blurb {{slide['field_content_position'][0]['value'] }}">
-                    {{ include('@component/Main/Home/Slider/templates/product-ribbon.html.twig') }}
-                    {{ slide['field_banner_blurb'][0]['value']|raw }}
-                </div>
             </div>
+
         {% elseif ((show_both or slide['field_log_in_state'][0]['value'] == '1') and is_login) %}
             <div class="xlide-item">
                 <a 
@@ -35,11 +36,11 @@
                         alt="{{ asset(slide['field_post_banner_image'][0]['alt']) }}" 
                         class="w-100"
                     >
+                    <div class="xlider-blurb {{slide['field_post_content_position'][0]['value'] }}">
+                        {{ include('@component/Main/Home/Slider/templates/product-ribbon.html.twig') }}
+                        {{ slide['field_post_banner_blurb'][0]['value']|raw }}
+                    </div>
                 </a>
-                <div class="xlider-blurb {{slide['field_post_content_position'][0]['value'] }}">
-                    {{ include('@component/Main/Home/Slider/templates/product-ribbon.html.twig') }}
-                    {{ slide['field_post_banner_blurb'][0]['value']|raw }}
-                </div>
             </div>
         {% endif %}
     {% endfor %}
