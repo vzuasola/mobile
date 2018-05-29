@@ -3,6 +3,16 @@
 .ckeditor-accordion {
     .ckeditor-wrapper {
         margin: 0 auto 0.3rem;
+
+        &.active {
+            .arrow {
+                top: 1.7rem;
+                border-top: 1rem solid #900000;
+                border-right: 1rem solid transparent;
+                border-left: 1rem solid transparent;
+                border-top-width: 1.6rem;
+            }
+        }
     }
 
     dt {
@@ -21,14 +31,6 @@
             left: 1.5rem;
             content: "";
             border-left-width: 1.6rem;
-        }
-
-        &.active .arrow {
-            top: 1.7rem;
-            border-top: 1rem solid #900000;
-            border-right: 1rem solid transparent;
-            border-left: 1rem solid transparent;
-            border-top-width: 1.6rem;
         }
     }
 

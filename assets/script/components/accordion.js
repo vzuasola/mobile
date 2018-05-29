@@ -104,13 +104,11 @@ export default function accordion(element, options) {
                     });
 
                     utility.addClass(active_accordionWrapper, 'active');
-                    utility.addClass(dt, 'active');
                     utility.addClass(active_dd, 'active');
                     active_dd.style.height = active_dd_height + 'px';
                 }
             } else {
                 utility.toggleClass(active_accordionWrapper, 'active');
-                utility.toggleClass(dt, 'active');
                 utility.toggleClass(active_dd, 'active');
 
                 if (active_dd_height === 0) {
