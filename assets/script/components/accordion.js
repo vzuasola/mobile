@@ -9,15 +9,13 @@
  */
 import * as utility from "@core/assets/js/components/utility";
 
-export default function accordion(options) {
+export default function accordion(element, options) {
     "use strict";
 
     // Default options
     var defaults = {
         collapsible: false
     };
-
-    var element = options.element;
 
     // create accordion functionality if the required elements exist is available.
     var ckeditorAccordion = element.querySelectorAll('.ckeditor-accordion'),
@@ -26,7 +24,7 @@ export default function accordion(options) {
 
     if (ckeditorAccordion.length > 0) {
         // extend options
-        options = options.option || {};
+        options = options || {};
 
         for (var name in defaults) {
             if (options[name] === undefined) {
