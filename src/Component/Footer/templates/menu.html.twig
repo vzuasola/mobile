@@ -3,8 +3,11 @@
         {% set menuLength = (footer_menu|length == 2) ? 'footer-mobile-item half' : 'footer-mobile-item' %}
         {% for menu in footer_menu %}
             <li class="{{ menuLength }}">
-                <a href="{{ url(menu.uri) }}"
-                class="{{ menu.attributes.class }}">
+                <a
+                    href="{{ url(menu.uri) }}"
+                    class="{{ menu.attributes.class }}"
+                    target="{{ menu.attributes.target }}"
+                >
                     {% include '@app/web/images/svg/footer/'~menu.attributes.svg~'.svg' ignore missing %}
                     {{ menu.title }}
                 </a>

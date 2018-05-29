@@ -109,6 +109,8 @@ class BalanceModuleController
                 );
 
                 $totalBalance = $sumBalance + $sumBonus;
+                $data['balances'] = $balances;
+                $data['bonuses'] = $bonuses;
                 $data['balance'] = number_format($totalBalance, 2, '.', ',');
                 $data['format'] = $this->totalBalanceFormat($currency);
                 $data['currency'] = $this->currencyTranslation($currency);
