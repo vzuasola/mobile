@@ -24,7 +24,8 @@ export class Menu {
                 this.openMenu();
             } else if (utility.hasClass(target, "close-svg") ||
                 utility.hasClass(target, "menu-item-internal", true) ||
-                utility.hasClass(target, "mobile-menu-overlay")
+                utility.hasClass(target, "mobile-menu-overlay") ||
+                utility.hasClass(target, "logo-img")
             ) {
                 this.closeMenu();
             }
