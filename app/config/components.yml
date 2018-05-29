@@ -2,9 +2,11 @@
 
 settings:
   router:
+    # Controls the headers defined when accessing individual components
     headers:
       Cache-Control: private, max-age=300
 
+# Define components
 components:
   access_denied:
     class: App\MobileEntry\Component\Main\AccessDenied\AccessDeniedComponent
@@ -72,6 +74,7 @@ components:
   marketing:
     class: App\MobileEntry\Component\Marketing\MarketingComponent
 
+# Define modules
 modules:
   session:
     class: App\MobileEntry\Module\Session\SessionModule
