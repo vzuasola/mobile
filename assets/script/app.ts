@@ -12,7 +12,13 @@ import "./loader";
 ComponentManager.init();
 
 Router.setOption("no-trailing-slashes", true);
-
 Router.init();
 
 Modal.listen(".modal-trigger");
+
+// fix for Safari not reloading the page on history back
+window.onpageshow = (event) => {
+    if (event.persisted) {
+        window.location.reload();
+    }
+};
