@@ -4,7 +4,9 @@
         {% for menu in footer_menu %}
             <li class="{{ menuLength }}">
                 <a href="{{ url(menu.uri) }}"
-                class="{{ menu.attributes.class }}">
+                class="{{ menu.attributes.class }}"
+                target="{{ menu.attributes.target }}"
+                >
                     {% include '@app/web/images/svg/footer/'~menu.attributes.svg~'.svg' ignore missing %}
                     {{ menu.title }}
                 </a>
