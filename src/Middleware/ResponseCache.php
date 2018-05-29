@@ -28,8 +28,13 @@ class ResponseCache extends Base
         $base = $uri->getBaseUrl();
         $path = $uri->getPath();
 
+        $url = trim($base . $path, '/');
+
         $widget = $this->request->getQueryParam('component-data-widget');
-        $url = trim($uri . $path, '/') . "?component-data-widget=$widget";
+
+        if ($widget) {
+            $url = "$url?component-data-widget=$widget";
+        }
 
         return md5($url);
     }
