@@ -1,6 +1,7 @@
 middlewares:
   request:
     slashes: App\Middleware\Request\Slashes
+    page_cache: App\Middleware\Cache\ResponseCache
     languages: App\Middleware\Request\Languages
     bootstrap: App\Middleware\Request\Bootstrap
     legacy_auth: App\Middleware\Request\LegacyAuthentication
@@ -8,4 +9,11 @@ middlewares:
 
   response:
     token: App\Middleware\Response\Token
+    page_cache: App\Middleware\Cache\ResponseCache
+    headers: App\Middleware\Response\Headers
     lazy_token: App\Middleware\Response\LazyToken
+
+  cache:
+    bootstrap: App\Middleware\Cache\Bootstrap
+    headers: App\Middleware\Response\Headers
+    lazy_replacement: App\Middleware\Cache\LazyReplacement
