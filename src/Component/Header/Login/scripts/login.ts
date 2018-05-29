@@ -170,9 +170,6 @@ export class Login {
 
                                 this.loader.hide();
                             },
-                            null,
-                            null,
-                            true,
                         );
                     }
                 }
@@ -319,9 +316,6 @@ export class Login {
                     () => {
                         this.loader.hide();
                     },
-                    null,
-                    null,
-                    true,
                 );
             });
         });
