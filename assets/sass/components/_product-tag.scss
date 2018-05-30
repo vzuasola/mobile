@@ -22,7 +22,7 @@ $slider-product-fish-hunter-foreground: $white;
 $slider-product-casino-gold-background: #fedead;
 $slider-product-casino-gold-foreground: #352808;
 
-$slider-product-keno-background: #ee3300;
+$slider-product-keno-background: #ff9100;
 $slider-product-keno-foreground: #fff;
 
 $slider-product-featured-background: #ffe001;
@@ -32,20 +32,16 @@ $slider-product-virtuals-background: #C5C0C1;
 $slider-product-virtuals-foreground: #AF0000;
 
 .product-tag {
-    position: relative;
-    display: inline-block;
-    top: -2.3rem;
-    left: 0;
+    margin-top: -1.8rem;
     z-index: 1;
     font-weight: 600;
     text-transform: uppercase;
-    text-align: center;
+    width: 100%;
 
     div {
         margin: 0 auto;
         padding: 0.5rem 1.5rem;
-        min-width: 13rem;
-        max-width: 100%;
+        width: 13rem;
     }
 }
 
