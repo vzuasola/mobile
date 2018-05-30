@@ -47,6 +47,8 @@ export class PushNotification {
         this.element = element;
         this.isconnected = false;
 
+        this.listenSessionLogin();
+
         if (attachments.authenticated) {
             xhr({
                 url: Router.generateRoute("push_notification", "pushnx"),
@@ -112,7 +114,6 @@ export class PushNotification {
         });
 
         this.attachAction();
-        this.listenSessionLogin();
         this.listenSessionLogout();
         this.socketConnected();
         this.messageListener();
