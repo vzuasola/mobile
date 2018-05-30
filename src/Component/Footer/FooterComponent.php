@@ -7,14 +7,14 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 class FooterComponent implements ComponentWidgetInterface
 {
     /**
-     * @var App\Fetcher\Drupal\menus
+     * @var App\Fetcher\Drupal\MenuFetcher
      */
     private $menus;
 
     /**
-     * @var App\Fetcher\Drupal\views
+     * @var App\Fetcher\Drupal\ViewsFetcher
      */
-    private $sponsors;
+    private $views;
 
     private $idDomain;
 
@@ -33,10 +33,10 @@ class FooterComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($menus, $sponsors, $idDomain)
+    public function __construct($menus, $views, $idDomain)
     {
         $this->menus = $menus;
-        $this->sponsors = $sponsors;
+        $this->views = $views;
         $this->idDomain = $idDomain;
     }
 
@@ -61,13 +61,7 @@ class FooterComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
-            $data['downloads_menu'] = $this->menus->getMultilingualMenu('mobile-downloads');
-        } catch (\Exception $e) {
-            $data['downloads_menu'] = [];
-        }
-
-        try {
-            $data['sponsors'] = $this->sponsors->getViewById('mobile_sponsor_list');
+            $data['sponsors'] = $this->views->getViewById('mobile_sponsor_list');
         } catch (\Exception $e) {
             $data['sponsors'] = [];
         }

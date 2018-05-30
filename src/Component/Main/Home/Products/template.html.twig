@@ -1,45 +1,47 @@
 {% if product_tiles %}
-<ul class="icon-thumbnail clearfix">
-    {% for product in product_tiles %}
-        {% if product.field_product_lobby_enable[0].value %}
-            <li class="icon-thumbnail-item product-box">
-            <a
-                href="{{ (is_logged_in) ? url(product.field_product_lobby_url_post_log[0].uri) : url(product.field_product_lobby_url_pre_log[0].uri) }}"
-                data-post-login-url="{{ product.field_post_login_url_encoded }}"
+<div class="home-display">
+    <ul class="icon-thumbnail clearfix">
+        {% for product in product_tiles %}
+            {% if product.field_product_lobby_enable[0].value %}
+                <li class="icon-thumbnail-item product-box">
+                <a
+                    href="{{ (is_logged_in) ? url(product.field_product_lobby_url_post_log[0].uri) : url(product.field_product_lobby_url_pre_log[0].uri) }}"
+                    data-post-login-url="{{ product.field_post_login_url_encoded }}"
 
-                target="{{ product.field_product_lobby_target[0].value }}"
+                    target="{{ product.field_product_lobby_target[0].value }}"
 
-                {% if product.field_product_integration_id %}
-                    data-product-instance-id="{{ product.field_product_integration_id[0].field_product_instance_id[0].value }}"
-                    data-product-integration-id="{{ product.field_product_integration_id[0].field_product_integration_id[0].value }}"
-                    data-product-login-via="{{ product.field_product_integration_id[0].field_product_login_via[0].value }}"
-                    data-product-reg-via="{{ product.field_product_integration_id[0].field_registration_url[0].value }}"
-                {% else %}
-                    {% if product.field_require_post_login[0].value %}
-                        data-product-require-post-login="true"
+                    {% if product.field_product_integration_id %}
+                        data-product-instance-id="{{ product.field_product_integration_id[0].field_product_instance_id[0].value }}"
+                        data-product-integration-id="{{ product.field_product_integration_id[0].field_product_integration_id[0].value }}"
+                        data-product-login-via="{{ product.field_product_integration_id[0].field_product_login_via[0].value }}"
+                        data-product-reg-via="{{ product.field_product_integration_id[0].field_registration_url[0].value }}"
                     {% else %}
-                        data-router="true"
-                        data-router-refresh="main"
+                        {% if product.field_require_post_login[0].value %}
+                            data-product-require-post-login="true"
+                        {% else %}
+                            data-router="true"
+                            data-router-refresh="main"
+                        {% endif %}
                     {% endif %}
-                {% endif %}
 
-                class="icon-thumbnail-link {{ product.field_product_lobby_class[0].value }}"
-            >
+                    class="icon-thumbnail-link {{ product.field_product_lobby_class[0].value }}"
+                >
 
-                <svg viewBox="0 0 20 20">
-                    <use xlink:href="#{{ product.field_product_lobby_id[0].value }}" />
-                </svg>
+                    <svg viewBox="0 0 20 20">
+                        <use xlink:href="#{{ product.field_product_lobby_id[0].value }}" />
+                    </svg>
 
-                <span class="icon-thumbnail-label">{{ product.field_product_lobby_title[0].value }}</span>
+                    <span class="icon-thumbnail-label">{{ product.field_product_lobby_title[0].value }}</span>
 
-                {% if product.field_product_lobby_tag[0].value %}
-                    <span class="icon-thumbnail-new-tag">
-                        <span>{{ config_new_text }}</span>
-                    </span>
-                {% endif %}
-            </a>
-        </li>
-        {% endif %}
-    {% endfor %}
-</ul>
+                    {% if product.field_product_lobby_tag[0].value %}
+                        <span class="icon-thumbnail-new-tag">
+                            <span>{{ config_new_text }}</span>
+                        </span>
+                    {% endif %}
+                </a>
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
 {% endif %}
