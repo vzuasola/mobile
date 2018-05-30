@@ -13,6 +13,7 @@ class PromotionsComponentScripts implements ComponentAttachmentInterface
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
     private $config;
+
     /**
      *
      */
