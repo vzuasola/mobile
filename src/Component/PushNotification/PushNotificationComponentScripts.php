@@ -24,7 +24,7 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession) 
+    public function __construct($playerSession)
     {
         $this->playerSession = $playerSession;
     }
