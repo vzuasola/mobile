@@ -53,6 +53,10 @@ components:
     class: App\MobileEntry\Component\Main\Home\Products\ProductsComponent
     parent: home
 
+  home_download:
+    class: App\MobileEntry\Component\Main\Home\Download\DownloadComponent
+    parent: home
+
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
 

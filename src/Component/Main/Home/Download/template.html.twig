@@ -1,4 +1,5 @@
 {% if downloads_menu %}
+<div class="container mt-10">
     <div class="grid grid-gap-10 app-download">
         {% set menuLength = (downloads_menu|length == 2 or downloads_menu|length == 4) ? 'col-6 mb-10' : 'col-4  mb-10' %}
         {% for menu in downloads_menu %}
@@ -7,10 +8,12 @@
                     href="{{ url(menu.uri) }}"
                     class="{{ menu.attributes.class }} download-box"
                     target="{{ menu.attributes.target }}"
+
                     data-router="true"
                     data-router-refresh="main"
-                    >
+                >
                     {% include '@app/web/images/svg/downloads/'~menu.attributes.svg~'.svg' ignore missing %}
+
                     <span class="app-download-text">
                         {{ menu.title }}
                     </span>
@@ -18,4 +21,5 @@
             </div>
         {% endfor %}
     </div>
+</div>
 {% endif %}
