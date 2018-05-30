@@ -12,26 +12,22 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     private $playerSession;
 
-    private $url;
-
     /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('player_session'),
-            $container->get('uri')
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $url)
+    public function __construct($playerSession)
     {
         $this->playerSession = $playerSession;
-        $this->url = $url;
     }
 
     /**
@@ -53,6 +49,7 @@ class PromotionsComponent implements ComponentWidgetInterface
             $data['node'] = [];
         }
 
+        $data['is_login'] = $this->playerSession->isLogin();
         return $data;
     }
 }
