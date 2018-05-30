@@ -28,19 +28,19 @@ export class PromotionsComponent implements ComponentInterface {
         });
     }
 
-    onLoad(element: HTMLElement, attachments: {filter_label: string}) {
+    onLoad(element: HTMLElement, attachments: {filterLabel: string}) {
         this.element = element;
         this.promotions = undefined;
 
-        this.init(attachments.filter_label);
+        this.init(attachments.filterLabel);
         this.listenChangeDropdown();
     }
 
-    onReload(element: HTMLElement, attachments: {filter_label: string}) {
+    onReload(element: HTMLElement, attachments: {filterLabel: string}) {
         this.element = element;
         this.promotions = undefined;
 
-        this.init(attachments.filter_label);
+        this.init(attachments.filterLabel);
         this.listenChangeDropdown();
 
     }
@@ -212,7 +212,7 @@ export class PromotionsComponent implements ComponentInterface {
             filters: response,
             filter_text: filterLabel,
         });
-        const filterEl = document.getElementById("promotion-filters");
+        const filterEl = this.element.querySelector("#promotion-filters");
 
         filterEl.innerHTML = template;
 

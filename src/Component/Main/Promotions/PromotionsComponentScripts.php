@@ -37,14 +37,16 @@ class PromotionsComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
+        $data = [];
+
         try {
             $promoConfigs = $this->config->getConfig('mobile_promotions.promotions_configuration');
         } catch (\Exception $e) {
             $promoConfigs = [];
         }
 
-        return [
-            'filter_label' => $promoConfigs['filter_label'] ?? 'Filter'
-        ];
+        $data['filterLabel'] = $promoConfigs['filter_label'] ?? 'Filter';
+
+        return $data;
     }
 }
