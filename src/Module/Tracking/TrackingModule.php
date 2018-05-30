@@ -2,6 +2,7 @@
 
 namespace App\MobileEntry\Module\Tracking;
 
+use App\Slim\Response;
 use App\Cookies\Cookies;
 use App\Plugins\ComponentWidget\ComponentModuleInterface;
 
@@ -29,32 +30,45 @@ class TrackingModule implements ComponentModuleInterface
         $this->request = $request;
     }
 
-    public function init()
+    /**
+     *
+     */
+    public function processRequest($request, &$response)
     {
+        $cookies = $this->getCookies();
+
         try {
-            $cookies = $this->getCookies();
             $affiliates = $this->views->getViewById('affiliates');
-            $config = $this->configs->getConfig('webcomposer_config.affiliate_configuration');
-
-            $params = $this->request->getParams();
-
-            foreach ($params as $key => $value) {
-                if (isset($affiliates[$key])) {
-                    $cookies[$key] = $value;
-                }
-            }
-
-            $time = $config['affiliate_expiration'] ?? 0;
-
-            if (!empty($cookies)) {
-                Cookies::set('affiliates', http_build_query($cookies), [
-                    'expire' => time() + ($time * 60),
-                    'http' => false,
-                    'path' => '/',
-                ]);
-            }
         } catch (\Exception $e) {
-            // do nothing
+            $affiliates = [];
+        }
+
+        try {
+            $config = $this->configs->getConfig('webcomposer_config.affiliate_configuration');
+        } catch (\Exception $e) {
+            $config = [];
+        }
+
+        $response = $response->withAttribute(__CLASS__, [
+            'views_affiliates' => $affiliates
+        ]);
+
+        $params = $this->request->getParams();
+
+        foreach ($params as $key => $value) {
+            if (isset($affiliates[$key])) {
+                $cookies[$key] = $value;
+            }
+        }
+
+        $time = $config['affiliate_expiration'] ?? 60;
+
+        if (!empty($cookies)) {
+            Cookies::set('affiliates', http_build_query($cookies), [
+                'expire' => time() + ($time * 60),
+                'http' => false,
+                'path' => '/',
+            ]);
         }
     }
 
