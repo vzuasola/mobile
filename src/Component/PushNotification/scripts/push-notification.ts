@@ -1,5 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
+import * as xhr from "@core/assets/js/vendor/reqwest";
 
+import {Router} from "@plugins/ComponentWidget/asset/router";
 import {ComponentManager } from "@plugins/ComponentWidget/asset/component";
 
 import PushNX from "@core/assets/js/components/push-notification";
@@ -40,68 +42,80 @@ export class PushNotification {
     private islogin;
     private isconnected: boolean;
 
-    constructor(element, attachments: {authenticated: boolean, pushnx: object}) {
+    constructor(element, attachments: {authenticated: boolean}) {
         this.element = element;
         this.isconnected = false;
 
         if (attachments.authenticated) {
-            this.pushnx = new PushNX({
-                islogin: attachments.authenticated,
-                enable: true, // start pushnx - default value true
-                scrollbot: false, // use default scrollbot library
-                modal: {
-                    enable: true, // default value true
-                    control: false, // default value true
-                    height: "auto", // custom height
-                },
-                dismiss: false, // dismiss all message - default value false
-                counter: true, // message counter custom event "pushnx.count.message"
-                notify: true, // new message indicator custom event "pushnx.new.message"
-                action: false, // bind message action buttons default value true custom event "pushnx.action"
-                buttons: {
-                    OK: "btn btn-small btn-yellow pushnx-lightbox-btn-ok",
-                    ACCEPT: "btn btn-small btn-medium btn-yellow pushnx-lightbox-btn-accept",
-                    DECLINE: "btn btn-small btn-medium btn-red pushnx-lightbox-btn-decline",
-                },
-                icons: true,
-                iconsvg: {
-                    arcade: productArcade,
-                    casinogold: productCasinoGold,
-                    casino: productCasino,
-                    dafasports: productDafasports,
-                    exchange: productExchange,
-                    fishhunter: productFishHunter,
-                    games: productGames,
-                    generic: productGeneric,
-                    keno: productKeno,
-                    livedealer: productLiveDealer,
-                    livechat: productLiveChat,
-                    lottery: productLottery,
-                    owsports: productOWSports,
-                    poker: productPoker,
-                    promotions: productPromotions,
-                    virtuals: productVirtuals,
-                },
-                template: { // override templates
-                    body: bodyTemplate, // body
-                    action: actionTemplate, // action
-                    message: messageTemplate, // message
-                    title: titleTemplate, // title
-                    expirationDate: expireDateTemplate, // expiration date
-                    expiredMessage: expireMessageTemplate, // expired error message
-                    dismissAllMessage: dismissTemplate, // dismiss all message
-                },
-                config: attachments.pushnx,
+            xhr({
+                url: Router.generateRoute("push_notification", "pushnx"),
+                type: "json",
+                method: "post",
+            }).then((response) => {
+                if (response.enabled) {
+                    this.startPushNx(attachments.authenticated, response);
+                }
             });
-
-            this.attachAction();
-            this.listenSessionLogin();
-            this.listenSessionLogout();
-            this.socketConnected();
-            this.messageListener();
-            this.listenOpenModal();
-            this.listenCloseModal();
         }
+    }
+
+    private startPushNx(login: boolean, pushnx: object) {
+        this.pushnx = new PushNX({
+            islogin: login,
+            enable: true, // start pushnx - default value true
+            scrollbot: false, // use default scrollbot library
+            modal: {
+                enable: true, // default value true
+                control: false, // default value true
+                height: "auto", // custom height
+            },
+            dismiss: false, // dismiss all message - default value false
+            counter: true, // message counter custom event "pushnx.count.message"
+            notify: true, // new message indicator custom event "pushnx.new.message"
+            action: false, // bind message action buttons default value true custom event "pushnx.action"
+            buttons: {
+                OK: "btn btn-small btn-yellow pushnx-lightbox-btn-ok",
+                ACCEPT: "btn btn-small btn-medium btn-yellow pushnx-lightbox-btn-accept",
+                DECLINE: "btn btn-small btn-medium btn-red pushnx-lightbox-btn-decline",
+            },
+            icons: true,
+            iconsvg: {
+                arcade: productArcade,
+                casinogold: productCasinoGold,
+                casino: productCasino,
+                dafasports: productDafasports,
+                exchange: productExchange,
+                fishhunter: productFishHunter,
+                games: productGames,
+                generic: productGeneric,
+                keno: productKeno,
+                livedealer: productLiveDealer,
+                livechat: productLiveChat,
+                lottery: productLottery,
+                owsports: productOWSports,
+                poker: productPoker,
+                promotions: productPromotions,
+                virtuals: productVirtuals,
+            },
+            template: { // override templates
+                body: bodyTemplate, // body
+                action: actionTemplate, // action
+                message: messageTemplate, // message
+                title: titleTemplate, // title
+                expirationDate: expireDateTemplate, // expiration date
+                expiredMessage: expireMessageTemplate, // expired error message
+                dismissAllMessage: dismissTemplate, // dismiss all message
+            },
+            config: pushnx,
+        });
+
+        this.attachAction();
+        this.listenSessionLogin();
+        this.listenSessionLogout();
+        this.socketConnected();
+        this.messageListener();
+        this.listenOpenModal();
+        this.listenCloseModal();
     }
 
     /**

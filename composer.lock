@@ -628,16 +628,16 @@
         },
         {
             "name": "layershifter/tld-database",
-            "version": "1.0.59",
+            "version": "1.0.60",
             "source": {
                 "type": "git",
                 "url": "https://github.com/layershifter/TLDDatabase.git",
-                "reference": "1caa87fd36259bea056382941ff7a15e04eb098e"
+                "reference": "32afe03b85e20ac0163f9e6b593f5b911b90133f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/layershifter/TLDDatabase/zipball/1caa87fd36259bea056382941ff7a15e04eb098e",
-                "reference": "1caa87fd36259bea056382941ff7a15e04eb098e",
+                "url": "https://api.github.com/repos/layershifter/TLDDatabase/zipball/32afe03b85e20ac0163f9e6b593f5b911b90133f",
+                "reference": "32afe03b85e20ac0163f9e6b593f5b911b90133f",
                 "shasum": ""
             },
             "require": {
@@ -675,7 +675,7 @@
                 "domain database",
                 "tld database"
             ],
-            "time": "2018-05-13T10:37:43+00:00"
+            "time": "2018-05-25T07:48:34+00:00"
         },
         {
             "name": "layershifter/tld-extract",
@@ -1751,7 +1751,7 @@
         },
         {
             "name": "symfony/asset",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/asset.git",
@@ -1807,7 +1807,7 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
@@ -1877,7 +1877,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -2016,7 +2016,7 @@
         },
         {
             "name": "symfony/inflector",
-            "version": "v4.0.10",
+            "version": "v4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/inflector.git",
@@ -2074,7 +2074,7 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
@@ -2149,7 +2149,7 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
@@ -2598,7 +2598,7 @@
         },
         {
             "name": "symfony/property-access",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-access.git",
@@ -2666,7 +2666,7 @@
         },
         {
             "name": "symfony/security-core",
-            "version": "v4.0.10",
+            "version": "v4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
@@ -2732,16 +2732,16 @@
         },
         {
             "name": "symfony/security-csrf",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-csrf.git",
-                "reference": "ab0319487a6d71ef4a5cd807182ad86cedf5d0ae"
+                "reference": "ffa93031d9b55ad8fb9e8add07f30d963c6f7069"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-csrf/zipball/ab0319487a6d71ef4a5cd807182ad86cedf5d0ae",
-                "reference": "ab0319487a6d71ef4a5cd807182ad86cedf5d0ae",
+                "url": "https://api.github.com/repos/symfony/security-csrf/zipball/ffa93031d9b55ad8fb9e8add07f30d963c6f7069",
+                "reference": "ffa93031d9b55ad8fb9e8add07f30d963c6f7069",
                 "shasum": ""
             },
             "require": {
@@ -2789,11 +2789,11 @@
             ],
             "description": "Symfony Security Component - CSRF Library",
             "homepage": "https://symfony.com",
-            "time": "2018-05-21T10:06:52+00:00"
+            "time": "2018-05-24T12:51:10+00:00"
         },
         {
             "name": "symfony/twig-bridge",
-            "version": "v3.3.16",
+            "version": "v3.3.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bridge.git",
@@ -2881,7 +2881,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.0.10",
+            "version": "v4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
@@ -3056,7 +3056,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "ec08258166c090e4fc347601a22cc0da01504f52"
+                "reference": "f094f2174dedb438f610323c312784e920e1068d"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.1",
@@ -3107,7 +3107,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2018-05-29 11:42:30"
+            "time": "2018-05-30T03:10:25+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -3321,25 +3321,28 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e"
+                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
-                "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/478465659fd987669df0bd8a9bf22a8710e5f1b6",
+                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0"
+                "php": "^7.1"
+            },
+            "replace": {
+                "myclabs/deep-copy": "self.version"
             },
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
-                "phpunit/phpunit": "^4.1"
+                "phpunit/phpunit": "^7.1"
             },
             "type": "library",
             "autoload": {
@@ -3362,7 +3365,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-10-19T19:58:43+00:00"
+            "time": "2018-05-29T17:25:09+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4016,16 +4019,16 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "5.0.6",
+            "version": "5.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "33fd41a76e746b8fa96d00b49a23dadfa8334cdf"
+                "reference": "3eaf040f20154d27d6da59ca2c6e28ac8fd56dce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/33fd41a76e746b8fa96d00b49a23dadfa8334cdf",
-                "reference": "33fd41a76e746b8fa96d00b49a23dadfa8334cdf",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/3eaf040f20154d27d6da59ca2c6e28ac8fd56dce",
+                "reference": "3eaf040f20154d27d6da59ca2c6e28ac8fd56dce",
                 "shasum": ""
             },
             "require": {
@@ -4071,7 +4074,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2018-01-06T05:45:45+00:00"
+            "time": "2018-05-29T13:50:43+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
