@@ -4,6 +4,11 @@
 extensions:
   - App\Extensions\Token\DomainTokens
 
+lazy:
+  - tracking
+  - tracking.creferer
+  - tracking.token
+
 # Define tokens here
 # Key value pair of token key and token class
 tokens:
