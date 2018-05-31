@@ -100,8 +100,72 @@
             svg {
                 display: block;
                 margin: 1.5rem auto 0;
-                width: 2.1rem;
+                width: 3rem;
                 fill: $light-gray;
+            }
+
+            // Icons text
+            // .icon-thumbnail-label {
+            //     top: 3.7rem;
+            // }
+
+            .quicklinks-download {
+                svg {
+                    width: 3.5rem;
+                    margin-left: 2.2rem;
+                }
+
+                .icon-thumbnail-label {
+                    margin-top: 0.7rem;
+                }
+            }
+
+            .quicklinks-notification {
+                svg {
+                    width: 3.7rem;
+                    margin-left: 2rem;
+                }
+
+                .icon-thumbnail-label {
+                    margin-top: 0.7rem;
+                }
+            }
+
+            .quicklinks-logout {
+                svg {
+                    margin-left: 2.5rem;
+                }
+            }
+
+            .quicklinks-home {
+                svg {
+                    margin-right: 1rem;
+                }
+            }
+
+            .quicklinks-promotions {
+                svg {
+                    width: 3.5rem;
+                    margin-left: 2rem;
+                    margin-top: 1.2rem;
+                }
+            }
+
+            .quicklinks-language {
+                svg {
+                    margin-left: 2.2rem;
+                }
+            }
+
+            .quicklinks-livechat {
+                svg {
+                    width: 3.5rem;
+                    margin-left: 2.2rem;
+                }
+
+                .icon-thumbnail-label {
+                    margin-top: 0.7rem;
+                }
             }
         }
     }
