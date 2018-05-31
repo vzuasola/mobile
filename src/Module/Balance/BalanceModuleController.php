@@ -126,8 +126,15 @@ class BalanceModuleController
         return $this->rest->output($response, $data);
     }
 
-    private function manageBalance($balances, $balanceMap, $currency, $currencyMap, $territory, $territoriesMap, $countryCode)
-    {
+    private function manageBalance(
+        $balances,
+        $balanceMap,
+        $currency,
+        $currencyMap,
+        $territory,
+        $territoriesMap,
+        $countryCode
+    ) {
         $balances = $this->includedBalance($balanceMap, $balances);
         $balances = $this->currencyFilter($currency, $currencyMap, $balances);
         $balances = $this->territoryFilter($territoriesMap, $territory, $balances, $countryCode);
