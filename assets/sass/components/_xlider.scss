@@ -50,7 +50,7 @@
     // Controls
     .btn-prev,
     .btn-next {
-        @include translateY(-50%);
+        @include translateY(-75%);
         position: absolute;
         z-index: 15;
         width: 1.5rem;

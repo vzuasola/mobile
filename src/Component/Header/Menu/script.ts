@@ -7,6 +7,8 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Menu} from "./scripts/menu";
 import {PushNotification} from "./scripts/push-notification";
 
+import EqualHeight from "@app/assets/script/components/equal-height";
+
 /**
  *
  */
@@ -22,6 +24,8 @@ export class MenuComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.element = element;
+        this.equalizeProductHeight();
+        this.equalizeQuicklinksHeight();
         this.isLogin = attachments.authenticated;
 
         this.activateMenu(element);
@@ -42,9 +46,21 @@ export class MenuComponent implements ComponentInterface {
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.element = element;
+        this.equalizeProductHeight();
+        this.equalizeQuicklinksHeight();
 
         this.activateMenu(element);
         this.pushNotification.handleOnLoad(element, attachments);
+    }
+
+    private equalizeProductHeight() {
+        const equalProduct = new EqualHeight(".icon-thumbnail-product a");
+        equalProduct.init();
+    }
+
+    private equalizeQuicklinksHeight() {
+        const equalQuicklinks = new EqualHeight(".icon-thumbnail-quicklinks a");
+        equalQuicklinks.init();
     }
 
     /**

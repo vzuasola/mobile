@@ -41,7 +41,7 @@
             {% elseif ((not is_login or (is_login and not is_provisioned)) and 
             'quicklinks-settings' in menu.attributes.class) %}
             {% else %}
-            <li class="icon-thumbnail-item">
+            <li class="icon-thumbnail-item icon-thumbnail-quicklinks">
                 <a href="{{ url(menu.uri) }}" class="icon-thumbnail-link menu-item-internal {{ menu.attributes.class }}"
                 target="{{ menu.attributes.target }}"
                 data-router="true"
@@ -64,7 +64,7 @@
             {% endif %} 
         {% endfor %}
         {% if is_login %}
-            <li class="icon-thumbnail-item">
+            <li class="icon-thumbnail-item icon-thumbnail-quicklinks">
                 <a href="#" class="icon-thumbnail-link menu-item-internal btn-logout quicklinks-logout">
                 {% include '@app/web/images/svg/quicklinks/quicklinks-logout.svg' %}
                     <span class="icon-thumbnail-label">{{ logout[app.lang] }}</span>
