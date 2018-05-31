@@ -15,9 +15,12 @@ Router.init();
 
 Modal.listen(".modal-trigger");
 
-// fix for Safari not reloading the page on history back
+// fix for Safari and Android not reloading the page on history back
 window.onpageshow = (event) => {
-    if (event.persisted) {
+    const isTraversal = event.persisted;
+    const isBack = typeof window.performance !== "undefined" && window.performance.navigation.type === 2;
+
+    if (isTraversal && isBack) {
         window.location.reload();
     }
 };
