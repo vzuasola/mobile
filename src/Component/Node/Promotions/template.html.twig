@@ -8,14 +8,13 @@
 {% if is_login %}
     {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
         <a
-            href="{{ url(field_post_banner_link.0.uri) }}"
+            href="{{ url(node.field_post_banner_link.0.uri) }}"
             target="{{node.field_post_banner_link_target.0.value }}"
             
             data-router="true"
             data-router-refresh="main"
         >
     {% endif %}
-
     {% if node.field_post_banner_image.0.url %}
         <img src="{{ node.field_post_banner_image.0.url }}" alt="" class="w-100">
     {% endif %}
