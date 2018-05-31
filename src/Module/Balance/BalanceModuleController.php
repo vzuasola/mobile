@@ -76,6 +76,7 @@ class BalanceModuleController
 
             try {
                 $currency = $this->user->getPlayerDetails()['currency'];
+                $countryCode = $this->user->getPlayerDetails()['countryCode'];
             } catch (\Exception $e) {
                 // Do nothing
             }
@@ -97,7 +98,8 @@ class BalanceModuleController
                     $currency,
                     $currencyMap,
                     $territory,
-                    $territoriesMap
+                    $territoriesMap,
+                    $countryCode
                 );
                 $sumBonus = $this->manageBalance(
                     $bonuses,
@@ -105,7 +107,8 @@ class BalanceModuleController
                     $currency,
                     $currencyMap,
                     $territory,
-                    $territoriesMap
+                    $territoriesMap,
+                    $countryCode
                 );
 
                 $totalBalance = $sumBalance + $sumBonus;
@@ -123,11 +126,11 @@ class BalanceModuleController
         return $this->rest->output($response, $data);
     }
 
-    private function manageBalance($balances, $balanceMap, $currency, $currencyMap, $territory, $territoriesMap)
+    private function manageBalance($balances, $balanceMap, $currency, $currencyMap, $territory, $territoriesMap, $countryCode)
     {
         $balances = $this->includedBalance($balanceMap, $balances);
         $balances = $this->currencyFilter($currency, $currencyMap, $balances);
-        $balances = $this->territoryFilter($territoriesMap, $territory, $balances);
+        $balances = $this->territoryFilter($territoriesMap, $territory, $balances, $countryCode);
 
         return array_sum($balances);
     }
@@ -166,13 +169,14 @@ class BalanceModuleController
     /**
      *
      */
-    private function territoryFilter($territoriesMapConfig, $territory, $balances)
+    private function territoryFilter($territoriesMapConfig, $territory, $balances, $countryCode)
     {
         if (!$territoriesMapConfig) {
             return $balances;
         }
         foreach ($territoriesMapConfig as $key => $territories) {
-            if (in_array($territory, $territories) && isset($balances[$key])) {
+            if ((in_array($countryCode, $territories) || in_array($territory, $territories))
+                && isset($balances[$key])) {
                 unset($balances[$key]);
             }
         }
