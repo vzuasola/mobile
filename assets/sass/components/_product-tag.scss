@@ -23,7 +23,7 @@ $slider-product-casino-gold-background: #fedead;
 $slider-product-casino-gold-foreground: #352808;
 
 $slider-product-keno-background: #ff9100;
-$slider-product-keno-foreground: #fff;
+$slider-product-keno-foreground: #373737;
 
 $slider-product-featured-background: #ffe001;
 $slider-product-featured-foreground: #363638;
@@ -32,16 +32,18 @@ $slider-product-virtuals-background: #C5C0C1;
 $slider-product-virtuals-foreground: #AF0000;
 
 .product-tag {
-    margin-top: -1.8rem;
+    margin: -1.8rem 0 0.7rem;
     z-index: 1;
     font-weight: 600;
     text-transform: uppercase;
     width: 100%;
 
     div {
+        display: inline-block;
         margin: 0 auto;
         padding: 0.5rem 1.5rem;
-        width: 13rem;
+        min-width: 13rem;
+        max-width: 100%;
     }
 }
 
