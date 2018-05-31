@@ -98,7 +98,10 @@
 
             // Icons
             svg {
+                display: block;
+                margin: 1.5rem auto 0;
                 width: 2.1rem;
+                fill: $light-gray;
             }
         }
     }
