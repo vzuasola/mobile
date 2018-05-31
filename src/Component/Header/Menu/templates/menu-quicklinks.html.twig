@@ -47,7 +47,9 @@
                 data-router="true"
                 data-router-refresh="main"
                 >
-                {% include '@app/web/images/svg/quicklinks/'~menu.attributes.svg~'.svg' ignore missing %}
+                <svg viewBox="0 0 32 20">
+                    <use xlink:href="#{{ menu.attributes.svg }}" />
+                </svg>
 
                 <span class="icon-thumbnail-label">{{ menu.title }}</span>
 
@@ -66,7 +68,9 @@
         {% if is_login %}
             <li class="icon-thumbnail-item icon-thumbnail-quicklinks">
                 <a href="#" class="icon-thumbnail-link menu-item-internal btn-logout quicklinks-logout">
-                {% include '@app/web/images/svg/quicklinks/quicklinks-logout.svg' %}
+                <svg viewBox="0 0 32 20">
+                    <use xlink:href="#quicklinks-logout" />
+                </svg>
                     <span class="icon-thumbnail-label">{{ logout[app.lang] }}</span>
                 </a>
             </li>
