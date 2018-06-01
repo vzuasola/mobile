@@ -7,8 +7,6 @@ namespace App\MobileEntry\Component\Main\Promotions;
  */
 class PromotionsComponentController
 {
-    private $rest;
-
     /**
      * @var App\Player\PlayerSession
      */
@@ -29,8 +27,8 @@ class PromotionsComponentController
      */
     private $paymentAccount;
 
+    private $rest;
     private $url;
-
     private $asset;
 
     /**
