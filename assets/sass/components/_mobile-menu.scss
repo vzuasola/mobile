@@ -185,14 +185,15 @@
         margin: 0;
         padding-left: 0;
         list-style-type: none;
+        text-align: center;
 
         li {
             display: inline;
         }
 
         a {
-            width: 45.5%;
-            margin: 0 0 3% 3%;
+            width: 47.7%;
+            margin: 0 0 1.5% 0;
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
             border: 0.1rem solid $gray;
