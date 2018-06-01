@@ -7,8 +7,6 @@ namespace App\MobileEntry\Component\Main\Promotions;
  */
 class PromotionsComponentController
 {
-    private $rest;
-
     /**
      * @var App\Player\PlayerSession
      */
@@ -29,8 +27,8 @@ class PromotionsComponentController
      */
     private $paymentAccount;
 
+    private $rest;
     private $url;
-
     private $asset;
 
     /**
@@ -73,18 +71,23 @@ class PromotionsComponentController
 
         try {
             $promoProduct = [];
+
             foreach ($promotionsFilters as $filters) {
                 $filterId = $filters['field_product_filter_id'][0]['value'];
+
                 if ($filterId === 'featured') {
                     $featured = $this->getPromotions($this->getFeatured(), 'featured');
+
                     if (count($featured)) {
                         $promoProduct[$filterId] = $featured;
                         $filterProperties[] = $this->getFilters($filters);
                     }
                 } else {
                     $args = ['filter_product_category_id' => $filters['tid'][0]['value']];
+
                     $promotions = $this->views->getViewById('promotions', $args);
                     $promoList = $this->getPromotions($promotions);
+
                     if (count($promoList)) {
                         $promoProduct[$filterId] = $promoList;
                         $filterProperties[] = $this->getFilters($filters);
@@ -140,9 +143,7 @@ class PromotionsComponentController
     private function getPreLoginPromotions($promoProperties, $promotion)
     {
         return $promoProperties + [
-            'thumbnail'=> isset($promotion['field_thumbnail_image'][0]['url'])
-                ? $this->asset->generateAssetUri($promotion['field_thumbnail_image'][0]['url'])
-                : '',
+            'thumbnail'=> $this->asset->generateAssetUri($promotion['field_thumbnail_image'][0]['url'] ?? ''),
             'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
         ];
     }
@@ -150,9 +151,7 @@ class PromotionsComponentController
     private function getPostLoginPromotions($promoProperties, $promotion)
     {
         return $promoProperties + [
-            'thumbnail'=> isset($promotion['field_post_thumbnail_image'][0]['url'])
-                ? $this->asset->generateAssetUri($promotion['field_post_thumbnail_image'][0]['url'])
-                : '',
+            'thumbnail'=> $this->asset->generateAssetUri($promotion['field_post_thumbnail_image'][0]['url'] ?? ''),
             'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
         ];
     }
@@ -160,6 +159,7 @@ class PromotionsComponentController
     private function getPromotions($promotions, $category = null)
     {
         $promoPerProduct = [];
+
         $isLogin = $this->playerSession->isLogin();
         $isProvisioned = $this->isPlayerProvisioned();
 
@@ -209,7 +209,7 @@ class PromotionsComponentController
             'ribbon_bg_color' => $ribbonColor,
             'ribbon_text_color' => $ribbonTextColor,
             'more_info_text' => $this->getPromoConfigs(),
-            'summary_url' => $this->url->generateUri($uri, []),
+            'summary_url' => $this->url->generateUri($uri, ['skip_parsers' => true]),
             'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
             'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
             'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
