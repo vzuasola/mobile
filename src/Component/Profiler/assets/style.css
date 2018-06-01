@@ -1,0 +1,70 @@
+.profiler-tab {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+
+    background: #373737;
+
+    width: 100%;
+
+    color: black;
+}
+
+.profiler-tab.compact {
+    width: auto;
+}
+
+.profiler-button {
+    border: none;
+    background: #373737;
+    color: #fff;
+    padding: 6px 30px;
+    border-radius: 4px 4px 0 0;
+    padding-right: 30px;
+}
+
+.profiler-button:focus {
+    outline: none;
+}
+
+.profiler-button.active {
+    color: #5e5e5e;
+    background: #d3d3d3;
+}
+
+.profiler-content {
+    position: fixed;
+
+    bottom: 50px;
+    left: 25px;
+    right: 25px;
+
+    border-radius: 10px;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+    background-color: #fff;
+
+    overflow-y: scroll;
+    max-height: 90%;
+}
+
+.profiler-content .header {
+    padding: 10px 20px 10px 20px;
+    background-color: gray;
+    color: white;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+.profiler-content .content {
+    padding: 20px;
+}
+
+.profiler-content .trace {
+    display: none;
+    padding-left: 20px;
+}
+
+.profiler-content .trace.active {
+    display: block;
+}
