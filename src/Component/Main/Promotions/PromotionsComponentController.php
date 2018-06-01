@@ -81,7 +81,6 @@ class PromotionsComponentController
     {
         $isLogin = $this->playerSession->isLogin();
         $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
-        ddd($isProvisioned);
 
         try {
             $filters = $this->getFilters();
