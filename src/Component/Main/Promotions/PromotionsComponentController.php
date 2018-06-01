@@ -72,35 +72,16 @@ class PromotionsComponentController
         $this->cacher = $cacher;
     }
 
-    public function promotions($request, $response)
-    {
-        $item = $this->cacher->getItem('custom.promotions');
-
-        if (!$item->isHit()) {
-            $data = $this->getPromotionCollection();
-
-            $item->set($data);
-
-            $this->cacher->save($item, [
-                'expires' => 1800,
-            ]);
-        } else {
-            $data = $item->get();
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
     /**
      *
      */
-    private function getPromotionCollection()
+    public function promotions($request, $response)
     {
-        try {
-            $promotionsFilters = $this->views->getViewById('promotion-filter');
-        } catch (\Exception $e) {
-            $promotionsFilters = [];
-        }
+        // try {
+            $promotionsFilters = $this->getPromotionsCollection();
+        // } catch (\Exception $e) {
+        //     $promotionsFilters = [];
+        // }
 
         try {
             $promoProduct = [];
@@ -133,6 +114,31 @@ class PromotionsComponentController
         } catch (\Exception $e) {
             $data['promotions'] = [];
             $data['filters'] = [];
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    /**
+     *
+     */
+    private function getPromotionsCollection()
+    {
+        $item = $this->cacher->getItem('custom.promotions');
+
+        if (!$item->isHit()) {
+            $data = $this->views->getViewById('promotion-filter');
+
+            $item->set([
+                'body' => $data,
+            ]);
+
+            $this->cacher->save($item, [
+                'expires' => 1800,
+            ]);
+        } else {
+            $body = $item->get();
+            $data = $body['body'];
         }
 
         return $data;
