@@ -6,13 +6,15 @@
             <div class="{{ menuLength }}">
                 <a
                     href="{{ url(menu.uri) }}"
-                    class="{{ menu.attributes.class }} download-box"
+                    class="{{ menu.attributes.class }} {{ menu.attributes.svg }} download-box"
                     target="{{ menu.attributes.target }}"
 
                     data-router="true"
                     data-router-refresh="main"
                 >
-                    {% include '@app/web/images/svg/downloads/'~menu.attributes.svg~'.svg' ignore missing %}
+                    <svg viewBox="0 0 20 20">
+                      <use xlink:href="#{{ menu.attributes.svg }}" />
+                    </svg>
 
                     <span class="app-download-text">
                         {{ menu.title }}

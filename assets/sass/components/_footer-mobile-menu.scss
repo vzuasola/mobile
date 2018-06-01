@@ -36,20 +36,17 @@
                 display: block;
                 height: 2rem;
                 margin: 0 auto 0.2rem;
-
-                path {
-                    fill: $white;
-                    transition: fill 0.3s;
-                }
+                fill: $white;
             }
 
-            &:hover {
-                color: $yellow;
+            &:hover svg {
+                fill: $yellow;
+            }
 
+            .footer-language,
+            .footer-livechat {
                 svg {
-                    path {
-                        fill: $yellow;
-                    }
+                    padding-left: 1.5rem;
                 }
             }
         }

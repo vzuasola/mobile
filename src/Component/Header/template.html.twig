@@ -4,7 +4,9 @@
         {% if is_login %}
             <div class="account-balance">
                 <a href="{{ url(cashier_link.uri) }}" target="{{ cashier_link.attributes.target }}" class="hidden">
-                    {% include '@app/web/images/svg/amount-balance.svg' %}
+                <svg viewBox="0 0 24 20">
+                    <use xlink:href="#amount-balance" />
+                </svg>
                     <span class="account-balance-amount"></span>
                 </a>
                 <div class="sk-fading-circle mobile-balance-loader">
