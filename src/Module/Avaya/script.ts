@@ -121,7 +121,9 @@ export class AvayaModule implements ModuleInterface {
             if (el.tagName === "A") {
                 const href = el.getAttribute("href");
 
-                return href.indexOf("linkto:avaya") !== -1;
+                if (href) {
+                    return href.indexOf("linkto:avaya") !== -1;
+                }
             }
         });
 
