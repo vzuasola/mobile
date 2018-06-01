@@ -30,6 +30,7 @@ class PromotionsComponentController
     private $rest;
     private $url;
     private $asset;
+    private $cacher;
 
     /**
      *
@@ -43,15 +44,24 @@ class PromotionsComponentController
             $container->get('config_fetcher'),
             $container->get('payment_account_fetcher'),
             $container->get('uri'),
-            $container->get('asset')
+            $container->get('asset'),
+            $container->get('page_cache_adapter')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $rest, $configs, $paymentAccount, $url, $asset)
-    {
+    public function __construct(
+        $playerSession,
+        $views,
+        $rest,
+        $configs,
+        $paymentAccount,
+        $url,
+        $asset,
+        $cacher
+    ) {
         $this->playerSession = $playerSession;
         $this->views = $views;
         $this->rest = $rest;
@@ -59,12 +69,16 @@ class PromotionsComponentController
         $this->paymentAccount = $paymentAccount;
         $this->url = $url;
         $this->asset = $asset;
+        $this->cacher = $cacher;
     }
 
+    /**
+     *
+     */
     public function promotions($request, $response)
     {
         try {
-            $promotionsFilters = $this->views->getViewById('promotion-filter');
+            $promotionsFilters = $this->getPromotionsCollection();
         } catch (\Exception $e) {
             $promotionsFilters = [];
         }
@@ -105,6 +119,34 @@ class PromotionsComponentController
         return $this->rest->output($response, $data);
     }
 
+    /**
+     *
+     */
+    private function getPromotionsCollection()
+    {
+        $item = $this->cacher->getItem('custom.promotions');
+
+        if (!$item->isHit()) {
+            $data = $this->views->getViewById('promotion-filter');
+
+            $item->set([
+                'body' => $data,
+            ]);
+
+            $this->cacher->save($item, [
+                'expires' => 1800,
+            ]);
+        } else {
+            $body = $item->get();
+            $data = $body['body'];
+        }
+
+        return $data;
+    }
+
+    /**
+     *
+     */
     private function getFilters($filters)
     {
         return [
@@ -114,6 +156,9 @@ class PromotionsComponentController
         ];
     }
 
+    /**
+     *
+     */
     private function isPlayerProvisioned()
     {
         $isProvisioned = false;
@@ -129,6 +174,9 @@ class PromotionsComponentController
         return $isProvisioned;
     }
 
+    /**
+     *
+     */
     private function getPromoConfigs()
     {
         try {
@@ -140,6 +188,9 @@ class PromotionsComponentController
         return $promoConfigs['more_info_link_text'] ?? 'More Info';
     }
 
+    /**
+     *
+     */
     private function getPreLoginPromotions($promoProperties, $promotion)
     {
         return $promoProperties + [
@@ -148,6 +199,9 @@ class PromotionsComponentController
         ];
     }
 
+    /**
+     *
+     */
     private function getPostLoginPromotions($promoProperties, $promotion)
     {
         return $promoProperties + [
@@ -156,6 +210,9 @@ class PromotionsComponentController
         ];
     }
 
+    /**
+     *
+     */
     private function getPromotions($promotions, $category = null)
     {
         $promoPerProduct = [];
@@ -190,6 +247,9 @@ class PromotionsComponentController
         return $promoPerProduct;
     }
 
+    /**
+     *
+     */
     private function getPromoProperties($promotion)
     {
         $uri = empty($promotion['field_summary_url'][0]['uri'])
@@ -216,6 +276,9 @@ class PromotionsComponentController
         ];
     }
 
+    /**
+     *
+     */
     private function getFeatured()
     {
         try {
