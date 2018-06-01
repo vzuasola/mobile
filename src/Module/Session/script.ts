@@ -44,6 +44,12 @@ export class SessionModule implements ModuleInterface {
                 }
             }
 
+            const affiliates = utility.getCookie("affiliates");
+
+            if (affiliates) {
+                url = utility.addQueryParam(url, "aff", utility.getAsciiSum(affiliates));
+            }
+
             return url;
         });
     }
