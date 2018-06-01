@@ -17,8 +17,8 @@ class TrackingModuleCache
         $attributes = $response->getAttribute(TrackingModule::class);
         $affiliates = $attributes['views.affiliates'] ?? [];
 
-        $time = $config['affiliate_expiration'] ?? 60;
         $config = $attributes['webcomposer_config.affiliate_configuration'] ?? [];
+        $time = $config['affiliate_expiration'] ?? 60;
 
         $params = $request->getParams();
 
