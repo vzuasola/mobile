@@ -50,7 +50,8 @@ class TrackingModule implements ComponentModuleInterface
         }
 
         $response = $response->withAttribute(__CLASS__, [
-            'views_affiliates' => $affiliates
+            'views.affiliates' => $affiliates,
+            'webcomposer_config.affiliate_configuration' => $config,
         ]);
 
         $params = $this->request->getParams();
