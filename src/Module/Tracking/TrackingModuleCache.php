@@ -15,7 +15,10 @@ class TrackingModuleCache
         $cookies = static::getCookies();
 
         $attributes = $response->getAttribute(TrackingModule::class);
-        $affiliates = $attributes['views_affiliates'] ?? [];
+        $affiliates = $attributes['views.affiliates'] ?? [];
+
+        $time = $config['affiliate_expiration'] ?? 60;
+        $config = $attributes['webcomposer_config.affiliate_configuration'] ?? [];
 
         $params = $request->getParams();
 
@@ -27,6 +30,7 @@ class TrackingModuleCache
 
         if (!empty($cookies)) {
             Cookies::set('affiliates', http_build_query($cookies), [
+                'expire' => time() + ($time * 60),
                 'http' => false,
                 'path' => '/',
             ]);
