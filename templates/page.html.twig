@@ -13,13 +13,6 @@
 {% endblock %}
 
 {% block header %}
-    <span class="hidden">
-        {% include '@app/web/images/svg/products/product-icons.svg' ignore missing %}
-    </span>
-    <span class="hidden">
-        {% include '@app/web/images/svg/quicklinks/quicklinks-icons.svg' ignore missing %}
-    </span>
-
     {{ widget('header') }}
     {{ widget('announcement') }}
 {% endblock header %}
@@ -37,6 +30,14 @@
 {% block footer %}
     {{ widget('footer') }}
     {{ widget('profiler') }}
+
+    <span class="hidden">
+        {% include '@app/web/images/svg/products/product-icons.svg' ignore missing %}
+        {% include '@app/web/images/svg/quicklinks/quicklinks-icons.svg' ignore missing %}
+        {% include '@app/web/images/svg/dafabet-sprite.svg' ignore missing %}
+        {% include '@app/web/images/svg/downloads/download-icons.svg' ignore missing %}
+        {% include '@app/web/images/svg/footer/footer-icons.svg' ignore missing %}
+    </span>
 {% endblock footer %}
 
 {% block script %}

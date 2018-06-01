@@ -7,15 +7,23 @@
                 {# <p class="login-notification">Account details incorrect - please check</p> #}
                 <div class="login-field mb-20">
                     <input type="text" class="login-field-username input-block-level" name="username" placeholder="{{ username_placeholder }}">
-                    {% include '@app/web/images/svg/user-login.svg' ignore missing %}
+                    <svg class="login-field-icon" viewBox="0 210 24 25.087">
+                        <use xlink:href="#user-login"/>
+                    </svg>
                 </div>
                 <div class="login-field">
                     <input type="password" class="login-field-password input-block-level password-mask-enabled" name="password" placeholder="{{ password_placeholder }}">
-                    {% include '@app/web/images/svg/user-password.svg' ignore missing %}
+                    <svg class="login-field-icon" viewBox="0 240 24 29.247">
+                        <use xlink:href="#user-password"/>
+                    </svg>
                     {% set passwordClass = true ? " password-mask-enabled" : "" %}
                     <span class="hidden password-mask-icon mask">
-                        {% include '@app/web/images/svg/password-mask.svg' ignore missing %}
-                        {% include '@app/web/images/svg/password-unmask.svg' ignore missing %}
+                        <svg class="password-icon-mask" viewBox="0 150 24 19.128">
+                            <use xlink:href="#password-mask"/>
+                        </svg>
+                        <svg class="password-icon-unmask" viewBox="0 180 24 14.018">
+                            <use xlink:href="#password-unmask"/>
+                        </svg>
                     </span>
                 </div>
                 <p class="login-error"></p>

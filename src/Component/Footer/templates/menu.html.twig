@@ -5,10 +5,12 @@
             <li class="{{ menuLength }}">
                 <a
                     href="{{ url(menu.uri) }}"
-                    class="{{ menu.attributes.class }}"
+                    class="{{ menu.attributes.class }} {{ menu.attributes.svg }}"
                     target="{{ menu.attributes.target }}"
                 >
-                    {% include '@app/web/images/svg/footer/'~menu.attributes.svg~'.svg' ignore missing %}
+                <svg viewBox="0 0 32 20">
+                    <use xlink:href="#{{ menu.attributes.svg }}" />
+                </svg>
                     {{ menu.title }}
                 </a>
             </li>

@@ -17,13 +17,13 @@
     }
 
     // icon
-    &-icon {
+    svg {
         width: 3.6rem;
         vertical-align: middle;
+        fill: $white;
 
-        path {
-            fill: $white;
-        }
+        // path {
+        // }
     }
 
     // loader 

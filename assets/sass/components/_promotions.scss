@@ -102,10 +102,7 @@
         svg {
             width: 1.2rem;
             @include rotate(-180);
-
-            path {
-                fill: $white;
-            }
+            fill: $white;
         }
 
         &-links {
@@ -146,10 +143,7 @@
             width: 0.8rem;
             margin-left: 0.5rem;
             @include rotate(-90);
-
-            path {
-                fill: $white;
-            }
+            fill: $white;
         }
     }
 
