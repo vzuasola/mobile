@@ -77,11 +77,11 @@ class PromotionsComponentController
      */
     public function promotions($request, $response)
     {
-        // try {
+        try {
             $promotionsFilters = $this->getPromotionsCollection();
-        // } catch (\Exception $e) {
-        //     $promotionsFilters = [];
-        // }
+        } catch (\Exception $e) {
+            $promotionsFilters = [];
+        }
 
         try {
             $promoProduct = [];
