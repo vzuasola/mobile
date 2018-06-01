@@ -66,6 +66,6 @@ class IDDomain
     {
         $hostname = Host::getHostname();
 
-        return in_array($hostname, self::DOMAINS) && $this->lang == self::LANG;
+        return in_array($hostname, self::DOMAINS) && strtolower($this->lang) == strtolower(self::LANG);
     }
 }

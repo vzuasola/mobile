@@ -1,9 +1,9 @@
 {% if downloads_menu %}
-<div class="container mt-10">
-    <div class="grid grid-gap-10 app-download">
-        {% set menuLength = (downloads_menu|length == 2 or downloads_menu|length == 4) ? 'col-6 mb-10' : 'col-4  mb-10' %}
+<div class="download mt-10 mb-10 clearfix">
+        <ul class="app-download">
+        {% set menuLength = (downloads_menu|length == 2 or downloads_menu|length == 4) ? 'app-download-two' : 'app-download-three' %}
         {% for menu in downloads_menu %}
-            <div class="{{ menuLength }}">
+            <li class="app-download-list {{ menuLength }}">
                 <a
                     href="{{ url(menu.uri) }}"
                     class="{{ menu.attributes.class }} {{ menu.attributes.svg }} download-box"
@@ -16,12 +16,12 @@
                       <use xlink:href="#{{ menu.attributes.svg }}" />
                     </svg>
 
-                    <span class="app-download-text">
+                    <span class="app-download-list-text">
                         {{ menu.title }}
                     </span>
                 </a>
-            </div>
+            </li>
         {% endfor %}
-    </div>
+        </ul>
 </div>
 {% endif %}
