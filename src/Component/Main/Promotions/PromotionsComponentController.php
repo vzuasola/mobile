@@ -7,6 +7,8 @@ namespace App\MobileEntry\Component\Main\Promotions;
  */
 class PromotionsComponentController
 {
+    const TIMEOUT = 1800;
+
     /**
      * @var App\Player\PlayerSession
      */
@@ -42,7 +44,7 @@ class PromotionsComponentController
             $container->get('views_fetcher'),
             $container->get('rest'),
             $container->get('config_fetcher'),
-            $container->get('payment_account_fetcher'),
+            $container->get('accounts_service'),
             $container->get('uri'),
             $container->get('asset'),
             $container->get('page_cache_adapter')
@@ -77,44 +79,56 @@ class PromotionsComponentController
      */
     public function promotions($request, $response)
     {
+        $isLogin = $this->playerSession->isLogin();
+        $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
+        ddd($isProvisioned);
+
         try {
-            $promotionsFilters = $this->getPromotionsCollection();
+            $filters = $this->getFilters();
         } catch (\Exception $e) {
-            $promotionsFilters = [];
+            $filters = [];
         }
 
         try {
-            $promoProduct = [];
+            $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
+        } catch (\Exception $e) {
+            $promoConfigs = [];
+        }
 
-            foreach ($promotionsFilters as $filters) {
-                $filterId = $filters['field_product_filter_id'][0]['value'];
+        try {
+            $featured = $this->views->getViewById('featured_promotions');
+        } catch (\Exception $e) {
+            $featured = [];
+        }
 
-                if ($filterId === 'featured') {
-                    $featured = $this->getPromotions($this->getFeatured(), 'featured');
+        $promotionData = [];
+        $promotionProducts = $this->getPromotionProducts($filters);
 
-                    if (count($featured)) {
-                        $promoProduct[$filterId] = $featured;
-                        $filterProperties[] = $this->getFilters($filters);
-                    }
-                } else {
-                    $args = ['filter_product_category_id' => $filters['tid'][0]['value']];
+        foreach ($filters as $filter) {
+            $id = $filter['field_product_filter_id'][0]['value'];
 
-                    $promotions = $this->views->getViewById('promotions', $args);
-                    $promoList = $this->getPromotions($promotions);
+            if ($id === 'featured') {
+                $featured = $this->createPromotions($featured, $promoConfigs, $isLogin, $isProvisioned, 'featured');
 
-                    if (count($promoList)) {
-                        $promoProduct[$filterId] = $promoList;
-                        $filterProperties[] = $this->getFilters($filters);
-                    }
+                if (count($featured)) {
+                    $promotionData[$id] = $featured;
+                    $filterData[] = $this->createFilter($filter);
+                }
+            } else {
+                $tid = $filter['tid'][0]['value'];
+
+                $promotions = $promotionProducts[$tid];
+                $promoList = $this->createPromotions($promotions, $promoConfigs, $isLogin, $isProvisioned);
+
+                if (count($promoList)) {
+                    $promotionData[$id] = $promoList;
+                    $filterData[] = $this->createFilter($filter);
                 }
             }
-
-            $data['promotions'] = $promoProduct;
-            $data['filters'] = $filterProperties;
-        } catch (\Exception $e) {
-            $data['promotions'] = [];
-            $data['filters'] = [];
         }
+
+        $data['promotions'] = $promotionData;
+        $data['filters'] = $filterData;
 
         return $this->rest->output($response, $data);
     }
@@ -122,9 +136,9 @@ class PromotionsComponentController
     /**
      *
      */
-    private function getPromotionsCollection()
+    private function getFilters()
     {
-        $item = $this->cacher->getItem('custom.promotions');
+        $item = $this->cacher->getItem('views.promotion-filter');
 
         if (!$item->isHit()) {
             $data = $this->views->getViewById('promotion-filter');
@@ -134,7 +148,7 @@ class PromotionsComponentController
             ]);
 
             $this->cacher->save($item, [
-                'expires' => 1800,
+                'expires' => self::TIMEOUT,
             ]);
         } else {
             $body = $item->get();
@@ -147,146 +161,109 @@ class PromotionsComponentController
     /**
      *
      */
-    private function getFilters($filters)
+    private function getPromotionProducts($filters)
     {
-        return [
-            'tid' => $filters['tid'][0]['value'],
-            'filter_id' => $filters['field_product_filter_id'][0]['value'],
-            'filter_name' =>  $filters['field_filter_name'][0]['value']
-        ];
-    }
+        $promotions = [];
 
-    /**
-     *
-     */
-    private function isPlayerProvisioned()
-    {
-        $isProvisioned = false;
+        $item = $this->cacher->getItem('views.promotion-products');
 
-        try {
-            if ($this->playerSession->isLogin()) {
-                $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
+        if (!$item->isHit()) {
+            foreach ($filters as $filter) {
+                $id = $filter['tid'][0]['value'];
+
+                if ($id !== 'featured') {
+                    $promotions[$id] = $this->views->getViewById('promotions', [
+                        'filter_product_category_id' => $filter['tid'][0]['value'],
+                    ]);
+                }
             }
-        } catch (\Exception $e) {
-            $isProvisioned = false;
+
+            $item->set([
+                'body' => $promotions,
+            ]);
+
+            $this->cacher->save($item, [
+                'expires' => self::TIMEOUT,
+            ]);
+        } else {
+            $body = $item->get();
+            $promotions = $body['body'];
         }
 
-        return $isProvisioned;
+        return $promotions;
     }
 
     /**
      *
      */
-    private function getPromoConfigs()
+    private function createFilter($filter)
     {
-        try {
-            $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
-        } catch (\Exception $e) {
-            $promoConfigs = [];
-        }
+        $data = [];
 
-        return $promoConfigs['more_info_link_text'] ?? 'More Info';
+        $data['tid'] = $filter['tid'][0]['value'];
+        $data['filter_id'] = $filter['field_product_filter_id'][0]['value'];
+        $data['filter_name'] = $filter['field_filter_name'][0]['value'];
+
+        return $data;
     }
 
     /**
      *
      */
-    private function getPreLoginPromotions($promoProperties, $promotion)
+    private function createPromotions($promotions, $config, $isLogin, $isProvisioned, $category = null)
     {
-        return $promoProperties + [
-            'thumbnail'=> $this->asset->generateAssetUri($promotion['field_thumbnail_image'][0]['url'] ?? ''),
-            'summary_blurb' => $promotion['field_summary_blurb'][0]['value'] ?? '',
-        ];
-    }
-
-    /**
-     *
-     */
-    private function getPostLoginPromotions($promoProperties, $promotion)
-    {
-        return $promoProperties + [
-            'thumbnail'=> $this->asset->generateAssetUri($promotion['field_post_thumbnail_image'][0]['url'] ?? ''),
-            'summary_blurb' => $promotion['field_post_summary_blurb'][0]['value'] ?? '',
-        ];
-    }
-
-    /**
-     *
-     */
-    private function getPromotions($promotions, $category = null)
-    {
-        $promoPerProduct = [];
-
-        $isLogin = $this->playerSession->isLogin();
-        $isProvisioned = $this->isPlayerProvisioned();
+        $collection = [];
 
         foreach ($promotions as $promotion) {
+            $properties = [];
+
+            if (empty($promotion['field_summary_url'][0]['uri'])) {
+                $uri = $promotion['path'][0]['alias'] ?? '#';
+            } else {
+                $uri = $promotion['field_summary_url'][0]['uri'];
+            }
+
+            $properties['title'] = $promotion['title'][0]['value'];
+            $properties['product'] = $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'];
+            $properties['ribbon_enable'] = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
+            $properties['ribbon_label'] = $promotion['field_ribbon_label'][0]['value'] ?? '';
+            $properties['ribbon_bg_color'] = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
+            $properties['ribbon_text_color'] = $promotion['field_ribbon_text_color'][0]['color'] ?? '';
+            $properties['more_info_text'] = $config['more_info_link_text'] ?? 'More Info';
+            $properties['summary_url'] = $this->url->generateUri($uri, ['skip_parsers' => true]);
+            $properties['summary_url_target'] = $promotion['field_summary_url_target'][0]['value'] ?? '';
+            $properties['summary_url_title'] = $promotion['field_summary_url'][0]['title'] ?? ['title' => ''];
+            $properties['hide_countdown'] = $promotion['field_hide_countdown'][0]['value'] ?? true;
+
             $filterId = $category ?? $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'];
+            $availability = array_column($promotion['field_promo_availability'], 'value');
 
-            $availability = count($promotion['field_promo_availability']) > 1
-                ? $promotion['field_promo_availability']
-                : $promotion['field_promo_availability'][0]['value'];
-
-            $promoProperties = $this->getPromoProperties($promotion);
-
-            if ($isLogin && ($availability == '1' || is_array($availability))) {
+            // selectively choose fields based on login state
+            if ($isLogin && in_array("1", $availability)) {
                 $isCasinoOnly = $promotion['field_casino_gold_only'][0]['value'] ?? false;
 
                 if ($isCasinoOnly && !$isProvisioned) {
                     continue;
                 }
 
-                $promoProperties = $this->getPostLoginPromotions($promoProperties, $promotion);
-                $promoPerProduct[] = $promoProperties + ['category' => $filterId];
-            } elseif (!$isLogin && ($availability == '0' || is_array($availability))) {
-                $promoProperties = $this->getPreLoginPromotions($promoProperties, $promotion);
-                $promoPerProduct[] = $promoProperties + ['category' => $filterId];
+                $properties['thumbnail'] = $this->asset->generateAssetUri(
+                    $promotion['field_post_thumbnail_image'][0]['url'] ?? ''
+                );
+                $properties['summary_blurb'] = $promotion['field_post_summary_blurb'][0]['value'] ?? '';
+                $properties['category'] = $filterId;
+
+                $collection[] = $properties;
+            } elseif (!$isLogin && in_array("0", $availability)) {
+                $properties['thumbnail'] = $this->asset->generateAssetUri(
+                    $promotion['field_thumbnail_image'][0]['url'] ?? ''
+                );
+                $properties['summary_blurb'] = $promotion['field_summary_blurb'][0]['value'] ?? '';
+                $properties['category'] = $filterId;
+
+                $collection[] = $properties;
             }
         }
 
-        return $promoPerProduct;
-    }
-
-    /**
-     *
-     */
-    private function getPromoProperties($promotion)
-    {
-        $uri = empty($promotion['field_summary_url'][0]['uri'])
-            ? ($promotion['path'][0]['alias'] ?? '#')
-            : $promotion['field_summary_url'][0]['uri'];
-
-        $ribbonEnable = $promotion['field_enable_disable_ribbon_tag'][0]['value'] ?? '';
-        $ribbonLabel = $promotion['field_ribbon_label'][0]['value'] ?? '';
-        $ribbonColor = $promotion['field_ribbon_background_color'][0]['color'] ?? '';
-        $ribbonTextColor = $promotion['field_ribbon_text_color'][0]['color'] ?? '';
-
-        return [
-            'title' => $promotion['title'][0]['value'],
-            'product' => $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'],
-            'ribbon_enable' => $ribbonEnable,
-            'ribbon_label' =>  $ribbonLabel,
-            'ribbon_bg_color' => $ribbonColor,
-            'ribbon_text_color' => $ribbonTextColor,
-            'more_info_text' => $this->getPromoConfigs(),
-            'summary_url' => $this->url->generateUri($uri, ['skip_parsers' => true]),
-            'summary_url_target'=> $promotion['field_summary_url_target'][0]['value'] ?? '',
-            'summary_url_title' => $promotion['field_summary_url'][0]['title'] ?? ['title' => ''],
-            'hide_countdown' => $promotion['field_hide_countdown'][0]['value'] ?? true,
-        ];
-    }
-
-    /**
-     *
-     */
-    private function getFeatured()
-    {
-        try {
-            $featured = $this->views->getViewById('featured_promotions');
-        } catch (\Exception $e) {
-            $featured = [];
-        }
-
-        return $featured;
+        return $collection;
     }
 }
