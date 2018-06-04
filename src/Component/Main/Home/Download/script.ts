@@ -6,7 +6,7 @@ import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 /**
  *
  */
-export class FooterComponent implements ComponentInterface {
+export class DownloadComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.downloadsVisibility(element);
         this.equalizeDownloadHeight();
@@ -21,7 +21,7 @@ export class FooterComponent implements ComponentInterface {
         const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
         if (ios) {
-            utility.addClass(element.querySelector(".app-download"), "hidden");
+            utility.addClass(element.querySelector(".download"), "hidden");
         }
     }
 
