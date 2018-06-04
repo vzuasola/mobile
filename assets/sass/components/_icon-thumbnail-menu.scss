@@ -125,16 +125,27 @@
                 }
             }
 
-            .quicklinks-logout,
-            .quicklinks-language,
-            .quicklinks-notification {
+            .quicklinks-language {
                 svg {
                     margin-left: 2.5rem;
                 }
             }
 
+            .quicklinks-notification {
+                svg {
+                    margin-left: 2.7rem;
+                }
+            }
+
+            .quicklinks-logout {
+                svg {
+                    margin-left: 2.8rem;
+                }
+            }
+
             .quicklinks-home,
-            .quicklinks-promotions {
+            .quicklinks-announcement,
+            .announcement-trigger {
                 svg {
                     margin-left: 2.3rem;
                 }
@@ -144,6 +155,7 @@
                 svg {
                     width: 3.5rem;
                     margin-top: 1.2rem;
+                    margin-left: 2.4rem;
                 }
             }
 
