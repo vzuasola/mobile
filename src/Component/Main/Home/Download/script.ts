@@ -21,7 +21,7 @@ export class DownloadComponent implements ComponentInterface {
         const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
         if (ios) {
-            utility.addClass(element.querySelector(".app-download"), "hidden");
+            utility.addClass(element.querySelector(".download"), "hidden");
         }
     }
 

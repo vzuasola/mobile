@@ -1,6 +1,6 @@
 {% if downloads_menu %}
-<div class="download mt-10 mb-10 clearfix">
-        <ul class="app-download">
+<div class="download mt-10 mb-10">
+        <ul class="app-download clearfix">
         {% set menuLength = (downloads_menu|length == 2 or downloads_menu|length == 4) ? 'app-download-two' : 'app-download-three' %}
         {% for menu in downloads_menu %}
             <li class="app-download-list {{ menuLength }}">
