@@ -16,24 +16,30 @@
             padding: 1rem 0;
             color: $yellow;
             border-radius: 0.3rem;
+            overflow: hidden;
 
             svg {
                 display: inline-block;
                 height: 100%;
                 width: 26.6%;
-                margin: 0 0 0 7.4%;
+                margin: 0 0 0 10.4%;
                 fill: $yellow;
             }
 
             span {
-                text-align: center;
-                width: 53%;
                 float: right;
+                width: 50%;
                 margin: 0 10.4% 0 2%;
-                align-items: center;
-                display: flex;
                 height: 100%;
                 text-align: center;
+
+                .th & {
+                    word-break: break-all;
+                }
+            }
+
+            .th & {
+                padding: 0;
             }
         }
 
