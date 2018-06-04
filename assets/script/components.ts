@@ -5,7 +5,7 @@ import {HeaderComponent} from "@app/src/Component/Header/script";
 import {MenuComponent} from "@app/src/Component/Header/Menu/script";
 import {LoginComponent} from "@app/src/Component/Header/Login/script";
 import {PromotionsComponent} from "@app/src/Component/Main/Promotions/script";
-import {FooterComponent} from "@app/src/Component/Footer/script";
+import {DownloadComponent} from "@app/src/Component/Main/Home/Download/script";
 import {AnnouncementComponent} from "@app/src/Component/Announcement/script";
 import {PushNotificationComponent} from "@app/src/Component/PushNotification/script";
 import {SEOComponent} from "@app/src/Component/SEO/script";
@@ -23,7 +23,7 @@ ComponentManager.setComponents({
     header_menu: new MenuComponent(),
     header_login: new LoginComponent(),
     promotions: new PromotionsComponent(),
-    footer: new FooterComponent(),
+    home_download: new DownloadComponent(),
     announcement: new AnnouncementComponent(),
     push_notification: new PushNotificationComponent(),
     seo: new SEOComponent(),

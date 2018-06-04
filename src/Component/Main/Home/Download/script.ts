@@ -6,7 +6,7 @@ import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 /**
  *
  */
-export class FooterComponent implements ComponentInterface {
+export class DownloadComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.downloadsVisibility(element);
         this.equalizeDownloadHeight();
