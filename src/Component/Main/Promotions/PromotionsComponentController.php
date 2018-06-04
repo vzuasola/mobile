@@ -33,6 +33,7 @@ class PromotionsComponentController
     private $url;
     private $asset;
     private $cacher;
+    private $currentLanguage;
 
     /**
      *
@@ -47,7 +48,8 @@ class PromotionsComponentController
             $container->get('accounts_service'),
             $container->get('uri'),
             $container->get('asset'),
-            $container->get('page_cache_adapter')
+            $container->get('page_cache_adapter'),
+            $container->get('lang')
         );
     }
 
@@ -62,7 +64,8 @@ class PromotionsComponentController
         $paymentAccount,
         $url,
         $asset,
-        $cacher
+        $cacher,
+        $currentLanguage
     ) {
         $this->playerSession = $playerSession;
         $this->views = $views;
@@ -72,6 +75,7 @@ class PromotionsComponentController
         $this->url = $url;
         $this->asset = $asset;
         $this->cacher = $cacher;
+        $this->currentLanguage = $currentLanguage;
     }
 
     /**
@@ -137,7 +141,7 @@ class PromotionsComponentController
      */
     private function getFilters()
     {
-        $item = $this->cacher->getItem('views.promotion-filter');
+        $item = $this->cacher->getItem('views.promotion-filter.'. $this->currentLanguage);
 
         if (!$item->isHit()) {
             $data = $this->views->getViewById('promotion-filter');
@@ -164,7 +168,7 @@ class PromotionsComponentController
     {
         $promotions = [];
 
-        $item = $this->cacher->getItem('views.promotion-products');
+        $item = $this->cacher->getItem('views.promotion-products.'. $this->currentLanguage);
 
         if (!$item->isHit()) {
             foreach ($filters as $filter) {
