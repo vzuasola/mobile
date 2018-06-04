@@ -118,7 +118,6 @@
             .quicklinks-notification {
                 svg {
                     width: 3.7rem;
-                    margin-left: 2rem;
                 }
 
                 .icon-thumbnail-label {
@@ -126,29 +125,25 @@
                 }
             }
 
-            .quicklinks-logout {
+            .quicklinks-logout,
+            .quicklinks-language,
+            .quicklinks-notification {
                 svg {
                     margin-left: 2.5rem;
                 }
             }
 
-            .quicklinks-home {
+            .quicklinks-home,
+            .quicklinks-promotions {
                 svg {
-                    margin-left: 2.2rem;
+                    margin-left: 2.3rem;
                 }
             }
 
             .quicklinks-promotions {
                 svg {
                     width: 3.5rem;
-                    margin-left: 2.4rem;
                     margin-top: 1.2rem;
-                }
-            }
-
-            .quicklinks-language {
-                svg {
-                    margin-left: 2.4rem;
                 }
             }
 
@@ -166,6 +161,14 @@
 
                 .icon-thumbnail-label {
                     margin-top: 0.7rem;
+                }
+            }
+
+            .quicklinks-contact,
+            .quicklinks-faq,
+            .quicklinks-settings {
+                svg {
+                    margin-left: 2.6rem;
                 }
             }
         }
