@@ -177,34 +177,34 @@ class BalanceModuleController
             $reserveBalance = [];
             $nonWithdrawableBalance = [];
             if (isset($balances[self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']])) {
-                    $reserveBalance = $this->balance->getReservedBalanceByProductIds(
-                        [
-                        'ids' => [self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']],
-                        ]
-                    )['balance'];
-                    $balancesArr['reserveBalances'] = $reserveBalance;
-                }
-
-                $nonWithdrawableBalance = $this->balance->getNonWithdrawableBalanceByProductIds(
+                $reserveBalance = $this->balance->getReservedBalanceByProductIds(
                     [
-                        'ids' => [
-                            self::SPECIAL_BALANCE_BEHAVIORS['oneworks'],
-                            self::SPECIAL_BALANCE_BEHAVIORS['als'],
-                            self::SPECIAL_BALANCE_BEHAVIORS['esports']
-                        ]
+                    'ids' => [self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']],
                     ]
                 )['balance'];
-                $balancesArr['nonWithdrawableBalances'] = $nonWithdrawableBalance;
+                $balancesArr['reserveBalances'] = $reserveBalance;
+            }
 
-                foreach ($balances as $key => $value) {
-                    if (isset($reserveBalance[$key])) {
-                        $balances[$key] += $reserveBalance[$key];
-                    }
+            $nonWithdrawableBalance = $this->balance->getNonWithdrawableBalanceByProductIds(
+                [
+                    'ids' => [
+                        self::SPECIAL_BALANCE_BEHAVIORS['oneworks'],
+                        self::SPECIAL_BALANCE_BEHAVIORS['als'],
+                        self::SPECIAL_BALANCE_BEHAVIORS['esports']
+                    ]
+                ]
+            )['balance'];
+            $balancesArr['nonWithdrawableBalances'] = $nonWithdrawableBalance;
 
-                    if (isset($nonWithdrawableBalance[$key])) {
-                        $balances[$key] += $nonWithdrawableBalance[$key];
-                    }
+            foreach ($balances as $key => $value) {
+                if (isset($reserveBalance[$key])) {
+                    $balances[$key] += $reserveBalance[$key];
                 }
+
+                if (isset($nonWithdrawableBalance[$key])) {
+                    $balances[$key] += $nonWithdrawableBalance[$key];
+                }
+            }
         }
 
         $balancesArr['balances'] = array_sum($balances);
