@@ -174,13 +174,16 @@ class BalanceModuleController
         $balances = $this->territoryFilter($territoriesMap, $territory, $balances, $countryCode);
 
         if ($type == 'balance') {
+            $reserveBalance = [];
+            $nonWithdrawableBalance = [];
             if (isset($balances[self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']])) {
-                $reserveBalance = $this->balance->getReservedBalanceByProductIds(
-                    [
-                    'ids' => [self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']],
-                    ]
-                )['balance'];
-                $balancesArr['reserveBalances'] = $reserveBalance;
+                    $reserveBalance = $this->balance->getReservedBalanceByProductIds(
+                        [
+                        'ids' => [self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']],
+                        ]
+                    )['balance'];
+                    $balancesArr['reserveBalances'] = $reserveBalance;
+                }
 
                 $nonWithdrawableBalance = $this->balance->getNonWithdrawableBalanceByProductIds(
                     [
@@ -202,7 +205,6 @@ class BalanceModuleController
                         $balances[$key] += $nonWithdrawableBalance[$key];
                     }
                 }
-            }
         }
 
         $balancesArr['balances'] = array_sum($balances);
