@@ -106,10 +106,12 @@ class BalanceModuleController
 
             try {
                 $balances = $this->balance->getBalanceByProductIds(
-                ['ids' => self::SPECIAL_BALANCE_BEHAVIORS])['balance'];
+                    ['ids' => self::SPECIAL_BALANCE_BEHAVIORS]
+                )['balance'];
 
                 $bonuses = $this->balance->getBonusBalanceByProductIds(
-                ['ids' => self::SPECIAL_BALANCE_BEHAVIORS])['balance'];
+                    ['ids' => self::SPECIAL_BALANCE_BEHAVIORS]
+                )['balance'];
 
                 // We'll remove the OW Sports bonus, since it's already part of the "realmoney" balance
                 unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['oneworks']]);
