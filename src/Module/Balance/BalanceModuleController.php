@@ -106,10 +106,10 @@ class BalanceModuleController
 
             try {
                 $balances = $this->balance->getBalanceByProductIds(
-                    ['ids' => self::SPECIAL_BALANCE_BEHAVIORS])['balance'];
+                ['ids' => self::SPECIAL_BALANCE_BEHAVIORS])['balance'];
 
                 $bonuses = $this->balance->getBonusBalanceByProductIds(
-                    ['ids' => self::SPECIAL_BALANCE_BEHAVIORS])['balance'];
+                ['ids' => self::SPECIAL_BALANCE_BEHAVIORS])['balance'];
 
                 // We'll remove the OW Sports bonus, since it's already part of the "realmoney" balance
                 unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['oneworks']]);
@@ -172,20 +172,20 @@ class BalanceModuleController
         if ($type == 'balance') {
             if (isset($balances[self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']])) {
                 $reserveBalance = $this->balance->getReservedBalanceByProductIds(
-                [
+                    [
                     'ids' => [self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']],
-                ]
+                    ]
                 )['balance'];
                 $this->reserveBalances = $reserveBalance;
 
                 $nonWithdrawableBalance = $this->balance->getNonWithdrawableBalanceByProductIds(
-                [
-                    'ids' => [
-                        self::SPECIAL_BALANCE_BEHAVIORS['oneworks'],
-                        self::SPECIAL_BALANCE_BEHAVIORS['als'],
-                        self::SPECIAL_BALANCE_BEHAVIORS['esports']
+                    [
+                        'ids' => [
+                            self::SPECIAL_BALANCE_BEHAVIORS['oneworks'],
+                            self::SPECIAL_BALANCE_BEHAVIORS['als'],
+                            self::SPECIAL_BALANCE_BEHAVIORS['esports']
+                        ]
                     ]
-                ]
                 )['balance'];
                 $this->nonWithdrawableBalances = $nonWithdrawableBalance;
 
