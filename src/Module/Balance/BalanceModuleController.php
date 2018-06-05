@@ -229,13 +229,14 @@ class BalanceModuleController
             return $balances;
         }
         $map = [];
+
         foreach ($currencyMap as $key => $currencies) {
-            if (in_array(strtoupper($currency), $currencies)) {
-                $map[$key] = $currencies;
+            if (!in_array(strtoupper($currency), $currencies)) {
+                unset($balances[$key]);
             }
         }
 
-        return array_intersect_key($balances, $map);
+        return $balances;
     }
 
     /**
@@ -252,6 +253,7 @@ class BalanceModuleController
                 unset($balances[$key]);
             }
         }
+
         return $balances;
     }
 
