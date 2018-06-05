@@ -234,7 +234,6 @@ class BalanceModuleController
         if (!$currencyMap) {
             return $balances;
         }
-        $map = [];
 
         foreach ($currencyMap as $key => $currencies) {
             if (!in_array(strtoupper($currency), $currencies)) {
