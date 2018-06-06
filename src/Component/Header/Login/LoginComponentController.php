@@ -57,6 +57,7 @@ class LoginComponentController
 
             try {
                 $data['success'] = $this->playerSession->login($username, $password, $options);
+                $data['hash'] = md5($username);
             } catch (\Exception $e) {
                 if ($e instanceof AccountLockedException) {
                     $response = $response->withStatus(403);
