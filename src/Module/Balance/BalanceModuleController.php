@@ -10,14 +10,6 @@ use App\Translations\Currency;
  */
 class BalanceModuleController
 {
-    private $rest;
-    private $config;
-    private $playerSession;
-    private $user;
-    private $territories;
-    private $balance;
-    private $lang;
-
     const SPECIAL_BALANCE_BEHAVIORS = [
         'casino' => 1,
         'casino_gold' => 2,
@@ -31,6 +23,14 @@ class BalanceModuleController
         'exchange' => 10,
         'esports' => 11,
     ];
+
+    private $rest;
+    private $config;
+    private $playerSession;
+    private $user;
+    private $territories;
+    private $balance;
+    private $lang;
 
     /**
      *
@@ -127,6 +127,7 @@ class BalanceModuleController
                     $countryCode,
                     'balance'
                 );
+
                 $sumBalance = $sumBalances['balances'];
 
                 $sumBonuses = $this->manageBalance(
@@ -139,12 +140,13 @@ class BalanceModuleController
                     $countryCode,
                     'bonus'
                 );
-                $sumBonus = $sumBonuses['balances'];
 
+                $sumBonus = $sumBonuses['balances'];
                 $totalBalance = $sumBalance + $sumBonus;
+
                 $data['balances'] = $balances;
-                $data['reserveBalances'] = $sumBalances['reserveBalances'];
-                $data['nonWithdrawableBalances'] = $sumBalances['nonWithdrawableBalances'];
+                $data['reserveBalances'] = $sumBalances['reserveBalances'] ?? 0;
+                $data['nonWithdrawableBalances'] = $sumBalances['nonWithdrawableBalances'] ?? 0;
                 $data['bonuses'] = $bonuses;
                 $data['balance'] = number_format($totalBalance, 2, '.', ',');
                 $data['format'] = $this->totalBalanceFormat($currency);
@@ -169,6 +171,7 @@ class BalanceModuleController
         $type
     ) {
         $balancesArr = [];
+
         $balances = $this->includedBalance($balanceMap, $balances);
         $balances = $this->currencyFilter($currency, $currencyMap, $balances);
         $balances = $this->territoryFilter($territoriesMap, $territory, $balances, $countryCode);
@@ -176,6 +179,7 @@ class BalanceModuleController
         if ($type == 'balance') {
             $reserveBalance = [];
             $nonWithdrawableBalance = [];
+
             if (isset($balances[self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']])) {
                 $reserveBalance = $this->balance->getReservedBalanceByProductIds(
                     [
