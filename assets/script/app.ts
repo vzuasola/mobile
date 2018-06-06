@@ -11,15 +11,18 @@ import "./loader";
 
 ComponentManager.init();
 
+Router.setOption(
+    "main-components",
+    ["header", "main", "footer", "language", "push_notification", "marketing", "seo", "announcement"],
+);
+
 Router.init();
 
 Modal.listen(".modal-trigger");
 
 // fix for Safari and Android not reloading the page on history back
 window.onpageshow = (event) => {
-    const isBack = typeof window.performance !== "undefined" && window.performance.navigation.type === 2;
-
-    if (isBack) {
+    if (event.persisted) {
         window.location.reload();
     }
 };
