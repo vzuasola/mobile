@@ -9,6 +9,7 @@ export class SessionModule implements ModuleInterface {
     private session: Session;
     private isSessionStarted: boolean = false;
     private isLogin: boolean = false;
+    private hash: string;
 
     onLoad(attachments: {authenticated: boolean, timeout: number, hash: string}) {
         const timeout = attachments.timeout ? attachments.timeout : 15;
@@ -17,11 +18,15 @@ export class SessionModule implements ModuleInterface {
 
         if (attachments.authenticated) {
             this.enableSession();
+
             this.isLogin = true;
+            this.hash = attachments.hash;
         }
 
-        ComponentManager.subscribe("session.login", (event, src) => {
+        ComponentManager.subscribe("session.login", (event, src, data) => {
             this.enableSession();
+
+            this.hash = data.response.hash;
         });
 
         ComponentManager.subscribe("session.prelogin", (event, src) => {
@@ -40,7 +45,7 @@ export class SessionModule implements ModuleInterface {
                 url = utility.addQueryParam(url, "authenticated", "true");
 
                 if (attachments.hash) {
-                    url = utility.addQueryParam(url, "hash", attachments.hash);
+                    url = utility.addQueryParam(url, "hash", this.hash);
                 }
             }
 

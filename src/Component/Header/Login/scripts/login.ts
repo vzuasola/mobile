@@ -144,6 +144,7 @@ export class Login {
                     src: this.srcElement,
                     username,
                     password,
+                    response,
                 });
 
                 // the action property defines what to do when a login process
@@ -158,6 +159,7 @@ export class Login {
                         src: this.srcElement,
                         username,
                         password,
+                        response,
                     });
                 } else {
                     ComponentManager.refreshComponents(
@@ -167,6 +169,7 @@ export class Login {
                                 src: this.srcElement,
                                 username,
                                 password,
+                                response,
                             });
 
                             this.loader.hide();
