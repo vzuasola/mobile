@@ -4,6 +4,8 @@ routes:
         action: App\MobileEntry\Controller\HomeController:view
         components:
             main: home
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
         page_cache:
             enabled: true
             expires: 1800
@@ -17,6 +19,8 @@ routes:
         action: App\MobileEntry\Controller\HomeController:view
         components:
             main: home
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
         page_cache:
             enabled: true
             expires: 1800
@@ -24,6 +28,8 @@ routes:
     /logout:
         method: GET
         action: App\MobileEntry\Controller\LogoutController:view
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
 
     /promotions:
         method: GET
@@ -31,7 +37,7 @@ routes:
         components:
             main: promotions
         headers:
-            Cache-Control: private, max-age=300
+            Cache-Control: no-cache, no-store, must-revalidate
         page_cache:
             enabled: true
             expires: 1800
@@ -64,6 +70,8 @@ routes:
         action: App\MobileEntry\Controller\NodeController:view
         components:
             main: node
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
         page_cache:
             enabled: true
             expires: 1800
