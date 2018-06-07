@@ -4,15 +4,34 @@
     } else {
         hideProfilerBar('full');
     }
+
+    document.addEventListener('console.push', function (event) {
+        var data = event.customData;
+
+        doPushProfilerConsole('<strong>' + data.key + '</strong>' + ' - ' + data.value);
+    });
 })();
 
 function doProfiler(target) {
     var element = document.querySelector(target);
+    var tabs = document.querySelectorAll('.profiler-content');
 
-    if (element.style.display === 'none') {
-        element.style.display = 'block';
-    } else {
-        element.style.display = 'none';
+    if (element) {
+        if (element.style.display === 'none') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    if (tabs) {
+        for (let index = 0; index < tabs.length; index++) {
+            const el = tabs[index];
+
+            if (el !== element) {
+                el.style.display = 'none';
+            }
+        }
     }
 }
 
@@ -30,37 +49,31 @@ function hideProfilerBar(state) {
     }
 }
 
-// var trace = document.querySelectorAll('.profiler-content .message');
-// var accordions = document.querySelectorAll('.profiler-content .trace');
+function doPushProfilerConsole(value) {
+    var wrapper = document.querySelector('.console-wrapper');
+    var span = document.createElement("p");
 
-// for (var i = 0; i < trace.length; i++) {
-//     trace[i].onclick = function (event) {
-//         var accordion = sibling(this.parentNode, '.trace');
-//         expandAccordion(accordion);
+    span.innerHTML = value;
 
-//         event.preventDefault();
-//     }
-// }
+    wrapper.appendChild(span);
+}
 
-// function collapseAccordion() {
-//     for (var i = 0; i < accordions.length; i++) {
-//         removeClass(accordions[i], 'active');
-//     }
+function clearProfilerConsole() {
+    var wrapper = document.querySelector('.console-wrapper');
 
-//     content.style.height = height + 'px';
-// }
+    wrapper.innerHTML = "";
+}
 
-// function expandAccordion(el) {
-//     if (hasClass(el, 'active')) {
-//         removeClass(el, 'active');
-//         collapseAccordion();
-//     } else {
-//         collapseAccordion();
-//         addClass(el, 'active');
-//         maxHeight = document.querySelector('.profiler-content-inner').scrollHeight;
-//         content.style.height = maxHeight + 'px';
-//     }
-// }
+function doExpandAccordion() {
+    var src = event.srcElement;
+    var trace = sibling(src.parentNode, 'div.trace');
+
+    if (trace.style.display === 'none') {
+        trace.style.display = 'block';
+    } else {
+        trace.style.display = 'none';
+    }
+}
 
 // Helper Methods
 
@@ -94,6 +107,7 @@ function removeClass(el, className) {
         }
     }
 };
+
 
 function hasCollection(a, b) {
     for (var i = 0, len = a.length; i < len; i++) {

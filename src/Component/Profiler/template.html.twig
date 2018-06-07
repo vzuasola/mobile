@@ -1,68 +1,99 @@
-{% if app.get('profiler').isProfileable() %}
+{% import "@component/Profiler/templates/trace.html.twig" as macros %}
 
-    {{ app.get('profiler').setMessage('Page Render', 0, true) }}
-    {{ app.get('profiler').debugSession() }}
+<div class="profiler-tab compact" style="display: none">
+    <button
+        class="profiler-button"
+        onclick="hideProfilerBar('full')"
+    >
+        <strong>WBC</strong>
+    </button>
+</div>
 
-    <div class="profiler-tab compact" style="display: none">
-        <button
-            class="profiler-button"
-            onclick="hideProfilerBar('full')"
-        >
-            <strong>WBC</strong>
-        </button>
+<div class="profiler-tab full">
+    <button
+        class="profiler-button"
+        onclick="hideProfilerBar('compact')"
+    >
+        <strong>WBC PROFILER</strong>
+    </button>
+
+    <button
+        class="profiler-button"
+        onclick="doProfiler('#profiler-content-console')"
+    >
+        Console
+    </button>
+
+    <div id="profiler-content-console" class="profiler-content" style="display: none">
+        <div class="header">
+            Console
+            <button class="profiler-clear" onclick="clearProfilerConsole()">Clear</button>
+        </div>
+        <div class="content console-wrapper">
+        </div>
     </div>
 
-    <div class="profiler-tab full">
-        <button
-            class="profiler-button"
-            onclick="hideProfilerBar('compact')"
-        >
-            <strong>WBC PROFILER</strong>
+    {% for label, items in stack %}
+        <button class="profiler-button" onclick="doProfiler('#profiler-content-{{ label|lower }}')">
+            {{ label }}
         </button>
 
-        <button
-            class="profiler-button"
-            onclick="doProfiler('#profiler-content-console')"
-        >
-            Console
-        </button>
-
-        <div id="profiler-content-console" class="profiler-content" style="display: none">
+        <div id="profiler-content-{{ label|lower }}" class="profiler-content" style="display: none">
             <div class="header">
-                Console
+                {{ label }}
             </div>
             <div class="content">
-                {% for key, messages in app.get('profiler').getMessages() %}
-                    {% if not key == 0 and messages is iterable %}
-                        <p><strong>{{ key }} ({{ messages|length }}) </strong></p>
-                        {{ include('@component/Profiler/templates/message.html.twig') }}
-                    {% elseif key == 0 and messages is iterable %}
-                        <p><strong>Debug</strong></p>
-                        {{ include('@component/Profiler/templates/message.html.twig') }}
+                {% for key, messages in items %}
+                    {% if messages is iterable %}
+                        <div class="group">
+                            <h3>{{ key }} ({{ messages|length }})</h3>
+
+                            {% for message in messages %}
+                                {% if message.message %}
+                                    <div class="message-wrapper">
+                                        <p>
+                                            <a
+                                                class="message"
+                                                href="#"
+                                                onclick="doExpandAccordion()"
+                                            >
+                                                {{ message.message|raw }}
+                                            </a>
+                                        </p>
+                                        <div class="trace" style="display:none">
+                                            {{ macros.trace(message.trace) }}
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <p>{{ message|raw }}</p>
+                                {% endif %}
+                                
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>{{ messages|raw }}</p>
                     {% endif %}
-                {% else %}
-                    <p>No debug messages to display</p>
                 {% endfor %}
             </div>
         </div>
+    {% endfor %}
 
-        <button class="profiler-button">Middlewares</button>
-        <button class="profiler-button">Networks</button>
-        <button class="profiler-button">Async</button>
+    <span id="btn-profile" class="profiler-button" style="float: right">
+        Render 
+        {% if cache %}
+            (CACHE HIT)
+        {% endif %}
+        
+        <strong>
+            <span class="profiler-time-ms">{{ app.get('profiler').getRenderTime() }}</span> ms
+        </strong>
+    </span>
+</div>
 
-        <span id="btn-profile" class="profiler-button" style="float: right">
-            Render 
-            <strong>
-                <span class="profiler-time-ms">{{ app.get('profiler').getRenderTime() }}</span> ms
-            </strong>
-        </span>
-    </div>
+<style>
+    {{ include('@component/Profiler/assets/style.css') }}
+</style>
 
-    <style>
-        {{ include('@component/Profiler/assets/style.css') }}
-    </style>
-
-    <script>
-        {{ include('@component/Profiler/assets/script.js') }}
-    </script>
-{% endif %}
+<script>
+    {{ include('@component/Profiler/assets/script.js') }}
+</script>
