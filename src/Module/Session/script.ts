@@ -25,12 +25,13 @@ export class SessionModule implements ModuleInterface {
 
         ComponentManager.subscribe("session.login", (event, src, data) => {
             this.enableSession();
-
-            this.hash = data.response.hash;
         });
 
-        ComponentManager.subscribe("session.prelogin", (event, src) => {
+        ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
+
+            // update the hash on successful login with the new hash data
+            this.hash = data.response.hash;
         });
 
         ComponentManager.subscribe("session.logout", (event, src) => {
