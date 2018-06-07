@@ -53,7 +53,7 @@ class SessionModuleScripts implements ComponentAttachmentInterface
         }
 
         try {
-            $data['hash'] = md5($this->playerSession->getUsername());
+            $data['hash'] = md5($this->playerSession->getToken());
         } catch (\Exception $e) {
             $data['hash'] = false;
         }
