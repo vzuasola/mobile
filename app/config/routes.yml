@@ -10,10 +10,6 @@ routes:
             enabled: true
             expires: 1800
 
-    /debug:
-        method: GET
-        action: App\Controller\DefaultController:debug
-
     /login:
         method: GET
         action: App\MobileEntry\Controller\HomeController:view
@@ -65,10 +61,14 @@ routes:
     /api/plugins/component/route/{id}/{method}:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:route
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
 
     /api/plugins/module/route/{id}/{method}:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:module
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
 
     /*.*:
         method: ANY
