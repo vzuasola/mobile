@@ -4,7 +4,7 @@ namespace App\MobileEntry\Dependencies;
 
 class Manifest
 {
-    public static function create($container)
+    public static function create()
     {
         $manifest = [];
 
