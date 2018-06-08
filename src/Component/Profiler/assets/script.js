@@ -4,13 +4,60 @@
     } else {
         hideProfilerBar('full');
     }
-
-    document.addEventListener('console.push', function (event) {
-        var data = event.customData;
-
-        doPushProfilerConsole('<strong>' + data.key + '</strong>' + ' - ' + data.value);
-    });
 })();
+
+// Public Methods
+
+function doPushProfilerConsole(value) {
+    var wrapper = document.querySelector('#profiler-content-console .console-wrapper');
+    var span = document.createElement("p");
+
+    span.innerHTML = value;
+
+    wrapper.appendChild(span);
+}
+
+function clearProfilerConsole() {
+    var src = event.srcElement;
+    var wrapper = src.parentNode.parentNode.querySelector('.console-wrapper');
+
+    wrapper.innerHTML = "";
+}
+
+function doPushProfilerGroup(group, value) {
+    var id = group.toLowerCase().replace(/ /g, '-');
+    var groupWrapper = document.querySelector('.console-extra-group');
+    var wrapper = document.querySelector('#profiler-content-console-' + id + ' .console-wrapper');
+
+    if (!wrapper) {
+        // create button
+        var button = document.querySelector('#profiler-content-btn').cloneNode(true);;
+
+        button.setAttribute('id', 'profiler-content-btn-' + id);
+        button.setAttribute('onclick', "doProfiler('#profiler-content-console-" + id + "')");
+        button.innerHTML = group;
+
+        groupWrapper.appendChild(button);
+
+        // create wrapper
+        var instance = document.querySelector('#profiler-content-console').cloneNode(true);;
+
+        instance.setAttribute('id', 'profiler-content-console-' + id);
+        instance.querySelector('.label').innerHTML = group;
+
+        groupWrapper.appendChild(instance);
+
+        wrapper = instance.querySelector('.console-wrapper');
+    }
+
+    var span = document.createElement("p");
+
+    span.innerHTML = value;
+
+    wrapper.appendChild(span);
+}
+
+// Private Methods
 
 function doProfiler(target) {
     var element = document.querySelector(target);
@@ -47,21 +94,6 @@ function hideProfilerBar(state) {
         document.querySelector('.profiler-tab.compact').style.display = 'none';
         document.querySelector('.profiler-tab.full').style.display = 'block';
     }
-}
-
-function doPushProfilerConsole(value) {
-    var wrapper = document.querySelector('.console-wrapper');
-    var span = document.createElement("p");
-
-    span.innerHTML = value;
-
-    wrapper.appendChild(span);
-}
-
-function clearProfilerConsole() {
-    var wrapper = document.querySelector('.console-wrapper');
-
-    wrapper.innerHTML = "";
 }
 
 function doExpandAccordion() {

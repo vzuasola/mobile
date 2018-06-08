@@ -86,3 +86,8 @@
 .profiler-content .trace {
     padding-left: 20px;
 }
+
+.console-standard-group,
+.console-extra-group {
+    display: inline;
+}

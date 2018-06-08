@@ -17,20 +17,22 @@
         <strong>WBC PROFILER</strong>
     </button>
 
-    <button
-        class="profiler-button"
-        onclick="doProfiler('#profiler-content-console')"
-    >
-        Console
-    </button>
-
-    <div id="profiler-content-console" class="profiler-content" style="display: none">
-        <div class="header">
+    <div class="console-standard-group">
+        <button id="profiler-content-btn" class="profiler-button" onclick="doProfiler('#profiler-content-console')">
             Console
-            <button class="profiler-clear" onclick="clearProfilerConsole()">Clear</button>
+        </button>
+
+        <div id="profiler-content-console" class="profiler-content" style="display: none">
+            <div class="header">
+                <span class="label">Console</span>
+                <button class="profiler-clear" onclick="clearProfilerConsole()">Clear</button>
+            </div>
+            <div class="content console-wrapper"></div>
         </div>
-        <div class="content console-wrapper">
-        </div>
+    </div>
+    
+
+    <div class="console-extra-group">
     </div>
 
     {% for label, items in stack %}

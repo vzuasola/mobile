@@ -7,6 +7,16 @@ import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/route
  *
  */
 export class ProfilerComponent implements ComponentInterface {
+    constructor() {
+        ComponentManager.subscribe("console.push", (event, src, data) => {
+            if (data.group) {
+                doPushProfilerGroup(data.group, `<strong>${data.key}</strong> - ${data.value}`);
+            } else {
+                doPushProfilerConsole(`<strong>${data.key}</strong> - ${data.value}`);
+            }
+        });
+    }
+
     onLoad(element: HTMLElement) {
         ComponentManager.subscribe("session.prelogin", () => {
             ComponentManager.refreshComponents(["profiler"]);
