@@ -310,7 +310,7 @@ export class Login {
             this.loader.show();
 
             xhr({
-                url: Router.generateRoute("header", "logout"),
+                url: Router.generateRoute("header_login", "logout"),
                 type: "json",
                 method: "get",
             }).always((response) => {
