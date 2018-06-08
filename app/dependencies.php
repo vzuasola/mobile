@@ -23,4 +23,3 @@ $container['id_domain'] = function ($c) {
 $container['accounts_service'] = function ($c) {
     return Accounts::create($c);
 };
-
