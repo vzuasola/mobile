@@ -96,21 +96,17 @@ class CasinoOptionComponentController
                 $preferredCasino = $product['product'];
                 $this->preferences->savePreference('casino.preferred', $preferredCasino);
                 $preferredCasinoUrl = $this->getCasinoUrl($product['product']);
+                $this->setLegacyPrefCookie($preferredCasino);
             } else {
-                $preferredCasino = $this->preferences->getPreferences();
+                $preferredCasinoPref = $this->preferences->getPreferences();
 
-                if (!empty($preferredCasino['casino.preferred'])) {
-                    $preferredCasinoUrl = $this->getCasinoUrl($preferredCasino['casino.preferred']);
+                if (!empty($preferredCasinoPref['casino.preferred'])) {
+                    $preferredCasino = $preferredCasinoPref['casino.preferred'];
+                    $preferredCasinoUrl = $this->getCasinoUrl($preferredCasino);
+                    $this->setLegacyPrefCookie($preferredCasino);
                 }
             }
 
-            $options = [
-                'path' => '/',
-                'domain' => Host::getDomain(),
-                'expire' => 0
-            ];
-
-            Cookies::set('mobile_revamp_casino_pref', $preferredCasino, $options);
         } catch (\Exception $e) {
             // do nothing
         }
@@ -130,5 +126,16 @@ class CasinoOptionComponentController
         }
 
         return $casinoUrl;
+    }
+
+    private function setLegacyPrefCookie($preferredCasino)
+    {
+        $options = [
+            'path' => '/',
+            'domain' => Host::getDomain(),
+            'expire' => 0
+        ];
+
+        Cookies::set('mobile_revamp_casino_pref', $preferredCasino, $options);
     }
 }
