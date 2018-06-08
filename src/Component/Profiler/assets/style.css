@@ -23,6 +23,16 @@
     padding-right: 30px;
 }
 
+.profiler-clear {
+    border: none;
+    background: #373737;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 15px;
+    margin-left: 15px;
+    font-size: 12px;
+}
+
 .profiler-button:focus {
     outline: none;
 }
@@ -60,11 +70,24 @@
     padding: 20px;
 }
 
+.profiler-content .content .group {
+    margin-top: 35px;
+}
+
+.profiler-content .content .group:first-child {
+    margin-top: 0px;
+}
+
+.profiler-content .message-wrapper .message {
+    color: darkslategray;
+    font-weight: 500;
+}
+
 .profiler-content .trace {
-    display: none;
     padding-left: 20px;
 }
 
-.profiler-content .trace.active {
-    display: block;
+.console-standard-group,
+.console-extra-group {
+    display: inline;
 }

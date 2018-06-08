@@ -6,13 +6,79 @@
     }
 })();
 
+// Public Methods
+
+function doPushProfilerConsole(value) {
+    var wrapper = document.querySelector('#profiler-content-console .console-wrapper');
+    var span = document.createElement("p");
+
+    span.innerHTML = value;
+
+    wrapper.appendChild(span);
+}
+
+function clearProfilerConsole() {
+    var src = event.srcElement;
+    var wrapper = src.parentNode.parentNode.querySelector('.console-wrapper');
+
+    wrapper.innerHTML = "";
+}
+
+function doPushProfilerGroup(group, value) {
+    var id = group.toLowerCase().replace(/ /g, '-');
+    var groupWrapper = document.querySelector('.console-extra-group');
+    var wrapper = document.querySelector('#profiler-content-console-' + id + ' .console-wrapper');
+
+    if (!wrapper) {
+        // create button
+        var button = document.querySelector('#profiler-content-btn').cloneNode(true);;
+
+        button.setAttribute('id', 'profiler-content-btn-' + id);
+        button.setAttribute('onclick', "doProfiler('#profiler-content-console-" + id + "')");
+        button.innerHTML = group;
+
+        groupWrapper.appendChild(button);
+
+        // create wrapper
+        var instance = document.querySelector('#profiler-content-console').cloneNode(true);;
+
+        instance.setAttribute('id', 'profiler-content-console-' + id);
+        instance.querySelector('.label').innerHTML = group;
+
+        groupWrapper.appendChild(instance);
+
+        wrapper = instance.querySelector('.console-wrapper');
+    }
+
+    var span = document.createElement("p");
+
+    span.innerHTML = value;
+
+    wrapper.appendChild(span);
+}
+
+// Private Methods
+
 function doProfiler(target) {
     var element = document.querySelector(target);
+    var tabs = document.querySelectorAll('.profiler-content');
 
-    if (element.style.display === 'none') {
-        element.style.display = 'block';
-    } else {
-        element.style.display = 'none';
+    if (element) {
+        if (element.style.display === 'none') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+
+    if (tabs) {
+        for (let index = 0; index < tabs.length; index++) {
+            const el = tabs[index];
+
+            if (el !== element) {
+                el.style.display = 'none';
+            }
+        }
     }
 }
 
@@ -30,37 +96,16 @@ function hideProfilerBar(state) {
     }
 }
 
-// var trace = document.querySelectorAll('.profiler-content .message');
-// var accordions = document.querySelectorAll('.profiler-content .trace');
+function doExpandAccordion() {
+    var src = event.srcElement;
+    var trace = sibling(src.parentNode, 'div.trace');
 
-// for (var i = 0; i < trace.length; i++) {
-//     trace[i].onclick = function (event) {
-//         var accordion = sibling(this.parentNode, '.trace');
-//         expandAccordion(accordion);
-
-//         event.preventDefault();
-//     }
-// }
-
-// function collapseAccordion() {
-//     for (var i = 0; i < accordions.length; i++) {
-//         removeClass(accordions[i], 'active');
-//     }
-
-//     content.style.height = height + 'px';
-// }
-
-// function expandAccordion(el) {
-//     if (hasClass(el, 'active')) {
-//         removeClass(el, 'active');
-//         collapseAccordion();
-//     } else {
-//         collapseAccordion();
-//         addClass(el, 'active');
-//         maxHeight = document.querySelector('.profiler-content-inner').scrollHeight;
-//         content.style.height = maxHeight + 'px';
-//     }
-// }
+    if (trace.style.display === 'none') {
+        trace.style.display = 'block';
+    } else {
+        trace.style.display = 'none';
+    }
+}
 
 // Helper Methods
 
@@ -94,6 +139,7 @@ function removeClass(el, className) {
         }
     }
 };
+
 
 function hasCollection(a, b) {
     for (var i = 0, len = a.length; i < len; i++) {
