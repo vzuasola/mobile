@@ -62,7 +62,6 @@ class ProfilerComponent implements ComponentWidgetInterface
             $stat = $value['stats'];
 
             $request = $stat->getRequest();
-            $response = $stat->getResponse();
 
             $uri = (string) $request->getUri();
 

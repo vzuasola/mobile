@@ -51,8 +51,6 @@ class ProfilerMiddleware implements ResponseMiddlewareInterface
                 $newStream = new Stream($stream);
 
                 $response = $response->withBody($newStream);
-            } else {
-                $instance = $this->components->getWidgetById('profiler');
             }
         }
     }
