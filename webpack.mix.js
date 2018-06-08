@@ -61,6 +61,7 @@ mix
     .copy('assets/images', 'web/images')
     .ts('assets/script/app.ts', 'web/app.js')
     .sass('assets/sass/app.scss', 'web/')
+    .version()
 ;
 
 // Full API
