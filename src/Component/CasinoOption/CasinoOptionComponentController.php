@@ -106,7 +106,6 @@ class CasinoOptionComponentController
                     $this->setLegacyPrefCookie($preferredCasino);
                 }
             }
-
         } catch (\Exception $e) {
             // do nothing
         }
