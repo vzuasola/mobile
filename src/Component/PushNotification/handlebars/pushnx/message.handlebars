@@ -1,8 +1,13 @@
-<div class="message message-pnx" id="message{{messageId}}">
-    <div class="circle"></div>
-    <div>{{{title}}}</div>
-    <div class="content" style="">{{{content}}} - custom templates</div>
-    <div class="actions" id="actions{{messageId}}" data-expiry="{{expiryDate}}">{{{actions}}}</div>
-    <div class="time">{{publishDate}} {{{expirationLabel}}}</div>
-    <hr/>
-</div>
+<ul>
+    <li class="pushnx-lightbox-message message message-pnx" id="message{{messageId}}">
+        {{{ icon }}}
+        <div class="pushnx-lightbox-message-title"><strong class="text-red text-uppercase">{{{title}}}</strong>
+            <span class="pushnx-lightbox-message-title-time pull-right">
+                {{publishDate}}
+            </span>
+        </div>
+        <p class="content" style="">{{{content}}}</p>
+        <p class="time">{{{expirationLabel}}}</p>
+        <p class="actions" id="actions{{messageId}}" data-expiry="{{expiryDate}}">{{{actions}}}</p>
+    </li>
+</ul>

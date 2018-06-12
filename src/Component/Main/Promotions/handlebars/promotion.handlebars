@@ -1,0 +1,42 @@
+{{#each promotions}}
+<div class="promotions-body-banner">
+    <a
+        href="{{this.summary_url}}"
+        target="{{this.summary_url_target}}"
+        title="{{this.summary_url_title.0.title}}"
+        class="promotions-body-banner-link tag-{{product}}"
+
+        data-router="true"
+        data-router-refresh="main"
+    >
+    {{#equals this.category "featured"}}
+    <svg viewBox="0 0 20 20">
+        <use xlink:href="#product-{{product}}" />
+    </svg>
+    {{else}}
+        {{#if this.ribbon_enable}}
+            <span
+                class="promotions-body-banner-tag"
+                style="background-color: {{this.ribbon_bg_color}}; color: {{this.ribbon_text_color}}"
+            >
+                {{this.ribbon_label}}
+            </span>
+        {{/if}}
+    {{/equals}}
+    <img src="{{this.thumbnail}}" class="w-100">
+</div>
+
+<div class="container promotions-content clearfix">
+    <h2 class="promotions-content-title">{{this.title}}</h2>
+    <div class="promotions-content-blurb">
+        {{{this.summary_blurb}}}
+        <span class="text-yellow">{{{this.more_info_text}}}</span>
+    </div>
+    <span class="promotions-content-links">
+        <svg viewBox="0 30 24 44.999">
+            <use xlink:href="#arrow" />
+        </svg>
+    </span>
+    </a>
+</div>
+{{/each}}

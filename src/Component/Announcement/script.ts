@@ -1,34 +1,38 @@
 import * as utility from "@core/assets/js/components/utility";
 import Storage from "@core/assets/js/components/utils/storage";
 
+import {Modal} from "@app/assets/script/components/modal";
+
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 export class AnnouncementComponent implements ComponentInterface {
     private storage: Storage;
     private refreshInterval: number = 300000;
+    private element: HTMLElement;
 
     constructor() {
         this.storage = new Storage();
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
+        this.element = element;
+
         this.activateAnnouncementBar(element);
         this.bindDismissButton(element);
 
         // lightbox
+        this.listenAnnouncementLightbox();
+        this.listenModalClose();
+        this.listenAutoRefresh(element);
+
         this.getUnread(element);
-        this.markAllRead(element);
-        this.autoRefreshCounter(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        this.activateAnnouncementBar(element);
-        this.bindDismissButton(element);
+        this.element = element;
 
          // lightbox
         this.getUnread(element);
-        this.markAllRead(element);
-        this.autoRefreshCounter(element);
     }
 
     /**
@@ -55,6 +59,7 @@ export class AnnouncementComponent implements ComponentInterface {
      */
     private bindDismissButton(element) {
         let activeItem = element.querySelector(".announcement-list");
+
         if (activeItem) {
             utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
                 activeItem = activeItem.getAttribute("data");
@@ -67,7 +72,7 @@ export class AnnouncementComponent implements ComponentInterface {
     /**
      * Refresh announcements on background
      */
-    private autoRefreshCounter(element) {
+    private listenAutoRefresh(element) {
         setInterval(() => {
             if (!utility.hasClass(element.querySelector("#announcement-lightbox"), "modal-active")) {
                 ComponentManager.refreshComponent("announcement");
@@ -75,20 +80,32 @@ export class AnnouncementComponent implements ComponentInterface {
         }, this.refreshInterval);
     }
 
-    private markAllRead(element) {
-        utility.listen(document.body, "click", (event, src) => {
-            const modalEl: HTMLElement = element.querySelector("#announcement-lightbox");
+    private listenModalClose() {
+        ComponentManager.subscribe("modal.close", (event, src, data) => {
+            if (utility.hasClass(data, "announcement")) {
+                const items = this.element.querySelectorAll(".announcement-item");
 
-            const modalOverlay: HTMLElement = modalEl.querySelector(".modal-overlay");
-            const negativeClass: HTMLElement = modalEl.querySelector(".modal-close");
+                if (items) {
+                    for (const key in items) {
+                        if (items.hasOwnProperty(key)) {
+                            const item = items[key];
+                            const activeItem = item.getAttribute("data");
 
-            if (negativeClass === src || modalOverlay === src || src.className.baseVal === negativeClass
-                || src.className.baseVal === "modal-close") {
-                for (const item of element.querySelectorAll(".announcement-item")) {
-                    const activeItem = item.getAttribute("data");
-                    this.setReadItems(activeItem);
+                            this.setReadItems(activeItem);
+                        }
+                    }
+
+                    ComponentManager.refreshComponent("announcement");
                 }
-                ComponentManager.refreshComponent("announcement");
+            }
+        });
+    }
+
+    private listenAnnouncementLightbox() {
+        ComponentManager.subscribe("click", (event: Event, src) => {
+            if (utility.hasClass(src, "announcement-trigger", true)) {
+                event.preventDefault();
+                Modal.open("#announcement-lightbox");
             }
         });
     }
@@ -105,16 +122,20 @@ export class AnnouncementComponent implements ComponentInterface {
 
             readItems = this.getReadItems();
 
-            if (readItems.indexOf(activeItem)  < 0) {
+            if (readItems.indexOf(activeItem) < 0) {
                 counter++;
             }
         }
-        utility.invoke(document, "announcement.update.count", {count: counter});
+
+        setTimeout (() => {
+            ComponentManager.broadcast("announcement.update.count", {count: counter});
+        }, 200);
+
     }
 
-   /**
-    * Get all Read Items
-    */
+    /**
+     * Get all Read Items
+     */
     private getReadItems() {
         let data = [];
 

@@ -6,13 +6,9 @@
 
         &-item {
             display: inline;
+            fill: $light-gray;
 
-            // Icons
-            path {
-                fill: $light-gray;
-            }
-
-            &:hover path {
+            &:hover svg {
                 fill: $yellow;
             }
 
@@ -35,27 +31,14 @@
 
             // Icons text
             .icon-thumbnail-label {
-                position: absolute;
-                top: 5.5rem;
-                left: 0;
                 display: block;
-                width: 100%;
-                padding: 0 0.2rem;
+                width: 96%;
+                margin: 1rem auto 0;
             }
 
-            // New tag
+            //Balloon Counter and New tag
+            .icon-balloon-counter,
             .icon-thumbnail-new-tag {
-                position: absolute;
-                top: 0.5rem;
-                right: 0.5rem;
-                padding: 0.3rem 0.5rem;
-                background: #ff0000;
-                color: $white;
-                font-size: 1rem;
-            }
-
-            //Balloon Counter
-            .icon-balloon-counter {
                 position: absolute;
                 top: 0.5rem;
                 right: 0.5rem;
@@ -73,47 +56,32 @@
 
         .icon-thumbnail-item {
             a {
-                width: 29.333333333333333%;
-                height: 9rem;
-                margin: 0 0 3% 3%;
+                width: 31.333333333333333%;
+                margin: 0 0 1.5% 1.5%;
                 font-size: 1.2rem;
                 text-transform: uppercase;
+                padding-bottom: 0.5rem;
             }
 
             // Icons
             svg {
-                margin-top: 1.5rem;
+                display: block;
+                margin: 1.5rem auto 0;
                 width: 2.9rem;
+                fill: $light-gray;
             }
 
-            &.menu-live-dealer {
+            .product-games {
                 svg {
-                    width: 2.5rem;
+                    margin-top: 0.5rem;
+                    width: 5rem;
                 }
             }
+        }
 
-            &.menu-games {
-                svg {
-                    width: 3.7rem;
-                }
-            }
-
-            &.menu-fish-hunter {
-                svg {
-                    width: 3.2rem;
-                }
-            }
-
-            &.menu-exchange {
-                svg {
-                    width: 3.2rem;
-                }
-            }
-
-            &.menu-lottery {
-                svg {
-                    width: 3.2rem;
-                }
+        .icon-thumbnail-item.product-games {
+            .icon-thumbnail-label {
+                margin-top: 0;
             }
         }
     }
@@ -122,44 +90,97 @@
     &-internal {
         .icon-thumbnail-item {
             a {
-                width: 21%;
-                height: 5rem;
-                margin: 0 0 3% 3%;
+                width: 23%;
+                margin: 0 0 1.5% 1.5%;
                 font-size: 0.8rem;
+                padding-bottom: 0.2rem;
             }
 
             // Icons
             svg {
-                width: 2.1rem;
-                margin-top: 0.7rem;
+                display: block;
+                margin: 1.5rem auto 0;
+                width: 3rem;
+                fill: $light-gray;
             }
 
-            // Icons text
-            .icon-thumbnail-label {
-                top: 3.1rem;
-            }
-
-            &.menu-download {
+            .quicklinks-download {
                 svg {
-                    width: 1.5rem;
+                    width: 3.5rem;
+                    margin-left: 2.7rem;
+                }
+
+                .icon-thumbnail-label {
+                    margin-top: 0.7rem;
                 }
             }
 
-            &.menu-payment {
+            .quicklinks-notification {
                 svg {
-                    width: 2.8rem;
+                    width: 3.7rem;
+                }
+
+                .icon-thumbnail-label {
+                    margin-top: 0.7rem;
                 }
             }
 
-            &.menu-notification {
+            .quicklinks-language {
                 svg {
-                    width: 1.7rem;
+                    margin-left: 2.5rem;
                 }
             }
 
-            &.menu-logout {
+            .quicklinks-notification {
                 svg {
-                    width: 1.8rem;
+                    margin-left: 2.7rem;
+                }
+            }
+
+            .quicklinks-logout {
+                svg {
+                    margin-left: 2.8rem;
+                }
+            }
+
+            .quicklinks-home,
+            .quicklinks-announcement,
+            .announcement-trigger {
+                svg {
+                    margin-left: 2.3rem;
+                }
+            }
+
+            .quicklinks-promotions {
+                svg {
+                    width: 3.5rem;
+                    margin-top: 1.2rem;
+                    margin-left: 2.4rem;
+                }
+            }
+
+            .quicklinks-payments {
+                svg {
+                    margin-left: 2rem;
+                }
+            }
+
+            .quicklinks-livechat {
+                svg {
+                    width: 3.5rem;
+                    margin-left: 2.5rem;
+                }
+
+                .icon-thumbnail-label {
+                    margin-top: 0.7rem;
+                }
+            }
+
+            .quicklinks-contact,
+            .quicklinks-faq,
+            .quicklinks-settings {
+                svg {
+                    margin-left: 2.6rem;
                 }
             }
         }

@@ -1,0 +1,6 @@
+{% if type == "blog" %}
+    {{ widget('node_blog', {'node': node}) }}
+{% endif %}
+{% if type == "promotion" %}
+    {{ widget('node_promotions', {'node': node}) }}
+{% endif %}

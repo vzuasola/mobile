@@ -1,14 +1,46 @@
-# Component list
+# Component Configuration List
 
+settings:
+  router:
+    # Controls the headers defined when accessing individual components
+    headers:
+      Cache-Control: private, max-age=300
+
+# Define components
 components:
+  access_denied:
+    class: App\MobileEntry\Component\Main\AccessDenied\AccessDeniedComponent
+
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
+  
+  header_menu:
+    class: App\MobileEntry\Component\Header\Menu\MenuComponent
+    parent: header
+
+  header_login:
+    class: App\MobileEntry\Component\Header\Login\LoginComponent
+    parent: header
 
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
 
   profiler:
     class: App\MobileEntry\Component\Profiler\ProfilerComponent
+
+  basic:
+    class: App\MobileEntry\Component\Main\Basic\BasicComponent
+
+  node:
+    class: App\MobileEntry\Component\Node\NodeComponent
+
+  node_blog:
+    class: App\MobileEntry\Component\Node\Blog\BlogComponent
+    parent: node
+
+  node_promotions:
+    class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
+    parent: node
 
   home:
     class: App\MobileEntry\Component\Main\Home\HomeComponent
@@ -21,15 +53,66 @@ components:
     class: App\MobileEntry\Component\Main\Home\Products\ProductsComponent
     parent: home
 
-  basic:
-    class: App\MobileEntry\Component\Main\Basic\BasicComponent
-
-  header_menu:
-    class: App\MobileEntry\Component\Header\Menu\MenuComponent
-    parent: header
+  home_download:
+    class: App\MobileEntry\Component\Main\Home\Download\DownloadComponent
+    parent: home
 
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
 
+  language:
+    class: App\MobileEntry\Component\Language\LanguageComponent
+
   push_notification:
     class: App\MobileEntry\Component\PushNotification\PushNotificationComponent
+
+  casino_option:
+    class: App\MobileEntry\Component\CasinoOption\CasinoOptionComponent
+
+  promotions:
+    class: App\MobileEntry\Component\Main\Promotions\PromotionsComponent
+
+  seo:
+    class: App\MobileEntry\Component\SEO\SEOComponent
+
+  marketing:
+    class: App\MobileEntry\Component\Marketing\MarketingComponent
+
+# Define modules
+modules:
+  session:
+    class: App\MobileEntry\Module\Session\SessionModule
+
+  avaya:
+    class: App\MobileEntry\Module\Avaya\AvayaModule
+
+  balance:
+    class: App\MobileEntry\Module\Balance\BalanceModule
+
+  tracking:
+    class: App\MobileEntry\Module\Tracking\TrackingModule
+
+  product_integration:
+    class: App\MobileEntry\Module\ProductIntegration\ProductIntegrationModule
+
+  generic_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Generic\GenericIntegrationModule
+
+  owsports_integration:
+    class: App\MobileEntry\Module\ProductIntegration\OWSports\OWSportsIntegrationModule
+
+  als_integration:
+    class: App\MobileEntry\Module\ProductIntegration\ALS\ALSIntegrationModule
+
+  game_integration:
+    class: App\MobileEntry\Module\GameIntegration\GameIntegrationModule
+
+  casino_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Casino\CasinoIntegrationModule
+
+  pas_integration:
+    class: App\MobileEntry\Module\GameIntegration\PAS\PASModule
+
+  login_redirect:
+    class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
+

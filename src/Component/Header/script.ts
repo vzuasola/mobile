@@ -1,148 +1,40 @@
 import * as utility from "@core/assets/js/components/utility";
-import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
-
-import {Session} from "./scripts/session";
-
-import {CheckboxStyler} from "@app/assets/script/components/checkbox-styler";
-import {Loader} from "@app/assets/script/components/loader";
-import {Modal} from "@app/assets/script/components/modal";
-import {passwordMask} from "@app/assets/script/components/password-mask";
 
 /**
  *
  */
 export class HeaderComponent implements ComponentInterface {
-    private modal: Modal;
-    private loader: Loader;
-    private session: Session;
+    private element: HTMLElement;
 
-    constructor() {
-        this.modal = new Modal();
-        this.loader = new Loader(document.body, true);
-    }
+    onLoad(element: HTMLElement, attachments: {}) {
+        this.element = element;
 
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
-        this.activateLogin(element);
-        this.bindLoginForm(element);
-        this.bindLogout(attachments);
-        this.bindSession(attachments);
-        this.activatePasswordMask(element);
+        ComponentManager.subscribe("balance.fetch", (event, src, data: any) => {
+            if (typeof data.response.balance !== "undefined") {
+                const wrapper = this.element.querySelector(".account-balance");
 
-        this.listenLogout(attachments);
-    }
+                if (wrapper) {
+                    const balance = wrapper.querySelector(".account-balance-amount");
+                    const link = wrapper.querySelector("a");
+                    const loader = wrapper.querySelector("div");
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
-        this.activateLogin(element);
-        this.bindLoginForm(element);
-        this.bindLogout(attachments);
-        this.bindSession(attachments);
-        this.activatePasswordMask(element);
-    }
+                    if (balance) {
+                        balance.innerHTML = data.response.balance;
+                    }
 
-    private activatePasswordMask(element) {
-        passwordMask(element.querySelector(".login-field-password"));
-    }
-
-    /**
-     * Activates the login modal
-     */
-    private activateLogin(element) {
-        const rememberUsername: HTMLElement = element.querySelector(".login-remember-username input");
-
-        if (rememberUsername) {
-            const checkbox = new CheckboxStyler(rememberUsername);
-            checkbox.init();
-        }
-    }
-
-    /**
-     * Binds the login form to send data to the login handler
-     */
-    private bindLoginForm(element) {
-        const form: HTMLElement = element.querySelector(".login-form");
-
-        utility.listen(form, "submit", (event, src) => {
-            event.preventDefault();
-
-            const username: string = src.querySelector('[name="username"]').value;
-            const password: string = src.querySelector('[name="password"]').value;
-
-            xhr({
-                  url: Router.generateRoute("header", "authenticate"),
-                  type: "json",
-                  method: "post",
-                  data: {
-                      username,
-                      password,
-                  },
-            }).then((response) => {
-                this.modal.close();
-                this.loader.show();
-
-                utility.invoke(document, "session.login");
-                ComponentManager.refreshComponent("header", () => {
-                  this.loader.hide();
-                  ComponentManager.refreshComponent("announcement");
-                  ComponentManager.refreshComponent("push_notification");
-                });
-                ComponentManager.refreshComponent("main", () => {
-                  this.loader.hide();
-                });
-            });
+                    utility.removeClass(link, "hidden");
+                    utility.addClass(loader, "hidden");
+                }
+            }
         });
     }
 
-    /**
-     * Binds any logout click event to logout the site
-     */
-    private bindLogout(attachments: {authenticated: boolean}) {
-        if (attachments.authenticated) {
-            utility.delegate(document, ".btn-logout", "click", (event, src) => {
-                utility.invoke(document, "session.logout");
-            }, true);
-        }
-    }
+    onReload(element: HTMLElement, attachments: {}) {
+        this.element = element;
 
-    /**
-     * Bind the session handler object
-     */
-    private bindSession(attachments: {authenticated: boolean}) {
-        if (attachments.authenticated && !this.session) {
-            this.session = new Session(300);
-            this.session.init();
-        }
-    }
-
-    /**
-     * Listeners
-     *
-     */
-
-    /**
-     * Listen for logout events
-     */
-    private listenLogout(attachments) {
-        utility.listen(document, "session.logout", (event) => {
-            this.loader.show();
-
-            xhr({
-                url: Router.generateRoute("header", "logout"),
-                type: "json",
-                method: "get",
-            }).always(() => {
-                ComponentManager.refreshComponent("header", () => {
-                    this.loader.hide();
-                    ComponentManager.refreshComponent("announcement");
-                    ComponentManager.refreshComponent("push_notification");
-                });
-
-                ComponentManager.refreshComponent("main", () => {
-                    this.loader.hide();
-                });
-            });
-        });
+        ComponentManager.broadcast("balance.refresh");
     }
 }

@@ -12,21 +12,28 @@ class HeaderComponentAsync implements AsyncComponentInterface
     private $configs;
 
     /**
+     * @var App\Fetcher\AsyncDrupal\MenuFetcher
+     */
+    private $menus;
+
+    /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('config_fetcher_async')
+            $container->get('config_fetcher_async'),
+            $container->get('menu_fetcher_async')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs)
+    public function __construct($configs, $menus)
     {
         $this->configs = $configs;
+        $this->menus = $menus;
     }
 
     /**
@@ -37,6 +44,7 @@ class HeaderComponentAsync implements AsyncComponentInterface
         return [
             $this->configs->getConfig('webcomposer_config.header_configuration'),
             $this->configs->getConfig('webcomposer_config.login_configuration'),
+            $this->menus->getMultilingualMenu('cashier-menu'),
         ];
     }
 }

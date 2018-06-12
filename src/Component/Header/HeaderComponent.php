@@ -16,6 +16,9 @@ class HeaderComponent implements ComponentWidgetInterface
      */
     private $playerSession;
 
+
+    private $menu;
+
     /**
      *
      */
@@ -23,17 +26,19 @@ class HeaderComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('config_fetcher'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('menu_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession)
+    public function __construct($configs, $playerSession, $menu)
     {
         $this->configs = $configs;
         $this->playerSession = $playerSession;
+        $this->menu = $menu;
     }
 
     /**
@@ -55,22 +60,35 @@ class HeaderComponent implements ComponentWidgetInterface
     {
         $data = [];
 
-        $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
-        $loginConfigs = $this->configs->getConfig('webcomposer_config.login_configuration');
+        try {
+            $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+            $cashierMenu = $this->menu->getMultilingualMenu('cashier-menu');
+        } catch (\Exception $e) {
+            $headerConfigs = [];
+            $cashierMenu = [];
+        }
 
-        $data['is_front'] = true;
         $data['logo_title'] = $headerConfigs['logo_title'] ?? 'Dafabet';
-        $data['join_now_text'] = $headerConfigs['join_now_text'] ?? 'Join';
-        $data['login_bottom_label'] = $loginConfigs['login_bottom_label'] ?? 'Login';
+        $data['join_now_text'] = $headerConfigs['join_now_text'] ?? 'Join Now';
+        $data['login_issue_text'] = $headerConfigs['login_issue_text'] ?? 'Cant Login ?';
+        $data['login_issue_link'] = $headerConfigs['login_issue_link'] ?? [];
+        $data['mobile_remember'] = $headerConfigs['mobile_remember'] ?? 'Remember Username';
+        $data['mobile_login_reg'] = $headerConfigs['mobile_login_reg'] ?? 'Login/Join';
+        $data['join_now_link'] = $headerConfigs['join_now_link'] ?? [];
 
-        // post login specific data
-
-        $isLogin = $this->playerSession->isLogin();
+        try {
+            $isLogin = $this->playerSession->isLogin();
+            $username = $this->playerSession->getUsername();
+        } catch (\Exception $e) {
+            $isLogin = false;
+            $username = false;
+        }
 
         $data['is_login'] = $isLogin;
 
-        if ($isLogin) {
-            $data['username'] = $this->playerSession->getUsername();
+        if ($isLogin && $username) {
+            $data['username'] = $username;
+            $data['cashier_link'] = $cashierMenu[0] ?? [];
         }
 
         return $data;

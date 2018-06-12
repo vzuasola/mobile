@@ -7,6 +7,11 @@ use App\Plugins\ComponentWidget\AsyncComponentInterface;
 class FooterComponentAsync implements AsyncComponentInterface
 {
     /**
+     * @var App\Fetcher\AsyncDrupal\ViewsFetcher
+     */
+    private $views;
+
+    /**
      * @var App\Fetcher\Drupal\menus
      */
     private $menus;
@@ -17,6 +22,7 @@ class FooterComponentAsync implements AsyncComponentInterface
     public static function create($container)
     {
         return new static(
+            $container->get('views_fetcher_async'),
             $container->get('menu_fetcher_async')
         );
     }
@@ -24,8 +30,9 @@ class FooterComponentAsync implements AsyncComponentInterface
     /**
      * Public constructor
      */
-    public function __construct($menus)
+    public function __construct($views, $menus)
     {
+        $this->views = $views;
         $this->menus = $menus;
     }
 
@@ -36,6 +43,7 @@ class FooterComponentAsync implements AsyncComponentInterface
     public function getDefinitions()
     {
         return [
+            $this->views->getViewById('mobile_sponsor_list'),
             $this->menus->getMultilingualMenu('mobile-footer'),
         ];
     }

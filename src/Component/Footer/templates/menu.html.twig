@@ -1,10 +1,22 @@
+{% set view_box = {
+        "footer-language": "0 0 20 20",
+        "footer-livechat": "0 0 20 20",
+        "footer-desktop": "0 0 32 20",
+    }
+%}
 <div class="footer-mobile-menu">
     <ul class="menu">
-        {% set menuLength = (footer_menu|length == 2) ? 'half' : '' %}
+        {% set menuLength = (footer_menu|length == 2) ? 'footer-mobile-item half' : 'footer-mobile-item' %}
         {% for menu in footer_menu %}
-            <li class="{{ menuLength }} {{ menu.attributes.class }}">
-                <a href="{{ url(menu.uri) }}">
-                    {% include '@app/web/images/svg/footer/'~menu.attributes.class~'.svg' ignore missing %}
+            <li class="{{ menuLength }}">
+                <a
+                    href="{{ url(menu.uri) }}"
+                    class="{{ menu.attributes.class }} {{ menu.attributes.svg }}"
+                    target="{{ menu.attributes.target }}"
+                >
+                <svg viewBox="{{ view_box[menu.attributes.svg] }}">
+                    <use xlink:href="#{{ menu.attributes.svg }}" />
+                </svg>
                     {{ menu.title }}
                 </a>
             </li>

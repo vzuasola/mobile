@@ -62,21 +62,42 @@ class ProductsComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+
         $data['is_logged_in'] = $this->playerSession->isLogin();
 
         try {
-            $data['product_tiles'] = $this->views->getViewById('product_lobby_tiles_entity');
+            $entities = $this->getEntity();
         } catch (\Exception $e) {
-            $data['product_tiles'] = [];
+            $entities = [];
         }
+
+        $data['product_tiles'] = $entities;
 
         try {
-            $data['config_new_text'] = $this->config
-                ->getConfig('webcomposer_config.header_configuration')['product_menu_new_tag'];
+            $headerConfigs = $this->config->getConfig('webcomposer_config.header_configuration');
         } catch (\Exception $e) {
-            $data['config_new_text'] = [];
+            $headerConfigs = [];
         }
 
+        $data['config_new_text'] = $headerConfigs['product_menu_new_tag'] ?? 'New';
+
         return $data;
+    }
+
+    private function getEntity()
+    {
+        $result = [];
+        $tiles = $this->views->getViewById('product_lobby_tiles_entity');
+
+        foreach ($tiles as $key => $tile) {
+            if (isset($tile['field_product_lobby_url_post_log'][0]['uri'])) {
+                $encode = base64_encode($tile['field_product_lobby_url_post_log'][0]['uri']);
+                $tile['field_post_login_url_encoded'] = $encode;
+            }
+
+            $result[$key] = $tile;
+        }
+
+        return $result;
     }
 }

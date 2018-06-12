@@ -1,0 +1,35 @@
+<div class="page-title promotions">
+    <h1 class="page-title-text promotions-title">{{ title }}</h1>
+    <a href="javascript:history.go(-1)" class="page-title-back-button">
+        <svg viewBox="0 30 24 44.999">
+            <use xlink:href="#arrow" />
+        </svg>
+    </a>
+    <div class="dropdown-menu">
+        <a
+            href="#"
+            class="dropdown-trigger promotion-link active-filter"
+            data-current-filter=""
+        >
+            <span class="current-filter"></span>
+            <svg viewBox="0 30 24 44.999">
+                <use xlink:href="#arrow" />
+            </svg>
+        </a>
+
+        <ul id="promotion-filters">
+        </ul>
+
+    </div>
+</div>
+
+<div class="promotions-loader">
+    <div class="promotions-body hidden">
+        
+    </div>
+    <div class="promotions-body promotions-no-available hidden">
+        <p>{{ no_available_promotions }}</p>
+    </div>
+
+    {% include '@component/Main/Promotions/templates/loader.html.twig' %}
+</div>

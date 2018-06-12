@@ -1,0 +1,9 @@
+{% if seo %}
+    {% for meta in seo %}
+        <{{ meta.field_tag[0].value }}
+        {% for attribute in meta.field_meta %}
+            {{ attribute.field_meta_name[0].value }}="{{ attribute.field_attribute_value[0].value }}"
+        {% endfor %}
+        />
+    {% endfor %}
+{% endif %}

@@ -15,7 +15,12 @@ mix.webpackConfig({
         rules: [
             {
                 test: /\.handlebars?$/,
-                loader: 'handlebars-loader'
+                loader: 'handlebars-loader',
+                query: {
+                    precompileOptions: {
+                        knownHelpersOnly: false,
+                    },
+                }
             },
             {
                 test: /\.ts$/,
@@ -23,7 +28,7 @@ mix.webpackConfig({
                 loader: 'tslint-loader',
                 options: {
                     emitErrors: true,
-                }
+                },
             }
         ]
     },
@@ -56,6 +61,7 @@ mix
     .copy('assets/images', 'web/images')
     .ts('assets/script/app.ts', 'web/app.js')
     .sass('assets/sass/app.scss', 'web/')
+    .version()
 ;
 
 // Full API

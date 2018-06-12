@@ -5,9 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{{ title }}</title>
+    {% block seo %}{% endblock %}
+    {% block marketing %}{% endblock %}
     {% block css %}{% endblock %}
 </head>
-<body class="{{ app.lang }}" >
+<body
+    class="{{ app.lang }}"
+    data-language="{{ app.lang }}"
+    data-route={{ app.router_request.uri.path }}
+
+    app-modules={{ modules() }}
+>
     {% block header %}{% endblock header %}
 
     <main class="main">
@@ -16,6 +24,8 @@
 
     {% block footer %}{% endblock footer %}
 
-    {% block script %}{% endblock %}
+    {% block script %}
+        {{ module_scripts() }}
+    {% endblock %}
 </body>
 </html>

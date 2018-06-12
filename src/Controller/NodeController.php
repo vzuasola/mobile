@@ -2,19 +2,50 @@
 
 namespace App\MobileEntry\Controller;
 
-use App\Async\Async;
-use App\Controller\NodeController as Base;
+use App\BaseController;
+use Slim\Exception\NotFoundException;
 
-class NodeController extends Base
+class NodeController extends BaseController
 {
     /**
      *
      */
-    public function viewNode($request, $response, $args, $node)
+    public function view($request, $response, $args)
     {
-        $data['data'] = $node;
-        $data['title'] = $node['title'][0]['value'];
+        $path = $request->getUri()->getPath();
+        $path = trim($path, '/');
 
-        return $this->widgets->render($response, '@site/page.html.twig', $data);
+        try {
+            $node = $this->get('node_fetcher')->getNodeByAlias($path);
+        } catch (\Exception $e) {
+            throw new NotFoundException($request, $response);
+        }
+
+        $this->checkAccess($node, $request, $response);
+
+        $data['title'] = $node['title'][0]['value'];
+        $data['node'] = $node;
+
+        return $this->widgets->render($response, '@site/node.html.twig', $data);
+    }
+
+    /**
+     * Check if a specified node has access
+     */
+    private function checkAccess($node, $request, $response)
+    {
+        try {
+            $state = (integer) $this->get('player_session')->isLogin();
+        } catch (\Exception $e) {
+            $state = 0;
+        }
+
+        if (isset($node['field_promo_availability'])) {
+            $states = array_column((array) $node['field_promo_availability'], 'value');
+
+            if (!in_array($state, $states)) {
+                throw new NotFoundException($request, $response);
+            }
+        }
     }
 }

@@ -22,18 +22,18 @@ class ProductsComponentAsync implements AsyncComponentInterface
     public static function create($container)
     {
         return new static(
-            $container->get('views_fetcher_async'),
-            $container->get('config_fetcher_async')
+            $container->get('config_fetcher_async'),
+            $container->get('views_fetcher_async')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($views, $config)
+    public function __construct($config, $views)
     {
-        $this->views = $views;
         $this->config = $config;
+        $this->views = $views;
     }
 
     /**
@@ -42,8 +42,8 @@ class ProductsComponentAsync implements AsyncComponentInterface
     public function getDefinitions()
     {
         return [
-            $this->views->getViewById('product_lobby_tiles_entity'),
             $this->config->getConfig('webcomposer_config.header_configuration'),
+            $this->views->getViewById('product_lobby_tiles_entity'),
         ];
     }
 }

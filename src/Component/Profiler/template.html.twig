@@ -3,14 +3,35 @@
     {{ app.get('profiler').setMessage('Page Render', 0, true) }}
     {{ app.get('profiler').debugSession() }}
 
-    <div id="profiler" class="profiler">
-        <button id="btn-profile" class="profiler-button">Render Time 
-            <strong>
-                <span class="profiler-time-ms">{{ app.get('profiler').getRenderTime() }}</span> ms
-            </strong>
+    <div class="profiler-tab compact" style="display: none">
+        <button
+            class="profiler-button"
+            onclick="hideProfilerBar('full')"
+        >
+            <strong>WBC</strong>
         </button>
-        <div class="profiler-content">
-            <div class="profiler-content-inner">
+    </div>
+
+    <div class="profiler-tab full">
+        <button
+            class="profiler-button"
+            onclick="hideProfilerBar('compact')"
+        >
+            <strong>WBC PROFILER</strong>
+        </button>
+
+        <button
+            class="profiler-button"
+            onclick="doProfiler('#profiler-content-console')"
+        >
+            Console
+        </button>
+
+        <div id="profiler-content-console" class="profiler-content" style="display: none">
+            <div class="header">
+                Console
+            </div>
+            <div class="content">
                 {% for key, messages in app.get('profiler').getMessages() %}
                     {% if not key == 0 and messages is iterable %}
                         <p><strong>{{ key }} ({{ messages|length }}) </strong></p>
@@ -24,8 +45,24 @@
                 {% endfor %}
             </div>
         </div>
+
+        <button class="profiler-button">Middlewares</button>
+        <button class="profiler-button">Networks</button>
+        <button class="profiler-button">Async</button>
+
+        <span id="btn-profile" class="profiler-button" style="float: right">
+            Render 
+            <strong>
+                <span class="profiler-time-ms">{{ app.get('profiler').getRenderTime() }}</span> ms
+            </strong>
+        </span>
     </div>
 
-    {{ include('@component/Profiler/templates/style.html.twig') }}
-    {{ include('@component/Profiler/templates/script.html.twig') }}
+    <style>
+        {{ include('@component/Profiler/assets/style.css') }}
+    </style>
+
+    <script>
+        {{ include('@component/Profiler/assets/script.js') }}
+    </script>
 {% endif %}

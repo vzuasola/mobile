@@ -7,9 +7,14 @@ use App\Plugins\ComponentWidget\AsyncComponentInterface;
 class AnnouncementComponentAsync implements AsyncComponentInterface
 {
     /**
-     * @var App\Fetcher\Drupal\ViewsFetcher
+     * @var App\Fetcher\AsyncDrupal\ConfigFetcher
      */
-    private $viewsFetcher;
+    private $configs;
+
+    /**
+     * @var App\Fetcher\AsyncDrupal\ViewsFetcher
+     */
+    private $views;
 
     /**
      *
@@ -17,6 +22,7 @@ class AnnouncementComponentAsync implements AsyncComponentInterface
     public static function create($container)
     {
         return new static(
+            $container->get('config_fetcher_async'),
             $container->get('views_fetcher_async')
         );
     }
@@ -24,9 +30,10 @@ class AnnouncementComponentAsync implements AsyncComponentInterface
     /**
      *
      */
-    public function __construct($viewsFetcher)
+    public function __construct($configs, $views)
     {
-        $this->viewsFetcher = $viewsFetcher;
+        $this->configs = $configs;
+        $this->views = $views;
     }
 
     /**
@@ -35,7 +42,8 @@ class AnnouncementComponentAsync implements AsyncComponentInterface
     public function getDefinitions()
     {
         return [
-            $this->viewsFetcher->getViewById('announcements'),
+            $this->configs->getConfig('webcomposer_config.announcements_configuration'),
+            $this->views->getViewById('announcements'),
         ];
     }
 }

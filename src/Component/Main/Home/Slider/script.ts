@@ -1,30 +1,32 @@
 import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 
-import Xlider from "./scripts/xlider";
+import Xlider from "@app/assets/script/components/xlider";
 
 /**
  *
  */
 export class SliderComponent implements ComponentInterface {
-    private slider = new Xlider({
-        selector: "#main-banner",
-        innerSelector: ".banner-slides",
-        childClassSelector: "banner-slides-item",
-        auto: true,
-        controls: true,
-        pager: false,
-        speed: 8000,
-    });
-
     onLoad(element: HTMLElement, attachments: {}) {
-        this.activateSlider();
+        this.activateSlider(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        this.activateSlider();
+        this.activateSlider(element);
     }
 
-    private activateSlider() {
-        this.slider.init();
+    private activateSlider(element) {
+        const slider: HTMLElement = element.querySelector("#main-slider");
+
+        if (slider && slider.querySelectorAll(".xlide-item").length > 0) {
+            // tslint:disable-next-line:no-unused-expression
+            const sliderObj = new Xlider({
+                selector: "#main-slider",
+                loop: true,
+                duration: 300,
+                controls: true,
+            });
+
+            setInterval(() => sliderObj.next(), 5000);
+        }
     }
 }

@@ -1,5 +1,5 @@
 // Arrow Pointer
-@mixin triangle($position: bottom, $size: 10px, $color: $light-gray) {
+@mixin triangle($position: bottom, $size: 1rem, $color: $light-gray) {
     display: block;
     width: 0;
     height: 0;

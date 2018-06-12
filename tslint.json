@@ -11,11 +11,14 @@
         "no-empty": [true, "allow-empty-catch"],
         "object-literal-sort-keys": false,
         "interface-name": false,
-        "no-console": false
+        "no-console": false,
+        "only-arrow-functions": [true, "allow-declarations", "allow-named-functions"],
+        "ordered-imports": false
     },
     "rulesDirectory": [],
     "linterOptions": {
         "exclude": [
+            "assets/script/vendor/**",
             "automation/**",
             "core/**",
             "cache/**",

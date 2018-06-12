@@ -1,31 +1,45 @@
 .login {
     // Content
     &-content {
-        // max-width: 34rem;
         padding: 4rem 5rem;
         border-radius: 0.5rem;
         background: $red;
 
-        &-button {
-            width: 2.5rem;
-            height: 2.5rem;
-            position: absolute;
-            top: 0.8rem;
-            right: 0.8rem;
-            outline: none;
-            border: 0;
-            cursor: pointer;
+        img {
+            margin-bottom: 1.5rem;
 
-            path {
-                fill: #af0000;
-            }
-            rect {
-                fill: #900000;
+            a {
                 width: 100%;
                 height: 100%;
-                rx: 10.81;
-                ry: 10.81;
+
+                img {
+                    position: static;
+                    vertical-align: middle;
+                }
             }
+        }
+    }
+
+    .mobile-close-button {
+        width: 1.9rem;
+        height: 1.9rem;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        outline: none;
+        border: 0;
+        cursor: pointer;
+        background: #900000;
+
+        path {
+            fill: #af0000;
+        }
+        rect {
+            fill: #900000;
+            width: 100%;
+            height: 100%;
+            rx: 10.81;
+            ry: 10.81;
         }
     }
 
@@ -53,11 +67,13 @@
             top: 0.8rem;
             left: 1rem;
             width: 2rem;
-
-            path {
-                fill: $disabled-text-gray;
-            }
+            fill: $disabled-text-gray;
         }
+    }
+
+    // Error message
+    .login-error {
+        margin-top: 0.5rem;
     }
 
     // Logo

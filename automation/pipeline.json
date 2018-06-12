@@ -184,8 +184,8 @@
                 "options": [],
                 "command": [
                     "install",
-                    "-v",
-                    "--no-interaction"
+                    "--no-interaction",
+                    "--profile"
                 ],
                 "volumes": [
                     "$PWD:/var/www/html/app"
@@ -234,7 +234,8 @@
                     "-Dsonar.leak.period=$LEAK_PERIOD"
                 ],
                 "volumes": [
-                    "$PWD:/app"
+                    "$PWD:/app",
+                    "$PWD/.sonar-cache:/root/.sonar/cache"
                 ]
             },
             "sonarqube-scanner": {
@@ -257,7 +258,8 @@
                     "-Dsonar.php.tests.reportPath=$PHPUNIT_TESTS_REPORT_PATH"
                 ],
                 "volumes": [
-                    "$PWD:/app"
+                    "$PWD:/app",
+                    "$PWD/.sonar-cache:/root/.sonar/cache"
                 ]
             }
         }
@@ -477,10 +479,10 @@
                 ],
                 "command": [
                     "install",
-                    "-v",
                     "--no-interaction",
                     "--no-dev",
-                    "--optimize-autoloader"
+                    "--optimize-autoloader",
+                    "--profile"
                 ],
                 "volumes": [
                     "$PWD:/var/www/html/app"
@@ -564,10 +566,10 @@
                 ],
                 "command": [
                     "install",
-                    "-v",
                     "--no-interaction",
                     "--no-dev",
-                    "--optimize-autoloader"
+                    "--optimize-autoloader",
+                    "--profile"
                 ],
                 "volumes": [
                     "$PWD:/var/www/html/app"

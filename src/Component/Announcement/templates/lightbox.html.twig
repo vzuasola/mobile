@@ -1,6 +1,7 @@
 <div id="announcement-lightbox" class="modal announcement">
+    <h2 class="announcement-title">{{title}}</h2>
+    {% include '@app/web/images/svg/announcement/announcement-closed.svg' %}
     <div class="modal-content announcement-content">
-        <p class="announcement-title">{{title}}</p>
         <div class="modal-body announcement-body">
             {% if announcement_count %}
             <ul>
@@ -14,9 +15,10 @@
                 {% endfor %}
             </ul>
             {% else %}
-                <p>{{ default_message }}</p>
+                <ul>
+                    <li class="text-red">{{ default_message }}</li>
+                </ul>
             {% endif %}
-            {% include '@app/web/images/svg/announcement/announcement-closed.svg' %}
         </div>
     </div>
 </div>

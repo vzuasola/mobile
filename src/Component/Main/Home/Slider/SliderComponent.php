@@ -6,6 +6,41 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class SliderComponent implements ComponentWidgetInterface
 {
+     /**
+     * @var App\Fetcher\Drupal\ViewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $configFetcher;
+
+    /**
+     * @var App\Player\PlayerSession
+     */
+    private $playerSession;
+
+    /**
+     *
+     */
+    public static function create($container)
+    {
+        return new static(
+            $container->get('views_fetcher'),
+            $container->get('player_session')
+        );
+    }
+
+    /**
+     *
+     */
+    public function __construct($viewsFetcher, $playerSession)
+    {
+        $this->viewsFetcher = $viewsFetcher;
+        $this->playerSession = $playerSession;
+    }
+
     /**
      * Defines the template path
      *
@@ -24,6 +59,18 @@ class SliderComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+
+        try {
+            $data['slides'] = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
+        } catch (\Exception $e) {
+            $data['slides'] = [];
+        }
+
+        try {
+            $data['is_login'] = $this->playerSession->isLogin();
+        } catch (\Exception $e) {
+            $data['is_login'] = false;
+        }
 
         return $data;
     }
