@@ -88,6 +88,8 @@ class ProfilerComponent implements ComponentWidgetInterface
 
     private function populateSession(&$stack)
     {
-        $stack['Session']['Session'] = @d($_SESSION);
+        if (function_exists('d')) {
+            $stack['Session']['Session'] = @d($_SESSION);
+        }
     }
 }
