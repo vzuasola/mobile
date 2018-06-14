@@ -30,6 +30,10 @@ $settings['settings']['components']['async'] = false;
 $settings['settings']['page_cache']['enable'] = true;
 $settings['settings']['page_cache']['default_timeout'] = 1800;
 
+// Fetchers
+
+$settings['settings']['fetchers']['enable_permanent_caching'] = true;
+
 // Environment Specific
 
 if (\App\Kernel::environment() !== 'DEV') {
