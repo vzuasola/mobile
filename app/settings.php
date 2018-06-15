@@ -36,6 +36,8 @@ $settings['settings']['fetchers']['enable_permanent_caching'] = true;
 
 // Environment Specific
 
+$settings['settings']['debug'] = true;
+
 if (\App\Kernel::environment() !== 'DEV') {
     $settings['settings']['asset']['prefixed_drupal'] = true;
 }

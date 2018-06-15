@@ -34,6 +34,7 @@ class ProfilerComponent implements ComponentWidgetInterface
 
         $this->populateMiddlewares($stack);
         $this->populateNetwork($stack);
+        $this->populateSession($stack);
 
         $data['stack'] = $stack;
 
@@ -82,6 +83,13 @@ class ProfilerComponent implements ComponentWidgetInterface
             } else {
                 $stack['Network']['Generic'][] = $stash;
             }
+        }
+    }
+
+    private function populateSession(&$stack)
+    {
+        if (function_exists('d')) {
+            $stack['Session']['Session'] = @d($_SESSION);
         }
     }
 }
