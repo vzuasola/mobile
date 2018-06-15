@@ -14,7 +14,7 @@ components:
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
   
-  header_menu:
+  menu:
     class: App\MobileEntry\Component\Menu\MenuComponent
 
   header_login:

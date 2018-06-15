@@ -21,7 +21,7 @@ import {ProfilerComponent} from "@app/src/Component/Profiler/script";
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
     header: new HeaderComponent(),
-    header_menu: new MenuComponent(),
+    menu: new MenuComponent(),
     header_login: new LoginComponent(),
     promotions: new PromotionsComponent(),
     home_download: new DownloadComponent(),
