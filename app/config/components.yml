@@ -15,8 +15,7 @@ components:
     class: App\MobileEntry\Component\Header\HeaderComponent
   
   header_menu:
-    class: App\MobileEntry\Component\Header\Menu\MenuComponent
-    parent: header
+    class: App\MobileEntry\Component\Menu\MenuComponent
 
   header_login:
     class: App\MobileEntry\Component\Header\Login\LoginComponent

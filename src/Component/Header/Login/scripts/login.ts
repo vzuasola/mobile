@@ -163,7 +163,7 @@ export class Login {
                     });
                 } else {
                     ComponentManager.refreshComponents(
-                        ["header", "main", "announcement", "push_notification"],
+                        ["header", "header_menu", "main", "announcement", "push_notification"],
                         () => {
                             ComponentManager.broadcast("session.login", {
                                 src: this.srcElement,
@@ -315,7 +315,7 @@ export class Login {
                 method: "get",
             }).always((response) => {
                 ComponentManager.refreshComponents(
-                    ["header", "main", "announcement", "push_notification"],
+                    ["header", "header_menu", "main", "announcement", "push_notification"],
                     () => {
                         this.loader.hide();
                     },

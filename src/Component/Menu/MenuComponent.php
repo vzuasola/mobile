@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Header\Menu;
+namespace App\MobileEntry\Component\Menu;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
@@ -68,7 +68,7 @@ class MenuComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Header/Menu/template.html.twig';
+        return '@component/Menu/template.html.twig';
     }
 
     /**
