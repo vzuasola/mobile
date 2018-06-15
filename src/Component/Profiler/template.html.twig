@@ -1,13 +1,13 @@
 {% import "@component/Profiler/templates/trace.html.twig" as macros %}
 
 <div id="profiler">
-    <div class="profiler-tab compact" style="display: none">
+    <div class="profiler-tab compact">
         <button class="profiler-button" onclick="window.profiler.compactBar('full')">
             <strong>WBC</strong>
         </button>
     </div>
 
-    <div class="profiler-tab full">
+    <div class="profiler-tab full" style="display: none">
         <button class="profiler-button" onclick="window.profiler.compactBar('compact')">
             <strong>WBC PROFILER</strong>
         </button>

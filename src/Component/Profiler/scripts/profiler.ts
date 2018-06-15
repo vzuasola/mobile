@@ -14,6 +14,12 @@ export class Profiler {
 
     setElement(element) {
         this.element = element;
+
+        if (localStorage.getItem("profiler.tab.state") === "compact") {
+            this.compactBar("compact");
+        } else {
+            this.compactBar("full");
+        }
     }
 
     push(value) {
