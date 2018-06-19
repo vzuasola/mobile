@@ -25,6 +25,13 @@ $settings['settings']['asset']['prefixed'] = false;
 
 $settings['settings']['components']['async'] = false;
 
+$settings['settings']['components']['render']['mode'] = 'prerender';
+$settings['settings']['components']['render']['preload'] = ['profiler', 'header', 'footer'];
+
+$settings['settings']['components']['router']['widget_headers'] = [
+    'Cache-Control' => 'private, max-age=300',
+];
+
 // Page Cache
 
 $settings['settings']['page_cache']['enable'] = true;

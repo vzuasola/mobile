@@ -1,11 +1,3 @@
-# Component Configuration List
-
-settings:
-  router:
-    # Controls the headers defined when accessing individual components
-    headers:
-      Cache-Control: private, max-age=300
-
 # Define components
 components:
   access_denied:
@@ -13,7 +5,7 @@ components:
 
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
-  
+
   header_menu:
     class: App\MobileEntry\Component\Header\Menu\MenuComponent
     parent: header
