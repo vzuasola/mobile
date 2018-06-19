@@ -32,6 +32,10 @@ $settings['settings']['components']['router']['widget_headers'] = [
     'Cache-Control' => 'private, max-age=300',
 ];
 
+// Cache
+
+$settings['settings']['cache']['default_timeout'] = 1800;
+
 // Page Cache
 
 $settings['settings']['page_cache']['enable'] = true;
