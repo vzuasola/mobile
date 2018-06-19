@@ -25,6 +25,10 @@ $settings['settings']['asset']['prefixed'] = false;
 
 $settings['settings']['components']['async'] = false;
 
+// Cache
+
+$settings['settings']['cache']['default_timeout'] = 1800;
+
 // Page Cache
 
 $settings['settings']['page_cache']['enable'] = true;
