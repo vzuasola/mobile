@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Header\Menu;
+namespace App\MobileEntry\Component\Menu;
 
 /**
  *

@@ -6,13 +6,12 @@ components:
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
 
-  header_menu:
-    class: App\MobileEntry\Component\Header\Menu\MenuComponent
-    parent: header
-
   header_login:
     class: App\MobileEntry\Component\Header\Login\LoginComponent
     parent: header
+  
+  menu:
+    class: App\MobileEntry\Component\Menu\MenuComponent
 
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
