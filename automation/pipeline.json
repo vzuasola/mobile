@@ -680,7 +680,9 @@
                     "--extra-vars",
                     "version: $VERSION.$CI_PIPELINE_ID",
                     "--extra-vars",
-                    "project: $CI_PROJECT_NAME"
+                    "project: $CI_PROJECT_NAME",
+                    "--extra-vars",
+                    "gitlab_user_email: $GITLAB_USER_EMAIL"
                 ],
                 "volumes": [
                     "$PWD:/app"
@@ -810,7 +812,9 @@
                     "--extra-vars",
                     "version: $VERSION.$CI_PIPELINE_ID",
                     "--extra-vars",
-                    "project: $CI_PROJECT_NAME"
+                    "project: $CI_PROJECT_NAME",
+                    "--extra-vars",
+                    "gitlab_user_email: $GITLAB_USER_EMAIL"
                 ],
                 "volumes": [
                     "$PWD:/app"
@@ -2009,7 +2013,9 @@
                     "--extra-vars",
                     "version: $VERSION.$CI_PIPELINE_ID",
                     "--extra-vars",
-                    "project: $CI_PROJECT_NAME"
+                    "project: $CI_PROJECT_NAME",
+                    "--extra-vars",
+                    "gitlab_user_email: $GITLAB_USER_EMAIL"
                 ],
                 "volumes": [
                     "$PWD:/app"
@@ -2175,7 +2181,9 @@
                     "--extra-vars",
                     "version: $VERSION.$CI_PIPELINE_ID",
                     "--extra-vars",
-                    "project: $CI_PROJECT_NAME"
+                    "project: $CI_PROJECT_NAME",
+                    "--extra-vars",
+                    "gitlab_user_email: $GITLAB_USER_EMAIL"
                 ],
                 "volumes": [
                     "$PWD:/app"
@@ -2305,7 +2313,9 @@
                     "--extra-vars",
                     "version: $VERSION.$CI_PIPELINE_ID",
                     "--extra-vars",
-                    "project: $CI_PROJECT_NAME"
+                    "project: $CI_PROJECT_NAME",
+                    "--extra-vars",
+                    "gitlab_user_email: $GITLAB_USER_EMAIL"
                 ],
                 "volumes": [
                     "$PWD:/app"
@@ -2569,7 +2579,9 @@
                     "--extra-vars",
                     "version: $VERSION.$CI_PIPELINE_ID",
                     "--extra-vars",
-                    "project: $CI_PROJECT_NAME"
+                    "project: $CI_PROJECT_NAME",
+                    "--extra-vars",
+                    "gitlab_user_email: $GITLAB_USER_EMAIL"
                 ],
                 "volumes": [
                     "$PWD:/app"
