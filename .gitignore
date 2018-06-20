@@ -9,6 +9,7 @@ node_modules/
 # Ignore generated assets
 /web/*
 !/web/app.php
+!/web/en/mobile/*
 !/web/index.php
 !/web/data.json
 !/web/.htaccess

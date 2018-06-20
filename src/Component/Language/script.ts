@@ -38,7 +38,7 @@ export class LanguageComponent implements ComponentInterface {
 
                     Router.navigate(
                         redirectionUrl,
-                        ["main", "header", "announcement", "footer", "language"],
+                        ["*"],
                         {
                             language: selectedLang,
                         },

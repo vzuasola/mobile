@@ -1,7 +1,7 @@
 .profiler-tab {
     position: fixed;
     bottom: 0;
-    z-index: 1000;
+    z-index: 999999;
 
     background: #373737;
 
@@ -18,9 +18,16 @@
     border: none;
     background: #373737;
     color: #fff;
-    padding: 6px 30px;
+    padding: 6px 10px;
     border-radius: 4px 4px 0 0;
-    padding-right: 30px;
+}
+
+.profiler-button:first-child {
+    padding-left: 20px;
+}
+
+.profiler-button:last-child {
+    padding-right: 20px;
 }
 
 .profiler-clear {
@@ -85,6 +92,10 @@
 
 .profiler-content .trace {
     padding-left: 20px;
+}
+
+.profiler-tab-wrapper {
+    display: inline-block;
 }
 
 .console-standard-group,

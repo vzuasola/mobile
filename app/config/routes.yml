@@ -70,6 +70,12 @@ routes:
         headers:
             Cache-Control: no-cache, no-store, must-revalidate
 
+    /api/plugins/module:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:moduleList
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
     /*.*:
         method: ANY
         action: App\MobileEntry\Controller\NodeController:view
