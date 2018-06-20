@@ -87,7 +87,7 @@ class LoginComponentController
         try {
             $data['success'] = $this->playerSession->logout();
         } catch (\Exception $e) {
-            // do nothing
+            $data['message'] = $e->getMessage();
         }
 
         return $this->rest->output($response, $data);

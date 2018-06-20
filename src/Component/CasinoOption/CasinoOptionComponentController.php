@@ -58,6 +58,9 @@ class CasinoOptionComponentController
         $this->paymentAccount = $paymentAccount;
     }
 
+    /**
+     *
+     */
     public function preference($request, $response)
     {
         $data = [];
@@ -87,6 +90,9 @@ class CasinoOptionComponentController
         return $this->rest->output($response, $data);
     }
 
+    /**
+     *
+     */
     private function getPreferenceProvisioned($product)
     {
         $preferredCasinoUrl = false;
@@ -95,7 +101,9 @@ class CasinoOptionComponentController
             if (!empty($product['product'])) {
                 $preferredCasino = $product['product'];
                 $this->preferences->savePreference('casino.preferred', $preferredCasino);
+
                 $preferredCasinoUrl = $this->getCasinoUrl($product['product']);
+
                 $this->setLegacyPrefCookie($preferredCasino);
             } else {
                 $preferredCasinoPref = $this->preferences->getPreferences();
@@ -103,6 +111,7 @@ class CasinoOptionComponentController
                 if (!empty($preferredCasinoPref['casino.preferred'])) {
                     $preferredCasino = $preferredCasinoPref['casino.preferred'];
                     $preferredCasinoUrl = $this->getCasinoUrl($preferredCasino);
+
                     $this->setLegacyPrefCookie($preferredCasino);
                 }
             }
@@ -113,6 +122,9 @@ class CasinoOptionComponentController
         return $preferredCasinoUrl;
     }
 
+    /**
+     *
+     */
     private function getCasinoUrl($product)
     {
         $casinoUrl = false;
@@ -127,12 +139,15 @@ class CasinoOptionComponentController
         return $casinoUrl;
     }
 
+    /**
+     *
+     */
     private function setLegacyPrefCookie($preferredCasino)
     {
         $options = [
             'path' => '/',
             'domain' => Host::getDomain(),
-            'expire' => 0
+            'expire' => 0,
         ];
 
         Cookies::set('mobile_revamp_casino_pref', $preferredCasino, $options);

@@ -21,10 +21,9 @@
             {% else %}
                 <li>
                     <p class="mb-10">
-                        <strong>{{ link.class }}{{ link.type }}{{ link.function }}</strong>
+                        <span style="font-weight: 500">{{ link.class }}{{ link.type }}{{ link.function }}</span>
                         {% if link.line %}
                             <br>
-
                             Line {{ link.line }}
                         {% endif %}
                     </p>

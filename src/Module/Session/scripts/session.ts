@@ -1,7 +1,8 @@
 import * as utility from "@core/assets/js/components/utility";
-
 import Counter from "@core/assets/js/components/utils/counter";
-import { ComponentManager } from "@plugins/ComponentWidget/asset/component";
+
+import {Console} from "@core/assets/js/components/utils/console";
+import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 export class Session {
     private timeout: number;
@@ -42,11 +43,13 @@ export class Session {
      */
 
     private onCounterRestart() {
-        console.log(`Starting session count with ${this.timeout} seconds`);
+        Console.push("Session Module", `Starting session count with ${this.timeout} seconds`);
     }
 
     private onCounterStop() {
         ComponentManager.broadcast("session.logout");
+
+        Console.push("Session Module", "Session has been terminated");
     }
 
     private onCounterCount(counter: Counter, time: number) {
