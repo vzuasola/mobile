@@ -1,4 +1,3 @@
-import * as utility from "@core/assets/js/components/utility";
 import Storage from "@core/assets/js/components/utils/storage";
 
 /**
@@ -15,10 +14,10 @@ export class Profiler {
     setElement(element) {
         this.element = element;
 
-        if (localStorage.getItem("profiler.tab.state") === "compact") {
-            this.compactBar("compact");
-        } else {
+        if (localStorage.getItem("profiler.tab.state") === "full") {
             this.compactBar("full");
+        } else {
+            this.compactBar("compact");
         }
     }
 
@@ -97,16 +96,16 @@ export class Profiler {
     }
 
     compactBar(state) {
-        if (state === "compact") {
-            this.storage.set("profiler.tab.state", "compact");
-
-            this.element.querySelector(".profiler-tab.compact").style.display = "block";
-            this.element.querySelector(".profiler-tab.full").style.display = "none";
-        } else {
+        if (state === "full") {
             this.storage.set("profiler.tab.state", "full");
 
             this.element.querySelector(".profiler-tab.compact").style.display = "none";
             this.element.querySelector(".profiler-tab.full").style.display = "block";
+        } else {
+            this.storage.set("profiler.tab.state", "compact");
+
+            this.element.querySelector(".profiler-tab.compact").style.display = "block";
+            this.element.querySelector(".profiler-tab.full").style.display = "none";
         }
     }
 }

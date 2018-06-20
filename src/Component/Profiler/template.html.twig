@@ -1,5 +1,6 @@
 {% import "@component/Profiler/templates/trace.html.twig" as macros %}
 
+{% if profileable %}
 <div id="profiler">
     <div class="profiler-tab compact">
         <button class="profiler-button" onclick="window.profiler.compactBar('full')">
@@ -49,11 +50,7 @@
                                         {% if message.message %}
                                             <div class="message-wrapper">
                                                 <p>
-                                                    <a 
-                                                        class="message"
-                                                        href="#" 
-                                                        {# onclick="doExpandAccordion()" #}
-                                                    >
+                                                    <a class="message" href="#" {# onclick="doExpandAccordion()" #}>
                                                         {{ message.message|raw }}
                                                     </a>
                                                 </p>
@@ -92,9 +89,5 @@
     <style>
         {{include('@component/Profiler/assets/style.css')}}
     </style>
-
-    {# <script>
-        {{ include('@component/Profiler/assets/script.js') }}
-    </script> #}
 </div>
-
+{% endif %}
