@@ -16,6 +16,7 @@ export class ProfilerComponent implements ComponentInterface {
     private frame = window as any;
 
     private isLoaded: boolean = false;
+    private profileable: boolean = false;
 
     constructor() {
         this.profiler = new Profiler();
@@ -38,8 +39,10 @@ export class ProfilerComponent implements ComponentInterface {
         });
     }
 
-    onLoad(element: HTMLElement) {
+    onLoad(element: HTMLElement, attachments: {profileable: boolean}) {
         this.isLoaded = true;
+        this.profileable = attachments.profileable;
+
         this.profiler.setElement(element);
 
         for (const item of this.stack) {
@@ -87,8 +90,10 @@ export class ProfilerComponent implements ComponentInterface {
         });
     }
 
-    onReload(element: HTMLElement) {
+    onReload(element: HTMLElement, attachments: {profileable: boolean}) {
         this.isLoaded = true;
+        this.profileable = attachments.profileable;
+
         this.profiler.setElement(element);
 
         for (const item of this.stack) {
@@ -97,22 +102,24 @@ export class ProfilerComponent implements ComponentInterface {
     }
 
     private doConsolePush(data) {
-        if (data.group) {
-            if (utility.isArray(data.value)) {
-                this.profiler.pushGroup(data.group, `<strong>${data.key}</strong>`);
-                this.profiler.pushGroup(data.group, `[ ${data.value.join(", ")} ]`);
+        if (this.profileable) {
+            if (data.group) {
+                if (utility.isArray(data.value)) {
+                    this.profiler.pushGroup(data.group, `<strong>${data.key}</strong>`);
+                    this.profiler.pushGroup(data.group, `[ ${data.value.join(", ")} ]`);
+                } else {
+                    if (data.key) {
+                        this.profiler.pushGroup(data.group, `<strong>${data.key}</strong> - ${data.value}`);
+                    } else {
+                        this.profiler.pushGroup(data.group, `${data.value}`);
+                    }
+                }
             } else {
                 if (data.key) {
-                    this.profiler.pushGroup(data.group, `<strong>${data.key}</strong> - ${data.value}`);
+                    this.profiler.push(`<strong>${data.key}</strong> - ${data.value}`);
                 } else {
-                    this.profiler.pushGroup(data.group, `${data.value}`);
+                    this.profiler.push(`${data.value}`);
                 }
-            }
-        } else {
-            if (data.key) {
-                this.profiler.push(`<strong>${data.key}</strong> - ${data.value}`);
-            } else {
-                this.profiler.push(`${data.value}`);
             }
         }
     }
