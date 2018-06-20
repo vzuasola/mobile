@@ -42,10 +42,16 @@ export class SessionModule implements ModuleInterface {
         // parameter flag. This allow us to properly set cache values for
         // post login pages
         Router.setOption("process-url-generators", (url: string, type: string) => {
+            const hashCookie: any = {};
+
             if (this.isLogin) {
+                hashCookie.authenticated = "true";
+
                 url = utility.addQueryParam(url, "authenticated", "true");
 
                 if (attachments.hash) {
+                    hashCookie.hash = this.hash;
+
                     url = utility.addQueryParam(url, "hash", this.hash);
                 }
             }
@@ -53,8 +59,15 @@ export class SessionModule implements ModuleInterface {
             const affiliates = utility.getCookie("affiliates");
 
             if (affiliates) {
+                hashCookie.aff = utility.getAsciiSum(affiliates);
+
                 url = utility.addQueryParam(url, "aff", utility.getAsciiSum(affiliates));
             }
+
+            // create a cookie that will be used by the router navigation
+            // AJAX endpoints on first load. We do this since no module is
+            // initialized on page load during page construction
+            utility.setCookie("routerhash", JSON.stringify(hashCookie));
 
             return url;
         });
