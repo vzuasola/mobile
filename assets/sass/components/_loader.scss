@@ -9,10 +9,10 @@
 
     .ray {
         position: absolute;
-        top: 4.6rem;
+        top: 0;
         background-color: #ffc600;
-        width: 1.2rem;
-        height: 1.2rem;
+        width: 1.6rem;
+        height: 1.6rem;
         @include animation-name(bounce_loader);
         @include animation-duration(1.3s);
         @include animation-iteration-count(infinite);
@@ -22,52 +22,52 @@
     }
 
     #ray-0 {
-        left: 4rem;
+        left: 0;
         @include animation-delay(0.01s);
     }
 
     #ray-1 {
-        left: 5.2rem;
+        left: 1.6rem;
         @include animation-delay(0.14s);
     }
 
     #ray-2 {
-        left: 6.4rem;
+        left: 3.2rem;
         @include animation-delay(0.27s);
     }
 
     #ray-3 {
-        left: 7.6rem;
+        left: 4.8rem;
         @include animation-delay(0.4s);
     }
 
     #ray-4 {
-        left: 8.8rem;
+        left: 6.4rem;
         @include animation-delay(0.53s);
     }
 
     #ray-5 {
-        left: 10rem;
+        left: 8.0rem;
         @include animation-delay(0.66s);
     }
 
     #ray-6 {
-        left: 11.2rem;
+        left: 9.6rem;
         @include animation-delay(0.79s);
     }
 
     #ray-7 {
-        left: 12.4;
+        left: 11.2rem;
         @include animation-delay(0.92s);
     }
 
     #ray-8 {
-        left: 13.6rem;
+        left: 12.8rem;
         @include animation-delay(1.05s);
     }
 
     #ray-9 {
-        left: 14.8rem;
+        left: 14.4rem;
         @include animation-delay(1.18s);
     }
 
