@@ -13,3 +13,6 @@ subscribers:
     hooks:
       - App\MobileEntry\Handlers\Logout\DSBLogout
       - App\MobileEntry\Handlers\Logout\Accounts
+  session_cleanup:
+    hooks:
+      - App\MobileEntry\Handlers\Session\HashCleanup

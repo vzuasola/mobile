@@ -1,5 +1,7 @@
 import "promise-polyfill/src/polyfill";
 
+import * as utility from "@core/assets/js/components/utility";
+
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
@@ -9,13 +11,35 @@ import "./components";
 import "./modules";
 import "./loader";
 
-ComponentManager.init();
-
 Router.setOption(
     "main-components",
-    ["header", "main", "footer", "language", "push_notification", "marketing", "seo", "announcement"],
+    ["header", "main", "menu", "footer", "language", "push_notification", "marketing", "seo", "announcement"],
 );
 
+// inital hashing of AJAX urls, we get the hashes from the cookies
+Router.setOption("process-url-generators", (url: string, type: string) => {
+    const hash = utility.getCookie("routerhash");
+
+    if (hash) {
+        const hashes = JSON.parse(hash);
+
+        if (hashes) {
+            for (const key in hashes) {
+                if (hashes.hasOwnProperty(key)) {
+                    const item = hashes[key];
+
+                    if (item && key) {
+                        url = utility.addQueryParam(url, key, item);
+                    }
+                }
+            }
+        }
+    }
+
+    return url;
+});
+
+ComponentManager.init();
 Router.init();
 
 Modal.listen(".modal-trigger");
