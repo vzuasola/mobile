@@ -48,7 +48,7 @@ class PromotionsComponentController
             $container->get('accounts_service'),
             $container->get('uri'),
             $container->get('asset'),
-            $container->get('page_cache_adapter'),
+            $container->get('redis_cache_adapter'),
             $container->get('lang')
         );
     }
