@@ -1,10 +1,10 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as Handlebars from "handlebars/runtime";
 
-import * as loaderTemplate from "@app/templates/components/loader.handlebars";
+import * as splashloaderTemplate from "@app/templates/components/splashloader.handlebars";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-export class Loader {
+export class Splashloader {
     private loader;
     private opacity: number;
 
@@ -24,7 +24,7 @@ export class Loader {
         const loader = document.createElement("div");
         const container = document.createElement("div");
 
-        container.innerHTML = loaderTemplate({lang: Router.getLanguage()});
+        container.innerHTML = splashloaderTemplate({lang: Router.getLanguage()});
 
         utility.addClass(container, "loader-container");
         utility.addClass(loader, "loader");
@@ -38,7 +38,7 @@ export class Loader {
         const opacity = this.opacity.toString();
 
         utility.removeClass(this.loader, "hidden");
-        this.loader.style.background = `rgba(0, 0, 0, ${opacity})`;
+        this.loader.style.background = `rgba(175, 0, 0, ${opacity})`;
 
         // set loader as overlay within component
         if (this.overlay) {
