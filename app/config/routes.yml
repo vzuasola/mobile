@@ -5,7 +5,7 @@ routes:
         components:
             main: home
         headers:
-            Cache-Control: public, max-age=300
+            Cache-Control: public, max-age=1800
         page_cache:
             enabled: true
             expires: 1800
@@ -33,7 +33,7 @@ routes:
         components:
             main: promotions
         headers:
-            Cache-Control: public, max-age=300
+            Cache-Control: public, max-age=900
         page_cache:
             enabled: true
             expires: 1800
