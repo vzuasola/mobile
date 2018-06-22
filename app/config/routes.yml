@@ -73,7 +73,7 @@ routes:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:moduleList
         headers:
-            Cache-Control: private, max-age=300
+            Cache-Control: no-cache, no-store, must-revalidate
 
     /*.*:
         method: ANY

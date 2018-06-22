@@ -5,8 +5,6 @@ components:
 
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
-    headers:
-      Cache-Control: private, max-age=300
 
   header_login:
     class: App\MobileEntry\Component\Header\Login\LoginComponent
@@ -52,8 +50,6 @@ components:
 
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
-    headers:
-      Cache-Control: public, max-age=900
 
   language:
     class: App\MobileEntry\Component\Language\LanguageComponent
