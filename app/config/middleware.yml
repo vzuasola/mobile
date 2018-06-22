@@ -13,6 +13,7 @@ middlewares:
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponse
     page_cache: App\MobileEntry\Middleware\ResponseCache
     headers: App\Middleware\Response\Headers
+    vary: App\MobileEntry\Middleware\Vary
     lazy_token: App\Middleware\Response\LazyToken
     profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
 
@@ -20,5 +21,6 @@ middlewares:
     bootstrap: App\Middleware\Cache\Bootstrap
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponseCache
     headers: App\Middleware\Response\Headers
+    vary: App\MobileEntry\Middleware\Vary
     lazy_replacement: App\Middleware\Cache\LazyReplacement
     profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware

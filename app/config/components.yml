@@ -5,6 +5,8 @@ components:
 
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
+    # headers:
+    #   Cache-Control: public, max-age=100
 
   header_login:
     class: App\MobileEntry\Component\Header\Login\LoginComponent

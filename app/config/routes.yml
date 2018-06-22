@@ -5,7 +5,7 @@ routes:
         components:
             main: home
         headers:
-            Cache-Control: no-cache, no-store, must-revalidate
+            Cache-Control: public, max-age=300
         page_cache:
             enabled: true
             expires: 1800
@@ -16,7 +16,7 @@ routes:
         components:
             main: home
         headers:
-            Cache-Control: no-cache, no-store, must-revalidate
+            Cache-Control: public, max-age=300
         page_cache:
             enabled: true
             expires: 1800
@@ -33,11 +33,10 @@ routes:
         components:
             main: promotions
         headers:
-            Cache-Control: no-cache, no-store, must-revalidate
+            Cache-Control: public, max-age=300
         page_cache:
             enabled: true
             expires: 1800
-
 
     # Definition of component controllers for cache control
 
@@ -74,7 +73,7 @@ routes:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:moduleList
         headers:
-            Cache-Control: no-cache, no-store, must-revalidate
+            Cache-Control: private, max-age=300
 
     /*.*:
         method: ANY
@@ -82,7 +81,7 @@ routes:
         components:
             main: node
         headers:
-            Cache-Control: no-cache, no-store, must-revalidate
+            Cache-Control: public, max-age=300
         page_cache:
             enabled: true
             expires: 1800
