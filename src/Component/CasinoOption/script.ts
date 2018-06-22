@@ -49,7 +49,8 @@ export class CasinoOptionComponent implements ComponentInterface {
 
     private listenCasinoOptionLink() {
         ComponentManager.subscribe("click", (event, src) => {
-            if (utility.hasClass(src, "casino-option")) {
+            const casinoOptionEl = utility.hasClass(src, "casino-option", true);
+            if (utility.hasClass(casinoOptionEl, "casino-option")) {
                 event.preventDefault();
 
                 const product = src.getAttribute("data-preferred-casino");
