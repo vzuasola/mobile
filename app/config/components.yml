@@ -107,3 +107,6 @@ modules:
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
+  desktop_redirect:
+    class: App\MobileEntry\Module\DesktopRedirect\DesktopRedirectModule
+
