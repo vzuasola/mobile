@@ -38,6 +38,12 @@ routes:
             enabled: true
             expires: 1800
 
+    /change-password:
+        method: GET
+        action: App\MobileEntry\Controller\ChangePasswordController:view
+        components:
+          main: change_password
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:

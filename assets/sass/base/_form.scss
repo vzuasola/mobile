@@ -1,5 +1,37 @@
 @import "../vendor/pure-form";
 
+// Variables
+$default-form-border-color: #ccc;
+$default-form-field-color: #ccc;
+
+// Validation icons
+.icon {
+    &-validation {
+        @extend %lazy-loaded;
+        position: absolute;
+        top: 0.3rem;
+        right: 0;
+        display: none;
+        background-image: url($base-sprite);
+        width: 2.3rem;
+        height: 2.3rem;
+    }
+
+    .has-error &-validation,
+    .has-success &-validation {
+        display: inline-block;
+    }
+
+    .has-error &-validation {
+        background-position: -24rem -40rem;
+    }
+
+    .has-success &-validation {
+        background-position: -28rem -40rem;
+    }
+}
+
+// Overwrite pure-form default form element styles
 .pure-form input[type="text"],
 .pure-form input[type="password"],
 .pure-form input[type="email"],
@@ -16,41 +48,66 @@
 .pure-form input[type="color"],
 .pure-form select,
 .pure-form textarea {
-    padding: 0.5rem 0.7rem;
-    border-radius: 0;
-    box-shadow: none;
-    border: 0.1rem solid #999;
-    font-size: 1.6rem;
-}
-
-.pure-form select {
-    height: auto;
-}
-
-.pure-form input[type="text"][disabled],
-.pure-form input[type="password"][disabled],
-.pure-form input[type="email"][disabled],
-.pure-form input[type="url"][disabled],
-.pure-form input[type="date"][disabled],
-.pure-form input[type="month"][disabled],
-.pure-form input[type="time"][disabled],
-.pure-form input[type="datetime"][disabled],
-.pure-form input[type="datetime-local"][disabled],
-.pure-form input[type="week"][disabled],
-.pure-form input[type="number"][disabled],
-.pure-form input[type="search"][disabled],
-.pure-form input[type="tel"][disabled],
-.pure-form input[type="color"][disabled],
-.pure-form select[disabled],
-.pure-form textarea[disabled] {
-    background-color: $disabled-field-gray;
-    color: $disabled-text-gray;
-    border: none;
-    -webkit-text-fill-color: $disabled-text-gray;
     padding: 0.5rem 1rem;
+    display: inline-block;
+    border: 0.1rem solid $default-form-border-color;
+    box-shadow: none;
+    vertical-align: middle;
+    box-sizing: border-box;
+    border-radius: 0;
 }
 
-.pure-form legend {
-    border-bottom: 0.1rem solid $legend-border;
-    padding: 0 1.5rem 0.8rem;
+.pure-form {
+    .form-content-wrapper {
+        margin-bottom: 2rem;
+        padding: 1rem 1.5rem;
+        border-radius: 0.3rem;
+        border: 0.1rem solid #515151;
+        background: #323031;
+
+        .form-item {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: none;
+        }
+
+        .form-field {
+            &-element {
+                width: 100%;
+                border: none;
+                border-bottom: 0.1rem solid #515151;
+                background: transparent;
+                color: $light-gray;
+
+                &:focus {
+                    border-color: $light-gray;
+                }
+            }
+        }
+
+        // Error message
+        .error-message {
+            margin: 5px 0 10px;
+            color: $fire-red;
+        }
+
+        // Submit field
+        .btn {
+            width: 100%;
+        }
+    }
+
+    // Blurb top
+    .blurb-top {
+        margin-bottom: 2rem;
+        padding: 0 2.5rem;
+        text-align: center;
+    }
+
+    // Blurb bottom
+    .blurb-bottom {
+        margin-bottom: 2rem;
+    }
 }
