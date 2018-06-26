@@ -3,6 +3,13 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {ForgotUsername} from "./forgot-username";
 
+/**
+ * Forgot password
+ *
+ * @param element Node chage password parent div element
+ * @param emailSelector String email field selector
+ * @param passwordSelector String password field selector
+ */
 export class ForgotPassword extends ForgotUsername {
     private passwordField: HTMLFormElement;
 
@@ -34,7 +41,6 @@ export class ForgotPassword extends ForgotUsername {
                 password: "pass123$$",
             },
         ];
-
 
         // Remove/hide error message & Show loader
         this.hideMessage();

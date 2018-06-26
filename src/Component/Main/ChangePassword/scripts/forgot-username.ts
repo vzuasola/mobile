@@ -3,6 +3,12 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Loader} from "@app/assets/script/components/loader";
 
+/**
+ * Forgot username
+ *
+ * @param element Node chage password parent div element
+ * @param emailSelector String email field selector
+ */
 export class ForgotUsername {
     static msgClass: string;
     emailField: HTMLFormElement;
@@ -13,12 +19,24 @@ export class ForgotUsername {
         this.element = element;
         this.emailField = this.element.querySelector(this.emailSelector);
         this.emailContainer = this.emailField.parentElement.parentElement;
-        this.loader = new Loader(utility.hasClass(this.emailField, "form-item", true), false, 0);
         ForgotUsername.msgClass = "error-message";
     }
 
-    validateEmail() {
-        // console.log("validateEmail()");
+    init() {
+        this.loader = new Loader(utility.hasClass(this.emailField, "form-item", true), false, 0);
+        this.bindEvent();
+    }
+
+    bindEvent() {
+        // form element
+        const form: HTMLElement = utility.findParent(this.emailField, "form");
+
+        // Listen form on submit
+        utility.listen(form, "submit", (event, src: any) => {
+            event.preventDefault();
+
+            this.checkField();
+        });
     }
 
     checkField() {
