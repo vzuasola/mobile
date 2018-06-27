@@ -11,6 +11,10 @@ import "./components";
 import "./modules";
 import "./loader";
 
+ComponentManager.setOption("module-response-handle-redirect", (request: XMLHttpRequest) => {
+    window.location.href = request.responseURL;
+});
+
 Router.setOption(
     "main-components",
     ["header", "main", "menu", "footer", "language", "push_notification", "marketing", "seo", "announcement"],
