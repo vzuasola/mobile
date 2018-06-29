@@ -3,7 +3,6 @@ middlewares:
     slashes: App\Middleware\Request\Slashes
     page_cache: App\MobileEntry\Middleware\ResponseCache
     languages: App\Middleware\Request\Languages
-    # auth_prefix: App\MobileEntry\Middleware\AuthPrefix
     bootstrap: App\Middleware\Request\Bootstrap
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetInit
     legacy_auth: App\Middleware\Request\LegacyAuthentication
@@ -14,7 +13,6 @@ middlewares:
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponse
     page_cache: App\MobileEntry\Middleware\ResponseCache
     headers: App\Middleware\Response\Headers
-    vary: App\MobileEntry\Middleware\Vary
     lazy_token: App\Middleware\Response\LazyToken
     profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
 
@@ -22,6 +20,5 @@ middlewares:
     bootstrap: App\Middleware\Cache\Bootstrap
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponseCache
     headers: App\Middleware\Response\Headers
-    vary: App\MobileEntry\Middleware\Vary
     lazy_replacement: App\Middleware\Cache\LazyReplacement
     profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware

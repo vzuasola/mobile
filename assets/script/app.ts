@@ -11,8 +11,23 @@ import "./components";
 import "./modules";
 import "./loader";
 
+// whenever the bootstrap AJAX receives a redirect, follow it
 ComponentManager.setOption("module-response-handle-redirect", (request: XMLHttpRequest) => {
     window.location.href = request.responseURL;
+});
+
+// check if we are receiving the maintenance or resitricted page so we can
+// redirect to it
+ComponentManager.setOption("module-response-handle-error", (request: XMLHttpRequest) => {
+    const page = request.getResponseHeader("x-page-error-type");
+
+    if (page === "maintenance") {
+        window.location.replace("/maintenance");
+    } else if (page === "restricted") {
+        window.location.replace("/restricted");
+    }
+
+    // handle additional error scenario here
 });
 
 Router.setOption(
