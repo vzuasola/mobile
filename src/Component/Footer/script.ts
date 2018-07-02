@@ -8,17 +8,16 @@ import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
  *
  */
 export class FooterComponent implements ComponentInterface {
-    private backTotop;
-
-    constructor() {
-        this.backTotop = new BacktoTop();
-    }
-
     onLoad(element: HTMLElement, attachments: {}) {
-         // Placeholder
+        this.activeBackToTop(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-         // Placeholder
+        this.activeBackToTop(element);
+    }
+
+    private activeBackToTop(element) {
+        const backtoTop = new BacktoTop(element);
+        backtoTop.init();
     }
 }
