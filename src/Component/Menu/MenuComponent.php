@@ -43,7 +43,7 @@ class MenuComponent implements ComponentWidgetInterface
             $container->get('views_fetcher'),
             $container->get('menu_fetcher'),
             $container->get('config_fetcher'),
-            $container->get('payment_account_fetcher'),
+            $container->get('accounts_service'),
             $container->get('id_domain')
         );
     }
