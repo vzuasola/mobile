@@ -42,7 +42,7 @@ class CasinoOptionComponentController
             $container->get('preferences_fetcher'),
             $container->get('rest'),
             $container->get('config_fetcher'),
-            $container->get('payment_account_fetcher')
+            $container->get('accounts_service')
         );
     }
 
