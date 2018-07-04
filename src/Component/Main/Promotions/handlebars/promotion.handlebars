@@ -5,7 +5,6 @@
         target="{{this.summary_url_target}}"
         title="{{this.summary_url_title.0.title}}"
         class="promotions-body-banner-link tag-{{product}}"
-
         data-router="true"
         data-router-refresh="main"
     >
@@ -39,4 +38,8 @@
     </span>
     </a>
 </div>
+<svg viewBox="0 0 20 20">
+    <use xlink:href="#clock" />
+</svg>
+{{countdown this.unpublish_on ../countdownText}}
 {{/each}}
