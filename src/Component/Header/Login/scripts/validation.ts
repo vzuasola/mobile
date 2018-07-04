@@ -126,6 +126,8 @@ export class Validation {
                     }
 
                     if (!userFlag) {
+                        utility.addClass(form.querySelector('[name="username"]'), "invalid");
+                        utility.addClass(form.querySelector('[name="password"]'), "invalid");
                         errorMessage = error.message;
                     }
 
