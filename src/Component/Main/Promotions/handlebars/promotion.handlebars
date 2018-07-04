@@ -9,7 +9,7 @@
         data-router-refresh="main"
     >
     {{#equals this.category "featured"}}
-    <svg viewBox="0 0 20 20">
+    <svg class="product-tag" viewBox="0 0 20 20">
         <use xlink:href="#product-{{product}}" />
     </svg>
     {{else}}
@@ -23,6 +23,12 @@
         {{/if}}
     {{/equals}}
     <img src="{{this.thumbnail}}" class="w-100">
+    <div class="promotions-body-banner-scheduler">
+        <svg class="clock" viewBox="0 120 24 24">
+            <use xlink:href="#clock" />
+        </svg>
+        {{countdown this.unpublish_on ../countdownText}}
+    </div>
 </div>
 
 <div class="container promotions-content clearfix">
@@ -38,8 +44,4 @@
     </span>
     </a>
 </div>
-<svg viewBox="0 0 20 20">
-    <use xlink:href="#clock" />
-</svg>
-{{countdown this.unpublish_on ../countdownText}}
 {{/each}}
