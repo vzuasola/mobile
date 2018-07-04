@@ -42,7 +42,7 @@ export default function Dropdown(options) {
 Dropdown.prototype.init = function () {
     this.initializeDropdownContents();
     this.eventTriggered();
-}
+};
 
 /**
  * Function to initialize and get initial height of dropdown content
