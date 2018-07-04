@@ -62,6 +62,16 @@
             border-radius: 0.1rem;
         }
 
+        .invalid::placeholder {
+            color: $red;
+        }
+
+        .invalid ~ .login-field-icon,
+        .invalid ~ span .password-icon-mask,
+        .invalid ~ span .password-icon-unmask {
+            fill: $red;
+        }
+
         &-icon {
             position: absolute;
             top: 0.8rem;
