@@ -50,7 +50,7 @@ export default class Xlider extends Siema {
      */
     static createElem(tagName, className) {
         const element = document.createElement(tagName);
-        element.classList.add(className || "")
+        element.classList.add(className || "");
 
         return element;
     }
