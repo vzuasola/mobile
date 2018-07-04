@@ -88,36 +88,37 @@ export default function accordion(element, options) {
             }
         });
 
-        function setActive(dt) {
-            var active_accordionWrapper = dt.parentNode,
-                active_dd = active_accordionWrapper.querySelector('dd'),
-                active_dd_height = active_dd.scrollHeight,
-                accordionWrapper = dt.parentNode.parentNode.querySelectorAll('.ckeditor-wrapper');
+    }
 
-            if (options.collapsible) {
-                if (!utility.hasClass(active_accordionWrapper, 'active')) {
-                    utility.forEach(accordionWrapper, function (item) {
-                        utility.removeClass(item, 'active');
-                        utility.removeClass(item.querySelector('dt'), 'active');
-                        utility.removeClass(item.querySelector('dd'), 'active');
-                        item.querySelector('dd').style.height = 0;
-                    });
+    function setActive(dt) {
+        var active_accordionWrapper = dt.parentNode,
+            active_dd = active_accordionWrapper.querySelector('dd'),
+            active_dd_height = active_dd.scrollHeight,
+            accordionWrapper = dt.parentNode.parentNode.querySelectorAll('.ckeditor-wrapper');
 
-                    utility.addClass(active_accordionWrapper, 'active');
-                    utility.addClass(active_dd, 'active');
-                    active_dd.style.height = active_dd_height + 'px';
-                }
+        if (options.collapsible) {
+            if (!utility.hasClass(active_accordionWrapper, 'active')) {
+                utility.forEach(accordionWrapper, function (item) {
+                    utility.removeClass(item, 'active');
+                    utility.removeClass(item.querySelector('dt'), 'active');
+                    utility.removeClass(item.querySelector('dd'), 'active');
+                    item.querySelector('dd').style.height = 0;
+                });
+
+                utility.addClass(active_accordionWrapper, 'active');
+                utility.addClass(active_dd, 'active');
+                active_dd.style.height = active_dd_height + 'px';
+            }
+        } else {
+            utility.toggleClass(active_accordionWrapper, 'active');
+            utility.toggleClass(active_dd, 'active');
+
+            if (active_dd_height === 0) {
+                active_dd.style.height = active_dd_height + 'px';
+            } else if (utility.hasClass(active_dd, 'active')) {
+                active_dd.style.height = active_dd_height + 'px';
             } else {
-                utility.toggleClass(active_accordionWrapper, 'active');
-                utility.toggleClass(active_dd, 'active');
-
-                if (active_dd_height === 0) {
-                    active_dd.style.height = active_dd_height + 'px';
-                } else if (utility.hasClass(active_dd, 'active')) {
-                    active_dd.style.height = active_dd_height + 'px';
-                } else {
-                    active_dd.style.height = 0;
-                }
+                active_dd.style.height = 0;
             }
         }
     }
