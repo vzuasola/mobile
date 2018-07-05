@@ -32,7 +32,7 @@ export class PromotionsComponent implements ComponentInterface {
                 const startTime =  new Date().getTime();
                 const timeDiff = (new Date(endTime).getTime() - startTime) / 1000;
 
-                if (timeDiff >= 0) {
+                if (timeDiff > 0) {
                     const elapsed = {
                         days: Math.floor(timeDiff / 86400),
                         hours: Math.floor(timeDiff / 3600 % 24),
@@ -50,7 +50,6 @@ export class PromotionsComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {filterLabel: string, countdown: string}) {
         this.element = element;
         this.promotions = undefined;
-        console.log(attachments.countdown);
         this.init(attachments.filterLabel, attachments.countdown);
         this.listenChangeDropdown(attachments.countdown);
     }

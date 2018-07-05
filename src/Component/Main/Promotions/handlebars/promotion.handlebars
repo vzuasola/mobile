@@ -23,13 +23,17 @@
         {{/if}}
     {{/equals}}
     <img src="{{this.thumbnail}}" class="w-100">
-    {{#equals this.hide_countdown "false"}}
-    <div class="promotions-body-banner-scheduler">
-        <svg class="clock" viewBox="0 120 24 24">
-            <use xlink:href="#clock" />
-        </svg>
-        {{countdown this.unpublish_on ../countdownText}}
-    </div>
+    {{#equals this.hide_countdown false}}
+        {{#if (countdown this.unpublish_on ../countdownText)}}
+        <div class="promotions-body-banner-scheduler">
+        {{else}}
+        <div class="promotions-body-banner-scheduler hidden">
+        {{/if}}
+            <svg class="clock" viewBox="0 120 24 24">
+                <use xlink:href="#clock" />
+            </svg>
+            {{countdown this.unpublish_on ../countdownText}}
+        </div>
     {{/equals}}
 </div>
 
