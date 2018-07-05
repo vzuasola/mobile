@@ -49,13 +49,14 @@ export class CasinoOptionComponent implements ComponentInterface {
 
     private listenCasinoOptionLink() {
         ComponentManager.subscribe("click", (event, src) => {
-            if (utility.hasClass(src, "casino-option", true)) {
+            const parentEl = utility.hasClass(src, "casino-option", true);
+            if (parentEl) {
                 event.preventDefault();
 
-                const product = src.getAttribute("data-preferred-casino");
+                const product = parentEl.getAttribute("data-preferred-casino");
                 const unselectedProduct = (product === "casino_gold") ? ".casino-classic" : ".casino-gold";
 
-                utility.removeClass(src, "select-option-muted");
+                utility.removeClass(parentEl, "select-option-muted");
                 utility.addClass(this.element.querySelector(unselectedProduct), "select-option-muted");
 
                 xhr({
