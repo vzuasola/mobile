@@ -33,14 +33,14 @@ class Accounts
     /**
      *
      */
-    public function hasAccount($product)
+    public function hasAccount($product, $username = null)
     {
         $store = $this->session->get('accounts.products') ?? [];
         $check = $store[$product] ?? null;
 
         if (!isset($check)) {
             try {
-                $check = $this->paymentAccount->hasAccount($product);
+                $check = $this->paymentAccount->hasAccount($product, $username);
             } catch (\Exception $e) {
                 // do nothing
             }
