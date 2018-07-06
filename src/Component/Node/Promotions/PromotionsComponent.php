@@ -11,6 +11,10 @@ class PromotionsComponent implements ComponentWidgetInterface
      * @var App\Player\PlayerSession
      */
     private $playerSession;
+    /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $config;
 
     /**
      *
@@ -18,16 +22,18 @@ class PromotionsComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession)
+    public function __construct($playerSession, $config)
     {
         $this->playerSession = $playerSession;
+        $this->config = $config;
     }
 
     /**
@@ -49,7 +55,25 @@ class PromotionsComponent implements ComponentWidgetInterface
             $data['node'] = [];
         }
 
+        try {
+            $promoConfigs = $this->config->getConfig('mobile_promotions.promotions_configuration');
+        } catch (\Exception $e) {
+            $promoConfigs = [];
+        }
+
+        $data['count_down_text'] = "";
+        $countdownFormat = $promoConfigs['countdown_format'] ?? "[days] days, [hours] remaining";
+        $countdownFormat = str_replace(['[days]', '[hours]'], ['%d', '%h'], $countdownFormat);
         $data['is_login'] = $this->playerSession->isLogin();
+
+        if (!$options['node']['field_hide_countdown'][0]['value'] && $options['node']['unpublish_on'][0]['value']) {
+            $startDate = new \DateTime("now");
+            $endDate = new \DateTime($options['node']['unpublish_on'][0]['value']);
+
+            $interval = $startDate->diff($endDate);
+            $data['count_down_text'] = $interval->format($countdownFormat);
+        }
+
         return $data;
     }
 }
