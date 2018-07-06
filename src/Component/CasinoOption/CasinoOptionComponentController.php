@@ -76,15 +76,14 @@ class CasinoOptionComponentController
             }
 
             $body = $request->getParsedBody();
-
+            $product = 'casino';
             if ($isProvisioned) {
-                $redirect = $this->getPreferenceProvisioned($body);
-            } else {
-                $redirect = $this->getCasinoUrl('casino');
+                $product = $this->getPreferenceProvisioned($body);
             }
 
+            $data['preferredProduct'] = $product;
             $data['success'] = $success;
-            $data['redirect'] = $redirect;
+            $data['redirect'] = $this->getCasinoUrl($product);
         }
 
         return $this->rest->output($response, $data);
@@ -102,15 +101,12 @@ class CasinoOptionComponentController
                 $preferredCasino = $product['product'];
                 $this->preferences->savePreference('casino.preferred', $preferredCasino);
 
-                $preferredCasinoUrl = $this->getCasinoUrl($product['product']);
-
                 $this->setLegacyPrefCookie($preferredCasino);
             } else {
                 $preferredCasinoPref = $this->preferences->getPreferences();
 
                 if (!empty($preferredCasinoPref['casino.preferred'])) {
                     $preferredCasino = $preferredCasinoPref['casino.preferred'];
-                    $preferredCasinoUrl = $this->getCasinoUrl($preferredCasino);
 
                     $this->setLegacyPrefCookie($preferredCasino);
                 }
@@ -119,7 +115,7 @@ class CasinoOptionComponentController
             // do nothing
         }
 
-        return $preferredCasinoUrl;
+        return $preferredCasino;
     }
 
     /**
