@@ -89,7 +89,7 @@ export default class Xlider extends Siema {
 
             setTimeout(() => {
                 controlElem.style.opacity = '0';
-            }, 5000)
+            }, 5000);
 
             prevElem.addEventListener('click', () => this.prev());
             nextElem.addEventListener('click', () => this.next());
