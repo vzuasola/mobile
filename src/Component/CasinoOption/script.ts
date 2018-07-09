@@ -23,25 +23,13 @@ export class CasinoOptionComponent implements ComponentInterface {
         this.element = element;
         this.isLogin = attachments.authenticated;
 
-        this.init();
         this.listenSettingsLightbox();
         this.listenCasinoOptionLink();
         this.listenLogout();
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
-        this.init();
         this.element = element;
-    }
-
-    private init() {
-        this.getPreference({}, (response) => {
-            if (response.preferredProduct) {
-                const selectedEl = (response.preferredProduct === "casino_gold") ? ".casino-gold" : ".casino-classic";
-                utility.removeClass(this.element.querySelector(selectedEl), "select-option-muted");
-                utility.addClass(this.element.querySelector(selectedEl), "selected");
-            }
-        });
     }
 
     private listenSettingsLightbox() {
@@ -55,7 +43,15 @@ export class CasinoOptionComponent implements ComponentInterface {
         });
 
         ComponentManager.subscribe("casino.preference", (event, src) => {
-            Modal.open("#casino-option-lightbox");
+            this.getPreference({}, (response) => {
+                if (response.preferredProduct) {
+                    const selectedEl = (response.preferredProduct === "casino_gold")
+                        ? ".casino-gold" : ".casino-classic";
+                    utility.removeClass(this.element.querySelector(selectedEl), "select-option-muted");
+                    utility.addClass(this.element.querySelector(selectedEl), "selected");
+                    Modal.open("#casino-option-lightbox");
+                }
+            });
         });
     }
 
