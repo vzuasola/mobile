@@ -71,7 +71,10 @@ class PromotionsComponent implements ComponentWidgetInterface
             $endDate = new \DateTime($options['node']['unpublish_on'][0]['value']);
 
             $interval = $startDate->diff($endDate);
-            $data['count_down_text'] = $interval->format($countdownFormat);
+            if ((int) $interval->format("%d") >= 0 && (int) $interval->format("%h") > 0) {
+                $data['count_down_text'] = $interval->format($countdownFormat);
+            }
+            
         }
 
         return $data;

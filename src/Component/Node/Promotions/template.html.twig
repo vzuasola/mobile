@@ -34,11 +34,11 @@
         {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
             </a>
         {% endif %}
+        </div>
 
         <div class="container page-promotion-inner">
             {{ node.field_post_body.0.value|raw }}
         </div>
-    </div>
 {% else %}
     <div class="promotions-body-banner">
         {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
