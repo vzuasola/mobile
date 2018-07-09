@@ -63,10 +63,12 @@ class MarketingComponent implements ComponentWidgetInterface
                     }
                 }
             }
+
             $data['marketing'] = $result;
         } catch (\Exception $e) {
             $data = [];
         }
+
         return $data;
     }
 }
