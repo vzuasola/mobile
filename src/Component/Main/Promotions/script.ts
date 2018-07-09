@@ -28,6 +28,8 @@ export class PromotionsComponent implements ComponentInterface {
         });
 
         Handlebars.registerHelper("countdown", (endTime, countdownText, options) => {
+            let elapsedStr: string = "";
+
             if (endTime) {
                 const startTime =  new Date().getTime();
                 const timeDiff = (new Date(endTime).getTime() - startTime) / 1000;
@@ -37,13 +39,15 @@ export class PromotionsComponent implements ComponentInterface {
                         days: Math.floor(timeDiff / 86400),
                         hours: Math.floor(timeDiff / 3600 % 24),
                     };
-                    const elapsedStr = countdownText.replace("[days]", elapsed.days)
-                        .replace("[hours]", elapsed.hours);
-                    return elapsedStr;
+
+                    if (elapsed.days >= 0 && elapsed.hours > 0) {
+                        elapsedStr = countdownText.replace("[days]", elapsed.days)
+                            .replace("[hours]", elapsed.hours);
+                    }
                 }
             }
 
-            return "";
+            return elapsedStr;
         });
     }
 
