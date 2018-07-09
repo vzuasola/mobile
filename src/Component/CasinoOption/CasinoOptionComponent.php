@@ -56,16 +56,6 @@ class CasinoOptionComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
-            $data['preferred'] = 'casino';
-            $preferredCasino = $this->preferences->getPreferences();
-            if ($preferredCasino['casino.preferred']) {
-                $data['preferred'] = $preferredCasino['casino.preferred'];
-            }
-        } catch (\Exception $e) {
-            $data['preferred'] = 'casino';
-        }
-
-        try {
             $casinoConfigs = $this->configs->getConfig('mobile_casino.casino_configuration');
             $data['title'] = $casinoConfigs['title'];
             $data['casino_text'] = $casinoConfigs['casino_text'];

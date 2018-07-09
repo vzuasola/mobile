@@ -62,7 +62,7 @@ class PromotionsComponent implements ComponentWidgetInterface
         }
 
         $data['count_down_text'] = "";
-        $countdownFormat = $promoConfigs['countdown_format'] ?? "[days] days, [hours] remaining";
+        $countdownFormat = $promoConfigs['countdown_format'] ?? "[days] days, [hours] hours remaining";
         $countdownFormat = str_replace(['[days]', '[hours]'], ['%d', '%h'], $countdownFormat);
         $data['is_login'] = $this->playerSession->isLogin();
 
@@ -71,7 +71,9 @@ class PromotionsComponent implements ComponentWidgetInterface
             $endDate = new \DateTime($options['node']['unpublish_on'][0]['value']);
 
             $interval = $startDate->diff($endDate);
-            $data['count_down_text'] = $interval->format($countdownFormat);
+            if ((int) $interval->format("%d") >= 0 && (int) $interval->format("%h") > 0) {
+                $data['count_down_text'] = $interval->format($countdownFormat);
+            }
         }
 
         return $data;

@@ -43,7 +43,15 @@ export class CasinoOptionComponent implements ComponentInterface {
         });
 
         ComponentManager.subscribe("casino.preference", (event, src) => {
-            Modal.open("#casino-option-lightbox");
+            this.getPreference({}, (response) => {
+                if (response.preferredProduct) {
+                    const selectedEl = (response.preferredProduct === "casino_gold")
+                        ? ".casino-gold" : ".casino-classic";
+                    utility.removeClass(this.element.querySelector(selectedEl), "select-option-muted");
+                    utility.addClass(this.element.querySelector(selectedEl), "selected");
+                    Modal.open("#casino-option-lightbox");
+                }
+            });
         });
     }
 
@@ -59,21 +67,27 @@ export class CasinoOptionComponent implements ComponentInterface {
                 utility.removeClass(parentEl, "select-option-muted");
                 utility.addClass(this.element.querySelector(unselectedProduct), "select-option-muted");
 
-                xhr({
-                    url: Router.generateRoute("casino_option", "preference"),
-                    type: "json",
-                    method: "post",
-                    data: {
-                        product,
-                    },
-                }).then((response) => {
+                this.getPreference(product, (response) => {
                     if (response.redirect) {
                         window.location.href = response.redirect;
                     }
-                }).fail((error, message) => {
-                    // do something
                 });
             }
+        });
+    }
+
+    private getPreference(product, callback) {
+        xhr({
+            url: Router.generateRoute("casino_option", "preference"),
+            type: "json",
+            method: "post",
+            data: {
+                product,
+            },
+        }).then((response) => {
+            callback(response);
+        }).fail((error, message) => {
+            // do something
         });
     }
 
