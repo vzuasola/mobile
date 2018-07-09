@@ -38,7 +38,6 @@ export class CasinoOptionComponent implements ComponentInterface {
         this.getPreference({}, (response) => {
             if (response.preferredProduct) {
                 const selectedEl = (response.preferredProduct === "casino_gold") ? ".casino-gold" : ".casino-classic";
-                console.log(selectedEl);
                 utility.removeClass(this.element.querySelector(selectedEl), "select-option-muted");
                 utility.addClass(this.element.querySelector(selectedEl), "selected");
             }
