@@ -4,74 +4,56 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 import {ForgotUsername} from "./forgot-username";
 
 /**
- * Forgot password
+ * Forgot Password
  *
  * @param element Node chage password parent div element
- * @param emailSelector String email field selector
- * @param passwordSelector String password field selector
+ * @param emailField String email field selector
  */
 export class ForgotPassword extends ForgotUsername {
-    private passwordField: HTMLFormElement;
+    passwordField: HTMLFormElement;
 
-    constructor(element: HTMLElement, emailSelector: string, private passwordSelector: string) {
-        super(element, emailSelector);
-        this.passwordField = this.element.querySelector(this.passwordSelector);
+    constructor(element: HTMLElement, attachments: any, url: string, emailField: any, passwordField: any) {
+        super(element, attachments, url, emailField);
+        this.passwordField = this.element.querySelector(passwordField);
     }
 
     checkField() {
-        // const email = this.emailField.value;
-        const dataObj = {
-            body: {
-                email: this.emailField.value,
-                username: this.passwordField.value,
-            },
-        };
-
-        const dataString = JSON.stringify(dataObj);
-
-        const mockResp = [
-            {
-                username: "cashierhra",
-                email: "cashierhra@gmail.com",
-                password: "pass123",
-            },
-            {
-                username: "johndoe",
-                email: "jdoe@gmail.com",
-                password: "pass123$$",
-            },
-        ];
-
         // Remove/hide error message & Show loader
-        this.hideMessage();
+        this.hideMessage(this.emailContainer);
         this.loader.show();
 
+        // Disable fields
+        this.disableFields(this.form);
+
         xhr({
-            // url: "http://api.myjson.com/bins/kwzpu",
-            url: Router.generateRoute("promotions", "promotions"),
+            url: this.url,
             type: "json",
             method: "post",
+            data: {
+                username: this.passwordField.value,
+                email: this.emailField.value,
+            },
         })
             .then((resp) => {
-                const data = JSON.parse(dataString);
-                const email = data.body.email;
-                const username = data.body.username;
+                // TEMPORARY
+                resp = {
+                    // message: "FORGOT_PASSWORD_FAILED",
+                    message: "FORGOT_PASSWORD_SUCCESS",
+                    response_code: "INT036",
+                };
 
-                const usernameEmailExist = mockResp.find((elem) => {
-                    return elem.email === email && elem.username === username;
-                });
-
-                if (usernameEmailExist) {
-                    this.showMessage("Username & Email found, should redirect to change password form");
+                if (resp.message === "FORGOT_PASSWORD_SUCCESS") {
+                    this.showConfirmationMessage(this.form);
                 } else {
-                    this.showMessage("Invalid username and/or email address.");
+                    this.showMessage(this.emailContainer, this.messageMapping(resp.message));
                 }
             })
             .fail((err, msg) => {
-                console.log("err fail() ", err);
+                this.showMessage(this.emailContainer, "Error retrieving data...");
             })
             .always((resp) => {
                 this.loader.hide();
+                this.enableFields(this.form);
             });
     }
 }

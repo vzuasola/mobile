@@ -3,6 +3,7 @@ import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import Tab from "@app/assets/script/components/tab";
 import {ForgotUsername} from "./scripts/forgot-username";
 import {ForgotPassword} from "./scripts/forgot-password";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
  *
@@ -10,18 +11,17 @@ import {ForgotPassword} from "./scripts/forgot-password";
 export class CantLoginComponent implements ComponentInterface {
     private forgotUsername: ForgotUsername;
     private forgotPassword: ForgotPassword;
-    private errorMessages: any;
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.activateTab(element);
-        this.activateForgotUsername(element);
-        this.activateForgotPassword(element);
+        this.activateForgotUsername(element, attachments);
+        this.activateForgotPassword(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.activateTab(element);
-        this.activateForgotUsername(element);
-        this.activateForgotPassword(element);
+        this.activateForgotUsername(element, attachments);
+        this.activateForgotPassword(element, attachments);
     }
 
     /**
@@ -31,13 +31,22 @@ export class CantLoginComponent implements ComponentInterface {
         const tab = new Tab();
     }
 
-    private activateForgotUsername(element) {
-        this.forgotUsername = new ForgotUsername(element, "#ForgotUsernameForm_email");
+    private activateForgotUsername(element, attachments) {
+        this.forgotUsername = new ForgotUsername(
+            element,
+            attachments,
+            Router.generateRoute("promotions", "promotions"),
+            "#ForgotUsernameForm_email");
         this.forgotUsername.init();
     }
 
-    private activateForgotPassword(element) {
-        this.forgotPassword = new ForgotPassword(element, "#ForgotPasswordForm_email", "#ForgotPasswordForm_username");
+    private activateForgotPassword(element, attachments) {
+        this.forgotPassword = new ForgotPassword(
+            element,
+            attachments,
+            Router.generateRoute("promotions", "promotions"),
+            "#ForgotPasswordForm_email",
+            "#ForgotPasswordForm_username");
         this.forgotPassword.init();
     }
 }

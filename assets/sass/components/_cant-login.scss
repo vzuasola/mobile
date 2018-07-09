@@ -1,6 +1,9 @@
 
 .forgot-password-form,
-.forgot-username-form {
+.forgot-username-form,
+.reset-password-form {
+    transition: opacity 0.3s;
+
     .form-item {
         & > .loader {
             position: static;
@@ -19,4 +22,18 @@
         }
 
     }
+
+    // Server side error message
+    .error-message {
+        margin-left: 40%;
+        margin-bottom: 20px;
+        color: $red;
+    }
+}
+
+// Confirmation message
+.confirmation-message {
+    transition: opacity 0.3s;
+    opacity: 0;
+    text-align: center;
 }
