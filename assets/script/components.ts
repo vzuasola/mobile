@@ -2,6 +2,7 @@ import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 import {AccessDeniedComponent} from "@app/src/Component/Main/AccessDenied/script";
 import {HeaderComponent} from "@app/src/Component/Header/script";
+import {FooterComponent} from "@app/src/Component/Footer/script";
 import {MenuComponent} from "@app/src/Component/Menu/script";
 import {LoginComponent} from "@app/src/Component/Header/Login/script";
 import {PromotionsComponent} from "@app/src/Component/Main/Promotions/script";
@@ -22,6 +23,7 @@ import {ChangePasswordComponent} from "@app/src/Component/Main/ChangePassword/sc
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
     header: new HeaderComponent(),
+    footer: new FooterComponent(),
     menu: new MenuComponent(),
     header_login: new LoginComponent(),
     promotions: new PromotionsComponent(),

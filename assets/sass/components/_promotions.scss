@@ -20,24 +20,23 @@
     &-banner {
         position: relative;
 
-        &-overlay {
+        &-scheduler {
             position: absolute;
             bottom: 0;
             width: 100%;
+            height: 2.4rem;
             text-align: center;
             color: $white;
             font-size: 1.2rem;
             padding: 0.3rem 0;
             background: rgba(0, 0, 0, 0.9);
 
-            &-clock {
+            .clock {
                 width: 1.5rem;
+                background: transparent;
                 vertical-align: middle;
                 margin-right: 0.2rem;
-
-                path {
-                    fill: $white;
-                }
+                fill: $white;
             }
         }
 
@@ -58,9 +57,14 @@
                 fill: $yellow;
             }
 
+            .clock {
+                background: transparent;
+                fill: $white;
+            }
+
         }
 
-        svg {
+        .promotion-tag {
             position: absolute;
             top: 0;
             left: 1rem;

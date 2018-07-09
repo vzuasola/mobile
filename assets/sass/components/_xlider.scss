@@ -48,6 +48,10 @@
     }
 
     // Controls
+    .slider-controls {
+        transition: opacity 0.5s;
+    }
+
     .btn-prev,
     .btn-next {
         @include translateY(-75%);

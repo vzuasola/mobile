@@ -46,6 +46,7 @@ class PromotionsComponentScripts implements ComponentAttachmentInterface
         }
 
         $data['filterLabel'] = $promoConfigs['filter_label'] ?? 'Filter';
+        $data['countdown'] = $promoConfigs['countdown_format'] ?? "[days] days, [hours] remaining";
 
         return $data;
     }

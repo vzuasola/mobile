@@ -50,7 +50,7 @@ export default class Xlider extends Siema {
      */
     static createElem(tagName, className) {
         const element = document.createElement(tagName);
-        element.classList.add(className || "")
+        element.classList.add(className || "");
 
         return element;
     }
@@ -86,6 +86,10 @@ export default class Xlider extends Siema {
             controlElem.appendChild(nextElem);
 
             this.selector.appendChild(controlElem);
+
+            setTimeout(() => {
+                controlElem.classList.add("hidden");
+            }, 5000);
 
             prevElem.addEventListener('click', () => this.prev());
             nextElem.addEventListener('click', () => this.next());
