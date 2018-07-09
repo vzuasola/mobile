@@ -32,12 +32,17 @@ export class SessionModule implements ModuleInterface {
 
             // update the hash on successful login with the new hash data
             this.hash = data.response.hash;
+            this.setHash(attachments);
         });
 
         ComponentManager.subscribe("session.logout", (event, src) => {
             this.isLogin = false;
         });
 
+        this.setHash(attachments);
+    }
+
+    private setHash(attachments) {
         // allow us to transform the Router generated urls with a query
         // parameter flag. This allow us to properly set cache values for
         // post login pages
