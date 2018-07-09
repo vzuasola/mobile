@@ -1,17 +1,17 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\ChangePassword;
+namespace App\MobileEntry\Component\Main\CantLogin;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
-class ChangePasswordComponent implements ComponentWidgetInterface
+class CantLoginComponent implements ComponentWidgetInterface
 {
     /**
      * {@inheritdoc}
      */
     public function getTemplate()
     {
-        return '@component/Main/ChangePassword/template.html.twig';
+        return '@component/Main/CantLogin/template.html.twig';
     }
 
     /**

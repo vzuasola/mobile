@@ -18,7 +18,7 @@ import {NodeComponent} from "@app/src/Component/Node/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
-import {ChangePasswordComponent} from "@app/src/Component/Main/ChangePassword/script";
+import {CantLoginComponent} from "@app/src/Component/Main/CantLogin/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -39,5 +39,5 @@ ComponentManager.setComponents({
     language: new LanguageComponent(),
     marketing: new MarketingComponent(),
     profiler: new ProfilerComponent(),
-    change_password: new ChangePasswordComponent(),
+    cant_login: new CantLoginComponent(),
 });

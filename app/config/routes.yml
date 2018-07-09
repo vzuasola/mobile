@@ -38,11 +38,11 @@ routes:
             enabled: true
             expires: 1800
 
-    /change-password:
+    /cant-login:
         method: GET
-        action: App\MobileEntry\Controller\ChangePasswordController:view
+        action: App\MobileEntry\Controller\CantLoginController:view
         components:
-          main: change_password
+          main: cant_login
 
     # Definition of component controllers for cache control
 

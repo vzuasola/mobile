@@ -7,7 +7,7 @@ import {ForgotPassword} from "./scripts/forgot-password";
 /**
  *
  */
-export class ChangePasswordComponent implements ComponentInterface {
+export class CantLoginComponent implements ComponentInterface {
     private forgotUsername: ForgotUsername;
     private forgotPassword: ForgotPassword;
     private errorMessages: any;

@@ -63,8 +63,8 @@ components:
   promotions:
     class: App\MobileEntry\Component\Main\Promotions\PromotionsComponent
 
-  change_password:
-    class: App\MobileEntry\Component\Main\ChangePassword\ChangePasswordComponent
+  cant_login:
+    class: App\MobileEntry\Component\Main\CantLogin\CantLoginComponent
 
   seo:
     class: App\MobileEntry\Component\SEO\SEOComponent
