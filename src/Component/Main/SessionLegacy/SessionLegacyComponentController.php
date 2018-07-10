@@ -18,10 +18,6 @@ class SessionLegacyComponentController
         );
     }
 
-    private function getSessionHandler()
-    {
-    }
-
     /**
      * Public constructor
      */

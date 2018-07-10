@@ -23,8 +23,6 @@ class SessionComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = [];
-
-        return $data;
+        return [];
     }
 }
