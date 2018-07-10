@@ -18,6 +18,7 @@ import {NodeComponent} from "@app/src/Component/Node/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
+import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -38,4 +39,5 @@ ComponentManager.setComponents({
     language: new LanguageComponent(),
     marketing: new MarketingComponent(),
     profiler: new ProfilerComponent(),
+    node_promotions: new PromotionsNodeComponent(),
 });
