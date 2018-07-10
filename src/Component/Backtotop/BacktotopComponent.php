@@ -6,10 +6,10 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class BacktotopComponent implements ComponentWidgetInterface
 {
-    /** 
-     * @var App\Fetcher\Drupal\ConfigFetcher 
-     */ 
-    private $configs; 
+    /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $configs;
 
     /**
      * Block utility helper
@@ -54,14 +54,14 @@ class BacktotopComponent implements ComponentWidgetInterface
     {
         $data = [];
 
-        try { 
+        try {
             $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
-        } catch (\Exception $e) { 
-            $footerConfigs = []; 
+        } catch (\Exception $e) {
+            $footerConfigs = [];
         }
 
-        $visibility = $footerConfigs['back_to_top_title'] ?? 0; 
-        $data['back_to_top'] = !$this->blockUtils->isVisibleOn($visibility); 
+        $visibility = $footerConfigs['back_to_top_title'] ?? 0;
+        $data['back_to_top'] = !$this->blockUtils->isVisibleOn($visibility);
 
         return $data;
     }
