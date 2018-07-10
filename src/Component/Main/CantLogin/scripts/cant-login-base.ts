@@ -1,5 +1,11 @@
 import * as utility from "@core/assets/js/components/utility";
 
+/**
+ * Cant login base
+ *
+ * @param Node element component parent element
+ * @param Object attachments
+ */
 export class CantLoginBase {
     element: HTMLElement;
     attachments: any;

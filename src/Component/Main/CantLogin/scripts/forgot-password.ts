@@ -4,10 +4,13 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 import {ForgotUsername} from "./forgot-username";
 
 /**
- * Forgot Password
+ * Forgot password
  *
- * @param element Node chage password parent div element
- * @param emailField String email field selector
+ * @param Node element component parent element
+ * @param Object attachments
+ * @param String url
+ * @param String emailField selector to target for email
+ * @param String passwordField selector to target for password
  */
 export class ForgotPassword extends ForgotUsername {
     passwordField: HTMLFormElement;

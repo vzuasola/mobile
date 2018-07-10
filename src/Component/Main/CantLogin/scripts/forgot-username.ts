@@ -7,8 +7,11 @@ import {CantLoginBase} from "./cant-login-base";
 /**
  * Forgot username
  *
- * @param element Node chage password parent div element
- * @param emailSelector String email field selector
+ * @param Node element component parent element
+ * @param Object attachments
+ * @param String url
+ * @param String emailField selector to target for email
+ * @param String passwordField selector to target for password
  */
 export class ForgotUsername extends CantLoginBase {
     url: string;
