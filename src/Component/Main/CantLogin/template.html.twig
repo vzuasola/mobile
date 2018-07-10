@@ -8,6 +8,14 @@
     </ul>
     <div class="container">
         <div class="tab-content" id="forgot-password-content">
+            {% form_theme formForgotPassword '@base/form/standard.html.twig' %}
+            {{ form_start(formForgotPassword, {'attr': {'class': 'pure-form forgot-password-form'}}) }}
+                <div class="alert alert-message hidden"></div>
+                <div class="form-wrapper">
+                    {{- form_widget(formForgotPassword) -}}
+                </div>
+            {{ form_end(formForgotPassword) }}
+
             <form name="ForgotPasswordForm" method="post" class="pure-form forgot-password-form">
                 <div class="blurb blurb-top">Please filll in the following details. An email will be sent to your registered email address</div>
 
@@ -55,6 +63,13 @@
         </div>
 
         <div class="tab-content" id="forgot-username-content">
+            {% form_theme formForgotUsername '@base/form/standard.html.twig' %}
+            {{ form_start(formForgotUsername, {'attr': {'class': 'pure-form forgot-username-form'}}) }}
+                <div class="alert alert-message hidden"></div>
+                <div class="form-wrapper">
+                    {{- form_widget(formForgotUsername) -}}
+                </div>
+            {{ form_end(formForgotUsername) }}
             <form name="ForgotUsernameForm" method="post" class="pure-form forgot-username-form">
                 <div class="blurb blurb-top">Please fill in the following details. An email will be sent to your registered email address with your Dafabet Username</div>
 
