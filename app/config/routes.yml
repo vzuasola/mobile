@@ -10,6 +10,18 @@ routes:
             enabled: true
             expires: 1800
 
+    /session:
+        method: GET
+        action: App\MobileEntry\Controller\SessionController:view
+        components:
+            main: session
+
+    /session/legacy:
+        method: GET
+        action: App\MobileEntry\Controller\SessionController:view
+        components:
+            main: session_legacy
+
     /login:
         method: GET
         action: App\MobileEntry\Controller\HomeController:view

@@ -48,6 +48,12 @@ components:
     class: App\MobileEntry\Component\Main\Home\Download\DownloadComponent
     parent: home
 
+  session:
+    class: App\MobileEntry\Component\Main\Session\SessionComponent
+
+  session_legacy:
+    class: App\MobileEntry\Component\Main\SessionLegacy\SessionLegacyComponent
+
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
 
