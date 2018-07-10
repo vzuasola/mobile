@@ -6,18 +6,17 @@ import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
  *
  */
 export class PromotionsNodeComponent implements ComponentInterface {
-
     onLoad(element: HTMLElement, attachments: {countdown: string}) {
        this.getCountdown(element, attachments.countdown);
     }
 
     onReload(element: HTMLElement, attachments: {countdown: string}) {
-       this.getCountdown(element, attachments.countdown);
+        this.getCountdown(element, attachments.countdown);
     }
 
     private getCountdown(element, countdownFormat) {
-        let elapsedStr: string = "";
         const endTime = element.querySelector(".countdown-text").getAttribute("data-end-time");
+
         if (endTime) {
             const startTime =  new Date().getTime();
             const timeDiff = (new Date(endTime).getTime() - startTime) / 1000;
@@ -29,7 +28,7 @@ export class PromotionsNodeComponent implements ComponentInterface {
                 };
 
                 if (elapsed.days > 0 || elapsed.hours > 0) {
-                    elapsedStr = countdownFormat.replace("[days]", elapsed.days)
+                    const elapsedStr = countdownFormat.replace("[days]", elapsed.days)
                         .replace("[hours]", elapsed.hours);
 
                     element.querySelector(".countdown-text").innerHTML = elapsedStr;
