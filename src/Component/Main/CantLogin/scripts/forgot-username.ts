@@ -30,7 +30,6 @@ export class ForgotUsername extends CantLoginBase {
 
     init() {
         if (this.emailField) {
-            console.log("this.attachments ", this.attachments);
             this.emailContainer = utility.hasClass(this.emailField, "form-item", true);
             this.form = utility.findParent(this.emailField, "form");
             this.loader = new Loader(utility.hasClass(this.emailField, "form-item", true), false, 0);
@@ -58,12 +57,18 @@ export class ForgotUsername extends CantLoginBase {
 
         // close button element on success/confirmation message
         const formParent = utility.findParent(this.form, "div");
-        const closeBtn = formParent.querySelector(".confirmation-message").querySelector(".btn");
+        const confirmationElem = formParent.querySelector(".confirmation-message");
 
-        utility.listen(closeBtn, "click", (event) => {
-            event.preventDefault();
-            window.close();
-        });
+        if (confirmationElem) {
+            const closeBtn = confirmationElem.querySelector(".btn");
+
+            if (closeBtn) {
+                utility.listen(closeBtn, "click", (event) => {
+                    event.preventDefault();
+                    window.close();
+                });
+            }
+        }
     }
 
     checkField() {
