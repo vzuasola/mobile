@@ -38,7 +38,6 @@ class BacktotopComponent implements ComponentWidgetInterface
         $this->blockUtils = $blockUtils;
     }
 
-
     /**
      *
      */
@@ -53,13 +52,11 @@ class BacktotopComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
-
         try {
             $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
         } catch (\Exception $e) {
             $footerConfigs = [];
         }
-
         $visibility = $footerConfigs['back_to_top_title'] ?? 0;
         $data['back_to_top'] = !$this->blockUtils->isVisibleOn($visibility);
 
