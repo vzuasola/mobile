@@ -20,9 +20,11 @@ export class BacktotopComponent implements ComponentInterface {
 
     private activeBackToTop(element) {
         const backtoTop = new BacktoTop(element);
+
         Router.on(RouterClass.afterNavigate, (event) => {
             ComponentManager.refreshComponent("backtotop");
         });
+
         backtoTop.init();
     }
 }
