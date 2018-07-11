@@ -78,6 +78,9 @@ components:
   marketing:
     class: App\MobileEntry\Component\Marketing\MarketingComponent
 
+  backtotop:
+    class: App\MobileEntry\Component\Backtotop\BacktotopComponent
+
 # Define modules
 modules:
   session:

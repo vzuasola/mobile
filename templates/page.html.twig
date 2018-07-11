@@ -40,6 +40,11 @@
         {% include '@app/web/images/svg/downloads/download-icons.svg' ignore missing %}
         {% include '@app/web/images/svg/footer/footer-icons.svg' ignore missing %}
     </span>
+
+    {% block backtotop %}
+        {{ widget('backtotop') }}
+    {% endblock backtotop %}
+
 {% endblock footer %}
 
 {% block script %}
