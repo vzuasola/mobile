@@ -40,7 +40,7 @@ export class PromotionsComponent implements ComponentInterface {
                         hours: Math.floor(timeDiff / 3600 % 24),
                     };
 
-                    if (elapsed.days >= 0 && elapsed.hours > 0) {
+                    if (elapsed.days > 0 || elapsed.hours > 0) {
                         elapsedStr = countdownText.replace("[days]", elapsed.days)
                             .replace("[hours]", elapsed.hours);
                     }
