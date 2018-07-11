@@ -41,9 +41,13 @@ export class SessionComponent implements ComponentInterface {
     }
 
     private doSessionProcess(element, fn) {
+        const route = Router.generateRoute("session", "process");
+
         for (let i = 1; i <= 3; i++) {
+            const time = Math.floor((Math.random() * 1000) + 1);
+
             xhr({
-                url: Router.generateRoute("session", "process"),
+                url: `${route}?time=${time}`,
                 type: "json",
             }).then((response) => {
                 if (response.status) {
