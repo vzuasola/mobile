@@ -41,9 +41,13 @@ export class SessionLegacyComponent implements ComponentInterface {
     }
 
     private doSessionProcess(element, fn) {
+        const route = Router.generateRoute("session_legacy", "process");
+
         for (let i = 1; i <= 3; i++) {
+            const time = Math.floor((Math.random() * 1000) + 1);
+
             xhr({
-                url: Router.generateRoute("session_legacy", "process"),
+                url: `${route}?time=${time}`,
                 type: "json",
             }).then((response) => {
                 if (response.status) {
