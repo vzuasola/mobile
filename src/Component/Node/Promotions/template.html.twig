@@ -22,12 +22,12 @@
             <img src="{{ node.field_post_banner_image.0.url }}" alt="" class="w-100">
         {% endif %}
 
-        {% if count_down_text %}
-            <div class="promotions-body-banner-scheduler">
+        {% if not node.field_hide_countdown.0.value %}
+            <div class="promotions-body-banner-scheduler hidden">
                 <svg class="clock" viewBox="0 120 24 24">
                     <use xlink:href="#clock" />
                 </svg>
-                {{ count_down_text }}
+                <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
             </div>
         {% endif %}
 
@@ -55,12 +55,12 @@
             <img src="{{ node.field_banner_image.0.url }}" alt="" class="w-100">
         {% endif %}
 
-        {% if count_down_text %}
-            <div class="promotions-body-banner-scheduler">
+        {% if not node.field_hide_countdown.0.value %}
+            <div class="promotions-body-banner-scheduler hidden">
                 <svg class="clock" viewBox="0 120 24 24">
                     <use xlink:href="#clock" />
                 </svg>
-                {{ count_down_text }}
+                <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
             </div>
         {% endif %}
 
