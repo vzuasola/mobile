@@ -50,6 +50,12 @@ routes:
             enabled: true
             expires: 1800
 
+    /cant-login:
+        method: GET
+        action: App\MobileEntry\Controller\CantLoginController:view
+        components:
+          main: cant_login
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:

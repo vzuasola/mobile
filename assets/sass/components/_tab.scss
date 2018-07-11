@@ -1,7 +1,35 @@
-.tab-content {
-    display: none;
-}
+.tab {
 
-.tab-content.active {
-    display: block;
+    background: #2a2829;
+    color: $light-gray;
+
+    // Tab menu/links
+    &-menu {
+        display: table;
+        width: 100%;
+        padding-left: 0;
+
+        li {
+            display: table-cell;
+        }
+
+        a {
+            display: block;
+            width: 100%;
+            padding: 0.7rem;
+            background: #323031;
+            color: $light-gray;
+            text-align: center;
+        }
+
+        .active a {
+            background: #2a2829;
+            color: $yellow;
+        }
+    }
+
+    // Tab content
+    &-content {
+        padding-bottom: 0.1rem;
+    }
 }

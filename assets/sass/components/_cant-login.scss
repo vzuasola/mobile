@@ -1,0 +1,39 @@
+
+.forgot-password-form,
+.forgot-username-form,
+.reset-password-form {
+    transition: opacity 0.3s;
+
+    .form-item {
+        & > .loader {
+            position: static;
+            margin: 10px 0;
+
+            .loader-container {
+                position: relative;
+                top: 0;
+                transform: translate(-50%, 0);
+
+                .loader {
+                    position: absolute !important;
+                    top: 0 !important;
+                }
+            }
+        }
+
+    }
+
+    // Server side error message
+    .error-message {
+        margin-left: 40%;
+        margin-bottom: 20px;
+        color: $red;
+    }
+}
+
+// Confirmation message
+.confirmation-message {
+    transition: opacity 0.3s;
+    opacity: 0;
+    text-align: center;
+}

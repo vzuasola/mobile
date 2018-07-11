@@ -9,6 +9,8 @@
 @import "buttons";
 @import "helper";
 
+@import "form";
+
 // Grid
 // @import "../vendor/bootstrap/grid";
 @import "grid";
@@ -30,4 +32,6 @@
 @import "../components/push-notification";
 @import "../components/account-balance-loader";
 @import "../components/accordion";
+@import "../components/tab";
+@import "../components/cant-login";
 @import "../components/back-to-top";

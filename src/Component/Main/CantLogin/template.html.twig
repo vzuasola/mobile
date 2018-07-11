@@ -1,0 +1,110 @@
+<div class="page-title promotions">
+    <h1 class="page-title-text">{{ title }}</h1>
+</div>
+<div class="tab">
+    <ul class="tab-menu">
+        <li class="active"><a href="#forgot-password-content">Forgot Password</a></li>
+        <li><a href="#forgot-username-content">Forgot Username</a></li>
+    </ul>
+    <div class="container">
+        <div class="tab-content" id="forgot-password-content">
+            {% form_theme formForgotPassword '@base/form/standard.html.twig' %}
+            {{ form_start(formForgotPassword, {'attr': {'class': 'pure-form forgot-password-form'}}) }}
+                <div class="alert alert-message hidden"></div>
+                <div class="form-wrapper">
+                    {{- form_widget(formForgotPassword) -}}
+                </div>
+            {{ form_end(formForgotPassword) }}
+
+            <form name="ForgotPasswordForm" method="post" class="pure-form forgot-password-form">
+                <div class="blurb blurb-top">Please filll in the following details. An email will be sent to your registered email address</div>
+
+                <div class="form-content-wrapper">
+                    <div class="form-item ForgotPasswordForm_username">
+                        <label for="ForgotPasswordForm_username" class="form-label">
+                            <span class="form-label-text">Username lorem ipsum dolor</span>
+                            <span class="required-field">*</span>
+                        </label>
+                        <div class="form-field">
+                            <input type="text" id="ForgotPasswordForm_username" name="ForgotPasswordForm[username]" placeholder="Dafabet User" class="form-field-element">
+                        </div>
+                    </div>
+                    <div class="form-item ForgotPasswordForm_email">
+                        <label for="ForgotPasswordForm_email" class="form-label">
+                            <span class="form-label-text">Email Address</span>
+                            <span class="required-field">*</span>
+                        </label>
+                        <div class="form-field">
+                            <input type="text" id="ForgotPasswordForm_email" name="ForgotPasswordForm[email]" placeholder="Email Address" class="form-field-element">
+                        </div>
+                    </div>
+                    <div class="form-item ForgotPasswordForm_submit">
+                        <div class="form-field">
+                            <button type="submit" id="ForgotPasswordForm_submit" name="ForgotPasswordForm[submit]" class="btn btn-small btn-yellow">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="blurb blurb-bottom">
+                    {# <svg class="mobile-menu-burger-icon" viewBox="0 90 24 15.197">
+                        <use xlink:href="#burger-menu" />
+                    </svg> #}
+                    <p>For any question or concerns please contact Customer Support</p>
+                </div>
+            </form>
+
+            <div class="confirmation-message mt-25 hidden">
+                <h3 class="text-red text-semibold"><span class="icon-success">&nbsp;</span> Forgot Password Success Confirmation</h3>
+                <p>A confirmation message has been sent to your registered email address.</p>
+                <p>Please check your email with your registered Dafabet username.</p>
+                <p>For any questions or concerns, please contact our&nbsp;<a href="https://www.dafabet.com/contact-us" target="_blank">Customer Support.</a></p>
+                <p><a class="btn btn-gray btn-small" href="#">Close Window</a></p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="forgot-username-content">
+            {% form_theme formForgotUsername '@base/form/standard.html.twig' %}
+            {{ form_start(formForgotUsername, {'attr': {'class': 'pure-form forgot-username-form'}}) }}
+                <div class="alert alert-message hidden"></div>
+                <div class="form-wrapper">
+                    {{- form_widget(formForgotUsername) -}}
+                </div>
+            {{ form_end(formForgotUsername) }}
+            <form name="ForgotUsernameForm" method="post" class="pure-form forgot-username-form">
+                <div class="blurb blurb-top">Please fill in the following details. An email will be sent to your registered email address with your Dafabet Username</div>
+
+                <div class="form-content-wrapper">
+                    <div class="form-item ForgotUsernameForm_email">
+                        <label for="ForgotUsernameForm_email" class="form-label">
+                            <span class="form-label-text">Email Address</span>
+                            <span class="required-field">*</span>
+                        </label>
+                        <div class="form-field">
+                            <input type="text" id="ForgotUsernameForm_email" name="ForgotUsernameForm[email]" placeholder="Email Address" class="form-field-element">
+                        </div>
+                    </div>
+                    <div class="form-item ForgotUsernameForm_submit">
+                        <div class="form-field">
+                            <button type="submit" id="ForgotUsernameForm_submit" name="ForgotUsernameForm[submit]" class="btn btn-small btn-yellow">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="blurb blurb-bottom">
+                    {# <svg class="mobile-menu-burger-icon" viewBox="0 90 24 15.197">
+                        <use xlink:href="#burger-menu" />
+                    </svg> #}
+                    <p>For any question or concerns please contact Customer Support</p>
+                </div>
+            </form>
+
+            <div class="confirmation-message mt-25 hidden">
+                <h3 class="text-red text-semibold"><span class="icon-success">&nbsp;</span> Forgot Username Success Confirmation</h3>
+                <p>A confirmation message has been sent to your registered email address.</p>
+                <p>Please check your email with your registered Dafabet username.</p>
+                <p>For any questions or concerns, please contact our&nbsp;<a href="https://www.dafabet.com/contact-us" target="_blank">Customer Support.</a></p>
+                <p><a class="btn btn-gray btn-small" href="#">Close Window</a></p>
+            </div>
+        </div>
+    </div>
+</div>
