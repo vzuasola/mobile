@@ -1,0 +1,47 @@
+<div class="page-title promotions">
+    <h1 class="page-title-text">{{ title }}</h1>
+</div>
+
+<form name="ForgotPasswordForm" method="post" class="pure-form reset-password-form form-vertical">
+    <div class="form-content-wrapper">
+        <div class="form-item ResetPasswordForm_new_password">
+            <label for="ResetPasswordForm_new_password" class="form-label">
+                <span class="form-label-text">New Password</span>
+                <span class="required-field">*</span>
+            </label>
+            <div class="form-field">
+                <input type="password" id="ResetPasswordForm_new_password" name="ResetPasswordForm[new_password]" class="form-field-element">
+            </div>
+        </div>
+        <div class="form-item ResetPasswordForm_verify_password">
+            <label for="ResetPasswordForm_verify_password" class="form-label">
+                <span class="form-label-text">Confirm Your New Password</span>
+                <span class="required-field">*</span>
+            </label>
+            <div class="form-field">
+                <input type="password" id="ResetPasswordForm_verify_password" name="ResetPasswordForm[verify_password]" class="form-field-element">
+            </div>
+        </div>
+        <div class="form-item ResetPasswordForm_submit">
+            <div class="form-field">
+                <button type="submit" id="ResetPasswordForm_submit" name="ResetPasswordForm[submit]" class="btn btn-small btn-yellow btn-changepass btn-lower-case">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="confirmation-message mt-25 mb-20 hidden">
+    <svg viewBox="0 0 20 20" class="icon-check-rounded mb-5">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#footer-language"></use>
+    </svg>
+    <h3 class="text-semibold">Retrive Password Request Sent</h3>
+    <p>A confirmation message has been sent to your registered email address. Please reset your password within the next 24 hours</p>
+    <p>Please check your email and click on the reset password link found on the mail that has just been sent to you.</p>
+    <p><a class="btn btn-yellow btn-small" href="#">Go to Dafabet Mobile</a></p>
+    <div class="contact-info-blurb">
+        <svg viewBox="0 0 20 20" class="icon-exclamation">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#footer-language"></use>
+        </svg>
+        <p>For any question or concerns please contact <a href="#">Customer Support</a></p>
+    </div>
+</div>
