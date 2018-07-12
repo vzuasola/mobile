@@ -79,8 +79,8 @@ export class ResetPassword extends CantLoginBase {
             .then((resp) => {
                 // TEMPORARY
                 resp = {
-                    // message: "CHANGE_FORGOTTEN_PASSWORD_FAILED",
-                    message: "CHANGE_FORGOTTEN_PASSWORD_SUCCESS",
+                    message: "CHANGE_FORGOTTEN_PASSWORD_FAILED",
+                    // message: "CHANGE_FORGOTTEN_PASSWORD_SUCCESS",
                     response_code: "INT036",
                 };
 

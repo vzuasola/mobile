@@ -14,16 +14,16 @@
     }
 }
 
-.forgot-password-form,
-.forgot-username-form,
-.reset-password-form {
+form.forgot-password-form,
+form.forgot-username-form,
+form.reset-password-form {
     transition: opacity 0.3s;
-
 
     .form-item {
         & > .loader {
             position: static;
-            margin: 1rem 0;
+            // margin: 1rem 0;
+            padding: 1rem 0;
 
             .loader-container {
                 position: relative;
@@ -41,10 +41,46 @@
 
     // Server side error message
     .error-message {
-        margin-left: 40%;
-        margin-bottom: 2rem;
+        margin: -0.5rem 0 0;
+        padding-bottom: 0.5rem;
         color: $red;
     }
+
+    // Form rounded box start =======================
+    // All form item
+    .form-item {
+        margin-bottom: 0;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        border-left: 0.1rem solid #515151;
+        border-right: 0.1rem solid #515151;
+        background: #323031;
+
+        .form-field-element {
+            margin-bottom: 1rem;
+        }
+    }
+
+    // top form item
+    .ForgotPasswordForm_username,
+    .ForgotUsernameForm_email,
+    .ResetPasswordForm_new_password {
+        padding-top: 1rem;
+        border-top: 0.1rem solid #515151;
+        border-radius: 0.3rem 0.3rem 0 0;
+    }
+
+    // bottom form item (usually action buttons)
+    .ForgotPasswordForm_submit,
+    .ForgotUsernameForm_submit,
+    .ResetPasswordForm_submit {
+        margin-bottom: 2rem;
+        padding-top: 1rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 0.1rem solid #515151;
+        border-radius: 0 0 0.3rem 0.3rem;
+    }
+    // Form rounded box end =======================
 }
 
 // Confirmation message
