@@ -82,6 +82,7 @@ class CasinoOptionComponentController
             $data['redirect'] = $this->getCasinoUrl($product);
             if ($isProvisioned) {
                 $product = $this->getPreferenceProvisioned($body);
+                $data['preferredProduct'] = $product;
                 $data['redirect'] = ($product) ? $this->getCasinoUrl($product) : '';
             }
         }
