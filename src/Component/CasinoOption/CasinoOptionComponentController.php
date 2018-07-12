@@ -94,8 +94,7 @@ class CasinoOptionComponentController
      */
     private function getPreferenceProvisioned($product)
     {
-        $preferredCasinoUrl = false;
-
+        $preferredCasino = false;
         try {
             if (!empty($product['product'])) {
                 $preferredCasino = $product['product'];
