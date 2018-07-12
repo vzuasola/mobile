@@ -10,8 +10,6 @@ import {CantLoginBase} from "@app/src/Component/Main/CantLogin/scripts/cant-logi
  * @param Node element component parent element
  * @param Object attachments
  * @param String url
- * @param String emailField selector to target for email
- * @param String passwordField selector to target for password
  */
 export class ResetPassword extends CantLoginBase {
     url: string;
@@ -81,12 +79,12 @@ export class ResetPassword extends CantLoginBase {
             .then((resp) => {
                 // TEMPORARY
                 resp = {
-                    // message: "FORGOT_USERNAME_FAILED",
-                    message: "FORGOT_USERNAME_SUCCESS",
+                    // message: "CHANGE_FORGOTTEN_PASSWORD_FAILED",
+                    message: "CHANGE_FORGOTTEN_PASSWORD_SUCCESS",
                     response_code: "INT036",
                 };
 
-                if (resp.message === "FORGOT_USERNAME_SUCCESS") {
+                if (resp.message === "CHANGE_FORGOTTEN_PASSWORD_SUCCESS") {
                     this.showConfirmationMessage(this.form);
                 } else {
                     this.showMessage(this.passwordVerifyContainer, this.messageMapping(resp.message));
