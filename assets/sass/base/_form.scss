@@ -57,46 +57,53 @@ $default-form-field-color: #ccc;
     border-radius: 0;
 }
 
-.pure-form {
+form.pure-form {
     .form-content-wrapper {
         margin-bottom: 2rem;
         padding: 1rem 1.5rem;
         border-radius: 0.3rem;
         border: 0.1rem solid #515151;
         background: #323031;
+    }
 
-        .form-item {
-            margin-bottom: 1rem;
-        }
+    .form-item {
+        margin-bottom: 1rem;
+    }
 
-        .form-label {
-            display: none;
-        }
+    .form-label {
+        display: none;
+    }
 
-        .form-field {
-            &-element {
-                width: 100%;
-                border: none;
-                border-bottom: 0.1rem solid #515151;
-                background: transparent;
-                color: $light-gray;
+    .form-field {
+        &-element {
+            width: 100%;
+            border: none;
+            border-bottom: 0.1rem solid #515151;
+            background: transparent;
+            color: $light-gray;
 
-                &:focus {
-                    border-color: $light-gray;
-                }
+            &:focus {
+                border-color: $light-gray;
             }
         }
+    }
 
-        // Error message
-        .error-message {
-            margin: 5px 0 10px;
-            color: $fire-red;
+    .has-error {
+        .form-field-element {
+            border-bottom: 0.1rem solid $red;
         }
+    }
 
-        // Submit field
-        .btn {
-            width: 100%;
-        }
+    // Error message
+    .error-message {
+        margin: 0.5rem 0 1rem;
+        color: $fire-red;
+        font-style: italic;
+    }
+
+    // Submit field
+    .btn {
+        width: 100%;
     }
 
     // Blurb top

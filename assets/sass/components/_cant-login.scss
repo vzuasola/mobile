@@ -1,13 +1,29 @@
+.forgot-password-form,
+.forgot-username-form,
+.reset-password-form,
+.confirmation-message {
+    // Anchors
+    a:not(.btn) {
+        color: $yellow;
+        text-decoration: underline;
+    }
+
+    h3 {
+        color: $light-gray;
+        font-size: 1.8rem;
+    }
+}
 
 .forgot-password-form,
 .forgot-username-form,
 .reset-password-form {
     transition: opacity 0.3s;
 
+
     .form-item {
         & > .loader {
             position: static;
-            margin: 10px 0;
+            margin: 1rem 0;
 
             .loader-container {
                 position: relative;
@@ -26,7 +42,7 @@
     // Server side error message
     .error-message {
         margin-left: 40%;
-        margin-bottom: 20px;
+        margin-bottom: 2rem;
         color: $red;
     }
 }
@@ -36,4 +52,30 @@
     transition: opacity 0.3s;
     opacity: 0;
     text-align: center;
+
+    .icon-check-rounded {
+        width: 3.7rem;
+        height: 3.7rem;
+        fill: $white;
+    }
+}
+
+// contact info blurb
+.contact-info-blurb {
+    display: flex;
+    padding: 1rem 4rem;
+    border: 0.1rem solid #515151;
+    border-radius: 0.3rem;
+    text-align: left;
+
+    .icon-exclamation {
+        width: 3.7rem;
+        height: 3.7rem;
+        fill: $white;
+        margin-right: 1rem;
+    }
+
+    p {
+        margin-bottom: 0;
+    }
 }
