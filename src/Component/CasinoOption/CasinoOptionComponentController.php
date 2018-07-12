@@ -77,13 +77,14 @@ class CasinoOptionComponentController
 
             $body = $request->getParsedBody();
             $product = 'casino';
-            if ($isProvisioned) {
-                $product = $this->getPreferenceProvisioned($body);
-            }
-
             $data['preferredProduct'] = $product;
             $data['success'] = $success;
             $data['redirect'] = $this->getCasinoUrl($product);
+            if ($isProvisioned) {
+                $product = $this->getPreferenceProvisioned($body);
+                $data['preferredProduct'] = $product;
+                $data['redirect'] = ($product) ? $this->getCasinoUrl($product) : '';
+            }
         }
 
         return $this->rest->output($response, $data);
@@ -94,8 +95,7 @@ class CasinoOptionComponentController
      */
     private function getPreferenceProvisioned($product)
     {
-        $preferredCasinoUrl = false;
-
+        $preferredCasino = false;
         try {
             if (!empty($product['product'])) {
                 $preferredCasino = $product['product'];
