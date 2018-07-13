@@ -19,6 +19,7 @@ import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
 import {CantLoginComponent} from "@app/src/Component/Main/CantLogin/script";
+import {ResetPasswordComponent} from "@app/src/Component/Main/ResetPassword/script";
 import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script";
 import {SessionComponent} from "@app/src/Component/Main/Session/script";
 import { SessionLegacyComponent } from "@app/src/Component/Main/SessionLegacy/script";
@@ -43,6 +44,7 @@ ComponentManager.setComponents({
     marketing: new MarketingComponent(),
     profiler: new ProfilerComponent(),
     cant_login: new CantLoginComponent(),
+    reset_password: new ResetPasswordComponent(),
     node_promotions: new PromotionsNodeComponent(),
     session: new SessionComponent(),
     session_legacy: new SessionLegacyComponent(),

@@ -72,6 +72,9 @@ components:
   cant_login:
     class: App\MobileEntry\Component\Main\CantLogin\CantLoginComponent
 
+  reset_password:
+    class: App\MobileEntry\Component\Main\ResetPassword\ResetPasswordComponent
+
   seo:
     class: App\MobileEntry\Component\SEO\SEOComponent
 
