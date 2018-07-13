@@ -1,5 +1,4 @@
 .tab {
-
     background: #2a2829;
     color: $light-gray;
 
@@ -7,6 +6,7 @@
     &-menu {
         display: table;
         width: 100%;
+        margin-bottom: 0.5rem;
         padding-left: 0;
 
         li {
