@@ -47,7 +47,7 @@ class ResetPasswordComponent implements ComponentWidgetInterface
         $data['formForgotUsername'] = $this->formManager->getForm(ForgotUsernameForm::class)->createView();
 
         $data['name'] = 'Drew';
-        $data['title'] = 'Can\'t access your Dafabet Account?';
+        $data['title'] = 'Password Reset Request';
 
         return $data;
     }

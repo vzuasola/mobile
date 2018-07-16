@@ -158,3 +158,15 @@ form.reset-password-form {
         }
     }
 }
+
+// Reset password page
+.reset-password-page {
+    padding: 1px 0;
+    background: #2a2829;
+
+    form.reset-password-form {
+        .blurb-summary {
+            margin-top: 1.5rem;
+        }
+    }
+}
