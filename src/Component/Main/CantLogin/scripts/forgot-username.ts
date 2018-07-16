@@ -88,18 +88,10 @@ export class ForgotUsername extends CantLoginBase {
             },
         })
             .then((resp) => {
-                // TEMPORARY
-                resp = {
-                    message: "FORGOT_USERNAME_FAILED",
-                    // message: "FORGOT_USERNAME_SUCCESS",
-                    response_code: "INT036",
-                };
-
                 if (resp.message === "FORGOT_USERNAME_SUCCESS") {
                     this.showConfirmationMessage(this.form);
                 } else {
                     this.showMessage(this.emailContainer, this.messageMapping(resp.message));
-                    // this.showMessage(this.emailContainer, this.attachments.messages[resp.message]);
                 }
             })
             .fail((err, msg) => {

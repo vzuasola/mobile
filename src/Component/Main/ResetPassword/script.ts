@@ -21,7 +21,7 @@ export class ResetPasswordComponent implements ComponentInterface {
         this.resetPassword = new ResetPassword(
             element,
             attachments,
-            Router.generateRoute("promotions", "promotions"));
+            Router.generateRoute("cant_login", "resetForgottenPassword"));
         this.resetPassword.init();
     }
 }
