@@ -12,6 +12,8 @@ export default class Xlider extends Siema {
         // Merge Siema and Xlider options
         this.config = Object.assign(extendedOptions, this.config);
 
+        console.log("this ", this);
+
         this.initXlider();
     }
 
@@ -95,4 +97,82 @@ export default class Xlider extends Siema {
             nextElem.addEventListener('click', () => this.next());
         }
     }
+
+    prev(howManySlides = 1, callback) {
+    // early return when there is nothing to slide
+    if (this.innerElements.length <= this.perPage) {
+      return;
+    }
+
+    const beforeChange = this.currentSlide;
+
+    if (this.config.loop) {
+      const isNewIndexClone = this.currentSlide - howManySlides < 0;
+      if (isNewIndexClone) {
+        this.disableTransition();
+
+        const mirrorSlideIndex = this.currentSlide + this.innerElements.length;
+        const mirrorSlideIndexOffset = this.perPage;
+        const moveTo = mirrorSlideIndex + mirrorSlideIndexOffset;
+        const offset = (this.config.rtl ? 1 : -1) * moveTo * (this.selectorWidth / this.perPage);
+        const dragDistance = this.config.draggable ? this.drag.endX - this.drag.startX : 0;
+
+        this.sliderFrame.style[this.transformProperty] = `translate3d(${offset + dragDistance}px, 0, 0)`;
+        this.currentSlide = mirrorSlideIndex - howManySlides;
+      }
+      else {
+        this.currentSlide = this.currentSlide - howManySlides;
+      }
+    }
+    else {
+      this.currentSlide = Math.max(this.currentSlide - howManySlides, 0);
+    }
+
+    if (beforeChange !== this.currentSlide) {
+      this.slideToCurrent(this.config.loop);
+      this.config.onChange.call(this);
+      this.config.onChange.call(this, this.innerElements[this.currentSlide], this);
+      if (callback) {
+        callback.call(this);
+      }
+    }
+  }
+
+    next(howManySlides = 1, callback) {
+        // early return when there is nothing to slide
+        if (this.innerElements.length <= this.perPage) {
+          return;
+        }
+
+        const beforeChange = this.currentSlide;
+
+        if (this.config.loop) {
+          const isNewIndexClone = this.currentSlide + howManySlides > this.innerElements.length - this.perPage;
+          if (isNewIndexClone) {
+            this.disableTransition();
+
+            const mirrorSlideIndex = this.currentSlide - this.innerElements.length;
+            const mirrorSlideIndexOffset = this.perPage;
+            const moveTo = mirrorSlideIndex + mirrorSlideIndexOffset;
+            const offset = (this.config.rtl ? 1 : -1) * moveTo * (this.selectorWidth / this.perPage);
+            const dragDistance = this.config.draggable ? this.drag.endX - this.drag.startX : 0;
+
+            this.sliderFrame.style[this.transformProperty] = `translate3d(${offset + dragDistance}px, 0, 0)`;
+            this.currentSlide = mirrorSlideIndex + howManySlides;
+          }
+          else {
+            this.currentSlide = this.currentSlide + howManySlides;
+          }
+        }
+        else {
+          this.currentSlide = Math.min(this.currentSlide + howManySlides, this.innerElements.length - this.perPage);
+        }
+        if (beforeChange !== this.currentSlide) {
+          this.slideToCurrent(this.config.loop);
+          this.config.onChange.call(this, this.innerElements[this.currentSlide], this);
+          if (callback) {
+            callback.call(this);
+          }
+        }
+      }
 }
