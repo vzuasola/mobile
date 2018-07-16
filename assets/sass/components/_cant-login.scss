@@ -138,9 +138,10 @@ form.reset-password-form {
     text-align: center;
 
     .icon-check-rounded {
-        width: 3.7rem;
-        height: 3.7rem;
-        fill: $white;
+        width: 5rem;
+        height: 5rem;
+        fill: #50db10;
+
     }
 
     .contact-info-blurb {
@@ -154,6 +155,18 @@ form.reset-password-form {
     > .form-field {
         > .form-field-element {
             border-bottom: none;
+        }
+    }
+}
+
+// Reset password page
+.reset-password-page {
+    padding: 1px 0;
+    background: #2a2829;
+
+    form.reset-password-form {
+        .blurb-summary {
+            margin-top: 1.5rem;
         }
     }
 }

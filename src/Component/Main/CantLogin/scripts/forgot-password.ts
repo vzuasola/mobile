@@ -38,13 +38,6 @@ export class ForgotPassword extends ForgotUsername {
             },
         })
             .then((resp) => {
-                // TEMPORARY
-                resp = {
-                    // message: "FORGOT_PASSWORD_FAILED",
-                    message: "FORGOT_PASSWORD_SUCCESS",
-                    response_code: "INT036",
-                };
-
                 if (resp.message === "FORGOT_PASSWORD_SUCCESS") {
                     this.showConfirmationMessage(this.form);
                 } else {
