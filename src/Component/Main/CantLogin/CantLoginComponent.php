@@ -5,11 +5,26 @@ namespace App\MobileEntry\Component\Main\CantLogin;
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\MobileEntry\Form\ForgotPasswordForm;
 use App\MobileEntry\Form\ForgotUsernameForm;
+use App\MobileEntry\Form\ResetPasswordForm;
+use App\Async\Async;
 
 class CantLoginComponent implements ComponentWidgetInterface
 {
 
+    /**
+     * Form manager object.
+     */
     private $formManager;
+
+    /**
+     * Request Object.
+     */
+    private $request;
+
+    /**
+     * Config Fetcher object.
+     */
+    private $configFetcher;
 
     /**
      *
@@ -17,16 +32,20 @@ class CantLoginComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
-            $container->get('form_manager')
+            $container->get('request'),
+            $container->get('form_manager'),
+            $container->get('config_fetcher_async')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($formManager)
+    public function __construct($request, $formManager, $configFetcher)
     {
         $this->formManager = $formManager;
+        $this->request = $request;
+        $this->configFetcher = $configFetcher->withProduct('account');
     }
 
     /**
@@ -43,12 +62,41 @@ class CantLoginComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
-        $data['formForgotPassword'] = $this->formManager->getForm(ForgotPasswordForm::class)->createView();
-        $data['formForgotUsername'] = $this->formManager->getForm(ForgotUsernameForm::class)->createView();
+        $config = $this->getConfig();
+        $data['config'] = $config;
+        $data['title'] = $config['cant_login_config']['page_subtitle'];
 
-        $data['name'] = 'Drew';
-        $data['title'] = 'Can\'t access your Dafabet Account?';
-
+        $this->cantLoginGetForm($data);
         return $data;
+    }
+
+    /**
+     * Get forms.
+     */
+    private function cantLoginGetForm(&$data)
+    {
+        if (is_null($this->request->getQueryParam('sbfpw'))) {
+            $formForgotPassword = $this->formManager->getForm(ForgotPasswordForm::class);
+            $formForgotUsername = $this->formManager->getForm(ForgotUsernameForm::class);
+
+            $data['formForgotPassword'] = $formForgotPassword->createView();
+            $data['formForgotUsername'] = $formForgotUsername->createView();
+            $data['isResetPassword'] = false;
+        } else {
+            $formResetPassword = $this->formManager->getForm(ResetPasswordForm::class);
+            $data['formResetPassword'] = $formResetPassword->createView();
+            $data['isResetPassword'] = true;
+        }
+    }
+
+    /**
+     * Get Config.
+     */
+    private function getConfig()
+    {
+        $config = [
+            'cant_login_config' => $this->configFetcher->getConfigById('cant_login')
+        ];
+        return Async::resolve($config);
     }
 }
