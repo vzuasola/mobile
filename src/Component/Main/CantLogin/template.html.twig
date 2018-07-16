@@ -1,62 +1,53 @@
 <div class="page-title promotions">
-    <h1 class="page-title-text">{{ title }}</h1>
+    {{ title.value|raw }}
 </div>
-<div class="tab">
-    <ul class="tab-menu">
-        <li class="active"><a href="#forgot-password-content">Forgot Password</a></li>
-        <li><a href="#forgot-username-content">Forgot Username</a></li>
-    </ul>
-    <div class="container">
-        <div class="tab-content" id="forgot-password-content">
-            {% form_theme formForgotPassword '@base/form/standard.html.twig' %}
-            {{ form_start(formForgotPassword, {'attr': {'class': 'pure-form forgot-password-form'}}) }}
-                <div class="alert alert-message hidden"></div>
-                <div class="form-wrapper">
-                    {{- form_widget(formForgotPassword) -}}
-                </div>
-            {{ form_end(formForgotPassword) }}
 
-            <div class="confirmation-message mt-25 mb-20 hidden">
-                <svg class="icon-check-rounded mb-10" viewBox="0 0 100 100">
-                    <use xlink:href="#check-rounded" />
-                </svg>
-                <h3 class="text-semibold">Retrive Password Request Sent</h3>
-                <p>A confirmation message has been sent to your registered email address. Please reset your password within the next 24 hours</p>
-                <p>Please check your email and click on the reset password link found on the mail that has just been sent to you.</p>
-                <p><a class="btn btn-yellow btn-small" href="#">Go to Dafabet Mobile</a></p>
-                <div class="contact-info-blurb">
-                    <svg class="icon-exclamation mb-5" viewBox="0 0 100 100">
-                        <use xlink:href="#exclamation-rounded" />
-                    </svg>
-                    <p>For any question or concerns please contact <a href="#">Customer Support</a></p>
+{% if isResetPassword %}
+    {% form_theme formResetPassword '@base/form/standard.html.twig' %}
+    {{ form_start(formResetPassword, {'attr': {'class': 'pure-form reset-password-form form-vertical'}}) }}
+        <div class="alert alert-message hidden"></div>
+        <div class="form-wrapper">
+            {{- form_widget(formResetPassword) -}}
+        </div>
+    {{ form_end(formResetPassword) }}
+
+    <div class="confirmation-message mt-25 mb-20 hidden">
+        {{ config.cant_login_config.mobile_reset_password_success_message.value|raw }}
+    </div>
+{% else %}
+    <div class="tab">
+        <ul class="tab-menu">
+            <li class="active"><a href="#forgot-password-content">Forgot Password</a></li>
+            <li><a href="#forgot-username-content">Forgot Username</a></li>
+        </ul>
+        <div class="container">
+            <div class="tab-content" id="forgot-password-content">
+                {% form_theme formForgotPassword '@base/form/standard.html.twig' %}
+                {{ form_start(formForgotPassword, {'attr': {'class': 'pure-form forgot-password-form'}}) }}
+                    <div class="alert alert-message hidden"></div>
+                    <div class="form-wrapper">
+                        {{- form_widget(formForgotPassword) -}}
+                    </div>
+                {{ form_end(formForgotPassword) }}
+
+                <div class="confirmation-message mt-25 mb-20 hidden">
+                    {{ config.cant_login_config.mobile_forgot_password_success_message.value|raw }}
                 </div>
             </div>
-        </div>
 
-        <div class="tab-content" id="forgot-username-content">
-            {% form_theme formForgotUsername '@base/form/standard.html.twig' %}
-            {{ form_start(formForgotUsername, {'attr': {'class': 'pure-form forgot-username-form'}}) }}
-                <div class="alert alert-message hidden"></div>
-                <div class="form-wrapper">
-                    {{- form_widget(formForgotUsername) -}}
-                </div>
-            {{ form_end(formForgotUsername) }}
+            <div class="tab-content" id="forgot-username-content">
+                {% form_theme formForgotUsername '@base/form/standard.html.twig' %}
+                {{ form_start(formForgotUsername, {'attr': {'class': 'pure-form forgot-username-form'}}) }}
+                    <div class="alert alert-message hidden"></div>
+                    <div class="form-wrapper">
+                        {{- form_widget(formForgotUsername) -}}
+                    </div>
+                {{ form_end(formForgotUsername) }}
 
-            <div class="confirmation-message mt-25 mb-20 hidden">
-                <svg class="icon-check-rounded mb-10" viewBox="0 0 100 100">
-                    <use xlink:href="#check-rounded" />
-                </svg>
-                <h3 class="text-semibold">Retrive Password Request Sent</h3>
-                <p>A confirmation message has been sent to your registered email address. Please reset your password within the next 24 hours</p>
-                <p>Please check your email and click on the reset password link found on the mail that has just been sent to you.</p>
-                <p><a class="btn btn-yellow btn-small" href="#">Go to Dafabet Mobile</a></p>
-                <div class="contact-info-blurb">
-                    <svg class="icon-exclamation mb-5" viewBox="0 0 100 100">
-                        <use xlink:href="#exclamation-rounded" />
-                    </svg>
-                    <p>For any question or concerns please contact <a href="#">Customer Support</a></p>
+                <div class="confirmation-message mt-25 mb-20 hidden">
+                    {{ config.cant_login_config.mobile_forgot_username_success_message.value|raw }}
                 </div>
             </div>
         </div>
     </div>
-</div>
+{% endif %}
