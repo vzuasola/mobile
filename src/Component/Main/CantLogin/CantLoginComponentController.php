@@ -5,7 +5,7 @@ namespace App\MobileEntry\Component\Main\CantLogin;
 /**
  *
  */
-class CantLoginController
+class CantLoginComponentController
 {
     const ERROR_CODE = [
         'INT001' => 'INTERNAL_ERROR',
@@ -17,8 +17,20 @@ class CantLoginController
         'INT038' => 'CHANGE_FORGOTTEN_PASSWORD_FAILED'
     ];
 
+    /**
+     * Rest Object.
+     */
     private $rest;
+
+    /**
+     * User Fetcher Object.
+     */
     private $userFetcher;
+
+    /**
+     * Change Password Fetcher Object.
+     */
+    private $changePassword;
 
     /**
      *
@@ -27,21 +39,23 @@ class CantLoginController
     {
         return new static(
             $container->get('rest'),
-            $container->get('user_fetcher')
+            $container->get('user_fetcher'),
+            $container->get('change_password')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $userFetcher)
+    public function __construct($rest, $userFetcher, $changePassword)
     {
         $this->rest = $rest;
         $this->userFetcher = $userFetcher;
+        $this->changePassword = $changePassword;
     }
 
     /**
-     *
+     * Ajax - forgot password request
      */
     public function forgotPassword($request, $response)
     {
@@ -55,20 +69,20 @@ class CantLoginController
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
 
-            return $this->get('rest')->output($response, [
+            return $this->rest->output($response, [
                 'response_code' => $error['responseCode'],
                 'message' => self::ERROR_CODE[$error['responseCode']]
             ]);
         }
 
-        return $this->get('rest')->output($response, [
+        return $this->rest->output($response, [
             'response_code' => 'INT033',
             'message' => self::ERROR_CODE['INT033']
         ]);
     }
 
     /**
-     *
+     * Ajax - forgot username request
      */
     public function forgotUsername($request, $response)
     {
@@ -90,6 +104,34 @@ class CantLoginController
         return $this->rest->output($response, [
             'response_code' => 'INT035',
             'message' => self::ERROR_CODE['INT035']
+        ]);
+    }
+
+    /**
+     * Ajax - reset password request
+     */
+    public function resetForgottenPassword($request, $response)
+    {
+        $result = [];
+
+        $token = $request->getParam('token');
+        $password = $request->getParam('password');
+
+        try {
+            $result = $this->changePassword->setResetPassword($token, $password);
+        } catch (\Exception $e) {
+            $error = $e->getResponse()->getBody()->getContents();
+            $error = json_decode($error, true);
+
+            return $this->rest->output($response, [
+                'response_code' => $error['responseCode'],
+                'message' => self::ERROR_CODE[$error['responseCode']]
+            ]);
+        }
+
+        return $this->rest->output($response, [
+            'response_code' => 'INT037',
+            'message' => self::ERROR_CODE['INT037']
         ]);
     }
 }
