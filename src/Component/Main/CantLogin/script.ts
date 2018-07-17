@@ -48,7 +48,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.forgotPassword = new ForgotPassword(
             element,
             attachments,
-            Router.generateRoute("cant_login", "forgotPassword"),
+            Router.generateRoute("cant_login", "forgotpassword"),
             "#ForgotPasswordForm_email",
             "#ForgotPasswordForm_username");
         this.forgotPassword.init();
@@ -58,7 +58,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.resetPassword = new ResetPassword(
             element,
             attachments,
-            Router.generateRoute("cant_login", "resetForgottenPassword"));
+            Router.generateRoute("cant_login", "resetforgottenpassword"));
         this.resetPassword.init();
     }
 }

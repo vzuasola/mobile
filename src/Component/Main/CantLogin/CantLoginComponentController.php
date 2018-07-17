@@ -57,7 +57,7 @@ class CantLoginComponentController
     /**
      * Ajax - forgot password request
      */
-    public function forgotPassword($request, $response)
+    public function forgotpassword($request, $response)
     {
         $result = [];
         $username = $request->getParam('username');
@@ -84,7 +84,7 @@ class CantLoginComponentController
     /**
      * Ajax - forgot username request
      */
-    public function forgotUsername($request, $response)
+    public function forgotusername($request, $response)
     {
         $result = [];
         $email = $request->getParam('email');
@@ -110,7 +110,7 @@ class CantLoginComponentController
     /**
      * Ajax - reset password request
      */
-    public function resetForgottenPassword($request, $response)
+    public function resetforgottenpassword($request, $response)
     {
         $result = [];
 
