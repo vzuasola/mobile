@@ -6,7 +6,6 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\MobileEntry\Form\ForgotPasswordForm;
 use App\MobileEntry\Form\ForgotUsernameForm;
 use App\MobileEntry\Form\ResetPasswordForm;
-use App\Async\Async;
 
 class CantLoginComponent implements ComponentWidgetInterface
 {
@@ -34,7 +33,7 @@ class CantLoginComponent implements ComponentWidgetInterface
         return new static(
             $container->get('request'),
             $container->get('form_manager'),
-            $container->get('config_fetcher_async')
+            $container->get('config_fetcher')
         );
     }
 
@@ -62,9 +61,9 @@ class CantLoginComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
-        $config = $this->getConfig();
+        $config = $this->configFetcher->getConfigById('cant_login');
         $data['config'] = $config;
-        $data['title'] = $config['cant_login_config']['page_subtitle'];
+        $data['title'] = $config['page_subtitle'];
 
         $this->cantLoginGetForm($data);
         return $data;
@@ -87,16 +86,5 @@ class CantLoginComponent implements ComponentWidgetInterface
             $data['formResetPassword'] = $formResetPassword->createView();
             $data['isResetPassword'] = true;
         }
-    }
-
-    /**
-     * Get Config.
-     */
-    private function getConfig()
-    {
-        $config = [
-            'cant_login_config' => $this->configFetcher->getConfigById('cant_login')
-        ];
-        return Async::resolve($config);
     }
 }
