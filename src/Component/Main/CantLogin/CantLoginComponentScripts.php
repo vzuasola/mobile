@@ -4,7 +4,6 @@ namespace App\MobileEntry\Component\Main\CantLogin;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 use App\Drupal\Config;
-use App\Async\Async;
 
 /**
  *
@@ -23,7 +22,7 @@ class CantLoginComponentScripts implements ComponentAttachmentInterface
     public static function create($container)
     {
         return new static(
-            $container->get('config_fetcher_async')
+            $container->get('config_fetcher')
         );
     }
 
@@ -39,11 +38,8 @@ class CantLoginComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        $config = [
-            'cant_login_config' => $this->configFetcher->getConfigById('cant_login')
-        ];
-        $data = Async::resolve($config);
-        $integrationError = Config::parse($data['cant_login_config']['cant_login_response_mapping']) ?? '';
+        $config = $this->configFetcher->getConfigById('cant_login');
+        $integrationError = Config::parse($config['cant_login_response_mapping']) ?? '';
 
         return [
             'username' => 'leandrew',
