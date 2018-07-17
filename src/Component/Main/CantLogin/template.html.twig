@@ -1,41 +1,9 @@
 <div class="page-title promotions">
-    {{ title.value|raw }}
+    <h1 class="page-title-text">{{ title }}</h1>
 </div>
 
 {% if isResetPassword %}
-    {% form_theme formResetPassword '@base/form/standard.html.twig' %}
-    {{ form_start(formResetPassword, {'attr': {'class': 'pure-form reset-password-form form-vertical'}}) }}
-    {{ form_end(formResetPassword) }}
-
-    <div class="confirmation-message mt-25 mb-20 hidden">
-        {{ config.cant_login_config.mobile_reset_password_success_message.value|raw }}
-    </div>
+    {{ include('@component/Main/CantLogin/templates/reset-password.html.twig') }}
 {% else %}
-    <div class="tab">
-        <ul class="tab-menu">
-            <li class="active"><a href="#forgot-password-content">Forgot Password</a></li>
-            <li><a href="#forgot-username-content">Forgot Username</a></li>
-        </ul>
-        <div class="container">
-            <div class="tab-content" id="forgot-password-content">
-                {% form_theme formForgotPassword '@base/form/standard.html.twig' %}
-                {{ form_start(formForgotPassword, {'attr': {'class': 'pure-form forgot-password-form'}}) }}
-                {{ form_end(formForgotPassword) }}
-
-                <div class="confirmation-message mt-25 mb-20 hidden">
-                    {{ config.cant_login_config.mobile_forgot_password_success_message.value|raw }}
-                </div>
-            </div>
-
-            <div class="tab-content" id="forgot-username-content">
-                {% form_theme formForgotUsername '@base/form/standard.html.twig' %}
-                {{ form_start(formForgotUsername, {'attr': {'class': 'pure-form forgot-username-form'}}) }}
-                {{ form_end(formForgotUsername) }}
-
-                <div class="confirmation-message mt-25 mb-20 hidden">
-                    {{ config.cant_login_config.mobile_forgot_username_success_message.value|raw }}
-                </div>
-            </div>
-        </div>
-    </div>
+    {{ include('@component/Main/CantLogin/templates/forgot-password-username.html.twig') }}
 {% endif %}
