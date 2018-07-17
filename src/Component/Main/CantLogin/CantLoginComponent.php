@@ -76,14 +76,14 @@ class CantLoginComponent implements ComponentWidgetInterface
     private function cantLoginGetForm(&$data)
     {
         if (is_null($this->request->getQueryParam('sbfpw'))) {
-            $formForgotPassword = $this->formManager->getForm(ForgotPasswordForm::class);
-            $formForgotUsername = $this->formManager->getForm(ForgotUsernameForm::class);
+            $formForgotPassword = $this->formManager->getForm(ForgotPasswordForm::class, ['attachValidationOnFormTag' => true]);
+            $formForgotUsername = $this->formManager->getForm(ForgotUsernameForm::class, ['attachValidationOnFormTag' => true]);
 
             $data['formForgotPassword'] = $formForgotPassword->createView();
             $data['formForgotUsername'] = $formForgotUsername->createView();
             $data['isResetPassword'] = false;
         } else {
-            $formResetPassword = $this->formManager->getForm(ResetPasswordForm::class);
+            $formResetPassword = $this->formManager->getForm(ResetPasswordForm::class, ['attachValidationOnFormTag' => true]);
             $data['formResetPassword'] = $formResetPassword->createView();
             $data['isResetPassword'] = true;
         }

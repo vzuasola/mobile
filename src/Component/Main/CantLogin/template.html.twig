@@ -5,10 +5,6 @@
 {% if isResetPassword %}
     {% form_theme formResetPassword '@base/form/standard.html.twig' %}
     {{ form_start(formResetPassword, {'attr': {'class': 'pure-form reset-password-form form-vertical'}}) }}
-        <div class="alert alert-message hidden"></div>
-        <div class="form-wrapper">
-            {{- form_widget(formResetPassword) -}}
-        </div>
     {{ form_end(formResetPassword) }}
 
     <div class="confirmation-message mt-25 mb-20 hidden">
@@ -24,10 +20,6 @@
             <div class="tab-content" id="forgot-password-content">
                 {% form_theme formForgotPassword '@base/form/standard.html.twig' %}
                 {{ form_start(formForgotPassword, {'attr': {'class': 'pure-form forgot-password-form'}}) }}
-                    <div class="alert alert-message hidden"></div>
-                    <div class="form-wrapper">
-                        {{- form_widget(formForgotPassword) -}}
-                    </div>
                 {{ form_end(formForgotPassword) }}
 
                 <div class="confirmation-message mt-25 mb-20 hidden">
@@ -38,10 +30,6 @@
             <div class="tab-content" id="forgot-username-content">
                 {% form_theme formForgotUsername '@base/form/standard.html.twig' %}
                 {{ form_start(formForgotUsername, {'attr': {'class': 'pure-form forgot-username-form'}}) }}
-                    <div class="alert alert-message hidden"></div>
-                    <div class="form-wrapper">
-                        {{- form_widget(formForgotUsername) -}}
-                    </div>
                 {{ form_end(formForgotUsername) }}
 
                 <div class="confirmation-message mt-25 mb-20 hidden">
