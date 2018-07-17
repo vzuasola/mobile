@@ -6,7 +6,7 @@ import * as utility from "@core/assets/js/components/utility";
  * @param Node element component parent element
  * @param Object attachments
  */
-export class CantLoginBase {
+export abstract class CantLoginBase {
     element: HTMLElement;
     attachments: any;
     msgClass: string;
