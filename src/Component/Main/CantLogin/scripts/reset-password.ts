@@ -1,6 +1,5 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
-import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Loader} from "@app/assets/script/components/loader";
 import {CantLoginBase} from "@app/src/Component/Main/CantLogin/scripts/cant-login-base";
 
