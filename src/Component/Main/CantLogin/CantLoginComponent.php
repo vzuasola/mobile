@@ -77,11 +77,11 @@ class CantLoginComponent implements ComponentWidgetInterface
     {
         if (is_null($this->request->getQueryParam('sbfpw'))) {
             $formForgotPassword = $this->formManager->getForm(
-                ForgotPasswordForm::class, 
+                ForgotPasswordForm::class,
                 ['attachValidationOnFormTag' => true]
             );
             $formForgotUsername = $this->formManager->getForm(
-                ForgotUsernameForm::class, 
+                ForgotUsernameForm::class,
                 ['attachValidationOnFormTag' => true]
             );
 
@@ -90,7 +90,7 @@ class CantLoginComponent implements ComponentWidgetInterface
             $data['isResetPassword'] = false;
         } else {
             $formResetPassword = $this->formManager->getForm(
-                ResetPasswordForm::class, 
+                ResetPasswordForm::class,
                 ['attachValidationOnFormTag' => true]
             );
             $data['formResetPassword'] = $formResetPassword->createView();
