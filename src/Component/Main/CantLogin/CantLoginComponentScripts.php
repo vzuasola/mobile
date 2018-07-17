@@ -42,7 +42,6 @@ class CantLoginComponentScripts implements ComponentAttachmentInterface
         $integrationError = Config::parse($config['cant_login_response_mapping']) ?? '';
 
         return [
-            'username' => 'leandrew',
             'messages' => $integrationError
         ];
     }
