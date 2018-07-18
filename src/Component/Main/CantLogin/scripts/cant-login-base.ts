@@ -100,9 +100,6 @@ export abstract class CantLoginBase {
         }, 10);
     }
 
-    /**
-     * Private methods ========================================
-     */
     private createMessage(parentElem, msg) {
         const msgContainer = this.createElem("div", this.msgClass);
 
