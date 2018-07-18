@@ -18,7 +18,7 @@ export abstract class CantLoginBase {
         this.msgClass = "error-message";
     }
 
-    activateValidator(form: HTMLFormElement) {
+    validate(form: HTMLFormElement) {
         const validator = new Validator(
             JSON.parse(form.getAttribute("data-validations")), [],
         );

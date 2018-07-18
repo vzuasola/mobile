@@ -18,6 +18,7 @@ export class ResetPassword extends CantLoginBase {
     passwordVerifyContainer: HTMLElement;
     token: string;
     loader: Loader;
+    validator: any;
 
     constructor(element: HTMLElement, attachments: any, url: string) {
         super(element, attachments);
@@ -35,6 +36,7 @@ export class ResetPassword extends CantLoginBase {
             this.passwordVerifyContainer = utility.hasClass(this.passwordFieldVerify, "form-item", true);
             this.token = utility.getParameterByName("sbfpw", document.referrer);
             this.loader = new Loader(utility.hasClass(this.passwordVerifyContainer, "form-item", true), false, 0);
+            this.validator = this.validate(this.form);
             this.bindEvent();
         }
     }
@@ -44,17 +46,9 @@ export class ResetPassword extends CantLoginBase {
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
 
-            setTimeout(() => {
-                const fields = Array.prototype.slice.call(this.form.elements);
-
-                const hasError = fields.filter((field) => {
-                    return utility.hasClass(field, "has-error", true);
-                });
-
-                if (hasError.length < 1) {
-                    this.checkField();
-                }
-            }, 100);
+            if (!this.validator.hasError) {
+                this.checkField();
+            }
         });
     }
 
