@@ -9,10 +9,12 @@ export class Validator {
     private formValidations: any;
     private options: any;
     private formValidator: FormValidator;
+    public hasError: boolean;
 
     constructor(formValidations, options) {
         this.formValidations = formValidations;
         this.options = options;
+        this.hasError: false;
     }
 
     init() {
@@ -62,6 +64,11 @@ export class Validator {
 
     private errorCallback(errors: any, event: any) {
         try {
+            if (error.length < 1) {
+                this.hasError = true;
+            } else {
+                this.hasError = false;
+            }
             const handler = this.options.error;
             return new handler(errors, event);
         } catch (e) {
