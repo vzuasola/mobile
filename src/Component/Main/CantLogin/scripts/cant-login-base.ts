@@ -1,5 +1,5 @@
 import * as utility from "@core/assets/js/components/utility";
-import {Validator} from "@app/assets/script/components/validator";
+import {Validator} from "@app/assets/script/components/validation/validator";
 
 /**
  * Cant login base
