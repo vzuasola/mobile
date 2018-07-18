@@ -6,15 +6,15 @@ import * as FormValidator from "@core/assets/js/vendor/validate";
 
 export class Validator {
 
+    hasError: boolean;
     private formValidations: any;
     private options: any;
     private formValidator: FormValidator;
-    public hasError: boolean;
 
     constructor(formValidations, options) {
         this.formValidations = formValidations;
         this.options = options;
-        this.hasError: false;
+        this.hasError = false;
     }
 
     init() {
@@ -64,11 +64,12 @@ export class Validator {
 
     private errorCallback(errors: any, event: any) {
         try {
-            if (error.length < 1) {
-                this.hasError = true;
-            } else {
+            if (errors.length < 1) {
                 this.hasError = false;
+            } else {
+                this.hasError = true;
             }
+
             const handler = this.options.error;
             return new handler(errors, event);
         } catch (e) {

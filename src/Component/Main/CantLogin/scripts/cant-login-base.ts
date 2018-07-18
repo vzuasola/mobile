@@ -1,4 +1,5 @@
 import * as utility from "@core/assets/js/components/utility";
+import {Validator} from "@app/assets/script/components/validator";
 
 /**
  * Cant login base
@@ -17,6 +18,16 @@ export abstract class CantLoginBase {
         this.msgClass = "error-message";
     }
 
+    activateValidator(form: HTMLFormElement) {
+        const validator = new Validator(
+            JSON.parse(form.getAttribute("data-validations")), [],
+        );
+
+        validator.init();
+
+        return validator;
+    }
+
     messageMapping(key) {
         return this.attachments.messages[key];
     }
@@ -27,7 +38,7 @@ export abstract class CantLoginBase {
      * @param Node parentElem parent element to insert message
      * @param String msg message to insert
      */
-    showMessage(parentElem, msg) {
+    showMessage(parentElem, msg): void {
         const oldMsgContainer = parentElem.querySelector("." + this.msgClass);
 
         this.createMessage(parentElem, msg);
@@ -37,7 +48,7 @@ export abstract class CantLoginBase {
         }
     }
 
-    hideMessage(parentElem) {
+    hideMessage(parentElem): void {
         const msgContainer = parentElem.querySelector("." + this.msgClass);
 
         if (msgContainer) {
@@ -50,7 +61,7 @@ export abstract class CantLoginBase {
      *
      * @param Node form form tag element
      */
-    disableFields(form) {
+    disableFields(form): void {
         utility.forEach(form.elements, (elem) => {
             elem.readOnly = true;
         });
@@ -63,7 +74,7 @@ export abstract class CantLoginBase {
      *
      * @param Node form form tag element
      */
-    enableFields(form) {
+    enableFields(form): void {
         utility.forEach(form.elements, (elem) => {
             elem.readOnly = false;
         });
@@ -76,7 +87,7 @@ export abstract class CantLoginBase {
      *
      * @param Node form form tag element
      */
-    showConfirmationMessage(form) {
+    showConfirmationMessage(form): void {
         const confirmationMessage = utility.findParent(form, "div").querySelector(".confirmation-message");
 
         form.style.opacity = "0";

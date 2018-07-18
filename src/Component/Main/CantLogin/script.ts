@@ -5,7 +5,6 @@ import {ForgotUsername} from "./scripts/forgot-username";
 import {ForgotPassword} from "./scripts/forgot-password";
 import {ResetPassword} from "./scripts/reset-password";
 import {Router} from "@plugins/ComponentWidget/asset/router";
-import {Validator} from "@app/assets/script/components/validator";
 
 /**
  *
@@ -20,7 +19,6 @@ export class CantLoginComponent implements ComponentInterface {
         this.activateForgotUsername(element, attachments);
         this.activateForgotPassword(element, attachments);
         this.activateResetPassword(element, attachments);
-        this.activateFormValidation(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -28,7 +26,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.activateForgotUsername(element, attachments);
         this.activateForgotPassword(element, attachments);
         this.activateResetPassword(element, attachments);
-        this.activateFormValidation(element);
+
     }
 
     /**
@@ -63,13 +61,5 @@ export class CantLoginComponent implements ComponentInterface {
             attachments,
             Router.generateRoute("cant_login", "resetForgottenPassword"));
         this.resetPassword.init();
-    }
-
-    private activateFormValidation(element) {
-        const forgotPasswordValidator = new Validator(
-            JSON.parse(element.querySelector(".forgot-password-form").getAttribute("data-validations")), [],
-        );
-
-        forgotPasswordValidator.init();
     }
 }
