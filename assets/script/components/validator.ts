@@ -23,8 +23,6 @@ export class Validator {
                 const ruleset = this.getRules(form);
 
                 if (ruleset) {
-                    console.log(ruleset);
-                    console.log(this.options);
                     this.formValidator = new FormValidator(
                         form,
                         ruleset,
@@ -60,12 +58,9 @@ export class Validator {
                 this.options[name] = defaults[name];
             }
         }
-        console.log(this.options);
     }
 
     private errorCallback(errors: any, event: any) {
-        console.log(errors);
-        console.log(this.options);
         try {
             const handler = this.options.error;
             return new handler(errors, event);
