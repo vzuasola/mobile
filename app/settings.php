@@ -25,6 +25,13 @@ $settings['settings']['asset']['prefixed'] = false;
 
 $settings['settings']['components']['async'] = false;
 
+$settings['settings']['components']['render']['mode'] = 'prerender';
+$settings['settings']['components']['render']['preload'] = ['profiler', 'footer', 'marketing', 'backtotop'];
+
+$settings['settings']['components']['router']['widget_headers'] = [
+    'Cache-Control' => 'private, max-age=300',
+];
+
 // Cache
 
 $settings['settings']['cache']['default_timeout'] = 1800;
@@ -39,6 +46,10 @@ $settings['settings']['page_cache']['default_timeout'] = 1800;
 $settings['settings']['fetchers']['enable_permanent_caching'] = true;
 
 // Environment Specific
+
+if (\App\Kernel::environment() === 'DEV') {
+    $settings['settings']['page_cache']['enable'] = false;
+}
 
 if (\App\Kernel::environment() !== 'DEV') {
     $settings['settings']['asset']['prefixed_drupal'] = true;

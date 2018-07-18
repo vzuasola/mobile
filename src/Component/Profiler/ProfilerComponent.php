@@ -12,6 +12,30 @@ class ProfilerComponent implements ComponentWidgetInterface
     /**
      *
      */
+    public static function create($container)
+    {
+        return new static(
+            $container->get('profiler'),
+            $container->get('session'),
+            $container->get('middleware_manager'),
+            $container->get('client_stats')
+        );
+    }
+
+    /**
+     * Public constructor
+     */
+    public function __construct($profiler, $session, $middlewares, $stats)
+    {
+        $this->profiler = $profiler;
+        $this->session = $session;
+        $this->middlewares = $middlewares;
+        $this->stats = $stats;
+    }
+
+    /**
+     *
+     */
     public function getTemplate()
     {
         return '@component/Profiler/template.html.twig';
@@ -22,41 +46,52 @@ class ProfilerComponent implements ComponentWidgetInterface
      */
     public function getData($options = [])
     {
-        $stack = [];
+        $data = [];
 
-        $response = $options['response'];
+        $isProfileable = $this->profiler->isProfileable();
 
-        $cacheState = $response->getHeaderLine(ResponseCache::CACHE_HEADER);
+        $data['profileable'] = $isProfileable;
 
-        if ($cacheState === ResponseCache::CACHE_HIT) {
-            $data['cache'] = true;
+        if ($isProfileable) {
+            $response = $options['response'];
+            $cacheState = $response->getHeaderLine(ResponseCache::CACHE_HEADER);
+
+            if ($cacheState === ResponseCache::CACHE_HIT) {
+                $data['cache'] = true;
+            }
+
+            $stack = [];
+
+            $this->populateMiddlewares($stack);
+            $this->populateNetwork($stack);
+            $this->populateSession($stack);
+
+            $data['stack'] = $stack;
         }
-
-        $this->populateMiddlewares($stack);
-        $this->populateNetwork($stack);
-
-        $data['stack'] = $stack;
 
         return $data;
     }
 
+    /**
+     *
+     */
     private function populateMiddlewares(&$stack)
     {
-        $middlewares = Kernel::container()->get('middleware_manager');
-
-        $requests = $middlewares->getRequestMiddlewares();
-        $responses = $middlewares->getResponseMiddlewares();
-        $caches = $middlewares->getCacheMiddlewares();
+        $requests = $this->middlewares->getRequestMiddlewares();
+        $responses = $this->middlewares->getResponseMiddlewares();
+        $caches = $this->middlewares->getCacheMiddlewares();
 
         $stack['Middlewares']['Request Middlewares'] = array_values($requests);
         $stack['Middlewares']['Response Middlewares'] = array_values($responses);
         $stack['Middlewares']['Cache Middlewares'] = array_values($caches);
     }
 
+    /**
+     *
+     */
     private function populateNetwork(&$stack)
     {
-        $requests = Kernel::container()->get('client_stats');
-        $stats = $requests->getStack();
+        $stats = $this->stats->getStack();
 
         foreach ($stats as $value) {
             $stat = $value['stats'];
@@ -82,6 +117,18 @@ class ProfilerComponent implements ComponentWidgetInterface
             } else {
                 $stack['Network']['Generic'][] = $stash;
             }
+        }
+    }
+
+    /**
+     *
+     */
+    private function populateSession(&$stack)
+    {
+        if (function_exists('d')) {
+            $stack['Session']['Session'] = @d(
+                $this->session->all()
+            );
         }
     }
 }

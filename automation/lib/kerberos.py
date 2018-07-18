@@ -53,7 +53,7 @@ def api_url():
     Returns:
         (str): gitlab API url
     """
-    return "https://gitlab.ph.esl-asia.com/api/v3/"
+    return "https://gitlab.ph.esl-asia.com/api/v4/"
 
 
 def deployments_url():

@@ -1,11 +1,3 @@
-# Component Configuration List
-
-settings:
-  router:
-    # Controls the headers defined when accessing individual components
-    headers:
-      Cache-Control: private, max-age=300
-
 # Define components
 components:
   access_denied:
@@ -13,14 +5,13 @@ components:
 
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
-  
-  header_menu:
-    class: App\MobileEntry\Component\Header\Menu\MenuComponent
-    parent: header
 
   header_login:
     class: App\MobileEntry\Component\Header\Login\LoginComponent
     parent: header
+  
+  menu:
+    class: App\MobileEntry\Component\Menu\MenuComponent
 
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
@@ -57,6 +48,12 @@ components:
     class: App\MobileEntry\Component\Main\Home\Download\DownloadComponent
     parent: home
 
+  session:
+    class: App\MobileEntry\Component\Main\Session\SessionComponent
+
+  session_legacy:
+    class: App\MobileEntry\Component\Main\SessionLegacy\SessionLegacyComponent
+
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
 
@@ -77,6 +74,9 @@ components:
 
   marketing:
     class: App\MobileEntry\Component\Marketing\MarketingComponent
+
+  backtotop:
+    class: App\MobileEntry\Component\Backtotop\BacktotopComponent
 
 # Define modules
 modules:
@@ -115,4 +115,3 @@ modules:
 
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
-

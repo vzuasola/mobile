@@ -11,6 +11,10 @@ class PromotionsComponent implements ComponentWidgetInterface
      * @var App\Player\PlayerSession
      */
     private $playerSession;
+    /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $config;
 
     /**
      *
@@ -18,16 +22,18 @@ class PromotionsComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession)
+    public function __construct($playerSession, $config)
     {
         $this->playerSession = $playerSession;
+        $this->config = $config;
     }
 
     /**
@@ -50,6 +56,7 @@ class PromotionsComponent implements ComponentWidgetInterface
         }
 
         $data['is_login'] = $this->playerSession->isLogin();
+
         return $data;
     }
 }

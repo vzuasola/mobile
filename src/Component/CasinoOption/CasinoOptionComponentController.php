@@ -42,7 +42,7 @@ class CasinoOptionComponentController
             $container->get('preferences_fetcher'),
             $container->get('rest'),
             $container->get('config_fetcher'),
-            $container->get('payment_account_fetcher')
+            $container->get('accounts_service')
         );
     }
 
@@ -76,15 +76,15 @@ class CasinoOptionComponentController
             }
 
             $body = $request->getParsedBody();
-
-            if ($isProvisioned) {
-                $redirect = $this->getPreferenceProvisioned($body);
-            } else {
-                $redirect = $this->getCasinoUrl('casino');
-            }
-
+            $product = 'casino';
+            $data['preferredProduct'] = $product;
             $data['success'] = $success;
-            $data['redirect'] = $redirect;
+            $data['redirect'] = $this->getCasinoUrl($product);
+            if ($isProvisioned) {
+                $product = $this->getPreferenceProvisioned($body);
+                $data['preferredProduct'] = $product;
+                $data['redirect'] = ($product) ? $this->getCasinoUrl($product) : '';
+            }
         }
 
         return $this->rest->output($response, $data);
@@ -95,14 +95,11 @@ class CasinoOptionComponentController
      */
     private function getPreferenceProvisioned($product)
     {
-        $preferredCasinoUrl = false;
-
+        $preferredCasino = false;
         try {
             if (!empty($product['product'])) {
                 $preferredCasino = $product['product'];
                 $this->preferences->savePreference('casino.preferred', $preferredCasino);
-
-                $preferredCasinoUrl = $this->getCasinoUrl($product['product']);
 
                 $this->setLegacyPrefCookie($preferredCasino);
             } else {
@@ -110,7 +107,6 @@ class CasinoOptionComponentController
 
                 if (!empty($preferredCasinoPref['casino.preferred'])) {
                     $preferredCasino = $preferredCasinoPref['casino.preferred'];
-                    $preferredCasinoUrl = $this->getCasinoUrl($preferredCasino);
 
                     $this->setLegacyPrefCookie($preferredCasino);
                 }
@@ -119,7 +115,7 @@ class CasinoOptionComponentController
             // do nothing
         }
 
-        return $preferredCasinoUrl;
+        return $preferredCasino;
     }
 
     /**

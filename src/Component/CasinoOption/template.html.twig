@@ -1,11 +1,11 @@
-<div id="casino-option-lightbox" class="modal casino-option">
+<div id="casino-option-lightbox" class="modal casino-options">
     <div class="modal-content casino-option-content">
     <p class="casino title">{{ title }}</p>
         <div class="modal-body casino-option-body">
             <div class="casino-option-body-select">
                 <a 
                     href="#" data-preferred-casino="casino"
-                    class="casino-classic casino-option {{ preferred == 'casino' ? 'selected' : 'select-option-muted'}}"
+                    class="casino-classic casino-option select-option-muted"
                 >
                     {% if app.lang == "ch" or app.lang == "sc" %}
                         <img src="{{ asset('images/dafabet_logo_chinese.png') }}" alt="{{ logo_title }}">
@@ -17,7 +17,7 @@
                 </a>
                 <a 
                     href="#" data-preferred-casino="casino_gold" 
-                    class="casino-gold casino-option {{ preferred == 'casino_gold' ? 'selected' : 'select-option-muted'}}"
+                    class="casino-gold casino-option select-option-muted"
                 >
                     {% if app.lang == "ch" or app.lang == "sc" %}
                         <img src="{{ asset('images/dafabet_gold_logo_sc.png') }}" alt="{{ logo_title }}">

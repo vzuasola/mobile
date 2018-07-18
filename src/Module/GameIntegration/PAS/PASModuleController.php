@@ -18,7 +18,7 @@ class PASModuleController
     {
         return new static(
             $container->get('rest'),
-            $container->get('payment_account_fetcher')
+            $container->get('accounts_service')
         );
     }
 

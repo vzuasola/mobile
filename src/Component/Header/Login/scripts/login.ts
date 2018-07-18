@@ -31,6 +31,8 @@ export class Login {
     constructor() {
         this.loader = new Loader(document.body, true);
         this.sync = new SyncEvents();
+
+        this.listenLoginEvents();
     }
 
     handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
@@ -38,7 +40,6 @@ export class Login {
         this.isLogin = attachments.authenticated;
 
         this.listenLogin();
-        this.listenLoginEvents();
         this.listenLogout();
 
         this.activateLogin(element);
@@ -163,7 +164,7 @@ export class Login {
                     });
                 } else {
                     ComponentManager.refreshComponents(
-                        ["header", "main", "announcement", "push_notification"],
+                        ["header", "menu", "main", "announcement", "push_notification"],
                         () => {
                             ComponentManager.broadcast("session.login", {
                                 src: this.srcElement,
@@ -315,7 +316,7 @@ export class Login {
                 method: "get",
             }).always((response) => {
                 ComponentManager.refreshComponents(
-                    ["header", "main", "announcement", "push_notification"],
+                    ["header", "menu", "main", "announcement", "push_notification"],
                     () => {
                         this.loader.hide();
                     },

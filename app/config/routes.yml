@@ -5,10 +5,22 @@ routes:
         components:
             main: home
         headers:
-            Cache-Control: no-cache, no-store, must-revalidate
+            Cache-Control: public, max-age=1800
         page_cache:
             enabled: true
             expires: 1800
+
+    /session:
+        method: GET
+        action: App\MobileEntry\Controller\SessionController:view
+        components:
+            main: session
+
+    /session/legacy:
+        method: GET
+        action: App\MobileEntry\Controller\SessionController:view
+        components:
+            main: session_legacy
 
     /login:
         method: GET
@@ -16,7 +28,7 @@ routes:
         components:
             main: home
         headers:
-            Cache-Control: no-cache, no-store, must-revalidate
+            Cache-Control: public, max-age=300
         page_cache:
             enabled: true
             expires: 1800
@@ -33,11 +45,10 @@ routes:
         components:
             main: promotions
         headers:
-            Cache-Control: no-cache, no-store, must-revalidate
+            Cache-Control: public, max-age=900
         page_cache:
             enabled: true
             expires: 1800
-
 
     # Definition of component controllers for cache control
 
@@ -70,13 +81,19 @@ routes:
         headers:
             Cache-Control: no-cache, no-store, must-revalidate
 
+    /api/plugins/module:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:moduleList
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
     /*.*:
         method: ANY
         action: App\MobileEntry\Controller\NodeController:view
         components:
             main: node
         headers:
-            Cache-Control: no-cache, no-store, must-revalidate
+            Cache-Control: public, max-age=300
         page_cache:
             enabled: true
             expires: 1800

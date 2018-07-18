@@ -8,44 +8,66 @@
 </div>
 
 {% if is_login %}
-    {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
-        <a
-            href="{{ url(node.field_post_banner_link.0.uri) }}"
-            target="{{node.field_post_banner_link_target.0.value }}"
-            
-            data-router="true"
-            data-router-refresh="main"
-        >
-    {% endif %}
-    {% if node.field_post_banner_image.0.url %}
-        <img src="{{ node.field_post_banner_image.0.url }}" alt="" class="w-100">
-    {% endif %}
+    <div class="promotions-body-banner">
+        {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
+            <a
+                href="{{ url(node.field_post_banner_link.0.uri) }}"
+                target="{{node.field_post_banner_link_target.0.value }}"
+                
+                data-router="true"
+                data-router-refresh="main"
+            >
+        {% endif %}
+        {% if node.field_post_banner_image.0.url %}
+            <img src="{{ node.field_post_banner_image.0.url }}" alt="" class="w-100">
+        {% endif %}
 
-    {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
-        </a>
-    {% endif %}
+        {% if not node.field_hide_countdown.0.value %}
+            <div class="promotions-body-banner-scheduler hidden">
+                <svg class="clock" viewBox="0 120 24 24">
+                    <use xlink:href="#clock" />
+                </svg>
+                <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
+            </div>
+        {% endif %}
 
-    <div class="container page-promotion-inner">
-        {{ node.field_post_body.0.value|raw }}
-    </div>
+        {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
+            </a>
+        {% endif %}
+        </div>
+
+        <div class="container page-promotion-inner">
+            {{ node.field_post_body.0.value|raw }}
+        </div>
 {% else %}
-    {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
-        <a
-            href="{{ url(node.field_banner_link.0.uri) }}"
-            target="{{node.field_banner_link_target.0.value }}"
+    <div class="promotions-body-banner">
+        {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
+            <a
+                href="{{ url(node.field_banner_link.0.uri) }}"
+                target="{{node.field_banner_link_target.0.value }}"
 
-            data-router="true"
-            data-router-refresh="main"
-        >
-    {% endif %}
+                data-router="true"
+                data-router-refresh="main"
+            >
+        {% endif %}
 
-    {% if node.field_banner_image.0.url %}
-        <img src="{{ node.field_banner_image.0.url }}" alt="" class="w-100">
-    {% endif %}
+        {% if node.field_banner_image.0.url %}
+            <img src="{{ node.field_banner_image.0.url }}" alt="" class="w-100">
+        {% endif %}
 
-    {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
-        </a>
-    {% endif %}
+        {% if not node.field_hide_countdown.0.value %}
+            <div class="promotions-body-banner-scheduler hidden">
+                <svg class="clock" viewBox="0 120 24 24">
+                    <use xlink:href="#clock" />
+                </svg>
+                <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
+            </div>
+        {% endif %}
+
+        {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
+            </a>
+        {% endif %}
+    </div>
 
     <div class="container page-promotion-inner">
         {{ node.body.0.value|raw }}

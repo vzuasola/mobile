@@ -43,36 +43,51 @@ export class CasinoOptionComponent implements ComponentInterface {
         });
 
         ComponentManager.subscribe("casino.preference", (event, src) => {
-            Modal.open("#casino-option-lightbox");
+            this.getPreference({}, (response) => {
+                if (response) {
+                    const selectedEl = (response.preferredProduct === "casino_gold")
+                        ? ".casino-gold" : ".casino-classic";
+                    utility.removeClass(this.element.querySelector(selectedEl), "select-option-muted");
+                    utility.addClass(this.element.querySelector(selectedEl), "selected");
+                    Modal.open("#casino-option-lightbox");
+                }
+            });
         });
     }
 
     private listenCasinoOptionLink() {
         ComponentManager.subscribe("click", (event, src) => {
-            if (utility.hasClass(src, "casino-option")) {
+            const parentEl = utility.hasClass(src, "casino-option", true);
+            if (parentEl) {
                 event.preventDefault();
 
-                const product = src.getAttribute("data-preferred-casino");
+                const product = parentEl.getAttribute("data-preferred-casino");
                 const unselectedProduct = (product === "casino_gold") ? ".casino-classic" : ".casino-gold";
 
-                utility.removeClass(src, "select-option-muted");
+                utility.removeClass(parentEl, "select-option-muted");
                 utility.addClass(this.element.querySelector(unselectedProduct), "select-option-muted");
 
-                xhr({
-                    url: Router.generateRoute("casino_option", "preference"),
-                    type: "json",
-                    method: "post",
-                    data: {
-                        product,
-                    },
-                }).then((response) => {
+                this.getPreference(product, (response) => {
                     if (response.redirect) {
                         window.location.href = response.redirect;
                     }
-                }).fail((error, message) => {
-                    // do something
                 });
             }
+        });
+    }
+
+    private getPreference(product, callback) {
+        xhr({
+            url: Router.generateRoute("casino_option", "preference"),
+            type: "json",
+            method: "post",
+            data: {
+                product,
+            },
+        }).then((response) => {
+            callback(response);
+        }).fail((error, message) => {
+            // do something
         });
     }
 

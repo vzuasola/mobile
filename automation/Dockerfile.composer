@@ -1,4 +1,5 @@
 FROM composer:1.5
+RUN apk add --no-cache libpng libpng-dev && docker-php-ext-install gd && apk del libpng-dev
 RUN composer global require "hirak/prestissimo:^0.3"
 RUN mkdir -p /tmp/cache
 RUN chmod -R 777 /tmp

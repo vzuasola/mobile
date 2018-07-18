@@ -29,10 +29,10 @@ export class MenuComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
 
         this.activateMenu(element);
+        this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
 
         this.listenAnnouncementCount();
-        this.listenBalance();
 
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
@@ -50,6 +50,7 @@ export class MenuComponent implements ComponentInterface {
         this.equalizeQuicklinksHeight();
 
         this.activateMenu(element);
+        this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
     }
 
@@ -71,21 +72,23 @@ export class MenuComponent implements ComponentInterface {
         menu.activate();
     }
 
-    private listenBalance() {
-        ComponentManager.subscribe("balance.fetch", (event, src, data: any) => {
-            if (this.isLogin && typeof data.response.balance !== "undefined") {
-                const headerBalance = this.element.querySelector(".mobile-menu-amount");
-                let formatedBalance: string;
+    private reloadBalance() {
+        ComponentManager.broadcast("balance.return", {
+            success: (response) => {
+                if (this.isLogin && typeof response.balance !== "undefined") {
+                    const headerBalance = this.element.querySelector(".mobile-menu-amount");
+                    let formatedBalance: string;
 
-                formatedBalance = data.response.format;
+                    formatedBalance = response.format;
 
-                if (formatedBalance) {
-                    formatedBalance = formatedBalance.replace("{currency}", data.response.currency);
-                    formatedBalance = formatedBalance.replace("{total}", data.response.balance);
+                    if (formatedBalance) {
+                        formatedBalance = formatedBalance.replace("{currency}", response.currency);
+                        formatedBalance = formatedBalance.replace("{total}", response.balance);
 
-                    headerBalance.innerHTML = formatedBalance;
+                        headerBalance.innerHTML = formatedBalance;
+                    }
                 }
-            }
+            },
         });
     }
     /**

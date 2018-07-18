@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Header\Menu;
+namespace App\MobileEntry\Component\Menu;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
@@ -43,7 +43,7 @@ class MenuComponent implements ComponentWidgetInterface
             $container->get('views_fetcher'),
             $container->get('menu_fetcher'),
             $container->get('config_fetcher'),
-            $container->get('payment_account_fetcher'),
+            $container->get('accounts_service'),
             $container->get('id_domain')
         );
     }
@@ -68,7 +68,7 @@ class MenuComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Header/Menu/template.html.twig';
+        return '@component/Menu/template.html.twig';
     }
 
     /**

@@ -1,0 +1,33 @@
+.back-to-top {
+    width: 5.5rem;
+    height: 4.5rem;
+    position: fixed;
+    bottom: 5.0rem;
+    right: 0;
+    cursor: pointer;
+    transition: all 1.2s;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 0.5rem 0 0 0.5rem;
+    text-indent: 2rem;
+
+    svg {
+        margin-top: 0.5rem;
+        width: 1.7rem;
+        @include rotate(90);
+        fill: $white;
+    }
+
+    &:after {
+        content: " ";
+        display: block;
+        overflow: hidden;
+        visibility: hidden;
+        width: 0;
+        height: 0;
+    }
+
+    &.hide {
+        opacity: 0;
+        display: none\9;
+    }
+}

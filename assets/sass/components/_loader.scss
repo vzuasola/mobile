@@ -3,16 +3,14 @@
     &-container {
         position: relative;
         width: 16.0rem;
-        height: 1.4remm;
+        height: 1.4rem;
         margin: -0.7rem auto 3.0rem;
     }
 
-    .ray {
+    .ray,
+    .loader {
         position: absolute;
-        top: 0;
         background-color: #ffc600;
-        width: 1.6rem;
-        height: 1.6rem;
         @include animation-name(bounce_loader);
         @include animation-duration(1.3s);
         @include animation-iteration-count(infinite);
@@ -21,52 +19,100 @@
         border-radius: 0.9rem;
     }
 
-    #ray-0 {
-        left: 0;
+    .ray {
+        top: 4.6rem;
+        width: 1.2rem;
+        height: 1.2rem;
+
+    }
+
+    .loader {
+        top: 0;
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+
+     #ray-0 {
+        left: 4rem;
         @include animation-delay(0.01s);
     }
 
     #ray-1 {
-        left: 1.6rem;
+        left: 5.2rem;
         @include animation-delay(0.14s);
     }
 
     #ray-2 {
-        left: 3.2rem;
+        left: 6.4rem;
         @include animation-delay(0.27s);
     }
 
     #ray-3 {
-        left: 4.8rem;
+        left: 7.6rem;
         @include animation-delay(0.4s);
     }
 
     #ray-4 {
-        left: 6.4rem;
+        left: 8.8rem;
         @include animation-delay(0.53s);
     }
 
     #ray-5 {
-        left: 8.0rem;
+        left: 10rem;
         @include animation-delay(0.66s);
     }
 
     #ray-6 {
+        left: 11.2rem;
+        @include animation-delay(0.79s);
+    }
+
+    #loader-0 {
+        left: 0;
+        @include animation-delay(0.01s);
+    }
+
+    #loader-1 {
+        left: 1.6rem;
+        @include animation-delay(0.14s);
+    }
+
+    #loader-2 {
+        left: 3.2rem;
+        @include animation-delay(0.27s);
+    }
+
+    #loader-3 {
+        left: 4.8rem;
+        @include animation-delay(0.4s);
+    }
+
+    #loader-4 {
+        left: 6.4rem;
+        @include animation-delay(0.53s);
+    }
+
+    #loader-5 {
+        left: 8.0rem;
+        @include animation-delay(0.66s);
+    }
+
+    #loader-6 {
         left: 9.6rem;
         @include animation-delay(0.79s);
     }
 
-    #ray-7 {
+    #loader-7 {
         left: 11.2rem;
         @include animation-delay(0.92s);
     }
 
-    #ray-8 {
+    #loader-8 {
         left: 12.8rem;
         @include animation-delay(1.05s);
     }
 
-    #ray-9 {
+    #loader-9 {
         left: 14.4rem;
         @include animation-delay(1.18s);
     }
@@ -79,7 +125,7 @@
 
         100% {
             transform: scale(0.5);
-            background-color: #fff;
+            background-color: #cf5a00;
         }
     }
 
@@ -91,21 +137,9 @@
 
         100% {
             -o-transform: scale(0.5);
-            background-color: #fff;
+            background-color: #cf5a00;
         }
     }
-
-    // @-ms-keyframes bounce_loader {
-    //     0% {
-    //         -ms-transform: scale(0.9);
-    //         background-color: #ffc600;
-    //     }
-
-    //     100% {
-    //         -ms-transform: scale(0.5);
-    //         background-color: #fff;
-    //     }
-    // }
 
     @-webkit-keyframes bounce_loader {
         0% {
@@ -115,7 +149,7 @@
 
         100% {
             -webkit-transform: scale(0.5);
-            background-color: #fff;
+            background-color: #cf5a00;
         }
     }
 
@@ -127,7 +161,7 @@
 
         100% {
             -moz-transform: scale(0.5);
-            background-color: #fff;
+            background-color: #cf5a00;
         }
     }
 
@@ -137,12 +171,11 @@
 
         .loader {
             position: absolute;
-            top: 0;
+            top: -4.6rem;
             right: 0;
             bottom: 0;
             left: 0;
             z-index: 1011;
-            background: rgba(0, 0, 0, 0.75);
 
             &-container {
                 @include translate(-50%, -10%);
@@ -153,4 +186,9 @@
             }
         }
     }
+}
+.sc-hidden,
+.ch-hidden {
+    display: none;
+    visibility: hidden;
 }

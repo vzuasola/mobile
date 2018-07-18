@@ -13,6 +13,24 @@ export class MarketingComponent implements ComponentInterface {
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        // Do nothing
+        const stash = [];
+        const scripts = element.querySelectorAll("script");
+
+        for (const key in scripts) {
+            if (scripts.hasOwnProperty(key)) {
+                const script = scripts[key];
+                const body = script.innerHTML;
+
+                const scriptAppend = document.createElement("script");
+
+                scriptAppend.appendChild(document.createTextNode(body));
+                stash.push(scriptAppend);
+                script.remove();
+            }
+        }
+
+        for (const item of stash) {
+            element.appendChild(item);
+        }
     }
 }

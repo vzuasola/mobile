@@ -60,6 +60,21 @@
             padding: 1rem 1rem 1rem 3.8rem;
             border: none;
             border-radius: 0.1rem;
+            background: $white;
+        }
+
+        .invalid::placeholder {
+            color: $red;
+        }
+
+        .invalid {
+            background: #faffbd;
+        }
+
+        .invalid ~ .login-field-icon,
+        .invalid ~ span .password-icon-mask,
+        .invalid ~ span .password-icon-unmask {
+            fill: $red;
         }
 
         &-icon {

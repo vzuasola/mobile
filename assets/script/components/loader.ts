@@ -1,4 +1,8 @@
 import * as utility from "@core/assets/js/components/utility";
+import * as Handlebars from "handlebars/runtime";
+
+import * as loaderTemplate from "@app/templates/components/loader.handlebars";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 export class Loader {
     private loader;
@@ -10,15 +14,17 @@ export class Loader {
     }
 
     createLoader() {
+        Handlebars.registerHelper("equals", function(value, compare, options) {
+            if (value === compare) {
+                return options.fn(this);
+            }
+
+            return options.inverse(this);
+        });
         const loader = document.createElement("div");
         const container = document.createElement("div");
-        let ray = "";
 
-        for (let i = 0; i < 10; i++) {
-            ray += '<div class="ray" id="ray-' + i + '"></div>';
-        }
-
-        container.innerHTML = ray;
+        container.innerHTML = loaderTemplate({lang: Router.getLanguage()});
 
         utility.addClass(container, "loader-container");
         utility.addClass(loader, "loader");

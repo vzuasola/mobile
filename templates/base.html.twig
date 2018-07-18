@@ -11,10 +11,11 @@
 </head>
 <body
     class="{{ app.lang }}"
+
     data-language="{{ app.lang }}"
     data-route={{ app.router_request.uri.path }}
 
-    app-modules={{ modules() }}
+    style="background: #000; visibility: hidden;"
 >
     {% block header %}{% endblock header %}
 

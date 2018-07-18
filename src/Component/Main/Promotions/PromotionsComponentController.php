@@ -48,7 +48,7 @@ class PromotionsComponentController
             $container->get('accounts_service'),
             $container->get('uri'),
             $container->get('asset'),
-            $container->get('page_cache_adapter'),
+            $container->get('redis_cache_adapter'),
             $container->get('lang')
         );
     }
@@ -237,6 +237,7 @@ class PromotionsComponentController
             $properties['summary_url_target'] = $promotion['field_summary_url_target'][0]['value'] ?? '';
             $properties['summary_url_title'] = $promotion['field_summary_url'][0]['title'] ?? ['title' => ''];
             $properties['hide_countdown'] = $promotion['field_hide_countdown'][0]['value'] ?? true;
+            $properties['unpublish_on'] = $promotion['unpublish_on'][0]['value'] ?? '';
 
             $filterId = $category ?? $promotion['field_product_category'][0]['field_product_filter_id'][0]['value'];
             $availability = array_column($promotion['field_promo_availability'], 'value');

@@ -114,16 +114,19 @@ export class Validation {
                     const error = errors[key];
 
                     if (error.rule === "user_required") {
+                        utility.addClass(form.querySelector('[name="username"]'), "invalid");
                         errorMessage = error.message;
                         userFlag = true;
                     }
 
                     if (error.rule === "pass_required") {
+                        utility.addClass(form.querySelector('[name="password"]'), "invalid");
                         errorMessage = error.message;
                         passFlag = true;
                     }
 
                     if (!userFlag) {
+                        utility.addClass(form.querySelector('[name="password"]'), "invalid");
                         errorMessage = error.message;
                     }
 
@@ -144,6 +147,8 @@ export class Validation {
         const form: HTMLElement = element.querySelector(".login-form");
 
         utility.listen(element, "click", (event, src) => {
+            utility.removeClass(form.querySelector('[name="username"]'), "invalid");
+            utility.removeClass(form.querySelector('[name="password"]'), "invalid");
             if (utility.hasClass(src, "modal-overlay") || utility.hasClass(src, "modal-close")) {
                 form.querySelector(".login-error").innerHTML = "";
             }
@@ -163,7 +168,8 @@ export class Validation {
                 403: this.attachments.error_messages.account_locked,
                 500: this.attachments.error_messages.service_not_available,
             };
-
+            utility.addClass(data.form.querySelector('[name="username"]'), "invalid");
+            utility.addClass(data.form.querySelector('[name="password"]'), "invalid");
             data.form.querySelector(".login-error").innerHTML = errorMessage[data.error.status];
         });
     }

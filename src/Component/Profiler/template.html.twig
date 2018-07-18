@@ -1,101 +1,93 @@
 {% import "@component/Profiler/templates/trace.html.twig" as macros %}
 
-<div class="profiler-tab compact" style="display: none">
-    <button
-        class="profiler-button"
-        onclick="hideProfilerBar('full')"
-    >
-        <strong>WBC</strong>
-    </button>
-</div>
-
-<div class="profiler-tab full">
-    <button
-        class="profiler-button"
-        onclick="hideProfilerBar('compact')"
-    >
-        <strong>WBC PROFILER</strong>
-    </button>
-
-    <div class="console-standard-group">
-        <button id="profiler-content-btn" class="profiler-button" onclick="doProfiler('#profiler-content-console')">
-            Console
+{% if profileable %}
+<div id="profiler">
+    <div class="profiler-tab compact">
+        <button class="profiler-button" onclick="window.profiler.compactBar('full')">
+            <strong>WBC</strong>
         </button>
-
-        <div id="profiler-content-console" class="profiler-content" style="display: none">
-            <div class="header">
-                <span class="label">Console</span>
-                <button class="profiler-clear" onclick="clearProfilerConsole()">Clear</button>
-            </div>
-            <div class="content console-wrapper"></div>
-        </div>
-    </div>
-    
-
-    <div class="console-extra-group">
     </div>
 
-    {% for label, items in stack %}
-        <button class="profiler-button" onclick="doProfiler('#profiler-content-{{ label|lower }}')">
-            {{ label }}
+    <div class="profiler-tab full" style="display: none">
+        <button class="profiler-button" onclick="window.profiler.compactBar('compact')">
+            <strong>WBC PROFILER</strong>
         </button>
 
-        <div id="profiler-content-{{ label|lower }}" class="profiler-content" style="display: none">
-            <div class="header">
-                {{ label }}
-            </div>
-            <div class="content">
-                {% for key, messages in items %}
-                    {% if messages is iterable %}
-                        <div class="group">
-                            <h3>{{ key }} ({{ messages|length }})</h3>
+        <div class="profiler-tab-wrapper">
+            <div class="console-standard-group">
+                <button id="profiler-content-btn" class="profiler-button" onclick="window.profiler.showBar('#profiler-content-console')">
+                    Console
+                </button>
 
-                            {% for message in messages %}
-                                {% if message.message %}
-                                    <div class="message-wrapper">
-                                        <p>
-                                            <a
-                                                class="message"
-                                                href="#"
-                                                onclick="doExpandAccordion()"
-                                            >
-                                                {{ message.message|raw }}
-                                            </a>
-                                        </p>
-                                        <div class="trace" style="display:none">
-                                            {{ macros.trace(message.trace) }}
-                                        </div>
-                                    </div>
-                                {% else %}
-                                    <p>{{ message|raw }}</p>
-                                {% endif %}
-                                
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p>{{ messages|raw }}</p>
-                    {% endif %}
-                {% endfor %}
+                <div id="profiler-content-console" class="profiler-content" style="display: none">
+                    <div class="header">
+                        <span class="label">Console</span>
+                        <button class="profiler-clear" data-profiler-group="console" onclick="window.profiler.clear()">Clear</button>
+                    </div>
+                    <div class="content console-wrapper"></div>
+                </div>
             </div>
+
+            <div class="console-extra-group"></div>
+
+            {% for label, items in stack %}
+                <button class="profiler-button" onclick="window.profiler.showBar('#profiler-content-{{ label|lower }}')">
+                    {{ label }}
+                </button>
+
+                <div id="profiler-content-{{ label|lower }}" class="profiler-content" style="display: none">
+                    <div class="header">
+                        {{ label }}
+                    </div>
+                    <div class="content">
+                        {% for key, messages in items %}
+                            {% if messages is iterable %}
+                                <div class="group">
+                                    <h3>{{ key }}
+                                        ({{ messages|length }})</h3>
+
+                                    {% for message in messages %}
+                                        {% if message.message %}
+                                            <div class="message-wrapper">
+                                                <p>
+                                                    <a class="message" href="#" {# onclick="doExpandAccordion()" #}>
+                                                        {{ message.message|raw }}
+                                                    </a>
+                                                </p>
+                                                <div class="trace" style="display:none">
+                                                    {{ macros.trace(message.trace) }}
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <p>{{ message|raw }}</p>
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p>{{ messages|raw }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
 
-    <span id="btn-profile" class="profiler-button" style="float: right">
-        Render 
-        {% if cache %}
-            (CACHE HIT)
-        {% endif %}
-        
-        <strong>
-            <span class="profiler-time-ms">{{ app.get('profiler').getRenderTime() }}</span> ms
-        </strong>
-    </span>
+        <span id="btn-profile" class="profiler-button" style="float: right">
+            Render
+            {% if cache %}
+                (CACHE HIT)
+            {% endif %}
+
+            <strong>
+                <span class="profiler-time-ms">{{ app.get('profiler').getRenderTime() }}</span>
+                ms
+            </strong>
+        </span>
+    </div>
+
+    <style>
+        {{include('@component/Profiler/assets/style.css')}}
+    </style>
 </div>
-
-<style>
-    {{ include('@component/Profiler/assets/style.css') }}
-</style>
-
-<script>
-    {{ include('@component/Profiler/assets/script.js') }}
-</script>
+{% endif %}

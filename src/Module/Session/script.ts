@@ -45,7 +45,7 @@ export class SessionModule implements ModuleInterface {
             if (this.isLogin) {
                 url = utility.addQueryParam(url, "authenticated", "true");
 
-                if (attachments.hash) {
+                if (this.hash) {
                     url = utility.addQueryParam(url, "hash", this.hash);
                 }
             }
