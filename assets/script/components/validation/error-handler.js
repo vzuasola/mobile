@@ -42,7 +42,7 @@ function onFormReset(event) {
  *
  * TODO Some hacks are involved
  */
-export default function ErrorHandler(errors, event) {
+export default function ErrorHandler(errors, event, formValidations) {
     "use strict";
 
     var $this = this;
@@ -77,7 +77,7 @@ export default function ErrorHandler(errors, event) {
             var form = event.target || event.srcElement;
             var name = form.getAttribute('name');
 
-            var fields = app.settings.formValidations[name];
+            var fields = formValidations[name];
 
             for (var field in fields) {
                 var item = name + '[' + field + ']';

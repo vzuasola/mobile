@@ -71,7 +71,7 @@ export class Validator {
             }
 
             const handler = this.options.error;
-            return new handler(errors, event);
+            return new handler(errors, event, this.formValidations);
         } catch (e) {
             console.log(e);
         }
