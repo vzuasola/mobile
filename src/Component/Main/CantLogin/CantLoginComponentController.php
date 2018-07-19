@@ -63,7 +63,6 @@ class CantLoginComponentController
             if ($error['responseCode'] == "INT034") {
                 $status = 'FORGOT_PASSWORD_FAILED';
             }
-
         }
 
         return $this->rest->output($response, [
@@ -89,7 +88,6 @@ class CantLoginComponentController
             if ($error['responseCode'] == "INT036") {
                 $status = 'FORGOT_USERNAME_FAILED';
             }
-
         }
 
         return $this->rest->output($response, [
@@ -116,7 +114,6 @@ class CantLoginComponentController
             if ($error['responseCode'] == "INT038") {
                 $status = 'CHANGE_FORGOTTEN_PASSWORD_FAILED';
             }
-
         }
 
         return $this->rest->output($response, [
