@@ -63,8 +63,8 @@ class CantLoginComponent implements ComponentWidgetInterface
         $data = [];
         $config = $this->configFetcher->getConfigById('cant_login');
         $data['config'] = $config;
-        $data['title_forgot'] = $config['page_subtitle'];
-        $data['title_reset'] = 'Password Reset Request';
+        $data['title_forgot'] = $config['cant_login_title'];
+        $data['title_reset'] = $config['reset_title'];
 
         $this->cantLoginGetForm($data);
         return $data;
