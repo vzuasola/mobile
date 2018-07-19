@@ -2,6 +2,7 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
 import {CantLoginBase} from "@app/src/Component/Main/CantLogin/scripts/cant-login-base";
+import PasswordMeter from "@app/assets/script/components/password-meter";
 
 /**
  * Forgot username
@@ -37,6 +38,7 @@ export class ResetPassword extends CantLoginBase {
             this.token = utility.getParameterByName("sbfpw", document.referrer);
             this.loader = new Loader(utility.hasClass(this.passwordVerifyContainer, "form-item", true), false, 0);
             this.validator = this.validate(this.form);
+            this.activatePasswordMeter();
             this.bindEvent();
         }
     }
@@ -49,6 +51,18 @@ export class ResetPassword extends CantLoginBase {
             if (!this.validator.hasError) {
                 this.checkField();
             }
+        });
+    }
+
+    activatePasswordMeter() {
+        const passwordMeter = new PasswordMeter({
+            selector: "#ResetPasswordForm_new_password",
+            strength: {
+                average: "Average",
+                label: "Password strength",
+                strong: "Strong",
+                weak: "Weak",
+            },
         });
     }
 
