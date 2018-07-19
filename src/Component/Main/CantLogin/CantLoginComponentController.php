@@ -7,16 +7,6 @@ namespace App\MobileEntry\Component\Main\CantLogin;
  */
 class CantLoginComponentController
 {
-    const ERROR_CODE = [
-        'INT001' => 'INTERNAL_ERROR',
-        'INT033' => 'FORGOT_PASSWORD_SUCCESS',
-        'INT034' => 'FORGOT_PASSWORD_FAILED',
-        'INT035' => 'FORGOT_USERNAME_SUCCESS',
-        'INT036' => 'FORGOT_USERNAME_FAILED',
-        'INT037' => 'CHANGE_FORGOTTEN_PASSWORD_SUCCESS',
-        'INT038' => 'CHANGE_FORGOTTEN_PASSWORD_FAILED'
-    ];
-
     /**
      * Rest Object.
      */
@@ -57,81 +47,77 @@ class CantLoginComponentController
     /**
      * Ajax - forgot password request
      */
-    public function forgotPassword($request, $response)
+    public function forgotpassword($request, $response)
     {
-        $result = [];
         $username = $request->getParam('username');
         $email = $request->getParam('email');
 
         try {
-            $result = $this->userFetcher->setForgotPassword($username, $email);
+            $this->userFetcher->setForgotPassword($username, $email);
+            $status = 'FORGOT_PASSWORD_SUCCESS';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
 
-            return $this->rest->output($response, [
-                'response_code' => $error['responseCode'],
-                'message' => self::ERROR_CODE[$error['responseCode']]
-            ]);
+            $status = 'INTERNAL_ERROR';
+            if ($error['responseCode'] == "INT034") {
+                $status = 'FORGOT_PASSWORD_FAILED';
+            }
         }
 
         return $this->rest->output($response, [
-            'response_code' => 'INT033',
-            'message' => self::ERROR_CODE['INT033']
+            'status' => $status,
         ]);
     }
 
     /**
      * Ajax - forgot username request
      */
-    public function forgotUsername($request, $response)
+    public function forgotusername($request, $response)
     {
-        $result = [];
         $email = $request->getParam('email');
 
         try {
-            $result = $this->userFetcher->setForgotUsername($email);
+            $this->userFetcher->setForgotUsername($email);
+            $status = 'FORGOT_USERNAME_SUCCESS';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
 
-            return $this->rest->output($response, [
-                'response_code' => $error['responseCode'],
-                'message' => self::ERROR_CODE[$error['responseCode']]
-            ]);
+            $status = 'INTERNAL_ERROR';
+            if ($error['responseCode'] == "INT036") {
+                $status = 'FORGOT_USERNAME_FAILED';
+            }
         }
 
         return $this->rest->output($response, [
-            'response_code' => 'INT035',
-            'message' => self::ERROR_CODE['INT035']
+            'status' => $status,
         ]);
     }
 
     /**
      * Ajax - reset password request
      */
-    public function resetForgottenPassword($request, $response)
+    public function resetforgottenpassword($request, $response)
     {
-        $result = [];
-
         $token = $request->getParam('token');
         $password = $request->getParam('password');
 
         try {
-            $result = $this->changePassword->setResetPassword($token, $password);
+            $this->changePassword->setResetPassword($token, $password);
+            $status = 'CHANGE_FORGOTTEN_PASSWORD_SUCCESS';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
 
-            return $this->rest->output($response, [
-                'response_code' => $error['responseCode'],
-                'message' => self::ERROR_CODE[$error['responseCode']]
-            ]);
+            $status = 'INTERNAL_ERROR';
+            if ($error['responseCode'] == "INT038") {
+                $status = 'CHANGE_FORGOTTEN_PASSWORD_FAILED';
+            }
         }
 
         return $this->rest->output($response, [
-            'response_code' => 'INT037',
-            'message' => self::ERROR_CODE['INT037']
+            'status' => $status,
         ]);
     }
 }
