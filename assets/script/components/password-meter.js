@@ -17,8 +17,6 @@ import * as utility from "Base/utility";
  *
  */
 
-
-
 export default function PasswordMeter(options) {
     "use strict";
 
