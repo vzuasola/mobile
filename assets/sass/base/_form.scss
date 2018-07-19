@@ -67,6 +67,9 @@ form.pure-form {
     }
 
     .form-field {
+        position: relative;
+        padding: 0.1rem 0;
+
         &-element {
             width: 100%;
             padding: 0.5rem 0.5rem;
@@ -88,10 +91,16 @@ form.pure-form {
     }
 
     // Error message
-    .error-message {
-        margin: 0.5rem 0 1rem;
+    .error-message,
+    .has-error .form-help-block {
+        display: block;
+        margin: -0.6rem 0 1rem;
         color: $fire-red;
         font-style: italic;
+    }
+
+    .error-message {
+        margin-top: 0.5rem;
     }
 
     // Submit field

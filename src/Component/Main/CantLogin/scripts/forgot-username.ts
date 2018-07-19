@@ -18,6 +18,7 @@ export class ForgotUsername extends CantLoginBase {
     emailContainer: HTMLElement;
     form: HTMLFormElement;
     loader: Loader;
+    validator: any;
 
     constructor(element: HTMLElement, attachments: any, url: string, emailField: any) {
         super(element, attachments);
@@ -32,6 +33,7 @@ export class ForgotUsername extends CantLoginBase {
             this.emailContainer = utility.hasClass(this.emailField, "form-item", true);
             this.form = utility.findParent(this.emailField, "form");
             this.loader = new Loader(utility.hasClass(this.emailField, "form-item", true), false, 0);
+            this.validator = this.validate(this.form);
             this.bindEvent();
         }
     }
@@ -41,17 +43,9 @@ export class ForgotUsername extends CantLoginBase {
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
 
-            setTimeout(() => {
-                const fields = Array.prototype.slice.call(this.form.elements);
-
-                const hasError = fields.filter((field) => {
-                    return utility.hasClass(field, "has-error", true);
-                });
-
-                if (hasError.length < 1) {
-                    this.checkField();
-                }
-            }, 100);
+            if (!this.validator.hasError) {
+                this.checkField();
+            }
         });
 
         // close button element on success/confirmation message

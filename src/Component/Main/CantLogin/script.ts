@@ -26,6 +26,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.activateForgotUsername(element, attachments);
         this.activateForgotPassword(element, attachments);
         this.activateResetPassword(element, attachments);
+
     }
 
     /**
