@@ -7,16 +7,6 @@ namespace App\MobileEntry\Component\Main\CantLogin;
  */
 class CantLoginComponentController
 {
-    const ERROR_CODE = [
-        'INT001' => 'INTERNAL_ERROR',
-        'INT033' => 'FORGOT_PASSWORD_SUCCESS',
-        'INT034' => 'FORGOT_PASSWORD_FAILED',
-        'INT035' => 'FORGOT_USERNAME_SUCCESS',
-        'INT036' => 'FORGOT_USERNAME_FAILED',
-        'INT037' => 'CHANGE_FORGOTTEN_PASSWORD_SUCCESS',
-        'INT038' => 'CHANGE_FORGOTTEN_PASSWORD_FAILED'
-    ];
-
     /**
      * Rest Object.
      */
@@ -59,20 +49,24 @@ class CantLoginComponentController
      */
     public function forgotpassword($request, $response)
     {
-        $result = [];
+        $status = 'FORGOT_PASSWORD_SUCCESS';
         $username = $request->getParam('username');
         $email = $request->getParam('email');
 
         try {
-            $result = $this->userFetcher->setForgotPassword($username, $email);
+            $this->userFetcher->setForgotPassword($username, $email);
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
-            $result = json_decode($error, true);
+            $error = json_decode($error, true);
+
+            $status = 'FORGOT_PASSWORD_FAILED';
+            if ($error['responseCode'] == "INT001") {
+                $status = 'INTERNAL_ERROR';
+            }
         }
 
         return $this->rest->output($response, [
-            'status' => self::ERROR_CODE[$result['responseCode']],
-            'message' => $result['responseMessage']
+            'status' => $status,
         ]);
     }
 
@@ -81,19 +75,23 @@ class CantLoginComponentController
      */
     public function forgotusername($request, $response)
     {
-        $result = [];
+        $status = 'FORGOT_USERNAME_SUCCESS';
         $email = $request->getParam('email');
 
         try {
-            $result = $this->userFetcher->setForgotUsername($email);
+            $this->userFetcher->setForgotUsername($email);
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
-            $result = json_decode($error, true);
+            $error = json_decode($error, true);
+
+            $status = 'FORGOT_USERNAME_FAILED';
+            if ($error['responseCode'] == "INT001") {
+                $status = 'INTERNAL_ERROR';
+            }
         }
 
         return $this->rest->output($response, [
-            'status' => self::ERROR_CODE[$result['responseCode']],
-            'message' => $result['responseMessage']
+            'status' => $status,
         ]);
     }
 
@@ -102,20 +100,24 @@ class CantLoginComponentController
      */
     public function resetforgottenpassword($request, $response)
     {
-        $result = [];
+        $status = 'CHANGE_FORGOTTEN_PASSWORD_SUCCESS';
         $token = $request->getParam('token');
         $password = $request->getParam('password');
 
         try {
-            $result = $this->changePassword->setResetPassword($token, $password);
+            $this->changePassword->setResetPassword($token, $password);
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
-            $result = json_decode($error, true);
+            $error = json_decode($error, true);
+
+            $status = 'CHANGE_FORGOTTEN_PASSWORD_FAILED';
+            if ($error['responseCode'] == "INT001") {
+                $status = 'INTERNAL_ERROR';
+            }
         }
 
         return $this->rest->output($response, [
-            'status' => self::ERROR_CODE[$result['responseCode']],
-            'message' => $result['responseMessage']
+            'status' => $status,
         ]);
     }
 }
