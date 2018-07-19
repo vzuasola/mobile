@@ -37,10 +37,10 @@ export class ForgotPassword extends ForgotUsername {
             },
         })
             .then((resp) => {
-                if (resp.message === "FORGOT_PASSWORD_SUCCESS") {
+                if (resp.status === "FORGOT_PASSWORD_SUCCESS") {
                     this.showConfirmationMessage(this.form);
                 } else {
-                    this.showMessage(this.emailContainer, this.messageMapping(resp.message));
+                    this.showMessage(this.emailContainer, this.messageMapping(resp.status));
                 }
             })
             .fail((err, msg) => {

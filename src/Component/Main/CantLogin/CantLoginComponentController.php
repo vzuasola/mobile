@@ -67,17 +67,12 @@ class CantLoginComponentController
             $result = $this->userFetcher->setForgotPassword($username, $email);
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
-            $error = json_decode($error, true);
-
-            return $this->rest->output($response, [
-                'response_code' => $error['responseCode'],
-                'message' => self::ERROR_CODE[$error['responseCode']]
-            ]);
+            $result = json_decode($error, true);
         }
 
         return $this->rest->output($response, [
-            'response_code' => 'INT033',
-            'message' => self::ERROR_CODE['INT033']
+            'status' => self::ERROR_CODE[$result['responseCode']],
+            'message' => $result['responseMessage']
         ]);
     }
 
@@ -93,17 +88,12 @@ class CantLoginComponentController
             $result = $this->userFetcher->setForgotUsername($email);
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
-            $error = json_decode($error, true);
-
-            return $this->rest->output($response, [
-                'response_code' => $error['responseCode'],
-                'message' => self::ERROR_CODE[$error['responseCode']]
-            ]);
+            $result = json_decode($error, true);
         }
 
         return $this->rest->output($response, [
-            'response_code' => 'INT035',
-            'message' => self::ERROR_CODE['INT035']
+            'status' => self::ERROR_CODE[$result['responseCode']],
+            'message' => $result['responseMessage']
         ]);
     }
 
@@ -113,7 +103,6 @@ class CantLoginComponentController
     public function resetforgottenpassword($request, $response)
     {
         $result = [];
-
         $token = $request->getParam('token');
         $password = $request->getParam('password');
 
@@ -121,17 +110,12 @@ class CantLoginComponentController
             $result = $this->changePassword->setResetPassword($token, $password);
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
-            $error = json_decode($error, true);
-
-            return $this->rest->output($response, [
-                'response_code' => $error['responseCode'],
-                'message' => self::ERROR_CODE[$error['responseCode']]
-            ]);
+            $result = json_decode($error, true);
         }
 
         return $this->rest->output($response, [
-            'response_code' => 'INT037',
-            'message' => self::ERROR_CODE['INT037']
+            'status' => self::ERROR_CODE[$result['responseCode']],
+            'message' => $result['responseMessage']
         ]);
     }
 }

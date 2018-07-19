@@ -70,10 +70,10 @@ export class ResetPassword extends CantLoginBase {
             },
         })
             .then((resp) => {
-                if (resp.message === "CHANGE_FORGOTTEN_PASSWORD_SUCCESS") {
+                if (resp.status === "CHANGE_FORGOTTEN_PASSWORD_SUCCESS") {
                     this.showConfirmationMessage(this.form);
                 } else {
-                    this.showMessage(this.passwordVerifyContainer, this.messageMapping(resp.message));
+                    this.showMessage(this.passwordVerifyContainer, this.messageMapping(resp.status));
                 }
             })
             .fail((err, msg) => {

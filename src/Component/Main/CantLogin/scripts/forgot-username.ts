@@ -81,10 +81,10 @@ export class ForgotUsername extends CantLoginBase {
             },
         })
             .then((resp) => {
-                if (resp.message === "FORGOT_USERNAME_SUCCESS") {
+                if (resp.status === "FORGOT_USERNAME_SUCCESS") {
                     this.showConfirmationMessage(this.form);
                 } else {
-                    this.showMessage(this.emailContainer, this.messageMapping(resp.message));
+                    this.showMessage(this.emailContainer, this.messageMapping(resp.status));
                 }
             })
             .fail((err, msg) => {
