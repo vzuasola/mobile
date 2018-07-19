@@ -31,6 +31,14 @@ class ForgotPasswordForm extends FormBase implements FormInterface
                 $definition[$key]['options']['attr']['placeholder'] = $definition[$key]['options']['placeholder'];
                 unset($definition[$key]['options']['placeholder']);
             }
+
+            if (isset($definition[$key]['options']['annotation'])) {
+                $annotation = $definition[$key]['options']['annotation'];
+                if ($annotation) {
+                    $definition[$key]['options']['attr']['data-annotation'] = $annotation;
+                }
+                unset($definition[$key]['options']['annotation']);
+            }
         }
 
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-changepass btn-lower-case";
