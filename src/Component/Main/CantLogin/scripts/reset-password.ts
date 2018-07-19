@@ -57,12 +57,7 @@ export class ResetPassword extends CantLoginBase {
     activatePasswordMeter() {
         const passwordMeter = new PasswordMeter({
             selector: "#ResetPasswordForm_new_password",
-            strength: {
-                average: "Average",
-                label: "Password strength",
-                strong: "Strong",
-                weak: "Weak",
-            },
+            strength: this.attachments.passwordStrengthMeter,
         });
     }
 
