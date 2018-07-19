@@ -59,6 +59,8 @@ export class ResetPassword extends CantLoginBase {
             selector: "#ResetPasswordForm_new_password",
             strength: this.attachments.passwordStrengthMeter,
         });
+
+        passwordMeter.init();
     }
 
     private checkField() {

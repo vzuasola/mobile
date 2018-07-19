@@ -45,10 +45,6 @@ export default function PasswordMeter(options) {
             $this.options[name] = defaults[name];
         }
     }
-
-    if (document.querySelector(this.options.selector)) {
-        this.init();
-    }
 }
 
 PasswordMeter.prototype.init = function () {
