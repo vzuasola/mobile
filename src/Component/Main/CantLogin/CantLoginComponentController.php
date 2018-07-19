@@ -49,20 +49,21 @@ class CantLoginComponentController
      */
     public function forgotpassword($request, $response)
     {
-        $status = 'FORGOT_PASSWORD_SUCCESS';
         $username = $request->getParam('username');
         $email = $request->getParam('email');
 
         try {
             $this->userFetcher->setForgotPassword($username, $email);
+            $status = 'FORGOT_PASSWORD_SUCCESS';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
 
-            $status = 'FORGOT_PASSWORD_FAILED';
-            if ($error['responseCode'] == "INT001") {
-                $status = 'INTERNAL_ERROR';
+            if ($error['responseCode'] == "INT034") {
+                $status = 'FORGOT_PASSWORD_FAILED';
             }
+
+            $status = 'INTERNAL_ERROR';
         }
 
         return $this->rest->output($response, [
@@ -75,19 +76,20 @@ class CantLoginComponentController
      */
     public function forgotusername($request, $response)
     {
-        $status = 'FORGOT_USERNAME_SUCCESS';
         $email = $request->getParam('email');
 
         try {
             $this->userFetcher->setForgotUsername($email);
+            $status = 'FORGOT_USERNAME_SUCCESS';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
 
-            $status = 'FORGOT_USERNAME_FAILED';
-            if ($error['responseCode'] == "INT001") {
-                $status = 'INTERNAL_ERROR';
+            if ($error['responseCode'] == "INT036") {
+                $status = 'FORGOT_USERNAME_FAILED';
             }
+
+            $status = 'INTERNAL_ERROR';
         }
 
         return $this->rest->output($response, [
@@ -100,20 +102,21 @@ class CantLoginComponentController
      */
     public function resetforgottenpassword($request, $response)
     {
-        $status = 'CHANGE_FORGOTTEN_PASSWORD_SUCCESS';
         $token = $request->getParam('token');
         $password = $request->getParam('password');
 
         try {
             $this->changePassword->setResetPassword($token, $password);
+            $status = 'CHANGE_FORGOTTEN_PASSWORD_SUCCESS';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
 
-            $status = 'CHANGE_FORGOTTEN_PASSWORD_FAILED';
-            if ($error['responseCode'] == "INT001") {
-                $status = 'INTERNAL_ERROR';
+            if ($error['responseCode'] == "INT038") {
+                $status = 'CHANGE_FORGOTTEN_PASSWORD_FAILED';
             }
+
+            $status = 'INTERNAL_ERROR';
         }
 
         return $this->rest->output($response, [
