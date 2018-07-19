@@ -34,7 +34,6 @@ export default function PasswordMeter(options) {
         selector: "#RegistrationForm_password",
         strength: strengths,
         wrapperSelector: '.password_meter_wrapper',
-        textWrapperSelector: '.password-meter-message span',
         event: 'blur',
         isValid : 0
     };
@@ -101,9 +100,9 @@ PasswordMeter.prototype.passwordStrengthTest = function () {
 };
 
 PasswordMeter.prototype.passwordMeterRender = function (strength) {
-    var strengthText = document.querySelector(this.options.textWrapperSelector),
-        wrapper = document.querySelector(this.options.wrapperSelector),
-        passwordMeterWrapper = document.querySelector('.password-meter');
+    var wrapper = document.querySelector(this.options.wrapperSelector),
+        passwordMeterWrapper = document.querySelector('.password-meter'),
+        strengthBar = document.querySelector(".password-meter-bar");
 
     utility.removeClass(wrapper, "password-meter-hidden");
     utility.removeClass(wrapper, "password-meter-weak");
@@ -114,14 +113,14 @@ PasswordMeter.prototype.passwordMeterRender = function (strength) {
         utility.removeClass(passwordMeterWrapper, 'hidden');
         wrapper.style.display = 'block';
         utility.addClass(wrapper, "password-meter-" + strength);
-        strengthText.innerHTML = this.options.strength[strength];
+        strengthBar.innerHTML = this.options.strength[strength];
     }
 
     if (strength === "hidden") {
         utility.addClass(passwordMeterWrapper, 'hidden');
         wrapper.style.display = 'none';
         utility.addClass(wrapper, "password-meter-hidden");
-        strengthText.innerHTML = "";
+        strengthBar.innerHTML = "";
     }
 };
 
@@ -131,9 +130,8 @@ PasswordMeter.prototype.generateMarkup = function () {
     utility.addClass(formItem, 'hidden');
     utility.addClass(formItem, 'password-meter');
 
-    var markupHtml = '<label class="form-label"></label><div class="form-field"><div class="password_meter_wrapper password-meter-hidden" style="display:none"><div><div class="password-meter-message">';
-    markupHtml += this.options.strength['label'];
-    markupHtml += ': <span></span></div></div><div><div class="password-meter-bar-bg"><div class="password-meter-bar"></div></div></div></div></div>';
+    var markupHtml = '<label class="form-label"></label><div class="form-field"><div class="password_meter_wrapper password-meter-hidden" style="display:none">';
+    markupHtml += '<div class="password-meter-bar-bg"><div class="password-meter-bar"></div></div></div></div>';
 
     formItem.innerHTML = markupHtml;
     var passwordField = document.querySelector(this.options.selector);
