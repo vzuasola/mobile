@@ -18,7 +18,6 @@ import * as utility from "@core/assets/js/components/utility";
 
 export default class PasswordMeter {
     private options: any;
-    private strengths: any;
     private password: HTMLFormElement;
 
     constructor(options) {
