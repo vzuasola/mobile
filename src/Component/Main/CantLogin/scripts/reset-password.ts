@@ -43,7 +43,7 @@ export class ResetPassword extends CantLoginBase {
         }
     }
 
-    bindEvent() {
+    private bindEvent() {
         // Listen form on submit
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
@@ -54,14 +54,14 @@ export class ResetPassword extends CantLoginBase {
         });
     }
 
-    activatePasswordMeter() {
+    private activatePasswordMeter() {
         const passwordMeter = new PasswordMeter({
             selector: "#ResetPasswordForm_new_password",
             strength: this.attachments.passwordStrengthMeter,
         });
     }
 
-    checkField() {
+    private checkField() {
         // Remove/hide error message & Show loader
         this.hideMessage(this.passwordVerifyContainer);
         this.loader.show();
