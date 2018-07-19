@@ -45,11 +45,11 @@ class CantLoginComponentScripts implements ComponentAttachmentInterface
 
         $config = $this->configFetcher->getConfigById('cant_login');
         $integrationError = Config::parse($config['cant_login_response_mapping']) ?? '';
-        $test = $this->translationManager->getTranslation('password-strength-meter');
+        $passMeter = $this->translationManager->getTranslation('password-strength-meter');
 
         return [
             'messages' => $integrationError,
-            'passwordStrengthMeter' => $test
+            'passwordStrengthMeter' => $passMeter
         ];
     }
 }
