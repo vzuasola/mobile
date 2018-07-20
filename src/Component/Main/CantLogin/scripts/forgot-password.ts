@@ -38,7 +38,7 @@ export class ForgotPassword extends CantLoginBase {
         }
     }
 
-    bindEvent() {
+    private bindEvent() {
         // Listen form on submit
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
@@ -64,7 +64,7 @@ export class ForgotPassword extends CantLoginBase {
         }
     }
 
-    checkField() {
+    private checkField() {
         // Remove/hide error message & Show loader
         this.hideMessage(this.emailContainer);
         this.loader.show();
