@@ -6,7 +6,7 @@ import PasswordMeter from "@app/assets/script/components/password-meter";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
- * Forgot username
+ * Reset Password
  *
  * @param Node element component parent element
  * @param Object attachments
@@ -20,7 +20,7 @@ export class ResetPassword extends CantLoginBase {
     loader: Loader;
     validator: any;
 
-    constructor(element: HTMLElement, attachments: any) {
+    constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
         this.element = element;
         this.attachments = attachments;

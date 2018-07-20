@@ -5,7 +5,7 @@ import {CantLoginBase} from "./cant-login-base";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
- * Forgot password
+ * Forgot Password
  *
  * @param Node element component parent element
  * @param Object attachments
@@ -20,12 +20,12 @@ export class ForgotPassword extends CantLoginBase {
     validator: any;
     passwordField: HTMLFormElement;
 
-    constructor(element: HTMLElement, attachments: any, emailField: any, passwordField: any) {
+    constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
         this.element = element;
         this.attachments = attachments;
-        this.emailField = this.element.querySelector(emailField);
-        this.passwordField = this.element.querySelector(passwordField);
+        this.emailField = this.element.querySelector("#ForgotPasswordForm_email");
+        this.passwordField = this.element.querySelector("#ForgotPasswordForm_username");
     }
 
     init() {
