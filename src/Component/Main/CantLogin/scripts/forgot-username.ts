@@ -10,7 +10,6 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  * @param Node element component parent element
  * @param Object attachments
  * @param String emailField selector to target for email
- * @param String passwordField selector to target for password
  */
 export class ForgotUsername extends CantLoginBase {
     emailField: HTMLFormElement;
