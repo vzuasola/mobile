@@ -4,7 +4,7 @@ import Tab from "@app/assets/script/components/tab";
 import {ForgotUsername} from "./scripts/forgot-username";
 import {ForgotPassword} from "./scripts/forgot-password";
 import {ResetPassword} from "./scripts/reset-password";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import {annotation} from "@app/assets/script/components/form-annotation";
 
 /**
  *
@@ -19,6 +19,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.activateForgotUsername(element, attachments);
         this.activateForgotPassword(element, attachments);
         this.activateResetPassword(element, attachments);
+        this.activateFormAnnotation(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -26,7 +27,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.activateForgotUsername(element, attachments);
         this.activateForgotPassword(element, attachments);
         this.activateResetPassword(element, attachments);
-
+        this.activateFormAnnotation(element);
     }
 
     /**
@@ -36,30 +37,28 @@ export class CantLoginComponent implements ComponentInterface {
         const tab = new Tab();
     }
 
+    private activateFormAnnotation(element) {
+        annotation(element);
+    }
+
     private activateForgotUsername(element, attachments) {
         this.forgotUsername = new ForgotUsername(
             element,
-            attachments,
-            Router.generateRoute("cant_login", "forgotusername"),
-            "#ForgotUsernameForm_email");
+            attachments);
         this.forgotUsername.init();
     }
 
     private activateForgotPassword(element, attachments) {
         this.forgotPassword = new ForgotPassword(
             element,
-            attachments,
-            Router.generateRoute("cant_login", "forgotpassword"),
-            "#ForgotPasswordForm_email",
-            "#ForgotPasswordForm_username");
+            attachments);
         this.forgotPassword.init();
     }
 
     private activateResetPassword(element, attachments) {
         this.resetPassword = new ResetPassword(
             element,
-            attachments,
-            Router.generateRoute("cant_login", "resetforgottenpassword"));
+            attachments);
         this.resetPassword.init();
     }
 }
