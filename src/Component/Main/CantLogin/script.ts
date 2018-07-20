@@ -5,6 +5,7 @@ import {ForgotUsername} from "./scripts/forgot-username";
 import {ForgotPassword} from "./scripts/forgot-password";
 import {ResetPassword} from "./scripts/reset-password";
 import {Router} from "@plugins/ComponentWidget/asset/router";
+import {annotation} from "@app/assets/script/components/form-annotation";
 
 /**
  *
@@ -19,6 +20,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.activateForgotUsername(element, attachments);
         this.activateForgotPassword(element, attachments);
         this.activateResetPassword(element, attachments);
+        this.activateFormAnnotation(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -26,7 +28,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.activateForgotUsername(element, attachments);
         this.activateForgotPassword(element, attachments);
         this.activateResetPassword(element, attachments);
-
+        this.activateFormAnnotation(element);
     }
 
     /**
@@ -34,6 +36,10 @@ export class CantLoginComponent implements ComponentInterface {
      */
     private activateTab(element) {
         const tab = new Tab();
+    }
+
+    private activateFormAnnotation(element) {
+        annotation(element);
     }
 
     private activateForgotUsername(element, attachments) {
