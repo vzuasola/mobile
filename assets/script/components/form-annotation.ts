@@ -17,8 +17,10 @@ export const annotation = (element: HTMLElement) => {
 
             // Remove annotation on Blur
             utility.addEventListener(elem, "blur", () => {
-                if (utility.findSibling(elem, ".form-annotation")) {
-                    elem.parentNode.removeChild(document.querySelector(".form-annotation"));
+                const formAnnotation = utility.findSibling(elem, ".form-annotation");
+
+                if (formAnnotation) {
+                    elem.parentNode.removeChild(formAnnotation);
                 }
             });
         });
