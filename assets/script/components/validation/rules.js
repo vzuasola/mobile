@@ -22,6 +22,8 @@ validators.required = {
             return field.checked ? true : false;
         }
 
+        value = value.trim();
+
         return (
             value !== null &&
             value !== '' &&
@@ -271,5 +273,30 @@ validators.valid_date = {
         return true;
     },
 };
+
+/**
+ * Invalid Words.
+ */
+validators.invalid_words = {
+    callback: function (value, param, field) {
+        var obj = param[0].split("\n");
+        obj = obj.map(function (x) {
+            return x.toUpperCase().trim();
+        });
+        return (obj.indexOf(value.toUpperCase()) === -1);
+    },
+};
+
+/**
+ * Verify new password.
+ */
+validators.verify_password = {
+    callback: function (value) {
+        var newPasswordField = document.querySelector("#ResetPasswordForm_new_password");
+        return value === newPasswordField.value;
+    }
+};
+
+
 
 export default validators;
