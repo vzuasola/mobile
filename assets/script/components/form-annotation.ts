@@ -6,7 +6,7 @@ export const annotation = (element: HTMLElement) => {
     if (fields) {
         utility.forEach(fields, (elem) => {
             // Add annotation on focus
-            utility.addEventListener(elem, "focus", () => {
+            utility.listen(elem, "focus", () => {
                 const span = document.createElement("span");
                 span.className = "form-annotation";
                 span.innerHTML = elem.getAttribute("data-annotation");
@@ -16,7 +16,7 @@ export const annotation = (element: HTMLElement) => {
             });
 
             // Remove annotation on Blur
-            utility.addEventListener(elem, "blur", () => {
+            utility.listen(elem, "blur", () => {
                 const formAnnotation = utility.findSibling(elem, ".form-annotation");
 
                 if (formAnnotation) {
