@@ -2,29 +2,30 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
 import {CantLoginBase} from "./cant-login-base";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
  * Forgot username
  *
  * @param Node element component parent element
  * @param Object attachments
- * @param String url
+ * @param String requestMethod ajax request method
  * @param String emailField selector to target for email
  * @param String passwordField selector to target for password
  */
 export class ForgotUsername extends CantLoginBase {
-    url: string;
+    requestMethod: string;
     emailField: HTMLFormElement;
     emailContainer: HTMLElement;
     form: HTMLFormElement;
     loader: Loader;
     validator: any;
 
-    constructor(element: HTMLElement, attachments: any, url: string, emailField: any) {
+    constructor(element: HTMLElement, attachments: any, requestMethod: string, emailField: any) {
         super(element, attachments);
         this.element = element;
         this.attachments = attachments;
-        this.url = url;
+        this.requestMethod = requestMethod;
         this.emailField = this.element.querySelector(emailField);
     }
 
@@ -73,7 +74,7 @@ export class ForgotUsername extends CantLoginBase {
         this.disableFields(this.form);
 
         xhr({
-            url: this.url,
+            url: Router.generateRoute("cant_login", this.requestMethod),
             type: "json",
             method: "post",
             data: {

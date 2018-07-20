@@ -1,21 +1,22 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {ForgotUsername} from "./forgot-username";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
  * Forgot password
  *
  * @param Node element component parent element
  * @param Object attachments
- * @param String url
+ * @param String requestMethod ajax request method
  * @param String emailField selector to target for email
  * @param String passwordField selector to target for password
  */
 export class ForgotPassword extends ForgotUsername {
     passwordField: HTMLFormElement;
 
-    constructor(element: HTMLElement, attachments: any, url: string, emailField: any, passwordField: any) {
-        super(element, attachments, url, emailField);
+    constructor(element: HTMLElement, attachments: any, requestMethod: string, emailField: any, passwordField: any) {
+        super(element, attachments, requestMethod, emailField);
         this.passwordField = this.element.querySelector(passwordField);
     }
 
@@ -28,7 +29,7 @@ export class ForgotPassword extends ForgotUsername {
         this.disableFields(this.form);
 
         xhr({
-            url: this.url,
+            url: Router.generateRoute("cant_login", this.requestMethod),
             type: "json",
             method: "post",
             data: {

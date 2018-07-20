@@ -4,7 +4,6 @@ import Tab from "@app/assets/script/components/tab";
 import {ForgotUsername} from "./scripts/forgot-username";
 import {ForgotPassword} from "./scripts/forgot-password";
 import {ResetPassword} from "./scripts/reset-password";
-import {Router} from "@plugins/ComponentWidget/asset/router";
 import {annotation} from "@app/assets/script/components/form-annotation";
 
 /**
@@ -46,7 +45,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.forgotUsername = new ForgotUsername(
             element,
             attachments,
-            Router.generateRoute("cant_login", "forgotusername"),
+            "forgotusername",
             "#ForgotUsernameForm_email");
         this.forgotUsername.init();
     }
@@ -55,7 +54,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.forgotPassword = new ForgotPassword(
             element,
             attachments,
-            Router.generateRoute("cant_login", "forgotpassword"),
+            "forgotpassword",
             "#ForgotPasswordForm_email",
             "#ForgotPasswordForm_username");
         this.forgotPassword.init();
@@ -65,7 +64,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.resetPassword = new ResetPassword(
             element,
             attachments,
-            Router.generateRoute("cant_login", "resetforgottenpassword"));
+            "resetforgottenpassword");
         this.resetPassword.init();
     }
 }
