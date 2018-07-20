@@ -10,7 +10,6 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  *
  * @param Node element component parent element
  * @param Object attachments
- * @param String requestMethod ajax request method
  */
 export class ResetPassword extends CantLoginBase {
     form: HTMLFormElement;

@@ -9,7 +9,6 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  *
  * @param Node element component parent element
  * @param Object attachments
- * @param String requestMethod ajax request method
  * @param String emailField selector to target for email
  * @param String passwordField selector to target for password
  */
