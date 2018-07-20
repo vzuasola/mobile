@@ -44,17 +44,14 @@ export class CantLoginComponent implements ComponentInterface {
     private activateForgotUsername(element, attachments) {
         this.forgotUsername = new ForgotUsername(
             element,
-            attachments,
-            "#ForgotUsernameForm_email");
+            attachments);
         this.forgotUsername.init();
     }
 
     private activateForgotPassword(element, attachments) {
         this.forgotPassword = new ForgotPassword(
             element,
-            attachments,
-            "#ForgotPasswordForm_email",
-            "#ForgotPasswordForm_username");
+            attachments);
         this.forgotPassword.init();
     }
 

@@ -5,7 +5,7 @@ import {CantLoginBase} from "./cant-login-base";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
- * Forgot username
+ * Forgot Username
  *
  * @param Node element component parent element
  * @param Object attachments
@@ -18,11 +18,11 @@ export class ForgotUsername extends CantLoginBase {
     loader: Loader;
     validator: any;
 
-    constructor(element: HTMLElement, attachments: any, emailField: any) {
+    constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
         this.element = element;
         this.attachments = attachments;
-        this.emailField = this.element.querySelector(emailField);
+        this.emailField = this.element.querySelector("#ForgotUsernameForm_email");
     }
 
     init() {
