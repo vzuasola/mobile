@@ -60,12 +60,18 @@ class CantLoginComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = [];
         $config = $this->configFetcher->getConfigById('cant_login');
-        $data['config'] = $config;
-        $data['title_forgot'] = $config['page_subtitle'];
-        $data['title_reset'] = 'Password Reset Request';
-
+        $data = [
+            'title_forgot' => $config['cant_login_title'] ?? 'Cannot Access your Dafabet Account?',
+            'title_reset' => $config['reset_title'] ?? 'Password Reset Request',
+            'password_link' => $config['forgot_password_link'] ?? '#forgot-password-content',
+            'password_tab_menu' => $config['forgot_password_tab_menu'] ?? 'Forgot Password',
+            'username_link' => $config['forgot_username_link'] ?? 'Forgot Username',
+            'username_tab_menu' => $config['forgot_username_tab_menu'] ?? '#forgot-username-content',
+            'password_success_message' => $config['mobile_forgot_password_success_message']['value'] ?? '',
+            'username_success_message' => $config['mobile_forgot_username_success_message']['value'] ?? '',
+            'reset_password_success_message' => $config['mobile_reset_password_success_message']['value'] ?? ''
+        ];
         $this->cantLoginGetForm($data);
         return $data;
     }
