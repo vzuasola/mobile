@@ -45,7 +45,6 @@ export class CantLoginComponent implements ComponentInterface {
         this.forgotUsername = new ForgotUsername(
             element,
             attachments,
-            "forgotusername",
             "#ForgotUsernameForm_email");
         this.forgotUsername.init();
     }
@@ -54,7 +53,6 @@ export class CantLoginComponent implements ComponentInterface {
         this.forgotPassword = new ForgotPassword(
             element,
             attachments,
-            "forgotpassword",
             "#ForgotPasswordForm_email",
             "#ForgotPasswordForm_username");
         this.forgotPassword.init();
@@ -63,8 +61,7 @@ export class CantLoginComponent implements ComponentInterface {
     private activateResetPassword(element, attachments) {
         this.resetPassword = new ResetPassword(
             element,
-            attachments,
-            "resetforgottenpassword");
+            attachments);
         this.resetPassword.init();
     }
 }

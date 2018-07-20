@@ -14,18 +14,16 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  * @param String passwordField selector to target for password
  */
 export class ForgotUsername extends CantLoginBase {
-    requestMethod: string;
     emailField: HTMLFormElement;
     emailContainer: HTMLElement;
     form: HTMLFormElement;
     loader: Loader;
     validator: any;
 
-    constructor(element: HTMLElement, attachments: any, requestMethod: string, emailField: any) {
+    constructor(element: HTMLElement, attachments: any, emailField: any) {
         super(element, attachments);
         this.element = element;
         this.attachments = attachments;
-        this.requestMethod = requestMethod;
         this.emailField = this.element.querySelector(emailField);
     }
 
@@ -74,7 +72,7 @@ export class ForgotUsername extends CantLoginBase {
         this.disableFields(this.form);
 
         xhr({
-            url: Router.generateRoute("cant_login", this.requestMethod),
+            url: Router.generateRoute("cant_login", "forgotusername"),
             type: "json",
             method: "post",
             data: {

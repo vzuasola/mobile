@@ -13,7 +13,6 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  * @param String requestMethod ajax request method
  */
 export class ResetPassword extends CantLoginBase {
-    requestMethod: string;
     form: HTMLFormElement;
     passwordField: HTMLFormElement;
     passwordFieldVerify: HTMLFormElement;
@@ -22,11 +21,10 @@ export class ResetPassword extends CantLoginBase {
     loader: Loader;
     validator: any;
 
-    constructor(element: HTMLElement, attachments: any, requestMethod: string) {
+    constructor(element: HTMLElement, attachments: any) {
         super(element, attachments);
         this.element = element;
         this.attachments = attachments;
-        this.requestMethod = requestMethod;
     }
 
     init() {
@@ -73,7 +71,7 @@ export class ResetPassword extends CantLoginBase {
         this.disableFields(this.form);
 
         xhr({
-            url: Router.generateRoute("cant_login", this.requestMethod),
+            url: Router.generateRoute("cant_login", "resetforgottenpassword"),
             type: "json",
             method: "post",
             data: {
