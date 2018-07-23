@@ -3,16 +3,15 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
 import {CantLoginBase} from "@app/src/Component/Main/CantLogin/scripts/cant-login-base";
 import PasswordMeter from "@app/assets/script/components/password-meter";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
- * Forgot username
+ * Reset Password
  *
  * @param Node element component parent element
  * @param Object attachments
- * @param String url
  */
 export class ResetPassword extends CantLoginBase {
-    url: string;
     form: HTMLFormElement;
     passwordField: HTMLFormElement;
     passwordFieldVerify: HTMLFormElement;
@@ -21,11 +20,10 @@ export class ResetPassword extends CantLoginBase {
     loader: Loader;
     validator: any;
 
-    constructor(element: HTMLElement, attachments: any, url: string) {
+    constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
         this.element = element;
         this.attachments = attachments;
-        this.url = url;
     }
 
     init() {
@@ -72,7 +70,7 @@ export class ResetPassword extends CantLoginBase {
         this.disableFields(this.form);
 
         xhr({
-            url: this.url,
+            url: Router.generateRoute("cant_login", "resetforgottenpassword"),
             type: "json",
             method: "post",
             data: {

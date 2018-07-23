@@ -2,30 +2,27 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
 import {CantLoginBase} from "./cant-login-base";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
- * Forgot username
+ * Forgot Username
  *
  * @param Node element component parent element
  * @param Object attachments
- * @param String url
  * @param String emailField selector to target for email
- * @param String passwordField selector to target for password
  */
 export class ForgotUsername extends CantLoginBase {
-    url: string;
     emailField: HTMLFormElement;
     emailContainer: HTMLElement;
     form: HTMLFormElement;
     loader: Loader;
     validator: any;
 
-    constructor(element: HTMLElement, attachments: any, url: string, emailField: any) {
+    constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
         this.element = element;
         this.attachments = attachments;
-        this.url = url;
-        this.emailField = this.element.querySelector(emailField);
+        this.emailField = this.element.querySelector("#ForgotUsernameForm_email");
     }
 
     init() {
@@ -38,7 +35,7 @@ export class ForgotUsername extends CantLoginBase {
         }
     }
 
-    bindEvent() {
+    private bindEvent() {
         // Listen form on submit
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
@@ -64,7 +61,7 @@ export class ForgotUsername extends CantLoginBase {
         }
     }
 
-    checkField() {
+    private checkField() {
         // Remove/hide error message & Show loader
         this.hideMessage(this.emailContainer);
         this.loader.show();
@@ -73,7 +70,7 @@ export class ForgotUsername extends CantLoginBase {
         this.disableFields(this.form);
 
         xhr({
-            url: this.url,
+            url: Router.generateRoute("cant_login", "forgotusername"),
             type: "json",
             method: "post",
             data: {
