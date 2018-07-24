@@ -16,6 +16,9 @@ class CantLoginComponentScripts implements ComponentAttachmentInterface
      */
     private $configFetcher;
 
+    /**
+     * Translation Manager Object.
+     */
     private $translationManager;
 
     /**

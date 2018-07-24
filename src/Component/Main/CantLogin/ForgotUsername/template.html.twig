@@ -1,0 +1,6 @@
+{% form_theme formForgotUsername '@base/form/standard.html.twig' %}
+{{ form_start(formForgotUsername, {'attr': {'class': 'pure-form forgot-username-form'}}) }}
+{{ form_end(formForgotUsername) }}
+<div class="confirmation-message mt-25 mb-20 hidden">
+    {{ username_success_message|raw }}
+</div>

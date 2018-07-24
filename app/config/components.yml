@@ -72,6 +72,18 @@ components:
   cant_login:
     class: App\MobileEntry\Component\Main\CantLogin\CantLoginComponent
 
+  cant_login_forgot_password:
+    class: App\MobileEntry\Component\Main\CantLogin\ForgotPassword\ForgotPasswordComponent
+    parent: cant_login
+
+  cant_login_forgot_username:
+    class: App\MobileEntry\Component\Main\CantLogin\ForgotUsername\ForgotUsernameComponent
+    parent: cant_login
+
+  cant_login_reset_password:
+    class: App\MobileEntry\Component\Main\CantLogin\ResetPassword\ResetPasswordComponent
+    parent: cant_login
+
   seo:
     class: App\MobileEntry\Component\SEO\SEOComponent
 
