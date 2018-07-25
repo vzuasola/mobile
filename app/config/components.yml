@@ -115,3 +115,6 @@ modules:
 
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
+
+  exchange_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Exchange\ExchangeIntegrationModule

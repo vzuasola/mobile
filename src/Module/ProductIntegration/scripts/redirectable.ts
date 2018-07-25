@@ -96,6 +96,10 @@ export abstract class Redirectable implements ModuleInterface {
         ComponentManager.subscribe("session.logout", (event) => {
             this.isLogin = false;
         });
+
+        ComponentManager.subscribe("direct.login", (event, src, data) => {
+            this.doDirectLogin(data.srcElement);
+        });
     }
 
     protected doRequest(src) {
@@ -115,5 +119,27 @@ export abstract class Redirectable implements ModuleInterface {
         }).fail((error, message) => {
             this.loader.hide();
         });
+    }
+
+    protected doDirectLogin(element) {
+        const product = utility.getParameterByName("product");
+
+        if (product) {
+            const el: HTMLElement = element.querySelector(`[data-product-instance-id="${product}"]`);
+
+            if (el) {
+                setTimeout(() => {
+                    ComponentManager.broadcast("redirectable.set.product", {
+                        product: el.getAttribute("data-product-integration-id"),
+                        src: el,
+                        onlyLogin: true,
+                    });
+                }, 500);
+
+                return;
+            }
+        }
+
+        ComponentManager.broadcast("header.login");
     }
 }
