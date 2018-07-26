@@ -24,21 +24,15 @@ class ResetPasswordForm extends FormBase implements FormInterface
     public function alterFormDefinition($definition, $data, $options)
     {
         foreach ($definition as $key => $formField) {
-            if (isset($definition[$key]['options']['placeholder']) &&
-                (strpos($formField['type'], 'TextType') !== false ||
-                strpos($formField['type'], 'PasswordType') !== false)
+            if (strpos($formField['type'], 'TextType') !== false ||
+                strpos($formField['type'], 'PasswordType') !== false
             ) {
-                $definition[$key]['options']['attr']['placeholder'] = $definition[$key]['options']['placeholder'];
-                unset($definition[$key]['options']['placeholder']);
+                $this->createAttribute($definition, $key, 'placeholder', 'placeholder');
             }
 
-            if (isset($definition[$key]['options']['annotation'])) {
-                $annotation = $definition[$key]['options']['annotation'];
-                if ($annotation) {
-                    $definition[$key]['options']['attr']['data-annotation'] = $annotation;
-                }
-                unset($definition[$key]['options']['annotation']);
-            }
+            $this->createAttribute($definition, $key, 'annotation', 'data-annotation');
+            $this->createAttribute($definition, $key, 'annotation_weak', 'data-annotation-weak');
+            $this->createAttribute($definition, $key, 'annotation_average', 'data-annotation-average');
         }
 
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-changepass btn-lower-case";
@@ -50,5 +44,19 @@ class ResetPasswordForm extends FormBase implements FormInterface
      */
     public function submit($form, $options)
     {
+    }
+
+    /**
+     * Create Field Attribute.
+     */
+    private function createAttribute(&$definition, $key, $attrKey, $attrName)
+    {
+        if (isset($definition[$key]['options'][$attrKey])) {
+            $value = $definition[$key]['options'][$attrKey];
+            if ($value) {
+                $definition[$key]['options']['attr'][$attrName] = $value;
+            }
+            unset($definition[$key]['options'][$attrKey]);
+        }
     }
 }

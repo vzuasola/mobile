@@ -164,7 +164,7 @@ export default function ErrorHandler(errors, event, formValidations) {
         if (input.type === 'checkbox') {
             input.parentNode.insertBefore(element, null);
         } else {
-            input.parentNode.insertBefore(element, input.nextSibling);
+            input.parentNode.appendChild(element);
         }
 
         return element;
