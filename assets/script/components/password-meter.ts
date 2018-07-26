@@ -19,10 +19,12 @@ import * as utility from "@core/assets/js/components/utility";
 export default class PasswordMeter {
     private options: any;
     private password: HTMLFormElement;
+    private passwordContainer: HTMLFormElement;
 
     constructor(options) {
         this.options = this.mergeDefaults(options);
         this.password = document.querySelector(this.options.selector);
+        this.passwordContainer = utility.findParent(this.password, ".form-item");
     }
 
     init() {
@@ -68,6 +70,21 @@ export default class PasswordMeter {
                 this.passwordMeterContruct();
             });
         }
+
+        utility.listen(this.password, "focus", (event, src) => {
+            this.options.isValid = 1;
+            this.formAnnotationRender();
+        });
+
+        utility.listen(this.password, "keydown", (event, src) => {
+            this.options.isValid = 1;
+            this.formAnnotationRender();
+        });
+
+        utility.listen(this.password, "blur", (event, src) => {
+            this.options.isValid = 0;
+            this.formAnnotationRender();
+        });
     }
 
     private passwordMeterContruct() {
@@ -79,10 +96,9 @@ export default class PasswordMeter {
         const password = this.password.value;
         const averageRegex = /(?=.*[A-Z])(?=.*[a-z])|(?=.*[A-Z])(?=.*[0-9])|(?=.*[a-z])(?=.*[0-9])/g;
         const strongRegex = /(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])/g;
-        const parent = utility.findParent(this.password, ".form-item");
 
         if (!(this.options.isValid) ||
-            (utility.hasClass(parent, "has-error")) ||
+            (utility.hasClass(this.passwordContainer, "has-error")) ||
             (this.password.value === "")) {
             return "hidden";
         }
@@ -135,7 +151,54 @@ export default class PasswordMeter {
 
         formItem.innerHTML = markupHtml;
 
-        const passwordFieldParent = utility.findParent(this.password, ".form-item");
-        passwordFieldParent.parentNode.insertBefore(formItem, passwordFieldParent.nextSibling);
+        this.passwordContainer.parentNode.insertBefore(formItem, this.passwordContainer.nextSibling);
+    }
+
+    // ==============================================================================================================
+    private formAnnotationRender() {
+        const strength = this.passwordStrengthTest();
+
+        if (strength === "weak" || strength === "average") {
+            this.showFormAnnotationMeter(strength);
+        }
+
+        if (strength === "hidden" || strength === "strong") {
+            this.hideFormAnnotationMeter();
+        }
+    }
+
+    private showFormAnnotationMeter(strength) {
+        const annotationElem = this.createAnnotation.call(this, strength);
+        const formField = utility.findParent(this.password, ".form-field");
+
+        this.hideFormAnnotationMeter();
+
+        formField.appendChild(annotationElem);
+    }
+
+    private hideFormAnnotationMeter() {
+        const annotationElem = this.passwordContainer.querySelector(".form-annotation-meter");
+
+        if (annotationElem) {
+            annotationElem.remove();
+        }
+    }
+
+    private createAnnotation(strength) {
+        const span = document.createElement("span");
+        let annotationData;
+
+        utility.addClass(span, "form-annotation-meter");
+
+        if (strength === "weak") {
+            annotationData = this.password.getAttribute("data-annotation-weak");
+
+        } else if (strength === "average") {
+            annotationData = this.password.getAttribute("data-annotation-average");
+        }
+
+        span.innerHTML = annotationData;
+
+        return span;
     }
 }
