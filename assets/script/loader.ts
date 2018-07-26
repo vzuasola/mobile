@@ -8,7 +8,9 @@ document.body.setAttribute("style", "");
 loader.show();
 
 ComponentManager.subscribe("components.finish", () => {
-    loader.hide();
+    setTimeout(() => {
+        loader.hide();
+    }, 400);
 });
 
 Router.on(RouterClass.beforeNavigate, (event) => {
