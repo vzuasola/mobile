@@ -154,7 +154,6 @@ export default class PasswordMeter {
         this.passwordContainer.parentNode.insertBefore(formItem, this.passwordContainer.nextSibling);
     }
 
-    // ==============================================================================================================
     private formAnnotationRender() {
         const strength = this.passwordStrengthTest();
 
