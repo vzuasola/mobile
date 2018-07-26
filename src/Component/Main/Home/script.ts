@@ -37,28 +37,8 @@ export class HomeComponent implements ComponentInterface {
     }
 
     private doLoginProcess(element) {
-        if (Router.route() === "/login" &&
-            !this.isLogin
-        ) {
-            const product = utility.getParameterByName("product");
-
-            if (product) {
-                const el: HTMLElement = element.querySelector(`[data-product-instance-id="${product}"]`);
-
-                if (el) {
-                    setTimeout(() => {
-                        ComponentManager.broadcast("redirectable.set.product", {
-                            product: el.getAttribute("data-product-integration-id"),
-                            src: el,
-                            onlyLogin: true,
-                        });
-                    }, 500);
-
-                    return;
-                }
-            }
-
-            ComponentManager.broadcast("header.login");
+        if (Router.route() === "/login") {
+            ComponentManager.broadcast("direct.login", {srcElement: element});
         }
     }
 }
