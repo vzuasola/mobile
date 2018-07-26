@@ -169,4 +169,15 @@ form.reset-password-form {
             margin-top: 1.5rem;
         }
     }
+
+    // Password annotation with meter/strength
+    .form-annotation-meter {
+        display: block;
+        margin: 0 0 1rem;
+    }
+}
+
+// Helper for showing only on desktop/mobile
+.show-desktop {
+    display: none;
 }
