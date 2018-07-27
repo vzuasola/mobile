@@ -113,12 +113,16 @@ form.reset-password-form {
 .ForgotPasswordForm_footer_markup,
 .ForgotUsernameForm_footer_markup,
 .ResetPasswordForm_footer_markup {
-    display: table;
+    position: relative;
     padding: 1rem 4rem;
+    padding-left: 6rem;
     text-align: left;
 
     .icon-exclamation {
-        float: left;
+        @include translateY(-50%);
+        position: absolute;
+        left: 2rem;
+        top: 50%;
         width: 4rem;
         height: 4rem;
         margin-right: 1rem;
