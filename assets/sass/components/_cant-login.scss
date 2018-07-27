@@ -45,6 +45,8 @@ form.reset-password-form {
     .ForgotPasswordForm_header_markup,
     .ForgotUsernameForm_header_markup,
     .ResetPasswordForm_header_markup {
+        padding-left: 3.5rem;
+        padding-right: 3.5rem;
         text-align: center;
 
         .blurb-heading {
@@ -113,25 +115,26 @@ form.reset-password-form {
 .ForgotPasswordForm_footer_markup,
 .ForgotUsernameForm_footer_markup,
 .ResetPasswordForm_footer_markup {
-    position: relative;
-    padding: 1rem 4rem;
-    padding-left: 6rem;
-    text-align: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 3.5rem;
+
+    // 
+    & > div {
+        line-height: 1.2rem;
+    }
 
     .icon-exclamation {
-        @include translateY(-50%);
-        position: absolute;
-        left: 2rem;
-        top: 50%;
+        min-width: 4rem;
         width: 4rem;
         height: 4rem;
-        margin-right: 1rem;
+        margin-right: 1.3rem;
         fill: $white;
     }
 
     p {
         margin-bottom: 0;
-        padding-left: 1.2rem;
     }
 }
 
