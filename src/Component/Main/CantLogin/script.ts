@@ -20,6 +20,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.activateForgotPassword(element, attachments);
         this.activateResetPassword(element, attachments);
         this.activateFormAnnotation(element);
+        this.showForm();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -28,6 +29,7 @@ export class CantLoginComponent implements ComponentInterface {
         this.activateForgotPassword(element, attachments);
         this.activateResetPassword(element, attachments);
         this.activateFormAnnotation(element);
+        this.showForm();
     }
 
     /**
@@ -60,5 +62,17 @@ export class CantLoginComponent implements ComponentInterface {
             element,
             attachments);
         this.resetPassword.init();
+    }
+
+    private showForm() {
+        const sbfpw = utility.getParameterByName("sbfpw");
+        const forgotPasswordForm = document.querySelector("#forgot-username-password");
+        const resetPasswordForm = document.querySelector("#reset-password");
+
+        if (sbfpw === null) {
+            utility.addClass(resetPasswordForm, "hidden");
+        } else {
+            utility.addClass(forgotPasswordForm, "hidden");
+        }
     }
 }

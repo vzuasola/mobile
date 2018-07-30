@@ -1,18 +1,30 @@
-<div class="page-title promotions">
-    <h1 class="page-title-text">{{ isResetPassword ? title_reset : title_forgot }}</h1>
+<div id="forgot-username-password">
+    <div class="page-title promotions">
+        <h1 class="page-title-text">{{ title_forgot }}</h1>
+    </div>
+    <div class="tab">
+        <ul class="tab-menu">
+            <li class="active"><a href="{{ password_link }}">{{ password_tab_menu }}</a></li>
+            <li><a href="{{ username_link }}">{{ username_tab_menu }}</a></li>
+        </ul>
+        <div class="container">
+            <div class="tab-content" id="forgot-password-content">
+                {{ widget('cant_login_forgot_password') }}
+            </div>
+            <div class="tab-content" id="forgot-username-content">
+                {{ widget('cant_login_forgot_username') }}
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="tab">
-    <ul class="tab-menu">
-        <li class="active"><a href="{{ password_link }}">{{ password_tab_menu }}</a></li>
-        <li><a href="{{ username_link }}">{{ username_tab_menu }}</a></li>
-    </ul>
-    <div class="container">
-        <div class="tab-content" id="forgot-password-content">
-            {{ widget('cant_login_forgot_password') }}
-        </div>
-        <div class="tab-content" id="forgot-username-content">
-            {{ widget('cant_login_forgot_username') }}
+<div id="reset-password">
+    <div class="page-title promotions">
+        <h1 class="page-title-text">{{ title_reset }}</h1>
+    </div>
+    <div class="reset-password-page">
+        <div class="container">
+            {{ widget('cant_login_reset_password') }}
         </div>
     </div>
 </div>
