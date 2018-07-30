@@ -177,11 +177,11 @@ form.reset-password-form {
         }
     }
 
-    // Password annotation with meter/strength
-    .form-annotation-meter {
-        display: block;
-        margin: 0 0 1rem;
-    }
+}
+
+// Password annotation with meter/strength
+.form-annotation-meter {
+    @extend .form-annotation;
 }
 
 // Helper for showing only on desktop/mobile
