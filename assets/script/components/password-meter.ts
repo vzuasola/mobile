@@ -82,8 +82,7 @@ export default class PasswordMeter {
         });
 
         utility.listen(this.password, "blur", (event, src) => {
-            this.options.isValid = 0;
-            this.formAnnotationRender();
+            this.hideFormAnnotationMeter();
         });
     }
 
@@ -157,11 +156,11 @@ export default class PasswordMeter {
     private formAnnotationRender() {
         const strength = this.passwordStrengthTest();
 
-        if (strength === "weak" || strength === "average") {
+        if (strength === "hidden" || strength === "weak" || strength === "average") {
             this.showFormAnnotationMeter(strength);
         }
 
-        if (strength === "hidden" || strength === "strong") {
+        if (strength === "strong") {
             this.hideFormAnnotationMeter();
         }
     }
@@ -172,7 +171,7 @@ export default class PasswordMeter {
 
         this.hideFormAnnotationMeter();
 
-        formField.appendChild(annotationElem);
+        formField.insertBefore(annotationElem, this.password.nextSibling);
     }
 
     private hideFormAnnotationMeter() {
@@ -189,11 +188,16 @@ export default class PasswordMeter {
 
         utility.addClass(span, "form-annotation-meter");
 
-        if (strength === "weak") {
-            annotationData = this.password.getAttribute("data-annotation-weak");
-
-        } else if (strength === "average") {
-            annotationData = this.password.getAttribute("data-annotation-average");
+        switch (strength) {
+            case "hidden":
+                annotationData = this.password.getAttribute("data-annotation");
+                break;
+            case "weak":
+                annotationData = this.password.getAttribute("data-annotation-weak");
+                break;
+            case "average":
+                annotationData = this.password.getAttribute("data-annotation-average");
+                break;
         }
 
         span.innerHTML = annotationData;

@@ -7,12 +7,14 @@ export const annotation = (element: HTMLElement) => {
         utility.forEach(fields, (elem) => {
             // Add annotation on focus
             utility.listen(elem, "focus", () => {
-                const span = document.createElement("span");
-                span.className = "form-annotation";
-                span.innerHTML = elem.getAttribute("data-annotation");
+                if (!elem.hasAttribute("data-annotation-weak") || !elem.hasAttribute("data-annotation-average")) {
+                    const span = document.createElement("span");
+                    span.className = "form-annotation";
+                    span.innerHTML = elem.getAttribute("data-annotation");
 
-                // Insert to DOM
-                elem.parentNode.insertBefore(span, elem.nextSibling);
+                    // Insert to DOM
+                    elem.parentNode.insertBefore(span, elem.nextSibling);
+                }
             });
 
             // Remove annotation on Blur
