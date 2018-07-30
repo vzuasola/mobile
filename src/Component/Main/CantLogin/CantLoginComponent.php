@@ -3,9 +3,6 @@
 namespace App\MobileEntry\Component\Main\CantLogin;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
-use App\MobileEntry\Form\ForgotPasswordForm;
-use App\MobileEntry\Form\ForgotUsernameForm;
-use App\MobileEntry\Form\ResetPasswordForm;
 
 class CantLoginComponent implements ComponentWidgetInterface
 {

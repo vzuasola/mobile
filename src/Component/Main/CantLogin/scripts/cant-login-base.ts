@@ -29,7 +29,10 @@ export abstract class CantLoginBase {
     }
 
     messageMapping(key) {
-        return this.attachments.messages[key];
+        const widgetContainer = document.querySelector("div[data-component-widget-class=cant_login]");
+        const attachments = widgetContainer.getAttribute("data-component-widget-attachments");
+        const config = JSON.parse(attachments);
+        return config.messages[key];
     }
 
     /**
