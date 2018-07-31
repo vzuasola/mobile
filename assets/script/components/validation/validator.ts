@@ -53,7 +53,7 @@ export class Validator {
         };
 
         // extend options
-        this.options || {};
+        this.options = this.options || {};
 
         for (const name in defaults) {
             if (this.options[name] === undefined) {
