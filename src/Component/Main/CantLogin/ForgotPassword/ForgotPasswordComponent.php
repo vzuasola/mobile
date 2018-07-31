@@ -54,8 +54,9 @@ class ForgotPasswordComponent implements ComponentWidgetInterface
         $data = [];
         $config = $this->configFetcher->getConfigById('cant_login');
         $formForgotPassword = $this->formManager->getForm(ForgotPasswordForm::class);
+        $defVal = "Retrieve Password Request Sent";
 
-        $data['password_success_message'] = $config['mobile_forgot_password_success_message']['value'] ?? '';
+        $data['password_success_message'] = $config['mobile_forgot_password_success_message']['value'] ?? $defVal;
         $data['formForgotPassword'] = $formForgotPassword->createView();
         return $data;
     }

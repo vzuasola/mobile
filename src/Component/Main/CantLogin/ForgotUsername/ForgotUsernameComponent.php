@@ -54,8 +54,9 @@ class ForgotUsernameComponent implements ComponentWidgetInterface
         $data = [];
         $config = $this->configFetcher->getConfigById('cant_login');
         $formForgotUsername = $this->formManager->getForm(ForgotUsernameForm::class);
+        $defVal = "Retrieve Username Request Sent";
 
-        $data['username_success_message'] = $config['mobile_forgot_username_success_message']['value'] ?? '';
+        $data['username_success_message'] = $config['mobile_forgot_username_success_message']['value'] ?? $defVal;
         $data['formForgotUsername'] = $formForgotUsername->createView();
         return $data;
     }

@@ -54,8 +54,9 @@ class ResetPasswordComponent implements ComponentWidgetInterface
         $data = [];
         $config = $this->configFetcher->getConfigById('cant_login');
         $formResetPassword = $this->formManager->getForm(ResetPasswordForm::class);
+        $defVal = "Reset Password Success";
 
-        $data['reset_password_success_message'] = $config['mobile_reset_password_success_message']['value'] ?? '';
+        $data['reset_password_success_message'] = $config['mobile_reset_password_success_message']['value'] ?? $defVal;
         $data['formResetPassword'] = $formResetPassword->createView();
         return $data;
     }
