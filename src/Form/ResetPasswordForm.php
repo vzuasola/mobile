@@ -23,8 +23,6 @@ class ResetPasswordForm extends FormBase implements FormInterface
      */
     public function alterFormDefinition($definition, $data, $options)
     {
-        // d($data);
-        // d($definition);
         foreach ($definition as $key => $formField) {
             if (strpos($formField['type'], 'TextType') !== false ||
                 strpos($formField['type'], 'PasswordType') !== false
@@ -36,8 +34,6 @@ class ResetPasswordForm extends FormBase implements FormInterface
             $this->moveAttribute($definition, $key, 'annotation_weak', 'data-annotation-weak');
             $this->moveAttribute($definition, $key, 'annotation_average', 'data-annotation-average');
         }
-
-        // ddd($definition);
 
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-changepass btn-lower-case";
         return $definition;
