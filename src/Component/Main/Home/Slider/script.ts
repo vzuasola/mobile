@@ -28,8 +28,12 @@ export class SliderComponent implements ComponentInterface {
                 controls: true,
                 onChange: this.onChangeHandler,
             });
-            setTimeout(() => utility.addClass(slider.querySelectorAll(".xlide-item")[1].parentElement, "fade"), 10);
-            setInterval(() => sliderObj.next(), 5000);
+            setTimeout(() => {
+                utility.addClass(slider.querySelectorAll(".xlide-item")[1].parentElement, "fade");
+            }, 10);
+            setInterval(() => {
+                sliderObj.next();
+            }, 5000);
         }
     }
 
