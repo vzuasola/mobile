@@ -9,15 +9,15 @@ import {annotation} from "@app/assets/script/components/form-annotation";
 export class CantLoginComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
-        this.init();
+        this.init(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        this.init();
+        this.init(element);
     }
 
     private init(element) {
-        new Tab();
+        const tab = new Tab();
         this.activateFormAnnotation(element);
         this.showForm(element);
     }
