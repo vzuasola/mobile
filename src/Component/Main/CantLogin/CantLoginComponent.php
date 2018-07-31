@@ -43,6 +43,7 @@ class CantLoginComponent implements ComponentWidgetInterface
     public function getData()
     {
         $config = $this->configFetcher->getConfigById('cant_login');
+
         $data = [
             'title_forgot' => $config['cant_login_title'] ?? 'Cannot Access your Dafabet Account?',
             'title_reset' => $config['reset_title'] ?? 'Password Reset Request',
@@ -51,6 +52,7 @@ class CantLoginComponent implements ComponentWidgetInterface
             'username_link' => $config['forgot_username_link'] ?? 'Forgot Username',
             'username_tab_menu' => $config['forgot_username_tab_menu'] ?? '#forgot-username-content',
         ];
+
         return $data;
     }
 }
