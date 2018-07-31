@@ -12,8 +12,6 @@ export default class Xlider extends Siema {
         // Merge Siema and Xlider options
         this.config = Object.assign(extendedOptions, this.config);
 
-        console.log("this ", this);
-
         this.initXlider();
     }
 
@@ -130,7 +128,6 @@ export default class Xlider extends Siema {
 
     if (beforeChange !== this.currentSlide) {
       this.slideToCurrent(this.config.loop);
-      this.config.onChange.call(this);
       this.config.onChange.call(this, this.innerElements[this.currentSlide], this);
       if (callback) {
         callback.call(this);
@@ -159,12 +156,10 @@ export default class Xlider extends Siema {
 
             this.sliderFrame.style[this.transformProperty] = `translate3d(${offset + dragDistance}px, 0, 0)`;
             this.currentSlide = mirrorSlideIndex + howManySlides;
-          }
-          else {
+          } else {
             this.currentSlide = this.currentSlide + howManySlides;
           }
-        }
-        else {
+        } else {
           this.currentSlide = Math.min(this.currentSlide + howManySlides, this.innerElements.length - this.perPage);
         }
         if (beforeChange !== this.currentSlide) {

@@ -33,12 +33,19 @@ export class SliderComponent implements ComponentInterface {
 
     private onChangeHandler(slide, $this) {
         const classAdded = "fade";
+
         const slideItem = slide.parentElement;
         const firstSlide = $this.innerElements[0].parentElement;
         const prevSlide = slideItem.previousElementSibling;
+        const nextSlide = slideItem.nextElementSibling;
         if (prevSlide.classList.contains(classAdded)) {
             prevSlide.classList.remove(classAdded);
         }
+
+        if (nextSlide.classList.contains(classAdded)) {
+            nextSlide.classList.remove(classAdded);
+        }
+
         slideItem.classList.add("fade");
         if ($this.currentSlide === $this.innerElements.length - 1) {
             firstSlide.classList.add(classAdded);
