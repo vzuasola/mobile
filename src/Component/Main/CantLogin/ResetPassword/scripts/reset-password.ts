@@ -53,9 +53,12 @@ export class ResetPassword extends CantLoginBase {
     }
 
     private activatePasswordMeter() {
+        const widgetContainer = document.querySelector("div[data-component-widget-class=cant_login]");
+        const attachments = widgetContainer.getAttribute("data-component-widget-attachments");
+        const config = JSON.parse(attachments);
         const passwordMeter = new PasswordMeter({
             selector: "#ResetPasswordForm_new_password",
-            strength: this.attachments.passwordStrengthMeter,
+            strength: config.passwordStrengthMeter,
         });
 
         passwordMeter.init();

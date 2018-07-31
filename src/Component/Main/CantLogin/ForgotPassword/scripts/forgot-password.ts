@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
-import {CantLoginBase} from "./cant-login-base";
+import {CantLoginBase} from "../../scripts/cant-login-base";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
@@ -47,21 +47,6 @@ export class ForgotPassword extends CantLoginBase {
                 this.checkField();
             }
         });
-
-        // close button element on success/confirmation message
-        const formParent = utility.findParent(this.form, "div");
-        const confirmationElem = formParent.querySelector(".confirmation-message");
-
-        if (confirmationElem) {
-            const closeBtn = confirmationElem.querySelector(".btn");
-
-            if (closeBtn) {
-                utility.listen(closeBtn, "click", (event) => {
-                    event.preventDefault();
-                    window.close();
-                });
-            }
-        }
     }
 
     private checkField() {
