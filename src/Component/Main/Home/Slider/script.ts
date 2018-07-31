@@ -28,7 +28,7 @@ export class SliderComponent implements ComponentInterface {
                 controls: true,
                 onChange: this.onChangeHandler,
             });
-
+            setTimeout(() => utility.addClass(slider.querySelectorAll(".xlide-item")[1].parentElement, "fade"), 10);
             setInterval(() => sliderObj.next(), 5000);
         }
     }
@@ -44,7 +44,7 @@ export class SliderComponent implements ComponentInterface {
             utility.removeClass(prevSlide, classAdded);
         }
 
-        if (nextSlide.classList.contains(classAdded)) {
+        if (utility.hasClass(nextSlide, classAdded)) {
             utility.removeClass(nextSlide, classAdded);
         }
         utility.addClass(slideItem, classAdded);
