@@ -23,17 +23,21 @@ class ResetPasswordForm extends FormBase implements FormInterface
      */
     public function alterFormDefinition($definition, $data, $options)
     {
+        // d($data);
+        // d($definition);
         foreach ($definition as $key => $formField) {
             if (strpos($formField['type'], 'TextType') !== false ||
                 strpos($formField['type'], 'PasswordType') !== false
             ) {
-                $this->createAttribute($definition, $key, 'placeholder', 'placeholder');
+                $this->moveAttribute($definition, $key, 'placeholder', 'placeholder');
             }
 
-            $this->createAttribute($definition, $key, 'annotation', 'data-annotation');
-            $this->createAttribute($definition, $key, 'annotation_weak', 'data-annotation-weak');
-            $this->createAttribute($definition, $key, 'annotation_average', 'data-annotation-average');
+            $this->moveAttribute($definition, $key, 'annotation', 'data-annotation');
+            $this->moveAttribute($definition, $key, 'annotation_weak', 'data-annotation-weak');
+            $this->moveAttribute($definition, $key, 'annotation_average', 'data-annotation-average');
         }
+
+        // ddd($definition);
 
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-changepass btn-lower-case";
         return $definition;
@@ -44,19 +48,5 @@ class ResetPasswordForm extends FormBase implements FormInterface
      */
     public function submit($form, $options)
     {
-    }
-
-    /**
-     * Create Field Attribute.
-     */
-    private function createAttribute(&$definition, $key, $attrKey, $attrName)
-    {
-        if (isset($definition[$key]['options'][$attrKey])) {
-            $value = $definition[$key]['options'][$attrKey];
-            if ($value) {
-                $definition[$key]['options']['attr'][$attrName] = $value;
-            }
-            unset($definition[$key]['options'][$attrKey]);
-        }
     }
 }

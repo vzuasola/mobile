@@ -24,21 +24,13 @@ class ForgotPasswordForm extends FormBase implements FormInterface
     public function alterFormDefinition($definition, $data, $options)
     {
         foreach ($definition as $key => $formField) {
-            if (isset($definition[$key]['options']['placeholder']) &&
-                (strpos($formField['type'], 'TextType') !== false ||
-                strpos($formField['type'], 'PasswordType') !== false)
+            if (strpos($formField['type'], 'TextType') !== false ||
+                strpos($formField['type'], 'PasswordType') !== false
             ) {
-                $definition[$key]['options']['attr']['placeholder'] = $definition[$key]['options']['placeholder'];
-                unset($definition[$key]['options']['placeholder']);
+                $this->moveAttribute($definition, $key, 'placeholder', 'placeholder');
             }
 
-            if (isset($definition[$key]['options']['annotation'])) {
-                $annotation = $definition[$key]['options']['annotation'];
-                if ($annotation) {
-                    $definition[$key]['options']['attr']['data-annotation'] = $annotation;
-                }
-                unset($definition[$key]['options']['annotation']);
-            }
+            $this->moveAttribute($definition, $key, 'annotation', 'data-annotation');
         }
 
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-changepass btn-lower-case";

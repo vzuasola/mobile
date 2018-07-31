@@ -17,7 +17,7 @@ export class CantLoginComponent implements ComponentInterface {
     }
 
     private init(element) {
-        const tab = new Tab();
+        new Tab();
         this.activateFormAnnotation(element);
         this.showForm(element);
     }
