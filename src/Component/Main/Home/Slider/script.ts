@@ -1,3 +1,5 @@
+import * as utility from "@core/assets/js/components/utility";
+
 import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 
 import Xlider from "@app/assets/script/components/xlider";
@@ -24,9 +26,31 @@ export class SliderComponent implements ComponentInterface {
                 loop: true,
                 duration: 300,
                 controls: true,
+                onChange: this.onChangeHandler,
             });
 
             setInterval(() => sliderObj.next(), 5000);
+        }
+    }
+
+    private onChangeHandler(slide, $this) {
+        const classAdded = "fade";
+
+        const slideItem = slide.parentElement;
+        const firstSlide = $this.innerElements[0].parentElement;
+        const prevSlide = slideItem.previousElementSibling;
+        const nextSlide = slideItem.nextElementSibling;
+        if (utility.hasClass(prevSlide, classAdded)) {
+            utility.removeClass(prevSlide, classAdded);
+        }
+
+        if (nextSlide.classList.contains(classAdded)) {
+            utility.removeClass(nextSlide, classAdded);
+        }
+        utility.addClass(slideItem, classAdded);
+        if ($this.currentSlide === $this.innerElements.length - 1) {
+            utility.addClass(firstSlide, classAdded);
+            utility.removeClass(slideItem, classAdded);
         }
     }
 }

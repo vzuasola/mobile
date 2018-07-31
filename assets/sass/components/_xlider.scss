@@ -84,3 +84,21 @@
         right: 2rem;
     }
 }
+
+.xlider {
+    // Blurb
+    &-blurb {
+        &.bottom {
+            opacity: 0;
+            bottom: -20rem;
+            transition: bottom .5s ease-in-out, opacity 1s ease-in-out;
+            transition-delay: .3s;
+            transform: translateY(0);
+        }
+    }
+
+    .fade .xlider-blurb.bottom {
+        bottom: 0;
+        opacity: 1;
+    }
+}
