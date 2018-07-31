@@ -11,13 +11,13 @@ export class CantLoginComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.activateTab(element);
         this.activateFormAnnotation(element);
-        this.showForm();
+        this.showForm(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.activateTab(element);
         this.activateFormAnnotation(element);
-        this.showForm();
+        this.showForm(element);
     }
 
     /**
@@ -31,10 +31,10 @@ export class CantLoginComponent implements ComponentInterface {
         annotation(element);
     }
 
-    private showForm() {
+    private showForm(element) {
         const sbfpw = utility.getParameterByName("sbfpw");
-        const forgotPasswordForm = document.querySelector("#forgot-username-password");
-        const resetPasswordForm = document.querySelector("#reset-password");
+        const forgotPasswordForm = element.querySelector("#forgot-username-password");
+        const resetPasswordForm = element.querySelector("#reset-password");
 
         if (sbfpw === null) {
             utility.addClass(resetPasswordForm, "hidden");
