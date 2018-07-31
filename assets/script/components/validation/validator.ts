@@ -35,7 +35,7 @@ export class Validator {
 
                     // extend the validator class, the extension acts like a
                     // reference call, modifying the passed object
-                    const extension = new ValidatorExtension(this.formValidator);
+                    new ValidatorExtension(this.formValidator);
 
                     const validationRules = this.options.rules;
 
@@ -53,7 +53,7 @@ export class Validator {
         };
 
         // extend options
-        const options = this.options || {};
+        this.options || {};
 
         for (const name in defaults) {
             if (this.options[name] === undefined) {
@@ -132,10 +132,8 @@ export class Validator {
                 const fieldClass = "class";
                 const formClass = this.formValidations[form][field][fieldClass];
                 definition.formClass = formClass;
-                switch (formClass) {
-                    case "App\\Extensions\\Form\\ConfigurableForm\\Fields\\Checkboxes":
-                        definition.name = definition.name + "[]";
-                        break;
+                if (formClass === "App\\Extensions\\Form\\ConfigurableForm\\Fields\\Checkboxes") {
+                    definition.name = definition.name + "[]";
                 }
 
                 rules.push(definition);
