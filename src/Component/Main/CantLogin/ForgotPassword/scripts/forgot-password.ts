@@ -47,23 +47,6 @@ export class ForgotPassword extends CantLoginBase {
                 this.checkField();
             }
         });
-
-        // close button element on success/confirmation message
-        const formParent = utility.findParent(this.form, "div");
-        const confirmationElem = formParent.querySelector(".confirmation-message");
-
-        if (confirmationElem) {
-            const closeBtn = confirmationElem.querySelector(".btn");
-
-            if (closeBtn) {
-                if (!utility.hasClass(closeBtn, "btn-mobile")) {
-                    utility.listen(closeBtn, "click", (event) => {
-                        event.preventDefault();
-                        window.close();
-                    });
-                }
-            }
-        }
     }
 
     private checkField() {

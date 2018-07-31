@@ -44,23 +44,6 @@ export class ForgotUsername extends CantLoginBase {
                 this.checkField();
             }
         });
-
-        // close button element on success/confirmation message
-        const formParent = utility.findParent(this.form, "div");
-        const confirmationElem = formParent.querySelector(".confirmation-message");
-
-        if (confirmationElem) {
-            const closeBtn = confirmationElem.querySelector(".btn");
-
-            if (!utility.hasClass(closeBtn, "btn-mobile")) {
-                if (closeBtn) {
-                    utility.listen(closeBtn, "click", (event) => {
-                        event.preventDefault();
-                        window.close();
-                    });
-                }
-            }
-        }
     }
 
     private checkField() {
