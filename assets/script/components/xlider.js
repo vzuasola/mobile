@@ -117,12 +117,10 @@ export default class Xlider extends Siema {
 
                 this.sliderFrame.style[this.transformProperty] = `translate3d(${offset + dragDistance}px, 0, 0)`;
                 this.currentSlide = mirrorSlideIndex - howManySlides;
-            }
-            else {
+            } else {
                 this.currentSlide = this.currentSlide - howManySlides;
             }
-        }
-        else {
+        } else {
             this.currentSlide = Math.max(this.currentSlide - howManySlides, 0);
         }
 
