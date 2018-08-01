@@ -45,8 +45,6 @@ class MyAccountComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        //$config = $this->configFetcher->getConfigById('cant_login');
-        $data = [];
-        return $data;
+        return [];
     }
 }
