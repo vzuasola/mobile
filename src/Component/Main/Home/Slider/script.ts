@@ -42,8 +42,10 @@ export class SliderComponent implements ComponentInterface {
 
         const slideItem = slide.parentElement;
         const firstSlide = $this.innerElements[0].parentElement;
+        const lastSlide = $this.innerElements[$this.innerElements.length - 1].parentElement;
         const prevSlide = slideItem.previousElementSibling;
         const nextSlide = slideItem.nextElementSibling;
+
         if (utility.hasClass(prevSlide, classAdded)) {
             utility.removeClass(prevSlide, classAdded);
         }
@@ -51,10 +53,31 @@ export class SliderComponent implements ComponentInterface {
         if (utility.hasClass(nextSlide, classAdded)) {
             utility.removeClass(nextSlide, classAdded);
         }
-        utility.addClass(slideItem, classAdded);
-        if ($this.currentSlide === $this.innerElements.length - 1) {
-            utility.addClass(firstSlide, classAdded);
+
+        if (utility.hasClass(slideItem, classAdded)) {
             utility.removeClass(slideItem, classAdded);
         }
+
+        if (utility.hasClass(firstSlide, classAdded)) {
+            utility.removeClass(firstSlide, classAdded);
+        }
+
+        if (utility.hasClass(lastSlide, classAdded)) {
+            utility.removeClass(lastSlide, classAdded);
+        }
+        utility.addClass(slideItem, classAdded);
+
+        // First Slide
+        if ($this.currentSlide === 0) {
+            utility.removeClass(slideItem, classAdded);
+            utility.addClass(firstSlide, classAdded);
+        }
+
+        // Last Slide
+        if ($this.currentSlide === $this.innerElements.length - 1) {
+            utility.removeClass(slideItem, classAdded);
+            utility.addClass(lastSlide, classAdded);
+        }
+
     }
 }
