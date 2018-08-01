@@ -99,17 +99,17 @@
         }
 
         &.t-1s {
-            transition: bottom .5s ease-in-out, opacity 1s ease-in-out;
+            transition: bottom 2s ease-in-out, opacity 1s ease-in-out;
             transition-delay: 1s;
         }
 
         &.t-2s {
-            transition: bottom .5s ease-in-out, opacity 1s ease-in-out;
-            transition-delay: 3s;
+            transition: bottom 2s ease-in-out, opacity 1s ease-in-out;
+            transition-delay: 2s;
         }
 
         &.t-3s {
-            transition: bottom .5s ease-in-out, opacity 1s ease-in-out;
+            transition: bottom 2s ease-in-out, opacity 1s ease-in-out;
             transition-delay: 3s;
         }
     }
