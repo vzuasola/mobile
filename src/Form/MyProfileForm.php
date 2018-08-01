@@ -47,7 +47,7 @@ class MyProfileForm extends FormBase implements FormInterface
         parent::setContainer($container);
         $this->user = $container->get('user_fetcher');
         $this->request = $container->get('router_request');
-        $this->config = $container->get('config_fetcher')->withProduct('account');;
+        $this->config = $container->get('config_fetcher')->withProduct('account');
 
         $this->scripts = $container->get('scripts');
         $this->playerSubscription = $container->get('receive_news');

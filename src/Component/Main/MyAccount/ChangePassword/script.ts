@@ -7,8 +7,10 @@ import {ComponentInterface} from "@core/src/Plugins/ComponentWidget/asset/compon
 export class MyAccountChangePasswordComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
+        // to be filled up later
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+        // to be filled up later
     }
 }
