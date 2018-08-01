@@ -84,6 +84,15 @@ components:
     class: App\MobileEntry\Component\Main\CantLogin\ResetPassword\ResetPasswordComponent
     parent: cant_login
 
+  my_account:
+    class: App\MobileEntry\Component\Main\MyAccount\MyAccountComponent
+
+  profile:
+    class: App\MobileEntry\Component\Main\MyAccount\Profile\ProfileComponent
+
+  change_password:
+    class: App\MobileEntry\Component\Main\MyAccount\ChangePassword\ChangePasswordComponent
+
   seo:
     class: App\MobileEntry\Component\SEO\SEOComponent
 

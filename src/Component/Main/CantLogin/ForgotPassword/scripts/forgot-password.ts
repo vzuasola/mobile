@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
-import {CantLoginBase} from "../../scripts/cant-login-base";
+import {FormBase} from "@app/assets/script/components/form-base";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
@@ -12,7 +12,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  * @param String emailField selector to target for email
  * @param String passwordField selector to target for password
  */
-export class ForgotPassword extends CantLoginBase {
+export class ForgotPassword extends FormBase {
     emailField: HTMLFormElement;
     emailContainer: HTMLElement;
     form: HTMLFormElement;

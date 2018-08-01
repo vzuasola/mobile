@@ -56,6 +56,12 @@ routes:
         components:
           main: cant_login
 
+    /my-account:
+        method: GET
+        action: App\MobileEntry\Controller\MyAccountController:view
+        components:
+          main: my_account
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:

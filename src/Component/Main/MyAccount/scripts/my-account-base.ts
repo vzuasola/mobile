@@ -7,7 +7,7 @@ import {Validator} from "@app/assets/script/components/validation/validator";
  * @param Node element component parent element
  * @param Object attachments
  */
-export abstract class CantLoginBase {
+export abstract class MyAccountBase {
     element: HTMLElement;
     attachments: any;
     msgClass: string;
