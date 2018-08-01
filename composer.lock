@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a8c7a5a45f7eb80c261dad8f80e4b5f",
+    "content-hash": "1fc4c07e174874f228409b7ae0bce7f2",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -819,7 +819,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "Developer"
+                    "role": "developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -3054,11 +3054,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-working",
+            "version": "dev-release-v1.77.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "29e505a323f046823b91009b54dabde58d6dadff"
+                "reference": "f5b64881e1954fe89fa70c919662d82e44cf6cf7"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.1",
@@ -3109,7 +3109,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2018-07-31T05:41:20+00:00"
+            "time": "2018-08-01T04:24:52+00:00"
         },
         {
             "name": "willdurand/negotiation",
