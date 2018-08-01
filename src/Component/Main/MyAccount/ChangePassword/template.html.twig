@@ -1,6 +1,3 @@
-{% form_theme formResetPassword '@base/form/standard.html.twig' %}
-{{ form_start(formResetPassword, {'attr': {'class': 'pure-form reset-password-form form-vertical'}}) }}
-{{ form_end(formResetPassword) }}
-<div class="confirmation-message mt-25 mb-20 hidden">
-    {{ reset_password_success_message|raw }}
-</div>
+{% form_theme formChangePassword '@base/form/standard.html.twig' %}
+{{ form_start(formChangePassword, {'attr': {'class': 'pure-form reset-password-form form-vertical'}}) }}
+{{ form_end(formChangePassword) }}

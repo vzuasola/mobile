@@ -43,7 +43,7 @@ class ProfileComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Main/MyAccount/MyProfile/template.html.twig';
+        return '@component/Main/MyAccount/Profile/template.html.twig';
     }
 
     /**
@@ -54,7 +54,7 @@ class ProfileComponent implements ComponentWidgetInterface
         $data = [];
         $formForgotPassword = $this->formManager->getForm(MyProfileForm::class);
         $data['formMyProfile'] = $formForgotPassword->createView();
-        d($data);
+
         return $data;
     }
 }

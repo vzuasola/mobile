@@ -43,7 +43,7 @@ class ChangePasswordComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Main/MyAccouunt/ChangePassword/template.html.twig';
+        return '@component/Main/MyAccount/ChangePassword/template.html.twig';
     }
 
     /**
@@ -52,8 +52,8 @@ class ChangePasswordComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
-        $formResetPassword = $this->formManager->getForm(ChangePasswordForm::class);
-        $data['formResetPassword'] = $formResetPassword->createView();
+        $formChangePassword = $this->formManager->getForm(ChangePasswordForm::class);
+        $data['formChangePassword'] = $formChangePassword->createView();
         return $data;
     }
 }

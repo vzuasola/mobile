@@ -24,6 +24,21 @@ class MyProfileForm extends FormBase implements FormInterface
         'country',
     ];
 
+    private $locale = [
+        'en-GB' => 'English (Europe)',
+        'zh-TW' => 'Traditional Chinese (繁體)',
+        'zh-CN' => 'Simplified Chinese (简体)',
+        'en-US' => 'English',
+        'el' => 'Greek (Ελληνικά)',
+        'hi' => 'English (India)',
+        'id' => 'Bahasa Indonesia',
+        'ja' => 'Japanese (日本語)',
+        'ko-KR' => 'Korean (한국어)',
+        'pl' => 'Polish (Polski)',
+        'th' => 'Thai (ภาษาไทย)',
+        'vi' => 'Vietnamese (Tiếng Việt)',
+    ];
+
     /**
      * Container dependency injection
      */
@@ -32,7 +47,8 @@ class MyProfileForm extends FormBase implements FormInterface
         parent::setContainer($container);
         $this->user = $container->get('user_fetcher');
         $this->request = $container->get('router_request');
-        $this->config = $container->get('config_fetcher');
+        $this->config = $container->get('config_fetcher')->withProduct('account');;
+
         $this->scripts = $container->get('scripts');
         $this->playerSubscription = $container->get('receive_news');
     }
@@ -49,7 +65,6 @@ class MyProfileForm extends FormBase implements FormInterface
      */
     public function alterFormDefinition($definition, $data, $options)
     {
-        ddd($definition);
         // call alter form attributes
         $definition = $this->alterFormAttributes($definition);
 
@@ -82,7 +97,6 @@ class MyProfileForm extends FormBase implements FormInterface
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-update btn-lower-case";
         $definition['button_cancel']['options']['attr']['class'] = "btn btn-small btn-gray btn-cancel btn-lower-case";
         $definition['mobile_number_2']['options']['label'] = ' ';
-        ddd($definition);
         return $definition;
     }
 
@@ -270,7 +284,7 @@ class MyProfileForm extends FormBase implements FormInterface
             'email' => $this->obfuscateEmail($apiValues['email']),
             'mobile_number_1' => $apiValues['mobileNumbers']['Home']['number'],
             'mobile_number_2' => (($mobile1Value === '') || ($mobile1Value === null)) ? '' : $mobile1Value,
-            'language_field' => LanguageMapping::LOCALE[$apiValues['locale']],
+            'language_field' => $this->locale,
             'sms_1_verified' => $apiValues['mobileNumbers']['Home']['verified'] ?? null,
             'sms_2_verified' => $apiValues['mobileNumbers']['Mobile 1']['verified'] ?? null,
             'gender' => $apiValues['gender'],
