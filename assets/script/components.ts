@@ -18,9 +18,13 @@ import {NodeComponent} from "@app/src/Component/Node/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
+import {CantLoginComponent} from "@app/src/Component/Main/CantLogin/script";
 import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script";
 import {SessionComponent} from "@app/src/Component/Main/Session/script";
 import { SessionLegacyComponent } from "@app/src/Component/Main/SessionLegacy/script";
+import {CantLoginForgotPasswordComponent} from "@app/src/Component/Main/CantLogin/ForgotPassword/script";
+import {CantLoginForgotUsernameComponent} from "@app/src/Component/Main/CantLogin/ForgotUsername/script";
+import {CantLoginResetPasswordComponent} from "@app/src/Component/Main/CantLogin/ResetPassword/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -41,7 +45,11 @@ ComponentManager.setComponents({
     language: new LanguageComponent(),
     marketing: new MarketingComponent(),
     profiler: new ProfilerComponent(),
+    cant_login: new CantLoginComponent(),
     node_promotions: new PromotionsNodeComponent(),
     session: new SessionComponent(),
     session_legacy: new SessionLegacyComponent(),
+    cant_login_forgot_password: new CantLoginForgotPasswordComponent(),
+    cant_login_forgot_username: new CantLoginForgotUsernameComponent(),
+    cant_login_reset_password: new CantLoginResetPasswordComponent(),
 });

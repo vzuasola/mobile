@@ -1,16 +1,18 @@
 .form-annotation {
     position: relative;
     display: block;
-    margin-top: 1.1rem;
+    margin-top: 0.2rem;
+    margin-bottom: 1rem;
     padding: 1rem 1.2rem;
     border-radius: 0.4rem;
     box-shadow: 0.2rem 0.3rem 0.3rem rgba(0, 0, 0, 0.4);
-    background: $dark-gray;
-    color: $white;
+    background: #141414;
+    color: $yellow;
     font-size: 1.4rem;
+    font-style: italic;
     
     &:before {
-        @include triangle(top, 0.8rem, $dark-gray);
+        @include triangle(top, 0.5rem, #141414);
         position: absolute;
         top: -0.9rem;
         left: 50%;
