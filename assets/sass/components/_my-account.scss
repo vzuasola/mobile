@@ -1,0 +1,33 @@
+form.profile-form,
+form.change-password-form {
+    transition: opacity 0.3s;
+
+    .form-item {
+        & > .loader {
+           @extend %form-loader;
+        }
+
+    }
+
+    // All form item
+    .form-item,
+    .MyProfileForm_submit {
+        @extend %form-item-round;
+    }
+
+    // top form item
+    .MyProfileForm_account_markup,
+    .MyProfileForm_communication_markup,
+    .MyProfileForm_address_markup,
+    .MyProfileForm_preference_markup {
+        @extend %form-item-round-top;
+    }
+
+    // bottom form item (usually action buttons)
+    .MyProfileForm_gender,
+    .MyProfileForm_language,
+    .MyProfileForm_postal_code,
+    .MyProfileForm_button_cancel {
+        @extend %form-item-round-bottom;
+    }
+}
