@@ -91,9 +91,26 @@
         &.bottom {
             opacity: 0;
             bottom: -20rem;
-            transition: bottom .5s ease-in-out, opacity 1s ease-in-out;
-            transition-delay: .3s;
             transform: translateY(0);
+        }
+        &.t-none {
+            transition: none;
+            transition-delay: 0s;
+        }
+
+        &.t-1s {
+            transition: bottom 2s ease-in-out, opacity 1s ease-in-out;
+            transition-delay: .5s;
+        }
+
+        &.t-2s {
+            transition: bottom 2s ease-in-out, opacity 1s ease-in-out;
+            transition-delay: 1s;
+        }
+
+        &.t-3s {
+            transition: bottom 2s ease-in-out, opacity 1s ease-in-out;
+            transition-delay: 2s;
         }
     }
 

@@ -14,7 +14,7 @@ class SliderComponent implements ComponentWidgetInterface
     /**
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
-    private $configFetcher;
+    private $configs;
 
     /**
      * @var App\Player\PlayerSession
@@ -27,6 +27,7 @@ class SliderComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
+            $container->get('config_fetcher'),
             $container->get('views_fetcher'),
             $container->get('player_session')
         );
@@ -35,8 +36,9 @@ class SliderComponent implements ComponentWidgetInterface
     /**
      *
      */
-    public function __construct($viewsFetcher, $playerSession)
+    public function __construct($configs, $viewsFetcher, $playerSession)
     {
+        $this->configs = $configs;
         $this->viewsFetcher = $viewsFetcher;
         $this->playerSession = $playerSession;
     }
@@ -65,6 +67,14 @@ class SliderComponent implements ComponentWidgetInterface
         } catch (\Exception $e) {
             $data['slides'] = [];
         }
+
+        try {
+            $sliderConfigs = $this->configs->getConfig('webcomposer_config.slider_v2_configuration');
+        } catch (\Exception $e) {
+            $data['configs'] = [];
+        }
+
+        $data['enable_transition_slider'] = $sliderConfigs['enable_transition_slider'] ?? 'none';
 
         try {
             $data['is_login'] = $this->playerSession->isLogin();
