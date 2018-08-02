@@ -1,0 +1,72 @@
+// Rounded form inputs =======================
+// All form item
+%form-item-round {
+    margin-bottom: 0;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-left: 0.1rem solid #515151;
+    border-right: 0.1rem solid #515151;
+    background: #323031;
+
+    .form-field-element {
+        margin-bottom: 1rem;
+    }
+}
+
+// top form item
+%form-item-round-top {
+    padding-top: 1rem;
+    border-top: 0.1rem solid #515151;
+    border-radius: 0.3rem 0.3rem 0 0;
+}
+
+// bottom form item (usually action buttons)
+%form-item-round-bottom {
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 0.1rem solid #515151;
+    border-radius: 0 0 0.3rem 0.3rem;
+}
+
+// contact info blurb =======================
+%contact-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 3.5rem;
+
+    // 
+    & > div {
+        line-height: 1.2rem;
+    }
+
+    .icon-exclamation {
+        min-width: 4rem;
+        width: 4rem;
+        height: 4rem;
+        margin-right: 1.3rem;
+        fill: $white;
+    }
+
+    p {
+        margin-bottom: 0;
+    }
+}
+
+// Loader ========================
+%form-loader {
+    position: static;;
+    padding: 1rem 0;
+
+    .loader-container {
+        position: relative;
+        top: 0;
+        transform: translate(-50%, 0);
+
+        .loader {
+            position: absolute !important;
+            top: 0 !important;
+        }
+    }
+}

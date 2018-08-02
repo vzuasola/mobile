@@ -1,5 +1,4 @@
 @import "../vendor/pure-form";
-
 // Variables
 $default-form-border-color: #ccc;
 $default-form-field-color: #ccc;
@@ -99,8 +98,11 @@ form.pure-form {
         font-style: italic;
     }
 
+    // Server side specific error message
     .error-message {
-        margin-top: 0.5rem;
+        margin: -0.5rem 0 0;
+        padding-bottom: 0.5rem;
+        color: $red;
     }
 
     // Submit field
@@ -120,3 +122,5 @@ form.pure-form {
         margin-bottom: 2rem;
     }
 }
+
+@import "form-placeholder";
