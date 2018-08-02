@@ -93,6 +93,9 @@ components:
   backtotop:
     class: App\MobileEntry\Component\Backtotop\BacktotopComponent
 
+  games_lobby:
+    class: App\MobileEntry\Component\GamesLobby\GamesLobbyComponent
+
 # Define modules
 modules:
   session:
