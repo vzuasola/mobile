@@ -74,6 +74,7 @@ form.reset-password-form {
 }
 
 // contact info blurb
+.contact-info-blurb,
 .ForgotPasswordForm_footer_markup,
 .ForgotUsernameForm_footer_markup,
 .ResetPasswordForm_footer_markup {
@@ -90,7 +91,6 @@ form.reset-password-form {
         width: 5rem;
         height: 5rem;
         fill: #50db10;
-
     }
 
     .contact-info-blurb {

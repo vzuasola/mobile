@@ -70,7 +70,7 @@ export class ForgotPassword extends FormBase {
                 if (resp.status === "FORGOT_PASSWORD_SUCCESS") {
                     this.showConfirmationMessage(this.form);
                 } else {
-                    this.showMessage(this.emailContainer, this.messageMapping(resp.status));
+                    this.showMessage(this.emailContainer, this.messageMapping(resp.status, "cant_login"));
                 }
             })
             .fail((err, msg) => {

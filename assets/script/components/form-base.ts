@@ -28,8 +28,9 @@ export abstract class FormBase {
         return validator;
     }
 
-    messageMapping(key) {
-        const attachments = this.element.getAttribute("data-component-widget-attachments");
+    messageMapping(key: string, component: string) {
+        const componentTarget = document.querySelector("[data-component-widget-class=" + component + "]");
+        const attachments = componentTarget.getAttribute("data-component-widget-attachments");
         const config = JSON.parse(attachments);
         return config.messages[key];
     }
