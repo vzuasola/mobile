@@ -10,6 +10,7 @@ class GamesLobbyComponent implements ComponentWidgetInterface
      * @var App\Fetcher\Drupal\ViewsFetcher
      */
     private $views;
+
     /**
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
