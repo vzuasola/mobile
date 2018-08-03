@@ -43,8 +43,8 @@ export class HeaderComponent implements ComponentInterface {
                             balance.innerHTML = response.balance;
                             const product = ComponentManager.getAttribute("product");
 
-                            if (product !== "0") {
-                                balance.innerHTML = response.balances[product];
+                            if (response.map.hasOwnProperty(product) && response.map[product] !== 0) {
+                                balance.innerHTML = response.balances[response.map[product]];
                             }
                         }
 
