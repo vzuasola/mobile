@@ -24,6 +24,11 @@ class BalanceModuleController
         'esports' => 11,
     ];
 
+    const PRODUCT_MAPPING = [
+        'mobile-entrypage' => 0,
+        'games' => 5
+    ];
+
     private $rest;
     private $config;
     private $playerSession;
@@ -144,6 +149,7 @@ class BalanceModuleController
                 $sumBonus = $sumBonuses['balances'];
                 $totalBalance = $sumBalance + $sumBonus;
 
+                $data['map'] = self::PRODUCT_MAPPING;
                 $data['balances'] = $balances;
                 $data['reserveBalances'] = $sumBalances['reserveBalances'] ?? 0;
                 $data['nonWithdrawableBalances'] = $sumBalances['nonWithdrawableBalances'] ?? 0;
