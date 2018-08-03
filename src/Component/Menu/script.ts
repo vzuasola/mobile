@@ -29,6 +29,8 @@ export class MenuComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
 
         this.activateMenu(element);
+        this.attachProduct();
+
         this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
 
@@ -50,6 +52,8 @@ export class MenuComponent implements ComponentInterface {
         this.equalizeQuicklinksHeight();
 
         this.activateMenu(element);
+        this.attachProduct();
+
         this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
     }
@@ -115,5 +119,15 @@ export class MenuComponent implements ComponentInterface {
                 }
             }
         });
+    }
+
+    private attachProduct() {
+        const product = ComponentManager.getAttribute("product");
+        if (product !== "mobile-entrypage") {
+            const menu: HTMLElement = this.element.querySelector(".attach-product");
+            if (menu) {
+                menu.setAttribute("href", menu.getAttribute("href") + `#${product}`);
+            }
+        }
     }
 }
