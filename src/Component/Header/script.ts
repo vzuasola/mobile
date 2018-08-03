@@ -13,12 +13,15 @@ export class HeaderComponent implements ComponentInterface {
         this.element = element;
 
         this.refreshBalance();
+
         Router.on(RouterClass.afterNavigate, (event) => {
             const wrapper = this.element.querySelector(".account-balance");
             const link = wrapper.querySelector("a");
             const loader = wrapper.querySelector("div");
+
             utility.addClass(link, "hidden");
             utility.removeClass(loader, "hidden");
+
             this.refreshBalance();
         });
     }
