@@ -83,8 +83,18 @@ form.pure-form {
         margin-bottom: 1rem;
     }
 
+    // Hide label
     .form-label {
         display: none;
+    }
+
+    // Show label (Add 'show-label' class to form tag)
+    &.show-label .form-label {
+        display: block;
+        margin: 0;
+        padding: 3px 0 0;
+        color: #515151;
+        font-size: 1.25rem;
     }
 
     .form-field {

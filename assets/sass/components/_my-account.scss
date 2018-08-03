@@ -3,6 +3,7 @@ form.change-password-form {
     transition: opacity 0.3s;
 
     .form-item {
+        // Loader
         & > .loader {
            @extend %form-loader;
         }
@@ -10,24 +11,26 @@ form.change-password-form {
     }
 
     // All form item
-    .form-item,
-    .MyProfileForm_submit {
+    & > .form-item,
+    & > .MyProfileForm_submit {
         @extend %form-item-round;
     }
 
     // top form item
-    .MyProfileForm_account_markup,
-    .MyProfileForm_communication_markup,
-    .MyProfileForm_address_markup,
-    .MyProfileForm_preference_markup {
+    & > .MyProfileForm_account_markup,
+    & > .MyProfileForm_communication_markup,
+    & > .MyProfileForm_address_markup,
+    & > .MyProfileForm_preference_markup,
+    & > .ChangePasswordForm_current_password_field {
         @extend %form-item-round-top;
     }
 
     // bottom form item (usually action buttons)
-    .MyProfileForm_gender,
-    .MyProfileForm_language,
-    .MyProfileForm_postal_code,
-    .MyProfileForm_button_cancel {
+    & > .MyProfileForm_gender,
+    & > .MyProfileForm_language,
+    & > .MyProfileForm_postal_code,
+    & > .MyProfileForm_button_cancel,
+    & > .ChangePasswordForm_change_password_submit_field {
         @extend %form-item-round-bottom;
     }
 }
