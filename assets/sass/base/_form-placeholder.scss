@@ -1,11 +1,15 @@
+// Variables
+$form-spacing: 1.5rem;
+$form-border-color: #515151;
+
 // Rounded form inputs =======================
 // All form item
 %form-item-round {
     margin-bottom: 0;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    border-left: 0.1rem solid #515151;
-    border-right: 0.1rem solid #515151;
+    padding-left: $form-spacing;
+    padding-right: $form-spacing;
+    border-left: 0.1rem solid $form-border-color;
+    border-right: 0.1rem solid $form-border-color;
     background: #323031;
 
     .form-field-element {
@@ -16,16 +20,16 @@
 // top form item
 %form-item-round-top {
     padding-top: 1rem;
-    border-top: 0.1rem solid #515151;
+    border-top: 0.1rem solid $form-border-color;
     border-radius: 0.3rem 0.3rem 0 0;
 
     // Blurb type
     &.blurb {
         padding-bottom: 1rem;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        border-left: 0.1rem solid #515151;
-        border-right: 0.1rem solid #515151;
+        padding-left: $form-spacing;
+        padding-right: $form-spacing;
+        border-left: 0.1rem solid $form-border-color;
+        border-right: 0.1rem solid $form-border-color;
         background: #323031;
         text-align: center;
 
@@ -39,8 +43,8 @@
 %form-item-round-bottom {
     margin-bottom: 1rem;
     padding-top: 1rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 0.1rem solid #515151;
+    padding-bottom: $form-spacing;
+    border-bottom: 0.1rem solid $form-border-color;
     border-radius: 0 0 0.3rem 0.3rem;
 }
 
@@ -83,5 +87,31 @@
             position: absolute !important;
             top: 0 !important;
         }
+    }
+}
+
+// Form actions two column
+%form-item-two-cols {
+    display: inline-block;
+    width: 50%;
+    padding-right: 0.85rem;
+
+    & + & {
+        padding-right: $form-spacing;
+    }
+}
+
+%form-item-two-cols-bottom {
+    padding: $form-spacing 0.85rem $form-spacing $form-spacing;
+    border-bottom: 0.1rem solid $form-border-color;
+    border-right: none;
+    border-radius: 0 0 0 0.3rem;
+
+    & + & {
+        padding-left: 0.85rem;
+        padding-right: $form-spacing;
+        border-right: 0.1rem solid $form-border-color;
+        border-left: none;
+        border-radius: 0 0 0.3rem 0;
     }
 }
