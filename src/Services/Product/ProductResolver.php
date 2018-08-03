@@ -30,7 +30,7 @@ class ProductResolver
     /**
      *
      */
-    public function getPageProduct()
+    public function getProduct()
     {
         return $this->routeManager->getAttribute('product') ?? 0;
     }
