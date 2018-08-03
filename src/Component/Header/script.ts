@@ -9,26 +9,26 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 export class HeaderComponent implements ComponentInterface {
     private element: HTMLElement;
 
-    onLoad(element: HTMLElement, attachments: { product: string }) {
+    onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
 
-        this.refreshBalance(attachments.product);
+        this.refreshBalance();
         Router.on(RouterClass.afterNavigate, (event) => {
             const wrapper = this.element.querySelector(".account-balance");
             const link = wrapper.querySelector("a");
             const loader = wrapper.querySelector("div");
             utility.addClass(link, "hidden");
             utility.removeClass(loader, "hidden");
-            ComponentManager.refreshComponent("header");
+            this.refreshBalance();
         });
     }
 
-    onReload(element: HTMLElement, attachments: { product: string }) {
+    onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.refreshBalance(attachments.product);
+        this.refreshBalance();
     }
 
-    private refreshBalance(product) {
+    private refreshBalance() {
         ComponentManager.broadcast("balance.return", {
             success: (response) => {
                 if (typeof response.balance !== "undefined") {
@@ -41,7 +41,9 @@ export class HeaderComponent implements ComponentInterface {
 
                         if (balance) {
                             balance.innerHTML = response.balance;
-                            if (product) {
+                            const product = ComponentManager.getAttribute("product");
+
+                            if (product !== "0") {
                                 balance.innerHTML = response.balances[product];
                             }
                         }
