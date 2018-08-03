@@ -819,7 +819,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "Developer"
+                    "role": "developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -3058,7 +3058,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "29e505a323f046823b91009b54dabde58d6dadff"
+                "reference": "c1a19d5e3d1686a7558d2149c4db4d007c8e4dd3"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.1",
@@ -3109,7 +3109,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2018-07-31T05:41:20+00:00"
+            "time": "2018-08-03T06:48:23+00:00"
         },
         {
             "name": "willdurand/negotiation",
