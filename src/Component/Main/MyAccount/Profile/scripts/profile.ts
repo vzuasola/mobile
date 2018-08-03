@@ -24,6 +24,7 @@ export class Profile extends FormBase {
     }
 
     init() {
-        // to be filled up later
+        this.form = this.element.querySelector(".profile-form");
+        this.validator = this.validate(this.form);
     }
 }
