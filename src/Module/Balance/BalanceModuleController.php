@@ -26,7 +26,7 @@ class BalanceModuleController
 
     const PRODUCT_MAPPING = [
         'mobile-entrypage' => 0,
-        'games' => 5
+        'mobile-games' => 5
     ];
 
     private $rest;
