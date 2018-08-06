@@ -22,8 +22,6 @@ export class ResetPassword extends FormBase {
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
-        this.element = element;
-        this.attachments = attachments;
     }
 
     init() {

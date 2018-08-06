@@ -19,8 +19,6 @@ export class Profile extends FormBase {
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
-        this.element = element;
-        this.attachments = attachments;
     }
 
     init() {

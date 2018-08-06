@@ -22,8 +22,6 @@ export class ForgotPassword extends FormBase {
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
-        this.element = element;
-        this.attachments = attachments;
         this.emailField = this.element.querySelector("#ForgotPasswordForm_email");
         this.passwordField = this.element.querySelector("#ForgotPasswordForm_username");
     }

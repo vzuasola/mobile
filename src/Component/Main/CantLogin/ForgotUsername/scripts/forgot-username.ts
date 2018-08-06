@@ -20,8 +20,6 @@ export class ForgotUsername extends FormBase {
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
-        this.element = element;
-        this.attachments = attachments;
         this.emailField = this.element.querySelector("#ForgotUsernameForm_email");
     }
 

@@ -10,7 +10,7 @@ import {Validator} from "@app/assets/script/components/validation/validator";
 export abstract class FormBase {
     element: HTMLElement;
     attachments: any;
-    msgClass: string;
+    private msgClass: string;
 
     constructor(element: HTMLElement, attachments: any) {
         this.element = element;
