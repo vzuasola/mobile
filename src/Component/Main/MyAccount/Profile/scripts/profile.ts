@@ -13,9 +13,9 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  * @param String passwordField selector to target for password
  */
 export class Profile extends FormBase {
-    form: HTMLFormElement;
-    loader: Loader;
-    validator: any;
+    private form: HTMLFormElement;
+    private loader: Loader;
+    private validator: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -25,6 +25,6 @@ export class Profile extends FormBase {
 
     init() {
         this.form = this.element.querySelector(".profile-form");
-        this.validator = this.validate(this.form);
+        this.validator = this.validateForm(this.form);
     }
 }

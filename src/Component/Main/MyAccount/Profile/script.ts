@@ -22,7 +22,8 @@ export class MyAccountProfileComponent implements ComponentInterface {
     private activateProfile(element, attachments) {
         this.profile = new Profile(
             element,
-            attachments);
+            attachments
+        );
         this.profile.init();
     }
 }

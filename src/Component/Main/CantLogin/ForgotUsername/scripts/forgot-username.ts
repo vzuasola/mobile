@@ -30,7 +30,7 @@ export class ForgotUsername extends FormBase {
             this.emailContainer = utility.hasClass(this.emailField, "form-item", true);
             this.form = utility.findParent(this.emailField, "form");
             this.loader = new Loader(utility.hasClass(this.emailField, "form-item", true), false, 0);
-            this.validator = this.validate(this.form);
+            this.validator = this.validateForm(this.form);
             this.bindEvent();
         }
     }

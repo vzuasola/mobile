@@ -18,7 +18,7 @@ export abstract class FormBase {
         this.msgClass = "error-message";
     }
 
-    validate(form: HTMLFormElement) {
+    validateForm(form: HTMLFormElement) {
         const validator = new Validator(
             JSON.parse(form.getAttribute("data-validations")), [],
         );

@@ -35,7 +35,7 @@ export class ResetPassword extends FormBase {
             this.passwordVerifyContainer = utility.hasClass(this.passwordFieldVerify, "form-item", true);
             this.token = utility.getParameterByName("sbfpw", document.referrer);
             this.loader = new Loader(utility.hasClass(this.passwordVerifyContainer, "form-item", true), false, 0);
-            this.validator = this.validate(this.form);
+            this.validator = this.validateForm(this.form);
             this.activatePasswordMeter();
             this.bindEvent();
         }
