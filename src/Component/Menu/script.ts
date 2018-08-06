@@ -127,14 +127,20 @@ export class MenuComponent implements ComponentInterface {
 
     private attachProduct() {
         const product = ComponentManager.getAttribute("product");
-        const menu: HTMLElement = this.element.querySelector(".attach-product");
+        const menus: NodeListOf<HTMLElement> = this.element.querySelectorAll(".attach-product");
 
-        if (menu) {
-            let url = utility.removeHash(menu.getAttribute("href"));
-            if (product !== "mobile-entrypage") {
-                url = utility.addHash(url, product.replace("mobile-", ""));
+        if (menus) {
+            for (const key in menus) {
+                if (menus.hasOwnProperty(key)) {
+                    const menu: HTMLElement = menus[key];
+                    let url = utility.removeHash(menu.getAttribute("href"));
+                    if (product !== "mobile-entrypage") {
+                        url = utility.addHash(url, product.replace("mobile-", ""));
+                    }
+                    menu.setAttribute("href", url);
+                }
             }
-            menu.setAttribute("href", url);
+
         }
     }
 }
