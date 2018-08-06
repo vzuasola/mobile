@@ -10,6 +10,7 @@ use App\Extensions\Form\ConfigurableForm\FormBase;
 class ChangePasswordForm extends FormBase implements FormInterface
 {
     protected $product = 'account';
+
     /**
      * @{inheritdoc}
      */
