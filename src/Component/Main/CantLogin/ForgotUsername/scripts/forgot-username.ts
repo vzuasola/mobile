@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
-import {CantLoginBase} from "../../scripts/cant-login-base";
+import {FormBase} from "@app/assets/script/components/form-base";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
@@ -11,17 +11,15 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  * @param Object attachments
  * @param String emailField selector to target for email
  */
-export class ForgotUsername extends CantLoginBase {
-    emailField: HTMLFormElement;
-    emailContainer: HTMLElement;
-    form: HTMLFormElement;
-    loader: Loader;
-    validator: any;
+export class ForgotUsername extends FormBase {
+    private emailField: HTMLFormElement;
+    private emailContainer: HTMLElement;
+    private form: HTMLFormElement;
+    private loader: Loader;
+    private validator: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
-        this.element = element;
-        this.attachments = attachments;
         this.emailField = this.element.querySelector("#ForgotUsernameForm_email");
     }
 
@@ -30,7 +28,7 @@ export class ForgotUsername extends CantLoginBase {
             this.emailContainer = utility.hasClass(this.emailField, "form-item", true);
             this.form = utility.findParent(this.emailField, "form");
             this.loader = new Loader(utility.hasClass(this.emailField, "form-item", true), false, 0);
-            this.validator = this.validate(this.form);
+            this.validator = this.validateForm(this.form);
             this.bindEvent();
         }
     }
@@ -66,7 +64,7 @@ export class ForgotUsername extends CantLoginBase {
                 if (resp.status === "FORGOT_USERNAME_SUCCESS") {
                     this.showConfirmationMessage(this.form);
                 } else {
-                    this.showMessage(this.emailContainer, this.messageMapping(resp.status));
+                    this.showMessage(this.emailContainer, this.messageMapping(resp.status, "cant_login"));
                 }
             })
             .fail((err, msg) => {
