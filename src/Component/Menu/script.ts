@@ -128,13 +128,12 @@ export class MenuComponent implements ComponentInterface {
     private attachProduct() {
         const product = ComponentManager.getAttribute("product");
         const menu: HTMLElement = this.element.querySelector(".attach-product");
-        let url = utility.removeHash(menu.getAttribute("href"));
 
         if (menu) {
+            let url = utility.removeHash(menu.getAttribute("href"));
             if (product !== "mobile-entrypage") {
                 url = utility.addHash(url, product);
             }
-
             menu.setAttribute("href", url);
         }
     }
