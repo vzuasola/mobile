@@ -32,6 +32,6 @@ class ProductResolver
      */
     public function getProduct()
     {
-        return $this->routeManager->getAttribute('product') ?? 0;
+        return $this->routeManager->getAttribute('product') ?? "mobile-entrypage";
     }
 }
