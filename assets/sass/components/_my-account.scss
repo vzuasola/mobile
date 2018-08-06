@@ -11,13 +11,12 @@ form.change-password-form {
 
     }
 
-    // All form item
-    & > .form-item,
-    & > .MyProfileForm_submit {
+    // Middle form items
+    & > .form-item {
         @extend %form-item-round;
     }
 
-    // top form item
+    // top form items
     & > .MyProfileForm_account_markup,
     & > .MyProfileForm_communication_markup,
     & > .MyProfileForm_address_markup,
@@ -26,7 +25,7 @@ form.change-password-form {
         @extend %form-item-round-top;
     }
 
-    // bottom form item (usually action buttons)
+    // bottom form items (usually action buttons)
     & > .MyProfileForm_gender,
     & > .MyProfileForm_language,
     & > .MyProfileForm_postal_code,
