@@ -2,7 +2,7 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 import {Menu} from "./scripts/menu";
 import {PushNotification} from "./scripts/push-notification";
@@ -29,6 +29,8 @@ export class MenuComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
 
         this.activateMenu(element);
+        this.attachProduct();
+
         this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
 
@@ -42,6 +44,10 @@ export class MenuComponent implements ComponentInterface {
             this.isLogin = false;
         });
 
+        Router.on(RouterClass.afterNavigate, (event) => {
+            this.attachProduct();
+        });
+
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
@@ -50,6 +56,8 @@ export class MenuComponent implements ComponentInterface {
         this.equalizeQuicklinksHeight();
 
         this.activateMenu(element);
+        this.attachProduct();
+
         this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
     }
@@ -115,5 +123,19 @@ export class MenuComponent implements ComponentInterface {
                 }
             }
         });
+    }
+
+    private attachProduct() {
+        const product = ComponentManager.getAttribute("product");
+        const menu: HTMLElement = this.element.querySelector(".attach-product");
+        let url = utility.removeHash(menu.getAttribute("href"));
+
+        if (menu) {
+            if (product !== "mobile-entrypage") {
+                url = utility.addHash(url, product);
+            }
+
+            menu.setAttribute("href", url);
+        }
     }
 }
