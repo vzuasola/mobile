@@ -67,7 +67,7 @@ routes:
             enabled: true
             expires: 1800
         attributes:
-            product: games
+            product: mobile-games
 
     # Definition of component controllers for cache control
 
