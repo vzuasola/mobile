@@ -4,6 +4,7 @@ namespace App\MobileEntry\Controller;
 
 use App\BaseController;
 use Slim\Exception\NotFoundException;
+
 class MyAccountController extends BaseController
 {
     /**
