@@ -12,13 +12,13 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  * @param Object attachments
  */
 export class ResetPassword extends FormBase {
-    form: HTMLFormElement;
-    passwordField: HTMLFormElement;
-    passwordFieldVerify: HTMLFormElement;
-    passwordVerifyContainer: HTMLElement;
-    token: string;
-    loader: Loader;
-    validator: any;
+    private form: HTMLFormElement;
+    private passwordField: HTMLFormElement;
+    private passwordFieldVerify: HTMLFormElement;
+    private passwordVerifyContainer: HTMLElement;
+    private token: string;
+    private loader: Loader;
+    private validator: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);

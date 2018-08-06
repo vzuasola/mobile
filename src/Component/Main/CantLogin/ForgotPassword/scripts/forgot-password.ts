@@ -13,12 +13,12 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  * @param String passwordField selector to target for password
  */
 export class ForgotPassword extends FormBase {
-    emailField: HTMLFormElement;
-    emailContainer: HTMLElement;
-    form: HTMLFormElement;
-    loader: Loader;
-    validator: any;
-    passwordField: HTMLFormElement;
+    private emailField: HTMLFormElement;
+    private emailContainer: HTMLElement;
+    private form: HTMLFormElement;
+    private loader: Loader;
+    private validator: any;
+    private passwordField: HTMLFormElement;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);

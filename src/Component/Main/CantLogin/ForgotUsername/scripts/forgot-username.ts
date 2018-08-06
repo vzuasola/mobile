@@ -12,11 +12,11 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  * @param String emailField selector to target for email
  */
 export class ForgotUsername extends FormBase {
-    emailField: HTMLFormElement;
-    emailContainer: HTMLElement;
-    form: HTMLFormElement;
-    loader: Loader;
-    validator: any;
+    private emailField: HTMLFormElement;
+    private emailContainer: HTMLElement;
+    private form: HTMLFormElement;
+    private loader: Loader;
+    private validator: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
