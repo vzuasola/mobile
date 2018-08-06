@@ -134,9 +134,11 @@ export class MenuComponent implements ComponentInterface {
                 if (menus.hasOwnProperty(key)) {
                     const menu: HTMLElement = menus[key];
                     let url = utility.removeHash(menu.getAttribute("href"));
+
                     if (product !== "mobile-entrypage") {
                         url = utility.addHash(url, product.replace("mobile-", ""));
                     }
+
                     menu.setAttribute("href", url);
                 }
             }
