@@ -50,8 +50,20 @@ export class HeaderComponent implements ComponentInterface {
                             balance.innerHTML = response.balance;
                             const product = ComponentManager.getAttribute("product");
 
-                            if (response.map.hasOwnProperty(product) && response.map[product] !== 0) {
-                                balance.innerHTML = Number(response.balances[response.map[product]]).toFixed(2);
+                            if (response.map.hasOwnProperty(product) && response.map[product] !== "mobile-entrypage") {
+                                let totalBalance = 0;
+                                if (response.balances[response.map[product]]) {
+                                    totalBalance += response.balances[response.map[product]];
+                                }
+
+                                if (response.bonuses[response.map[product]]) {
+                                    totalBalance += response.bonuses[response.map[product]];
+                                }
+
+                                if (response.reserveBalances[response.map[product]]) {
+                                    totalBalance += response.reserveBalances[response.map[product]];
+                                }
+                                balance.innerHTML = Number(totalBalance).toFixed(2);
                             }
                         }
 
