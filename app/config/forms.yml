@@ -1,0 +1,52 @@
+# Form Definition file
+
+# Validations defines the sever side validation following this format:
+# validation_key: My\Class:myMethod
+validations:
+  default: App\Extensions\Form\Validators\Validators:default
+  required: App\Extensions\Form\Validators\Validators:required
+  alphanumeric: App\Extensions\Form\Validators\Validators:alphanumeric
+  no_symbols: App\Extensions\Form\Validators\Validators:noSymbols
+  numeric: App\Extensions\Form\Validators\Validators:numeric
+  numeric_symbols: App\Extensions\Form\Validators\Validators:numericSymbols
+  email: App\Extensions\Form\Validators\Validators:email
+  min_length: App\Extensions\Form\Validators\Validators:min
+  max_length: App\Extensions\Form\Validators\Validators:max
+  alpha: App\Extensions\Form\Validators\Validators:alpha
+  alpha_multi: App\Extensions\Form\Validators\Validators:alphaMulti
+  regex: App\Extensions\Form\Validators\Validators:regex
+  valid_date: App\Extensions\Form\Validators\Validators:validDate
+  invalid_words: App\MobileEntry\Extensions\Forms\Validators\Validators:invalidWords
+  verify_password: App\MobileEntry\Extensions\Forms\Validators\Validators:verifyPassword
+
+# Form type mapping
+#
+# You can define here a form type, form type has two parts:
+# - fields
+# - validation
+#
+# Fields are a mapping of 'index' to the actual FormMap class
+# Validatable lists all FormMap class that can be validated
+types:
+  # Mapping for Webcomposer Form
+  configurable_form:
+    fields:
+      textfield: App\Extensions\Form\ConfigurableForm\Fields\Text
+      password: App\Extensions\Form\ConfigurableForm\Fields\Password
+      select: App\Extensions\Form\ConfigurableForm\Fields\Select
+      textarea: App\Extensions\Form\ConfigurableForm\Fields\Textarea
+      radios: App\Extensions\Form\ConfigurableForm\Fields\Radios
+      checkbox: App\Extensions\Form\ConfigurableForm\Fields\Checkbox
+      checkboxes: App\Extensions\Form\ConfigurableForm\Fields\Checkboxes
+      markup: App\Extensions\Form\ConfigurableForm\Fields\Markup
+      submit: App\Extensions\Form\ConfigurableForm\Fields\Submit
+      hidden: App\Extensions\Form\ConfigurableForm\Fields\Hidden
+      button: App\Extensions\Form\ConfigurableForm\Fields\Button
+    validation:
+      - App\Extensions\Form\ConfigurableForm\Fields\Text
+      - App\Extensions\Form\ConfigurableForm\Fields\Password
+      - App\Extensions\Form\ConfigurableForm\Fields\Select
+      - App\Extensions\Form\ConfigurableForm\Fields\Textarea
+      - App\Extensions\Form\ConfigurableForm\Fields\Radios
+      - App\Extensions\Form\ConfigurableForm\Fields\Checkbox
+      - App\Extensions\Form\ConfigurableForm\Fields\Checkboxes

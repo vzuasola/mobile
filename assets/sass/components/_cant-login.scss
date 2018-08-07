@@ -1,0 +1,190 @@
+.forgot-password-form,
+.forgot-username-form,
+.reset-password-form,
+.confirmation-message {
+    margin-bottom: 1rem;
+
+    // Anchors
+    a:not(.btn) {
+        color: $yellow;
+        text-decoration: underline;
+    }
+
+    h3 {
+        color: $light-gray;
+        font-size: 1.8rem;
+    }
+}
+
+form.forgot-password-form,
+form.forgot-username-form,
+form.reset-password-form {
+    transition: opacity 0.3s;
+
+    .form-item {
+        & > .loader {
+            position: static;
+            // margin: 1rem 0;
+            padding: 1rem 0;
+
+            .loader-container {
+                position: relative;
+                top: 0;
+                transform: translate(-50%, 0);
+
+                .loader {
+                    position: absolute !important;
+                    top: 0 !important;
+                }
+            }
+        }
+
+    }
+
+    // Blurp top/header
+    .ForgotPasswordForm_header_markup,
+    .ForgotUsernameForm_header_markup,
+    .ResetPasswordForm_header_markup {
+        padding-left: 3.5rem;
+        padding-right: 3.5rem;
+        text-align: center;
+
+        .blurb-heading {
+            display: none;
+        }
+
+        .blurb-summary {
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+        }
+    }
+
+    // Blurb bottom/footer
+    .ForgotPasswordForm_footer_markup,
+    .ForgotUsernameForm_footer_markup,
+    .ResetPasswordForm_footer_markup {
+        //
+    }
+
+    // Server side error message
+    .error-message {
+        margin: -0.5rem 0 0;
+        padding-bottom: 0.5rem;
+        color: $red;
+    }
+
+    // Form rounded box start =======================
+    // All form item
+    .form-item {
+        margin-bottom: 0;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        border-left: 0.1rem solid #515151;
+        border-right: 0.1rem solid #515151;
+        background: #323031;
+
+        .form-field-element {
+            margin-bottom: 1rem;
+        }
+    }
+
+    // top form item
+    .ForgotPasswordForm_username,
+    .ForgotUsernameForm_email,
+    .ResetPasswordForm_new_password {
+        padding-top: 1rem;
+        border-top: 0.1rem solid #515151;
+        border-radius: 0.3rem 0.3rem 0 0;
+    }
+
+    // bottom form item (usually action buttons)
+    .ForgotPasswordForm_submit,
+    .ForgotUsernameForm_submit,
+    .ResetPasswordForm_submit {
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 0.1rem solid #515151;
+        border-radius: 0 0 0.3rem 0.3rem;
+    }
+    // Form rounded box end =======================
+}
+
+// contact info blurb
+.contact-info-blurb,
+.ForgotPasswordForm_footer_markup,
+.ForgotUsernameForm_footer_markup,
+.ResetPasswordForm_footer_markup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 3.5rem;
+
+    // 
+    & > div {
+        line-height: 1.2rem;
+    }
+
+    .icon-exclamation {
+        min-width: 4rem;
+        width: 4rem;
+        height: 4rem;
+        margin-right: 1.3rem;
+        fill: $white;
+    }
+
+    p {
+        margin-bottom: 0;
+    }
+}
+
+// Confirmation message
+.confirmation-message {
+    transition: opacity 0.3s;
+    opacity: 0;
+    text-align: center;
+
+    .icon-check-rounded {
+        width: 5rem;
+        height: 5rem;
+        fill: #50db10;
+
+    }
+
+    .contact-info-blurb {
+        padding-top: 2rem;
+        border-top: 0.1rem solid #515151;
+    }
+}
+
+// Temporary fix for double .form-field/.form-field-element
+.form-wrapper {
+    > .form-field {
+        > .form-field-element {
+            border-bottom: none;
+        }
+    }
+}
+
+// Reset password page
+.reset-password-page {
+    padding: 1px 0;
+    background: #2a2829;
+
+    form.reset-password-form {
+        .blurb-summary {
+            margin-top: 1.5rem;
+        }
+    }
+
+}
+
+// Password annotation with meter/strength
+.form-annotation-meter {
+    @extend .form-annotation;
+}
+
+// Helper for showing only on desktop/mobile
+.show-desktop {
+    display: none;
+}

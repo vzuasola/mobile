@@ -69,6 +69,21 @@ components:
   promotions:
     class: App\MobileEntry\Component\Main\Promotions\PromotionsComponent
 
+  cant_login:
+    class: App\MobileEntry\Component\Main\CantLogin\CantLoginComponent
+
+  cant_login_forgot_password:
+    class: App\MobileEntry\Component\Main\CantLogin\ForgotPassword\ForgotPasswordComponent
+    parent: cant_login
+
+  cant_login_forgot_username:
+    class: App\MobileEntry\Component\Main\CantLogin\ForgotUsername\ForgotUsernameComponent
+    parent: cant_login
+
+  cant_login_reset_password:
+    class: App\MobileEntry\Component\Main\CantLogin\ResetPassword\ResetPasswordComponent
+    parent: cant_login
+
   seo:
     class: App\MobileEntry\Component\SEO\SEOComponent
 
@@ -115,3 +130,6 @@ modules:
 
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
+
+  exchange_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Exchange\ExchangeIntegrationModule
