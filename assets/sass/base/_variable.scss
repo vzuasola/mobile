@@ -251,9 +251,13 @@ $grid-float-breakpoint:     $screen-sm-min !default;
 $grid-float-breakpoint-max: ($grid-float-breakpoint - 1) !default;
 
 // Password Strenght 'Meter' -------------------------------------------
-$weak-color: #f20000;
-$average-color: #6699cc;
-$strong-color: #0b840b;
+$password-meter-bar: #2b2829;
+$weak-color: #f00;
+$average-color: #fc3b00;
+$strong-color: #50db0f;
+$weak-font-color: $white;
+$average-font-color: $white;
+$strong-font-color: $dark-gray;
 
 $announcement-bg: #d3d3d3;
 $announcement-text: #5d5d5d;

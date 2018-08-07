@@ -21,7 +21,8 @@ form.change-password-form {
     & > .MyProfileForm_communication_markup,
     & > .MyProfileForm_address_markup,
     & > .MyProfileForm_preference_markup,
-    & > .ChangePasswordForm_current_password_field {
+    & > .ChangePasswordForm_current_password_field,
+    & > .ChangePasswordForm_current_password {
         @extend %form-item-round-top;
     }
 
@@ -30,7 +31,8 @@ form.change-password-form {
     & > .MyProfileForm_language,
     & > .MyProfileForm_postal_code,
     & > .MyProfileForm_button_cancel,
-    & > .ChangePasswordForm_change_password_submit_field {
+    & > .ChangePasswordForm_change_password_submit_field,
+    & > .ChangePasswordForm_submit {
         @extend %form-item-round-bottom;
     }
 
