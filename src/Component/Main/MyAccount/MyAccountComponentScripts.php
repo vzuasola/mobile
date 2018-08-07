@@ -17,18 +17,12 @@ class MyAccountComponentScripts implements ComponentAttachmentInterface
     private $configFetcher;
 
     /**
-     * Translation Manager Object.
-     */
-    private $translationManager;
-
-    /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('config_fetcher'),
-            $container->get('translation_manager')
+            $container->get('config_fetcher')
         );
     }
 
@@ -38,7 +32,6 @@ class MyAccountComponentScripts implements ComponentAttachmentInterface
     public function __construct($configFetcher, $translationManager)
     {
         $this->configFetcher = $configFetcher->withProduct('account');
-        $this->translationManager = $translationManager;
     }
     /**
      * @{inheritdoc}
@@ -46,7 +39,7 @@ class MyAccountComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         return [
-            'messages' => [],
+            'messages' => []
         ];
     }
 }
