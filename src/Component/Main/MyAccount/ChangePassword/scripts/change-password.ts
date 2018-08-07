@@ -12,11 +12,12 @@ import PasswordMeter from "@app/assets/script/components/password-meter";
  * @param Object attachments
  */
 export class ChangePassword extends FormBase {
-    form: HTMLFormElement;
-    currentPasswordField: HTMLFormElement;
-    newPasswordField: HTMLFormElement;
-    verifyPasswordField: HTMLFormElement;
-    passwordVerifyContainer: HTMLElement;
+    private form: HTMLFormElement;
+    private currentPasswordField: HTMLFormElement;
+    private newPasswordField: HTMLFormElement;
+    private verifyPasswordField: HTMLFormElement;
+    private passwordVerifyContainer: HTMLElement;
+    private validator: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -35,7 +36,7 @@ export class ChangePassword extends FormBase {
 
             // this.token = utility.getParameterByName("sbfpw", document.referrer);
             // this.loader = new Loader(utility.hasClass(this.passwordVerifyContainer, "form-item", true), false, 0);
-            // this.validator = this.validate(this.form);
+            this.validator = this.validateForm(this.form);
             this.activatePasswordMeter();
             // this.bindEvent();
         }
