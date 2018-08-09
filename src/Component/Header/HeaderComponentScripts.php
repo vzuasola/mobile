@@ -13,6 +13,14 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 
     private $loginConfig;
 
+    private $productResolver;
+
+    private $views;
+
+    const PRODUCT_MAPPING = [
+        'mobile-games' => 'games'
+    ];
+
     /**
      *
      */
@@ -20,17 +28,21 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('player_session'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('views_fetcher'),
+            $container->get('product_resolver')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $loginConfig)
+    public function __construct($playerSession, $loginConfig, $views, $productResolver)
     {
         $this->playerSession = $playerSession;
         $this->loginConfig = $loginConfig;
+        $this->views = $views;
+        $this->productResolver = $productResolver;
     }
 
     /**
@@ -52,7 +64,23 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
             'error_message_invalid_passname' => $config['error_message_invalid_passname'],
             'error_message_service_not_available' => $config['error_message_service_not_available'],
             'error_message_account_suspended' => $config['error_message_account_suspended'],
-            'error_message_account_locked' => $config['error_message_account_locked']
+            'error_message_account_locked' => $config['error_message_account_locked'],
+            'products' => $this->getProduct($this->productResolver->getProduct())
         ];
+    }
+
+    private function getProduct($productParam)
+    {
+        $result = [];
+        $products = $this->views->getViewById('products');
+
+        foreach ($products as $product) {
+            if (array_key_exists($productParam, $this::PRODUCT_MAPPING)
+                 && $this::PRODUCT_MAPPING[$productParam] === $product['field_product_instance_id'][0]['value']) {
+                $result[$productParam] = $product;
+            }
+        }
+
+        return $result;
     }
 }

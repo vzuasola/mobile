@@ -10,9 +10,10 @@ export class HeaderComponent implements ComponentInterface {
     private element: HTMLElement;
     private attachments: any;
 
-    onLoad(element: HTMLElement, attachments: { authenticated: boolean }) {
+    onLoad(element: HTMLElement, attachments: { authenticated: boolean, products: any[]}) {
         this.element = element;
         this.attachments = attachments;
+        this.attachProduct();
         this.refreshBalance();
 
         Router.on(RouterClass.afterNavigate, (event) => {
@@ -25,13 +26,16 @@ export class HeaderComponent implements ComponentInterface {
                 utility.removeClass(loader, "hidden");
 
                 this.refreshBalance();
+            } else {
+                this.attachProduct();
             }
         });
     }
 
-    onReload(element: HTMLElement, attachments: { authenticated: boolean }) {
+    onReload(element: HTMLElement, attachments: { authenticated: boolean, products: any[]}) {
         this.element = element;
         this.attachments = attachments;
+        this.attachProduct();
         this.refreshBalance();
     }
 
@@ -73,5 +77,25 @@ export class HeaderComponent implements ComponentInterface {
                 }
             },
         });
+    }
+
+    private attachProduct() {
+        const product = ComponentManager.getAttribute("product");
+        const loginButton = this.element.querySelector(".login-trigger");
+
+        if (product !== "mobile-entrypage" && loginButton) {
+            if (this.attachments.products.hasOwnProperty(product)) {
+                const currentProduct = this.attachments.products[product];
+
+                loginButton.setAttribute(
+                    "data-product-login-via",
+                    currentProduct.field_product_login_via[0].value,
+                );
+                loginButton.setAttribute(
+                    "data-product-reg-via",
+                    currentProduct.field_registration_url[0].value,
+                );
+            }
+        }
     }
 }

@@ -16,6 +16,10 @@ class HeaderComponent implements ComponentWidgetInterface
      */
     private $playerSession;
 
+     /**
+     * @var App\Fetcher\Drupal\ViewsFetcher
+     */
+    private $views;
 
     private $menu;
 
@@ -27,18 +31,20 @@ class HeaderComponent implements ComponentWidgetInterface
         return new static(
             $container->get('config_fetcher'),
             $container->get('player_session'),
-            $container->get('menu_fetcher')
+            $container->get('menu_fetcher'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession, $menu)
+    public function __construct($configs, $playerSession, $menu, $views)
     {
         $this->configs = $configs;
         $this->playerSession = $playerSession;
         $this->menu = $menu;
+        $this->views = $views;
     }
 
     /**
