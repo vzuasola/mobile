@@ -112,6 +112,7 @@ dev:
 
 lighthouse development:
   stage: integration-tests-development
+  when: manual
   script:
     - python -u automation/run.py --stage lighthouse
 

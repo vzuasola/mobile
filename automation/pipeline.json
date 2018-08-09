@@ -80,12 +80,14 @@
     },
     "lighthouse": {
         "steps": {
-            "phpcs": {
+            "lighthouse": {
                 "dockerfile": "automation/Dockerfile.lighthouse",
                 "docker-image-suffix": "-lighthouse",
                 "options": [],
                 "command": [
-                    "lighthouse"
+                    "lighthouse",
+                    "--accessibility=70",
+                    "--seo=85"
                 ]
             }
         }
