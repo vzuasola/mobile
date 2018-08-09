@@ -88,6 +88,9 @@
                     "lighthouse",
                     "--accessibility=70",
                     "--seo=85"
+                ],
+                "volumes": [
+                    "$PWD:/app"
                 ]
             }
         }
