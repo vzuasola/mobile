@@ -10,9 +10,10 @@ export class HeaderComponent implements ComponentInterface {
     private element: HTMLElement;
     private attachments: any;
 
-    onLoad(element: HTMLElement, attachments: { authenticated: boolean }) {
+    onLoad(element: HTMLElement, attachments: { authenticated: boolean, products: any[]}) {
         this.element = element;
         this.attachments = attachments;
+        this.attachProduct();
         this.refreshBalance();
 
         Router.on(RouterClass.afterNavigate, (event) => {
@@ -29,9 +30,10 @@ export class HeaderComponent implements ComponentInterface {
         });
     }
 
-    onReload(element: HTMLElement, attachments: { authenticated: boolean }) {
+    onReload(element: HTMLElement, attachments: { authenticated: boolean, products: any[]}) {
         this.element = element;
         this.attachments = attachments;
+        this.attachProduct();
         this.refreshBalance();
     }
 
@@ -61,5 +63,24 @@ export class HeaderComponent implements ComponentInterface {
                 }
             },
         });
+    }
+
+    private attachProduct() {
+        const product = ComponentManager.getAttribute("product");
+
+        if (product !== "mobile-entrypage") {
+            if (this.attachments.products.hasOwnProperty(product)) {
+                const currentProduct = this.attachments.products[product];
+
+                this.element.querySelector(".btn-mobile-login").setAttribute(
+                    "data-product-login-via",
+                    currentProduct.field_product_login_via[0].value,
+                );
+                this.element.querySelector(".btn-mobile-login").setAttribute(
+                    "data-product-reg-via",
+                    currentProduct.field_registration_url[0].value,
+                );
+            }
+        }
     }
 }

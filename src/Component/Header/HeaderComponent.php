@@ -21,13 +21,7 @@ class HeaderComponent implements ComponentWidgetInterface
      */
     private $views;
 
-
     private $menu;
-
-    const PRODUCT_MAPPING = [
-        'mobile-entrypage' => 0,
-        'games' => 'games'
-    ];
 
     /**
      *
@@ -87,7 +81,6 @@ class HeaderComponent implements ComponentWidgetInterface
         $data['mobile_remember'] = $headerConfigs['mobile_remember'] ?? 'Remember Username';
         $data['mobile_login_reg'] = $headerConfigs['mobile_login_reg'] ?? 'Login/Join';
         $data['join_now_link'] = $headerConfigs['join_now_link'] ?? [];
-        $data['product'] = $this->getProduct('games');
 
         try {
             $isLogin = $this->playerSession->isLogin();
@@ -105,20 +98,5 @@ class HeaderComponent implements ComponentWidgetInterface
         }
 
         return $data;
-    }
-
-    private function getProduct($productParam)
-    {
-        $result = [];
-        $products = $this->views->getViewById('products');
-
-        foreach ($products as $key => $product) {
-            if (array_key_exists($product['field_product_instance_id'][0]['value'], $this::PRODUCT_MAPPING)
-                 && $this::PRODUCT_MAPPING[$product['field_product_instance_id'][0]['value']] === $productParam) {
-                return $product;
-            }
-        }
-
-        return [];
     }
 }
