@@ -110,6 +110,11 @@ dev:
   tags:
     - jmeter
 
+lighthouse development:
+  stage: integration-tests-development
+  script:
+    - python -u automation/run.py --stage lighthouse
+
 qa1:
   stage: deploy-test
   environment:

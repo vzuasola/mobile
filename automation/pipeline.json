@@ -78,6 +78,18 @@
             }
         }
     },
+    "lighthouse": {
+        "steps": {
+            "phpcs": {
+                "dockerfile": "automation/Dockerfile.lighthouse",
+                "docker-image-suffix": "-lighthouse",
+                "options": [],
+                "command": [
+                    "lighthouse"
+                ]
+            }
+        }
+    },
     "sensiolab-security-checker": {
         "steps": {
             "sensiolab-security-checker": {
