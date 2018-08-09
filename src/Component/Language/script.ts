@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 import {Modal} from "@app/assets/script/components/modal";
 
@@ -9,9 +9,16 @@ import {Modal} from "@app/assets/script/components/modal";
  *
  */
 export class LanguageComponent implements ComponentInterface {
+    private product: string;
+
     onLoad(element: HTMLElement, attachments: {currentLanguage: string}) {
+        this.product = ComponentManager.getAttribute("product");
         this.generateLanguageUrl(element, attachments.currentLanguage);
         this.bindLanguageLightbox();
+
+        Router.on(RouterClass.afterNavigate, (event) => {
+            this.refreshLanguage();
+        });
     }
 
     onReload(element: HTMLElement, attachments: {currentLanguage: string}) {
@@ -55,5 +62,13 @@ export class LanguageComponent implements ComponentInterface {
                 Modal.open("#language-lightbox");
             }
         });
+    }
+
+    private refreshLanguage() {
+        const product = ComponentManager.getAttribute("product");
+        if (this.product !== product) {
+            this.product = product;
+            ComponentManager.refreshComponent("language");
+        }
     }
 }
