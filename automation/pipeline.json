@@ -85,7 +85,7 @@
                 "docker-image-suffix": "-lighthouse",
                 "options": [],
                 "command": [
-                    "lighthouse",
+                    "https://dev-m.elysium-dfbt.com",
                     "--accessibility=70",
                     "--seo=85"
                 ],
