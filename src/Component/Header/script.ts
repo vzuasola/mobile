@@ -26,6 +26,8 @@ export class HeaderComponent implements ComponentInterface {
                 utility.removeClass(loader, "hidden");
 
                 this.refreshBalance();
+            } else {
+                this.attachProduct();
             }
         });
     }
@@ -67,16 +69,17 @@ export class HeaderComponent implements ComponentInterface {
 
     private attachProduct() {
         const product = ComponentManager.getAttribute("product");
+        const loginButton = this.element.querySelector(".login-trigger");
 
-        if (product !== "mobile-entrypage") {
+        if (product !== "mobile-entrypage" && loginButton) {
             if (this.attachments.products.hasOwnProperty(product)) {
                 const currentProduct = this.attachments.products[product];
 
-                this.element.querySelector(".btn-mobile-login").setAttribute(
+                loginButton.setAttribute(
                     "data-product-login-via",
                     currentProduct.field_product_login_via[0].value,
                 );
-                this.element.querySelector(".btn-mobile-login").setAttribute(
+                loginButton.setAttribute(
                     "data-product-reg-via",
                     currentProduct.field_registration_url[0].value,
                 );

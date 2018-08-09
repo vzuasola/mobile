@@ -17,19 +17,22 @@ export class MenuComponent implements ComponentInterface {
 
     private element: HTMLElement;
     private isLogin: boolean;
+    private products: any[];
 
     constructor() {
         this.pushNotification = new PushNotification();
     }
 
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onLoad(element: HTMLElement, attachments: {authenticated: boolean, products: any[]}) {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
         this.isLogin = attachments.authenticated;
+        this.products = attachments.products;
 
         this.activateMenu(element);
         this.attachProduct();
+        this.attachProductToLogin();
 
         this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
@@ -46,17 +49,20 @@ export class MenuComponent implements ComponentInterface {
 
         Router.on(RouterClass.afterNavigate, (event) => {
             this.attachProduct();
+            this.attachProductToLogin();
         });
 
     }
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onReload(element: HTMLElement, attachments: {authenticated: boolean, products: any[]}) {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
+        this.products = attachments.products;
 
         this.activateMenu(element);
         this.attachProduct();
+        this.attachProductToLogin();
 
         this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
@@ -135,6 +141,26 @@ export class MenuComponent implements ComponentInterface {
                 url = utility.addHash(url, product.replace("mobile-", ""));
             }
             menu.setAttribute("href", url);
+        }
+    }
+
+    private attachProductToLogin() {
+        const product = ComponentManager.getAttribute("product");
+        const loginButton = this.element.querySelector(".login-trigger");
+
+        if (product !== "mobile-entrypage" && loginButton) {
+            if (this.products.hasOwnProperty(product)) {
+                const currentProduct = this.products[product];
+
+                loginButton.setAttribute(
+                    "data-product-login-via",
+                    currentProduct.field_product_login_via[0].value,
+                );
+                loginButton.setAttribute(
+                    "data-product-reg-via",
+                    currentProduct.field_registration_url[0].value,
+                );
+            }
         }
     }
 }
