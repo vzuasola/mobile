@@ -74,7 +74,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
         $result = [];
         $products = $this->views->getViewById('products');
 
-        foreach ($products as $key => $product) {
+        foreach ($products as $product) {
             if (array_key_exists($productParam, $this::PRODUCT_MAPPING)
                  && $this::PRODUCT_MAPPING[$productParam] === $product['field_product_instance_id'][0]['value']) {
                 $result[$productParam] = $product;
