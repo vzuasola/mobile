@@ -1,0 +1,45 @@
+form.profile-form,
+form.change-password-form {
+    padding-top: 1rem;
+    transition: opacity 0.3s;
+
+    .form-item {
+        // Loader
+        & > .loader {
+           @extend %form-loader;
+        }
+
+    }
+
+    // Middle form items
+    & > .form-item {
+        @extend %form-item-round;
+    }
+
+    // top form items
+    & > .MyProfileForm_account_markup,
+    & > .MyProfileForm_communication_markup,
+    & > .MyProfileForm_address_markup,
+    & > .MyProfileForm_preference_markup,
+    & > .ChangePasswordForm_current_password_field,
+    & > .ChangePasswordForm_current_password {
+        @extend %form-item-round-top;
+    }
+
+    // bottom form items (usually action buttons)
+    & > .MyProfileForm_gender,
+    & > .MyProfileForm_language,
+    & > .MyProfileForm_postal_code,
+    & > .MyProfileForm_button_cancel,
+    & > .ChangePasswordForm_change_password_submit_field,
+    & > .ChangePasswordForm_submit {
+        @extend %form-item-round-bottom;
+    }
+
+    // Form actions (2 columns)
+    .MyProfileForm_submit,
+    .MyProfileForm_button_cancel {
+        @extend %form-item-two-cols;
+        @extend %form-item-two-cols-bottom;
+    }
+}

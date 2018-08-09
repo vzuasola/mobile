@@ -7,10 +7,10 @@ import {Validator} from "@app/assets/script/components/validation/validator";
  * @param Node element component parent element
  * @param Object attachments
  */
-export abstract class CantLoginBase {
+export abstract class FormBase {
     element: HTMLElement;
     attachments: any;
-    msgClass: string;
+    private msgClass: string;
 
     constructor(element: HTMLElement, attachments: any) {
         this.element = element;
@@ -18,7 +18,7 @@ export abstract class CantLoginBase {
         this.msgClass = "error-message";
     }
 
-    validate(form: HTMLFormElement) {
+    validateForm(form: HTMLFormElement) {
         const validator = new Validator(
             JSON.parse(form.getAttribute("data-validations")), [],
         );
@@ -28,9 +28,9 @@ export abstract class CantLoginBase {
         return validator;
     }
 
-    messageMapping(key) {
-        const widgetContainer = document.querySelector("div[data-component-widget-class=cant_login]");
-        const attachments = widgetContainer.getAttribute("data-component-widget-attachments");
+    messageMapping(key: string, component: string) {
+        const componentTarget = document.querySelector("[data-component-widget-class=" + component + "]");
+        const attachments = componentTarget.getAttribute("data-component-widget-attachments");
         const config = JSON.parse(attachments);
         return config.messages[key];
     }

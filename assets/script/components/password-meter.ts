@@ -136,6 +136,20 @@ export default class PasswordMeter {
             utility.addClass(wrapper, "password-meter-hidden");
             strengthBar.innerHTML = "";
         }
+
+        this.addInputClass(strength);
+
+    }
+
+    private addInputClass(strength) {
+        utility.removeClass(this.passwordContainer, "form-item-hidden");
+        utility.removeClass(this.passwordContainer, "form-item-weak");
+        utility.removeClass(this.passwordContainer, "form-item-average");
+        utility.removeClass(this.passwordContainer, "form-item-strong");
+
+        if (strength !== "hidden") {
+            utility.addClass(this.passwordContainer, "form-item-" + strength);
+        }
     }
 
     private generateMarkup() {

@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
-import {CantLoginBase} from "@app/src/Component/Main/CantLogin/scripts/cant-login-base";
+import {FormBase} from "@app/assets/script/components/form-base";
 import PasswordMeter from "@app/assets/script/components/password-meter";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
@@ -11,19 +11,17 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  * @param Node element component parent element
  * @param Object attachments
  */
-export class ResetPassword extends CantLoginBase {
-    form: HTMLFormElement;
-    passwordField: HTMLFormElement;
-    passwordFieldVerify: HTMLFormElement;
-    passwordVerifyContainer: HTMLElement;
-    token: string;
-    loader: Loader;
-    validator: any;
+export class ResetPassword extends FormBase {
+    private form: HTMLFormElement;
+    private passwordField: HTMLFormElement;
+    private passwordFieldVerify: HTMLFormElement;
+    private passwordVerifyContainer: HTMLElement;
+    private token: string;
+    private loader: Loader;
+    private validator: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
-        this.element = element;
-        this.attachments = attachments;
     }
 
     init() {
@@ -33,9 +31,9 @@ export class ResetPassword extends CantLoginBase {
             this.passwordField = this.form.ResetPasswordForm_new_password;
             this.passwordFieldVerify = this.form.ResetPasswordForm_verify_password;
             this.passwordVerifyContainer = utility.hasClass(this.passwordFieldVerify, "form-item", true);
-            this.token = utility.getParameterByName("sbfpw", document.referrer);
+            this.token = utility.getParameterByName("sbfpw");
             this.loader = new Loader(utility.hasClass(this.passwordVerifyContainer, "form-item", true), false, 0);
-            this.validator = this.validate(this.form);
+            this.validator = this.validateForm(this.form);
             this.activatePasswordMeter();
             this.bindEvent();
         }
@@ -85,7 +83,7 @@ export class ResetPassword extends CantLoginBase {
                 if (resp.status === "CHANGE_FORGOTTEN_PASSWORD_SUCCESS") {
                     this.showConfirmationMessage(this.form);
                 } else {
-                    this.showMessage(this.passwordVerifyContainer, this.messageMapping(resp.status));
+                    this.showMessage(this.passwordVerifyContainer, this.messageMapping(resp.status, "cant_login"));
                 }
             })
             .fail((err, msg) => {

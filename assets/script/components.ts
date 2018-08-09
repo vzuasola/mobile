@@ -1,4 +1,4 @@
-import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
+import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 
 import {AccessDeniedComponent} from "@app/src/Component/Main/AccessDenied/script";
 import {FooterComponent} from "@app/src/Component/Footer/script";
@@ -26,6 +26,9 @@ import { SessionLegacyComponent } from "@app/src/Component/Main/SessionLegacy/sc
 import {CantLoginForgotPasswordComponent} from "@app/src/Component/Main/CantLogin/ForgotPassword/script";
 import {CantLoginForgotUsernameComponent} from "@app/src/Component/Main/CantLogin/ForgotUsername/script";
 import {CantLoginResetPasswordComponent} from "@app/src/Component/Main/CantLogin/ResetPassword/script";
+import {MyAccountComponent} from "@app/src/Component/Main/MyAccount/script";
+import {MyAccountProfileComponent} from "@app/src/Component/Main/MyAccount/Profile/script";
+import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -54,4 +57,7 @@ ComponentManager.setComponents({
     cant_login_forgot_password: new CantLoginForgotPasswordComponent(),
     cant_login_forgot_username: new CantLoginForgotUsernameComponent(),
     cant_login_reset_password: new CantLoginResetPasswordComponent(),
+    my_account: new MyAccountComponent(),
+    profile: new MyAccountProfileComponent(),
+    change_password: new MyAccountChangePasswordComponent(),
 });

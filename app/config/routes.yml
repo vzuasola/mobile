@@ -56,6 +56,12 @@ routes:
         components:
           main: cant_login
 
+    /my-account:
+        method: GET
+        action: App\MobileEntry\Controller\MyAccountController:view
+        components:
+          main: my_account
+
     /games:
         method: GET
         action: App\MobileEntry\Controller\GamesController:view
