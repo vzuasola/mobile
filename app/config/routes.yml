@@ -62,6 +62,19 @@ routes:
         components:
           main: my_account
 
+    /games:
+        method: GET
+        action: App\MobileEntry\Controller\GamesController:view
+        components:
+            main: games_lobby
+        headers:
+            Cache-Control: public, max-age=900
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-games
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:
