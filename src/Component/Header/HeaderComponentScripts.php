@@ -71,14 +71,18 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 
     private function getProduct($productParam)
     {
-        $result = [];
-        $products = $this->views->getViewById('products');
+        try {
+            $result = [];
+            $products = $this->views->getViewById('products');
 
-        foreach ($products as $product) {
-            if (array_key_exists($productParam, $this::PRODUCT_MAPPING)
-                 && $this::PRODUCT_MAPPING[$productParam] === $product['field_product_instance_id'][0]['value']) {
-                $result[$productParam] = $product;
+            foreach ($products as $product) {
+                if (array_key_exists($productParam, $this::PRODUCT_MAPPING)
+                     && $this::PRODUCT_MAPPING[$productParam] === $product['field_product_instance_id'][0]['value']) {
+                    $result[$productParam] = $product;
+                }
             }
+        } catch (\Exception $e) {
+            $result = [];
         }
 
         return $result;
