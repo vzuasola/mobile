@@ -115,6 +115,8 @@ lighthouse development:
   when: manual
   script:
     - python -u automation/run.py --stage lighthouse
+  tags:
+    - devrunner
 
 qa1:
   stage: deploy-test
