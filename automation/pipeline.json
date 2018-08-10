@@ -85,6 +85,7 @@
                 "docker-image-suffix": "-lighthouse",
                 "options": [],
                 "command": [
+                    "lighthouse-ci",
                     "https://m.dafabet.com",
                     "--accessibility=70",
                     "--seo=85"

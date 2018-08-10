@@ -27,5 +27,4 @@ RUN groupadd --system chrome && \
 
 USER chrome
 
-ENTRYPOINT ["lighthouse-ci"]
-CMD ["lighthouse-ci", "--help"]
+ENTRYPOINT []
