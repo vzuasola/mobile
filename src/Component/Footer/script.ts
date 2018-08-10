@@ -41,16 +41,16 @@ export class FooterComponent implements ComponentInterface {
         const product = ComponentManager.getAttribute("product");
         const menu: HTMLElement = this.element.querySelector(".footer-desktop");
 
-        if (menu) {
+        if (menu && this.originalOrl) {
             let url = this.originalOrl;
-            if (product !== "mobile-entrypage") {
-                url = url.replace("@product", product.replace("mobile-", ""));
-            } else {
-                url = url.replace("@product", "");
+            if (url.indexOf("@product") !== -1) {
+                if (product !== "mobile-entrypage") {
+                    url = url.replace("@product", product.replace("mobile-", ""));
+                } else {
+                    url = url.replace("@product", "");
+                }
             }
-
             menu.setAttribute("href", url);
-
         }
     }
 }
