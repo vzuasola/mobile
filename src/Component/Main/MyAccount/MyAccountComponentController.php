@@ -45,23 +45,23 @@ class MyAccountComponentController
     }
 
     /**
-     * Ajax - forgot password request
+     * Ajax - change password request
      */
-    public function forgotpassword($request, $response)
+    public function changepassword($request, $response)
     {
-        $username = $request->getParam('username');
-        $email = $request->getParam('email');
+        $currentPassword = $request->getParam('current_password');
+        $newPassword = $request->getParam('new_password');
 
         try {
-            $this->userFetcher->setForgotPassword($username, $email);
+            $result = $this->changePassword->changePlayerPassword($currentPassword, $newPassword);
             $status = 'FORGOT_PASSWORD_SUCCESS';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
 
             $status = 'INTERNAL_ERROR';
-            if ($error['responseCode'] == "INT034") {
-                $status = 'FORGOT_PASSWORD_FAILED';
+            if ($error['responseCode'] == "INT013") {
+                $status = 'CHANGE_PASSWORD_FAILED';
             }
         }
 
