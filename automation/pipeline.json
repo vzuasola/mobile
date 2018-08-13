@@ -86,7 +86,7 @@
                 "options": [],
                 "command": [
                     "lighthouse-ci",
-                    "https://m.dafabet.com",
+                    "https://dev-m.elysium-dfbt.com",
                     "--accessibility=70",
                     "--seo=85"
                 ],
