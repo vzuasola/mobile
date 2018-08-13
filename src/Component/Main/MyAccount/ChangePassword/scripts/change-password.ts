@@ -35,7 +35,6 @@ export class ChangePassword extends FormBase {
             this.verifyPasswordField = this.form.ChangePasswordForm_verify_password;
             this.passwordVerifyContainer = utility.hasClass(this.verifyPasswordField, "form-item", true);
 
-            // this.token = utility.getParameterByName("sbfpw", document.referrer);
             this.loader = new Loader(utility.hasClass(this.passwordVerifyContainer, "form-item", true), false, 0);
             this.validator = this.validateForm(this.form);
             this.activatePasswordMeter();

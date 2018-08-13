@@ -54,7 +54,7 @@ class MyAccountComponentController
 
         try {
             $result = $this->changePassword->changePlayerPassword($currentPassword, $newPassword);
-            $status = 'FORGOT_PASSWORD_SUCCESS';
+            $status = 'CHANGE_PASSWORD_SUCCESS';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
