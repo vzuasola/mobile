@@ -89,7 +89,7 @@
                     "https://dev-m.elysium-dfbt.com",
                     "--report",
                     "--accessibility=70",
-                    "--seo=85",
+                    "--seo=85"
                 ],
                 "volumes": [
                     "$PWD:/app"
