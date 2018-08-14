@@ -2,19 +2,5 @@
 {{ form_start(formChangePassword, {'attr': {'class': 'pure-form change-password-form'}}) }}
 {{ form_end(formChangePassword) }}
 <div class="confirmation-message mt-25 mb-20 hidden">
-    <div><svg class="icon-check-rounded mb-10" viewBox="0 0 100 100"> <use xlink:href="#check-rounded" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg>
-<h3 class="text-red text-semibold"><span class="icon-success">&nbsp;</span> Retrieve Password&nbsp;Request Sent (Mobile)</h3>
-
-<p>A confirmation message has been sent to your registered email address.</p>
-
-<p>Please check your email with your registered Dafabet username.</p>
-
-<p><a class="btn btn-yellow btn-small btn-mobile" href="https://www.google.com.ph/" target="_self">GO TO Google.com</a></p>
-</div>
-
-<div class="contact-info-blurb"><svg class="icon-exclamation mb-5" viewBox="0 0 100 100"> <use xlink:href="#exclamation-rounded" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg>
-
-<p class="text-align-left">For any question or concerns please contact <a href="linkto:avaya">Customer Support</a></p>
-</div>
-
+    {{ successMessage|raw}}
 </div>
