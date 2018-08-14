@@ -168,14 +168,16 @@ export default class PasswordMeter {
     }
 
     private formAnnotationRender() {
-        const strength = this.passwordStrengthTest();
+        if (this.password.hasAttribute("data-annotation")) {
+            const strength = this.passwordStrengthTest();
 
-        if (strength === "hidden" || strength === "weak" || strength === "average") {
-            this.showFormAnnotationMeter(strength);
-        }
+            if (strength === "hidden" || strength === "weak" || strength === "average") {
+                this.showFormAnnotationMeter(strength);
+            }
 
-        if (strength === "strong") {
-            this.hideFormAnnotationMeter();
+            if (strength === "strong") {
+                this.hideFormAnnotationMeter();
+            }
         }
     }
 
