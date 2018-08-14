@@ -119,7 +119,7 @@ lighthouse development:
     - devrunner
   artifacts:
     paths:
-      - lighthouse/report.html
+      - lighthouse
     expire_in: 1 month
 
 qa1:

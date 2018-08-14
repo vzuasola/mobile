@@ -19,7 +19,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 ARG CACHEBUST=1
 RUN npm i https://github.com/alexecus/lighthouse-ci -g
 
-RUN mkdir -p /lighthouse
+RUN mkdir -p /lighthouse && chmod 777 -R /lighthouse
 
 # Add a chrome user and setup home dir
 RUN groupadd --system chrome && \
@@ -29,6 +29,6 @@ RUN groupadd --system chrome && \
 
 USER chrome
 
-WORKDIR /app
+WORKDIR /lighthouse
 
 ENTRYPOINT []
