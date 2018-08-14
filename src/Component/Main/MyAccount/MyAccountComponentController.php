@@ -13,11 +13,6 @@ class MyAccountComponentController
     private $rest;
 
     /**
-     * User Fetcher Object.
-     */
-    private $userFetcher;
-
-    /**
      * Change Password Fetcher Object.
      */
     private $changePassword;
@@ -29,7 +24,6 @@ class MyAccountComponentController
     {
         return new static(
             $container->get('rest'),
-            $container->get('user_fetcher'),
             $container->get('change_password')
         );
     }
@@ -37,10 +31,9 @@ class MyAccountComponentController
     /**
      * Public constructor
      */
-    public function __construct($rest, $userFetcher, $changePassword)
+    public function __construct($rest, $changePassword)
     {
         $this->rest = $rest;
-        $this->userFetcher = $userFetcher;
         $this->changePassword = $changePassword;
     }
 
