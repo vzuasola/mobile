@@ -93,6 +93,9 @@
                 ],
                 "volumes": [
                     "$PWD:/app"
+                ],
+                "other_vars": [
+                    "--build-arg CACHEBUST=$(date +%s)"
                 ]
             }
         }
