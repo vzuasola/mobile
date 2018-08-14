@@ -27,4 +27,6 @@ RUN groupadd --system chrome && \
 
 USER chrome
 
+WORKDIR /app
+
 ENTRYPOINT []
