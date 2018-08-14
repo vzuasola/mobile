@@ -133,7 +133,7 @@ export default function ErrorHandler(errors, event, formValidations) {
     function createErrorIcon(input) {
         var icon = utility.findSibling(input, '.icon-validation'),
             iconSuccess = '<svg class="icon-success" viewbox="0 0 39.19 39.53"><use xlink:href="#check-rounded-thin" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>',
-            iconError = '<svg class="icon-error" viewbox="0 0 100 100"><use xlink:href="#exclamation-rounded" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>';;
+            iconError = '<svg class="icon-error" viewbox="0 0 100 100"><use xlink:href="#exclamation-rounded" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>';
 
         if (!icon) {
             var element = document.createElement('span');
