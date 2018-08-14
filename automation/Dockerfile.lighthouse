@@ -29,6 +29,7 @@ RUN groupadd --system chrome && \
 
 USER chrome
 
+VOLUME ["/lighthouse"]
 WORKDIR /lighthouse
 
 ENTRYPOINT []
