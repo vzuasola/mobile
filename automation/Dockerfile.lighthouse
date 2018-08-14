@@ -19,6 +19,8 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 ARG CACHEBUST=1
 RUN npm i https://github.com/alexecus/lighthouse-ci -g
 
+RUN mkdir -p /lighthouse
+
 # Add a chrome user and setup home dir
 RUN groupadd --system chrome && \
     useradd --system --create-home --gid chrome --groups audio,video chrome && \
@@ -26,8 +28,6 @@ RUN groupadd --system chrome && \
     chown --recursive chrome:chrome /home/chrome
 
 USER chrome
-
-RUN mkdir -p /lighthouse
 
 WORKDIR /app
 
