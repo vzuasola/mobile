@@ -46,7 +46,7 @@ class MyAccountComponentController
         $newPassword = $request->getParam('new_password');
 
         try {
-            $result = $this->changePassword->changePlayerPassword($currentPassword, $newPassword);
+            $this->changePassword->changePlayerPassword($currentPassword, $newPassword);
             $status = 'CHANGE_PASSWORD_SUCCESS';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
