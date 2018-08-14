@@ -117,6 +117,10 @@ lighthouse development:
     - python -u automation/run.py --stage lighthouse
   tags:
     - devrunner
+  artifacts:
+    paths:
+      - lighthouse/report.html
+    expire_in: 1 month
 
 qa1:
   stage: deploy-test

@@ -27,6 +27,8 @@ RUN groupadd --system chrome && \
 
 USER chrome
 
+RUN mkdir -p /lighthouse
+
 WORKDIR /app
 
 ENTRYPOINT []
