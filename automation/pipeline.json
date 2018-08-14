@@ -85,17 +85,10 @@
                 "docker-image-suffix": "-lighthouse",
                 "options": [],
                 "command": [
-                    "lighthouse-ci",
-                    "https://dev-m.elysium-dfbt.com",
-                    "--report=automation/deployed/",
-                    "--accessibility=70",
-                    "--seo=85"
+                    "lighthouse-ci"
                 ],
                 "volumes": [
                     "$PWD:/app"
-                ],
-                "other_vars": [
-                    "--build-arg CACHEBUST=$(date +%s)"
                 ]
             }
         }
