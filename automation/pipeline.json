@@ -92,7 +92,7 @@
                     "--seo=85"
                 ],
                 "volumes": [
-                    "$PWD:/app"
+                    "$PWD:/lighthouse"
                 ]
             }
         }
