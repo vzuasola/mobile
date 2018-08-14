@@ -1,6 +1,6 @@
 import * as utility from "@core/assets/js/components/utility";
-// import * as xhr from "@core/assets/js/vendor/reqwest";
-// import {Router} from "@plugins/ComponentWidget/asset/router";
+import * as xhr from "@core/assets/js/vendor/reqwest";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Loader} from "@app/assets/script/components/loader";
 import {FormBase} from "@app/assets/script/components/form-base";
 import PasswordMeter from "@app/assets/script/components/password-meter";
@@ -18,6 +18,7 @@ export class ChangePassword extends FormBase {
     private verifyPasswordField: HTMLFormElement;
     private passwordVerifyContainer: HTMLElement;
     private validator: any;
+    private loader: Loader;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -34,12 +35,55 @@ export class ChangePassword extends FormBase {
             this.verifyPasswordField = this.form.ChangePasswordForm_verify_password;
             this.passwordVerifyContainer = utility.hasClass(this.verifyPasswordField, "form-item", true);
 
-            // this.token = utility.getParameterByName("sbfpw", document.referrer);
-            // this.loader = new Loader(utility.hasClass(this.passwordVerifyContainer, "form-item", true), false, 0);
+            this.loader = new Loader(utility.hasClass(this.passwordVerifyContainer, "form-item", true), false, 0);
             this.validator = this.validateForm(this.form);
             this.activatePasswordMeter();
-            // this.bindEvent();
+            this.bindEvent();
         }
+    }
+
+    private bindEvent() {
+        // Listen form on submit
+        utility.listen(this.form, "submit", (event, src) => {
+            event.preventDefault();
+
+            if (!this.validator.hasError) {
+                this.checkField();
+            }
+        });
+    }
+
+    private checkField() {
+        // Remove/hide error message & Show loader
+        this.hideMessage(this.passwordVerifyContainer);
+        this.loader.show();
+
+        // Disable fields
+        this.disableFields(this.form);
+
+        xhr({
+            url: Router.generateRoute("my_account", "changepassword"),
+            type: "json",
+            method: "post",
+            data: {
+                current_password: this.currentPasswordField.value,
+                new_password : this.newPasswordField.value,
+            },
+        })
+            .then((resp) => {
+                if (resp.status === "CHANGE_PASSWORD_SUCCESS") {
+                    this.showConfirmationMessage(this.form);
+                } else {
+                    this.showMessage(this.passwordVerifyContainer, this.messageMapping(resp.status, "change_password"));
+                }
+            })
+            .fail((err, msg) => {
+                this.showMessage(this.passwordVerifyContainer, "Error retrieving data...");
+            })
+            .always((resp) => {
+                this.loader.hide();
+                this.enableFields(this.form);
+            });
     }
 
     private activatePasswordMeter() {

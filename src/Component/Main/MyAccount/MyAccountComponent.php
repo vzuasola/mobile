@@ -10,29 +10,6 @@ use App\MobileEntry\Form\ResetPasswordForm;
 class MyAccountComponent implements ComponentWidgetInterface
 {
     /**
-     * Config Fetcher object.
-     */
-    private $configFetcher;
-
-    /**
-     *
-     */
-    public static function create($container)
-    {
-        return new static(
-            $container->get('config_fetcher')
-        );
-    }
-
-    /**
-     * Public constructor
-     */
-    public function __construct($configFetcher)
-    {
-        $this->configFetcher = $configFetcher->withProduct('account');
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getTemplate()

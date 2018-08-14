@@ -13,11 +13,6 @@ class MyAccountComponentController
     private $rest;
 
     /**
-     * User Fetcher Object.
-     */
-    private $userFetcher;
-
-    /**
      * Change Password Fetcher Object.
      */
     private $changePassword;
@@ -29,7 +24,6 @@ class MyAccountComponentController
     {
         return new static(
             $container->get('rest'),
-            $container->get('user_fetcher'),
             $container->get('change_password')
         );
     }
@@ -37,31 +31,30 @@ class MyAccountComponentController
     /**
      * Public constructor
      */
-    public function __construct($rest, $userFetcher, $changePassword)
+    public function __construct($rest, $changePassword)
     {
         $this->rest = $rest;
-        $this->userFetcher = $userFetcher;
         $this->changePassword = $changePassword;
     }
 
     /**
-     * Ajax - forgot password request
+     * Ajax - change password request
      */
-    public function forgotpassword($request, $response)
+    public function changepassword($request, $response)
     {
-        $username = $request->getParam('username');
-        $email = $request->getParam('email');
+        $currentPassword = $request->getParam('current_password');
+        $newPassword = $request->getParam('new_password');
 
         try {
-            $this->userFetcher->setForgotPassword($username, $email);
-            $status = 'FORGOT_PASSWORD_SUCCESS';
+            $result = $this->changePassword->changePlayerPassword($currentPassword, $newPassword);
+            $status = 'CHANGE_PASSWORD_SUCCESS';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
 
             $status = 'INTERNAL_ERROR';
-            if ($error['responseCode'] == "INT034") {
-                $status = 'FORGOT_PASSWORD_FAILED';
+            if ($error['responseCode'] == "INT013") {
+                $status = 'CHANGE_PASSWORD_FAILED';
             }
         }
 
