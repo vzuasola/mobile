@@ -1,7 +1,8 @@
 .forgot-password-form,
 .forgot-username-form,
 .reset-password-form,
-.confirmation-message {
+.api-success-message,
+.api-failed-message {
     margin-bottom: 1rem;
 
     // Anchors
@@ -46,13 +47,6 @@ form.reset-password-form {
         }
     }
 
-    // Blurb bottom/footer
-    .ForgotPasswordForm_footer_markup,
-    .ForgotUsernameForm_footer_markup,
-    .ResetPasswordForm_footer_markup {
-        //
-    }
-
     // All form item
     .form-item {
         @extend %form-item-round;
@@ -82,7 +76,8 @@ form.reset-password-form {
 }
 
 // Confirmation message
-.confirmation-message {
+.api-success-message,
+.api-failed-message {
     transition: opacity 0.3s;
     opacity: 0;
     text-align: center;

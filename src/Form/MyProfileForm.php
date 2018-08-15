@@ -222,21 +222,6 @@ class MyProfileForm extends FormBase implements FormInterface
     }
 
     /**
-     * Language Mapping
-     *
-     */
-    private function alternateLanguageMapping()
-    {
-        $languages = LanguageMapping::LOCALE;
-
-        foreach ($languages as $key => $value) {
-            $newLanguages[$value] = $key;
-        }
-
-        return $newLanguages;
-    }
-
-    /**
      * Country Mapping
      */
     private function countryCodeMapping()
@@ -310,8 +295,8 @@ class MyProfileForm extends FormBase implements FormInterface
      */
     private function setDisabledFields($definition)
     {
-        foreach ($this->disabledFields as $key => $value) {
-            $definition[$value]['options']['attr']['disabled'] = "disabled";
+        foreach ($this->disabledFields as $fieldKey) {
+            $definition[$fieldKey]['options']['attr']['disabled'] = "disabled";
         }
 
         return $definition;

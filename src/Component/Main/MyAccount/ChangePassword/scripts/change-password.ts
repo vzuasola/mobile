@@ -72,7 +72,9 @@ export class ChangePassword extends FormBase {
         })
             .then((resp) => {
                 if (resp.status === "CHANGE_PASSWORD_SUCCESS") {
-                    this.showConfirmationMessage(this.form);
+                    this.showConfirmationMessage(this.form, ".api-success-message");
+                } else if (resp.status === "CHANGE_PASSWORD_FAILED") {
+                    this.showConfirmationMessage(this.form, ".api-failed-message");
                 } else {
                     this.showMessage(this.passwordVerifyContainer, this.messageMapping(resp.status, "change_password"));
                 }
