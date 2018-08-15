@@ -48,13 +48,6 @@ form.reset-password-form {
         }
     }
 
-    // Blurb bottom/footer
-    .ForgotPasswordForm_footer_markup,
-    .ForgotUsernameForm_footer_markup,
-    .ResetPasswordForm_footer_markup {
-        //
-    }
-
     // All form item
     .form-item {
         @extend %form-item-round;
