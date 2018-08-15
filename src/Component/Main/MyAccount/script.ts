@@ -1,8 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import Tab from "@app/assets/script/components/tab";
-import {CheckboxStyler} from "@app/assets/script/components/checkbox-styler";
-import {RadioStyler} from "@app/assets/script/components/radio-styler";
+import {Marker} from "@app/assets/script/components/marker";
 
 /**
  *
@@ -19,11 +18,21 @@ export class MyAccountComponent implements ComponentInterface {
     private init(element) {
         new Tab();
 
-        // Checkbox styler
-        const checkbox = new CheckboxStyler(element.querySelector("#ProfileForm_contact_preference"));
-        checkbox.init();
+        const iconChecked = `<svg class="marker-active" viewbox="0 0 39.19 39.53">
+            <use xlink:href="#check-rounded-thin" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>`;
+        const iconUnChecked = `<svg class="marker-normal" viewbox="0 0 100 100">
+            <use xlink:href="#exclamation-rounded" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>`;
 
-        const radio = new RadioStyler("#MyProfileForm_gender");
-        radio.init();
+        // Checkbox
+        new Marker({
+            parent: ".MyProfileForm_preference_markup",
+            iconDefault: iconUnChecked,
+            iconActive: iconChecked,
+        });
+
+        // Radio
+        new Marker({
+            parent: "#MyProfileForm_gender",
+        });
     }
 }
