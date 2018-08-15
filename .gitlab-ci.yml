@@ -116,6 +116,7 @@ lighthouse development:
   script:
     - python -u automation/run.py --stage lighthouse
   artifacts:
+    when: always
     paths:
       - automation/deployed/*.html
     expire_in: 1 month
