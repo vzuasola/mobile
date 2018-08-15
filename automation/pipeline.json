@@ -87,7 +87,7 @@
                 "command": [
                     "lighthouse-ci",
                     "https://dev-m.elysium-dfbt.com",
-                    "--report=./",
+                    "--report=deployed",
                     "--accessibility=70",
                     "--seo=85"
                 ],
