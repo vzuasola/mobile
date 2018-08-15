@@ -66,7 +66,7 @@ export class ForgotPassword extends FormBase {
         })
             .then((resp) => {
                 if (resp.status === "FORGOT_PASSWORD_SUCCESS") {
-                    this.showConfirmationMessage(this.form);
+                    this.showConfirmationMessage(this.form, ".api-success-message");
                 } else {
                     this.showMessage(this.emailContainer, this.messageMapping(resp.status, "cant_login"));
                 }
