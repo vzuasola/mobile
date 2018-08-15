@@ -85,7 +85,11 @@
                 "docker-image-suffix": "-lighthouse",
                 "options": [],
                 "command": [
-                    "lighthouse-ci"
+                    "lighthouse-ci",
+                    "https://dev-m.elysium-dfbt.com",
+                    "--report=automation/deployed/",
+                    "--accessibility=70",
+                    "--seo=85"
                 ],
                 "volumes": [
                     "$PWD:/app"
