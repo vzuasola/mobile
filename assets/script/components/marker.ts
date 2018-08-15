@@ -8,8 +8,8 @@ import * as utility from "@core/assets/js/components/utility";
  * @param Object options
  * @param String options.parent parent element of the checkbox/radio inputs
  * @param String options.className class name of the checkbox/radio wrapper used for styling
- * @param String options.iconDefault <svg> tag for normal/unchecked checkbox/radio inputs
- * @param String options.iconActive <svg> tag for active/checked checkbox/radio inputs
+ * @param String options.iconDefault <svg>/<img> tag for normal/unchecked checkbox/radio inputs
+ * @param String options.iconActive <svg>/<img> tag for active/checked checkbox/radio inputs
  */
 export class Marker {
     private checkboxes: {};

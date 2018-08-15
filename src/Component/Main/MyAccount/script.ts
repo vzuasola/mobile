@@ -2,6 +2,8 @@ import * as utility from "@core/assets/js/components/utility";
 import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import Tab from "@app/assets/script/components/tab";
 import {Marker} from "@app/assets/script/components/marker";
+import * as iconCheckedTemplate from "@app/templates/handlebars/icon-checked.handlebars";
+import * as iconUnCheckedTemplate from "@app/templates/handlebars/icon-unchecked.handlebars";
 
 /**
  *
@@ -18,16 +20,11 @@ export class MyAccountComponent implements ComponentInterface {
     private init(element) {
         new Tab();
 
-        const iconChecked = `<svg class="marker-active" viewbox="0 0 39.19 39.53">
-            <use xlink:href="#check-rounded-thin" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>`;
-        const iconUnChecked = `<svg class="marker-normal" viewbox="0 0 100 100">
-            <use xlink:href="#exclamation-rounded" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>`;
-
         // Checkbox
         new Marker({
             parent: ".MyProfileForm_preference_markup",
-            iconDefault: iconUnChecked,
-            iconActive: iconChecked,
+            iconDefault: iconUnCheckedTemplate(),
+            iconActive: iconCheckedTemplate(),
         });
 
         // Radio
