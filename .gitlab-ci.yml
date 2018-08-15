@@ -2,10 +2,10 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
+  - integration-tests-development
   - tests
   - package
   - deploy-dev
-  - integration-tests-development
   - performance-tests-development
   - security-tests-development
   - deploy-test
@@ -117,7 +117,7 @@ lighthouse development:
     - python -u automation/run.py --stage lighthouse
   artifacts:
     paths:
-      - automation/deployed/*.html
+      - automation/deployed/*.*
     expire_in: 1 month
   tags:
     - devrunner
