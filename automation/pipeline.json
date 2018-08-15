@@ -88,7 +88,7 @@
                     "lighthouse-ci",
                     "https://dev-m.elysium-dfbt.com",
                     "--report=./automation/deployed",
-                    "--accessibility=70",
+                    "--accessibility=50",
                     "--seo=85"
                 ],
                 "volumes": [
