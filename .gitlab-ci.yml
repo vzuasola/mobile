@@ -2,10 +2,10 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
-  - integration-tests-development
   - tests
   - package
   - deploy-dev
+  - integration-tests-development
   - performance-tests-development
   - security-tests-development
   - deploy-test
