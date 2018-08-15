@@ -115,12 +115,12 @@ lighthouse development:
   when: manual
   script:
     - python -u automation/run.py --stage lighthouse
-  tags:
-    - devrunner
   artifacts:
     paths:
-      - automation/deployed/*.html
+      - report.html
     expire_in: 1 month
+  tags:
+    - devrunner
 
 qa1:
   stage: deploy-test
