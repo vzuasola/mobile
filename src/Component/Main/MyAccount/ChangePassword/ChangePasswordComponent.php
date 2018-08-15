@@ -54,10 +54,12 @@ class ChangePasswordComponent implements ComponentWidgetInterface
         $formChangePassword = $this->formManager->getForm(ChangePasswordForm::class);
         $config = $this->configFetcher->getConfigById('my_account_change_password');
         $successMessage = $config['change_password_mobile_success_message']['value'] ?? '';
+        $fialedMessage = $config['change_password_mobile_failed_message']['value'] ?? '';
 
         return [
             'formChangePassword' => $formChangePassword->createView(),
-            'successMessage' => $successMessage
+            'successMessage' => $successMessage,
+            'fialedMessage' => $fialedMessage
         ];
     }
 }
