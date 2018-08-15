@@ -17,7 +17,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 
 # Install lighthouse cli
 ARG CACHEBUST=1
-RUN npm i https://github.com/alexecus/lighthouse-ci -g
+RUN npm i https://github.com/alexecus/lighthouse-ci#master -g
 
 # Add a chrome user and setup home dir
 RUN groupadd --system chrome && \
