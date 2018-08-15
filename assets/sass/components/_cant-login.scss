@@ -1,7 +1,9 @@
 .forgot-password-form,
 .forgot-username-form,
 .reset-password-form,
-.confirmation-message {
+.confirmation-message,
+.api-success-message,
+.api-failed-message {
     margin-bottom: 1rem;
 
     // Anchors
@@ -82,6 +84,8 @@ form.reset-password-form {
 }
 
 // Confirmation message
+.api-success-message,
+.api-failed-message,
 .confirmation-message {
     transition: opacity 0.3s;
     opacity: 0;

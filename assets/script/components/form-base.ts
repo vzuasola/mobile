@@ -90,8 +90,8 @@ export abstract class FormBase {
      *
      * @param Node form form tag element
      */
-    showConfirmationMessage(form): void {
-        const confirmationMessage = utility.findParent(form, "div").querySelector(".confirmation-message");
+    showConfirmationMessage(form, selector: string = ".confirmation-message"): void {
+        const confirmationMessage = utility.findParent(form, "div").querySelector(selector);
 
         form.style.opacity = "0";
         utility.removeClass(confirmationMessage, "hidden");
