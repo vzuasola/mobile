@@ -97,6 +97,25 @@
             }
         }
     },
+    "lighthouse-test": {
+        "steps": {
+            "lighthouse": {
+                "dockerfile": "automation/Dockerfile.lighthouse",
+                "docker-image-suffix": "-lighthouse",
+                "options": [],
+                "command": [
+                    "lighthouse-ci",
+                    "https://qa1-m.elysium-dfbt.com",
+                    "--report=./automation/deployed",
+                    "--accessibility=70",
+                    "--seo=85"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
     "sensiolab-security-checker": {
         "steps": {
             "sensiolab-security-checker": {
