@@ -102,7 +102,6 @@ export abstract class Redirectable implements ModuleInterface {
                 const el: HTMLElement = data.srcElement
                     .querySelector(`[data-product-instance-id="${data.productCode}"]`);
                 if (el && el.getAttribute("data-product-integration-id") === this.code) {
-                    console.log(el.getAttribute("data-product-integration-id"));
                     this.doDirectLogin(el);
                 }
             }
@@ -140,7 +139,6 @@ export abstract class Redirectable implements ModuleInterface {
             }, 500);
             return;
         }
-        console.log("Test");
 
         ComponentManager.broadcast("header.login");
     }
