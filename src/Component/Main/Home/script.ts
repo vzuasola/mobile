@@ -26,19 +26,18 @@ export class HomeComponent implements ComponentInterface {
         ComponentManager.subscribe("session.logout", (event) => {
             this.isLogin = false;
         });
-
         this.doLoginProcess(element);
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.isLogin = attachments.authenticated;
-
         this.doLoginProcess(element);
     }
 
     private doLoginProcess(element) {
         if (Router.route() === "/login") {
-            ComponentManager.broadcast("direct.login", {srcElement: element});
+            const product = utility.getParameterByName("product");
+            ComponentManager.broadcast("direct.login", {srcElement: element, productCode: product});
         }
     }
 }

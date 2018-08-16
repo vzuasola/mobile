@@ -98,7 +98,9 @@ export abstract class Redirectable implements ModuleInterface {
         });
 
         ComponentManager.subscribe("direct.login", (event, src, data) => {
-            this.doDirectLogin(data.srcElement);
+            if (data && typeof data.productCode !== "undefined" && data.productCode === this.code) {
+                this.doDirectLogin(data.srcElement, data.productCode);
+            }
         });
     }
 
@@ -121,8 +123,7 @@ export abstract class Redirectable implements ModuleInterface {
         });
     }
 
-    protected doDirectLogin(element) {
-        const product = utility.getParameterByName("product");
+    protected doDirectLogin(element, product) {
 
         if (product) {
             const el: HTMLElement = element.querySelector(`[data-product-instance-id="${product}"]`);
@@ -135,7 +136,6 @@ export abstract class Redirectable implements ModuleInterface {
                         onlyLogin: true,
                     });
                 }, 500);
-
                 return;
             }
         }
