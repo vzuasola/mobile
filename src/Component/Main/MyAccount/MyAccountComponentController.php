@@ -75,9 +75,9 @@ class MyAccountComponentController
         /**
      * Send Verification Code
      */
-    public function sendVerificationCode($request, $response, $args)
+    public function sendverificationcode($request, $response)
     {
-        $subTypeId = $request->getParsedBody()['subtypeId'] ?? null;
+        $subTypeId = $request->getParsedBody()['data'] ?? null;
 
         try {
             $smsVerificationStatus = $this->sms->sendSmsVerificationCode($subTypeId);
@@ -109,15 +109,14 @@ class MyAccountComponentController
             }
         }
 
-        return $this->get('rest')->output($response, [
+        return $this->rest->output($response, [
             'response_code' => $smsVerificationStatus,
             'message' => $message
         ]);
     }
 
-    public function submitVerificationCode($request, $response, $args)
+    public function submitverificationcode($request, $response)
     {
-
         $data = $request->getParsedBody()['data'] ?? null;
 
         try {
@@ -125,6 +124,7 @@ class MyAccountComponentController
         } catch (\Exception $e) {
             return $response->withStatus(500);
         }
+
 
         $smsVerificationErrorMessageList = $this->getErrorMessage();
 
@@ -150,15 +150,16 @@ class MyAccountComponentController
             }
         }
 
-        return $this->get('rest')->output($response, [
+        return $this->rest->output($response, [
             'response_code' => $smsVerificationStatus,
             'message' => $message
         ]);
     }
 
-    public function checkSmsStatus($request, $response, $args)
+    public function checksmsstatus($request, $response)
     {
         $subTypeId = $request->getParsedBody()['subtypeId'] ?? null;
+
         try {
             $smsStatus = $this->sms->checkSmsStatus($subTypeId);
         } catch (\Exception $e) {
@@ -192,7 +193,7 @@ class MyAccountComponentController
             }
         }
 
-        return $this->get('rest')->output($response, [
+        return $this->rest->output($response, [
             'response_code' => $smsStatus,
             'message' => $message
         ]);

@@ -138,9 +138,6 @@ class MyProfileForm extends FormBase implements FormInterface
                 $definition[$key]['options']['data'] = $value;
             }
         }
-        // set default if verified mobile numbers
-        $definition['mobile_number_1']['options']['attr']['data-verified'] = "0";
-        $definition['mobile_number_2']['options']['attr']['data-verified'] = "0";
         // check mobile 1 if verified and set the flag to true and disable field
         if ($values['sms_1_verified']) {
             $definition['mobile_number_1']['options']['attr']['data-verified'] = "1";

@@ -1,12 +1,13 @@
 {% form_theme formMyProfile '@base/form/standard.html.twig' %}
 {{ form_start(formMyProfile, {'attr': {'class': 'pure-form profile-form show-label'}}) }}
+<div class="alert alert-error hidden" id="verification-error"> </div>
 {{ form_end(formMyProfile) }}
 
 <div class="verification-container hidden">
-    <a href="#verify-mobile-number" class="verify-mobile verify-mobile-selector hidden" id="verify-mobile-modal"> {{ smsVerification.verify_text }} </a>
+    <a href="#verify-mobile-number" class="verify-mobile verify-mobile-selector hidden" id="verify-mobile-modal"> {{ config.sms.verify_text }} </a>
     <span class="btn btn-small btn-yellow verify-mobile-loading verify-mobile hidden"><img src="../images/balance-loader-white.gif"></span>
 </div>
-<a id="add-new-mobile" href="" class="add-new-mobile hidden">{{ myProfileGeneralConfig['add_mobile_label'] }}</a>
+<a id="add-new-mobile" href="" class="add-new-mobile hidden">{{ config.general.add_mobile_label }}</a>
 
 <div id="verify-mobile-number" class="modal">
     <div class="modal-content">

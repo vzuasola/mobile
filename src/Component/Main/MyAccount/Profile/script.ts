@@ -11,7 +11,6 @@ export class MyAccountProfileComponent implements ComponentInterface {
     private sms: Sms;
 
     onLoad(element: HTMLElement, attachments: {}) {
-        console.log(attachments);
         this.activateProfile(element, attachments);
         this.enableSms(element, attachments);
     }
