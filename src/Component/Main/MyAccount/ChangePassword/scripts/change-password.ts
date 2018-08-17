@@ -19,6 +19,7 @@ export class ChangePassword extends FormBase {
     private passwordVerifyContainer: HTMLElement;
     private validator: any;
     private loader: Loader;
+    private passwordMeter: PasswordMeter;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -39,6 +40,7 @@ export class ChangePassword extends FormBase {
             this.validator = this.validateForm(this.form);
             this.activatePasswordMeter();
             this.bindEvent();
+            this.tryAgain(this.form);
         }
     }
 
@@ -91,11 +93,55 @@ export class ChangePassword extends FormBase {
     private activatePasswordMeter() {
         const attachments = this.element.getAttribute("data-component-widget-attachments");
         const config = JSON.parse(attachments);
-        const passwordMeter = new PasswordMeter({
+        this.passwordMeter = new PasswordMeter({
             selector: "#ChangePasswordForm_new_password",
             strength: config.passwordStrengthMeter,
         });
 
-        passwordMeter.init();
+        this.passwordMeter.init();
+    }
+
+    private tryAgain(form) {
+        const tryAgainBtn = this.element.querySelector(".try-again-btn");
+        const failMessageContainer: any = this.element.querySelector(".api-failed-message");
+
+        utility.listen(tryAgainBtn, "click", (event, src) => {
+            event.preventDefault();
+            this.loader.hide();
+            this.onFormReset(form);
+
+            failMessageContainer.style.opacity = "0";
+            utility.removeClass(form, "hidden");
+
+            setTimeout(() => {
+                utility.addClass(failMessageContainer, "hidden");
+                form.style.opacity = "1";
+            }, 10);
+        });
+    }
+
+    private onFormReset(form) {
+        // reset form
+        form.reset();
+
+        // enable fields
+        utility.forEach(form.elements, (input) => {
+            input.readOnly = false;
+        });
+
+        // remove password meter
+        this.passwordMeter.passwordMeterRender("hidden");
+
+        // remove icon-validation
+        const icons = form.querySelectorAll(".icon-validation");
+        utility.forEach(icons, (icon) => {
+            icon.remove();
+        });
+
+        // remove helper block
+        const messages = form.querySelectorAll(".form-help-block");
+        utility.forEach(messages, (message) => {
+            message.remove();
+        });
     }
 }
