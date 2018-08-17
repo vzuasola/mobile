@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Home\Products;
+namespace App\MobileEntry\Component\Main\Lobby\Home\Products;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
@@ -51,7 +51,7 @@ class ProductsComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Main/Home/Products/template.html.twig';
+        return '@component/Main/Lobby/Home/Products/template.html.twig';
     }
 
     /**

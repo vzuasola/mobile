@@ -7,14 +7,14 @@ import {BacktotopComponent} from "@app/src/Component/Backtotop/script";
 import {MenuComponent} from "@app/src/Component/Menu/script";
 import {LoginComponent} from "@app/src/Component/Header/Login/script";
 import {PromotionsComponent} from "@app/src/Component/Main/Promotions/script";
-import {DownloadComponent} from "@app/src/Component/Main/Home/Download/script";
+import {DownloadComponent} from "@app/src/Component/Main/Lobby/Home/Download/script";
 import {AnnouncementComponent} from "@app/src/Component/Announcement/script";
 import {PushNotificationComponent} from "@app/src/Component/PushNotification/script";
 import {SEOComponent} from "@app/src/Component/SEO/script";
-import {HomeComponent} from "@app/src/Component/Main/Home/script";
+import {LobbyComponent} from "@app/src/Component/Main/Lobby/script";
 import {MarketingComponent} from "@app/src/Component/Marketing/script";
-import {SliderComponent} from "@app/src/Component/Main/Home/Slider/script";
-import {ProductsComponent} from "@app/src/Component/Main/Home/Products/script";
+import {LobbySliderComponent} from "@app/src/Component/Main/Lobby/Slider/script";
+import {ProductsComponent} from "@app/src/Component/Main/Lobby/Home/Products/script";
 import {NodeComponent} from "@app/src/Component/Node/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
@@ -39,8 +39,8 @@ ComponentManager.setComponents({
     announcement: new AnnouncementComponent(),
     push_notification: new PushNotificationComponent(),
     seo: new SEOComponent(),
-    home: new HomeComponent(),
-    home_slider: new SliderComponent(),
+    lobby: new LobbyComponent(),
+    lobby_slider: new LobbySliderComponent(),
     home_products: new ProductsComponent(),
     node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),

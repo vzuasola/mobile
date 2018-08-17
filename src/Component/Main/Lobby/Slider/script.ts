@@ -7,7 +7,7 @@ import Xlider from "@app/assets/script/components/xlider";
 /**
  *
  */
-export class SliderComponent implements ComponentInterface {
+export class LobbySliderComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.activateSlider(element);
     }

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Home;
+namespace App\MobileEntry\Component\Main\Lobby;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 
 /**
  *
  */
-class HomeComponentScripts implements ComponentAttachmentInterface
+class LobbyComponentScripts implements ComponentAttachmentInterface
 {
     /**
      * @var App\Player\PlayerSession

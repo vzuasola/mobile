@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Home\Download;
+namespace App\MobileEntry\Component\Main\Lobby\Home\Download;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
@@ -37,7 +37,7 @@ class DownloadComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Main/Home/Download/template.html.twig';
+        return '@component/Main/Lobby/Home/Download/template.html.twig';
     }
 
     /**

@@ -8,7 +8,7 @@ import {Loader} from "@app/assets/script/components/loader";
 /**
  *
  */
-export class HomeComponent implements ComponentInterface {
+export class LobbyComponent implements ComponentInterface {
     private loader: Loader;
     private isLogin: boolean = false;
 

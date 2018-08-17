@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Home\Slider;
+namespace App\MobileEntry\Component\Main\Lobby\Slider;
 
 use App\Plugins\ComponentWidget\AsyncComponentInterface;
 
