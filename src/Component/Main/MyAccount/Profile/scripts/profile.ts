@@ -93,9 +93,7 @@ export class Profile extends FormBase {
             return false;
         }
 
-        for (let i = 0; i < aProps.length; i++) {
-            const propName = aProps[i];
-
+        for (const propName of aProps) {
             // If values of same property are not equal,
             // objects are not equivalent
             if (a[propName] !== b[propName]) {
@@ -115,9 +113,7 @@ export class Profile extends FormBase {
         const old = {};
         const modified = {};
 
-        for (let i = 0; i < aProps.length; i++) {
-            const propName = aProps[i];
-
+        for (const propName of aProps) {
             // If values of same property are not equal,
             // objects are not equivalent
             if (a[propName] !== b[propName]) {
