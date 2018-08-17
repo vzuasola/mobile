@@ -125,7 +125,8 @@ class MyAccountComponentController
         }
 
         return $this->rest->output($response, [
-            'status' => 'UPDATE_PROFILE_SUCCESS'
+            'success' => true,
+            'status' => 'success'
         ]);
     }
 }
