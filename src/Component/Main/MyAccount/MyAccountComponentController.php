@@ -130,7 +130,7 @@ class MyAccountComponentController
             }
 
             return $this->rest->output($response, [
-                'success' => true,
+                'success' => false,
                 'status' => $status,
             ]);
         }
