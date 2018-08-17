@@ -25,7 +25,7 @@ class MyAccountComponentController
     /**
      * Receive News Object
      */
-    private $receiveNews;
+    private $subscription;
 
     /**
      *
@@ -48,7 +48,7 @@ class MyAccountComponentController
         $this->rest = $rest;
         $this->changePassword = $changePassword;
         $this->userFetcher = $userFetcher;
-        $this->receiveNews = $receiveNews;
+        $this->subscription = $receiveNews;
     }
 
     /**
@@ -118,8 +118,8 @@ class MyAccountComponentController
         ];
 
         try {
-            $status = $this->userFetcher->setPlayerDetails($playerDetails);
-            $this->receiveNews->setSubscription($receiveNews);
+            $this->userFetcher->setPlayerDetails($playerDetails);
+            $this->subscription->setSubscription($receiveNews);
         } catch (\Exception $e) {
             return $response->withStatus(500);
         }
