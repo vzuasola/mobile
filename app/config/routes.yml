@@ -60,7 +60,8 @@ routes:
         method: GET
         action: App\MobileEntry\Controller\GamesController:view
         components:
-            main: games_lobby
+            main: lobby
+            lobby_content: games_lobby
         headers:
             Cache-Control: public, max-age=900
         page_cache:

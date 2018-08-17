@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\GamesLobby;
+namespace App\MobileEntry\Component\Main\Lobby\GamesLobby;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
@@ -43,7 +43,7 @@ class GamesLobbyComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/GamesLobby/template.html.twig';
+        return '@component/Main/Lobby/GamesLobby/template.html.twig';
     }
 
     /**
