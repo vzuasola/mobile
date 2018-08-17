@@ -32,6 +32,34 @@ export default class PasswordMeter {
         this.bindEvent();
     }
 
+    passwordMeterRender(strength) {
+        const wrapper = document.querySelector(this.options.wrapperSelector);
+        const passwordMeterWrapper = document.querySelector(".password-meter");
+        const strengthBar = document.querySelector(".password-meter-bar");
+
+        utility.removeClass(wrapper, "password-meter-hidden");
+        utility.removeClass(wrapper, "password-meter-weak");
+        utility.removeClass(wrapper, "password-meter-average");
+        utility.removeClass(wrapper, "password-meter-strong");
+
+        if (strength !== "hidden") {
+            utility.removeClass(passwordMeterWrapper, "hidden");
+            wrapper.style.display = "block";
+            utility.addClass(wrapper, "password-meter-" + strength);
+            strengthBar.innerHTML = this.options.strength[strength];
+        }
+
+        if (strength === "hidden") {
+            utility.addClass(passwordMeterWrapper, "hidden");
+            wrapper.style.display = "none";
+            utility.addClass(wrapper, "password-meter-hidden");
+            strengthBar.innerHTML = "";
+        }
+
+        this.addInputClass(strength);
+
+    }
+
     private mergeDefaults(options) {
         const strengths = {
             weak: "Weak",
@@ -111,34 +139,6 @@ export default class PasswordMeter {
         }
 
         return "weak";
-    }
-
-    private passwordMeterRender(strength) {
-        const wrapper = document.querySelector(this.options.wrapperSelector);
-        const passwordMeterWrapper = document.querySelector(".password-meter");
-        const strengthBar = document.querySelector(".password-meter-bar");
-
-        utility.removeClass(wrapper, "password-meter-hidden");
-        utility.removeClass(wrapper, "password-meter-weak");
-        utility.removeClass(wrapper, "password-meter-average");
-        utility.removeClass(wrapper, "password-meter-strong");
-
-        if (strength !== "hidden") {
-            utility.removeClass(passwordMeterWrapper, "hidden");
-            wrapper.style.display = "block";
-            utility.addClass(wrapper, "password-meter-" + strength);
-            strengthBar.innerHTML = this.options.strength[strength];
-        }
-
-        if (strength === "hidden") {
-            utility.addClass(passwordMeterWrapper, "hidden");
-            wrapper.style.display = "none";
-            utility.addClass(wrapper, "password-meter-hidden");
-            strengthBar.innerHTML = "";
-        }
-
-        this.addInputClass(strength);
-
     }
 
     private addInputClass(strength) {
