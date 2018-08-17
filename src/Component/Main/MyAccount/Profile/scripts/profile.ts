@@ -72,11 +72,10 @@ export class Profile extends FormBase {
                 if (this.hasChanges()) {
                     const tbody = this.element.querySelector(this.modalSelector + " tbody");
                     const data = this.getFilteredDifference(this.oldValues, this.newValues);
-                    console.log("data", data);
                     tbody.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);
                 } else {
-                    console.log("NO changes detected asdf");
+                    // Add a notification message
                 }
             }
         });
