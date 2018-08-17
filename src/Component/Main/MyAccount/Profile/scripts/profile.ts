@@ -2,7 +2,6 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
 import {FormBase} from "@app/assets/script/components/form-base";
-import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
  * Forgot Password
