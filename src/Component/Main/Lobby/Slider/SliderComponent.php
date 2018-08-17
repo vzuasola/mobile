@@ -27,6 +27,7 @@ class SliderComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
+            $container->get('product_resolver'),
             $container->get('config_fetcher'),
             $container->get('views_fetcher'),
             $container->get('player_session')
@@ -36,10 +37,10 @@ class SliderComponent implements ComponentWidgetInterface
     /**
      *
      */
-    public function __construct($configs, $viewsFetcher, $playerSession)
+    public function __construct($product, $configs, $viewsFetcher, $playerSession)
     {
         $this->configs = $configs;
-        $this->viewsFetcher = $viewsFetcher;
+        $this->viewsFetcher = $viewsFetcher->withProduct($product->getProduct());
         $this->playerSession = $playerSession;
     }
 
