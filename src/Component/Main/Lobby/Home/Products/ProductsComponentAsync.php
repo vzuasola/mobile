@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Home\Products;
+namespace App\MobileEntry\Component\Main\Lobby\Home\Products;
 
 use App\Plugins\ComponentWidget\AsyncComponentInterface;
 

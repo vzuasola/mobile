@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Home;
+namespace App\MobileEntry\Component\Main\Lobby\Home;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
@@ -13,7 +13,7 @@ class HomeComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Main/Home/template.html.twig';
+        return '@component/Main/Lobby/Home/template.html.twig';
     }
 
     /**

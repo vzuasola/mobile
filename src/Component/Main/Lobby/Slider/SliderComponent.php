@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Home\Slider;
+namespace App\MobileEntry\Component\Main\Lobby\Slider;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
@@ -50,7 +50,7 @@ class SliderComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Main/Home/Slider/template.html.twig';
+        return '@component/Main/Lobby/Slider/template.html.twig';
     }
 
     /**
