@@ -13,7 +13,7 @@ import {PushNotificationComponent} from "@app/src/Component/PushNotification/scr
 import {SEOComponent} from "@app/src/Component/SEO/script";
 import {LobbyComponent} from "@app/src/Component/Main/Lobby/script";
 import {MarketingComponent} from "@app/src/Component/Marketing/script";
-import {SliderComponent} from "@app/src/Component/Main/Lobby/Slider/script";
+import {LobbySliderComponent} from "@app/src/Component/Main/Lobby/Slider/script";
 import {ProductsComponent} from "@app/src/Component/Main/Lobby/Home/Products/script";
 import {NodeComponent} from "@app/src/Component/Node/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
@@ -40,7 +40,7 @@ ComponentManager.setComponents({
     push_notification: new PushNotificationComponent(),
     seo: new SEOComponent(),
     lobby: new LobbyComponent(),
-    lobby_slider: new SliderComponent(),
+    lobby_slider: new LobbySliderComponent(),
     home_products: new ProductsComponent(),
     node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),
