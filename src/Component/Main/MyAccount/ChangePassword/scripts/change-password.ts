@@ -4,7 +4,6 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Loader} from "@app/assets/script/components/loader";
 import {FormBase} from "@app/assets/script/components/form-base";
 import PasswordMeter from "@app/assets/script/components/password-meter";
-import {onFormReset} from "@app/assets/script/components/validation/error-handler";
 
 /**
  * Reset Password
