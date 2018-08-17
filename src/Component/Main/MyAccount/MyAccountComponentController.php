@@ -121,7 +121,18 @@ class MyAccountComponentController
             $this->userFetcher->setPlayerDetails($playerDetails);
             $this->subscription->setSubscription($receiveNews);
         } catch (\Exception $e) {
-            return $response->withStatus(500);
+            $error = $e->getResponse()->getBody()->getContents();
+            $error = json_decode($error, true);
+
+            $status = 'server_error';
+            if ($error['responseCode'] == "INT029") {
+                $status = 'failed';
+            }
+
+            return $this->rest->output($response, [
+                'success' => true,
+                'status' => $status,
+            ]);
         }
 
         return $this->rest->output($response, [
