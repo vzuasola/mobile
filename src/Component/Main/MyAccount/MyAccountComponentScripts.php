@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\CantLogin;
+namespace App\MobileEntry\Component\Main\MyAccount;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 use App\Drupal\Config;
@@ -29,7 +29,7 @@ class MyAccountComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($configFetcher, $translationManager)
+    public function __construct($configFetcher)
     {
         $this->configFetcher = $configFetcher->withProduct('account');
     }
@@ -38,8 +38,14 @@ class MyAccountComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
+        try {
+            $config = $this->configFetcher->getConfigById('my_account_profile_modal_preview');
+        } catch (\Exception $e) {
+            $config = [];
+        }
+
         return [
-            'messages' => []
+            'config' => $config
         ];
     }
 }
