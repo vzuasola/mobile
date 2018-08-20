@@ -13,13 +13,6 @@ form.change-password-form {
 
     }
 
-    // Hide validation icons for disabled form fields.
-    .form-field-element[disabled] {
-        & + .icon-validation {
-            display: none;
-        }
-    }
-
     // Middle form items
     & > .form-item {
         @extend %form-item-round;
