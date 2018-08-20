@@ -4,6 +4,8 @@
     display: inline-block;
     width: 1.6rem;
     height: 1.6rem;
+    margin-right: 0.4rem;
+    vertical-align: middle;
 
     input {
         position: absolute;
@@ -45,8 +47,10 @@
 .marker-svg {
     position: relative;
     display: inline-block;
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.4rem;
+    vertical-align: middle;
 
     input {
         position: absolute;

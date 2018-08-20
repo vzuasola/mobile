@@ -44,4 +44,64 @@ form.change-password-form {
         @extend %form-item-two-cols;
         @extend %form-item-two-cols-bottom;
     }
+
+    // Individual form items =======================================================
+
+    // Gender
+    .MyProfileForm_gender {
+        position: relative;
+
+        .form-label {
+            display: inline-block;
+        }
+
+        .form-item {
+            display: inline-block;
+
+            .form-field,
+            & {
+                position: static;
+            }
+
+            .radio-inline {
+                display: inline-block;
+                margin-left: 3rem;
+            }
+        }
+
+        // adjust validation icon position
+        .icon-validation {
+            top: 1.5rem;
+            right: 1.5rem;
+        }
+    }
+
+    // Contact preference
+    .MyProfileForm_preference_markup {
+        .contact-preference-top-blurb,
+        .contact-preference-label,
+        .contact-preference-bottom-blurb {
+            text-align: left;
+        }
+
+        .contact-preference-top-blurb {
+            margin: 1.5rem 0 1rem;
+            font-weight: normal;
+        }
+
+        .contact-preference-label {
+            position: relative;
+            padding-left: 3rem;
+
+            .marker-svg {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+
+        .contact-preference-bottom-blurb {
+            padding-left: 3rem;
+        }
+    }
 }
