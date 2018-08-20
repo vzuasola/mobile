@@ -44,4 +44,22 @@ form.change-password-form {
         @extend %form-item-two-cols;
         @extend %form-item-two-cols-bottom;
     }
+
+    // Individual form items =======================================================
+
+    // Gender
+    .MyProfileForm_gender {
+        .form-label {
+            display: inline-block;
+        }
+
+        .form-item {
+            display: inline-block;
+
+            .radio-inline {
+                display: inline-block;
+                margin-left: 3rem;
+            }
+        }
+    }
 }
