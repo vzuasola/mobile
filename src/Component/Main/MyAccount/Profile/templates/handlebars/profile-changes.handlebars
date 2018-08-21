@@ -1,78 +1,89 @@
 {{log this}}
 
-{{#if this.old.gender }}
+{{#ifCondition this.old.gender "||" this.modified.gender }}
     <tr>
-        <th>Gender</th>
-        <th>Gender</th>
+        <th>{{this.labels.gender}}</th>
+        <th>{{this.labels.gender}}</th>
     </tr>
     <tr>
         <td>{{this.old.gender}}</td>
         <td>{{this.modified.gender}}</td>
     </tr>
-{{/if}}
+{{/ifCondition}}
 
-{{#if this.old.language }}
+{{#ifCondition this.old.language "||" this.modified.language }}
     <tr>
-        <th>language</th>
-        <th>language</th>
+        <th>{{this.labels.language}}</th>
+        <th>{{this.labels.language}}</th>
     </tr>
     <tr>
         <td>{{this.old.language}}</td>
         <td>{{this.modified.language}}</td>
     </tr>
-{{/if}}
+{{/ifCondition}}
 
-{{#if this.old.mobile }}
+{{#ifCondition this.old.mobile "||" this.modified.mobile }}
     <tr>
-        <th>mobile</th>
-        <th>mobile</th>
+        <th>{{this.labels.mobile}}</th>
+        <th>{{this.labels.mobile}}</th>
     </tr>
     <tr>
         <td>{{this.old.mobile}}</td>
         <td>{{this.modified.mobile}}</td>
     </tr>
-{{/if}}
+{{/ifCondition}}
 
-{{#if this.old.mobile1 }}
+{{#ifCondition this.old.mobile1 "||" this.modified.mobile1 }}
     <tr>
-        <th>mobile1</th>
-        <th>mobile1</th>
+        <th>{{this.labels.mobile1}}</th>
+        <th>{{this.labels.mobile1}}</th>
     </tr>
     <tr>
         <td>{{this.old.mobile1}}</td>
         <td>{{this.modified.mobile1}}</td>
     </tr>
-{{/if}}
+{{/ifCondition}}
 
-{{#if this.old.address }}
+{{#ifCondition this.old.address "||" this.modified.address }}
     <tr>
-        <th>address</th>
-        <th>address</th>
+        <th>{{this.labels.address}}</th>
+        <th>{{this.labels.address}}</th>
     </tr>
     <tr>
         <td>{{this.old.address}}</td>
         <td>{{this.modified.address}}</td>
     </tr>
-{{/if}}
+{{/ifCondition}}
 
-{{#if this.old.city }}
+{{#ifCondition this.old.city "||" this.modified.city }}
     <tr>
-        <th>city</th>
-        <th>city</th>
+        <th>{{this.labels.city}}</th>
+        <th>{{this.labels.city}}</th>
     </tr>
     <tr>
         <td>{{this.old.city}}</td>
         <td>{{this.modified.city}}</td>
     </tr>
-{{/if}}
+{{/ifCondition}}
 
-{{#if this.old.postal_code }}
+{{#ifCondition this.old.postal_code "||" this.modified.postal_code }}
     <tr>
-        <th>postal_code</th>
-        <th>postal_code</th>
+        <th>{{this.labels.postal_code}}</th>
+        <th>{{this.labels.postal_code}}</th>
     </tr>
     <tr>
         <td>{{this.old.postal_code}}</td>
         <td>{{this.modified.postal_code}}</td>
     </tr>
-{{/if}}
+{{/ifCondition}}
+
+{{#ifCondition this.old.receive_news "||" this.modified.receive_news }}
+    <tr>
+        <th>{{this.labels.receive_news}}</th>
+        <th>{{this.labels.receive_news}}</th>
+    </tr>
+    <tr>
+        <td>{{this.old.receive_news}}</td>
+        <td>{{this.modified.receive_news}}</td>
+    </tr>
+{{/ifCondition}}
