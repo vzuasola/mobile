@@ -90,3 +90,33 @@
         min-width: 10rem;
     }
 }
+
+// Standard modal
+.modal-standard {
+    .modal-content {
+        @include translate(0, 0);
+        position: absolute;
+        top: 1.5rem;
+        left: 1.5rem;
+        right: 1.5rem;
+        width: $modal-standard-width;
+        max-width: none;
+        min-width: 0;
+        max-height: 95%;
+        margin: 0;
+        padding: $modal-standard-padding;
+        border-radius: $modal-standard-radius;
+        background-color: $modal-standard-bg;
+    }
+
+    .modal-header {
+        margin: 0 0 1.5rem;
+        padding: 0.3rem 2rem 1.2rem;
+        border-bottom: 1px solid #575556;
+        border-radius: $modal-standard-radius $modal-standard-radius 0 0;
+        background: $modal-standard-header-bg;
+        color: $modal-standard-header-color;
+        font-size: 1.6rem;
+        font-weight: 600;
+    }
+}

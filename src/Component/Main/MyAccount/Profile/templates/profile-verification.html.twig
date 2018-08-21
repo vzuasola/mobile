@@ -1,7 +1,7 @@
-<div id="profile-verification" class="modal profile-verification">
+<div id="profile-verification" class="modal modal-standard profile-verification">
     <div class="modal-content">
+        <div class="modal-header">Save Account Changes</div>
         <div class="modal-body">
-            <h3>Save Account Changes</h3>
             <p>Please review list of changes. Changes may require to provide documents for profile verification.</p>
             <table class="table-primary w-100">
                 <thead>
@@ -14,6 +14,23 @@
 
                 </tbody>
             </table>
+            <p>Enter your password to save changes to your account</p>
+            <form class="pure-form change-password-form">
+                <div class="form-item ChangePasswordForm_current_password">
+                    <label for="ChangePasswordForm_current_password" class="form-label">
+                        <span class="form-label-text">Current Password</span>
+                        <span class="required-field">*</span>
+                    </label>
+                    <div class="form-field">
+                        <input type="password" id="ChangePasswordForm_current_password" name="ChangePasswordForm[current_password]" placeholder="Current Password" class="form-field-element">
+                    </div>
+                </div>
+                <div class="form-item ChangePasswordForm_submit">
+                    <div class="form-field">
+                        <button type="submit" id="ChangePasswordForm_submit" name="ChangePasswordForm[submit]" class="btn btn-small btn-yellow btn-changepass btn-lower-case">Change Password</button>
+                    </div>
+                </div>
+            </form>
         </div>
         {% include '@app/web/images/svg/closed.svg' ignore missing %}
     </div>
