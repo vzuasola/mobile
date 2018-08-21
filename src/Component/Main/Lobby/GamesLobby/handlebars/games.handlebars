@@ -1,13 +1,14 @@
 {{#each games}}
-<div class="wrapper-game-list-item {{this.field_games_list_thumbnail_size.[0].value}}">
+<div class="wrapper-game-list-item {{this.size}}">
     <div class="games-list-item">
-        {{#if this.field_game_ribbon.[0]}}
+        {{#if this.ribbon}}
             <div class="game-ribbon"
-                style="background: {{this.field_game_ribbon.[0].field_games_ribbon_color.[0].color}}; color: {{this.field_game_ribbon.[0].field_games_text_color.[0].color}};"
+                style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
             >
-                {{this.field_game_ribbon.[0].name.[0].value}}
+                {{this.ribbon.name}}
             </div>
         {{/if}}
+        <img src="{{this.image.url}}" alt="{{this.image.alt}}">
     </div>
 </div>
 {{/each}}

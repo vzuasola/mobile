@@ -66,11 +66,54 @@ class GamesLobbyComponentController
         }
 
         try {
-            $data['games'] = $this->views->getViewById('games_list');
+            $games = $this->views->getViewById('games_list');
+            $data['games'] = $this->arrangeGames($games);
         } catch (\Exception $e) {
             $data['games'] = [];
         }
-
         return $this->rest->output($response, $data);
+    }
+
+    private function arrangeGames($games)
+    {
+        $gamesList = [];
+        foreach ($games as $game) {
+            foreach ($game['field_games_list_category'] as $category) {
+                $gamesList[$category['field_games_alias'][0]['value']][]
+                    = $this->processGame($game);
+            }
+        }
+        return $gamesList;
+    }
+
+    private function processGame($game)
+    {
+        try {
+            $processGame = [];
+            $processGame['size'] = $game['field_games_list_thumbnail_size'][0]['value'];
+            if (isset($game['field_game_ribbon'][0])) {
+                $ribbon = $game['field_game_ribbon'][0];
+                $processGame['ribbon']['background'] = $ribbon['field_games_ribbon_color'][0]['color'];
+                $processGame['ribbon']['color'] = $ribbon['field_games_text_color'][0]['color'];
+                $processGame['ribbon']['name'] = $ribbon['name'][0]['value'];
+            }
+
+            $processGame['image'] = [
+                'alt' => $game['field_games_list_thumb_img_small'][0]['alt'],
+                'url' =>
+                    $this->asset->generateAssetUri($game['field_games_list_thumb_img_small'][0]['url'])
+            ];
+
+            if ($processGame['size'] == "size-big") {
+                $processGame['image'] = [
+                    'alt' => $game['field_games_list_thumb_img_big'][0]['alt'],
+                    'url' =>
+                        $this->asset->generateAssetUri($game['field_games_list_thumb_img_big'][0]['url'])
+                ];
+            }
+            return $processGame;
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 }

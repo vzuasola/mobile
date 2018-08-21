@@ -31,9 +31,9 @@ export class GamesLobbyComponent implements ComponentInterface {
             url: Router.generateRoute("games_lobby", "lobby"),
             type: "json",
         }).then((response) => {
-            console.log(response.games);
+            const key = response.categories[0].field_games_alias;
             this.setCategories(response.categories);
-            this.setGames(response.games);
+            this.setGames(response.games[key]);
         }).fail((error, message) => {
             console.log(error);
         });
