@@ -1,6 +1,6 @@
 {{log this}}
 
-{{#ifCondition this.old.gender "||" this.modified.gender }}
+{{#condition this.old.gender "||" this.modified.gender }}
     <tr>
         <th>{{this.labels.gender}}</th>
         <th>{{this.labels.gender}}</th>
@@ -9,9 +9,9 @@
         <td>{{this.old.gender}}</td>
         <td>{{this.modified.gender}}</td>
     </tr>
-{{/ifCondition}}
+{{/condition}}
 
-{{#ifCondition this.old.language "||" this.modified.language }}
+{{#condition this.old.language "||" this.modified.language }}
     <tr>
         <th>{{this.labels.language}}</th>
         <th>{{this.labels.language}}</th>
@@ -20,9 +20,9 @@
         <td>{{this.old.language}}</td>
         <td>{{this.modified.language}}</td>
     </tr>
-{{/ifCondition}}
+{{/condition}}
 
-{{#ifCondition this.old.mobile "||" this.modified.mobile }}
+{{#condition this.old.mobile "||" this.modified.mobile }}
     <tr>
         <th>{{this.labels.mobile}}</th>
         <th>{{this.labels.mobile}}</th>
@@ -31,9 +31,9 @@
         <td>{{this.old.mobile}}</td>
         <td>{{this.modified.mobile}}</td>
     </tr>
-{{/ifCondition}}
+{{/condition}}
 
-{{#ifCondition this.old.mobile1 "||" this.modified.mobile1 }}
+{{#condition this.old.mobile1 "||" this.modified.mobile1 }}
     <tr>
         <th>{{this.labels.mobile1}}</th>
         <th>{{this.labels.mobile1}}</th>
@@ -42,9 +42,9 @@
         <td>{{this.old.mobile1}}</td>
         <td>{{this.modified.mobile1}}</td>
     </tr>
-{{/ifCondition}}
+{{/condition}}
 
-{{#ifCondition this.old.address "||" this.modified.address }}
+{{#condition this.old.address "||" this.modified.address }}
     <tr>
         <th>{{this.labels.address}}</th>
         <th>{{this.labels.address}}</th>
@@ -53,9 +53,9 @@
         <td>{{this.old.address}}</td>
         <td>{{this.modified.address}}</td>
     </tr>
-{{/ifCondition}}
+{{/condition}}
 
-{{#ifCondition this.old.city "||" this.modified.city }}
+{{#condition this.old.city "||" this.modified.city }}
     <tr>
         <th>{{this.labels.city}}</th>
         <th>{{this.labels.city}}</th>
@@ -64,9 +64,9 @@
         <td>{{this.old.city}}</td>
         <td>{{this.modified.city}}</td>
     </tr>
-{{/ifCondition}}
+{{/condition}}
 
-{{#ifCondition this.old.postal_code "||" this.modified.postal_code }}
+{{#condition this.old.postal_code "||" this.modified.postal_code }}
     <tr>
         <th>{{this.labels.postal_code}}</th>
         <th>{{this.labels.postal_code}}</th>
@@ -75,9 +75,9 @@
         <td>{{this.old.postal_code}}</td>
         <td>{{this.modified.postal_code}}</td>
     </tr>
-{{/ifCondition}}
+{{/condition}}
 
-{{#ifCondition this.old.receive_news "||" this.modified.receive_news }}
+{{#condition this.old.receive_news "||" this.modified.receive_news }}
     <tr>
         <th>{{this.labels.receive_news}}</th>
         <th>{{this.labels.receive_news}}</th>
@@ -86,4 +86,4 @@
         <td>{{this.old.receive_news}}</td>
         <td>{{this.modified.receive_news}}</td>
     </tr>
-{{/ifCondition}}
+{{/condition}}
