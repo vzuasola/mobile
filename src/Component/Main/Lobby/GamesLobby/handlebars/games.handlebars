@@ -1,0 +1,14 @@
+{{#each games}}
+<div class="wrapper-game-list-item {{this.size}}">
+    <div class="games-list-item">
+        {{#if this.ribbon}}
+            <div class="game-ribbon"
+                style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
+            >
+                {{this.ribbon.name}}
+            </div>
+        {{/if}}
+        <img src="{{this.image.url}}" alt="{{this.image.alt}}">
+    </div>
+</div>
+{{/each}}

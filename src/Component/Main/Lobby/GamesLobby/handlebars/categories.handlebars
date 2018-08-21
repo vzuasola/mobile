@@ -1,0 +1,18 @@
+<div class="pull-left">
+    <nav>
+        <ul class="category-tab-list">
+            {{#each categories}}
+            <li>
+                <a
+                    href="#{{this.field_games_alias}}"
+                    class="category-tab category-{{this.field_games_alias}}"
+                    data-product-filter-id="{{this.field_games_alias}}"
+                    data-product-filter-name="{{this.name}}"
+                >
+                    {{this.name}}
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+    </nav>
+</div>
