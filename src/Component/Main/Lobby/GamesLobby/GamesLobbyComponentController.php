@@ -59,6 +59,7 @@ class GamesLobbyComponentController
     public function lobby($request, $response)
     {
         $data = [];
+
         try {
             $data['categories'] = $this->views->getViewById('games_category');
         } catch (\Exception $e) {
@@ -71,18 +72,21 @@ class GamesLobbyComponentController
         } catch (\Exception $e) {
             $data['games'] = [];
         }
+
         return $this->rest->output($response, $data);
     }
 
     private function arrangeGames($games)
     {
         $gamesList = [];
+
         foreach ($games as $game) {
             foreach ($game['field_games_list_category'] as $category) {
                 $gamesList[$category['field_games_alias'][0]['value']][]
                     = $this->processGame($game);
             }
         }
+
         return $gamesList;
     }
 
@@ -91,6 +95,7 @@ class GamesLobbyComponentController
         try {
             $processGame = [];
             $processGame['size'] = $game['field_games_list_thumbnail_size'][0]['value'];
+
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
                 $processGame['ribbon']['background'] = $ribbon['field_games_ribbon_color'][0]['color'];
@@ -111,6 +116,7 @@ class GamesLobbyComponentController
                         $this->asset->generateAssetUri($game['field_games_list_thumb_img_big'][0]['url'])
                 ];
             }
+
             return $processGame;
         } catch (\Exception $e) {
             return [];

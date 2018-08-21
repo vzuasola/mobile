@@ -43,7 +43,9 @@ export class GamesLobbyComponent implements ComponentInterface {
         const template = categoriesTemplate({
             categories: data,
         });
+
         const categoriesEl = this.element.querySelector("#game-categories");
+
         if (categoriesEl) {
             categoriesEl.innerHTML = template;
         }
@@ -53,7 +55,9 @@ export class GamesLobbyComponent implements ComponentInterface {
         const template = gameTemplate({
             games: data,
         });
+
         const gamesEl = this.element.querySelector("#game-container");
+
         if (gamesEl) {
             gamesEl.innerHTML = template;
         }
