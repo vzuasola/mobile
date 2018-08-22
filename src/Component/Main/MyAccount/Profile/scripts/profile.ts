@@ -89,6 +89,7 @@ export class Profile extends FormBase {
 
                     // Add labels to data
                     data.labels = this.getLabels();
+                    console.log("data", data);
 
                     tbody.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);

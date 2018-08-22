@@ -1,5 +1,6 @@
 form.profile-form,
-form.change-password-form {
+form.change-password-form,
+form.verify-password-form {
     padding-top: 1rem;
     transition: opacity 0.3s;
 
@@ -22,7 +23,8 @@ form.change-password-form {
     & > .MyProfileForm_address_markup,
     & > .MyProfileForm_preference_markup,
     & > .ChangePasswordForm_current_password_field,
-    & > .ChangePasswordForm_current_password {
+    & > .ChangePasswordForm_current_password,
+    & > .VerifyPasswordForm_verify_password {
         @extend %form-item-round-top;
     }
 
@@ -32,7 +34,8 @@ form.change-password-form {
     & > .MyProfileForm_postal_code,
     & > .MyProfileForm_button_cancel,
     & > .ChangePasswordForm_change_password_submit_field,
-    & > .ChangePasswordForm_submit {
+    & > .ChangePasswordForm_submit,
+    & > .VerifyPasswordForm_submit {
         @extend %form-item-round-bottom;
     }
 
