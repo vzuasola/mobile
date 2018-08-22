@@ -27,17 +27,19 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('user_fetcher'),
-            $container->get('receive_news')
+            $container->get('receive_news'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($userFetcher, $playerSubscription)
+    public function __construct($userFetcher, $playerSubscription,  $configFetcher)
     {
         $this->user = $userFetcher;
         $this->playerSubscription = $playerSubscription;
+        $this->configFetcher = $configFetcher->withProduct('account');
     }
 
     /**
@@ -45,8 +47,13 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
+        $smsConfig = $this->configFetcher->getConfigById('my_account_sms_verification');
+
         return [
             'user' => $this->getFormValues(),
+            'verification_code_min_length_message' => $smsConfig['verification_code_min_length_message'],
+            'verification_code_max_length_message' => $smsConfig['verification_code_max_length_message'],
+            'verification_code_required_message' => $smsConfig['verification_code_required_message'],
         ];
     }
 
