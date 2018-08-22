@@ -170,7 +170,6 @@ class MyAccountComponentController
 
         try {
             $smsStatus = $this->sms->checkSmsStatus($subTypeId);
-
         } catch (\Exception $e) {
             return $response->withStatus(500);
         }
