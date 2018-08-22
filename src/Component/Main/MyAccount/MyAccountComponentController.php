@@ -56,10 +56,10 @@ class MyAccountComponentController
     /**
      * Public constructor
      */
-    public function __construct($rest, $changePassword, $sms, $configFetcher, $userFetcher, $receiveNews, $playerSession)
+    public function __construct($rest, $changePass, $sms, $configFetcher, $userFetcher, $receiveNews, $playerSession)
     {
         $this->rest = $rest;
-        $this->changePassword = $changePassword;
+        $this->changePassword = $changePass;
         $this->sms = $sms;
         $this->configFetcher = $configFetcher->withProduct('account');
         $this->userFetcher = $userFetcher;
