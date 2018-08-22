@@ -41,9 +41,19 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
     }
 
     /**
+     * @{inheritdoc}
+     */
+    public function getAttachments()
+    {
+        return [
+            'user' => $this->getFormValues(),
+        ];
+    }
+
+    /**
      * Get Form Default values
      */
-    private function getFormValues($values)
+    private function getFormValues()
     {
         // initiate values config
         $apiValues = $this->user->getPlayerDetails();

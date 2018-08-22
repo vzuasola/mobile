@@ -99,8 +99,6 @@ class MyAccountComponentController
             return $response->withStatus(500);
         }
 
-        $smsVerificationErrorMessageList = $this->getErrorMessage();
-
         if ($smsVerificationStatus) {
             switch ($smsVerificationStatus) {
                 case 'INT019':
@@ -117,11 +115,7 @@ class MyAccountComponentController
             }
         }
 
-        foreach ($smsVerificationErrorMessageList as $key => $value) {
-            if ($key == $smsVerificationStatus) {
-                $message = $value[0];
-            }
-        }
+        $message = $this->getErrorMessage($smsVerificationStatus);
 
         return $this->rest->output($response, [
             'response_code' => $smsVerificationStatus,
@@ -139,9 +133,6 @@ class MyAccountComponentController
             return $response->withStatus(500);
         }
 
-
-        $smsVerificationErrorMessageList = $this->getErrorMessage();
-
         if ($smsVerificationStatus) {
             switch ($smsVerificationStatus) {
                 case 'INT021':
@@ -158,11 +149,7 @@ class MyAccountComponentController
             }
         }
 
-        foreach ($smsVerificationErrorMessageList as $key => $value) {
-            if ($key == $smsVerificationStatus) {
-                $message = $value[0];
-            }
-        }
+        $message = $this->getErrorMessage($smsVerificationStatus);
 
         return $this->rest->output($response, [
             'response_code' => $smsVerificationStatus,
@@ -179,8 +166,6 @@ class MyAccountComponentController
         } catch (\Exception $e) {
             return $response->withStatus(500);
         }
-
-        $smsVerificationErrorMessageList = $this->getErrorMessage();
 
         if ($smsStatus) {
             switch ($smsStatus) {
@@ -201,11 +186,7 @@ class MyAccountComponentController
             }
         }
 
-        foreach ($smsVerificationErrorMessageList as $key => $value) {
-            if ($key == $smsStatus) {
-                $message = $value[0];
-            }
-        }
+        $message = $this->getErrorMessage($smsStatus);
 
         return $this->rest->output($response, [
             'response_code' => $smsStatus,
@@ -216,7 +197,7 @@ class MyAccountComponentController
     /**
      * Error Message List fetcher from drupal
      */
-    private function getErrorMessage()
+    private function getErrorMessage($status)
     {
         $smsVerification = $this->configFetcher->getConfigById('my_account_sms_verification');
         $smsVerificationErrorMessage = $smsVerification['verification_code_response'];
@@ -229,7 +210,13 @@ class MyAccountComponentController
             $smsVerificationErrorMessageList[$newKey] = explode(PHP_EOL, $newValue);
         }
 
-        return $smsVerificationErrorMessageList;
+        foreach ($smsVerificationErrorMessageList as $key => $value) {
+            if ($key == $status) {
+                $message = $value[0];
+            }
+        }
+
+        return $message;
     }
 
     /**

@@ -33,6 +33,7 @@ class MyAccountComponentScripts implements ComponentAttachmentInterface
     {
         $this->configFetcher = $configFetcher->withProduct('account');
     }
+
     /**
      * @{inheritdoc}
      */
