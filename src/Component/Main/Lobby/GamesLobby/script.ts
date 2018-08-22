@@ -63,8 +63,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             key = this.response.categories[0].field_games_alias;
             key = this.getActiveCategory(this.response.games, key);
         }
-
-        this.setCategories(this.response.categories);
+        this.setCategories(this.response.categories, key);
         this.setGames(this.response.games[key]);
     }
 
@@ -72,9 +71,10 @@ export class GamesLobbyComponent implements ComponentInterface {
      * Set the category in the template
      *
      */
-    private setCategories(data) {
+    private setCategories(data, key) {
         const template = categoriesTemplate({
             categories: data,
+            active: key,
         });
 
         const categoriesEl = this.element.querySelector("#game-categories");

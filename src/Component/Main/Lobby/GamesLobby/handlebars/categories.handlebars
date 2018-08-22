@@ -1,3 +1,4 @@
+
 <div class="pull-left">
     <nav>
         <ul class="category-tab-list">
@@ -5,7 +6,7 @@
             <li>
                 <a
                     href="#{{this.field_games_alias}}"
-                    class="category-tab category-{{this.field_games_alias}}"
+                    class="category-tab category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
                     data-category-filter-id="{{this.field_games_alias}}"
                     data-category-filter-name="{{this.name}}"
                 >
