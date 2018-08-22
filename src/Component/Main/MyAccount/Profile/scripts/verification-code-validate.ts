@@ -28,9 +28,6 @@ export class VerificationCodeValidate {
         }],
         (errors, event) => {
             const e = event || window.event;
-            const fieldId = {
-                "verification-code-field": "",
-            };
 
             // Attaching error message on field element
             for (const key in errors) {

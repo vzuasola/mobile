@@ -35,7 +35,7 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($userFetcher, $playerSubscription,  $configFetcher)
+    public function __construct($userFetcher, $playerSubscription, $configFetcher)
     {
         $this->user = $userFetcher;
         $this->playerSubscription = $playerSubscription;
