@@ -70,8 +70,7 @@ class IDDomain
     {
         $hostname = Host::getHostname();
 
-        $countryCode = $this->request->getHeader('DEF_GEOIP_COUNTRY')[0] ?? '';
-
+        $countryCode = $this->request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '';
         return (in_array($hostname, self::DOMAINS) && strtolower($this->lang) == strtolower(self::LANG))
             || strtolower($countryCode) == strtolower(self::LANG);
     }
