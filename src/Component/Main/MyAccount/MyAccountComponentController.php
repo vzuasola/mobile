@@ -18,7 +18,12 @@ class MyAccountComponentController
     private $changePassword;
 
     /**
-     * User Fetcher Object.
+     * sms Object
+     */
+    private $sms;
+
+    /**
+     * User Fetcher Object
      */
     private $userFetcher;
 
@@ -45,6 +50,8 @@ class MyAccountComponentController
         return new static(
             $container->get('rest'),
             $container->get('change_password'),
+            $container->get('sms_verification'),
+            $container->get('config_fetcher'),
             $container->get('user_fetcher'),
             $container->get('receive_news'),
             $container->get('player_session'),
@@ -55,10 +62,12 @@ class MyAccountComponentController
     /**
      * Public constructor
      */
-    public function __construct($rest, $changePassword, $userFetcher, $receiveNews, $playerSession, $session)
+    public function __construct($rest, $changePass, $sms, $configFetcher, $userFetcher, $receiveNews, $playerSession, $session)
     {
         $this->rest = $rest;
-        $this->changePassword = $changePassword;
+        $this->changePassword = $changePass;
+        $this->sms = $sms;
+        $this->configFetcher = $configFetcher->withProduct('account');
         $this->userFetcher = $userFetcher;
         $this->subscription = $receiveNews;
         $this->playerSession = $playerSession;
@@ -89,6 +98,139 @@ class MyAccountComponentController
         return $this->rest->output($response, [
             'status' => $status,
         ]);
+    }
+
+    /**
+     * Send Verification Code
+     */
+    public function sendverificationcode($request, $response)
+    {
+        $subTypeId = $request->getParsedBody()['data'] ?? null;
+
+        try {
+            $smsVerificationStatus = $this->sms->sendSmsVerificationCode($subTypeId);
+        } catch (\Exception $e) {
+            return $response->withStatus(500);
+        }
+
+        if ($smsVerificationStatus) {
+            switch ($smsVerificationStatus) {
+                case 'INT019':
+                    $smsVerificationStatus = 'SMS_VERIFICATION_SUCCESS';
+                    break;
+                case 'INT020':
+                    $smsVerificationStatus = 'SMS_VERIFICATION_FAILED';
+                    break;
+                case 'INT001':
+                    $smsVerificationStatus = 'INTERNAL_ERROR';
+                    break;
+                default:
+                    $smsVerificationStatus = '';
+            }
+        }
+
+        $message = $this->getErrorMessage($smsVerificationStatus);
+
+        return $this->rest->output($response, [
+            'response_code' => $smsVerificationStatus,
+            'message' => $message
+        ]);
+    }
+
+    public function submitverificationcode($request, $response)
+    {
+        $data = $request->getParsedBody()['data'] ?? null;
+
+        try {
+            $smsVerificationStatus = $this->sms->submitSmsVerificationCode($data);
+        } catch (\Exception $e) {
+            return $response->withStatus(500);
+        }
+
+        if ($smsVerificationStatus) {
+            switch ($smsVerificationStatus) {
+                case 'INT021':
+                    $smsVerificationStatus = 'SMS_VERIFICATION_SUBMIT_SUCCESS';
+                    break;
+                case 'INT022':
+                    $smsVerificationStatus = 'SMS_VERIFICATION_SUBMIT_FAILED';
+                    break;
+                case 'INT001':
+                    $smsVerificationStatus = 'INTERNAL_ERROR';
+                    break;
+                default:
+                    $smsVerificationStatus = '';
+            }
+        }
+
+        $message = $this->getErrorMessage($smsVerificationStatus);
+
+        return $this->rest->output($response, [
+            'response_code' => $smsVerificationStatus,
+            'message' => $message
+        ]);
+    }
+
+    public function checksmsstatus($request, $response)
+    {
+        $subTypeId = $request->getParsedBody()['subtypeId'] ?? null;
+
+        try {
+            $smsStatus = $this->sms->checkSmsStatus($subTypeId);
+        } catch (\Exception $e) {
+            return $response->withStatus(500);
+        }
+
+        if ($smsStatus) {
+            switch ($smsStatus) {
+                case 'INT023':
+                    $smsStatus = 'CHECK_SMS_STATUS_VERIFIED';
+                    break;
+                case 'INT024':
+                    $smsStatus = 'CHECK_SMS_STATUS_NOT_VERIFIED';
+                    break;
+                case 'INT025':
+                    $smsStatus = 'CHECK_SMS_STATUS_FAILED';
+                    break;
+                case 'INT001':
+                    $smsStatus = 'INTERNAL_ERROR';
+                    break;
+                default:
+                    $smsStatus = '';
+            }
+        }
+
+        $message = $this->getErrorMessage($smsStatus);
+
+        return $this->rest->output($response, [
+            'response_code' => $smsStatus,
+            'message' => $message
+        ]);
+    }
+
+    /**
+     * Error Message List fetcher from drupal
+     */
+    private function getErrorMessage($status)
+    {
+        $smsVerification = $this->configFetcher->getConfigById('my_account_sms_verification');
+        $smsVerificationErrorMessage = $smsVerification['verification_code_response'];
+
+        $smsVerificationErrorMessages = explode(PHP_EOL, $smsVerificationErrorMessage);
+        $smsVerificationErrorMessageList = array();
+
+        foreach ($smsVerificationErrorMessages as $value) {
+            list($newKey, $newValue) = explode('|', rtrim($value));
+            $smsVerificationErrorMessageList[$newKey] = explode(PHP_EOL, $newValue);
+        }
+
+        foreach ($smsVerificationErrorMessageList as $key => $value) {
+            if ($key == $status) {
+                $message = $value[0];
+            }
+        }
+
+        return $message;
     }
 
     /**
@@ -149,7 +291,9 @@ class MyAccountComponentController
             ]);
         }
 
-        $this->storeUpdatedPlayerDetails();
+        $this->session->delete('player.details');
+        $this->userFetcher->getPlayerDetails();
+
         return $this->rest->output($response, [
             'success' => true,
             'status' => 'success'
@@ -186,22 +330,5 @@ class MyAccountComponentController
             'success' => true,
             'status' => 'success'
         ]);
-    }
-
-    /**
-     * save the updated player details in session.
-     */
-    private function storeUpdatedPlayerDetails()
-    {
-        $this->session->delete('player.details');
-
-        $details = $this->userFetcher->getPlayerDetails();
-        foreach (Player::KEYS as $key) {
-            if (isset($details[$key])) {
-                $store[$key] = $details[$key];
-            }
-        }
-
-        $this->session->set('player.details', $store);
     }
 }

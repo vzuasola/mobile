@@ -40,6 +40,20 @@ export class Profile extends FormBase {
             address: this.form.MyProfileForm_address.value,
             city: this.form.MyProfileForm_city.value,
             postal_code: this.form.MyProfileForm_postal_code.value,
+            receive_news: this.form.ProfileForm_contact_preference.checked ? "Yes" : "No",
+        };
+    }
+
+    private getLabels() {
+        return {
+            gender: this.form.querySelector(".MyProfileForm_gender .form-label-text").textContent,
+            language: this.form.querySelector(".MyProfileForm_language .form-label-text").textContent,
+            mobile: this.form.querySelector(".MyProfileForm_mobile_number_1 .form-label-text").textContent,
+            mobile1: this.form.querySelector(".MyProfileForm_mobile_number_1 .form-label-text").textContent,
+            address: this.form.querySelector(".MyProfileForm_address .form-label-text").textContent,
+            city: this.form.querySelector(".MyProfileForm_city .form-label-text").textContent,
+            postal_code: this.form.querySelector(".MyProfileForm_postal_code .form-label-text").textContent,
+            receive_news: this.form.querySelector(".MyProfileForm_preference_markup .label-inwrapper").textContent,
         };
     }
 
@@ -71,7 +85,11 @@ export class Profile extends FormBase {
             if (!this.validator.hasError) {
                 if (this.hasChanges()) {
                     const tbody = this.element.querySelector(this.modalSelector + " tbody");
-                    const data = this.getFilteredDifference(this.oldValues, this.newValues);
+                    const data: any = this.getFilteredDifference(this.oldValues, this.newValues);
+
+                    // Add labels to data
+                    data.labels = this.getLabels();
+
                     tbody.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);
                 } else {
@@ -82,17 +100,13 @@ export class Profile extends FormBase {
     }
 
     private isEquivalent(a: {}, b: {}) {
-        // Create arrays of property names
-        const aProps = Object.getOwnPropertyNames(a);
-        const bProps = Object.getOwnPropertyNames(b);
-
         // If number of properties is different,
         // objects are not equivalent
-        if (aProps.length !== bProps.length) {
+        if (Object.getOwnPropertyNames(a).length !== Object.getOwnPropertyNames(b).length) {
             return false;
         }
 
-        for (const propName of aProps) {
+        for (const propName of Object.getOwnPropertyNames(a)) {
             // If values of same property are not equal,
             // objects are not equivalent
             if (a[propName] !== b[propName]) {
