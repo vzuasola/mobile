@@ -71,3 +71,32 @@ tr th {
 [dir="rtl"] tr th {
     text-align: right;
 }
+
+// Table styles
+.table-primary {
+    &,
+    th,
+    td {
+        padding: 0.5rem 1rem 0.6rem;
+        border: 0.2rem solid #f8f9fb;
+        font-weight: normal;
+    }
+
+    thead {
+        th {
+            background: $dark-red;
+        }
+    }
+
+    tbody {
+        th {
+            background: $gray;
+            color: $light-gray;
+        }
+
+        td {
+            background: $light-gray;
+            color: $gray;
+        }
+    }
+}

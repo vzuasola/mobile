@@ -20,6 +20,9 @@ mix.webpackConfig({
                     precompileOptions: {
                         knownHelpersOnly: false,
                     },
+                    helperDirs: [
+                        path.resolve(__dirname, "./assets/script/components/handlebars"),
+                    ]
                 }
             },
             {

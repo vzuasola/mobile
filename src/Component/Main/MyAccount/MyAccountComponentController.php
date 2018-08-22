@@ -23,6 +23,16 @@ class MyAccountComponentController
     private $sms;
 
     /**
+     * User Fetcher Object
+     */
+    private $userFetcher;
+
+    /**
+     * Receive News Object
+     */
+    private $subscription;
+
+    /**
      *
      */
     public static function create($container)
@@ -31,19 +41,23 @@ class MyAccountComponentController
             $container->get('rest'),
             $container->get('change_password'),
             $container->get('sms_verification'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('user_fetcher'),
+            $container->get('receive_news')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $changePassword, $sms, $configFetcher)
+    public function __construct($rest, $changePassword, $sms, $configFetcher, $userFetcher, $receiveNews)
     {
         $this->rest = $rest;
         $this->changePassword = $changePassword;
         $this->sms = $sms;
         $this->configFetcher = $configFetcher->withProduct('account');
+        $this->userFetcher = $userFetcher;
+        $this->subscription = $receiveNews;
     }
 
     /**
@@ -72,7 +86,7 @@ class MyAccountComponentController
         ]);
     }
 
-        /**
+    /**
      * Send Verification Code
      */
     public function sendverificationcode($request, $response)
@@ -216,5 +230,69 @@ class MyAccountComponentController
         }
 
         return $smsVerificationErrorMessageList;
+    }
+
+    /**
+     * Ajax - update profile request
+     */
+    public function updateprofile($request, $response)
+    {
+        $defaultValues = $this->userFetcher->getPlayerDetails();
+        $profileFormValues = $request->getParsedBody();
+        $receiveNews = false;
+        $mobile1 = null;
+
+        $mobileNumber = $defaultValues['mobileNumbers']['Home']['number'] ?? "";
+        $mobileNumberVerified = $defaultValues['mobileNumbers']['Home']['verified'] ?? false;
+
+        if (isset($profileFormValues['mobile']) && !$mobileNumberVerified) {
+            $mobileNumber = $profileFormValues['mobile'];
+        }
+
+        if (isset($profileFormValues['mobile1']) ?? $profileFormValues['mobile1']) {
+            $mobile1 = $profileFormValues['mobile1'];
+        }
+
+        if (isset($profileFormValues['receive_news'])) {
+            $receiveNews = true;
+        }
+
+        $playerDetails = [
+            'username' => $defaultValues['username'],
+            'firstname' => $defaultValues['firstName'],
+            'lastname' => $defaultValues['lastName'],
+            'email' => $defaultValues['email'],
+            'countryid' => $defaultValues['countryId'],
+            'gender' => $profileFormValues['gender'],
+            'language' => $profileFormValues['language'],
+            'mobile' => $mobileNumber,
+            'mobile1' => $mobile1,
+            'address' => $profileFormValues['address'],
+            'city' => $profileFormValues['city'],
+            'postalcode' => $profileFormValues['postal_code'],
+        ];
+
+        try {
+            $this->userFetcher->setPlayerDetails($playerDetails);
+            $this->subscription->setSubscription($receiveNews);
+        } catch (\Exception $e) {
+            $error = $e->getResponse()->getBody()->getContents();
+            $error = json_decode($error, true);
+
+            $status = 'server_error';
+            if ($error['responseCode'] == "INT029") {
+                $status = 'failed';
+            }
+
+            return $this->rest->output($response, [
+                'success' => false,
+                'status' => $status,
+            ]);
+        }
+
+        return $this->rest->output($response, [
+            'success' => true,
+            'status' => 'success'
+        ]);
     }
 }
