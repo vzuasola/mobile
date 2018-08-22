@@ -14,24 +14,10 @@
 
                 </tbody>
             </table>
-            <p>Enter your password to save changes to your account</p>
-            <form class="pure-form change-password-form">
-                <div class="form-item ChangePasswordForm_current_password">
-                    <label for="ChangePasswordForm_current_password" class="form-label">
-                        <span class="form-label-text">Current Password</span>
-                        <span class="required-field">*</span>
-                    </label>
-                    <div class="form-field">
-                        <input type="password" id="ChangePasswordForm_current_password" name="ChangePasswordForm[current_password]" placeholder="Current Password" class="form-field-element">
-                    </div>
-                </div>
-                <div class="form-item ChangePasswordForm_submit">
-                    <div class="form-field">
-                        <button type="submit" id="ChangePasswordForm_submit" name="ChangePasswordForm[submit]" class="btn btn-small btn-yellow btn-changepass btn-lower-case">Change Password</button>
-                    </div>
-                </div>
-            </form>
+
+            {{ widget("profile_verify_password") }}
         </div>
         {% include '@app/web/images/svg/closed.svg' ignore missing %}
     </div>
+
 </div>
