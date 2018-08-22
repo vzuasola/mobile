@@ -62,8 +62,16 @@ class MyAccountComponentController
     /**
      * Public constructor
      */
-    public function __construct($rest, $changePass, $sms, $configFetcher, $userFetcher, $receiveNews, $playerSession, $session)
-    {
+    public function __construct(
+        $rest,
+        $changePass,
+        $sms,
+        $configFetcher,
+        $userFetcher,
+        $receiveNews,
+        $playerSession,
+        $session
+    ) {
         $this->rest = $rest;
         $this->changePassword = $changePass;
         $this->sms = $sms;
