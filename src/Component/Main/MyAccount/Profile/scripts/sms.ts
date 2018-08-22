@@ -224,6 +224,7 @@ export class Sms {
                     // Trigger checking of sms code for 2 minutes
                     if (checkStatusCounter < 40) {
                         checkStatusCounter++;
+                        This.checkSmsStatus;
                     } else {
                         location.reload();
                     }
