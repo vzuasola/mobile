@@ -138,9 +138,14 @@ class MyProfileForm extends FormBase implements FormInterface
                 $definition[$key]['options']['data'] = $value;
             }
         }
-
+        // check mobile 1 if verified and set the flag to true and disable field
         if ($values['sms_1_verified']) {
+            $definition['mobile_number_1']['options']['attr']['data-verified'] = "1";
             $this->disabledFields = array_merge($this->disabledFields, ['mobile_number_1']);
+        }
+        // check mobile 2 if verified and set the flag to true (will not disable field still can edit)
+        if ($values['sms_2_verified']) {
+            $definition['mobile_number_2']['options']['attr']['data-verified'] = "1";
         }
 
         return $definition;
@@ -282,10 +287,6 @@ class MyProfileForm extends FormBase implements FormInterface
         if ($result['sms_1_verified']) {
             $result['mobile_number_1'] = $this->contactNumberMasking($result['mobile_number_1']);
         }
-
-        $this->scripts->attach([
-            'playerData' => $result,
-        ]);
 
         return $result;
     }

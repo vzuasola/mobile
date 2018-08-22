@@ -100,17 +100,13 @@ export class Profile extends FormBase {
     }
 
     private isEquivalent(a: {}, b: {}) {
-        // Create arrays of property names
-        const aProps = Object.getOwnPropertyNames(a);
-        const bProps = Object.getOwnPropertyNames(b);
-
         // If number of properties is different,
         // objects are not equivalent
-        if (aProps.length !== bProps.length) {
+        if (Object.getOwnPropertyNames(a).length !== Object.getOwnPropertyNames(b).length) {
             return false;
         }
 
-        for (const propName of aProps) {
+        for (const propName of Object.getOwnPropertyNames(a)) {
             // If values of same property are not equal,
             // objects are not equivalent
             if (a[propName] !== b[propName]) {

@@ -52,9 +52,20 @@ class ProfileComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
-        $formForgotPassword = $this->formManager->getForm(MyProfileForm::class);
-        $data['formMyProfile'] = $formForgotPassword->createView();
+        $formMyProfile = $this->formManager->getForm(MyProfileForm::class);
+        $myProfileConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
+        $smsConfig = $this->configFetcher->getConfigById('my_account_sms_verification');
 
-        return $data;
+        return [
+            'title' => 'My Account',
+            'formMyProfile' => $formMyProfile->createView(),
+            'add_mobile_label' => $myProfileConfig['add_mobile_label'] ?? 'Add Mobile',
+            'modal_verify_header_text' => $smsConfig['modal_verify_header_text'] ?? 'Verify Number',
+            'modal_verify_body_text' => $smsConfig['modal_verify_body_text'] ?? 'Verify your mobile number',
+            'modal_verification_code_placeholder' => $smsConfig['modal_verification_code_placeholder'] ?? 'Code',
+            'modal_verification_resend_code_text' => $smsConfig['modal_verification_resend_code_text'] ?? 'Resend',
+            'modal_verification_submit_text' => $smsConfig['modal_verification_submit_text'] ?? 'Submit',
+            'verify_text' => $smsConfig['verify_text'] ?? 'Verify',
+        ];
     }
 }
