@@ -40,7 +40,7 @@ class SliderComponent implements ComponentWidgetInterface
     public function __construct($product, $configs, $viewsFetcher, $playerSession)
     {
         $this->configs = $configs;
-        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-entrypage');
+        $this->viewsFetcher = $viewsFetcher->withProduct($product->getProduct());
         $this->playerSession = $playerSession;
     }
 

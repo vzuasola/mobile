@@ -34,16 +34,16 @@ $settings['settings']['components']['router']['widget_headers'] = [
 
 // Cache
 
-// $settings['settings']['cache']['default_timeout'] = 1800;
+$settings['settings']['cache']['default_timeout'] = 1800;
 
 // Page Cache
 
-// $settings['settings']['page_cache']['enable'] = true;
-// $settings['settings']['page_cache']['default_timeout'] = 1800;
+$settings['settings']['page_cache']['enable'] = true;
+$settings['settings']['page_cache']['default_timeout'] = 1800;
 
 // Fetchers
 
-// $settings['settings']['fetchers']['enable_permanent_caching'] = true;
+$settings['settings']['fetchers']['enable_permanent_caching'] = true;
 
 // Environment Specific
 
