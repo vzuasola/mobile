@@ -91,6 +91,10 @@ components:
     class: App\MobileEntry\Component\Main\MyAccount\Profile\ProfileComponent
     parent: my_account
 
+  profile_verify_password:
+    class: App\MobileEntry\Component\Main\MyAccount\Profile\VerifyPassword\VerifyPasswordComponent
+    parent: profile
+
   change_password:
     class: App\MobileEntry\Component\Main\MyAccount\ChangePassword\ChangePasswordComponent
     parent: my_account

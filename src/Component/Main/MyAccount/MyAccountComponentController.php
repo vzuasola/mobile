@@ -33,6 +33,11 @@ class MyAccountComponentController
     private $subscription;
 
     /**
+     * Player Session Object
+     */
+    private $playerSession;
+
+    /**
      *
      */
     public static function create($container)
@@ -43,14 +48,15 @@ class MyAccountComponentController
             $container->get('sms_verification'),
             $container->get('config_fetcher'),
             $container->get('user_fetcher'),
-            $container->get('receive_news')
+            $container->get('receive_news'),
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $changePassword, $sms, $configFetcher, $userFetcher, $receiveNews)
+    public function __construct($rest, $changePassword, $sms, $configFetcher, $userFetcher, $receiveNews, $playerSession)
     {
         $this->rest = $rest;
         $this->changePassword = $changePassword;
@@ -58,6 +64,7 @@ class MyAccountComponentController
         $this->configFetcher = $configFetcher->withProduct('account');
         $this->userFetcher = $userFetcher;
         $this->subscription = $receiveNews;
+        $this->playerSession = $playerSession;
     }
 
     /**
@@ -268,6 +275,38 @@ class MyAccountComponentController
 
             $status = 'server_error';
             if ($error['responseCode'] == "INT029") {
+                $status = 'failed';
+            }
+
+            return $this->rest->output($response, [
+                'success' => false,
+                'status' => $status,
+            ]);
+        }
+
+        return $this->rest->output($response, [
+            'success' => true,
+            'status' => 'success'
+        ]);
+    }
+
+    /**
+     * Ajax - verify password request
+     */
+    public function verifypassword($request, $response)
+    {
+        $requestBody = $request->getParsedBody();
+        $password = $requestBody['password'] ?? null;
+        $username = $requestBody['username'] ?? null;
+
+        try {
+            $this->playerSession->validateSessionPassword($username, $password);
+        } catch (\Exception $e) {
+            $error = $e->getResponse()->getBody()->getContents();
+            $error = json_decode($error, true);
+
+            $status = 'server_error';
+            if ($error['responseCode'] == "INT027") {
                 $status = 'failed';
             }
 
