@@ -19,6 +19,7 @@ export class GamesLobbyComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.element = element;
+        this.listenChangeCategory();
         this.generateLobby();
     }
 
@@ -57,9 +58,11 @@ export class GamesLobbyComponent implements ComponentInterface {
     /**
      * Populate lobby with the set response
      */
-    private setLobby() {
-        let key = this.response.categories[0].field_games_alias;
-        key = this.getActiveCategory(this.response.games, key);
+    private setLobby(key?: string) {
+        if (!key) {
+            key = this.response.categories[0].field_games_alias;
+            key = this.getActiveCategory(this.response.games, key);
+        }
 
         this.setCategories(this.response.categories);
         this.setGames(this.response.games[key]);
@@ -108,5 +111,17 @@ export class GamesLobbyComponent implements ComponentInterface {
         if (gamesEl) {
             gamesEl.innerHTML = template;
         }
+    }
+
+    /**
+     * Event listener for category click
+     */
+    private listenChangeCategory() {
+        ComponentManager.subscribe("click", (event: Event, src) => {
+            if (src.getAttribute("data-category-filter-id")) {
+                const key = src.getAttribute("data-category-filter-id");
+                this.setLobby(key);
+            }
+        });
     }
 }
