@@ -172,7 +172,8 @@ export class Sms {
         event = event || window.event;
         utility.preventDefault(event);
         const This = this;
-        const verifCode = (this.element.querySelector("#verification-code-field") as HTMLInputElement).value;
+        const verifCodeField: HTMLInputElement = this.element.querySelector("#verification-code-field");
+        const verifCode = verifCodeField.value;
         const verificationError = document.getElementById("modal-verification-error");
         const verificationSuccess = document.getElementById("modal-verification-success");
 
