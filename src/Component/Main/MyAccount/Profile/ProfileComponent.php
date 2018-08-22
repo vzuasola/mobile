@@ -53,19 +53,19 @@ class ProfileComponent implements ComponentWidgetInterface
     {
         $data = [];
         $formMyProfile = $this->formManager->getForm(MyProfileForm::class);
-        $data['config']['general'] = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
-        $data['config']['sms'] = $this->configFetcher->getConfigById('my_account_sms_verification');
+        $myProfileConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
+        $smsConfig = $this->configFetcher->getConfigById('my_account_sms_verification');
 
         return [
             'title' => 'My Account',
             'formMyProfile' => $formMyProfile->createView(),
-            'add_mobile_label' => $data['config']['general']['add_mobile_label'],
-            'modal_verify_header_text' => $data['config']['sms']['modal_verify_header_text'],
-            'modal_verify_body_text' => $data['config']['sms']['modal_verify_body_text'],
-            'modal_verification_code_placeholder' => $data['config']['sms']['modal_verification_code_placeholder'],
-            'modal_verification_resend_code_text' => $data['config']['sms']['modal_verification_resend_code_text'],
-            'modal_verification_submit_text' => $data['config']['sms']['modal_verification_submit_text'],
-            'verify_text' => $data['config']['sms']['verify_text'],
+            'add_mobile_label' => $myProfileConfig['add_mobile_label'] ?? 'Add Mobile',
+            'modal_verify_header_text' => $smsConfig['modal_verify_header_text'] ?? 'Verify Number',
+            'modal_verify_body_text' => $smsConfig['modal_verify_body_text'] ?? 'Verify your mobile number',
+            'modal_verification_code_placeholder' => $smsConfig['modal_verification_code_placeholder'] ?? 'Verification',
+            'modal_verification_resend_code_text' => $smsConfig['modal_verification_resend_code_text'] ?? 'Resend',
+            'modal_verification_submit_text' => $smsConfig['modal_verification_submit_text'] ?? 'Submit',
+            'verify_text' => $smsConfig['verify_text'] ?? 'Verify',
         ];
     }
 }
