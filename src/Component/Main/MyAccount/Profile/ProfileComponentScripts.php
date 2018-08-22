@@ -39,15 +39,6 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
         $this->user = $userFetcher;
         $this->playerSubscription = $playerSubscription;
     }
-    /**
-     * @{inheritdoc}
-     */
-    public function getAttachments()
-    {
-        return [
-            'user' => $this->getFormValues($this->user->getPlayerDetails())
-        ];
-    }
 
     /**
      * Get Form Default values
@@ -63,7 +54,7 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             $mobile1Value = $apiValues['mobileNumbers']['Mobile 1']['number'] ?? null;
         }
 
-        $result = [
+        return [
             'username' => $apiValues['username'],
             'currency' => $apiValues['currency'],
             'first_name' => $apiValues['firstName'],
@@ -82,7 +73,5 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'postal_code' => $apiValues['postalCode'],
             'receive_news' => $receiveNews,
         ];
-
-        return $result;
     }
 }
