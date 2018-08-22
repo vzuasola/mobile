@@ -9,7 +9,6 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  *
  * @param Node element component parent element
  * @param Object attachments
- * @param String password selector to target for password
  */
 export class VerifyPassword extends FormBase {
     private emailField: HTMLFormElement;

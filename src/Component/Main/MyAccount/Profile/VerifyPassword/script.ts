@@ -16,9 +16,6 @@ export class MyAccountProfileVerifyPasswordComponent implements ComponentInterfa
         this.activateVerifyPassword(element, attachments);
     }
 
-    /**
-     * Activate Forgot Password
-     */
     private activateVerifyPassword(element, attachments) {
         this.verifyPassword = new VerifyPassword(
             element,
