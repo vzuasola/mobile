@@ -158,7 +158,7 @@ class MyAccountComponentController
         $username = $requestBody['username'] ?? null;
 
         try {
-            $verificationStatus = $this->playerSession->validateSessionPassword($username, $password);
+            $this->playerSession->validateSessionPassword($username, $password);
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
