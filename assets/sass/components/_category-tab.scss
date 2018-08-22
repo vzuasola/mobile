@@ -1,0 +1,45 @@
+.category-tab {
+    @extend %clearfix;
+    height: 4rem;
+    background: $cat-tab-bg;
+    position: relative;
+}
+
+.category-tab-list {
+    @extend %clearfix;
+    padding-left: 0;
+    float: left;
+    list-style-type: none;
+    margin-bottom: 0.2rem;
+
+    li {
+        float: left;
+    }
+
+    a {
+        display: inline-block;
+        height: 4rem;
+        padding: 0 2.2rem;
+        background: $cat-tab-bg;
+        color: $cat-tab-color;
+        font-size: 1.6rem;
+        line-height: 4rem;
+        text-decoration: none;
+        font-weight: 600;
+
+        svg {
+            width: 2.5rem;
+            height: 2.5rem;
+            position: absolute;
+            top: 0.7rem;
+            left: 0.7rem;
+            outline: none;
+            fill: $white;
+        }
+    }
+
+    .active {
+        background: $dark-red;
+        color: $yellow;
+    }
+}

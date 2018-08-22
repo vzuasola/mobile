@@ -1,0 +1,60 @@
+#game-container,
+.game-container {
+    background: $dark-red;
+}
+
+.game-tiles {
+    display: inline-block;
+}
+
+.game-listing {
+    float: left;
+    margin: 0;
+    padding: 0;
+
+    .size-small {
+        width: 31.333333%;
+        margin: 0 1% 1.5% 1%;
+    }
+
+    .size-large {
+        width: 64.66666666666667%;
+        margin: 0 1% 1.5% 1%;
+    }
+
+    .size-large-after {
+        margin-top: -26.1%;
+    }
+
+    &-item {
+        position: relative;
+        float: left;
+        display: inline-block;
+    }
+}
+
+// Game Ribbon
+.game-ribbon {
+    position: absolute;
+    top: 0.5rem;
+    left: 0rem;
+    display: block;
+    padding: 0.2rem 0.5rem;
+    background: #ff0000;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 0.2rem;
+}
+
+.game-favorite {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    width: 2rem;
+    cursor: pointer;
+    fill: $yellow;
+}
+
+.game-list-thumb {
+    width: 100%;
+}
