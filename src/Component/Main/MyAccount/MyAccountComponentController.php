@@ -18,19 +18,24 @@ class MyAccountComponentController
     private $changePassword;
 
     /**
-     * User Fetcher Object
+     * User Fetcher Object.
      */
     private $userFetcher;
 
     /**
-     * Receive News Object
+     * Receive News Object.
      */
     private $subscription;
 
     /**
-     * Player Session Object
+     * Player Session Object.
      */
     private $playerSession;
+
+    /**
+     * Session Object.
+     */
+    private $session;
 
     /**
      *
@@ -42,20 +47,22 @@ class MyAccountComponentController
             $container->get('change_password'),
             $container->get('user_fetcher'),
             $container->get('receive_news'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $changePassword, $userFetcher, $receiveNews, $playerSession)
+    public function __construct($rest, $changePassword, $userFetcher, $receiveNews, $playerSession, $session)
     {
         $this->rest = $rest;
         $this->changePassword = $changePassword;
         $this->userFetcher = $userFetcher;
         $this->subscription = $receiveNews;
         $this->playerSession = $playerSession;
+        $this->session = $session;
     }
 
     /**
@@ -142,6 +149,7 @@ class MyAccountComponentController
             ]);
         }
 
+        $this->storeUpdatedPlayerDetails();
         return $this->rest->output($response, [
             'success' => true,
             'status' => 'success'
@@ -178,5 +186,22 @@ class MyAccountComponentController
             'success' => true,
             'status' => 'success'
         ]);
+    }
+
+    /**
+     * save the updated player details in session.
+     */
+    private function storeUpdatedPlayerDetails()
+    {
+        $this->session->delete('player.details');
+
+        $details = $this->userFetcher->getPlayerDetails();
+        foreach (Player::KEYS as $key) {
+            if (isset($details[$key])) {
+                $store[$key] = $details[$key];
+            }
+        }
+
+        $this->session->set('player.details', $store);
     }
 }
