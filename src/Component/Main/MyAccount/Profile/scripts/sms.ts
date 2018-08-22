@@ -4,6 +4,7 @@ import {Loader} from "@app/assets/script/components/loader";
 import {Modal} from "@app/assets/script/components/modal";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {VerificationCodeValidate} from "./verification-code-validate";
+import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 
 /**
  * SMS Verification
@@ -24,10 +25,13 @@ export class Sms {
     private verifyBtn: HTMLElement;
     private verificationError: HTMLElement;
     private subTypeId: number;
+    private verified: boolean;
+
     // construct
     constructor(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.attachments = attachments;
+        this.loader = new Loader(document.body, true);
     }
     // init
     init() {
@@ -117,6 +121,7 @@ export class Sms {
 
     // Method to send sms
     private sendVerificationCode(event) {
+        this.verified = false;
         if (event.target && event.target.id === "verify-mobile-modal") {
             this.subTypeId = 2;
 
@@ -182,6 +187,7 @@ export class Sms {
         const verifCode = verifCodeField.value;
         const verificationError = document.getElementById("modal-verification-error");
         const verificationSuccess = document.getElementById("modal-verification-success");
+        this.loader.show();
 
         xhr({
             url: Router.generateRoute("my_account", "submitverificationcode"),
@@ -203,6 +209,7 @@ export class Sms {
                 utility.addClass(verificationSuccess, "hidden");
                 utility.removeClass(verificationError, "hidden");
                 verificationError.innerHTML = res.message;
+                this.refreshProfileForm();
             }
         });
     }
@@ -212,25 +219,40 @@ export class Sms {
         const This = parentThis;
         let checkStatusCounter = 0;
         setInterval((e) => {
-            xhr({
-                url: Router.generateRoute("my_account", "checksmsstatus"),
-                type: "json",
-                method: "post",
-                data: {
-                    subtypeId: This.subTypeId,
-                },
-            }).then((res) => {
-                if (res.response_code === "CHECK_SMS_STATUS_NOT_VERIFIED") {
-                    // Trigger checking of sms code for 2 minutes
-                    if (checkStatusCounter < 40) {
-                        checkStatusCounter++;
-                        This.checkSmsStatus;
+            if (this.verified === false) {
+                xhr({
+                    url: Router.generateRoute("my_account", "checksmsstatus"),
+                    type: "json",
+                    method: "post",
+                    data: {
+                        subtypeId: This.subTypeId,
+                    },
+                }).then((res) => {
+                    if (res.response_code === "CHECK_SMS_STATUS_NOT_VERIFIED") {
+                        // Trigger checking of sms code for 2 minutes
+                        if (checkStatusCounter < 40) {
+                            checkStatusCounter++;
+                            This.checkSmsStatus;
+                        } else {
+                            this.refreshProfileForm();
+                        }
                     } else {
-                        location.reload();
+                        this.refreshProfileForm();
                     }
-                }
-            });
+                });
+            }
         }, 3000);
+    }
+
+    private refreshProfileForm() {
+        this.verified = true;
+        Modal.close("#verify-mobile-number");
+        ComponentManager.refreshComponent(
+            ["main"],
+            () => {
+                this.loader.hide();
+            },
+        );
     }
 
     // Open Lightbox after successful send sms code

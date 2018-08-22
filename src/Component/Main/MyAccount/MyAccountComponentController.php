@@ -170,6 +170,7 @@ class MyAccountComponentController
 
         try {
             $smsStatus = $this->sms->checkSmsStatus($subTypeId);
+
         } catch (\Exception $e) {
             return $response->withStatus(500);
         }
@@ -190,6 +191,7 @@ class MyAccountComponentController
                     break;
                 default:
                     $smsStatus = '';
+                    break;
             }
         }
 
@@ -208,7 +210,6 @@ class MyAccountComponentController
     {
         $smsVerification = $this->configFetcher->getConfigById('my_account_sms_verification');
         $smsVerificationErrorMessage = $smsVerification['verification_code_response'];
-
         $smsVerificationErrorMessages = explode(PHP_EOL, $smsVerificationErrorMessage);
         $smsVerificationErrorMessageList = array();
 
