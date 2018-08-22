@@ -109,7 +109,7 @@ class GamesLobbyComponentController
                     $this->asset->generateAssetUri($game['field_games_list_thumb_img_small'][0]['url'])
             ];
 
-            if ($processGame['size'] == "size-big") {
+            if ($processGame['size'] == "size-large") {
                 $processGame['image'] = [
                     'alt' => $game['field_games_list_thumb_img_big'][0]['alt'],
                     'url' =>
