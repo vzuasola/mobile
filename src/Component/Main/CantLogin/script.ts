@@ -7,6 +7,7 @@ import {annotation} from "@app/assets/script/components/form-annotation";
  *
  */
 export class CantLoginComponent implements ComponentInterface {
+    private sbfpw: string;
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.init(element);
@@ -17,9 +18,19 @@ export class CantLoginComponent implements ComponentInterface {
     }
 
     private init(element) {
-        new Tab();
-        this.activateFormAnnotation(element);
-        this.showForm(element);
+        // get icore token pass from query parameter
+        this.sbfpw = utility.getParameterByName("sbfpw");
+        // if sbfpw and cookie token are present and is the same
+        // show expired page else show form
+        if (utility.getCookie("reset_token") && this.sbfpw &&
+            utility.getCookie("reset_token") === this.sbfpw) {
+            utility.addClass(element.querySelector(".forgot-form-wrapper", "hidden"));
+            utility.removeClass(element.querySelector(".expired-token-wrapper", "hidden"));
+        } else {
+            new Tab();
+            this.activateFormAnnotation(element);
+            this.showForm(element);
+        }
     }
 
     private activateFormAnnotation(element) {
@@ -27,11 +38,10 @@ export class CantLoginComponent implements ComponentInterface {
     }
 
     private showForm(element) {
-        const sbfpw = utility.getParameterByName("sbfpw");
         const forgotPasswordForm = element.querySelector("#forgot-username-password");
         const resetPasswordForm = element.querySelector("#reset-password");
 
-        if (sbfpw === null) {
+        if (this.sbfpw === null) {
             utility.addClass(resetPasswordForm, "hidden");
         } else {
             utility.addClass(forgotPasswordForm, "hidden");
