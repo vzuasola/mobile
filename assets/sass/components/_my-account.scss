@@ -1,3 +1,5 @@
+@import "my-account-notification";
+
 form.profile-form,
 form.change-password-form,
 form.verify-password-form {
@@ -9,7 +11,6 @@ form.verify-password-form {
         & > .loader {
            @extend %form-loader;
         }
-
     }
 
     // Middle form items

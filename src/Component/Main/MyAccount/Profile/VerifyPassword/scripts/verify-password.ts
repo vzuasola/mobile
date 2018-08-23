@@ -2,6 +2,7 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
 import {FormBase} from "@app/assets/script/components/form-base";
+import Notification from "@app/assets/script/components/notification";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
@@ -15,9 +16,12 @@ export class VerifyPassword extends FormBase {
     private passwordContainer: HTMLElement;
     private form: HTMLFormElement;
     private loader: Loader;
+    private updateProfileLoader: Loader;
     private validator: any;
     private password: HTMLFormElement;
     private formValues: any;
+    private errorNotification: any;
+    private successNotification: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -29,7 +33,12 @@ export class VerifyPassword extends FormBase {
             this.form = utility.findParent(this.password, "form");
             this.passwordContainer = utility.hasClass(this.password, "form-item", true);
             this.loader = new Loader(utility.hasClass(this.password, "form-item", true), false, 0);
+            this.updateProfileLoader = new Loader(document.body, false, 0);
             this.validator = this.validateForm(this.form);
+            this.errorNotification = new Notification(document.getElementById("my-account"),
+                "password-message-error", true);
+            this.successNotification = new Notification(document.getElementById("my-account"),
+                "password-message-success", true);
             this.bindEvent();
         }
     }
@@ -98,12 +107,11 @@ export class VerifyPassword extends FormBase {
                 if (resp.success) {
                     callback();
                 } else {
-                    console.log("Incorrect password");
-                    this.showMessage(document.getElementById("my-account"), "status: " + resp.status);
+                    this.onError("Error validating password");
                 }
             })
             .fail((err, msg) => {
-                this.showMessage(this.passwordContainer, msg);
+                this.onError("Error validating password");
             })
             .always((resp) => {
                 this.loader.hide();
@@ -112,6 +120,11 @@ export class VerifyPassword extends FormBase {
     }
 
     private udpateProfile = () => {
+        this.updateProfileLoader.show();
+
+        // Disable fields
+        this.disableFields(this.form);
+
         xhr({
             url: Router.generateRoute("my_account", "updateprofile"),
             type: "json",
@@ -119,19 +132,32 @@ export class VerifyPassword extends FormBase {
             data: this.formValues,
         })
             .then((resp) => {
-                console.log("resp", resp);
                 if (resp.success) {
-                    console.log("Changes successfull..");
+                    this.onSuccess("Changes saved!!");
                 } else {
-                    console.log("Changes failed...");
+                    this.onError("Error saving data!!");
                 }
             })
             .fail((err, msg) => {
-                this.showMessage(this.passwordContainer, "Error retrieving data...");
+                this.onError("Error saving data!!");
             })
             .always((resp) => {
-                this.loader.hide();
+                this.updateProfileLoader.hide();
                 this.enableFields(this.form);
             });
+    }
+
+    private onSuccess(message) {
+        this.closeModal();
+        this.successNotification.show(message);
+    }
+
+    private onError(message) {
+        this.closeModal();
+        this.errorNotification.show(message);
+    }
+
+    private closeModal() {
+        utility.triggerEvent(document.querySelector("#profile-verification .modal-close-button"), "click");
     }
 }
