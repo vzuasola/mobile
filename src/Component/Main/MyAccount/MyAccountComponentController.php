@@ -28,14 +28,19 @@ class MyAccountComponentController
     private $userFetcher;
 
     /**
-     * Receive News Object
+     * Receive News Object.
      */
     private $subscription;
 
     /**
-     * Player Session Object
+     * Player Session Object.
      */
     private $playerSession;
+
+    /**
+     * Session Object.
+     */
+    private $session;
 
     /**
      *
@@ -49,15 +54,24 @@ class MyAccountComponentController
             $container->get('config_fetcher'),
             $container->get('user_fetcher'),
             $container->get('receive_news'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $changePass, $sms, $configFetcher, $userFetcher, $receiveNews, $playerSession)
-    {
+    public function __construct(
+        $rest,
+        $changePass,
+        $sms,
+        $configFetcher,
+        $userFetcher,
+        $receiveNews,
+        $playerSession,
+        $session
+    ) {
         $this->rest = $rest;
         $this->changePassword = $changePass;
         $this->sms = $sms;
@@ -65,6 +79,7 @@ class MyAccountComponentController
         $this->userFetcher = $userFetcher;
         $this->subscription = $receiveNews;
         $this->playerSession = $playerSession;
+        $this->session = $session;
     }
 
     /**
@@ -284,6 +299,7 @@ class MyAccountComponentController
             ]);
         }
 
+        $this->session->delete('player.details');
         return $this->rest->output($response, [
             'success' => true,
             'status' => 'success'
