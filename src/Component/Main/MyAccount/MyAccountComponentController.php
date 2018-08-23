@@ -300,8 +300,6 @@ class MyAccountComponentController
         }
 
         $this->session->delete('player.details');
-        $this->userFetcher->getPlayerDetails();
-
         return $this->rest->output($response, [
             'success' => true,
             'status' => 'success'
