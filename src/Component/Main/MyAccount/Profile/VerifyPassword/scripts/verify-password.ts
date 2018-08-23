@@ -36,9 +36,9 @@ export class VerifyPassword extends FormBase {
             this.updateProfileLoader = new Loader(document.body, false, 0);
             this.validator = this.validateForm(this.form);
             this.errorNotification = new Notification(document.getElementById("my-account"),
-                "password-message-error", true);
+                "password-message-error", true, 3);
             this.successNotification = new Notification(document.getElementById("my-account"),
-                "password-message-success", true);
+                "password-message-success", true, 3);
             this.bindEvent();
         }
     }

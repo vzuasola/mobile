@@ -7,6 +7,7 @@ import * as closeButtonTemplate from "@app/templates/handlebars/close-button.han
  * @param Node parent parent element of notification to insert to
  * @param String className
  * @param Boolean enableButton add close button to notification
+ * @param Number timer close notification automatically in seconds
  */
 export default class Notification {
     private parent: HTMLElement;
@@ -14,7 +15,10 @@ export default class Notification {
     private notification: HTMLElement;
     private closeButton: HTMLElement;
 
-    constructor(parent: HTMLElement, className: string, private enableButton: boolean = false) {
+    constructor(parent: HTMLElement,
+                className: string,
+                private enableButton: boolean = false,
+                private timer: number = -1) {
         this.parent = parent;
         this.className = className;
     }
@@ -25,6 +29,12 @@ export default class Notification {
         this.createNotification(message);
         this.createButton();
         this.bindEvent();
+
+        if (this.timer > 0) {
+            setTimeout(() => {
+                this.notification.remove();
+            }, this.timer * 1000);
+        }
 
         if (oldNotification) {
             oldNotification.remove();
