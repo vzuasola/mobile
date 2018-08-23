@@ -24,8 +24,9 @@ export class CantLoginComponent implements ComponentInterface {
         // show expired page else show form
         if (utility.getCookie("reset_token") && this.sbfpw &&
             utility.getCookie("reset_token") === this.sbfpw) {
-            utility.addClass(element.querySelector(".forgot-form-wrapper", "hidden"));
-            utility.removeClass(element.querySelector(".expired-token-wrapper", "hidden"));
+            utility.addClass(element.querySelector("#forgot-username-password"), "hidden");
+            utility.addClass(element.querySelector("#reset-password"), "hidden");
+            utility.removeClass(element.querySelector(".expired-token-wrapper"), "hidden");
         } else {
             new Tab();
             this.activateFormAnnotation(element);

@@ -110,10 +110,13 @@ class CantLoginComponentController
             $this->changePassword->setResetPassword($token, $password);
             $status = 'CHANGE_FORGOTTEN_PASSWORD_SUCCESS';
 
-            Cookies::set('reset_token', $token, [
+            $options = [
                 'path' => '/',
-                'domain' => Host::getDomain((string) $this->request->getUri()),
-            ]);
+                'domain' => Host::getDomain(),
+                'expire' => 0,
+            ];
+
+            Cookies::set('reset_token', $token, $options);
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
