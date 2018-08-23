@@ -51,7 +51,6 @@ class ProfileComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = [];
         $formMyProfile = $this->formManager->getForm(MyProfileForm::class);
         $myProfileConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
         $smsConfig = $this->configFetcher->getConfigById('my_account_sms_verification');

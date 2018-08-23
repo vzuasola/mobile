@@ -3,6 +3,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
 import {Modal} from "@app/assets/script/components/modal";
 import {Router} from "@plugins/ComponentWidget/asset/router";
+import {VerificationCodeValidate} from "./verification-code-validate";
 
 /**
  * SMS Verification
@@ -36,6 +37,11 @@ export class Sms {
         this.verificationError = this.element.querySelector("#verification-error");
         this.prepareElements();
         this.attachEvents();
+        const verifCodeValidate = new VerificationCodeValidate(
+            this.element,
+            this.attachments,
+        );
+        verifCodeValidate.init();
     }
     // prepare necessary elements for sms verification
     private prepareElements() {
