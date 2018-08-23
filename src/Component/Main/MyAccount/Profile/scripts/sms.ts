@@ -111,8 +111,11 @@ export class Sms {
     private addNewMobileNumber(e) {
         if (e.target && e.target.id === "add-new-mobile") {
             e.preventDefault();
+            const mobileNumber2Field: HTMLInputElement = this.element.querySelector("#MyProfileForm_mobile_number_2");
+            const mobileNumber2FieldValue = mobileNumber2Field.getAttribute("data-value");
             utility.removeClass(this.element.querySelector(".form-item.MyProfileForm_mobile_number_2"), "hidden");
-            this.element.querySelector("#MyProfileForm_mobile_number_2").removeAttribute("disabled");
+            mobileNumber2Field.removeAttribute("disabled");
+            mobileNumber2Field.value = mobileNumber2FieldValue;
             utility.addClass(e.target, "hidden");
             const mobile2Btn = this.element.querySelector(".MyProfileForm_mobile_number_2 .verify-mobile");
             utility.addClass(mobile2Btn, "hidden");
