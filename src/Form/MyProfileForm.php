@@ -96,7 +96,6 @@ class MyProfileForm extends FormBase implements FormInterface
 
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-update btn-lower-case";
         $definition['button_cancel']['options']['attr']['class'] = "btn btn-small btn-gray btn-cancel btn-lower-case";
-        $definition['mobile_number_2']['options']['label'] = ' ';
         return $definition;
     }
 
