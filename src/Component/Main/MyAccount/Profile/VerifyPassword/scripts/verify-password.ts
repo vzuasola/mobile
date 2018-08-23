@@ -67,7 +67,7 @@ export class VerifyPassword extends FormBase {
             address: profileForm.MyProfileForm_address.value,
             city: profileForm.MyProfileForm_city.value,
             postal_code: profileForm.MyProfileForm_postal_code.value,
-            receive_news: profileForm.ProfileForm_contact_preference.checked ? "Yes" : "No",
+            receive_news: profileForm.ProfileForm_contact_preference.checked ? true : false,
         };
     }
 
