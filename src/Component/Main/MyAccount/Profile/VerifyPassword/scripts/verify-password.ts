@@ -4,6 +4,7 @@ import {Loader} from "@app/assets/script/components/loader";
 import {FormBase} from "@app/assets/script/components/form-base";
 import Notification from "@app/assets/script/components/notification";
 import {Router} from "@plugins/ComponentWidget/asset/router";
+import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 
 /**
  * Verify Password
@@ -16,7 +17,7 @@ export class VerifyPassword extends FormBase {
     private passwordContainer: HTMLElement;
     private form: HTMLFormElement;
     private loader: Loader;
-    private updateProfileLoader: Loader;
+    private updateProfileLoader: HTMLElement;
     private validator: any;
     private password: HTMLFormElement;
     private formValues: any;
@@ -33,11 +34,11 @@ export class VerifyPassword extends FormBase {
             this.form = utility.findParent(this.password, "form");
             this.passwordContainer = utility.hasClass(this.password, "form-item", true);
             this.loader = new Loader(utility.hasClass(this.password, "form-item", true), false, 0);
-            this.updateProfileLoader = new Loader(document.body, false, 0);
+            this.updateProfileLoader = document.querySelector("body > .loader");
             this.validator = this.validateForm(this.form);
-            this.errorNotification = new Notification(document.getElementById("my-account"),
+            this.errorNotification = new Notification(document.body,
                 "password-message-error", true, 3);
-            this.successNotification = new Notification(document.getElementById("my-account"),
+            this.successNotification = new Notification(document.body,
                 "password-message-success", true, 3);
             this.bindEvent();
         }
@@ -62,7 +63,7 @@ export class VerifyPassword extends FormBase {
             gender: this.getGenderValue(),
             language: profileForm.MyProfileForm_language.value,
             mobile: profileForm.MyProfileForm_mobile_number_1.value,
-            mobile1: profileForm.MyProfileForm_mobile_number_2.value || "",
+            mobile2: profileForm.MyProfileForm_mobile_number_2.value || "",
             address: profileForm.MyProfileForm_address.value,
             city: profileForm.MyProfileForm_city.value,
             postal_code: profileForm.MyProfileForm_postal_code.value,
@@ -120,7 +121,8 @@ export class VerifyPassword extends FormBase {
     }
 
     private udpateProfile = () => {
-        this.updateProfileLoader.show();
+        this.closeModal();
+        utility.removeClass(this.updateProfileLoader, "hidden");
 
         // Disable fields
         this.disableFields(this.form);
@@ -142,7 +144,7 @@ export class VerifyPassword extends FormBase {
                 this.onError("Error saving data!!");
             })
             .always((resp) => {
-                this.updateProfileLoader.hide();
+                utility.addClass(this.updateProfileLoader, "hidden");
                 this.enableFields(this.form);
             });
     }
@@ -150,14 +152,22 @@ export class VerifyPassword extends FormBase {
     private onSuccess(message) {
         this.closeModal();
         this.successNotification.show(message);
+        this.refreshComponent();
     }
 
     private onError(message) {
         this.closeModal();
         this.errorNotification.show(message);
+        this.refreshComponent();
     }
 
     private closeModal() {
         utility.triggerEvent(document.querySelector("#profile-verification .modal-close-button"), "click");
+    }
+
+    private refreshComponent() {
+        ComponentManager.refreshComponent(
+            ["main"],
+        );
     }
 }

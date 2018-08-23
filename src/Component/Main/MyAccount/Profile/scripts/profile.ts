@@ -40,7 +40,7 @@ export class Profile extends FormBase {
             gender: this.getGenderValue(),
             language: this.form.MyProfileForm_language.value,
             mobile: this.form.MyProfileForm_mobile_number_1.value,
-            mobile1: this.form.MyProfileForm_mobile_number_2.value || "",
+            mobile2: this.form.MyProfileForm_mobile_number_2.value || "",
             address: this.form.MyProfileForm_address.value,
             city: this.form.MyProfileForm_city.value,
             postal_code: this.form.MyProfileForm_postal_code.value,
@@ -53,12 +53,19 @@ export class Profile extends FormBase {
             gender: this.form.querySelector(".MyProfileForm_gender .form-label-text").textContent,
             language: this.form.querySelector(".MyProfileForm_language .form-label-text").textContent,
             mobile: this.form.querySelector(".MyProfileForm_mobile_number_1 .form-label-text").textContent,
-            mobile1: this.form.querySelector(".MyProfileForm_mobile_number_1 .form-label-text").textContent,
+            mobile2: this.getMobile2Value(),
             address: this.form.querySelector(".MyProfileForm_address .form-label-text").textContent,
             city: this.form.querySelector(".MyProfileForm_city .form-label-text").textContent,
             postal_code: this.form.querySelector(".MyProfileForm_postal_code .form-label-text").textContent,
             receive_news: this.form.querySelector(".MyProfileForm_preference_markup .label-inwrapper").textContent,
         };
+    }
+
+    private getMobile2Value() {
+        const mobile2 = this.form.querySelector(".MyProfileForm_mobile_number_2 .form-label-text") ?
+            this.form.querySelector(".MyProfileForm_mobile_number_2 .form-label-text").textContent :
+            this.form.querySelector(".MyProfileForm_mobile_number_2 .form-label").textContent;
+        return mobile2;
     }
 
     private getGenderValue() {
