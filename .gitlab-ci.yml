@@ -186,7 +186,7 @@ lighthouse qa1:
       - automation/deployed/*.html
     expire_in: 1 month
   tags:
-    - intrunner
+    - tstrunner
 
 tct:
   stage: deploy-test
