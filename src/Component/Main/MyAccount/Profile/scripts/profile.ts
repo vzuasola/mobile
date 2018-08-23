@@ -4,6 +4,7 @@ import {Loader} from "@app/assets/script/components/loader";
 import {FormBase} from "@app/assets/script/components/form-base";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Modal} from "@app/assets/script/components/modal";
+import Notification from "@app/assets/script/components/notification";
 import * as verificationTemplate from "./../templates/handlebars/profile-changes.handlebars";
 
 /**
@@ -19,6 +20,7 @@ export class Profile extends FormBase {
     private oldValues: any;
     private newValues: any;
     private modalSelector: string = "#profile-verification";
+    private notification: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -27,6 +29,8 @@ export class Profile extends FormBase {
     init() {
         this.form = this.element.querySelector(".profile-form");
         this.validator = this.validateForm(this.form);
+        this.notification = new Notification(document.body,
+                "password-message-error", true, 3);
         this.oldValues = {...this.getValues()};
         this.handleSubmission();
     }
@@ -93,7 +97,7 @@ export class Profile extends FormBase {
                     tbody.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);
                 } else {
-                    // Add a notification message
+                    this.notification.show("No changes detected");
                 }
             }
         });
@@ -127,8 +131,6 @@ export class Profile extends FormBase {
         const modified = {};
 
         for (const propName of aProps) {
-            // If values of same property are not equal,
-            // objects are not equivalent
             if (a[propName] !== b[propName]) {
                 old[propName] = a[propName];
                 modified[propName] = b[propName];
