@@ -127,16 +127,16 @@ class MyProfileForm extends FormBase implements FormInterface
             $reversedArray = array_reverse($definition['mobile_number_2']['validators']['rules']);
             $definition['mobile_number_2']['validators']['rules']  = $reversedArray;
         }
-        // if there's no value for mobile number 2 put the country code as a default value
-        if (!$values['mobile_number_2']) {
-            $values['mobile_number_2'] = $countryCode;
-        }
-
+        // iterate and put all values to field
         foreach ($values as $key => $value) {
             if (isset($definition[$key])) {
                 $definition[$key]['options']['attr']['value'] = $value;
                 $definition[$key]['options']['data'] = $value;
             }
+        }
+        // if there's no value for mobile number 2 put the country code as a default value
+        if (!$values['mobile_number_2']) {
+            $definition['mobile_number_2']['options']['attr']['data-value'] = $countryCode;
         }
         // check mobile 1 if verified and set the flag to true and disable field
         if ($values['sms_1_verified']) {
