@@ -106,14 +106,20 @@ class GamesLobbyComponentController
             $processGame['image'] = [
                 'alt' => $game['field_games_list_thumb_img_small'][0]['alt'],
                 'url' =>
-                    $this->asset->generateAssetUri($game['field_games_list_thumb_img_small'][0]['url'])
+                    $this->asset->generateAssetUri(
+                        $game['field_games_list_thumb_img_small'][0]['url'],
+                        ['product' => 'mobile-games']
+                    )
             ];
 
             if ($processGame['size'] == "size-large") {
                 $processGame['image'] = [
                     'alt' => $game['field_games_list_thumb_img_big'][0]['alt'],
                     'url' =>
-                        $this->asset->generateAssetUri($game['field_games_list_thumb_img_big'][0]['url'])
+                        $this->asset->generateAssetUri(
+                            $game['field_games_list_thumb_img_big'][0]['url'],
+                            ['product' => 'mobile-games']
+                        )
                 ];
             }
 

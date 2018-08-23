@@ -14,8 +14,8 @@
                     target="{{ slide['field_banner_link_target'][0]['value']}}"
                 >
                     <img 
-                        src="{{ asset(slide['field_banner_image'][0]['url']) }}" 
-                        alt="{{ asset(slide['field_banner_image'][0]['alt']) }}" 
+                        src="{{ asset(slide['field_banner_image'][0]['url'], product) }}" 
+                        alt="{{ asset(slide['field_banner_image'][0]['alt'], product) }}" 
                         class="w-100"
                     >
                     <div class="xlider-blurb {{slide['field_content_position'][0]['value'] }} {{enable_transition_slider }}">
@@ -32,8 +32,8 @@
                     target="{{ slide['field_post_banner_link_target'][0]['value']}}"
                 >
                     <img 
-                        src="{{ asset(slide['field_post_banner_image'][0]['url']) }}" 
-                        alt="{{ asset(slide['field_post_banner_image'][0]['alt']) }}" 
+                        src="{{ asset(slide['field_post_banner_image'][0]['url'], product) }}" 
+                        alt="{{ asset(slide['field_post_banner_image'][0]['alt'], product) }}" 
                         class="w-100"
                     >
                     <div class="xlider-blurb {{slide['field_post_content_position'][0]['value'] }} {{enable_transition_slider }}">

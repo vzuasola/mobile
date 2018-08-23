@@ -21,6 +21,8 @@ class SliderComponent implements ComponentWidgetInterface
      */
     private $playerSession;
 
+    private $product;
+
     /**
      *
      */
@@ -39,6 +41,7 @@ class SliderComponent implements ComponentWidgetInterface
      */
     public function __construct($product, $configs, $viewsFetcher, $playerSession)
     {
+        $this->product = $product;
         $this->configs = $configs;
         $this->viewsFetcher = $viewsFetcher->withProduct($product->getProduct());
         $this->playerSession = $playerSession;
@@ -61,7 +64,11 @@ class SliderComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = [];
+        try {
+            $data['product'] = ['product' => $this->product->getProduct()];
+        } catch (\Exception $e) {
+            $data['product'] = [];
+        }
 
         try {
             $data['slides'] = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
