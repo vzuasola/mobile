@@ -47,7 +47,7 @@ class MyAccountComponentScripts implements ComponentAttachmentInterface
             'primary_label' => $general_config['primary_label'] ?? '',
             'no_changed_detected_message' => $general_config['no_changed_detected_message'] ?? '',
             'message_timeout' => $general_config['message_timeout'] ?? 5,
-            'messages' => $message_config['server_side_mapping'] ?? '',
+            'messages' => Config::parse($message_config['server_side_mapping']) ?? '',
             'modal_header' => $modal_config['modal_preview_header'] ?? '',
             'modal_top_blurb' => $modal_config['modal_preview_top_blurb'] ?? '',
             'modal_current_label' => $modal_config['modal_preview_current_label'] ?? '',
