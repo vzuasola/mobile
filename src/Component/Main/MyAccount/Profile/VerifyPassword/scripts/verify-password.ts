@@ -59,11 +59,6 @@ export class VerifyPassword extends FormBase {
     private getValues() {
         const profileForm: HTMLFormElement = document.querySelector(".profile-form");
 
-        let contactPref = false;
-        if (profileForm.ProfileForm_contact_preference.checked) {
-            contactPref = true;
-        }
-
         return {
             gender: this.getGenderValue(),
             language: profileForm.MyProfileForm_language.value,
@@ -72,7 +67,7 @@ export class VerifyPassword extends FormBase {
             address: profileForm.MyProfileForm_address.value,
             city: profileForm.MyProfileForm_city.value,
             postal_code: profileForm.MyProfileForm_postal_code.value,
-            receive_news: contactPref,
+            receive_news: profileForm.ProfileForm_contact_preference.checked,
         };
     }
 
