@@ -114,7 +114,6 @@ class CantLoginComponentController
                 'path' => '/',
                 'domain' => Host::getDomain((string) $this->request->getUri()),
             ]);
-
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
