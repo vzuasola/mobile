@@ -86,7 +86,7 @@
                 "options": [],
                 "command": [
                     "lighthouse-ci",
-                    "https://dev-m.elysium-dfbt.com",
+                    "https://dev-m.elysium-dfbt.com/en",
                     "--report=./automation/deployed",
                     "--accessibility=70",
                     "--seo=85"
@@ -105,7 +105,26 @@
                 "options": [],
                 "command": [
                     "lighthouse-ci",
-                    "https://qa1-m.elysium-dfbt.com",
+                    "https://qa1-m.elysium-dfbt.com/en",
+                    "--report=./automation/deployed",
+                    "--accessibility=70",
+                    "--seo=85"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
+    "lighthouse-tct": {
+        "steps": {
+            "lighthouse": {
+                "dockerfile": "automation/Dockerfile.lighthouse",
+                "docker-image-suffix": "-lighthouse",
+                "options": [],
+                "command": [
+                    "lighthouse-ci",
+                    "https://tct-m.elysium-dfbt.com/en",
                     "--report=./automation/deployed",
                     "--accessibility=70",
                     "--seo=85"

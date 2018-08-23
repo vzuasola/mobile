@@ -188,6 +188,19 @@ lighthouse qa1:
   tags:
     - tstrunner
 
+lighthouse tct:
+  stage: integration-tests-test
+  when: manual
+  script:
+    - python -u automation/run.py --stage lighthouse-tct
+  artifacts:
+    when: always
+    paths:
+      - automation/deployed/*.html
+    expire_in: 1 month
+  tags:
+    - intrunner
+
 tct:
   stage: deploy-test
   environment:
