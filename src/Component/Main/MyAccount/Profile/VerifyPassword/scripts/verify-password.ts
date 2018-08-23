@@ -108,11 +108,12 @@ export class VerifyPassword extends FormBase {
                 if (resp.success) {
                     callback();
                 } else {
-                    this.onError("Error validating password");
+                    this.closeModal();
+                    this.errorNotification.show("Error validating password");
                 }
             })
             .fail((err, msg) => {
-                this.onError("Error validating password");
+                this.onError("Error fetching resource");
             })
             .always((resp) => {
                 this.loader.hide();
