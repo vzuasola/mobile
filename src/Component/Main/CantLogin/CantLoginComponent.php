@@ -51,6 +51,7 @@ class CantLoginComponent implements ComponentWidgetInterface
             'password_tab_menu' => $config['forgot_password_tab_menu'] ?? 'Forgot Password',
             'username_link' => $config['forgot_username_link'] ?? 'Forgot Username',
             'username_tab_menu' => $config['forgot_username_tab_menu'] ?? '#forgot-username-content',
+            'mobile_reset_expired_message' => $config['mobile_reset_expired_message']['value'] ?? "Expired Page",
         ];
     }
 }

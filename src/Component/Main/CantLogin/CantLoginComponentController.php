@@ -2,6 +2,9 @@
 
 namespace App\MobileEntry\Component\Main\CantLogin;
 
+use App\Cookies\Cookies;
+use App\Utils\Host;
+
 /**
  *
  */
@@ -106,6 +109,12 @@ class CantLoginComponentController
         try {
             $this->changePassword->setResetPassword($token, $password);
             $status = 'CHANGE_FORGOTTEN_PASSWORD_SUCCESS';
+
+            Cookies::set('reset_token', $token, [
+                'path' => '/',
+                'domain' => Host::getDomain((string) $this->request->getUri()),
+            ]);
+
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);

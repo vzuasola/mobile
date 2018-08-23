@@ -2,7 +2,7 @@
     <div class="page-title promotions">
         <h1 class="page-title-text">{{ title_forgot }}</h1>
     </div>
-    <div class="tab">
+    <div class="tab forgot-form-wrapper">
         <ul class="tab-menu">
             <li class="active"><a href="{{ password_link }}">{{ password_tab_menu }}</a></li>
             <li><a href="{{ username_link }}">{{ username_tab_menu }}</a></li>
@@ -15,6 +15,9 @@
                 {{ widget('cant_login_forgot_username') }}
             </div>
         </div>
+    </div>
+    <div class="expired-token-wrapper hidden">
+        {{ mobile_reset_expired_message }}
     </div>
 </div>
 
