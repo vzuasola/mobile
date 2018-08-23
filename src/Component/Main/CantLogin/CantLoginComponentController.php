@@ -117,7 +117,6 @@ class CantLoginComponentController
             ];
 
             Cookies::set('reset_token', $token, $options);
-
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
