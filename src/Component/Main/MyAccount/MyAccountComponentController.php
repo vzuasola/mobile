@@ -262,7 +262,7 @@ class MyAccountComponentController
             $mobile1 = $profileFormValues['mobile1'];
         }
 
-        if ($profileFormValues['receive_news'] == 'true') {
+        if ($profileFormValues['receive_news'] === 'true') {
             $receiveNews = true;
         }
 
