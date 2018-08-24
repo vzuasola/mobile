@@ -40,7 +40,7 @@ export class Profile extends FormBase {
     private getValues() {
         return {
             gender: this.getGenderValue(),
-            language: this.form.MyProfileForm_language.value,
+            language: this.getLanguageText(),
             mobile: this.form.MyProfileForm_mobile_number_1.value,
             mobile2: this.form.MyProfileForm_mobile_number_2.value || "",
             address: this.form.MyProfileForm_address.value,
@@ -61,6 +61,11 @@ export class Profile extends FormBase {
             postal_code: this.form.querySelector(".MyProfileForm_postal_code .form-label-text").textContent,
             receive_news: this.form.querySelector(".MyProfileForm_preference_markup .label-inwrapper").textContent,
         };
+    }
+
+    private getLanguageText() {
+        const select = this.form.MyProfileForm_language;
+        return select.options[select.selectedIndex].text;
     }
 
     private getMobile2Value() {
