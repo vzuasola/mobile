@@ -1,87 +1,109 @@
-{{#condition this.old.gender "||" this.modified.gender }}
-    <tr>
-        <th>{{this.labels.gender}}</th>
-        <th>{{this.labels.gender}}</th>
-    </tr>
-    <tr>
-        <td>{{this.old.gender}}</td>
-        <td>{{this.modified.gender}}</td>
-    </tr>
-{{/condition}}
+{{#if this.config.modalHeader }}
+    <div class="modal-body-header">{{ this.config.modalHeader }}</div>
+{{/if}}
 
-{{#condition this.old.language "||" this.modified.language }}
-    <tr>
-        <th>{{this.labels.language}}</th>
-        <th>{{this.labels.language}}</th>
-    </tr>
-    <tr>
-        <td>{{this.old.language}}</td>
-        <td>{{this.modified.language}}</td>
-    </tr>
-{{/condition}}
+{{#if this.config.modalTopBlurb }}
+    <p>{{ this.config.modalTopBlurb }}</p>
+{{/if}}
 
-{{#condition this.old.mobile "||" this.modified.mobile }}
-    <tr>
-        <th>{{this.labels.mobile}}</th>
-        <th>{{this.labels.mobile}}</th>
-    </tr>
-    <tr>
-        <td>{{this.old.mobile}}</td>
-        <td>{{this.modified.mobile}}</td>
-    </tr>
-{{/condition}}
+<table class="table-primary w-100">
+    <thead>
+        <tr>
+            <th class="text-center">{{ this.config.modalCurrentLabel }}</th>
+            <th class="text-center">{{ this.config.modalNewLabel }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#condition this.old.gender "||" this.modified.gender }}
+            <tr>
+                <th>{{this.labels.gender}}</th>
+                <th>{{this.labels.gender}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.gender}}</td>
+                <td>{{this.modified.gender}}</td>
+            </tr>
+        {{/condition}}
 
-{{#condition this.old.mobile2 "||" this.modified.mobile2 }}
-    <tr>
-        <th>{{this.labels.mobile2}}</th>
-        <th>{{this.labels.mobile2}}</th>
-    </tr>
-    <tr>
-        <td>{{this.old.mobile2}}</td>
-        <td>{{this.modified.mobile2}}</td>
-    </tr>
-{{/condition}}
+        {{#condition this.old.language "||" this.modified.language }}
+            <tr>
+                <th>{{this.labels.language}}</th>
+                <th>{{this.labels.language}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.language}}</td>
+                <td>{{this.modified.language}}</td>
+            </tr>
+        {{/condition}}
 
-{{#condition this.old.address "||" this.modified.address }}
-    <tr>
-        <th>{{this.labels.address}}</th>
-        <th>{{this.labels.address}}</th>
-    </tr>
-    <tr>
-        <td>{{this.old.address}}</td>
-        <td>{{this.modified.address}}</td>
-    </tr>
-{{/condition}}
+        {{#condition this.old.mobile "||" this.modified.mobile }}
+            <tr>
+                <th>{{this.labels.mobile}}</th>
+                <th>{{this.labels.mobile}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.mobile}}</td>
+                <td>{{this.modified.mobile}}</td>
+            </tr>
+        {{/condition}}
 
-{{#condition this.old.city "||" this.modified.city }}
-    <tr>
-        <th>{{this.labels.city}}</th>
-        <th>{{this.labels.city}}</th>
-    </tr>
-    <tr>
-        <td>{{this.old.city}}</td>
-        <td>{{this.modified.city}}</td>
-    </tr>
-{{/condition}}
+        {{#condition this.old.mobile2 "||" this.modified.mobile2 }}
+            <tr>
+                <th>{{this.labels.mobile2}}</th>
+                <th>{{this.labels.mobile2}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.mobile2}}</td>
+                <td>{{this.modified.mobile2}}</td>
+            </tr>
+        {{/condition}}
 
-{{#condition this.old.postal_code "||" this.modified.postal_code }}
-    <tr>
-        <th>{{this.labels.postal_code}}</th>
-        <th>{{this.labels.postal_code}}</th>
-    </tr>
-    <tr>
-        <td>{{this.old.postal_code}}</td>
-        <td>{{this.modified.postal_code}}</td>
-    </tr>
-{{/condition}}
+        {{#condition this.old.address "||" this.modified.address }}
+            <tr>
+                <th>{{this.labels.address}}</th>
+                <th>{{this.labels.address}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.address}}</td>
+                <td>{{this.modified.address}}</td>
+            </tr>
+        {{/condition}}
 
-{{#condition this.old.receive_news "||" this.modified.receive_news }}
-    <tr>
-        <th>{{this.labels.receive_news}}</th>
-        <th>{{this.labels.receive_news}}</th>
-    </tr>
-    <tr>
-        <td>{{this.old.receive_news}}</td>
-        <td>{{this.modified.receive_news}}</td>
-    </tr>
-{{/condition}}
+        {{#condition this.old.city "||" this.modified.city }}
+            <tr>
+                <th>{{this.labels.city}}</th>
+                <th>{{this.labels.city}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.city}}</td>
+                <td>{{this.modified.city}}</td>
+            </tr>
+        {{/condition}}
+
+        {{#condition this.old.postal_code "||" this.modified.postal_code }}
+            <tr>
+                <th>{{this.labels.postal_code}}</th>
+                <th>{{this.labels.postal_code}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.postal_code}}</td>
+                <td>{{this.modified.postal_code}}</td>
+            </tr>
+        {{/condition}}
+
+        {{#condition this.old.receive_news "||" this.modified.receive_news }}
+            <tr>
+                <th>{{this.labels.receive_news}}</th>
+                <th>{{this.labels.receive_news}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.receive_news}}</td>
+                <td>{{this.modified.receive_news}}</td>
+            </tr>
+        {{/condition}}
+    </tbody>
+</table>
+
+{{#if this.config.modalBottomBlurb }}
+    <p>{{ this.config.modalBottomBlurb }}</p>
+{{/if}}

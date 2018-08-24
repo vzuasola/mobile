@@ -23,6 +23,7 @@ export class VerifyPassword extends FormBase {
     private formValues: any;
     private errorNotification: any;
     private successNotification: any;
+    private config: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -35,11 +36,12 @@ export class VerifyPassword extends FormBase {
             this.passwordContainer = utility.hasClass(this.password, "form-item", true);
             this.loader = new Loader(utility.hasClass(this.password, "form-item", true), false, 0);
             this.updateProfileLoader = document.querySelector("body > .loader");
+            this.config = this.getAttachmentFrom("my_account");
             this.validator = this.validateForm(this.form);
             this.errorNotification = new Notification(document.body,
-                "password-message-error", true, 3);
+                "password-message-error", true, this.config.messageTimeout);
             this.successNotification = new Notification(document.body,
-                "password-message-success", true, 3);
+                "password-message-success", true, this.config.messageTimeout);
             this.bindEvent();
         }
     }
@@ -109,11 +111,11 @@ export class VerifyPassword extends FormBase {
                     callback();
                 } else {
                     this.closeModal();
-                    this.errorNotification.show("Error validating password");
+                    this.errorNotification.show(this.config.messages.UPDATE_PROFILE_FAILED);
                 }
             })
             .fail((err, msg) => {
-                this.onError("Error fetching resource");
+                this.onError(this.config.messages.INTERNAL_ERROR);
             })
             .always((resp) => {
                 this.loader.hide();
@@ -135,14 +137,15 @@ export class VerifyPassword extends FormBase {
             data: this.formValues,
         })
             .then((resp) => {
+                console.log("resp", resp);
                 if (resp.success) {
-                    this.onSuccess("Changes saved!!");
+                    this.onSuccess(this.config.messages.UPDATE_PROFILE_SUCCESS);
                 } else {
-                    this.onError("Error saving data!!");
+                    this.onError(this.config.messages.UPDATE_PROFILE_FAILED);
                 }
             })
             .fail((err, msg) => {
-                this.onError("Error saving data!!");
+                this.onError(this.config.messages.UPDATE_PROFILE_FAILED);
             })
             .always((resp) => {
                 utility.addClass(this.updateProfileLoader, "hidden");

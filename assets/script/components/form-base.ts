@@ -29,10 +29,16 @@ export abstract class FormBase {
     }
 
     messageMapping(key: string, component: string) {
+        const config = this.getAttachmentFrom(component);
+        return config.messages[key];
+    }
+
+    getAttachmentFrom(component) {
         const componentTarget = document.querySelector("[data-component-widget-class=" + component + "]");
         const attachments = componentTarget.getAttribute("data-component-widget-attachments");
         const config = JSON.parse(attachments);
-        return config.messages[key];
+
+        return config;
     }
 
     /**

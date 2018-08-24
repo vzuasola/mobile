@@ -21,6 +21,7 @@ export class Profile extends FormBase {
     private newValues: any;
     private modalSelector: string = "#profile-verification";
     private notification: any;
+    private config: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -28,6 +29,7 @@ export class Profile extends FormBase {
 
     init() {
         this.form = this.element.querySelector(".profile-form");
+        this.config = this.getAttachmentFrom("my_account");
         this.validator = this.validateForm(this.form);
         this.notification = new Notification(document.body,
                 "password-message-error", true, 3);
@@ -95,16 +97,17 @@ export class Profile extends FormBase {
 
             if (!this.validator.hasError) {
                 if (this.hasChanges()) {
-                    const tbody = this.element.querySelector(this.modalSelector + " tbody");
+                    const profileChangesContainer = this.element.querySelector(this.modalSelector + " .changes");
                     const data: any = this.getFilteredDifference(this.oldValues, this.newValues);
 
                     // Add labels to data
                     data.labels = this.getLabels();
+                    data.config = this.config;
 
-                    tbody.innerHTML = verificationTemplate(data);
+                    profileChangesContainer.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);
                 } else {
-                    this.notification.show("No changes detected");
+                    this.notification.show(this.config.noUpdateDetected);
                 }
             }
         });
