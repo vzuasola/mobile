@@ -122,7 +122,7 @@ export default function ErrorHandler(errors, event, formValidations) {
         if (!field.hasAttribute("disabled")) {
             utility.addClass(field, 'has-error');
             utility.removeClass(field, 'has-success');
-    
+
             createErrorMessage(element, message);
             createErrorIcon(element);
         }
