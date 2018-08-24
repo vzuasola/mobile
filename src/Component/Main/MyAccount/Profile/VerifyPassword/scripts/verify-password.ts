@@ -130,7 +130,6 @@ export class VerifyPassword extends FormBase {
         // Disable fields
         this.disableFields(this.form);
 
-
         xhr({
             url: Router.generateRoute("my_account", "updateprofile"),
             type: "json",
