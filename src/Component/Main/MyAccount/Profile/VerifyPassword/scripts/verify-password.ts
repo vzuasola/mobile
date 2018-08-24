@@ -65,7 +65,7 @@ export class VerifyPassword extends FormBase {
             gender: this.getGenderValue(),
             language: profileForm.MyProfileForm_language.value,
             mobile: profileForm.MyProfileForm_mobile_number_1.value,
-            mobile2: profileForm.MyProfileForm_mobile_number_2.value || "",
+            mobile1: profileForm.MyProfileForm_mobile_number_2.value || "",
             address: profileForm.MyProfileForm_address.value,
             city: profileForm.MyProfileForm_city.value,
             postal_code: profileForm.MyProfileForm_postal_code.value,
@@ -130,6 +130,7 @@ export class VerifyPassword extends FormBase {
         // Disable fields
         this.disableFields(this.form);
 
+
         xhr({
             url: Router.generateRoute("my_account", "updateprofile"),
             type: "json",
@@ -137,7 +138,6 @@ export class VerifyPassword extends FormBase {
             data: this.formValues,
         })
             .then((resp) => {
-                console.log("resp", resp);
                 if (resp.success) {
                     this.onSuccess(this.config.messages.UPDATE_PROFILE_SUCCESS);
                 } else {
