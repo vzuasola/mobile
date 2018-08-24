@@ -32,8 +32,17 @@ export class Profile extends FormBase {
         this.validator = this.validateForm(this.form);
         this.notification = new Notification(document.body,
                 "password-message-error", true, 3);
+        this.contactPreference();
         this.oldValues = {...this.getValues()};
         this.handleSubmission();
+    }
+
+    private contactPreference() {
+        const checkbox: HTMLFormElement = this.element.querySelector("#ProfileForm_contact_preference");
+        if (this.attachments.user.receive_news) {
+            checkbox.checked = true;
+        }
+
     }
 
     private getValues() {
