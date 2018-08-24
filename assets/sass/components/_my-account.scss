@@ -1,0 +1,116 @@
+@import "my-account-notification";
+
+form.profile-form,
+form.change-password-form,
+form.verify-password-form {
+    padding-top: 1rem;
+    transition: opacity 0.3s;
+
+    .form-item {
+        // Loader
+        & > .loader {
+           @extend %form-loader;
+        }
+    }
+
+    // Middle form items
+    & > .form-item {
+        @extend %form-item-round;
+    }
+
+    // top form items
+    & > .MyProfileForm_account_markup,
+    & > .MyProfileForm_communication_markup,
+    & > .MyProfileForm_address_markup,
+    & > .MyProfileForm_preference_markup,
+    & > .ChangePasswordForm_current_password_field,
+    & > .ChangePasswordForm_current_password,
+    & > .VerifyPasswordForm_verify_password {
+        @extend %form-item-round-top;
+    }
+
+    // bottom form items (usually action buttons)
+    & > .MyProfileForm_gender,
+    & > .MyProfileForm_language,
+    & > .MyProfileForm_postal_code,
+    & > .MyProfileForm_button_cancel,
+    & > .ChangePasswordForm_change_password_submit_field,
+    & > .ChangePasswordForm_submit,
+    & > .VerifyPasswordForm_submit {
+        @extend %form-item-round-bottom;
+    }
+
+    // Form actions (2 columns)
+    .MyProfileForm_submit,
+    .MyProfileForm_button_cancel {
+        @extend %form-item-two-cols;
+        @extend %form-item-two-cols-bottom;
+    }
+
+    // Individual form items =======================================================
+
+    // Gender
+    .MyProfileForm_gender {
+        position: relative;
+
+        .form-label {
+            display: inline-block;
+        }
+
+        .form-item {
+            display: inline-block;
+
+            .form-field,
+            & {
+                position: static;
+            }
+
+            .radio-inline {
+                display: inline-block;
+                margin-left: 3rem;
+            }
+        }
+
+        // adjust validation icon position
+        .icon-validation {
+            top: 1.5rem;
+            right: 1.5rem;
+        }
+    }
+
+    // Contact preference
+    .MyProfileForm_preference_markup {
+        .contact-preference-top-blurb,
+        .contact-preference-label,
+        .contact-preference-bottom-blurb {
+            text-align: left;
+        }
+
+        .contact-preference-top-blurb {
+            margin: 1.5rem 0 1rem;
+            font-weight: normal;
+        }
+
+        .contact-preference-label {
+            position: relative;
+            padding-left: 3rem;
+
+            .marker-svg {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+
+        .contact-preference-bottom-blurb {
+            padding-left: 3rem;
+        }
+    }
+
+    // Mobile Number
+    .MyProfileForm_primary_number {
+        .form-item {
+            margin-bottom: 0;
+        }
+    }
+}

@@ -1,0 +1,10 @@
+<div id="profile-verification" class="modal modal-standard profile-verification">
+    <div class="modal-content">
+        {# <div class="modal-header">Save Account Changes</div> #}
+        <div class="modal-body">
+            <div class="changes"></div>
+            {{ widget("profile_verify_password") }}
+        </div>
+        {% include '@app/web/images/svg/closed.svg' ignore missing %}
+    </div>
+</div>

@@ -12,6 +12,10 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 export class BacktotopComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.activeBackToTop(element);
+
+        Router.on(RouterClass.afterNavigate, (event) => {
+            ComponentManager.refreshComponent("backtotop");
+        });
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -20,11 +24,6 @@ export class BacktotopComponent implements ComponentInterface {
 
     private activeBackToTop(element) {
         const backtoTop = new BacktoTop(element);
-
-        Router.on(RouterClass.afterNavigate, (event) => {
-            ComponentManager.refreshComponent("backtotop");
-        });
-
         backtoTop.init();
     }
 }

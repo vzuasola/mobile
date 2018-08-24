@@ -119,25 +119,30 @@ export default function ErrorHandler(errors, event, formValidations) {
         var field = utility.findParent(element, '.form-item');
 
         removeErrorMessage(element);
+        if (!field.hasAttribute("disabled")) {
+            utility.addClass(field, 'has-error');
+            utility.removeClass(field, 'has-success');
 
-        utility.addClass(field, 'has-error');
-        utility.removeClass(field, 'has-success');
-
-        createErrorMessage(element, message);
-        createErrorIcon(element);
+            createErrorMessage(element, message);
+            createErrorIcon(element);
+        }
     };
 
     /**
      *
      */
     function createErrorIcon(input) {
-        var icon = utility.findSibling(input, '.icon-validation');
+        var icon = utility.findSibling(input, '.icon-validation'),
+            iconSuccess = '<svg class="icon-success" viewbox="0 0 39.19 39.53"><use xlink:href="#check-rounded-thin" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>',
+            iconError = '<svg class="icon-error" viewbox="0 0 100 100"><use xlink:href="#exclamation-rounded" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>';
 
-        if (!icon) {
+        if (!icon && !input.hasAttribute("disabled")) {
             var element = document.createElement('span');
 
             element.className = 'icon-validation';
 
+            element.innerHTML = iconError;
+            element.innerHTML += iconSuccess;
             input.parentNode.insertBefore(element, input.nextSibling);
 
             return element;
