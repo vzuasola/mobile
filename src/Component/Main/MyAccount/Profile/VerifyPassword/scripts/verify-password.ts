@@ -42,13 +42,13 @@ export class VerifyPassword extends FormBase {
                 document.body,
                 "password-message-error",
                 true,
-                this.config.messageTimeout
+                this.config.messageTimeout,
             );
             this.successNotification = new Notification(
                 document.body,
                 "password-message-success",
                 true,
-                this.config.messageTimeout
+                this.config.messageTimeout,
             );
             this.bindEvent();
         }
