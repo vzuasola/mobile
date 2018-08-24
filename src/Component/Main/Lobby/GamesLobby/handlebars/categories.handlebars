@@ -1,23 +1,21 @@
-<nav>
-    <ul class="category-tab-list">
-        <li class="game-category">
-            <a href="#" class="category-tab-links">
-             <svg viewBox="0 0 86 86">
-                <path d="M54.67 11.87a30.26 30.26 0 1 0-4.14 46.24l23.33 23.33a5.36 5.36 0 1 0 7.58-7.58L58.11 50.53a30.25 30.25 0 0 0-3.44-38.66zm-6 36.79a21.76 21.76 0 1 1 0-30.78 21.76 21.76 0 0 1-.01 30.78z"/>
-            </svg>
-            </a>
-        </li>
-        {{#each categories}}
-        <li class="game-category">
-            <a
-                href="#{{this.field_games_alias}}"
-                class="category-tab category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
-                data-category-filter-id="{{this.field_games_alias}}"
-                data-category-filter-name="{{this.name}}"
-            >
-                {{this.name}}
-            </a>
-        </li>
-        {{/each}}
-    </ul>
-</nav>
+<div class="game-search">
+    <a href="#">
+     <svg viewBox="0 0 86 86">
+        <path d="M54.67 11.87a30.26 30.26 0 1 0-4.14 46.24l23.33 23.33a5.36 5.36 0 1 0 7.58-7.58L58.11 50.53a30.25 30.25 0 0 0-3.44-38.66zm-6 36.79a21.76 21.76 0 1 1 0-30.78 21.76 21.76 0 0 1-.01 30.78z"/>
+    </svg>
+    </a>
+</div>
+<div class="xlider category-tab-list" id="category-tab">
+    {{#each categories}}
+    <div class="game-category {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
+        <a
+            href="#{{this.field_games_alias}}"
+            class="category-tab category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
+            data-category-filter-id="{{this.field_games_alias}}"
+            data-category-filter-name="{{this.name}}"
+        >
+            {{this.name}}
+        </a>
+    </div>
+    {{/each}}
+</div>

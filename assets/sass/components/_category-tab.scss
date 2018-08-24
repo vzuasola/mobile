@@ -1,8 +1,25 @@
 .category-tab {
     @extend %clearfix;
-    height: 4rem;
+    height: 3rem;
     background: $cat-tab-bg;
     position: relative;
+
+    .game-search {
+        a {
+            width: 3rem;
+            height: 3rem;
+            position: absolute;
+            z-index: 11;
+            background: $cat-tab-bg;
+        }
+
+        svg {
+            outline: none;
+            fill: #fff;
+            margin: 0.5rem 0 0 0.5rem;
+            width: 2rem;
+        }
+    }
 }
 
 .category-tab-list {
@@ -11,31 +28,21 @@
     float: left;
     list-style-type: none;
     margin-bottom: 0.2rem;
+    padding-left: 3rem;
 
-    li {
-        float: left;
+    .game-category {
+        text-align: center;
     }
 
     a {
         display: inline-block;
-        height: 4rem;
-        padding: 0 2.2rem;
+        height: 3rem;
         background: $cat-tab-bg;
         color: $cat-tab-color;
-        font-size: 1.6rem;
-        line-height: 4rem;
+        font-size: 1.4rem;
+        line-height: 3rem;
         text-decoration: none;
         font-weight: 600;
-
-        svg {
-            width: 2.5rem;
-            height: 2.5rem;
-            position: absolute;
-            top: 0.7rem;
-            left: 0.7rem;
-            outline: none;
-            fill: $white;
-        }
     }
 
     .active {
