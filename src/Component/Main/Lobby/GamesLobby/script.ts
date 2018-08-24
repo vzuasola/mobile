@@ -10,6 +10,8 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 
+import Xlider from "@app/assets/script/components/xlider";
+
 /**
  *
  */
@@ -26,6 +28,28 @@ export class GamesLobbyComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.element = element;
         this.generateLobby();
+    }
+
+    private activateSlider(element) {
+        const slider: HTMLElement = element.querySelector("#category-tab");
+
+        if (slider && slider.querySelectorAll(".game-category").length > 0) {
+            // tslint:disable-next-line:no-unused-expression
+            const sliderObj = new Xlider({
+                selector: "#category-tab",
+                loop: false,
+                duration: 300,
+                controls: false,
+                perPage: {
+                    200: 2,
+                    320: 3,
+                    360: 3.6,
+                    640: 5.2,
+                    800: 7.3,
+                    1024: 8,
+                  },
+            });
+        }
     }
 
     /**
@@ -81,6 +105,7 @@ export class GamesLobbyComponent implements ComponentInterface {
 
         if (categoriesEl) {
             categoriesEl.innerHTML = template;
+            this.activateSlider(this.element);
         }
     }
 
