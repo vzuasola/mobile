@@ -128,6 +128,10 @@ $form-border-color: #515151;
     & > .form-field {
         flex: 2 0 9.5rem;
         padding-right: 1rem;
+
+        .icon-validation {
+            right: 1rem;
+        }
     }
 
     .verification-container {
