@@ -109,7 +109,8 @@
         background-color: $modal-standard-bg;
     }
 
-    .modal-header {
+    .modal-header,
+    .modal-body-header {
         margin: 0 0 1.5rem;
         padding: 0.3rem 2rem 1.2rem;
         border-bottom: 1px solid #575556;

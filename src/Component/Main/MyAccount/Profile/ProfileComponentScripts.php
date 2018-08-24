@@ -48,12 +48,16 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         $smsConfig = $this->configFetcher->getConfigById('my_account_sms_verification');
+        $messageConfig = $this->configFetcher->getConfigById('my_account_profile_server_side_mapping');
+        $generalConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
 
         return [
             'user' => $this->getFormValues(),
             'verification_code_min_length_message' => $smsConfig['verification_code_min_length_message'],
             'verification_code_max_length_message' => $smsConfig['verification_code_max_length_message'],
             'verification_code_required_message' => $smsConfig['verification_code_required_message'],
+            'messages' => Config::parse($messageConfig['server_side_mapping']) ?? '',
+            'noUpdateDetected' => $generalConfig['no_changed_detected_message'] ?? '',
         ];
     }
 

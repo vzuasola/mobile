@@ -4,6 +4,7 @@ import {Loader} from "@app/assets/script/components/loader";
 import {FormBase} from "@app/assets/script/components/form-base";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Modal} from "@app/assets/script/components/modal";
+import Notification from "@app/assets/script/components/notification";
 import * as verificationTemplate from "./../templates/handlebars/profile-changes.handlebars";
 
 /**
@@ -19,6 +20,8 @@ export class Profile extends FormBase {
     private oldValues: any;
     private newValues: any;
     private modalSelector: string = "#profile-verification";
+    private notification: any;
+    private config: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -27,6 +30,8 @@ export class Profile extends FormBase {
     init() {
         this.form = this.element.querySelector(".profile-form");
         this.validator = this.validateForm(this.form);
+        this.notification = new Notification(document.body,
+                "password-message-error", true, 3);
         this.oldValues = {...this.getValues()};
         this.handleSubmission();
     }
@@ -34,7 +39,7 @@ export class Profile extends FormBase {
     private getValues() {
         return {
             gender: this.getGenderValue(),
-            language: this.form.MyProfileForm_language.value,
+            language: this.getLanguageText(),
             mobile: this.form.MyProfileForm_mobile_number_1.value,
             mobile1: this.form.MyProfileForm_mobile_number_2.value || "",
             address: this.form.MyProfileForm_address.value,
@@ -49,12 +54,24 @@ export class Profile extends FormBase {
             gender: this.form.querySelector(".MyProfileForm_gender .form-label-text").textContent,
             language: this.form.querySelector(".MyProfileForm_language .form-label-text").textContent,
             mobile: this.form.querySelector(".MyProfileForm_mobile_number_1 .form-label-text").textContent,
-            mobile1: this.form.querySelector(".MyProfileForm_mobile_number_1 .form-label-text").textContent,
+            mobile1: this.getMobile2Value(),
             address: this.form.querySelector(".MyProfileForm_address .form-label-text").textContent,
             city: this.form.querySelector(".MyProfileForm_city .form-label-text").textContent,
             postal_code: this.form.querySelector(".MyProfileForm_postal_code .form-label-text").textContent,
             receive_news: this.form.querySelector(".MyProfileForm_preference_markup .label-inwrapper").textContent,
         };
+    }
+
+    private getLanguageText() {
+        const select = this.form.MyProfileForm_language;
+        return select.options[select.selectedIndex].text;
+    }
+
+    private getMobile2Value() {
+        const mobile1 = this.form.querySelector(".MyProfileForm_mobile_number_2 .form-label-text") ?
+            this.form.querySelector(".MyProfileForm_mobile_number_2 .form-label-text").textContent :
+            this.form.querySelector(".MyProfileForm_mobile_number_2 .form-label").textContent;
+        return mobile1;
     }
 
     private getGenderValue() {
@@ -84,16 +101,17 @@ export class Profile extends FormBase {
 
             if (!this.validator.hasError) {
                 if (this.hasChanges()) {
-                    const tbody = this.element.querySelector(this.modalSelector + " tbody");
+                    const profileChangesContainer = this.element.querySelector(this.modalSelector + " .changes");
                     const data: any = this.getFilteredDifference(this.oldValues, this.newValues);
 
                     // Add labels to data
                     data.labels = this.getLabels();
+                    data.config = this.attachments;
 
-                    tbody.innerHTML = verificationTemplate(data);
+                    profileChangesContainer.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);
                 } else {
-                    // Add a notification message
+                    this.notification.show(this.attachments.noUpdateDetected);
                 }
             }
         });
@@ -127,8 +145,6 @@ export class Profile extends FormBase {
         const modified = {};
 
         for (const propName of aProps) {
-            // If values of same property are not equal,
-            // objects are not equivalent
             if (a[propName] !== b[propName]) {
                 old[propName] = a[propName];
                 modified[propName] = b[propName];

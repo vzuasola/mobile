@@ -28,6 +28,7 @@ import {CantLoginForgotUsernameComponent} from "@app/src/Component/Main/CantLogi
 import {CantLoginResetPasswordComponent} from "@app/src/Component/Main/CantLogin/ResetPassword/script";
 import {MyAccountComponent} from "@app/src/Component/Main/MyAccount/script";
 import {MyAccountProfileComponent} from "@app/src/Component/Main/MyAccount/Profile/script";
+import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/MyAccount/Profile/VerifyPassword/script";
 import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
 
 ComponentManager.setComponents({
@@ -59,5 +60,6 @@ ComponentManager.setComponents({
     cant_login_reset_password: new CantLoginResetPasswordComponent(),
     my_account: new MyAccountComponent(),
     profile: new MyAccountProfileComponent(),
+    profile_verify_password: new MyAccountProfileVerifyPasswordComponent(),
     change_password: new MyAccountChangePasswordComponent(),
 });

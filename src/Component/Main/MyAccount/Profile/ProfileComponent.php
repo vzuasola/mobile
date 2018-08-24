@@ -58,13 +58,13 @@ class ProfileComponent implements ComponentWidgetInterface
         return [
             'title' => 'My Account',
             'formMyProfile' => $formMyProfile->createView(),
-            'add_mobile_label' => $myProfileConfig['add_mobile_label'] ?? 'Add Mobile',
-            'modal_verify_header_text' => $smsConfig['modal_verify_header_text'] ?? 'Verify Number',
-            'modal_verify_body_text' => $smsConfig['modal_verify_body_text'] ?? 'Verify your mobile number',
-            'modal_verification_code_placeholder' => $smsConfig['modal_verification_code_placeholder'] ?? 'Code',
-            'modal_verification_resend_code_text' => $smsConfig['modal_verification_resend_code_text'] ?? 'Resend',
-            'modal_verification_submit_text' => $smsConfig['modal_verification_submit_text'] ?? 'Submit',
-            'verify_text' => $smsConfig['verify_text'] ?? 'Verify',
+            'addMobileLabel' => $myProfileConfig['add_mobile_label'] ?? 'Add Mobile',
+            'modalVerifyHeaderText' => $smsConfig['modal_verify_header_text'] ?? 'Verify Number',
+            'modalVerifyBodyText' => $smsConfig['modal_verify_body_text'] ?? 'Verify your mobile number',
+            'modalVerificationCodePlaceholder' => $smsConfig['modal_verification_code_placeholder'] ?? 'Code',
+            'modalVerificationResendCodeText' => $smsConfig['modal_verification_resend_code_text'] ?? 'Resend',
+            'modalVerificationSubmitText' => $smsConfig['modal_verification_submit_text'] ?? 'Submit',
+            'verifyText' => $smsConfig['verifyText'] ?? 'Verify',
         ];
     }
 }
