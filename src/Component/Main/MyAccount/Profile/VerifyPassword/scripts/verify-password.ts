@@ -38,10 +38,18 @@ export class VerifyPassword extends FormBase {
             this.updateProfileLoader = document.querySelector("body > .loader");
             this.config = this.getAttachmentFrom("my_account");
             this.validator = this.validateForm(this.form);
-            this.errorNotification = new Notification(document.body,
-                "password-message-error", true, this.config.messageTimeout);
-            this.successNotification = new Notification(document.body,
-                "password-message-success", true, this.config.messageTimeout);
+            this.errorNotification = new Notification(
+                document.body,
+                "password-message-error",
+                true,
+                this.config.messageTimeout
+            );
+            this.successNotification = new Notification(
+                document.body,
+                "password-message-success",
+                true,
+                this.config.messageTimeout
+            );
             this.bindEvent();
         }
     }

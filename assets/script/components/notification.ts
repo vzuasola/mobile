@@ -15,10 +15,12 @@ export default class Notification {
     private notification: HTMLElement;
     private closeButton: HTMLElement;
 
-    constructor(parent: HTMLElement,
-                className: string,
-                private enableButton: boolean = false,
-                private timer: number = -1) {
+    constructor(
+        parent: HTMLElement,
+        className: string,
+        private enableButton: boolean = false,
+        private timer: number = -1
+    ) {
         this.parent = parent;
         this.className = className;
     }

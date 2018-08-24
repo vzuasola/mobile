@@ -19,7 +19,9 @@ export class MyAccountProfileVerifyPasswordComponent implements ComponentInterfa
     private activateVerifyPassword(element, attachments) {
         this.verifyPassword = new VerifyPassword(
             element,
-            attachments);
+            attachments
+        );
+
         this.verifyPassword.init();
     }
 }
