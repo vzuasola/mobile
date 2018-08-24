@@ -119,12 +119,13 @@ export default function ErrorHandler(errors, event, formValidations) {
         var field = utility.findParent(element, '.form-item');
 
         removeErrorMessage(element);
+        if (!field.hasAttribute("disabled")) {
+            utility.addClass(field, 'has-error');
+            utility.removeClass(field, 'has-success');
 
-        utility.addClass(field, 'has-error');
-        utility.removeClass(field, 'has-success');
-
-        createErrorMessage(element, message);
-        createErrorIcon(element);
+            createErrorMessage(element, message);
+            createErrorIcon(element);
+        }
     };
 
     /**
