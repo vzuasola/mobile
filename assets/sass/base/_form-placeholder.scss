@@ -115,3 +115,37 @@ $form-border-color: #515151;
         border-radius: 0 0 0.3rem 0;
     }
 }
+
+// Mobile
+%mobile-layout {
+    display: flex;
+    flex-wrap: wrap;
+
+    & > .form-label {
+        width: 100%;
+    }
+
+    & > .form-field {
+        flex: 2 0 9.5rem;
+        padding-right: 1rem;
+
+        .icon-validation {
+            right: 1rem;
+        }
+    }
+
+    .verification-container {
+        flex: 0 0 auto;
+        text-align: center;
+
+        a {
+            display: block;
+            padding: 0 1.2rem;
+            border-radius: 0.3rem;
+            background: $yellow;
+            color: $dark-gray;
+            font-weight: 600;
+            line-height: 3.5rem;
+        }
+    }
+}

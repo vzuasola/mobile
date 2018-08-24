@@ -107,10 +107,35 @@ form.verify-password-form {
         }
     }
 
-    // Mobile Number
-    .MyProfileForm_primary_number {
-        .form-item {
-            margin-bottom: 0;
+    // Mobile Number 1
+    .MyProfileForm_mobile_number_1 {
+        @extend %mobile-layout;
+
+        .MyProfileForm_primary_number {
+            flex: 0 0 auto;
+
+            .form-label {
+                display: none;
+            }
+
+            .form-field {
+                margin-right: 1rem;
+            }
         }
+
+        .add-new-mobile {
+            width: 100%;
+            padding: .5rem;
+            border: 1px solid $form-border-color;
+            border-radius: 0.5rem;
+            background: #2b2829;
+            color: $light-gray;
+            text-align: center;
+        }
+    }
+
+    // Mobile Number 2
+    .MyProfileForm_mobile_number_2:not(.hidden) {
+        @extend %mobile-layout;
     }
 }

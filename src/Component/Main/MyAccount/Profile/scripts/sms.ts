@@ -2,6 +2,7 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
 import {Modal} from "@app/assets/script/components/modal";
+import {Marker} from "@app/assets/script/components/marker";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {VerificationCodeValidate} from "./verification-code-validate";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
@@ -24,6 +25,7 @@ export class Sms {
     private verifyContainer: HTMLElement;
     private verifyBtn: HTMLElement;
     private verificationError: HTMLElement;
+    private addNewMobile: any;
     private subTypeId: number;
     private verified: boolean;
 
@@ -35,10 +37,11 @@ export class Sms {
     }
     // init
     init() {
-        this.mobile1Item = this.element.querySelector(".MyProfileForm_mobile_number_1 .form-field");
-        this.mobile2Item = this.element.querySelector(".MyProfileForm_mobile_number_2 .form-field");
+        this.mobile1Item = this.element.querySelector(".MyProfileForm_mobile_number_1");
+        this.mobile2Item = this.element.querySelector(".MyProfileForm_mobile_number_2");
         this.verifyContainer = this.element.querySelector(".verification-container");
         this.verificationError = this.element.querySelector("#verification-error");
+        this.addNewMobile = this.element.querySelector("#add-new-mobile").cloneNode(true);
         this.prepareElements();
         this.attachEvents();
         const verifCodeValidate = new VerificationCodeValidate(
@@ -46,17 +49,27 @@ export class Sms {
             this.attachments,
         );
         verifCodeValidate.init();
+
+        // Radio
+        new Marker({
+            parent: ".MyProfileForm_mobile_number_1",
+        });
     }
     // prepare necessary elements for sms verification
     private prepareElements() {
+        const primary = this.element.querySelector(".MyProfileForm_primary_number");
         // append verification button
         this.mobile1Item.appendChild(this.verifyContainer.cloneNode(true));
         this.mobile2Item.appendChild(this.verifyContainer.cloneNode(true));
+        this.mobile1Item.insertBefore(
+            primary,
+            this.mobile1Item.querySelector(".form-field").nextElementSibling,
+        );
         // check if mobile number 2 is empty on icore
         if (this.attachments.user.mobile_number_2 === "") {
             // add new mobile number link
-            this.mobile1Item.appendChild(this.element.querySelector("#add-new-mobile").cloneNode(true));
-            utility.removeClass(this.element.querySelector(".MyProfileForm_mobile_number_1 #add-new-mobile"), "hidden");
+            this.mobile1Item.appendChild(this.addNewMobile);
+            utility.removeClass(this.addNewMobile, "hidden");
             this.element.querySelector("#MyProfileForm_mobile_number_2").setAttribute("disabled", "disabled");
             // hide mobile number 2 field
             utility.addClass(this.element.querySelector(".form-item.MyProfileForm_mobile_number_2"), "hidden");
@@ -80,7 +93,6 @@ export class Sms {
         if (!this.attachments.user.sms_1_verified) {
             this.verifyBtn = this.element.querySelector(".MyProfileForm_mobile_number_1 .verify-mobile-selector");
             utility.removeClass(this.verifyBtn , "hidden");
-            utility.addClass(this.verifyBtn , "MyProfileForm_mobile_number_1");
         }
         // Mobile 2 field alter
         const verif2Container = this.element.querySelector(".MyProfileForm_mobile_number_2 .verification-container");
@@ -88,7 +100,6 @@ export class Sms {
         if (!this.attachments.user.sms_2_verified) {
             this.verifyBtn = this.element.querySelector(".MyProfileForm_mobile_number_2 .verify-mobile-selector");
             utility.removeClass(this.verifyBtn, "hidden");
-            utility.addClass(this.verifyBtn, "ProfileForm_mobile_number_2");
         }
     }
 
