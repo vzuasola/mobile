@@ -65,7 +65,10 @@ class SliderComponent implements ComponentWidgetInterface
     public function getData()
     {
         try {
-            $data['product'] = ['product' => $this->product->getProduct()];
+            $data['product'] = [];
+            if ($this->product->getProduct() != 'mobile-entrypage') {
+                $data['product'] = ['product' => $this->product->getProduct()];
+            }
         } catch (\Exception $e) {
             $data['product'] = [];
         }
