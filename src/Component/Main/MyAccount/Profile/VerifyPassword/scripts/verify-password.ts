@@ -36,19 +36,18 @@ export class VerifyPassword extends FormBase {
             this.passwordContainer = utility.hasClass(this.password, "form-item", true);
             this.loader = new Loader(utility.hasClass(this.password, "form-item", true), false, 0);
             this.updateProfileLoader = document.querySelector("body > .loader");
-            this.config = this.getAttachmentFrom("my_account");
             this.validator = this.validateForm(this.form);
             this.errorNotification = new Notification(
                 document.body,
                 "password-message-error",
                 true,
-                this.config.messageTimeout,
+                this.attachments.messageTimeout,
             );
             this.successNotification = new Notification(
                 document.body,
                 "password-message-success",
                 true,
-                this.config.messageTimeout,
+                this.attachments.messageTimeout,
             );
             this.bindEvent();
         }
@@ -119,11 +118,11 @@ export class VerifyPassword extends FormBase {
                     callback();
                 } else {
                     this.closeModal();
-                    this.errorNotification.show(this.config.messages.UPDATE_PROFILE_FAILED);
+                    this.errorNotification.show(this.attachments.messages.UPDATE_PROFILE_FAILED);
                 }
             })
             .fail((err, msg) => {
-                this.onError(this.config.messages.INTERNAL_ERROR);
+                this.onError(this.attachments.messages.INTERNAL_ERROR);
             })
             .always((resp) => {
                 this.loader.hide();
@@ -146,13 +145,13 @@ export class VerifyPassword extends FormBase {
         })
             .then((resp) => {
                 if (resp.success) {
-                    this.onSuccess(this.config.messages.UPDATE_PROFILE_SUCCESS);
+                    this.onSuccess(this.attachments.messages.UPDATE_PROFILE_SUCCESS);
                 } else {
-                    this.onError(this.config.messages.UPDATE_PROFILE_FAILED);
+                    this.onError(this.attachments.messages.UPDATE_PROFILE_FAILED);
                 }
             })
             .fail((err, msg) => {
-                this.onError(this.config.messages.UPDATE_PROFILE_FAILED);
+                this.onError(this.attachments.messages.UPDATE_PROFILE_FAILED);
             })
             .always((resp) => {
                 utility.addClass(this.updateProfileLoader, "hidden");

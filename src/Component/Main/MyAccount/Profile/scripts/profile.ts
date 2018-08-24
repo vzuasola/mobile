@@ -29,7 +29,6 @@ export class Profile extends FormBase {
 
     init() {
         this.form = this.element.querySelector(".profile-form");
-        this.config = this.getAttachmentFrom("my_account");
         this.validator = this.validateForm(this.form);
         this.notification = new Notification(document.body,
                 "password-message-error", true, 3);
@@ -107,12 +106,12 @@ export class Profile extends FormBase {
 
                     // Add labels to data
                     data.labels = this.getLabels();
-                    data.config = this.config;
+                    data.config = this.attachments;
 
                     profileChangesContainer.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);
                 } else {
-                    this.notification.show(this.config.noUpdateDetected);
+                    this.notification.show(this.attachments.noUpdateDetected);
                 }
             }
         });
