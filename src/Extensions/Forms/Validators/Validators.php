@@ -33,5 +33,4 @@ class Validators
     {
         return true;
     }
-
 }
