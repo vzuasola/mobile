@@ -26,8 +26,12 @@ export class Profile extends FormBase {
 
     init() {
         this.form = this.element.querySelector(".profile-form");
-        this.notification = new Notification(document.body,
-                "password-message-error", true, 3);
+        this.notification = new Notification(
+            document.body,
+            "password-message-error",
+            true,
+            this.attachments.messageTimeout,
+        );
         this.contactPreference();
         this.oldValues = {...this.getValues()};
         // we check if mobile 1 had a value and add the a required validation
