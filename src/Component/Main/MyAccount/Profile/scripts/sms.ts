@@ -294,6 +294,9 @@ export class Sms {
     // Open Lightbox after successful send sms code
     private launchLightBox() {
         Modal.open("#verify-mobile-number");
+        const form: HTMLFormElement = this.element.querySelector("#verify-sms-form");
+        form.reset();
+        form.querySelector(".validation-error-message").innerHTML = "";
     }
 
     private hideUnhideVerify(e, elem, value) {
