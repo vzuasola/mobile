@@ -297,6 +297,13 @@ validators.verify_password = {
     }
 };
 
-
+/**
+ * Not match username.
+ */
+validators.not_match_username = {
+    callback: function (value, param, field) {
+        return value.toUpperCase() !== field.element.getAttribute('data-username');
+    },
+};
 
 export default validators;

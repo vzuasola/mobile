@@ -64,7 +64,7 @@ class ProfileComponent implements ComponentWidgetInterface
             'modalVerificationCodePlaceholder' => $smsConfig['modal_verification_code_placeholder'] ?? 'Code',
             'modalVerificationResendCodeText' => $smsConfig['modal_verification_resend_code_text'] ?? 'Resend',
             'modalVerificationSubmitText' => $smsConfig['modal_verification_submit_text'] ?? 'Submit',
-            'verifyText' => $smsConfig['verifyText'] ?? 'Verify',
+            'verifyText' => $smsConfig['verify_text'] ?? 'Verify',
         ];
     }
 }

@@ -125,3 +125,15 @@ form.reset-password-form {
 .show-desktop {
     display: none;
 }
+
+// Expired token
+.expired-token-wrapper {
+    padding: 2.5rem 0 0.5rem;
+    background: #2a2829;
+    color: $light-gray;
+
+    .contact-info-blurb {
+        padding-top: 2rem;
+        border-top: 0.1rem solid #515151;
+    }
+}
