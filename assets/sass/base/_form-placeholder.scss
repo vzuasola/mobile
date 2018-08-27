@@ -71,6 +71,12 @@ $form-border-color: #515151;
     p {
         margin-bottom: 0;
     }
+
+    // Anchors
+    a:not(.btn) {
+        color: $yellow;
+        text-decoration: underline;
+    }
 }
 
 // Loader ========================
