@@ -2,7 +2,8 @@
 
 form.profile-form,
 form.change-password-form,
-form.verify-password-form {
+form.verify-password-form,
+form.sms-verification-code-form {
     padding-top: 1rem;
     transition: opacity 0.3s;
 
@@ -25,7 +26,8 @@ form.verify-password-form {
     & > .MyProfileForm_preference_markup,
     & > .ChangePasswordForm_current_password_field,
     & > .ChangePasswordForm_current_password,
-    & > .VerifyPasswordForm_verify_password {
+    & > .VerifyPasswordForm_verify_password,
+    & > .verification-code-field {
         @extend %form-item-round-top;
     }
 
@@ -36,7 +38,8 @@ form.verify-password-form {
     & > .MyProfileForm_button_cancel,
     & > .ChangePasswordForm_change_password_submit_field,
     & > .ChangePasswordForm_submit,
-    & > .VerifyPasswordForm_submit {
+    & > .VerifyPasswordForm_submit,
+    & > .verify-mobile-reload {
         @extend %form-item-round-bottom;
     }
 
@@ -137,5 +140,12 @@ form.verify-password-form {
     // Mobile Number 2
     .MyProfileForm_mobile_number_2:not(.hidden) {
         @extend %mobile-layout;
+    }
+
+    // Verification Code
+    .verification-code-field {
+        .resend-code {
+            color: $yellow;
+        }
     }
 }
