@@ -5,6 +5,7 @@ import Notification from "@app/assets/script/components/notification";
 import * as verificationTemplate from "./../templates/handlebars/profile-changes.handlebars";
 import {Loader} from "@app/assets/script/components/loader";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
+
 /**
  * Profile
  *
@@ -66,7 +67,9 @@ export class Profile extends FormBase {
             address: this.form.MyProfileForm_address.value,
             city: this.form.MyProfileForm_city.value,
             postal_code: this.form.MyProfileForm_postal_code.value,
-            receive_news: this.form.ProfileForm_contact_preference.checked ? "Yes" : "No",
+            receive_news: this.form.ProfileForm_contact_preference.checked
+                ? this.attachments.contactPreferenceYes
+                : this.attachments.contactPreferenceNo,
         };
     }
 
