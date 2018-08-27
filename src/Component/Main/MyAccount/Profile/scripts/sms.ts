@@ -6,6 +6,7 @@ import {Marker} from "@app/assets/script/components/marker";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {VerificationCodeValidate} from "./verification-code-validate";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
+import * as checkTemplate from "@app/templates/handlebars/icon-check-only.handlebars";
 
 /**
  * SMS Verification
@@ -28,6 +29,10 @@ export class Sms {
     private addNewMobile: any;
     private subTypeId: number;
     private verified: boolean;
+    private mobile1Input: HTMLInputElement;
+    private mobile2Input: HTMLInputElement;
+    private mobile1InputValue: string;
+    private mobile2InputValue: string;
 
     // construct
     constructor(element: HTMLElement, attachments: {}) {
@@ -39,6 +44,10 @@ export class Sms {
     init() {
         this.mobile1Item = this.element.querySelector(".MyProfileForm_mobile_number_1");
         this.mobile2Item = this.element.querySelector(".MyProfileForm_mobile_number_2");
+        this.mobile1Input = this.element.querySelector("#MyProfileForm_mobile_number_1");
+        this.mobile2Input = this.element.querySelector("#MyProfileForm_mobile_number_2");
+        this.mobile1InputValue = this.mobile1Input.value;
+        this.mobile2InputValue = this.mobile2Input.value;
         this.verifyContainer = this.element.querySelector(".verification-container");
         this.verificationError = this.element.querySelector("#verification-error");
         this.addNewMobile = this.element.querySelector("#add-new-mobile").cloneNode(true);
@@ -78,29 +87,37 @@ export class Sms {
                 this.addNewMobileNumber(event);
             });
         }
+
+        const verif1Container = this.element.querySelector(".MyProfileForm_mobile_number_1 .verification-container");
+        const verif2Container = this.element.querySelector(".MyProfileForm_mobile_number_2 .verification-container");
+
         // add verified icon on verified mobile number
         if (this.attachments.user.sms_1_verified) {
-            const verifiedElem = this.element.querySelector(".MyProfileForm_mobile_number_1 .verified-mobile");
-            utility.removeClass(verifiedElem, "hidden");
+            this.addCheckIcon(verif1Container);
         }
         if (this.attachments.user.sms_2_verified) {
-            const verifiedElem2 = this.element.querySelector(".MyProfileForm_mobile_number_2 .verified-mobile");
-            utility.removeClass(verifiedElem2, "hidden");
+            this.addCheckIcon(verif2Container);
         }
         // Mobile 1 field alter
-        const verif1Container = this.element.querySelector(".MyProfileForm_mobile_number_1 .verification-container");
         utility.removeClass(verif1Container, "hidden");
         if (!this.attachments.user.sms_1_verified) {
-            this.verifyBtn = this.element.querySelector(".MyProfileForm_mobile_number_1 .verify-mobile-selector");
-            utility.removeClass(this.verifyBtn , "hidden");
+            const verifyBtn = this.element.querySelector(".MyProfileForm_mobile_number_1 .verify-mobile-selector");
+            utility.removeClass(verifyBtn , "hidden");
+            utility.addClass(verifyBtn , "MyProfileForm_mobile_number_1_verify");
         }
         // Mobile 2 field alter
-        const verif2Container = this.element.querySelector(".MyProfileForm_mobile_number_2 .verification-container");
         utility.removeClass(verif2Container, "hidden");
         if (!this.attachments.user.sms_2_verified) {
-            this.verifyBtn = this.element.querySelector(".MyProfileForm_mobile_number_2 .verify-mobile-selector");
-            utility.removeClass(this.verifyBtn, "hidden");
+            const verifyBtn2 = this.element.querySelector(".MyProfileForm_mobile_number_2 .verify-mobile-selector");
+            utility.removeClass(verifyBtn2, "hidden");
+            utility.addClass(verifyBtn2 , "MyProfileForm_mobile_number_2_verify");
         }
+    }
+
+    private addCheckIcon(container) {
+        container.innerHTML = "";
+        const checkContainer = utility.createElem("span", "icon-verified-mobile", container);
+        checkContainer.innerHTML = checkTemplate();
     }
 
     // Attach SMS Action Events
@@ -116,6 +133,12 @@ export class Sms {
         });
         utility.listen(this.element.querySelector("#verify-mobile-submit"), "click", (event) => {
             this.submitVerificationCode(event);
+        });
+        utility.listen(this.element.querySelector("#MyProfileForm_mobile_number_1"), "keyup", (event) => {
+            this.hideUnhideVerify(event, this.mobile1Item, this.mobile1InputValue);
+        });
+        utility.listen(this.element.querySelector("#MyProfileForm_mobile_number_2"), "keyup", (event) => {
+            this.hideUnhideVerify(event, this.mobile2Item, this.mobile2InputValue);
         });
     }
 
@@ -139,7 +162,7 @@ export class Sms {
         if (event.target && event.target.id === "verify-mobile-modal") {
             this.subTypeId = 2;
 
-            if (utility.hasClass(event.target, "MyProfileForm_mobile_number_1")) {
+            if (utility.hasClass(event.target, "MyProfileForm_mobile_number_1_verify")) {
                 this.subTypeId = 1;
             }
 
@@ -188,6 +211,7 @@ export class Sms {
                 utility.addClass(verificationSuccess, "hidden");
                 utility.removeClass(verificationError, "hidden");
                 verificationError.innerHTML = res.message;
+                this.loader.hide();
             }
         });
     }
@@ -201,6 +225,11 @@ export class Sms {
         const verifCode = verifCodeField.value;
         const verificationError = document.getElementById("modal-verification-error");
         const verificationSuccess = document.getElementById("modal-verification-success");
+
+        if (verifCode.length > 6 || verifCode.length < 6) {
+            return;
+        }
+
         this.loader.show();
 
         xhr({
@@ -223,7 +252,7 @@ export class Sms {
                 utility.addClass(verificationSuccess, "hidden");
                 utility.removeClass(verificationError, "hidden");
                 verificationError.innerHTML = res.message;
-                this.refreshProfileForm();
+                this.loader.hide();
             }
         });
     }
@@ -272,5 +301,18 @@ export class Sms {
     // Open Lightbox after successful send sms code
     private launchLightBox() {
         Modal.open("#verify-mobile-number");
+        const form: HTMLFormElement = this.element.querySelector("#verify-sms-form");
+        form.reset();
+        form.querySelector(".validation-error-message").innerHTML = "";
+    }
+
+    private hideUnhideVerify(e, elem, value) {
+        if (value && e.target.value !== value) {
+            utility.addClass(elem.querySelector(".verification-container"), "hidden");
+        }
+
+        if (value && e.target.value === value) {
+            utility.removeClass(elem.querySelector(".verification-container"), "hidden");
+        }
     }
 }

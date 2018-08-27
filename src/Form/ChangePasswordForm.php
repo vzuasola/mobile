@@ -20,6 +20,15 @@ class ChangePasswordForm extends FormBase implements FormInterface
     }
 
     /**
+     * Container dependency injection
+     */
+    public function setContainer($container)
+    {
+        parent::setContainer($container);
+        $this->user = $container->get('user_fetcher');
+    }
+
+    /**
      * @{inheritdoc}
      */
     public function alterFormDefinition($definition, $data, $options)
@@ -33,6 +42,9 @@ class ChangePasswordForm extends FormBase implements FormInterface
         }
 
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-changepass btn-lower-case";
+        // attach username in password field for validation
+        $user = $this->user->getPlayerDetails();
+        $definition['new_password']['options']['attr']['data-username'] = $user['username'];
 
         return $definition;
     }
