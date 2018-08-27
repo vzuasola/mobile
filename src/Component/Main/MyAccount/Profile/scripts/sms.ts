@@ -204,6 +204,11 @@ export class Sms {
         const verifCode = verifCodeField.value;
         const verificationError = document.getElementById("modal-verification-error");
         const verificationSuccess = document.getElementById("modal-verification-success");
+
+        if (verifCode.length > 6 || verifCode.length < 6) {
+            return;
+        }
+
         this.loader.show();
 
         xhr({
@@ -226,6 +231,7 @@ export class Sms {
                 utility.addClass(verificationSuccess, "hidden");
                 utility.removeClass(verificationError, "hidden");
                 verificationError.innerHTML = res.message;
+                this.loader.hide();
             }
         });
     }
