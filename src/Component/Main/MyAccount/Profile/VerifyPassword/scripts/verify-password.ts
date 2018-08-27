@@ -57,7 +57,6 @@ export class VerifyPassword extends FormBase {
         // Listen form on submit
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
-
             if (!this.validator.hasError) {
                 this.formValues = this.getValues();
                 this.checkField(this.udpateProfile);

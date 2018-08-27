@@ -96,10 +96,10 @@ export class Profile extends FormBase {
         // Listen form on submit
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
+            const hasError = this.element.querySelectorAll(".has-error").length;
 
             this.newValues = this.getValues();
-
-            if (!this.validator.hasError) {
+            if (!hasError) {
                 if (this.hasChanges()) {
                     const profileChangesContainer = this.element.querySelector(this.modalSelector + " .changes");
                     const data: any = this.getFilteredDifference(this.oldValues, this.newValues);

@@ -93,6 +93,7 @@ export class Sms {
         if (!this.attachments.user.sms_1_verified) {
             this.verifyBtn = this.element.querySelector(".MyProfileForm_mobile_number_1 .verify-mobile-selector");
             utility.removeClass(this.verifyBtn , "hidden");
+            utility.addClass(this.verifyBtn , "MyProfileForm_mobile_number_1_verify");
         }
         // Mobile 2 field alter
         const verif2Container = this.element.querySelector(".MyProfileForm_mobile_number_2 .verification-container");
@@ -100,6 +101,7 @@ export class Sms {
         if (!this.attachments.user.sms_2_verified) {
             this.verifyBtn = this.element.querySelector(".MyProfileForm_mobile_number_2 .verify-mobile-selector");
             utility.removeClass(this.verifyBtn, "hidden");
+            utility.addClass(this.verifyBtn , "MyProfileForm_mobile_number_2_verify");
         }
     }
 
@@ -139,7 +141,7 @@ export class Sms {
         if (event.target && event.target.id === "verify-mobile-modal") {
             this.subTypeId = 2;
 
-            if (utility.hasClass(event.target, "MyProfileForm_mobile_number_1")) {
+            if (utility.hasClass(event.target, "MyProfileForm_mobile_number_1_verify")) {
                 this.subTypeId = 1;
             }
 
