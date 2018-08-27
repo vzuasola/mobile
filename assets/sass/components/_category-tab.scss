@@ -1,6 +1,5 @@
 .category-tab {
     @extend %clearfix;
-    height: 3rem;
     background: $cat-tab-bg;
     position: relative;
 
@@ -24,11 +23,8 @@
 
 .category-tab-list {
     @extend %clearfix;
-    padding-left: 0;
     float: left;
     list-style-type: none;
-    margin-bottom: 0.2rem;
-    padding-left: 3rem;
 
     .game-category {
         text-align: center;
@@ -36,13 +32,12 @@
 
     a {
         display: inline-block;
-        height: 3rem;
         background: $cat-tab-bg;
         color: $cat-tab-color;
         font-size: 1.4rem;
-        line-height: 3rem;
         text-decoration: none;
         font-weight: 600;
+        padding: 0.5rem;
     }
 
     .active {
