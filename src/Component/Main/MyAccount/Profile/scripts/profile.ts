@@ -1,8 +1,5 @@
 import * as utility from "@core/assets/js/components/utility";
-import * as xhr from "@core/assets/js/vendor/reqwest";
-import {Loader} from "@app/assets/script/components/loader";
 import {FormBase} from "@app/assets/script/components/form-base";
-import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Modal} from "@app/assets/script/components/modal";
 import Notification from "@app/assets/script/components/notification";
 import * as verificationTemplate from "./../templates/handlebars/profile-changes.handlebars";
@@ -15,13 +12,10 @@ import * as verificationTemplate from "./../templates/handlebars/profile-changes
  */
 export class Profile extends FormBase {
     private form: HTMLFormElement;
-    private loader: Loader;
-    private validator: any;
     private oldValues: any;
     private newValues: any;
     private modalSelector: string = "#profile-verification";
     private notification: any;
-    private config: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -29,11 +23,22 @@ export class Profile extends FormBase {
 
     init() {
         this.form = this.element.querySelector(".profile-form");
-        this.validator = this.validateForm(this.form);
         this.notification = new Notification(document.body,
                 "password-message-error", true, 3);
         this.contactPreference();
         this.oldValues = {...this.getValues()};
+        // we check if mobile 1 had a value and add the a required validation
+        if (this.oldValues.mobile1) {
+            const rules = JSON.parse(this.form.getAttribute("data-validations"));
+            const callbackRequired = rules.MyProfileForm.mobile_number_1.rules.callback_required;
+            const reversedRules = Object.assign(
+                {callback_required: callbackRequired},
+                rules.MyProfileForm.mobile_number_2.rules,
+            );
+            rules.MyProfileForm.mobile_number_2.rules = reversedRules;
+            this.form.setAttribute("data-validations", JSON.stringify(rules));
+        }
+        this.validateForm(this.form);
         this.handleSubmission();
     }
 
