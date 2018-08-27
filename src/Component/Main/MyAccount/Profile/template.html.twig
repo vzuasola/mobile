@@ -17,8 +17,8 @@
                 <div class="alert alert-error hidden" id="modal-verification-error"> </div>
                 <div class="alert alert-success hidden" id="modal-verification-success"> </div>
                 <p class="mb-30">{{ modalVerifyBodyText | raw }}</p>
-                <form class="pure-form sms-verification-code-form" name="pure-form" id="verify-sms-form" method="post">
-                    <div class="form-item verification-code-field">
+                <form class="pure-form sms-verification-code-form" name="sms-verification-code-form" id="verify-sms-form" method="post">
+                    <div class="form-item verification-code-field-wrapper">
                         <div class="form-field">
                             <input type="text" name="verification-code-field" id="verification-code-field" placeholder="{{ modalVerificationCodePlaceholder }}" class="input-block-level form-field-element verification-code-field" />
                             <span class="validation-icon"></span>
@@ -26,7 +26,7 @@
                             <a href="" class="resend-code" id="verify-mobile-resend"> {{ modalVerificationResendCodeText }} </a>
                         </div>
                     </div>
-                    <div class="form-item verify-mobile-reload">
+                    <div class="form-item verify-mobile-reload-wrapper">
                         <div class="form-field">
                             <!--[if lte IE 8]><input type="text" style="display: none" disabled="disabled" /><![endif]-->
                             <input type="submit" value="{{ modalVerificationSubmitText }}" class="send-code-submit btn btn-small btn-yellow btn-lower-case" id="verify-mobile-submit">
