@@ -190,6 +190,7 @@ export class Sms {
                 utility.addClass(verificationSuccess, "hidden");
                 utility.removeClass(verificationError, "hidden");
                 verificationError.innerHTML = res.message;
+                this.loader.hide();
             }
         });
     }
@@ -225,7 +226,6 @@ export class Sms {
                 utility.addClass(verificationSuccess, "hidden");
                 utility.removeClass(verificationError, "hidden");
                 verificationError.innerHTML = res.message;
-                this.refreshProfileForm();
             }
         });
     }
