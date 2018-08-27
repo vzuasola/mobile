@@ -3,7 +3,8 @@ import {FormBase} from "@app/assets/script/components/form-base";
 import {Modal} from "@app/assets/script/components/modal";
 import Notification from "@app/assets/script/components/notification";
 import * as verificationTemplate from "./../templates/handlebars/profile-changes.handlebars";
-
+import {Loader} from "@app/assets/script/components/loader";
+import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 /**
  * Profile
  *
@@ -16,9 +17,11 @@ export class Profile extends FormBase {
     private newValues: any;
     private modalSelector: string = "#profile-verification";
     private notification: any;
+    private loader: Loader;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
+        this.loader = new Loader(document.body, true);
     }
 
     init() {
@@ -128,6 +131,19 @@ export class Profile extends FormBase {
                     this.notification.show(this.attachments.noUpdateDetected);
                 }
             }
+        });
+
+        // listen on cancel button
+        utility.listen(this.element.querySelector("#MyProfileForm_button_cancel"), "click", (event, src) => {
+            event.preventDefault();
+            this.loader.show();
+
+            ComponentManager.refreshComponent(
+                ["main"],
+                () => {
+                    this.loader.hide();
+                },
+            );
         });
     }
 
