@@ -63,7 +63,8 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'modalTopBlurb' => $modalConfig['modal_preview_top_blurb'] ?? '',
             'modalCurrentLabel' => $modalConfig['modal_preview_current_label'] ?? '',
             'modalNewLabel' => $modalConfig['modal_preview_new_label'] ?? '',
-            'modalBottomBlurb' => $modalConfig['modal_preview_bottom_blurb'] ?? ''
+            'modalBottomBlurb' => $modalConfig['modal_preview_bottom_blurb'] ?? '',
+            'messageTimeout' => $generalConfig['message_timeout'] ?? 5,
         ];
     }
 
