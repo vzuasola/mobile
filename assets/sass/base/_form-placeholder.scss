@@ -144,7 +144,7 @@ $form-border-color: #515151;
         flex: 0 0 auto;
         text-align: center;
 
-        a {
+        .verify-mobile {
             display: block;
             padding: 0 1.2rem;
             border-radius: 0.3rem;
@@ -152,6 +152,19 @@ $form-border-color: #515151;
             color: $dark-gray;
             font-weight: 600;
             line-height: 3.5rem;
+        }
+
+        .icon-verified-mobile {
+            display: block;
+            min-width: 6.3rem;
+            height: 3.5rem;
+            border-radius: 0.4rem;
+            border: 0.2rem solid #50db0f;
+
+            svg {
+                width: 3rem;
+                fill: #50db0f;
+            }
         }
     }
 }
