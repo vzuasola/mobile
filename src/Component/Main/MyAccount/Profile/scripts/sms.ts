@@ -28,6 +28,10 @@ export class Sms {
     private addNewMobile: any;
     private subTypeId: number;
     private verified: boolean;
+    private mobile1Input: HTMLInputElement;
+    private mobile2Input: HTMLInputElement;
+    private mobile1InputValue: string;
+    private mobile2InputValue: string;
 
     // construct
     constructor(element: HTMLElement, attachments: {}) {
@@ -39,6 +43,10 @@ export class Sms {
     init() {
         this.mobile1Item = this.element.querySelector(".MyProfileForm_mobile_number_1");
         this.mobile2Item = this.element.querySelector(".MyProfileForm_mobile_number_2");
+        this.mobile1Input = this.element.querySelector("#MyProfileForm_mobile_number_1");
+        this.mobile2Input = this.element.querySelector("#MyProfileForm_mobile_number_2");
+        this.mobile1InputValue = this.mobile1Input.value;
+        this.mobile2InputValue = this.mobile2Input.value;
         this.verifyContainer = this.element.querySelector(".verification-container");
         this.verificationError = this.element.querySelector("#verification-error");
         this.addNewMobile = this.element.querySelector("#add-new-mobile").cloneNode(true);
@@ -118,6 +126,12 @@ export class Sms {
         });
         utility.listen(this.element.querySelector("#verify-mobile-submit"), "click", (event) => {
             this.submitVerificationCode(event);
+        });
+        utility.listen(this.element.querySelector("#MyProfileForm_mobile_number_1"), "keyup", (event) => {
+            this.hideUnhideVerify(event, this.mobile1Item, this.mobile1InputValue);
+        });
+        utility.listen(this.element.querySelector("#MyProfileForm_mobile_number_2"), "keyup", (event) => {
+            this.hideUnhideVerify(event, this.mobile2Item, this.mobile2InputValue);
         });
     }
 
@@ -280,5 +294,15 @@ export class Sms {
     // Open Lightbox after successful send sms code
     private launchLightBox() {
         Modal.open("#verify-mobile-number");
+    }
+
+    private hideUnhideVerify(e, elem, value) {
+        if (value && e.target.value !== value) {
+            utility.addClass(elem.querySelector(".verification-container"), "hidden");
+        }
+
+        if (value && e.target.value === value) {
+            utility.removeClass(elem.querySelector(".verification-container"), "hidden");
+        }
     }
 }
