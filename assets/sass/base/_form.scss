@@ -25,6 +25,11 @@ $default-form-field-color: #ccc;
         }
     }
 
+    // Adjust right position for select form type
+    select + &-validation {
+        right: 1.8rem;
+    }
+
     .has-error &-validation svg.icon-error,
     .has-success &-validation svg.icon-success {
         display: inline-block;

@@ -96,7 +96,6 @@ class MyProfileForm extends FormBase implements FormInterface
 
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-update btn-lower-case";
         $definition['button_cancel']['options']['attr']['class'] = "btn btn-small btn-gray btn-cancel btn-lower-case";
-        $definition['mobile_number_2']['options']['label'] = ' ';
         return $definition;
     }
 
@@ -127,20 +126,25 @@ class MyProfileForm extends FormBase implements FormInterface
             $reversedArray = array_reverse($definition['mobile_number_2']['validators']['rules']);
             $definition['mobile_number_2']['validators']['rules']  = $reversedArray;
         }
-        // if there's no value for mobile number 2 put the country code as a default value
-        if (!$values['mobile_number_2']) {
-            $values['mobile_number_2'] = $countryCode;
-        }
-
+        // iterate and put all values to field
         foreach ($values as $key => $value) {
             if (isset($definition[$key])) {
                 $definition[$key]['options']['attr']['value'] = $value;
                 $definition[$key]['options']['data'] = $value;
             }
         }
-
+        // if there's no value for mobile number 2 put the country code as a default value
+        if (!$values['mobile_number_2']) {
+            $definition['mobile_number_2']['options']['attr']['data-value'] = $countryCode;
+        }
+        // check mobile 1 if verified and set the flag to true and disable field
         if ($values['sms_1_verified']) {
+            $definition['mobile_number_1']['options']['attr']['data-verified'] = "1";
             $this->disabledFields = array_merge($this->disabledFields, ['mobile_number_1']);
+        }
+        // check mobile 2 if verified and set the flag to true (will not disable field still can edit)
+        if ($values['sms_2_verified']) {
+            $definition['mobile_number_2']['options']['attr']['data-verified'] = "1";
         }
 
         return $definition;
@@ -222,21 +226,6 @@ class MyProfileForm extends FormBase implements FormInterface
     }
 
     /**
-     * Language Mapping
-     *
-     */
-    private function alternateLanguageMapping()
-    {
-        $languages = LanguageMapping::LOCALE;
-
-        foreach ($languages as $key => $value) {
-            $newLanguages[$value] = $key;
-        }
-
-        return $newLanguages;
-    }
-
-    /**
      * Country Mapping
      */
     private function countryCodeMapping()
@@ -298,10 +287,6 @@ class MyProfileForm extends FormBase implements FormInterface
             $result['mobile_number_1'] = $this->contactNumberMasking($result['mobile_number_1']);
         }
 
-        $this->scripts->attach([
-            'playerData' => $result,
-        ]);
-
         return $result;
     }
 
@@ -310,8 +295,8 @@ class MyProfileForm extends FormBase implements FormInterface
      */
     private function setDisabledFields($definition)
     {
-        foreach ($this->disabledFields as $key => $value) {
-            $definition[$value]['options']['attr']['disabled'] = "disabled";
+        foreach ($this->disabledFields as $fieldKey) {
+            $definition[$fieldKey]['options']['attr']['disabled'] = "disabled";
         }
 
         return $definition;

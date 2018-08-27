@@ -28,11 +28,8 @@ export abstract class FormBase {
         return validator;
     }
 
-    messageMapping(key: string, component: string) {
-        const componentTarget = document.querySelector("[data-component-widget-class=" + component + "]");
-        const attachments = componentTarget.getAttribute("data-component-widget-attachments");
-        const config = JSON.parse(attachments);
-        return config.messages[key];
+    messageMapping(key: string) {
+        return this.attachments.messages[key];
     }
 
     /**
@@ -90,8 +87,8 @@ export abstract class FormBase {
      *
      * @param Node form form tag element
      */
-    showConfirmationMessage(form): void {
-        const confirmationMessage = utility.findParent(form, "div").querySelector(".confirmation-message");
+    showConfirmationMessage(form, selector: string = ".api-success-message"): void {
+        const confirmationMessage = utility.findParent(form, "div").querySelector(selector);
 
         form.style.opacity = "0";
         utility.removeClass(confirmationMessage, "hidden");

@@ -135,6 +135,15 @@ $modal-radius: 1.5rem;
 $modal-header-color: $white;
 $modal-header-bg: $red;
 
+// Modal standard
+$modal-standard-padding: 1.2rem;
+$modal-standard-width: auto;
+$modal-standard-bg: #2a2829;
+$modal-standard-overlay-bg: rgba(0, 0, 0, 0.8);
+$modal-standard-radius: 0.5rem;
+$modal-standard-header-color: $light-gray;
+$modal-standard-header-bg: transparent;
+
 // Push Notification Modal -------------------------------------------
 $pushnx-color: #3e3e3e;
 $pushnx-bg: #e7e7e7;

@@ -10,12 +10,6 @@ use App\Drupal\Config;
  */
 class CantLoginComponentScripts implements ComponentAttachmentInterface
 {
-
-    /**
-     * Config Fetcher Object.
-     */
-    private $configFetcher;
-
     /**
      * Translation Manager Object.
      */
@@ -27,7 +21,6 @@ class CantLoginComponentScripts implements ComponentAttachmentInterface
     public static function create($container)
     {
         return new static(
-            $container->get('config_fetcher'),
             $container->get('translation_manager')
         );
     }
@@ -35,9 +28,8 @@ class CantLoginComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($configFetcher, $translationManager)
+    public function __construct($translationManager)
     {
-        $this->configFetcher = $configFetcher->withProduct('account');
         $this->translationManager = $translationManager;
     }
     /**
@@ -45,13 +37,9 @@ class CantLoginComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-
-        $config = $this->configFetcher->getConfigById('cant_login');
-        $integrationError = Config::parse($config['cant_login_response_mapping']) ?? '';
         $passMeter = $this->translationManager->getTranslation('password-strength-meter');
 
         return [
-            'messages' => $integrationError,
             'passwordStrengthMeter' => $passMeter
         ];
     }

@@ -81,9 +81,9 @@ export class ResetPassword extends FormBase {
         })
             .then((resp) => {
                 if (resp.status === "CHANGE_FORGOTTEN_PASSWORD_SUCCESS") {
-                    this.showConfirmationMessage(this.form);
+                    this.showConfirmationMessage(this.form, ".api-success-message");
                 } else {
-                    this.showMessage(this.passwordVerifyContainer, this.messageMapping(resp.status, "cant_login"));
+                    this.showMessage(this.passwordVerifyContainer, this.messageMapping(resp.status));
                 }
             })
             .fail((err, msg) => {
