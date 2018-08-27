@@ -110,7 +110,7 @@ export class Profile extends FormBase {
         // Listen form on submit
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
-            const hasError = this.element.querySelectorAll(".has-error").length;
+            const hasError = this.form.querySelectorAll(".has-error").length;
 
             this.newValues = this.getValues();
             if (!hasError) {
