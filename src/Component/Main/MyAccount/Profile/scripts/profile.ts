@@ -136,8 +136,6 @@ export class Profile extends FormBase {
                     data.config = this.attachments;
                     data.genderText = this.getGenderText();
 
-                    console.log("data", data);
-
                     profileChangesContainer.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);
                 } else {
