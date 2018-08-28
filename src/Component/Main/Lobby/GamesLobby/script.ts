@@ -148,8 +148,17 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenChangeCategory() {
         ComponentManager.subscribe("click", (event: Event, src) => {
             if (src.getAttribute("data-category-filter-id")) {
+                const categoriesEl = this.element.querySelector("#game-categories");
+                const activeLink = categoriesEl.querySelector(".category-tab .active a");
+
+                utility.removeClass(activeLink, "active");
+                utility.removeClass(activeLink.parentElement, "active");
+
+                utility.addClass(src, "active");
+                utility.addClass(src.parentElement, "active");
+
                 const key = src.getAttribute("data-category-filter-id");
-                this.setLobby(key);
+                this.setGames(this.response.games[key]);
             }
         });
     }
