@@ -25,8 +25,6 @@ class GamesLobbyComponentController
 
     private $asset;
 
-    private $usedCategories;
-
     /**
      *
      */
@@ -71,7 +69,7 @@ class GamesLobbyComponentController
 
         try {
             $categories = $this->views->getViewById('games_category');
-            $data['categories'] = $this->arrangeCategories($categories);
+            $data['categories'] = $this->arrangeCategories($categories, $data['games']);
         } catch (\Exception $e) {
             $data['categories'] = [];
         }
@@ -80,7 +78,7 @@ class GamesLobbyComponentController
     }
 
     /**
-     * Arrange games per category and list used category
+     * Arrange games per category
      */
     private function arrangeGames($games)
     {
@@ -90,8 +88,6 @@ class GamesLobbyComponentController
             foreach ($game['field_games_list_category'] as $category) {
                 $gamesList[$category['field_games_alias'][0]['value']][]
                     = $this->processGame($game);
-                $this->usedCategories[$category['field_games_alias'][0]['value']]
-                    = $category['field_games_alias'][0]['value'];
             }
         }
 
@@ -143,11 +139,11 @@ class GamesLobbyComponentController
     /**
      * Arrange and removed unused categories
      */
-    private function arrangeCategories($categories)
+    private function arrangeCategories($categories, $gamesList)
     {
         $categoryList = [];
         foreach ($categories as $category) {
-            if (isset($this->usedCategories[$category['field_games_alias']])) {
+            if (isset($gamesList[$category['field_games_alias']])) {
                 $categoryList[] = $category;
             }
         }
