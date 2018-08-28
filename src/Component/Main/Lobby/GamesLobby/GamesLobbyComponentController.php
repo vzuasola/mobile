@@ -64,7 +64,7 @@ class GamesLobbyComponentController
             try {
                 $categories = $this->views->getViewById('games_category');
                 $data['games'] = $this->getGamesbyCategory($categories);
-                $data['categories'] = $this->arrangeCategories($categories, $data['games']);
+                $data['categories'] = $this->getArrangedCategoriesByGame($categories, $data['games']);
             } catch (\Exception $e) {
                 $data['categories'] = [];
                 $data['games'] = [];
@@ -154,7 +154,7 @@ class GamesLobbyComponentController
     /**
      * Arrange and removed unused categories
      */
-    private function arrangeCategories($categories, $gamesList)
+    private function getArrangedCategoriesByGame($categories, $gamesList)
     {
         $categoryList = [];
         foreach ($categories as $category) {
