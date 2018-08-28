@@ -61,21 +61,25 @@ class GamesLobbyComponentController
         $data = [];
 
         try {
-            $data['categories'] = $this->views->getViewById('games_category');
-        } catch (\Exception $e) {
-            $data['categories'] = [];
-        }
-
-        try {
             $games = $this->views->getViewById('games_list');
             $data['games'] = $this->arrangeGames($games);
         } catch (\Exception $e) {
             $data['games'] = [];
         }
 
+        try {
+            $categories = $this->views->getViewById('games_category');
+            $data['categories'] = $this->arrangeCategories($categories, $data['games']);
+        } catch (\Exception $e) {
+            $data['categories'] = [];
+        }
+
         return $this->rest->output($response, $data);
     }
 
+    /**
+     * Arrange games per category
+     */
     private function arrangeGames($games)
     {
         $gamesList = [];
@@ -90,6 +94,9 @@ class GamesLobbyComponentController
         return $gamesList;
     }
 
+    /**
+     * Simplify game array
+     */
     private function processGame($game)
     {
         try {
@@ -127,5 +134,20 @@ class GamesLobbyComponentController
         } catch (\Exception $e) {
             return [];
         }
+    }
+
+    /**
+     * Arrange and removed unused categories
+     */
+    private function arrangeCategories($categories, $gamesList)
+    {
+        $categoryList = [];
+        foreach ($categories as $category) {
+            if (isset($gamesList[$category['field_games_alias']])) {
+                $categoryList[] = $category;
+            }
+        }
+
+        return $categoryList;
     }
 }
