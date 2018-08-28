@@ -5,6 +5,7 @@ import Notification from "@app/assets/script/components/notification";
 import * as verificationTemplate from "./../templates/handlebars/profile-changes.handlebars";
 import {Loader} from "@app/assets/script/components/loader";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
+import EqualHeight from "@app/assets/script/components/equal-height";
 
 /**
  * Profile
@@ -48,6 +49,7 @@ export class Profile extends FormBase {
         }
         this.validateForm(this.form);
         this.handleSubmission();
+        this.equalizeActionButtonHeight();
     }
 
     private contactPreference() {
@@ -189,5 +191,10 @@ export class Profile extends FormBase {
         }
 
         return {old, modified};
+    }
+
+    private equalizeActionButtonHeight() {
+        const equalize = new EqualHeight("#MyProfileForm_submit, #MyProfileForm_button_cancel");
+        equalize.init();
     }
 }
