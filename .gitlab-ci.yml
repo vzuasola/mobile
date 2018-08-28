@@ -309,7 +309,7 @@ uat:
     - jmeter
 
 lighthouse uat:
-  stage: integration-tests-test
+  stage: integration-tests-staging
   when: manual
   script:
     - python -u automation/run.py --stage lighthouse-uat
@@ -371,7 +371,7 @@ staging:
     - jmeter
 
 lighthouse stg:
-  stage: integration-tests-test
+  stage: integration-tests-staging
   when: manual
   script:
     - python -u automation/run.py --stage lighthouse-stg
