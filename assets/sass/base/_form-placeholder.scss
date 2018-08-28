@@ -32,6 +32,7 @@ $form-border-color: #515151;
         border-right: 0.1rem solid $form-border-color;
         background: #323031;
         text-align: center;
+        font-weight: 600;
 
         hr {
             display: none;
@@ -132,7 +133,7 @@ $form-border-color: #515151;
     }
 
     & > .form-field {
-        flex: 2 0 9.5rem;
+        flex: 2 0 5.6rem;
         padding-right: 1rem;
 
         .icon-validation {
@@ -151,18 +152,18 @@ $form-border-color: #515151;
             background: $yellow;
             color: $dark-gray;
             font-weight: 600;
-            line-height: 3.5rem;
+            line-height: 3.2rem;
         }
 
         .icon-verified-mobile {
             display: block;
             min-width: 6.3rem;
-            height: 3.5rem;
+            height: 3.2rem;
             border-radius: 0.4rem;
-            border: 0.2rem solid #50db0f;
+            border: 0.1rem solid #50db0f;
 
             svg {
-                width: 3rem;
+                width: 2.8rem;
                 fill: #50db0f;
             }
         }

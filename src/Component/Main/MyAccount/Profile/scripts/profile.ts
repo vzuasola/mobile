@@ -5,6 +5,8 @@ import Notification from "@app/assets/script/components/notification";
 import * as verificationTemplate from "./../templates/handlebars/profile-changes.handlebars";
 import {Loader} from "@app/assets/script/components/loader";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
+import EqualHeight from "@app/assets/script/components/equal-height";
+
 /**
  * Profile
  *
@@ -47,6 +49,7 @@ export class Profile extends FormBase {
         }
         this.validateForm(this.form);
         this.handleSubmission();
+        this.equalizeActionButtonHeight();
     }
 
     private contactPreference() {
@@ -59,14 +62,16 @@ export class Profile extends FormBase {
 
     private getValues() {
         return {
-            gender: this.getGenderValue(),
+            gender: this.getGenderText(),
             language: this.getLanguageText(),
             mobile: this.form.MyProfileForm_mobile_number_1.value,
             mobile1: this.form.MyProfileForm_mobile_number_2.value || "",
             address: this.form.MyProfileForm_address.value,
             city: this.form.MyProfileForm_city.value,
             postal_code: this.form.MyProfileForm_postal_code.value,
-            receive_news: this.form.ProfileForm_contact_preference.checked ? "Yes" : "No",
+            receive_news: this.form.ProfileForm_contact_preference.checked
+                ? this.attachments.contactPreferenceYes
+                : this.attachments.contactPreferenceNo,
         };
     }
 
@@ -95,13 +100,14 @@ export class Profile extends FormBase {
         return mobile1;
     }
 
-    private getGenderValue() {
+    private getGenderText() {
         const genderElems: any = document.getElementsByName("MyProfileForm[gender]");
         let gender;
 
         for (let i = 0, length = genderElems.length; i < length; i++) {
             if (genderElems[i].checked) {
-                gender = genderElems[i].value;
+                const label = utility.hasClass(genderElems[i], "pure-radio", true);
+                gender = label.querySelector(".label-span").textContent;
                 break;
             }
         }
@@ -128,6 +134,7 @@ export class Profile extends FormBase {
                     // Add labels to data
                     data.labels = this.getLabels();
                     data.config = this.attachments;
+                    data.genderText = this.getGenderText();
 
                     profileChangesContainer.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);
@@ -186,5 +193,10 @@ export class Profile extends FormBase {
         }
 
         return {old, modified};
+    }
+
+    private equalizeActionButtonHeight() {
+        const equalize = new EqualHeight("#MyProfileForm_submit, #MyProfileForm_button_cancel");
+        equalize.init();
     }
 }

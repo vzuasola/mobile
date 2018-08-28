@@ -74,10 +74,9 @@ form.sms-verification-code-form {
             }
         }
 
-        // adjust validation icon position
+        // hide validation icon
         .icon-validation {
-            top: 1.5rem;
-            right: 1.5rem;
+            display: none;
         }
     }
 
@@ -128,12 +127,18 @@ form.sms-verification-code-form {
 
         .add-new-mobile {
             width: 100%;
-            padding: .5rem;
+            padding: 0.6rem 0.5rem 0.5rem;
             border: 1px solid $form-border-color;
             border-radius: 0.5rem;
             background: #2b2829;
             color: $light-gray;
             text-align: center;
+
+            svg {
+                width: 1.2rem;
+                margin-right: 0.5rem;
+                fill: $light-gray;
+            }
         }
     }
 

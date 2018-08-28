@@ -83,8 +83,8 @@ export class Sms {
             // hide mobile number 2 field
             utility.addClass(this.element.querySelector(".form-item.MyProfileForm_mobile_number_2"), "hidden");
             // add listener to add new mobile to unhide mobile 2 field
-            utility.listen(this.element, "click", (event) => {
-                this.addNewMobileNumber(event);
+            utility.listen(this.element, "click", (event, src) => {
+                this.addNewMobileNumber(event, src);
             });
         }
 
@@ -142,16 +142,16 @@ export class Sms {
         });
     }
 
-    private addNewMobileNumber(e) {
-        if (e.target && e.target.id === "add-new-mobile") {
+    private addNewMobileNumber(e, src) {
+        const addNewMobile = utility.hasClass(src, "add-new-mobile", true);
+        if (addNewMobile) {
             e.preventDefault();
-            const mobileNumber2Field: HTMLInputElement = this.element.querySelector("#MyProfileForm_mobile_number_2");
-            const mobileNumber2FieldValue = mobileNumber2Field.getAttribute("data-value");
+            const mobileNumber2FieldValue = this.mobile2Input.getAttribute("data-value");
             utility.removeClass(this.element.querySelector(".form-item.MyProfileForm_mobile_number_2"), "hidden");
-            mobileNumber2Field.removeAttribute("disabled");
-            mobileNumber2Field.value = mobileNumber2FieldValue;
-            utility.addClass(e.target, "hidden");
-            const mobile2Btn = this.element.querySelector(".MyProfileForm_mobile_number_2 .verify-mobile");
+            this.mobile2Input.removeAttribute("disabled");
+            this.mobile2Input.value = mobileNumber2FieldValue;
+            utility.addClass(addNewMobile, "hidden");
+            const mobile2Btn = this.mobile1Item.querySelector(".verify-mobile");
             utility.addClass(mobile2Btn, "hidden");
         }
     }

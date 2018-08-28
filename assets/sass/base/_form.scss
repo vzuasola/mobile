@@ -123,6 +123,7 @@ form.pure-form {
 
     .has-error {
         .form-field-element {
+            padding-right: 3rem;
             border-bottom: 0.1rem solid $red;
         }
     }
@@ -141,6 +142,11 @@ form.pure-form {
         margin: -0.5rem 0 0;
         padding-bottom: 0.5rem;
         color: $red;
+    }
+
+    // Required indicator
+    .required-field {
+        margin-left: 0.3rem;
     }
 
     // Submit field
