@@ -74,10 +74,9 @@ form.sms-verification-code-form {
             }
         }
 
-        // adjust validation icon position
+        // hide validation icon
         .icon-validation {
-            top: 1.5rem;
-            right: 1.5rem;
+            display: none;
         }
     }
 
