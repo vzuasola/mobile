@@ -61,20 +61,38 @@ class GamesLobbyComponentController
         $data = [];
 
         try {
-            $games = $this->views->getViewById('games_list');
-            $data['games'] = $this->arrangeGames($games);
-        } catch (\Exception $e) {
-            $data['games'] = [];
-        }
+            try {
+                $categories = $this->views->getViewById('games_category');
+                $data['games'] = $this->getGamesbyCategory($categories);
+                $data['categories'] = $this->arrangeCategories($categories, $data['games']);
+            } catch (\Exception $e) {
+                $data['categories'] = [];
+                $data['games'] = [];
+            }
 
-        try {
-            $categories = $this->views->getViewById('games_category');
-            $data['categories'] = $this->arrangeCategories($categories, $data['games']);
         } catch (\Exception $e) {
-            $data['categories'] = [];
+            $data = [];
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    /**
+     * Get games by category with sort
+     */
+    private function getGamesbyCategory($categories)
+    {
+        $gamesList = [];
+        foreach ($categories as $category) {
+            $games = $this->views->getViewById('games_list', [
+                'category' => $category['tid']
+            ]);
+
+            if ($games) {
+                $gamesList[$category['field_games_alias']] = $this->arrangeGames($games);
+            }
+        }
+        return $gamesList;
     }
 
     /**
@@ -85,10 +103,7 @@ class GamesLobbyComponentController
         $gamesList = [];
 
         foreach ($games as $game) {
-            foreach ($game['field_games_list_category'] as $category) {
-                $gamesList[$category['field_games_alias'][0]['value']][]
-                    = $this->processGame($game);
-            }
+            $gamesList[] = $this->processGame($game);
         }
 
         return $gamesList;
@@ -150,4 +165,5 @@ class GamesLobbyComponentController
 
         return $categoryList;
     }
+
 }
