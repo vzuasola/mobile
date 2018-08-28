@@ -123,6 +123,7 @@ form.pure-form {
 
     .has-error {
         .form-field-element {
+            padding-right: 3rem;
             border-bottom: 0.1rem solid $red;
         }
     }
