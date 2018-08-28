@@ -144,6 +144,11 @@ form.pure-form {
         color: $red;
     }
 
+    // Required indicator
+    .required-field {
+        margin-left: 0.3rem;
+    }
+
     // Submit field
     .btn {
         width: 100%;
