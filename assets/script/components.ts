@@ -1,7 +1,6 @@
-import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
+import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 
 import {AccessDeniedComponent} from "@app/src/Component/Main/AccessDenied/script";
-import {FooterComponent} from "@app/src/Component/Footer/script";
 import {HeaderComponent} from "@app/src/Component/Header/script";
 import {BacktotopComponent} from "@app/src/Component/Backtotop/script";
 import {MenuComponent} from "@app/src/Component/Menu/script";
@@ -26,10 +25,13 @@ import {SessionLegacyComponent} from "@app/src/Component/Main/SessionLegacy/scri
 import {CantLoginForgotPasswordComponent} from "@app/src/Component/Main/CantLogin/ForgotPassword/script";
 import {CantLoginForgotUsernameComponent} from "@app/src/Component/Main/CantLogin/ForgotUsername/script";
 import {CantLoginResetPasswordComponent} from "@app/src/Component/Main/CantLogin/ResetPassword/script";
+import {MyAccountComponent} from "@app/src/Component/Main/MyAccount/script";
+import {MyAccountProfileComponent} from "@app/src/Component/Main/MyAccount/Profile/script";
+import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/MyAccount/Profile/VerifyPassword/script";
+import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
-    footer: new FooterComponent(),
     header: new HeaderComponent(),
     backtotop: new BacktotopComponent(),
     menu: new MenuComponent(),
@@ -54,4 +56,8 @@ ComponentManager.setComponents({
     cant_login_forgot_password: new CantLoginForgotPasswordComponent(),
     cant_login_forgot_username: new CantLoginForgotUsernameComponent(),
     cant_login_reset_password: new CantLoginResetPasswordComponent(),
+    my_account: new MyAccountComponent(),
+    profile: new MyAccountProfileComponent(),
+    profile_verify_password: new MyAccountProfileVerifyPasswordComponent(),
+    change_password: new MyAccountChangePasswordComponent(),
 });

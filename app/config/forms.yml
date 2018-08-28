@@ -18,6 +18,7 @@ validations:
   valid_date: App\Extensions\Form\Validators\Validators:validDate
   invalid_words: App\MobileEntry\Extensions\Forms\Validators\Validators:invalidWords
   verify_password: App\MobileEntry\Extensions\Forms\Validators\Validators:verifyPassword
+  not_match_username: App\MobileEntry\Extensions\Forms\Validators\Validators:notMatchUsername
 
 # Form type mapping
 #

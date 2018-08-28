@@ -1,0 +1,9 @@
+{% form_theme formChangePassword '@base/form/standard.html.twig' %}
+{{ form_start(formChangePassword, {'attr': {'class': 'pure-form change-password-form'}}) }}
+{{ form_end(formChangePassword) }}
+<div class="api-success-message mt-25 mb-20 hidden">
+    {{ successMessage|raw }}
+</div>
+<div class="api-failed-message mt-25 mb-20 hidden">
+    {{ fialedMessage|raw }}
+</div>
