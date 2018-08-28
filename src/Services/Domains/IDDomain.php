@@ -39,22 +39,26 @@ class IDDomain
      */
     private $lang;
 
+    private $request;
+
     /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('lang')
+            $container->get('lang'),
+            $container->get('request')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($lang)
+    public function __construct($lang, $request)
     {
         $this->lang = $lang;
+        $this->request = $request;
     }
 
     /**
@@ -66,6 +70,9 @@ class IDDomain
     {
         $hostname = Host::getHostname();
 
-        return in_array($hostname, self::DOMAINS) && strtolower($this->lang) == strtolower(self::LANG);
+        $countryCode = $this->request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '';
+
+        return (in_array($hostname, self::DOMAINS) && strtolower($this->lang) == strtolower(self::LANG))
+            || strtolower($countryCode) == strtolower(self::LANG);
     }
 }
