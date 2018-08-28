@@ -25,6 +25,8 @@ class GamesLobbyComponentController
 
     private $asset;
 
+    private $usedCategories;
+
     /**
      *
      */
@@ -61,21 +63,25 @@ class GamesLobbyComponentController
         $data = [];
 
         try {
-            $data['categories'] = $this->views->getViewById('games_category');
-        } catch (\Exception $e) {
-            $data['categories'] = [];
-        }
-
-        try {
             $games = $this->views->getViewById('games_list');
             $data['games'] = $this->arrangeGames($games);
         } catch (\Exception $e) {
             $data['games'] = [];
         }
 
+        try {
+            $categories = $this->views->getViewById('games_category');
+            $data['categories'] = $this->arrangeCategories($categories);
+        } catch (\Exception $e) {
+            $data['categories'] = [];
+        }
+
         return $this->rest->output($response, $data);
     }
 
+    /**
+     * Arrange games per category and list used category
+     */
     private function arrangeGames($games)
     {
         $gamesList = [];
@@ -84,12 +90,17 @@ class GamesLobbyComponentController
             foreach ($game['field_games_list_category'] as $category) {
                 $gamesList[$category['field_games_alias'][0]['value']][]
                     = $this->processGame($game);
+                $this->usedCategories[$category['field_games_alias'][0]['value']]
+                    = $category['field_games_alias'][0]['value'];
             }
         }
 
         return $gamesList;
     }
 
+    /**
+     * Simplify game array
+     */
     private function processGame($game)
     {
         try {
@@ -127,5 +138,20 @@ class GamesLobbyComponentController
         } catch (\Exception $e) {
             return [];
         }
+    }
+
+    /**
+     * Arrange and removed unused categories
+     */
+    private function arrangeCategories($categories)
+    {
+        $categoryList = [];
+        foreach ($categories as $category) {
+            if (isset($this->usedCategories[$category['field_games_alias']])) {
+                $categoryList[] = $category;
+            }
+        }
+
+        return $categoryList;
     }
 }
