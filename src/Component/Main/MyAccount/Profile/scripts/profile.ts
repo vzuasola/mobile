@@ -62,7 +62,7 @@ export class Profile extends FormBase {
 
     private getValues() {
         return {
-            gender: this.getGenderValue(),
+            gender: this.getGenderText(),
             language: this.getLanguageText(),
             mobile: this.form.MyProfileForm_mobile_number_1.value,
             mobile1: this.form.MyProfileForm_mobile_number_2.value || "",
@@ -100,13 +100,14 @@ export class Profile extends FormBase {
         return mobile1;
     }
 
-    private getGenderValue() {
+    private getGenderText() {
         const genderElems: any = document.getElementsByName("MyProfileForm[gender]");
         let gender;
 
         for (let i = 0, length = genderElems.length; i < length; i++) {
             if (genderElems[i].checked) {
-                gender = genderElems[i].value;
+                const label = utility.hasClass(genderElems[i], "pure-radio", true);
+                gender = label.querySelector(".label-span").textContent;
                 break;
             }
         }
@@ -133,6 +134,9 @@ export class Profile extends FormBase {
                     // Add labels to data
                     data.labels = this.getLabels();
                     data.config = this.attachments;
+                    data.genderText = this.getGenderText();
+
+                    console.log("data", data);
 
                     profileChangesContainer.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);
