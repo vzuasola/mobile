@@ -69,7 +69,6 @@ class GamesLobbyComponentController
                 $data['categories'] = [];
                 $data['games'] = [];
             }
-
         } catch (\Exception $e) {
             $data = [];
         }
