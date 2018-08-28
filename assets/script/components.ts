@@ -1,7 +1,6 @@
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 
 import {AccessDeniedComponent} from "@app/src/Component/Main/AccessDenied/script";
-import {FooterComponent} from "@app/src/Component/Footer/script";
 import {HeaderComponent} from "@app/src/Component/Header/script";
 import {BacktotopComponent} from "@app/src/Component/Backtotop/script";
 import {MenuComponent} from "@app/src/Component/Menu/script";
@@ -33,7 +32,6 @@ import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccoun
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
-    footer: new FooterComponent(),
     header: new HeaderComponent(),
     backtotop: new BacktotopComponent(),
     menu: new MenuComponent(),
