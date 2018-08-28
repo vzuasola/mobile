@@ -135,6 +135,44 @@
             }
         }
     },
+    "lighthouse-stg": {
+        "steps": {
+            "lighthouse": {
+                "dockerfile": "automation/Dockerfile.lighthouse",
+                "docker-image-suffix": "-lighthouse",
+                "options": [],
+                "command": [
+                    "lighthouse-ci",
+                    "https://stg-m.elysium-dfbt.com/en",
+                    "--report=./automation/deployed",
+                    "--accessibility=70",
+                    "--seo=85"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
+    "lighthouse-uat": {
+        "steps": {
+            "lighthouse": {
+                "dockerfile": "automation/Dockerfile.lighthouse",
+                "docker-image-suffix": "-lighthouse",
+                "options": [],
+                "command": [
+                    "lighthouse-ci",
+                    "https://uat-m.elysium-dfbt.com/en",
+                    "--report=./automation/deployed",
+                    "--accessibility=70",
+                    "--seo=85"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
     "sensiolab-security-checker": {
         "steps": {
             "sensiolab-security-checker": {

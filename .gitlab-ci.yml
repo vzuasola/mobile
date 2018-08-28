@@ -188,19 +188,6 @@ lighthouse qa1:
   tags:
     - tstrunner
 
-lighthouse tct:
-  stage: integration-tests-test
-  when: manual
-  script:
-    - python -u automation/run.py --stage lighthouse-tct
-  artifacts:
-    when: always
-    paths:
-      - automation/deployed/*.html
-    expire_in: 1 month
-  tags:
-    - intrunner
-
 tct:
   stage: deploy-test
   environment:
@@ -241,6 +228,19 @@ tct:
     expire_in: 1 month
   tags:
     - jmeter
+
+lighthouse tct:
+  stage: integration-tests-test
+  when: manual
+  script:
+    - python -u automation/run.py --stage lighthouse-tct
+  artifacts:
+    when: always
+    paths:
+      - automation/deployed/*.html
+    expire_in: 1 month
+  tags:
+    - intrunner
 
 testing signoff:
   stage: testing-signoff
@@ -308,6 +308,19 @@ uat:
   tags:
     - jmeter
 
+lighthouse uat:
+  stage: integration-tests-test
+  when: manual
+  script:
+    - python -u automation/run.py --stage lighthouse-uat
+  artifacts:
+    when: always
+    paths:
+      - automation/deployed/*.html
+    expire_in: 1 month
+  tags:
+    - uatrunner
+
 staging:
   stage: deploy-staging
   environment:
@@ -356,6 +369,19 @@ staging:
     - tags
   tags:
     - jmeter
+
+lighthouse stg:
+  stage: integration-tests-test
+  when: manual
+  script:
+    - python -u automation/run.py --stage lighthouse-stg
+  artifacts:
+    when: always
+    paths:
+      - automation/deployed/*.html
+    expire_in: 1 month
+  tags:
+    - stgrunner
 
 .acunetix staging:
   stage: security-tests-staging
