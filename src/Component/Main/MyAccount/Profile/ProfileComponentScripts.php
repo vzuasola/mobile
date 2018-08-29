@@ -51,6 +51,7 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
         $messageConfig = $this->configFetcher->getConfigById('my_account_profile_server_side_mapping');
         $generalConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
         $modalConfig = $this->configFetcher->getConfigById('my_account_profile_modal_preview');
+        $labelConfig = $this->configFetcher->getConfigById('my_account_profile_labels');
 
         return [
             'user' => $this->getFormValues(),
@@ -63,7 +64,10 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'modalTopBlurb' => $modalConfig['modal_preview_top_blurb'] ?? '',
             'modalCurrentLabel' => $modalConfig['modal_preview_current_label'] ?? '',
             'modalNewLabel' => $modalConfig['modal_preview_new_label'] ?? '',
-            'modalBottomBlurb' => $modalConfig['modal_preview_bottom_blurb'] ?? ''
+            'modalBottomBlurb' => $modalConfig['modal_preview_bottom_blurb'] ?? '',
+            'messageTimeout' => $generalConfig['message_timeout'] ?? 5,
+            'contactPreferenceYes' => $labelConfig['contact_preference_yes'] ?? 'yes',
+            'contactPreferenceNo' => $labelConfig['contact_preference_no'] ?? 'no',
         ];
     }
 

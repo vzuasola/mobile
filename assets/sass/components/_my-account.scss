@@ -2,7 +2,8 @@
 
 form.profile-form,
 form.change-password-form,
-form.verify-password-form {
+form.verify-password-form,
+form.sms-verification-code-form {
     padding-top: 1rem;
     transition: opacity 0.3s;
 
@@ -25,7 +26,8 @@ form.verify-password-form {
     & > .MyProfileForm_preference_markup,
     & > .ChangePasswordForm_current_password_field,
     & > .ChangePasswordForm_current_password,
-    & > .VerifyPasswordForm_verify_password {
+    & > .VerifyPasswordForm_verify_password,
+    & > .verification-code-field-wrapper {
         @extend %form-item-round-top;
     }
 
@@ -36,7 +38,8 @@ form.verify-password-form {
     & > .MyProfileForm_button_cancel,
     & > .ChangePasswordForm_change_password_submit_field,
     & > .ChangePasswordForm_submit,
-    & > .VerifyPasswordForm_submit {
+    & > .VerifyPasswordForm_submit,
+    & > .verify-mobile-reload-wrapper {
         @extend %form-item-round-bottom;
     }
 
@@ -71,10 +74,9 @@ form.verify-password-form {
             }
         }
 
-        // adjust validation icon position
+        // hide validation icon
         .icon-validation {
-            top: 1.5rem;
-            right: 1.5rem;
+            display: none;
         }
     }
 
@@ -125,17 +127,30 @@ form.verify-password-form {
 
         .add-new-mobile {
             width: 100%;
-            padding: .5rem;
+            padding: 0.6rem 0.5rem 0.5rem;
             border: 1px solid $form-border-color;
             border-radius: 0.5rem;
             background: #2b2829;
             color: $light-gray;
             text-align: center;
+
+            svg {
+                width: 1.2rem;
+                margin-right: 0.5rem;
+                fill: $light-gray;
+            }
         }
     }
 
     // Mobile Number 2
     .MyProfileForm_mobile_number_2:not(.hidden) {
         @extend %mobile-layout;
+    }
+
+    // Verification Code
+    .verification-code-field-wrapper {
+        .resend-code {
+            color: $yellow;
+        }
     }
 }

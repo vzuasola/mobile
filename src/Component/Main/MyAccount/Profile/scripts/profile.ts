@@ -1,11 +1,11 @@
 import * as utility from "@core/assets/js/components/utility";
-import * as xhr from "@core/assets/js/vendor/reqwest";
-import {Loader} from "@app/assets/script/components/loader";
 import {FormBase} from "@app/assets/script/components/form-base";
-import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Modal} from "@app/assets/script/components/modal";
 import Notification from "@app/assets/script/components/notification";
 import * as verificationTemplate from "./../templates/handlebars/profile-changes.handlebars";
+import {Loader} from "@app/assets/script/components/loader";
+import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
+import EqualHeight from "@app/assets/script/components/equal-height";
 
 /**
  * Profile
@@ -15,26 +15,41 @@ import * as verificationTemplate from "./../templates/handlebars/profile-changes
  */
 export class Profile extends FormBase {
     private form: HTMLFormElement;
-    private loader: Loader;
-    private validator: any;
     private oldValues: any;
     private newValues: any;
     private modalSelector: string = "#profile-verification";
     private notification: any;
-    private config: any;
+    private loader: Loader;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
+        this.loader = new Loader(document.body, true);
     }
 
     init() {
         this.form = this.element.querySelector(".profile-form");
-        this.validator = this.validateForm(this.form);
-        this.notification = new Notification(document.body,
-                "password-message-error", true, 3);
+        this.notification = new Notification(
+            document.body,
+            "password-message-error",
+            true,
+            this.attachments.messageTimeout,
+        );
         this.contactPreference();
         this.oldValues = {...this.getValues()};
+        // we check if mobile 1 had a value and add the a required validation
+        if (this.oldValues.mobile1) {
+            const rules = JSON.parse(this.form.getAttribute("data-validations"));
+            const callbackRequired = rules.MyProfileForm.mobile_number_1.rules.callback_required;
+            const reversedRules = Object.assign(
+                {callback_required: callbackRequired},
+                rules.MyProfileForm.mobile_number_2.rules,
+            );
+            rules.MyProfileForm.mobile_number_2.rules = reversedRules;
+            this.form.setAttribute("data-validations", JSON.stringify(rules));
+        }
+        this.validateForm(this.form);
         this.handleSubmission();
+        this.equalizeActionButtonHeight();
     }
 
     private contactPreference() {
@@ -47,14 +62,16 @@ export class Profile extends FormBase {
 
     private getValues() {
         return {
-            gender: this.getGenderValue(),
+            gender: this.getGenderText(),
             language: this.getLanguageText(),
             mobile: this.form.MyProfileForm_mobile_number_1.value,
             mobile1: this.form.MyProfileForm_mobile_number_2.value || "",
             address: this.form.MyProfileForm_address.value,
             city: this.form.MyProfileForm_city.value,
             postal_code: this.form.MyProfileForm_postal_code.value,
-            receive_news: this.form.ProfileForm_contact_preference.checked ? "Yes" : "No",
+            receive_news: this.form.ProfileForm_contact_preference.checked
+                ? this.attachments.contactPreferenceYes
+                : this.attachments.contactPreferenceNo,
         };
     }
 
@@ -83,13 +100,14 @@ export class Profile extends FormBase {
         return mobile1;
     }
 
-    private getGenderValue() {
+    private getGenderText() {
         const genderElems: any = document.getElementsByName("MyProfileForm[gender]");
         let gender;
 
         for (let i = 0, length = genderElems.length; i < length; i++) {
             if (genderElems[i].checked) {
-                gender = genderElems[i].value;
+                const label = utility.hasClass(genderElems[i], "pure-radio", true);
+                gender = label.querySelector(".label-span").textContent;
                 break;
             }
         }
@@ -105,10 +123,10 @@ export class Profile extends FormBase {
         // Listen form on submit
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
+            const hasError = this.form.querySelectorAll(".has-error").length;
 
             this.newValues = this.getValues();
-
-            if (!this.validator.hasError) {
+            if (!hasError) {
                 if (this.hasChanges()) {
                     const profileChangesContainer = this.element.querySelector(this.modalSelector + " .changes");
                     const data: any = this.getFilteredDifference(this.oldValues, this.newValues);
@@ -116,6 +134,7 @@ export class Profile extends FormBase {
                     // Add labels to data
                     data.labels = this.getLabels();
                     data.config = this.attachments;
+                    data.genderText = this.getGenderText();
 
                     profileChangesContainer.innerHTML = verificationTemplate(data);
                     Modal.open(this.modalSelector);
@@ -123,6 +142,19 @@ export class Profile extends FormBase {
                     this.notification.show(this.attachments.noUpdateDetected);
                 }
             }
+        });
+
+        // listen on cancel button
+        utility.listen(this.element.querySelector("#MyProfileForm_button_cancel"), "click", (event, src) => {
+            event.preventDefault();
+            this.loader.show();
+
+            ComponentManager.refreshComponent(
+                ["main"],
+                () => {
+                    this.loader.hide();
+                },
+            );
         });
     }
 
@@ -161,5 +193,10 @@ export class Profile extends FormBase {
         }
 
         return {old, modified};
+    }
+
+    private equalizeActionButtonHeight() {
+        const equalize = new EqualHeight("#MyProfileForm_submit, #MyProfileForm_button_cancel");
+        equalize.init();
     }
 }
