@@ -3,9 +3,11 @@ import {FormBase} from "@app/assets/script/components/form-base";
 import {Modal} from "@app/assets/script/components/modal";
 import Notification from "@app/assets/script/components/notification";
 import * as verificationTemplate from "./../templates/handlebars/profile-changes.handlebars";
+import * as questionMarkTemplate from "@app/templates/handlebars/question-mark.handlebars";
 import {Loader} from "@app/assets/script/components/loader";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 import EqualHeight from "@app/assets/script/components/equal-height";
+import Tooltip from "@app/assets/script/components/tooltip";
 
 /**
  * Profile
@@ -50,6 +52,7 @@ export class Profile extends FormBase {
         this.validateForm(this.form);
         this.handleSubmission();
         this.equalizeActionButtonHeight();
+        this.activateTooltip();
     }
 
     private contactPreference() {
@@ -198,5 +201,17 @@ export class Profile extends FormBase {
     private equalizeActionButtonHeight() {
         const equalize = new EqualHeight("#MyProfileForm_submit, #MyProfileForm_button_cancel");
         equalize.init();
+    }
+
+    private activateTooltip() {
+        const commBlurb = this.form.querySelector(".MyProfileForm_communication_markup");
+        const tooltipContent = this.form.MyProfileForm_mobile_number_1.getAttribute("tooltip-content");
+        const iconContainer = utility.createElem("span", null, commBlurb);
+
+        // Insert <svg> icon
+        iconContainer.innerHTML = questionMarkTemplate();
+
+        // Init tooltip
+        new Tooltip(iconContainer, tooltipContent);
     }
 }

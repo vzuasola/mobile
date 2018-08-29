@@ -43,3 +43,8 @@
     </div>
 </div>
 {{ include('@component/Main/MyAccount/Profile/templates/profile-verification.html.twig') }}
+
+{# Question mark icon #}
+<span class="hidden">
+    {% include '@app/web/images/svg/rounded-questionmark.svg' ignore missing %}
+</span>

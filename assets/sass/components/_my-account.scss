@@ -80,6 +80,20 @@ form.sms-verification-code-form {
         }
     }
 
+    // Communication details
+    .MyProfileForm_communication_markup {
+        svg {
+            width: 1.7rem;
+            margin-left: 0.4rem;
+            vertical-align: middle;
+            fill: $light-gray;
+
+            &:hover {
+                fill: $yellow;
+            }
+        }
+    }
+
     // Contact preference
     .MyProfileForm_preference_markup {
         .contact-preference-top-blurb,
