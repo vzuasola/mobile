@@ -89,6 +89,7 @@ export class AvayaModule implements ModuleInterface {
 
     private updatePopupWindow(url) {
         try {
+            url = this.attachProduct(url);
             if (this.windowObject.location.href !== "about:blank" &&
                 url === this.avayaLink &&
                 !this.windowObject.closed
@@ -108,6 +109,14 @@ export class AvayaModule implements ModuleInterface {
                 this.windowObject.focus();
             }
         }
+    }
+
+    private attachProduct(url) {
+        const product = ComponentManager.getAttribute("product");
+        if (product !== "mobile-entrypage") {
+            return utility.addQueryParam(url, "product", product.replace("mobile-", ""));
+        }
+        return url;
     }
 
     /**

@@ -1,0 +1,170 @@
+// Variables
+$form-spacing: 1.5rem;
+$form-border-color: #515151;
+
+// Rounded form inputs =======================
+// All form item
+%form-item-round {
+    margin-bottom: 0;
+    padding-left: $form-spacing;
+    padding-right: $form-spacing;
+    border-left: 0.1rem solid $form-border-color;
+    border-right: 0.1rem solid $form-border-color;
+    background: #323031;
+
+    .form-field-element {
+        margin-bottom: 1rem;
+    }
+}
+
+// top form item
+%form-item-round-top {
+    padding-top: 1rem;
+    border-top: 0.1rem solid $form-border-color;
+    border-radius: 0.3rem 0.3rem 0 0;
+
+    // Blurb type
+    &.blurb {
+        padding-bottom: 1rem;
+        padding-left: $form-spacing;
+        padding-right: $form-spacing;
+        border-left: 0.1rem solid $form-border-color;
+        border-right: 0.1rem solid $form-border-color;
+        background: #323031;
+        text-align: center;
+
+        hr {
+            display: none;
+        }
+    }
+}
+
+// bottom form item (usually action buttons)
+%form-item-round-bottom {
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    padding-bottom: $form-spacing;
+    border-bottom: 0.1rem solid $form-border-color;
+    border-radius: 0 0 0.3rem 0.3rem;
+}
+
+// contact info blurb =======================
+%contact-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 3.5rem;
+
+    // 
+    & > div {
+        line-height: 1.2rem;
+    }
+
+    .icon-exclamation {
+        min-width: 4rem;
+        width: 4rem;
+        height: 4rem;
+        margin-right: 1.3rem;
+        fill: $white;
+    }
+
+    p {
+        margin-bottom: 0;
+    }
+
+    // Anchors
+    a:not(.btn) {
+        color: $yellow;
+        text-decoration: underline;
+    }
+}
+
+// Loader ========================
+%form-loader {
+    position: static;;
+    padding: 1rem 0;
+
+    .loader-container {
+        position: relative;
+        top: 0;
+        transform: translate(-50%, 0);
+
+        .loader {
+            position: absolute !important;
+            top: 0 !important;
+        }
+    }
+}
+
+// Form actions two column
+%form-item-two-cols {
+    display: inline-block;
+    width: 50%;
+    padding-right: 0.85rem;
+
+    & + & {
+        padding-right: $form-spacing;
+    }
+}
+
+%form-item-two-cols-bottom {
+    padding: $form-spacing 0.85rem $form-spacing $form-spacing;
+    border-bottom: 0.1rem solid $form-border-color;
+    border-right: none;
+    border-radius: 0 0 0 0.3rem;
+
+    & + & {
+        padding-left: 0.85rem;
+        padding-right: $form-spacing;
+        border-right: 0.1rem solid $form-border-color;
+        border-left: none;
+        border-radius: 0 0 0.3rem 0;
+    }
+}
+
+// Mobile
+%mobile-layout {
+    display: flex;
+    flex-wrap: wrap;
+
+    & > .form-label {
+        width: 100%;
+    }
+
+    & > .form-field {
+        flex: 2 0 9.5rem;
+        padding-right: 1rem;
+
+        .icon-validation {
+            right: 1rem;
+        }
+    }
+
+    .verification-container {
+        flex: 0 0 auto;
+        text-align: center;
+
+        .verify-mobile {
+            display: block;
+            padding: 0 1.2rem;
+            border-radius: 0.3rem;
+            background: $yellow;
+            color: $dark-gray;
+            font-weight: 600;
+            line-height: 3.5rem;
+        }
+
+        .icon-verified-mobile {
+            display: block;
+            min-width: 6.3rem;
+            height: 3.5rem;
+            border-radius: 0.4rem;
+            border: 0.2rem solid #50db0f;
+
+            svg {
+                width: 3rem;
+                fill: #50db0f;
+            }
+        }
+    }
+}

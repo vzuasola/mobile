@@ -25,4 +25,12 @@ class Validators
     {
         return true;
     }
+
+    /**
+     * Validation for username
+     */
+    public function notMatchUsername()
+    {
+        return true;
+    }
 }
