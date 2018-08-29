@@ -27,6 +27,8 @@ class GamesLobbyComponentController
 
     private $recentGames;
 
+    private $favorite;
+
     /**
      *
      */
@@ -38,7 +40,8 @@ class GamesLobbyComponentController
             $container->get('rest'),
             $container->get('config_fetcher'),
             $container->get('asset'),
-            $container->get('recent_games_fetcher')
+            $container->get('recents_fetcher'),
+            $container->get('favorites_fetcher')
         );
     }
 
@@ -51,7 +54,8 @@ class GamesLobbyComponentController
         $rest,
         $configs,
         $asset,
-        $recentGames
+        $recentGames,
+        $favorite
     ) {
         $this->playerSession = $playerSession;
         $this->views = $views->withProduct('mobile-games');
@@ -59,6 +63,7 @@ class GamesLobbyComponentController
         $this->configs = $configs;
         $this->asset = $asset;
         $this->recentGames = $recentGames;
+        $this->favorite = $favorite;
     }
 
     public function lobby($request, $response)
@@ -79,7 +84,6 @@ class GamesLobbyComponentController
                 $data['games'] = [];
             }
         } catch (\Exception $e) {
-
             $data = [];
         }
 
@@ -157,13 +161,12 @@ class GamesLobbyComponentController
                 case 'all-games':
                     $gamesList[$category['field_games_alias']] = $allGames;
                     break;
-                // case 'recently-played':
-                //     $games = $this->getRecentlyPlayedGames($allGames);
-                //     if ($games) {
-                //         $gamesList[$category['field_games_alias']] = $games;
-                //     }
-                    
-                //     break;
+                case 'recently-played':
+                    $games = $this->getRecentlyPlayedGames($allGames);
+                    if ($games) {
+                        $gamesList[$category['field_games_alias']] = $games;
+                    }
+                    break;
             }
         }
 
