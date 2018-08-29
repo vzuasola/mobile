@@ -9,35 +9,39 @@
 
 .game-listing {
     float: left;
-    margin: 0.3rem 0 0 0;
+    margin: 0;
     padding: 0;
 
     .size-small {
-        width: 31.333333%;
-        margin: 0 1% 1.5% 1%;
+        width: 33.33333333%;
     }
 
     .size-large {
-        width: 64.66666666666667%;
-        margin: 0 1% 1.5% 1%;
-    }
-
-    .size-large-after {
-        margin-top: -26.1%;
+        width: 66.66666667%;
     }
 
     &-item {
         position: relative;
         float: left;
         display: inline-block;
+        min-height: 0.1rem;
+        padding: 0 1% 1.5% 1%;
     }
+
+    .size-large:nth-child(even) + .size-small {
+        margin-top: -10.7rem;
+    }
+}
+
+.game-listing:first-child {
+    margin: 0.3rem 0 0 0;
 }
 
 // Game Ribbon
 .game-ribbon {
     position: absolute;
     top: 0.5rem;
-    left: 0rem;
+    left: 0.39rem;
     display: block;
     padding: 0.2rem 0.5rem;
     background: #ff0000;
