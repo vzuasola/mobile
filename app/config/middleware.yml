@@ -14,11 +14,11 @@ middlewares:
     page_cache: App\MobileEntry\Middleware\ResponseCache
     headers: App\Middleware\Response\Headers
     lazy_token: App\Middleware\Response\LazyToken
-    profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
+    # profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
 
   cache:
     bootstrap: App\Middleware\Cache\Bootstrap
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponseCache
     headers: App\Middleware\Response\Headers
     lazy_replacement: App\Middleware\Cache\LazyReplacement
-    profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
+    # profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
