@@ -1,4 +1,5 @@
 import * as utility from "@core/assets/js/components/utility";
+import * as Handlebars from "handlebars/runtime";
 
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
@@ -20,12 +21,14 @@ export class GamesLobbyComponent implements ComponentInterface {
     private response: any;
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.response = null;
         this.element = element;
         this.listenChangeCategory();
         this.generateLobby();
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.response = null;
         this.element = element;
         this.generateLobby();
     }
