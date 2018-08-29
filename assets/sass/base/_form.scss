@@ -121,9 +121,15 @@ form.pure-form {
         }
     }
 
-    .has-error {
+    .has-error,
+    .has-success {
         .form-field-element {
             padding-right: 3rem;
+        }
+    }
+
+    .has-error {
+        .form-field-element {
             border-bottom: 0.1rem solid $red;
         }
     }
