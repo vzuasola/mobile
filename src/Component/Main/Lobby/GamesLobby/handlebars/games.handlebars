@@ -1,5 +1,6 @@
-<div class="game-listing">
-    {{#each games}}
+{{#each games}}
+    <div class="game-listing col-12">
+        {{#each this}}
         <div class="game-listing-item {{this.size}}">
             {{#if this.ribbon}}
                 <div class="game-ribbon"
@@ -13,5 +14,6 @@
             </svg>
             <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
         </div>
-    {{/each}}
-</div>
+        {{/each}}
+    </div>
+{{/each}}

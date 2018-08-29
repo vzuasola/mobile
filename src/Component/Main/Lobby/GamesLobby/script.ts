@@ -40,7 +40,6 @@ export class GamesLobbyComponent implements ComponentInterface {
                 loop: false,
                 duration: 300,
                 controls: false,
-                center: true,
                 perPage: {
                     200: 2,
                     320: 3,
@@ -49,7 +48,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     800: 7.3,
                     1024: 8,
                   },
-              onInit() {
+                onInit() {
                     this.selector.firstElementChild.style.padding = "0 0 0 30px";
                   },
             });

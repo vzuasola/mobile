@@ -65,6 +65,7 @@ class GamesLobbyComponentController
                 $categories = $this->views->getViewById('games_category');
                 $data['games'] = $this->getGamesbyCategory($categories);
                 $data['categories'] = $this->getArrangedCategoriesByGame($categories, $data['games']);
+                $data['games'] = $this->groupGamesByContainer($data['games'], 3);
             } catch (\Exception $e) {
                 $data['categories'] = [];
                 $data['games'] = [];
@@ -74,6 +75,16 @@ class GamesLobbyComponentController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+
+    private function groupGamesByContainer($games, $group = 1)
+    {
+        $gamesList = [];
+        foreach ($games as $category => $game) {
+            $gamesList[$category] = array_chunk($game, $group);
+        }
+        return $gamesList;
     }
 
     /**
@@ -91,6 +102,7 @@ class GamesLobbyComponentController
                 $gamesList[$category['field_games_alias']] = $this->arrangeGames($games);
             }
         }
+
         return $gamesList;
     }
 
