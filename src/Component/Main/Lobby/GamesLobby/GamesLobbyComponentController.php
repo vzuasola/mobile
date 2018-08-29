@@ -71,7 +71,7 @@ class GamesLobbyComponentController
                 $specialCategories = $this->getSpecialCategories($categories);
                 $specialCategoryGames = $this->getSpecialGamesbyCategory($specialCategories);
 
-                $data['games'] = $this->getGamesbyCategory($categories) + $specialCategoryGames;;
+                $data['games'] = $this->getGamesbyCategory($categories) + $specialCategoryGames;
                 $data['categories'] = $this->getArrangedCategoriesByGame($categories, $data['games']);
                 $data['games'] = $this->groupGamesByContainer($data['games'], 3);
             } catch (\Exception $e) {
@@ -115,13 +115,12 @@ class GamesLobbyComponentController
             $categoryId = $category['field_games_alias'];
             $games = $this->views->getViewById('games_list', [
                 'category' => $category['tid']
-                ]);
-
-                if ($games) {
-                    $gamesList[$categoryId] = $this->arrangeGames($games);
-                }
-            
+            ]);
+            if ($games) {
+                $gamesList[$categoryId] = $this->arrangeGames($games);
+            }
         }
+
         return $gamesList;
     }
 
@@ -221,7 +220,7 @@ class GamesLobbyComponentController
                 ];
             }
 
-            $processGame['game_code'] = $game['field_game_code'][0]['value'];
+            $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
 
             return $processGame;
         } catch (\Exception $e) {
