@@ -58,6 +58,7 @@ form.sms-verification-code-form {
 
         .form-label {
             display: inline-block;
+            margin-right: 3rem;
         }
 
         .form-item {
@@ -70,7 +71,7 @@ form.sms-verification-code-form {
 
             .radio-inline {
                 display: inline-block;
-                margin-left: 3rem;
+                margin-right: 3rem;
             }
         }
 
@@ -110,6 +111,7 @@ form.sms-verification-code-form {
         .contact-preference-label {
             position: relative;
             padding-left: 3rem;
+            font-weight: 400;
 
             .marker-svg {
                 position: absolute;
@@ -120,6 +122,7 @@ form.sms-verification-code-form {
 
         .contact-preference-bottom-blurb {
             padding-left: 3rem;
+            font-weight: 400;
         }
     }
 
