@@ -165,8 +165,6 @@ export class Sms {
             this.mobile2Input.removeAttribute("disabled");
             this.mobile2Input.value = mobileNumber2FieldValue;
             utility.addClass(addNewMobile, "hidden");
-            const mobile2Btn = this.mobile1Item.querySelector(".verify-mobile");
-            utility.addClass(mobile2Btn, "hidden");
         }
     }
 
