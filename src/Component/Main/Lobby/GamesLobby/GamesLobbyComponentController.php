@@ -314,8 +314,9 @@ class GamesLobbyComponentController
                     $favorites[] = $games['id'];
                 }
 
-                if (count($favorites) >= 0
-                    && in_array($gameCode, $favorites)) {
+                if (count($favorites) >= 0 &&
+                    in_array($gameCode, $favorites)
+                ) {
                     $this->favorite->removeFavorites([$gameCode]);
                     $response['success'] = true;
                     return $response;
