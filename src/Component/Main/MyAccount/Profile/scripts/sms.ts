@@ -6,6 +6,7 @@ import {Marker} from "@app/assets/script/components/marker";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {VerificationCodeValidate} from "./verification-code-validate";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
+import Notification from "@app/assets/script/components/notification";
 import * as checkTemplate from "@app/templates/handlebars/icon-check-only.handlebars";
 
 /**
@@ -33,6 +34,8 @@ export class Sms {
     private mobile2Input: HTMLInputElement;
     private mobile1InputValue: string;
     private mobile2InputValue: string;
+    private errorNotification: any;
+    private successNotification: any;
 
     // construct
     constructor(element: HTMLElement, attachments: {}) {
@@ -56,6 +59,18 @@ export class Sms {
         const verifCodeValidate = new VerificationCodeValidate(
             this.element,
             this.attachments,
+        );
+        this.errorNotification = new Notification(
+            document.body,
+            "password-message-error",
+            true,
+            this.attachments.messageTimeout,
+        );
+        this.successNotification = new Notification(
+            document.body,
+            "password-message-success",
+            true,
+            this.attachments.messageTimeout,
         );
         verifCodeValidate.init();
 
@@ -90,7 +105,6 @@ export class Sms {
 
         const verif1Container = this.element.querySelector(".MyProfileForm_mobile_number_1 .verification-container");
         const verif2Container = this.element.querySelector(".MyProfileForm_mobile_number_2 .verification-container");
-
         // add verified icon on verified mobile number
         if (this.attachments.user.sms_1_verified) {
             this.addCheckIcon(verif1Container);
@@ -182,7 +196,7 @@ export class Sms {
                     this.launchLightBox();
                 } else {
                     utility.removeClass(this.verificationError, "hidden");
-                    this.verificationError.innerHTML = res.message;
+                    this.errorNotification.show(res.message);
                 }
             });
         }
@@ -244,9 +258,7 @@ export class Sms {
             },
         }).then((res) => {
             if (res.response_code === "SMS_VERIFICATION_SUBMIT_SUCCESS") {
-                utility.addClass(verificationError, "hidden");
-                utility.removeClass(verificationSuccess, "hidden");
-                verificationSuccess.innerHTML = res.message;
+                this.successNotification.show(res.message);
                 This.checkSmsStatus(This);
             } else {
                 utility.addClass(verificationSuccess, "hidden");
