@@ -1,5 +1,4 @@
 @import "../vendor/pure-form";
-
 // Variables
 $default-form-border-color: #ccc;
 $default-form-field-color: #ccc;
@@ -7,27 +6,33 @@ $default-form-field-color: #ccc;
 // Validation icons
 .icon {
     &-validation {
-        @extend %lazy-loaded;
         position: absolute;
         top: 0.3rem;
         right: 0;
-        display: none;
-        background-image: url($base-sprite);
-        width: 2.3rem;
-        height: 2.3rem;
+        width: 2.2rem;
+        height: 2.2rem;
+
+        svg {
+            display: none;
+
+            &.icon-error {
+                fill: $weak-color;
+            }
+
+            &.icon-success {
+                fill: $strong-color;
+            }
+        }
     }
 
-    .has-error &-validation,
-    .has-success &-validation {
+    // Adjust right position for select form type
+    select + &-validation {
+        right: 1.8rem;
+    }
+
+    .has-error &-validation svg.icon-error,
+    .has-success &-validation svg.icon-success {
         display: inline-block;
-    }
-
-    .has-error &-validation {
-        background-position: -24rem -40rem;
-    }
-
-    .has-success &-validation {
-        background-position: -28rem -40rem;
     }
 }
 
@@ -48,6 +53,7 @@ $default-form-field-color: #ccc;
 .pure-form input[type="color"],
 .pure-form select,
 .pure-form textarea {
+    background: transparent;
     padding: 0.5rem 1rem;
     display: inline-block;
     border: 0.1rem solid $default-form-border-color;
@@ -57,13 +63,44 @@ $default-form-field-color: #ccc;
     border-radius: 0;
 }
 
+// Disabled form
+.pure-form input[type="text"][disabled],
+.pure-form input[type="password"][disabled],
+.pure-form input[type="email"][disabled],
+.pure-form input[type="url"][disabled],
+.pure-form input[type="date"][disabled],
+.pure-form input[type="month"][disabled],
+.pure-form input[type="time"][disabled],
+.pure-form input[type="datetime"][disabled],
+.pure-form input[type="datetime-local"][disabled],
+.pure-form input[type="week"][disabled],
+.pure-form input[type="number"][disabled],
+.pure-form input[type="search"][disabled],
+.pure-form input[type="tel"][disabled],
+.pure-form input[type="color"][disabled],
+.pure-form select[disabled],
+.pure-form textarea[disabled] {
+    color: $disabled-text-gray;
+    background: transparent;
+}
+
 form.pure-form {
     .form-item {
         margin-bottom: 1rem;
     }
 
+    // Hide label
     .form-label {
         display: none;
+    }
+
+    // Show label (Add 'show-label' class to form tag)
+    &.show-label .form-label {
+        display: block;
+        margin: 0;
+        padding: 3px 0 0;
+        color: #515151;
+        font-size: 1.25rem;
     }
 
     .form-field {
@@ -99,8 +136,11 @@ form.pure-form {
         font-style: italic;
     }
 
+    // Server side specific error message
     .error-message {
-        margin-top: 0.5rem;
+        margin: -0.5rem 0 0;
+        padding-bottom: 0.5rem;
+        color: $red;
     }
 
     // Submit field
@@ -120,3 +160,5 @@ form.pure-form {
         margin-bottom: 2rem;
     }
 }
+
+@import "form-placeholder";

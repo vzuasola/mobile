@@ -292,11 +292,18 @@ validators.invalid_words = {
  */
 validators.verify_password = {
     callback: function (value) {
-        var newPasswordField = document.querySelector("#ResetPasswordForm_new_password");
+        var newPasswordField = document.querySelector("#ResetPasswordForm_new_password") || document.querySelector("#ChangePasswordForm_new_password");
         return value === newPasswordField.value;
     }
 };
 
-
+/**
+ * Not match username.
+ */
+validators.not_match_username = {
+    callback: function (value, param, field) {
+        return value.toUpperCase() !== field.element.getAttribute('data-username');
+    },
+};
 
 export default validators;

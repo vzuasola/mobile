@@ -56,6 +56,12 @@ routes:
         components:
           main: cant_login
 
+    /my-account:
+        method: GET
+        action: App\MobileEntry\Controller\MyAccountController:view
+        components:
+          main: my_account
+
     /games:
         method: GET
         action: App\MobileEntry\Controller\GamesController:view
@@ -82,6 +88,60 @@ routes:
             expires: 1800
 
     /api/plugins/component/route/header/logout:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
+    /api/plugins/component/route/my_account/updateprofile:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
+    /api/plugins/component/route/my_account/verifypassword:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
+    /api/plugins/component/route/my_account/changepassword:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
+    /api/plugins/component/route/my_account/sendverificationcode:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
+    /api/plugins/component/route/my_account/submitverificationcode:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
+    /api/plugins/component/route/my_account/checksmsstatus:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
+    /api/plugins/component/route/cant_login/forgotpassword:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
+    /api/plugins/component/route/cant_login/forgotusername:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
+    /api/plugins/component/route/cant_login/resetforgottenpassword:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
         headers:

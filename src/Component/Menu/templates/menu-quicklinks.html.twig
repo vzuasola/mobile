@@ -32,12 +32,13 @@
     'quicklinks-notification': '#pushnxLightbox',
 } %}
 
+
 {% if quicklinks %}
 <h3 class="mobile-menu-internal-header"><span>{{ links[app.lang] }}</span></h3>
 <div class="menu-display menu-display-internal">
     <ul class="icon-thumbnail clearfix">
         {% for menu in quicklinks %}
-            {% if (not is_login and 'quicklinks-notification' in menu.attributes.class) %}
+            {% if (not is_login and (('quicklinks-notification' in menu.attributes.class) or ('quicklinks-change-password' in menu.attributes.class))) %}
             {% elseif ((not is_login or (is_login and not is_provisioned)) and 
             'quicklinks-settings' in menu.attributes.class) %}
             {% else %}
@@ -48,9 +49,14 @@
                 data-router-refresh="main"
                 data-router-active-link-class="active"
                 >
-                <svg viewBox="0 0 32 20">
-                    <use xlink:href="#{{ menu.attributes.svg }}" />
-                </svg>
+
+                {% if 'quicklinks-change-password' in menu.attributes.class %}
+                    <svg viewBox="0 0 35.74 46.05">
+                {% else %}
+                    <svg viewBox="0 0 32 20">
+                {% endif %}
+                        <use xlink:href="#{{ menu.attributes.svg }}" />
+                    </svg>
 
                 <span class="icon-thumbnail-label">{{ menu.title }}</span>
 

@@ -94,26 +94,11 @@
     }
 
     svg {
-        width: 2.5rem;
-        height: 2.5rem;
-        position: absolute;
         top: 0.5rem;
         right: 1rem;
-        outline: none;
-        border: 0.1rem solid #8c8c8c;
-        border-radius: 0.4rem;
-        cursor: pointer;
-
-        path {
-            fill: #8c8c8c;
-        }
 
         rect {
             fill: #000;
-            width: 100%;
-            height: 100%;
-            rx: 10.81;
-            ry: 10.81;
         }
     }
 }

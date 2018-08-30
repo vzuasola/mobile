@@ -7,10 +7,10 @@ import {Validator} from "@app/assets/script/components/validation/validator";
  * @param Node element component parent element
  * @param Object attachments
  */
-export abstract class CantLoginBase {
+export abstract class FormBase {
     element: HTMLElement;
     attachments: any;
-    msgClass: string;
+    private msgClass: string;
 
     constructor(element: HTMLElement, attachments: any) {
         this.element = element;
@@ -18,7 +18,7 @@ export abstract class CantLoginBase {
         this.msgClass = "error-message";
     }
 
-    validate(form: HTMLFormElement) {
+    validateForm(form: HTMLFormElement) {
         const validator = new Validator(
             JSON.parse(form.getAttribute("data-validations")), [],
         );
@@ -28,11 +28,8 @@ export abstract class CantLoginBase {
         return validator;
     }
 
-    messageMapping(key) {
-        const widgetContainer = document.querySelector("div[data-component-widget-class=cant_login]");
-        const attachments = widgetContainer.getAttribute("data-component-widget-attachments");
-        const config = JSON.parse(attachments);
-        return config.messages[key];
+    messageMapping(key: string) {
+        return this.attachments.messages[key];
     }
 
     /**
@@ -90,8 +87,8 @@ export abstract class CantLoginBase {
      *
      * @param Node form form tag element
      */
-    showConfirmationMessage(form): void {
-        const confirmationMessage = utility.findParent(form, "div").querySelector(".confirmation-message");
+    showConfirmationMessage(form, selector: string = ".api-success-message"): void {
+        const confirmationMessage = utility.findParent(form, "div").querySelector(selector);
 
         form.style.opacity = "0";
         utility.removeClass(confirmationMessage, "hidden");

@@ -64,7 +64,7 @@ $dark-orange:	#c59006;
 $disabled-field-gray: #eaeaea;
 $disabled-text-gray:  #777;
 $legend-border:       #868686;
-$error-text-color:    #f20000;
+$error-text-color:    $red;
 $success-text-color:  #0b840b;
 $alert-text-color:    #c09853;
 
@@ -75,9 +75,9 @@ $background-color: $red;
 $default-element-margin-bottom: 1.5rem; // h1, h2, h3, h4, h5, h6, p, ul, ol, table, dl, form, menu
 
 // Border Radius ----------------------------------------
-$border-radius-default:     0.2rem !default;
-$border-radius-large:       1rem !default;
-$border-radius-small:       0.1rem !default;
+$border-radius-default:     0.6rem !default;
+$border-radius-large:       0.8rem !default;
+$border-radius-small:       0.4rem !default;
 
 // form Elements ----------------------------------------
 $input-color-placeholder:       #999 !default;
@@ -132,6 +132,15 @@ $modal-overlay-bg: rgba(0, 0, 0, 0.8);
 $modal-radius: 1.5rem;
 $modal-header-color: $white;
 $modal-header-bg: $red;
+
+// Modal standard
+$modal-standard-padding: 1.2rem;
+$modal-standard-width: auto;
+$modal-standard-bg: #2a2829;
+$modal-standard-overlay-bg: rgba(0, 0, 0, 0.8);
+$modal-standard-radius: 0.5rem;
+$modal-standard-header-color: $light-gray;
+$modal-standard-header-bg: transparent;
 
 // Push Notification Modal -------------------------------------------
 $pushnx-color: #3e3e3e;
@@ -249,9 +258,13 @@ $grid-float-breakpoint:     $screen-sm-min !default;
 $grid-float-breakpoint-max: ($grid-float-breakpoint - 1) !default;
 
 // Password Strenght 'Meter' -------------------------------------------
-$weak-color: #f20000;
-$average-color: #6699cc;
-$strong-color: #0b840b;
+$password-meter-bar: #2b2829;
+$weak-color: #f00;
+$average-color: #fc3b00;
+$strong-color: #50db0f;
+$weak-font-color: $white;
+$average-font-color: $white;
+$strong-font-color: $dark-gray;
 
 $announcement-bg: #d3d3d3;
 $announcement-text: #5d5d5d;
