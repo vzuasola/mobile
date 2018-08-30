@@ -19,19 +19,22 @@ import Xlider from "@app/assets/script/components/xlider";
 export class GamesLobbyComponent implements ComponentInterface {
     private element: HTMLElement;
     private response: any;
+    private isLogin: boolean;
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.response = null;
         this.element = element;
+        this.isLogin = attachments.authenticated;
         this.listenChangeCategory();
-        this.listenClickGameTile(attachments.authenticated);
-        this.listenFavoriteClick(attachments.authenticated);
+        this.listenClickGameTile(this.isLogin);
+        this.listenFavoriteClick(this.isLogin);
         this.generateLobby();
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.response = null;
         this.element = element;
+        this.isLogin = attachments.authenticated;
         this.generateLobby();
     }
 

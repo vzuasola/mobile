@@ -161,7 +161,7 @@ class GamesLobbyComponentController
         try {
             $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
-                $allGames[$game['field_game_code'][0]['value']] = $this->processGame($game);
+                $allGames[$game['field_game_code'][0]['value']] = $this->processGame($game, true);
             }
         } catch (\Exception $e) {
             $allGames = [];
@@ -217,7 +217,7 @@ class GamesLobbyComponentController
     /**
      * Simplify game array
      */
-    private function processGame($game)
+    private function processGame($game, $special = false)
     {
         try {
             $processGame = [];
@@ -239,7 +239,7 @@ class GamesLobbyComponentController
                     )
             ];
 
-            if ($processGame['size'] == "size-large") {
+            if ($processGame['size'] == "size-large" && !$special) {
                 $processGame['image'] = [
                     'alt' => $game['field_games_list_thumb_img_big'][0]['alt'],
                     'url' =>
