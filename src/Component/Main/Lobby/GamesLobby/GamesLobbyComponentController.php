@@ -99,6 +99,15 @@ class GamesLobbyComponentController
         }
     }
 
+    public function favorite($request, $response)
+    {
+        $gameCode = $request->getParsedBody();
+        if (isset($gameCode['gameCode'])) {
+            $result = $this->toggleFavoriteGames($gameCode['gameCode']);
+            return $this->rest->output($response, $result);
+        }
+    }
+
     private function groupGamesByContainer($games, $group = 1)
     {
         $gamesList = [];
@@ -175,6 +184,12 @@ class GamesLobbyComponentController
                     break;
                 case 'recently-played':
                     $games = $this->getRecentlyPlayedGames($allGames);
+                    if ($games) {
+                        $gamesList[$category['field_games_alias']] = $games;
+                    }
+                    break;
+                case 'favorites':
+                    $games = $this->getFavoriteGames($allGames);
                     if ($games) {
                         $gamesList[$category['field_games_alias']] = $games;
                     }
@@ -258,6 +273,65 @@ class GamesLobbyComponentController
         return $categoryList;
     }
 
+    /**
+     * Get favorite games
+     */
+    private function getFavoriteGames($games)
+    {
+        try {
+            $gameList = [];
+            if ($this->playerSession->isLogin()) {
+                $favGames = $this->favorite->getFavorites();
+                usort($favGames, 'self::sortRecentGames');
+                if (is_array($favGames)) {
+                    foreach ($favGames as $gameCode) {
+                        if (array_key_exists($gameCode['id'], $games)) {
+                            $gameList[] = $games[$gameCode['id']];
+                        }
+                    }
+                }
+            }
+            return $gameList;
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        return $gameList;
+    }
+
+    /**
+     * Set favorite games
+     */
+    private function toggleFavoriteGames($gameCode)
+    {
+        $response = ['success' => false];
+        try {
+            if ($this->playerSession->isLogin()) {
+                $favoriteGames = $this->favorite->getFavorites();
+                $favoriteGames = (is_array($favoriteGames)) ? $favoriteGames : [];
+                $favorites = [];
+                foreach ($favoriteGames as $games) {
+                    $favorites[] = $games['id'];
+                }
+
+                if (count($favorites) >= 0
+                    && in_array($gameCode, $favorites)) {
+                    $this->favorite->removeFavorites([$gameCode]);
+                    $response['success'] = true;
+                    return $response;
+                }
+
+                $this->favorite->saveFavorites([$gameCode]);
+
+                $response['success'] = true;
+            }
+        } catch (\Exception $e) {
+            $response['success'] = false;
+        }
+
+        return $response;
+    }
+
 
     /**
      * Get recently played games
@@ -302,7 +376,7 @@ class GamesLobbyComponentController
 
                 if (count($recent) >= 20) {
                     $removedGameCode = end($recent);
-                    $this->recentGames->removeRecents($removedGameCode['id']);
+                    $this->recentGames->removeRecents([$removedGameCode['id']]);
                 }
 
                 if ((count($recent) >= 0 && count($recent) < 20)

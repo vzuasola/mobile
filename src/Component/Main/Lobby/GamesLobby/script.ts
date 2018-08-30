@@ -25,6 +25,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.element = element;
         this.listenChangeCategory();
         this.listenClickGameTile(attachments.authenticated);
+        this.listenFavoriteClick(attachments.authenticated);
         this.generateLobby();
     }
 
@@ -172,7 +173,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenClickGameTile(isLogin) {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "game-listing-item", true);
-            if (el) {
+            if (el && src.tagName === "IMG") {
                 if (!isLogin) {
                     ComponentManager.broadcast("header.login");
                 } else {
@@ -193,6 +194,33 @@ export class GamesLobbyComponent implements ComponentInterface {
                         console.log(error);
                     });
                 }
+            }
+        });
+    }
+
+    /**
+     * Event listener for game item click
+     */
+    private listenFavoriteClick(isLogin) {
+        ComponentManager.subscribe("click", (event, src) => {
+            const el = utility.hasClass(src, "game-favorite", true);
+            if (el && isLogin) {
+                const gameCode = el.parentElement.getAttribute("data-game-code");
+                xhr({
+                    url: Router.generateRoute("games_lobby", "favorite"),
+                    type: "json",
+                    method: "post",
+                    data: {
+                        gameCode,
+                    },
+                }).then((result) => {
+                    if (result.success) {
+                        this.response = null;
+                        this.generateLobby();
+                    }
+                }).fail((error, message) => {
+                    console.log(error);
+                });
             }
         });
     }
