@@ -265,8 +265,8 @@ class GamesLobbyComponentController
     private function getRecentlyPlayedGames($games)
     {
         try {
+            $gameList = [];
             if ($this->playerSession->isLogin()) {
-                $gameList = [];
                 $recentlyPlayed = $this->recentGames->getRecents();
                 usort($recentlyPlayed, 'self::sortRecentGames');
                 if (is_array($recentlyPlayed)) {
