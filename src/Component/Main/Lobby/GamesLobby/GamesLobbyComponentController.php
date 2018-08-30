@@ -221,7 +221,8 @@ class GamesLobbyComponentController
     {
         try {
             $processGame = [];
-            $processGame['size'] = $game['field_games_list_thumbnail_size'][0]['value'];
+            $size = $game['field_games_list_thumbnail_size'][0]['value'];
+            $processGame['size'] = ($special) ? 'size-small' : $size;
 
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
