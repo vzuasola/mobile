@@ -106,7 +106,6 @@ class GamesLobbyComponentController
             $gamesList[$category] = array_chunk($game, $group);
         }
         return $gamesList;
-
     }
 
     /**
@@ -130,7 +129,11 @@ class GamesLobbyComponentController
         return $gamesList;
     }
 
-    private function getSpecialCategories($categories) {
+    /**
+     * Get list of special categories
+     */
+    private function getSpecialCategories($categories)
+    {
         $specialCategories = [];
         foreach ($categories as $category) {
             if ($category['field_isordinarycategory'] === "False") {
@@ -141,7 +144,11 @@ class GamesLobbyComponentController
         return $specialCategories;
     }
 
-    private function getAllGames() {
+    /**
+     * Get list of all games
+     */
+    private function getAllGames()
+    {
         try {
             $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
@@ -154,6 +161,9 @@ class GamesLobbyComponentController
         return $allGames;
     }
 
+    /**
+     * Get games for special categories
+     */
     private function getSpecialGamesbyCategory($specialCategories)
     {
         $allGames = $this->getAllGames();
@@ -312,6 +322,9 @@ class GamesLobbyComponentController
         return $response;
     }
 
+    /**
+     * Sort recently played games based on timestamp
+     */
     public static function sortRecentGames($game1, $game2)
     {
         return ($game1['timestamp'] > $game2['timestamp']) ? -1 : 1;
