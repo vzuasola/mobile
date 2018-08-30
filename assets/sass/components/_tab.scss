@@ -10,22 +10,34 @@
         padding-left: 0;
 
         li {
+            display: flex;
+            align-items: center;
             flex-basis: 50%;
             list-style-type: none;
+
+            &,
+            a {
+                background: #323031;
+            }
         }
 
         a {
             display: block;
             width: 100%;
             padding: 0.7rem;
-            background: #323031;
             color: $light-gray;
             text-align: center;
         }
 
-        .active a {
-            background: #2a2829;
-            color: $yellow;
+        .active {
+            &,
+            a {
+                background: #2a2829;
+            }
+
+            a {
+                color: $yellow;
+            }
         }
     }
 
