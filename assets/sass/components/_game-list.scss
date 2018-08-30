@@ -10,7 +10,7 @@
 .game-listing {
     width: 100vw;
     float: left;
-    padding: 0 1% 1.5% 1%;
+    padding: 0 0.5% 0.75% 0.5%;
 
     .size-small {
         width: 33.33333333%;
@@ -25,20 +25,20 @@
         float: left;
         display: inline-block;
         min-height: 0.1rem;
-        padding: 0 1.5%;
+        padding: 0 0.5%;
     }
 
     .size-large:nth-child(even) + .size-small {
-        margin-top: -24%;
+        margin-top: -25%;
     }
 
     .size-large:nth-child(odd) + .size-small {
-        padding-bottom: 2%;
+        padding-bottom: 1%;
     }
 }
 
 .game-listing:first-child {
-    margin-top: 2%;
+    margin-top: 1%;
 }
 
 // Game Ribbon
