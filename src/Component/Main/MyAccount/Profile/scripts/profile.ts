@@ -32,7 +32,7 @@ export class Profile extends FormBase {
         this.form = this.element.querySelector(".profile-form");
         this.notification = new Notification(
             document.body,
-            "password-message-error",
+            "notification-error",
             true,
             this.attachments.messageTimeout,
         );
