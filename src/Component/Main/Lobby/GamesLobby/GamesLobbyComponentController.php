@@ -152,7 +152,7 @@ class GamesLobbyComponentController
         try {
             $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
-                $allGames[$game['field_game_code'][0]['value']] = $this->processGame($game);;
+                $allGames[$game['field_game_code'][0]['value']] = $this->processGame($game);
             }
         } catch (\Exception $e) {
             $allGames = [];
@@ -314,7 +314,6 @@ class GamesLobbyComponentController
 
                 $response['success'] = true;
             }
-
         } catch (\Exception $e) {
             $response['success'] = false;
         }
