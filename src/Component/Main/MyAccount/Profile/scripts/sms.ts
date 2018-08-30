@@ -62,13 +62,13 @@ export class Sms {
         );
         this.errorNotification = new Notification(
             document.body,
-            "password-message-error",
+            "notification-error",
             true,
             this.attachments.messageTimeout,
         );
         this.successNotification = new Notification(
             document.body,
-            "password-message-success",
+            "notification-success",
             true,
             this.attachments.messageTimeout,
         );

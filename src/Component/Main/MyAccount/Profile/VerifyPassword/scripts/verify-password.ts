@@ -39,13 +39,13 @@ export class VerifyPassword extends FormBase {
             this.validator = this.validateForm(this.form);
             this.errorNotification = new Notification(
                 document.body,
-                "password-message-error",
+                "notification-error",
                 true,
                 this.attachments.messageTimeout,
             );
             this.successNotification = new Notification(
                 document.body,
-                "password-message-success",
+                "notification-success",
                 true,
                 this.attachments.messageTimeout,
             );
