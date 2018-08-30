@@ -136,6 +136,11 @@ class PromotionsComponentController
         return $this->rest->output($response, $data);
     }
 
+    public function test($request, $response)
+    {
+        return $this->rest->output($response, ["success" => true]);
+    }
+
     /**
      *
      */

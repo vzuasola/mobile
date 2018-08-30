@@ -166,24 +166,29 @@ export class GamesLobbyComponent implements ComponentInterface {
         });
     }
 
+    /**
+     * Event listener for game item click
+     */
     private listenClickGameTile(isLogin) {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "game-listing-item", true);
-
             if (el) {
                 if (!isLogin) {
                     ComponentManager.broadcast("header.login");
                 } else {
                     const gameCode = el.getAttribute("data-game-code");
                     xhr({
-                        url: Router.generateRoute("games_lobby", "setRecentlyPlayedGames"),
+                        url: Router.generateRoute("games_lobby", "recent"),
                         type: "json",
+                        method: "post",
                         data: {
                             gameCode,
                         },
-                    }).then((response) => {
-                        this.response = response;
-                        this.setLobby();
+                    }).then((result) => {
+                        if (result.success) {
+                            this.response = null;
+                            this.generateLobby();
+                        }
                     }).fail((error, message) => {
                         console.log(error);
                     });

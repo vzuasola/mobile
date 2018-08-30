@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Lobby\GamesLobby;
+namespace App\MobileEntry\Component\Main\Lobby\GamesLobby;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 

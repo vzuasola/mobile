@@ -90,6 +90,15 @@ class GamesLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
+    public function recent($request, $response)
+    {
+        $gameCode = $request->getParsedBody();
+        if (isset($gameCode['gameCode'])) {
+            $result = $this->setRecentlyPlayedGames($gameCode['gameCode']);
+            return $this->rest->output($response, $result);
+        }
+    }
+
     private function groupGamesByContainer($games, $group = 1)
     {
         $gamesList = [];
@@ -100,15 +109,6 @@ class GamesLobbyComponentController
 
     }
 
-    public function recent($request, $response)
-    {
-        $gameCode = $request->getParsedBody();
-
-        $this->setRecentlyPlayedGames($gameCode);
-
-        return $this->rest->output($response, ["success" => true]);
-    }
-
     /**
      * Get games by category with sort
      */
@@ -116,12 +116,14 @@ class GamesLobbyComponentController
     {
         $gamesList = [];
         foreach ($categories as $category) {
-            $categoryId = $category['field_games_alias'];
-            $games = $this->views->getViewById('games_list', [
-                'category' => $category['tid']
-            ]);
-            if ($games) {
-                $gamesList[$categoryId] = $this->arrangeGames($games);
+            if ($category['field_isordinarycategory'] === "True") {
+                $categoryId = $category['field_games_alias'];
+                $games = $this->views->getViewById('games_list', [
+                    'category' => $category['tid']
+                ]);
+                if ($games) {
+                    $gamesList[$categoryId] = $this->arrangeGames($games);
+                }
             }
         }
 
@@ -252,17 +254,22 @@ class GamesLobbyComponentController
      */
     private function getRecentlyPlayedGames($games)
     {
-        $gameList = [];
-        if ($this->playerSession->isLogin()) {
-            $recentlyPlayed = $this->recentGames->getRecents();
-            if ($recentlyPlayed) {
-                foreach ($recentlyPlayed as $gameCode) {
-                    if (array_key_exists($gameCode, $games)) {
-                        $gameList[] = $games[$gameCode];
+        try {
+            if ($this->playerSession->isLogin()) {
+                $gameList = [];
+                $recentlyPlayed = $this->recentGames->getRecents();
+                usort($recentlyPlayed, 'self::sortRecentGames');
+                if (is_array($recentlyPlayed)) {
+                    foreach ($recentlyPlayed as $gameCode) {
+                        if (array_key_exists($gameCode['id'], $games)) {
+                            $gameList[] = $games[$gameCode['id']];
+                        }
                     }
                 }
             }
-            
+            return $gameList;
+        } catch (\Exception $e) {
+            return [];
         }
 
         return $gameList;
@@ -273,15 +280,40 @@ class GamesLobbyComponentController
      */
     private function setRecentlyPlayedGames($gameCode)
     {
-        if ($this->playerSession->isLogin()) {
-            $recentlyPlayed = $this->recentGames->getRecents();
+        $response = ['success' => false];
+        try {
+            if ($this->playerSession->isLogin()) {
+                $recentlyPlayed = $this->recentGames->getRecents();
+                $recentlyPlayed = (is_array($recentlyPlayed)) ? $recentlyPlayed : [];
+                $recent = [];
+                foreach ($recentlyPlayed as $games) {
+                    $recent[] = $games['id'];
+                }
 
-            if (in_array($gameCode)) {
-                unset($recentlyPlayed[$gameCode]);
+                if (count($recent) >= 20) {
+                    $removedGameCode = end($recent);
+                    $this->recentGames->removeRecents($removedGameCode['id']);
+                }
+
+                if ((count($recent) >= 0 && count($recent) < 20)
+                    && in_array($gameCode, $recent)) {
+                    $this->recentGames->removeRecents([$gameCode]);
+                }
+
+                $this->recentGames->saveRecents([$gameCode]);
+
+                $response['success'] = true;
             }
 
-            array_unshift($recentlyPlayed, $gameCode);
-            $this->recentGames->saveRecents($recentlyPlayed);
+        } catch (\Exception $e) {
+            $response['success'] = false;
         }
+
+        return $response;
+    }
+
+    public static function sortRecentGames($game1, $game2)
+    {
+        return ($game1['timestamp'] > $game2['timestamp']) ? -1 : 1;
     }
 }
