@@ -19,18 +19,22 @@ import Xlider from "@app/assets/script/components/xlider";
 export class GamesLobbyComponent implements ComponentInterface {
     private element: HTMLElement;
     private response: any;
+    private isLogin: boolean;
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.response = null;
         this.element = element;
+        this.isLogin = attachments.authenticated;
         this.listenChangeCategory();
-        this.listenClickGameTile(attachments.authenticated);
+        this.listenClickGameTile(this.isLogin);
+        this.listenFavoriteClick(this.isLogin);
         this.generateLobby();
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.response = null;
         this.element = element;
+        this.isLogin = attachments.authenticated;
         this.generateLobby();
     }
 
@@ -172,7 +176,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenClickGameTile(isLogin) {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "game-listing-item", true);
-            if (el) {
+            if (el && src.tagName === "IMG") {
                 if (!isLogin) {
                     ComponentManager.broadcast("header.login");
                 } else {
@@ -193,6 +197,33 @@ export class GamesLobbyComponent implements ComponentInterface {
                         console.log(error);
                     });
                 }
+            }
+        });
+    }
+
+    /**
+     * Event listener for game item click
+     */
+    private listenFavoriteClick(isLogin) {
+        ComponentManager.subscribe("click", (event, src) => {
+            const el = utility.hasClass(src, "game-favorite", true);
+            if (el && isLogin) {
+                const gameCode = el.parentElement.getAttribute("data-game-code");
+                xhr({
+                    url: Router.generateRoute("games_lobby", "favorite"),
+                    type: "json",
+                    method: "post",
+                    data: {
+                        gameCode,
+                    },
+                }).then((result) => {
+                    if (result.success) {
+                        this.response = null;
+                        this.generateLobby();
+                    }
+                }).fail((error, message) => {
+                    console.log(error);
+                });
             }
         });
     }
