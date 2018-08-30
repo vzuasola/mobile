@@ -282,7 +282,7 @@ class GamesLobbyComponentController
             $gameList = [];
             if ($this->playerSession->isLogin()) {
                 $favGames = $this->favorite->getFavorites();
-                usort($favGames, 'self::sortRecentGames');
+                usort($favGames, [$this, 'sortRecentGames']);
                 if (is_array($favGames)) {
                     foreach ($favGames as $gameCode) {
                         if (array_key_exists($gameCode['id'], $games)) {
@@ -342,7 +342,7 @@ class GamesLobbyComponentController
             $gameList = [];
             if ($this->playerSession->isLogin()) {
                 $recentlyPlayed = $this->recentGames->getRecents();
-                usort($recentlyPlayed, 'self::sortRecentGames');
+                usort($recentlyPlayed, [$this, 'sortRecentGames']);
                 if (is_array($recentlyPlayed)) {
                     foreach ($recentlyPlayed as $gameCode) {
                         if (array_key_exists($gameCode['id'], $games)) {
