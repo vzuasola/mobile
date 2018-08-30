@@ -24,6 +24,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.response = null;
         this.element = element;
         this.listenChangeCategory();
+        this.listenClickGameTile(attachments.authenticated);
         this.generateLobby();
     }
 
@@ -161,6 +162,37 @@ export class GamesLobbyComponent implements ComponentInterface {
 
                 const key = src.getAttribute("data-category-filter-id");
                 this.setGames(this.response.games[key]);
+            }
+        });
+    }
+
+    /**
+     * Event listener for game item click
+     */
+    private listenClickGameTile(isLogin) {
+        ComponentManager.subscribe("click", (event, src) => {
+            const el = utility.hasClass(src, "game-listing-item", true);
+            if (el) {
+                if (!isLogin) {
+                    ComponentManager.broadcast("header.login");
+                } else {
+                    const gameCode = el.getAttribute("data-game-code");
+                    xhr({
+                        url: Router.generateRoute("games_lobby", "recent"),
+                        type: "json",
+                        method: "post",
+                        data: {
+                            gameCode,
+                        },
+                    }).then((result) => {
+                        if (result.success) {
+                            this.response = null;
+                            this.generateLobby();
+                        }
+                    }).fail((error, message) => {
+                        console.log(error);
+                    });
+                }
             }
         });
     }
