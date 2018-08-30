@@ -132,7 +132,14 @@ export class Sms {
             this.resendVerificationCode(event);
         });
         utility.listen(this.element.querySelector("#verify-mobile-submit"), "click", (event) => {
-            this.submitVerificationCode(event);
+            const elem: HTMLInputElement = this.element.querySelector("#verification-code-field");
+            utility.triggerEvent(elem, "blur");
+
+            const hasError = utility.hasClass(elem, "has-error", true);
+            if (!hasError) {
+                this.submitVerificationCode(event);
+            }
+
         });
         utility.listen(this.element.querySelector("#MyProfileForm_mobile_number_1"), "keyup", (event) => {
             this.hideUnhideVerify(event, this.mobile1Item, this.mobile1InputValue);
