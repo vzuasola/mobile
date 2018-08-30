@@ -24,8 +24,11 @@
                     <div class="form-item verification-code-field-wrapper">
                         <div class="form-field">
                             <input type="text" name="verification-code-field" id="verification-code-field" placeholder="{{ modalVerificationCodePlaceholder }}" class="input-block-level form-field-element verification-code-field" />
-                            <span class="validation-icon"></span>
-                            <span class="validation-error-message text-red"></span>
+                            <span class="icon-validation">
+                                <svg class="icon-error" viewBox="0 0 100 100"><use xlink:href="#exclamation-rounded" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>
+                                <svg class="icon-success" viewBox="0 0 39.19 39.53"><use xlink:href="#check-rounded-thin" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>
+                            </span>
+                            <span class="validation-error-message form-help-block tag-color-apple-red text-align-left"></span>
                             <a href="" class="resend-code" id="verify-mobile-resend"> {{ modalVerificationResendCodeText }} </a>
                         </div>
                     </div>
