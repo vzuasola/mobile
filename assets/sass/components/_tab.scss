@@ -4,13 +4,14 @@
 
     // Tab menu/links
     &-menu {
-        display: table;
-        width: 100%;
+        display: flex;
+        align-items: stretch;
         margin-bottom: 0.5rem;
         padding-left: 0;
 
         li {
-            display: table-cell;
+            flex-basis: 50%;
+            list-style-type: none;
         }
 
         a {
