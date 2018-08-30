@@ -115,7 +115,7 @@ class GamesLobbyComponentController
     {
         $gamesList = [];
         foreach ($categories as $category) {
-            if ($category['field_isordinarycategory'] === "True") {
+            if (strtolower($category['field_isordinarycategory']) === "true") {
                 $categoryId = $category['field_games_alias'];
                 $games = $this->views->getViewById('games_list', [
                     'category' => $category['tid']
@@ -136,7 +136,7 @@ class GamesLobbyComponentController
     {
         $specialCategories = [];
         foreach ($categories as $category) {
-            if ($category['field_isordinarycategory'] === "False") {
+            if (strtolower($category['field_isordinarycategory']) === "false") {
                 $specialCategories[$category['field_games_alias']] = $category;
             }
         }
