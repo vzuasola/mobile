@@ -317,6 +317,15 @@ export class Sms {
 
     // Open Lightbox after successful send sms code
     private launchLightBox() {
+        const verificationError = this.element.querySelector("#modal-verification-error");
+        const fieldWrapper = this.element.querySelector(".verification-code-field-wrapper");
+
+        utility.addClass(verificationError, "hidden");
+        verificationError.innerHTML = "";
+
+        utility.removeClass(fieldWrapper, "has-error");
+        utility.removeClass(fieldWrapper, "has-success");
+
         Modal.open("#verify-mobile-number");
         const form: HTMLFormElement = this.element.querySelector("#verify-sms-form");
         form.reset();
