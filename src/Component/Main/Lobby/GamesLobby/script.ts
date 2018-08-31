@@ -138,8 +138,6 @@ export class GamesLobbyComponent implements ComponentInterface {
      * Set the games list in the template
      */
     private setGames(data) {
-        console.log(this.response.favorite_list);
-        console.log(data);
         const template = gameTemplate({
             games: data,
             favorites: this.response.favorite_list,
