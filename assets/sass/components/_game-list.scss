@@ -10,14 +10,32 @@
 .game-listing {
     width: 100vw;
     float: left;
-    padding: 0 0.5% 0.75% 0.5%;
+    padding: 0 1% 1.75% 1%;
 
     .size-small {
         width: 33.33333333%;
+
+        .game-favorite {
+            position: absolute;
+            top: 4%;
+            right: 6%;
+            width: 11%;
+            cursor: pointer;
+            fill: $yellow;
+        }
     }
 
     .size-large {
         width: 66.66666667%;
+
+        .game-favorite {
+            position: absolute;
+            top: 2%;
+            right: 3%;
+            width: 6%;
+            cursor: pointer;
+            fill: $yellow;
+        }
     }
 
     &-item {
@@ -25,42 +43,32 @@
         float: left;
         display: inline-block;
         min-height: 0.1rem;
-        padding: 0 0.5%;
+        padding: 0 1%;
     }
 
     .size-large:nth-child(even) + .size-small {
-        margin-top: -25%;
+        margin-top: -24.5%;
     }
 
     .size-large:nth-child(odd) + .size-small {
-        padding-bottom: 1%;
+        padding-bottom: 1.5%;
     }
 }
 
 .game-listing:first-child {
-    margin-top: 1%;
+    margin-top: 2%;
 }
 
 // Game Ribbon
 .game-ribbon {
     position: absolute;
     top: 0.5rem;
-    left: 0.39rem;
     display: block;
     padding: 0.2rem 0.5rem;
     background: #ff0000;
     color: white;
     font-size: 1.2rem;
     border-radius: 0.2rem;
-}
-
-.game-favorite {
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
-    width: 2rem;
-    cursor: pointer;
-    fill: $yellow;
 }
 
 .game-list-thumb {
