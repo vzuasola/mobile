@@ -143,6 +143,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         const template = gameTemplate({
             games: data,
             favorites: this.response.favorite_list,
+            isLogin: this.isLogin,
         });
 
         const gamesEl = this.element.querySelector("#game-container");
