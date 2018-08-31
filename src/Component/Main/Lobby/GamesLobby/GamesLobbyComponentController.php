@@ -401,7 +401,7 @@ class GamesLobbyComponentController
                 }
 
                 // Remove last item when it reaches 21
-                if (count($recent) >= 22) {
+                if (count($recent) >= 21) {
                     $removedGameCode = end($recent);
                     $this->recentGames->removeRecents([$removedGameCode]);
                 }
