@@ -395,6 +395,7 @@ class GamesLobbyComponentController
             if ($this->playerSession->isLogin()) {
                 $recentlyPlayed = $this->recentGames->getRecents();
                 $recentlyPlayed = (is_array($recentlyPlayed)) ? $recentlyPlayed : [];
+                usort($recentlyPlayed, [$this, 'sortRecentGames']);
                 $recent = [];
                 foreach ($recentlyPlayed as $games) {
                     $recent[] = $games['id'];
