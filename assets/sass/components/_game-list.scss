@@ -21,6 +21,10 @@
             right: 6%;
             width: 11%;
             cursor: pointer;
+            fill: $white;
+        }
+
+        .game-favorite.active {
             fill: $yellow;
         }
     }
@@ -34,6 +38,10 @@
             right: 3%;
             width: 6%;
             cursor: pointer;
+            fill: $white;
+        }
+
+        .game-favorite.active {
             fill: $yellow;
         }
     }
