@@ -132,3 +132,19 @@ export abstract class FormBase {
         return element;
     }
 }
+
+export const resetForm = (form): void => {
+    form.reset();
+
+    // remove icon-validation
+    const icons = form.querySelectorAll(".icon-validation");
+    utility.forEach(icons, (icon) => {
+        icon.remove();
+    });
+
+    // remove helper block
+    const messages = form.querySelectorAll(".form-help-block");
+    utility.forEach(messages, (message) => {
+        message.remove();
+    });
+};

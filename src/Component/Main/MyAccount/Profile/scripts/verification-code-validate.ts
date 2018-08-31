@@ -36,6 +36,7 @@ export class VerificationCodeValidate {
                     this.manageFieldClasses(errors[key].id, selectorWrapper, "valid", "invalid");
                     selectorWrapper.querySelector(".validation-error-message").innerHTML = errors[key].message;
                     utility.addClass(selectorWrapper, "has-error");
+                    utility.removeClass(selectorWrapper, "has-success");
                 }
             }
 
@@ -45,6 +46,7 @@ export class VerificationCodeValidate {
                 this.manageFieldClasses(target.id, selectorWrapperParent, "invalid", "valid");
                 selectorWrapperParent.querySelector(".validation-error-message").innerHTML = "";
                 utility.removeClass(selectorWrapperParent, "has-error");
+                utility.addClass(selectorWrapperParent, "has-success");
             }
         });
 
