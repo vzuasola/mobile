@@ -49,15 +49,19 @@ export class GamesLobbyComponent implements ComponentInterface {
                 duration: 300,
                 controls: false,
                 perPage: {
-                    200: 2,
-                    320: 3,
-                    360: 3.6,
-                    640: 5.2,
-                    800: 7.3,
-                    1024: 8,
+                    0: 1,
+                    320: 3.35,
+                    360: 3.76,
+                    375: 3.91,
+                    411: 4.3,
+                    414: 4.3,
+                    568: 5.94,
+                    640: 6.7,
+                    731: 7.63,
+                    823: 8.6,
                   },
                 onInit() {
-                    this.selector.firstElementChild.style.padding = "0 0 0 10%";
+                    this.selector.firstElementChild.style.padding = "0 0 0 3rem";
                   },
             });
         }
