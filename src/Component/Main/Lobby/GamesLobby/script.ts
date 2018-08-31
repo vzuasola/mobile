@@ -26,8 +26,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.listenChangeCategory();
-        this.listenClickGameTile(this.isLogin);
-        this.listenFavoriteClick(this.isLogin);
+        this.listenClickGameTile();
+        this.listenFavoriteClick();
         this.generateLobby();
     }
 
@@ -138,8 +138,11 @@ export class GamesLobbyComponent implements ComponentInterface {
      * Set the games list in the template
      */
     private setGames(data) {
+        console.log(this.response.favorite_list);
+        console.log(data);
         const template = gameTemplate({
             games: data,
+            favorites: this.response.favorite_list,
         });
 
         const gamesEl = this.element.querySelector("#game-container");
@@ -173,11 +176,11 @@ export class GamesLobbyComponent implements ComponentInterface {
     /**
      * Event listener for game item click
      */
-    private listenClickGameTile(isLogin) {
+    private listenClickGameTile() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "game-listing-item", true);
             if (el && src.tagName === "IMG") {
-                if (!isLogin) {
+                if (!this.isLogin) {
                     ComponentManager.broadcast("header.login");
                 } else {
                     const gameCode = el.getAttribute("data-game-code");
@@ -204,10 +207,10 @@ export class GamesLobbyComponent implements ComponentInterface {
     /**
      * Event listener for game item click
      */
-    private listenFavoriteClick(isLogin) {
+    private listenFavoriteClick() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "game-favorite", true);
-            if (el && isLogin) {
+            if (el && this.isLogin) {
                 const gameCode = el.parentElement.getAttribute("data-game-code");
                 xhr({
                     url: Router.generateRoute("games_lobby", "favorite"),
