@@ -34,6 +34,13 @@
         text-align: center;
     }
 
+    .game-category.active {
+        .active {
+            background: $dark-red;
+            color: $yellow;
+        }
+    }
+
     a {
         display: inline-block;
         background: $cat-tab-bg;
@@ -41,11 +48,6 @@
         font-size: 1.4rem;
         text-decoration: none;
         font-weight: 600;
-        padding: 0.5rem;
-    }
-
-    .active {
-        background: $dark-red;
-        color: $yellow;
+        padding: 0.5rem 1rem;
     }
 }
