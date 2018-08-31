@@ -64,7 +64,7 @@ export default class Xlider extends Siema {
         elementContainer.classList.add("xlider-item");
         elementContainer.style.cssFloat = this.config.rtl ? 'right' : 'left';
         elementContainer.style.float = this.config.rtl ? 'right' : 'left';
-        elementContainer.style.width = this.config.loop ? 100 / (this.innerElements.length + (this.perPage * 2)) + '%' : 'auto';
+        elementContainer.style.width = `${this.config.loop ? 100 / (this.innerElements.length + (this.perPage * 2)) : 100 / (this.innerElements.length)}%`;
         elementContainer.appendChild(elm);
         return elementContainer;
     }
