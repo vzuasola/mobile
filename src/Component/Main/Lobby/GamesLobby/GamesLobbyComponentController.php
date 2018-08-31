@@ -402,7 +402,7 @@ class GamesLobbyComponentController
 
                 if (count($recent) >= 20) {
                     $removedGameCode = end($recent);
-                    $this->recentGames->removeRecents([$removedGameCode['id']]);
+                    $this->recentGames->removeRecents([$removedGameCode]);
                 }
 
                 if ((count($recent) >= 0 && count($recent) < 20)
