@@ -97,7 +97,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         if (!key) {
             key = this.response.categories[0].field_games_alias;
             key = this.getActiveCategory(this.response.games, key);
-            window.location.hash = key
+            window.location.hash = key;
         }
         this.setCategories(this.response.categories, key);
         this.setGames(this.response.games[key]);
