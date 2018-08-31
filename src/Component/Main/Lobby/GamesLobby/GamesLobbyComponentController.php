@@ -395,13 +395,14 @@ class GamesLobbyComponentController
             if ($this->playerSession->isLogin()) {
                 $recentlyPlayed = $this->recentGames->getRecents();
                 $recentlyPlayed = (is_array($recentlyPlayed)) ? $recentlyPlayed : [];
+                usort($recentlyPlayed, [$this, 'sortRecentGames']);
                 $recent = [];
                 foreach ($recentlyPlayed as $games) {
                     $recent[] = $games['id'];
                 }
 
                 // Remove last item when it reaches 21
-                if (count($recent) >= 22) {
+                if (count($recent) >= 21) {
                     $removedGameCode = end($recent);
                     $this->recentGames->removeRecents([$removedGameCode]);
                 }
