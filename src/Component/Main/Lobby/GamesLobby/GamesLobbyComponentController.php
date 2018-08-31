@@ -81,6 +81,7 @@ class GamesLobbyComponentController
                 $data['games'] = $this->groupGamesByContainer($data['games'], 3);
                 $data['favorite_list'] = $this->getFavoriteGamesList();
             } catch (\Exception $e) {
+                ddd($e);
                 $data['categories'] = [];
                 $data['games'] = [];
             }
@@ -278,7 +279,9 @@ class GamesLobbyComponentController
     private function getFavoriteGamesRequest()
     {
         $favGames = $this->favorite->getFavorites();
-        usort($favGames, [$this, 'sortRecentGames']);
+        if ($favGames) {
+            usort($favGames, [$this, 'sortRecentGames']);
+        }
         return $favGames;
     }
 

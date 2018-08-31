@@ -57,7 +57,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     1024: 8,
                   },
                 onInit() {
-                    this.selector.firstElementChild.style.padding = "0 0 0 30px";
+                    this.selector.firstElementChild.style.padding = "0 0 0 10%";
                   },
             });
         }

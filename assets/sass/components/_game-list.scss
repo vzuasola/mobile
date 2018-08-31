@@ -12,20 +12,40 @@
     float: left;
     padding: 0 1% 1.75% 1%;
 
+    .size-small,
+    .size-large {
+        .game-favorite {
+            position: absolute;
+            top: 0;
+            outline: none;
+            border: 0;
+            cursor: pointer;
+
+            svg {
+                width: 30%;
+                outline: none;
+                border: 0;
+                cursor: pointer;
+                fill: $white;
+                margin: 15% 0 0 55%;
+
+            }
+        }
+    }
+
     .size-small {
         width: 33.33333333%;
 
         .game-favorite {
-            position: absolute;
-            top: 4%;
-            right: 6%;
-            width: 11%;
-            cursor: pointer;
-            fill: $white;
+            right: 2.75%;
+            width: 40%;
+            height: 40%;
         }
 
         .game-favorite.active {
-            fill: $yellow;
+            svg {
+                fill: $yellow;
+            }
         }
     }
 
@@ -33,16 +53,15 @@
         width: 66.66666667%;
 
         .game-favorite {
-            position: absolute;
-            top: 2%;
-            right: 3%;
-            width: 6%;
-            cursor: pointer;
-            fill: $white;
+            right: 1.5%;
+            width: 20%;
+            height: 20%;
         }
 
         .game-favorite.active {
-            fill: $yellow;
+            svg {
+                fill: $yellow;
+            }
         }
     }
 
