@@ -400,12 +400,14 @@ class GamesLobbyComponentController
                     $recent[] = $games['id'];
                 }
 
-                if (count($recent) >= 20) {
+                // Remove last item when it reaches 21
+                if (count($recent) >= 22) {
                     $removedGameCode = end($recent);
                     $this->recentGames->removeRecents([$removedGameCode]);
                 }
 
-                if ((count($recent) >= 0 && count($recent) < 20)
+                // Move item to the top of stack if it exists already
+                if ((count($recent) >= 0 && count($recent) < 22)
                     && in_array($gameCode, $recent)) {
                     $this->recentGames->removeRecents([$gameCode]);
                 }
