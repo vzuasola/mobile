@@ -60,7 +60,24 @@ export class GamesLobbyComponent implements ComponentInterface {
                     this.selector.firstElementChild.style.padding = "0 0 0 10%";
                   },
             });
+
+            sliderObj.goTo(this.getActiveIndex(slider));
         }
+    }
+
+    private getActiveIndex(list: HTMLElement) {
+        const slides = list.querySelectorAll(".game-category");
+
+        for (const key in slides) {
+            if (slides.hasOwnProperty(key)) {
+                const slide = slides[key];
+                if (utility.hasClass(slide, "active")) {
+                    return key + 1;
+                }
+            }
+        }
+
+        return 1;
     }
 
     /**
