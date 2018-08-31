@@ -79,6 +79,7 @@ class GamesLobbyComponentController
                 $data['games'] = $this->getGamesbyCategory($categories) + $specialCategoryGames;
                 $data['categories'] = $this->getArrangedCategoriesByGame($categories, $data['games']);
                 $data['games'] = $this->groupGamesByContainer($data['games'], 3);
+                $data['favorite_list'] = $this->getFavoriteGamesList();
             } catch (\Exception $e) {
                 $data['categories'] = [];
                 $data['games'] = [];
@@ -274,6 +275,27 @@ class GamesLobbyComponentController
         return $categoryList;
     }
 
+    private function getFavoriteGamesRequest()
+    {
+        $favGames = $this->favorite->getFavorites();
+        usort($favGames, [$this, 'sortRecentGames']);
+        return $favGames;
+    }
+
+    private function getFavoriteGamesList()
+    {
+        $gameList = [];
+        if ($this->playerSession->isLogin()) {
+            $favGames = $this->getFavoriteGamesRequest();
+            if (is_array($favGames)) {
+                foreach ($favGames as $gameCode) {
+                    $gameList[$gameCode['id']] = 'active';
+                }
+            }
+        }
+        return $gameList;
+    }
+
     /**
      * Get favorite games
      */
@@ -282,8 +304,7 @@ class GamesLobbyComponentController
         try {
             $gameList = [];
             if ($this->playerSession->isLogin()) {
-                $favGames = $this->favorite->getFavorites();
-                usort($favGames, [$this, 'sortRecentGames']);
+                $favGames = $this->getFavoriteGamesRequest();
                 if (is_array($favGames)) {
                     foreach ($favGames as $gameCode) {
                         if (array_key_exists($gameCode['id'], $games)) {
