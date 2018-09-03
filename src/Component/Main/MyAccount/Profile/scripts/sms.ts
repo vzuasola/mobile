@@ -179,6 +179,8 @@ export class Sms {
     private sendVerificationCode(event) {
         this.verified = false;
         const verificationError = document.getElementById("modal-verification-error");
+        const verificationSuccess = document.getElementById("modal-verification-success");
+
         if (event.target && event.target.id === "verify-mobile-modal") {
             this.subTypeId = 2;
 
@@ -199,6 +201,10 @@ export class Sms {
                 if (res.response_code === "SMS_VERIFICATION_SUCCESS") {
                     utility.addClass(verificationError, "hidden");
                     verificationError.innerHTML = "";
+
+                    utility.addClass(verificationSuccess, "hidden");
+                    verificationSuccess.innerHTML = "";
+
                     this.launchLightBox();
                 } else {
                     utility.removeClass(verificationError, "hidden");
