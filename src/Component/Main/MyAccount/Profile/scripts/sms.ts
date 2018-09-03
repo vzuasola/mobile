@@ -178,6 +178,7 @@ export class Sms {
     // Method to send sms
     private sendVerificationCode(event) {
         this.verified = false;
+        const verificationError = document.getElementById("modal-verification-error");
         if (event.target && event.target.id === "verify-mobile-modal") {
             this.subTypeId = 2;
 
@@ -196,11 +197,11 @@ export class Sms {
                 },
             }).then((res) => {
                 if (res.response_code === "SMS_VERIFICATION_SUCCESS") {
-                    utility.addClass(this.verificationError, "hidden");
-                    this.verificationError.innerHTML = "";
+                    utility.addClass(verificationError, "hidden");
+                    verificationError.innerHTML = "";
                     this.launchLightBox();
                 } else {
-                    utility.removeClass(this.verificationError, "hidden");
+                    utility.removeClass(verificationError, "hidden");
                     this.errorNotification.show(res.message);
                 }
             });
