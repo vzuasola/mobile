@@ -2,7 +2,6 @@ import * as utility from "@core/assets/js/components/utility";
 import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import Tab from "@app/assets/script/components/tab";
 import {Marker} from "@app/assets/script/components/marker";
-import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 import * as iconCheckedTemplate from "@app/templates/handlebars/icon-checked.handlebars";
 import * as iconUnCheckedTemplate from "@app/templates/handlebars/icon-unchecked.handlebars";
 
