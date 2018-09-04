@@ -270,8 +270,7 @@ export class Sms {
             },
         }).then((res) => {
             if (res.response_code === "SMS_VERIFICATION_SUBMIT_SUCCESS") {
-                this.successNotification.show(res.message);
-                This.checkSmsStatus(This);
+                This.checkSmsStatus(This, res.message);
             } else {
                 utility.addClass(verificationSuccess, "hidden");
                 utility.removeClass(verificationError, "hidden");
@@ -282,7 +281,7 @@ export class Sms {
     }
 
     // Check sms verification status
-    private checkSmsStatus(parentThis) {
+    private checkSmsStatus(parentThis, message) {
         const This = parentThis;
         let checkStatusCounter = 0;
         setInterval((e) => {
@@ -301,23 +300,24 @@ export class Sms {
                             checkStatusCounter++;
                             This.checkSmsStatus(parentThis);
                         } else {
-                            this.refreshProfileForm();
+                            this.refreshProfileForm(message);
                         }
                     } else {
-                        this.refreshProfileForm();
+                        this.refreshProfileForm(message);
                     }
                 });
             }
         }, 3000);
     }
 
-    private refreshProfileForm() {
+    private refreshProfileForm(message) {
         this.verified = true;
         Modal.close("#verify-mobile-number");
         ComponentManager.refreshComponent(
             ["main"],
             () => {
                 this.loader.hide();
+                this.successNotification.show(message);
             },
         );
     }
