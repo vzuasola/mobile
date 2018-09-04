@@ -68,13 +68,13 @@ class HeaderComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+        $data['is_front'] = false;
         try {
-            $data['is_front'] = false;
             if (in_array($this->request->getUri()->getPath(), $this::HOME)) {
                 $data['is_front'] = true;
             }
         } catch (\Exception $e) {
-            $data['is_front'] = false;
+            // Do nothing
         }
 
         try {
