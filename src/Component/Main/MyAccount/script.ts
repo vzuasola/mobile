@@ -18,6 +18,8 @@ export class MyAccountComponent implements ComponentInterface {
     }
 
     private init(element) {
+        this.toggleLogoutLink();
+
         new Tab();
 
         // Checkbox
@@ -31,5 +33,29 @@ export class MyAccountComponent implements ComponentInterface {
         new Marker({
             parent: "#MyProfileForm_gender",
         });
+    }
+
+    private toggleLogoutLink() {
+        const bodyTag = document.body;
+        const logoutLink: any = bodyTag.querySelector(".quicklinks-logout");
+
+        let i = 0;
+
+        const intervalId = setInterval(() => {
+            const route = bodyTag.getAttribute("data-route");
+
+            i++;
+
+            if (logoutLink && route === "/my-account") {
+                logoutLink.parentNode.style.display = "none";
+                if (i > 5) {
+                    return;
+                }
+            } else {
+                logoutLink.parentNode.style.display = "block";
+                clearInterval(intervalId);
+            }
+
+        }, 1000);
     }
 }
