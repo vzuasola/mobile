@@ -37,11 +37,11 @@ class VoidbridgeModuleController
     public function launch($request, $response)
     {
         $data['gameurl'] = false;
-        $languageCode = $request->getParam('languageCode');
+        $requestData = $request->getParsedBody();
         try {
-            $responseData = $this->voidbridge->getGameUrlById('icore_vb', $args['gameid'], [
+            $responseData = $this->voidbridge->getGameUrlById('icore_vb', $requestData['gameCode'], [
                 'options' => [
-                    'languageCode' => $languageCode
+                    'languageCode' => $requestData['langCode']
                 ]
             ]);
             if ($responseData['url']) {
