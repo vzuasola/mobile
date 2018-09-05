@@ -4,7 +4,7 @@ import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 import {GameInterface} from "./game.interface";
 
-export class GameLauncher {
+class GameLauncher {
     private providers: {[name: string]: GameInterface} = {};
 
     /**
@@ -39,6 +39,10 @@ export class GameLauncher {
 
         ComponentManager.subscribe("click", (event, src) => {
             this.onClick(event, src);
+        });
+
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            this.onLogin(event, data.src);
         });
     }
 
@@ -127,4 +131,34 @@ export class GameLauncher {
             });
         }
     }
+
+    /**
+     *
+     */
+    private onLogin(e, src) {
+        const el = utility.find(src, (element) => {
+            if (element.getAttribute("data-game-provider") &&
+                element.getAttribute("data-game-code")) {
+                return true;
+            }
+        });
+
+        if (el) {
+            e.preventDefault();
+
+            const provider = el.getAttribute("data-game-provider");
+            const options = this.getOptionsByElement(el);
+
+            options.provider = provider;
+
+            this.launch(provider, options);
+
+            ComponentManager.broadcast("game.launch", {
+                src: el,
+            });
+        }
+    }
 }
+
+const launcher = new GameLauncher();
+export {launcher as GameLauncher};

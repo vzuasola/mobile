@@ -11,10 +11,10 @@ import {PASModule} from "./PAS/script";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 export class GameIntegrationModule implements ModuleInterface {
-    private gameLauncher: GameLauncher;
+    private gameLauncher;
 
     constructor() {
-        this.gameLauncher = new GameLauncher();
+        this.gameLauncher = GameLauncher;
     }
 
     onLoad(attachments: {}) {
