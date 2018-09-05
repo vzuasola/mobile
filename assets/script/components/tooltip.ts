@@ -5,6 +5,7 @@ import * as utility from "@core/assets/js/components/utility";
  *
  * @param Node/String trigger selector or node element
  * @param String content tooltip content
+ * @param Node contentParent option to insert tooltip content to any HTML tag
  */
 class Tooltip {
     private trigger: any;
@@ -13,7 +14,7 @@ class Tooltip {
     private content: string;
     private active: boolean;
 
-    constructor(trigger: any, content?: string) {
+    constructor(trigger: any, content?: string, private contentParent?: HTMLElement) {
         this.trigger = (typeof trigger === "string") ? document.querySelector(trigger) : trigger;
         this.content = this.trigger.hasAttribute("data-tooltip-content")
                 ? this.trigger.getAttribute("data-tooltip-content")
@@ -68,7 +69,20 @@ class Tooltip {
     }
 
     private generateMarkup() {
-        this.container = utility.createElem("div", "tooltip-container", this.trigger);
+        this.container = utility.createElem("div", "tooltip-container");
+
+        if (this.contentParent) {
+            // Set content parent as relative for styling purposes
+            this.contentParent.style.position = "relative";
+
+            this.contentParent.appendChild(this.container);
+        } else {
+            // Set content parent as relative for styling purposes
+            this.trigger.style.position = "relative";
+
+            this.trigger.appendChild(this.container);
+        }
+
         utility.addClass(this.container, "hidden");
         this.container.innerHTML = this.content;
     }
