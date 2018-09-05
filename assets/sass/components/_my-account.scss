@@ -13,7 +13,8 @@ form.sms-verification-code-form {
     }
 
     // Middle form items
-    & > .form-item {
+    & > .form-item,
+    & > .blurb {
         @extend %form-item-round;
     }
 
@@ -25,7 +26,7 @@ form.sms-verification-code-form {
     & > .ChangePasswordForm_current_password_field,
     & > .ChangePasswordForm_current_password,
     & > .VerifyPasswordForm_verify_password,
-    & > .verification-code-field-wrapper {
+    & > .SmsVerificationForm_verification_code {
         @extend %form-item-round-top;
     }
 
@@ -37,7 +38,7 @@ form.sms-verification-code-form {
     & > .ChangePasswordForm_change_password_submit_field,
     & > .ChangePasswordForm_submit,
     & > .VerifyPasswordForm_submit,
-    & > .verify-mobile-reload-wrapper {
+    & > .SmsVerificationForm_submit {
         @extend %form-item-round-bottom;
     }
 
@@ -163,9 +164,13 @@ form.sms-verification-code-form {
     }
 
     // Verification Code
-    .verification-code-field-wrapper {
+    .SmsVerificationForm_resend_markup {
         .resend-code {
             color: $yellow;
         }
+    }
+
+    .SmsVerificationForm_verification_code {
+        text-align: left;
     }
 }
