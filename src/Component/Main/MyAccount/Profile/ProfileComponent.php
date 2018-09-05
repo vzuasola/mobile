@@ -4,6 +4,7 @@ namespace App\MobileEntry\Component\Main\MyAccount\Profile;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\MobileEntry\Form\MyProfileForm;
+use App\MobileEntry\Form\SmsVerificationForm;
 
 class ProfileComponent implements ComponentWidgetInterface
 {
@@ -52,12 +53,14 @@ class ProfileComponent implements ComponentWidgetInterface
     public function getData()
     {
         $formMyProfile = $this->formManager->getForm(MyProfileForm::class);
+        $SmsVerificationForm = $this->formManager->getForm(SmsVerificationForm::class);
         $myProfileConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
         $smsConfig = $this->configFetcher->getConfigById('my_account_sms_verification');
 
         return [
             'title' => 'My Account',
             'formMyProfile' => $formMyProfile->createView(),
+            'SmsVerificationForm' => $SmsVerificationForm->createView(),
             'addMobileLabel' => $myProfileConfig['add_mobile_label'] ?? 'Add Mobile',
             'modalVerifyHeaderText' => $smsConfig['modal_verify_header_text'] ?? 'Verify Number',
             'modalVerifyBodyText' => $smsConfig['modal_verify_body_text'] ?? 'Verify your mobile number',
