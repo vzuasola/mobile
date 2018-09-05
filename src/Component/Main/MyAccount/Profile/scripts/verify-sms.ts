@@ -330,9 +330,6 @@ export class SmsVerification extends FormBase {
         utility.removeClass(fieldWrapper, "has-success");
 
         Modal.open("#verify-mobile-number");
-        // const form: HTMLFormElement = this.element.querySelector("#verify-sms-form");
-        // form.reset();
-        // form.querySelector(".validation-error-message").innerHTML = "";
     }
 
     private hideUnhideVerify(e, elem, value) {
