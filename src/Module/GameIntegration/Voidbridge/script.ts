@@ -1,3 +1,5 @@
+import * as xhr from "@core/assets/js/vendor/reqwest";
+
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 

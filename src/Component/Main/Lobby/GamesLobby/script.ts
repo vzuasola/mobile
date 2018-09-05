@@ -32,6 +32,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.listenChangeCategory();
+        this.listenHashChange();
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
@@ -199,6 +200,41 @@ export class GamesLobbyComponent implements ComponentInterface {
                 this.setGames(this.response.games[key]);
             }
         });
+    }
+
+    /**
+     * Event listener for category click
+     */
+    private listenHashChange() {
+        utility.listen(window, "hashchange", (event, src: any) => {
+
+            let key = this.response.categories[0].field_games_alias;
+            key = this.getActiveCategory(this.response.games, key);
+            window.location.hash = key;
+
+            const categoriesEl = this.element.querySelector("#game-categories");
+            const activeLink = categoriesEl.querySelector(".category-tab .active a");
+
+            const categories = categoriesEl.querySelectorAll(".category-tab");
+
+            for (const id in categories) {
+                if (categories.hasOwnProperty(id)) {
+                    const category = categories[id];
+                    if (category.getAttribute("href") === "#" + key) {
+                        src = category;
+                        break;
+                    }
+               }
+           }
+
+            utility.removeClass(activeLink, "active");
+            utility.removeClass(activeLink.parentElement, "active");
+
+            utility.addClass(src, "active");
+            utility.addClass(src.parentElement, "active");
+
+            this.setGames(this.response.games[key]);
+    });
     }
 
     /**
