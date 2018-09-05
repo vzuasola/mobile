@@ -133,16 +133,12 @@ export class SmsVerification extends FormBase {
 
     // Attach SMS Action Events
     private attachEvents() {
-        utility.listen(this.mobile1Item.querySelector("#verify-mobile-modal"), "click", (event) => {
-            resetForm(this.form);
-            event.preventDefault(event);
-            this.sendVerificationCode(event);
-        });
-        utility.listen(this.mobile2Item.querySelector("#verify-mobile-modal"), "click", (event) => {
-            resetForm(this.form);
-            event.preventDefault(event);
-            this.sendVerificationCode(event);
-        });
+        const mItem1 = this.mobile1Item.querySelector("#verify-mobile-modal");
+        this.verifyButtonEvent(mItem1);
+
+        const mItem2 = this.mobile2Item.querySelector("#verify-mobile-modal");
+        this.verifyButtonEvent(mItem2);
+
         utility.listen(this.element.querySelector("#verify-mobile-resend"), "click", (event) => {
             event.preventDefault(event);
             this.resendVerificationCode(event);
@@ -160,6 +156,14 @@ export class SmsVerification extends FormBase {
             if (!this.validator.hasError) {
                 this.submitVerificationCode(event);
             }
+        });
+    }
+
+    private verifyButtonEvent(el) {
+        utility.listen(el, "click", (event) => {
+            resetForm(this.form);
+            event.preventDefault(event);
+            this.sendVerificationCode(event);
         });
     }
 
