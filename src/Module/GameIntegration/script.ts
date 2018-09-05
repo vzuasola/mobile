@@ -11,16 +11,17 @@ import {PASModule} from "./PAS/script";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 export class GameIntegrationModule implements ModuleInterface {
-    private gameLauncher: GameLauncher;
+    private gameLauncher;
 
     constructor() {
-        this.gameLauncher = new GameLauncher();
+        this.gameLauncher = GameLauncher;
     }
 
     onLoad(attachments: {}) {
         const pas: any = ComponentManager.getModuleInstance("pas_integration");
-
+        const voidbridge: any = ComponentManager.getModuleInstance("voidbridge_integration");
         this.gameLauncher.setProvider("pas", pas);
+        this.gameLauncher.setProvider("voidbridge", voidbridge);
         this.gameLauncher.init();
     }
 }

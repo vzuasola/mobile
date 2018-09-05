@@ -6,6 +6,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as categoriesTemplate from "./handlebars/categories.handlebars";
 import * as gameTemplate from "./handlebars/games.handlebars";
 
+import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
@@ -20,13 +21,20 @@ export class GamesLobbyComponent implements ComponentInterface {
     private element: HTMLElement;
     private response: any;
     private isLogin: boolean;
+    private gameLauncher;
+
+    constructor() {
+        this.gameLauncher = GameLauncher;
+    }
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
         this.response = null;
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.listenChangeCategory();
+        this.listenHashChange();
         this.listenClickGameTile();
+        this.listenGameLaunch();
         this.listenFavoriteClick();
         this.generateLobby();
     }
@@ -195,12 +203,61 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     /**
+     * Event listener for category click
+     */
+    private listenHashChange() {
+        utility.listen(window, "hashchange", (event, src: any) => {
+
+            let key = this.response.categories[0].field_games_alias;
+            key = this.getActiveCategory(this.response.games, key);
+            window.location.hash = key;
+
+            const categoriesEl = this.element.querySelector("#game-categories");
+            const activeLink = categoriesEl.querySelector(".category-tab .active a");
+
+            const categories = categoriesEl.querySelectorAll(".category-tab");
+
+            for (const id in categories) {
+                if (categories.hasOwnProperty(id)) {
+                    const category = categories[id];
+                    if (category.getAttribute("href") === "#" + key) {
+                        src = category;
+                        break;
+                    }
+               }
+           }
+
+            utility.removeClass(activeLink, "active");
+            utility.removeClass(activeLink.parentElement, "active");
+
+            utility.addClass(src, "active");
+            utility.addClass(src.parentElement, "active");
+
+            this.setGames(this.response.games[key]);
+        });
+    }
+
+    /**
      * Event listener for game item click
      */
     private listenClickGameTile() {
-        ComponentManager.subscribe("click", (event, src) => {
+        ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "game-listing-item", true);
-            if (el && src.tagName === "IMG") {
+            if (el && !this.isLogin) {
+                ComponentManager.broadcast("header.login", {
+                    src: el,
+                });
+            }
+        });
+    }
+
+    /**
+     * Event listener for game item click
+     */
+    private listenGameLaunch() {
+        ComponentManager.subscribe("game.launch", (event, src, data) => {
+            const el = utility.hasClass(data.src, "game-listing-item", true);
+            if (el) {
                 if (!this.isLogin) {
                     ComponentManager.broadcast("header.login");
                 } else {
