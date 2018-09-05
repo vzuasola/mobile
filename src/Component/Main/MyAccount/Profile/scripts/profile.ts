@@ -197,7 +197,7 @@ export class Profile extends FormBase {
     }
 
     private activateTooltip() {
-        const commBlurb = this.form.querySelector(".MyProfileForm_communication_markup");
+        const commBlurb: HTMLElement = this.form.querySelector(".MyProfileForm_communication_markup");
         const tooltipContent = this.form.MyProfileForm_mobile_number_1.getAttribute("tooltip-content");
         const iconContainer = utility.createElem("span", null, commBlurb);
 
@@ -205,6 +205,6 @@ export class Profile extends FormBase {
         iconContainer.innerHTML = questionMarkTemplate();
 
         // Init tooltip
-        new Tooltip(iconContainer, tooltipContent);
+        new Tooltip(iconContainer, tooltipContent, commBlurb);
     }
 }
