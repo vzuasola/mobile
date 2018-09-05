@@ -56,8 +56,8 @@ class VoidbridgeModuleScripts implements ComponentAttachmentInterface
 
         return [
             'authenticated' => $this->playerSession->isLogin(),
-            'lang' => $this->lang ?? 'en',
-            'currencies' => explode("\r\n", $config[self::KEY . '_currency']),
+            'lang' => $this->lang,
+            'currencies' => explode(PHP_EOL, $config[self::KEY . '_currency']),
             'languages' => Config::parse($config[self::KEY . '_language_mapping'] ?? ''),
             'providerName' => $providerMapping[self::KEY],
         ];

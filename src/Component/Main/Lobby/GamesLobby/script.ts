@@ -234,7 +234,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             utility.addClass(src.parentElement, "active");
 
             this.setGames(this.response.games[key]);
-    });
+        });
     }
 
     /**
