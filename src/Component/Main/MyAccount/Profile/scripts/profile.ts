@@ -6,7 +6,6 @@ import * as verificationTemplate from "./../templates/handlebars/profile-changes
 import * as questionMarkTemplate from "@app/templates/handlebars/question-mark.handlebars";
 import {Loader} from "@app/assets/script/components/loader";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
-import EqualHeight from "@app/assets/script/components/equal-height";
 import Tooltip from "@app/assets/script/components/tooltip";
 
 /**
@@ -51,7 +50,6 @@ export class Profile extends FormBase {
         }
         this.validateForm(this.form);
         this.handleSubmission();
-        this.equalizeActionButtonHeight();
         this.activateTooltip();
     }
 
@@ -196,11 +194,6 @@ export class Profile extends FormBase {
         }
 
         return {old, modified};
-    }
-
-    private equalizeActionButtonHeight() {
-        const equalize = new EqualHeight("#MyProfileForm_submit, #MyProfileForm_button_cancel");
-        equalize.init();
     }
 
     private activateTooltip() {

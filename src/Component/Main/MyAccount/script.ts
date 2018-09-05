@@ -5,6 +5,7 @@ import {Marker} from "@app/assets/script/components/marker";
 import * as iconCheckedTemplate from "@app/templates/handlebars/icon-checked.handlebars";
 import * as iconUnCheckedTemplate from "@app/templates/handlebars/icon-unchecked.handlebars";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
+import EqualHeight from "@app/assets/script/components/equal-height";
 
 /**
  *
@@ -20,6 +21,7 @@ export class MyAccountComponent implements ComponentInterface {
 
     private init(element) {
         this.toggleLogoutLink();
+        this.equalizeActionButtonHeight();
 
         new Tab();
 
@@ -46,5 +48,10 @@ export class MyAccountComponent implements ComponentInterface {
             // Show logout link
             logoutLink.parentNode.style.display = "block";
         });
+    }
+
+    private equalizeActionButtonHeight() {
+        const equalize = new EqualHeight("#MyProfileForm_submit, #MyProfileForm_button_cancel");
+        equalize.init();
     }
 }
