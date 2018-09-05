@@ -39,7 +39,7 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
             const lang = document.body.getAttribute("data-language");
             let langCode = "en";
 
-            if (typeof this.languages[lang] !== undefined) {
+            if (typeof this.languages[lang] !== "undefined") {
                 langCode = this.languages[lang];
             }
             this.launchGame();
