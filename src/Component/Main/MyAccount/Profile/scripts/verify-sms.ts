@@ -207,7 +207,6 @@ export class SmsVerification extends FormBase {
 
                     this.launchLightBox();
                 } else {
-                    // utility.removeClass(verificationError, "hidden");
                     this.errorNotification.show(res.message);
                 }
             });
