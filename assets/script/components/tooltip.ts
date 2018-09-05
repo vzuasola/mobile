@@ -54,8 +54,6 @@ class Tooltip {
             const trigger = utility.hasClass(src, this.triggerClass, true);
             const container = utility.hasClass(src, "tooltip-container", true);
 
-            console.log("src", src);
-
             if (this.active && container) {
                 // Don't close on clicking tooltip content
                 return;
