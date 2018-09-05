@@ -48,16 +48,24 @@ class Tooltip {
     }
 
     private bindEvent() {
-        utility.listen(window, "click", (event, src) => {
-            const trigger = utility.hasClass(src, this.triggerClass, true);
+        const eventType = utility.eventType();
 
-            if (trigger) {
+        utility.listen(window, eventType, (event, src) => {
+            const trigger = utility.hasClass(src, this.triggerClass, true);
+            const container = utility.hasClass(src, "tooltip-container", true);
+
+            if (this.active && container) {
+                // Don't close on clicking tooltip content
+                return;
+            } else if (trigger) {
+                // toggle when clicking trigger
                 if (utility.hasClass(this.container, "hidden")) {
                     this.showTooltip();
                 } else {
                     this.hideTooltip();
                 }
             } else {
+                // Close tooltip when clicking outside
                 this.hideTooltip();
             }
         });
