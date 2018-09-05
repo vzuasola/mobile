@@ -85,6 +85,10 @@ export class Sms {
         // append verification button
         this.mobile1Item.appendChild(this.verifyContainer.cloneNode(true));
         this.mobile2Item.appendChild(this.verifyContainer.cloneNode(true));
+        const verif1Container = this.element.querySelector(".MyProfileForm_mobile_number_1 .verification-container");
+        const verif2Container = this.element.querySelector(".MyProfileForm_mobile_number_2 .verification-container");
+        utility.removeClass(verif1Container, "hidden");
+        utility.removeClass(verif2Container, "hidden");
         this.mobile1Item.insertBefore(
             primary,
             this.mobile1Item.querySelector(".form-field").nextElementSibling,
@@ -97,14 +101,16 @@ export class Sms {
             this.element.querySelector("#MyProfileForm_mobile_number_2").setAttribute("disabled", "disabled");
             // hide mobile number 2 field
             utility.addClass(this.element.querySelector(".form-item.MyProfileForm_mobile_number_2"), "hidden");
+            utility.addClass(verif2Container, "hidden");
             // add listener to add new mobile to unhide mobile 2 field
             utility.listen(this.element, "click", (event, src) => {
                 this.addNewMobileNumber(event, src);
             });
+            // add listener to remove verify button
+            utility.listen(this.element.querySelector("#MyProfileForm_mobile_number_2"), "keyup", (event) => {
+                this.hideUnhideVerify(event, this.mobile2Item, this.mobile2InputValue);
+            });
         }
-
-        const verif1Container = this.element.querySelector(".MyProfileForm_mobile_number_1 .verification-container");
-        const verif2Container = this.element.querySelector(".MyProfileForm_mobile_number_2 .verification-container");
         // add verified icon on verified mobile number
         if (this.attachments.user.sms_1_verified) {
             this.addCheckIcon(verif1Container);
@@ -113,14 +119,12 @@ export class Sms {
             this.addCheckIcon(verif2Container);
         }
         // Mobile 1 field alter
-        utility.removeClass(verif1Container, "hidden");
         if (!this.attachments.user.sms_1_verified) {
             const verifyBtn = this.element.querySelector(".MyProfileForm_mobile_number_1 .verify-mobile-selector");
             utility.removeClass(verifyBtn , "hidden");
             utility.addClass(verifyBtn , "MyProfileForm_mobile_number_1_verify");
         }
         // Mobile 2 field alter
-        utility.removeClass(verif2Container, "hidden");
         if (!this.attachments.user.sms_2_verified) {
             const verifyBtn2 = this.element.querySelector(".MyProfileForm_mobile_number_2 .verify-mobile-selector");
             utility.removeClass(verifyBtn2, "hidden");
