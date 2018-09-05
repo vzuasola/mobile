@@ -101,16 +101,30 @@ export class GameLauncher {
      *
      */
     private onClick(e, src) {
-        if (src.getAttribute("data-game-launch") === "true" &&
-            src.getAttribute("data-game-provider")
-        ) {
-            const provider = src.getAttribute("data-game-provider");
-            const options = this.getOptionsByElement(src);
+        const el = utility.find(src, (element) => {
+            if (utility.hasClass(src, "game-favorite", true)) {
+                return false;
+            }
+
+            if (element.getAttribute("data-game-provider") &&
+                element.getAttribute("data-game-launch") === "true") {
+                return true;
+            }
+        });
+
+        if (el) {
+            e.preventDefault();
+
+            const provider = el.getAttribute("data-game-provider");
+            const options = this.getOptionsByElement(el);
 
             options.provider = provider;
 
             this.invoke(provider, "prelaunch", [options]);
             this.invoke(provider, "launch", [options]);
+            ComponentManager.broadcast("game.launch", {
+                src: el,
+            });
         }
     }
 }

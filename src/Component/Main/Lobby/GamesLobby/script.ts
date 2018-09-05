@@ -198,9 +198,9 @@ export class GamesLobbyComponent implements ComponentInterface {
      * Event listener for game item click
      */
     private listenClickGameTile() {
-        ComponentManager.subscribe("click", (event, src) => {
-            const el = utility.hasClass(src, "game-listing-item", true);
-            if (el && src.tagName === "IMG") {
+        ComponentManager.subscribe("game.launch", (event, src, data) => {
+            const el = utility.hasClass(data.src, "game-listing-item", true);
+            if (el) {
                 if (!this.isLogin) {
                     ComponentManager.broadcast("header.login");
                 } else {

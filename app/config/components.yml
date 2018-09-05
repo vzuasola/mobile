@@ -153,6 +153,9 @@ modules:
   pas_integration:
     class: App\MobileEntry\Module\GameIntegration\PAS\PASModule
 
+  voidbridge_integration:
+    class: App\MobileEntry\Module\GameIntegration\Voidbridge\VoidbridgeModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 

@@ -254,6 +254,7 @@ class GamesLobbyComponentController
             }
 
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
+            $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";
 
             return $processGame;
         } catch (\Exception $e) {
