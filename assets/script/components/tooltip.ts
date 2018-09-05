@@ -57,13 +57,9 @@ class Tooltip {
             if (this.active && container) {
                 // Don't close on clicking tooltip content
                 return;
-            } else if (trigger) {
-                // toggle when clicking trigger
-                if (utility.hasClass(this.container, "hidden")) {
-                    this.showTooltip();
-                } else {
-                    this.hideTooltip();
-                }
+            } else if (!this.active && trigger) {
+                // show when clicking trigger and currently not active
+                this.showTooltip();
             } else {
                 // Close tooltip when clicking outside
                 this.hideTooltip();
