@@ -7,8 +7,8 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 
-export class VoidbridgeModule implements ModuleInterface, GameInterface {
-    private key: string = "voidbridge";
+export class SkywindModule implements ModuleInterface, GameInterface {
+    private key: string = "skywind";
     private currencies: any;
     private languages: any;
     private windowObject: any;
@@ -45,12 +45,13 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
 
             this.launchGame(options.target);
             xhr({
-                url: Router.generateModuleRoute("voidbridge_integration", "launch"),
+                url: Router.generateModuleRoute("skywind_integration", "launch"),
                 type: "json",
                 method: "post",
                 data: {
                     gameCode: options.code,
                     langCode,
+                    playMode: true,
                 },
             }).then((response) => {
                 if (response.gameurl) {
