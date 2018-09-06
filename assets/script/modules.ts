@@ -7,6 +7,7 @@ import {SessionModule} from "@app/src/Module/Session/script";
 import {GameIntegrationModule} from "@app/src/Module/GameIntegration/script";
 import {PASModule} from "@app/src/Module/GameIntegration/PAS/script";
 import {VoidbridgeModule} from "@app/src/Module/GameIntegration/Voidbridge/script";
+import {SkywindModule} from "@app/src/Module/GameIntegration/Skywind/script";
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
@@ -23,6 +24,7 @@ ComponentManager.setModules({
     game_integration: new GameIntegrationModule(),
     pas_integration: new PASModule(),
     voidbridge_integration: new VoidbridgeModule(),
+    skywind_integration: new SkywindModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
     generic_integration: new GenericIntegrationModule(),
