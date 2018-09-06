@@ -147,4 +147,11 @@ export const resetForm = (form): void => {
     utility.forEach(messages, (message) => {
         message.remove();
     });
+
+    // remove has-success/error class
+    const formItems = form.querySelectorAll(".form-item");
+    utility.forEach(formItems, (item) => {
+        utility.removeClass(item, "has-error");
+        utility.removeClass(item, "has-success");
+    });
 };
