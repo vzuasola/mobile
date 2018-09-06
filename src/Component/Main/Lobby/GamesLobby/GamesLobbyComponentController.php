@@ -81,7 +81,6 @@ class GamesLobbyComponentController
                 $data['games'] = $this->groupGamesByContainer($data['games'], 3);
                 $data['favorite_list'] = $this->getFavoriteGamesList();
             } catch (\Exception $e) {
-                ddd($e);
                 $data['categories'] = [];
                 $data['games'] = [];
             }
