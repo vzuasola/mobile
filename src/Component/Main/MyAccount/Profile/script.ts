@@ -1,23 +1,23 @@
 import * as utility from "@core/assets/js/components/utility";
 import {ComponentInterface} from "@core/src/Plugins/ComponentWidget/asset/component";
 import {Profile} from "./scripts/profile";
-import {Sms} from "./scripts/sms";
+import {SmsVerification} from "./scripts/verify-sms";
 
 /**
  *
  */
 export class MyAccountProfileComponent implements ComponentInterface {
     private profile: Profile;
-    private sms: Sms;
+    private smsVerification: SmsVerification;
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.activateProfile(element, attachments);
-        this.enableSms(element, attachments);
+        this.activeSmsVerification(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.activateProfile(element, attachments);
-        this.enableSms(element, attachments);
+        this.activeSmsVerification(element, attachments);
     }
 
     /**
@@ -31,11 +31,14 @@ export class MyAccountProfileComponent implements ComponentInterface {
         this.profile.init();
     }
 
-    private enableSms(element, attachments) {
-        this.sms = new Sms(
+    /**
+     * Activate SMS Verification
+     */
+    private activeSmsVerification(element, attachments) {
+        this.smsVerification = new SmsVerification(
             element,
             attachments,
         );
-        this.sms.init();
+        this.smsVerification.init();
     }
 }
