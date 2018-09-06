@@ -42,7 +42,8 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
             if (typeof this.languages[lang] !== "undefined") {
                 langCode = this.languages[lang];
             }
-            this.launchGame();
+
+            this.launchGame(options.target);
             xhr({
                 url: Router.generateModuleRoute("voidbridge_integration", "launch"),
                 type: "json",
@@ -65,26 +66,30 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
         // not implemented
     }
 
-    private launchGame() {
-        const prop = {
-            width: 360,
-            height: 720,
-            scrollbars: 1,
-            scrollable: 1,
-            resizable: 1,
-        };
-        try {
-            if (this.windowObject &&
-                !this.windowObject.closed &&
-                this.windowObject.location.href !== "about:blank"
-            ) {
-                this.windowObject.focus();
-            } else {
-                this.windowObject = PopupWindow("", "gameWindow", prop);
-            }
-        } catch (e) {
-            if (this.windowObject) {
-                this.windowObject.focus();
+    private launchGame(target) {
+        if (target === "_self") {
+            this.windowObject = window;
+        } else {
+            const prop = {
+                width: 360,
+                height: 720,
+                scrollbars: 1,
+                scrollable: 1,
+                resizable: 1,
+            };
+            try {
+                if (this.windowObject &&
+                    !this.windowObject.closed &&
+                    this.windowObject.location.href !== "about:blank"
+                ) {
+                    this.windowObject.focus();
+                } else {
+                    this.windowObject = PopupWindow("", "gameWindow", prop);
+                }
+            } catch (e) {
+                if (this.windowObject) {
+                    this.windowObject.focus();
+                }
             }
         }
     }
