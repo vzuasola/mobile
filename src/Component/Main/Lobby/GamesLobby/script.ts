@@ -12,6 +12,7 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 
+import {GamesSearch} from "./scripts/games-search";
 import Xlider from "@app/assets/script/components/xlider";
 
 /**
@@ -22,12 +23,14 @@ export class GamesLobbyComponent implements ComponentInterface {
     private response: any;
     private isLogin: boolean;
     private gameLauncher;
+    private gamesSearch: GamesSearch;
 
     constructor() {
         this.gameLauncher = GameLauncher;
+        this.gamesSearch = new GamesSearch();
     }
 
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onLoad(element: HTMLElement, attachments: {authenticated: boolean, search_config: any }) {
         this.response = null;
         this.element = element;
         this.isLogin = attachments.authenticated;
@@ -37,13 +40,15 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.listenFavoriteClick();
         this.generateLobby();
+        this.gamesSearch.handleOnLoad(this.element, attachments);
     }
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onReload(element: HTMLElement, attachments: {authenticated: boolean, search_config: any }) {
         this.response = null;
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.generateLobby();
+        this.gamesSearch.handleOnReLoad(this.element, attachments);
     }
 
     private activateSlider(element) {
@@ -113,6 +118,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             type: "json",
         }).then((response) => {
             this.response = response;
+            this.gamesSearch.setGamesList(response);
             this.setLobby();
         }).fail((error, message) => {
             console.log(error);
