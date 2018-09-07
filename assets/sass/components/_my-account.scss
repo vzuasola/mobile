@@ -175,7 +175,15 @@ form.sms-verification-code-form {
     }
 }
 
-.table-header-text {
-    width: 50%;
-    word-wrap: break-word;
+#profile-verification {
+    table {
+        td {
+            word-break: break-all;
+        }
+
+        .table-header-text {
+            width: 50%;
+        }
+
+    }
 }
