@@ -151,6 +151,7 @@ export class Profile extends FormBase {
         utility.listen(this.element.querySelector("#MyProfileForm_button_cancel"), "click", (event, src) => {
             event.preventDefault();
             this.loader.show();
+            window.location.hash = "";
 
             ComponentManager.refreshComponent(
                 ["main"],
