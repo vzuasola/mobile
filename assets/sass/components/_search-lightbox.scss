@@ -1,0 +1,94 @@
+.games-search {
+    .modal-overlay {
+        background: $dark-gray;
+    }
+
+    &-content {
+        @include translate(0, 0%);
+        top: 0;
+        height: 100%;
+        max-height: 95%;
+        width: 100%;
+        max-width: 100%;
+        background: transparent;
+        padding: 1.5rem;
+        border: 0;
+        border-radius: 0;
+        margin-bottom: 0.8rem;
+    }
+
+    .modal-body {
+        margin: 1.6rem 0;
+
+        h2 {
+            color: $light-gray;
+        }
+    }
+
+    // Heading text
+    h2 {
+        margin: 0rem 1rem 1rem;
+        color: $light-gray;
+        font-size: 1.6rem;
+        font-weight: 600;
+    }
+
+    &-filter {
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        outline: none;
+        cursor: pointer;
+
+        svg {
+            width: 2rem;
+            height: 2rem;
+            fill: $white;
+        }
+    }
+
+    &-back {
+        position: absolute;
+        top: 1rem;
+        left: 1.5rem;
+        outline: none;
+        cursor: pointer;
+
+        svg {
+            width: 2rem;
+            height: 2rem;
+            fill: $white;
+        }
+    }
+
+    // Search Area
+    &-input {
+        width: 84%;
+        padding: 1.25rem 0.5rem;
+        border: none;
+        background: $white;
+        color: $black;
+        border-radius: 0.5rem 0 0 0.5rem;
+        outline: none;
+        float: left;
+    }
+
+    &-submit {
+        width: 10%;
+        background: transparent;
+        filter: none;
+        font-size: 0;
+        padding: 0 2.5rem;
+        vertical-align: middle;
+        border: 0;
+        background: $dark-red;
+        float: left;
+
+        svg {
+            outline: none;
+            margin: 0.5rem 0 0 -1.5rem;
+            width: 3rem;
+            fill: #fff;
+        }
+    }
+}
