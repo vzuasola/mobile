@@ -12,8 +12,6 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 
-import Xlider from "@app/assets/script/components/xlider";
-
 /**
  *
  */
@@ -44,37 +42,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.generateLobby();
-    }
-
-    private activateSlider(element) {
-        const slider: HTMLElement = element.querySelector("#category-tab");
-
-        if (slider && slider.querySelectorAll(".game-category").length > 0) {
-            // tslint:disable-next-line:no-unused-expression
-            const sliderObj = new Xlider({
-                selector: "#category-tab",
-                loop: false,
-                duration: 300,
-                controls: false,
-                perPage: {
-                    0: 1,
-                    320: 3.35,
-                    360: 3.76,
-                    375: 3.91,
-                    411: 4.3,
-                    414: 4.3,
-                    568: 5.94,
-                    640: 6.7,
-                    731: 7.63,
-                    823: 8.6,
-                  },
-                onInit() {
-                    this.selector.firstElementChild.style.padding = "0 0 0 3rem";
-                  },
-            });
-
-            sliderObj.goTo(this.getActiveIndex(slider));
-        }
     }
 
     private getActiveIndex(list: HTMLElement) {
@@ -146,7 +113,6 @@ export class GamesLobbyComponent implements ComponentInterface {
 
         if (categoriesEl) {
             categoriesEl.innerHTML = template;
-            this.activateSlider(this.element);
         }
     }
 
