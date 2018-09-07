@@ -16,6 +16,8 @@ class GamesLobbyComponent implements ComponentWidgetInterface
      */
     private $config;
 
+    private $product;
+
     /**
      *
      */
@@ -23,17 +25,19 @@ class GamesLobbyComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('views_fetcher'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('product_resolver')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($views, $configs)
+    public function __construct($views, $configs, $product)
     {
         $this->views = $views;
-        $this->configs = $configs;
+        $this->product = $product;
+        $this->configs = $configs->withProduct($product->getProduct());
     }
 
     /**
@@ -53,6 +57,14 @@ class GamesLobbyComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        return [];
+        try {
+            $config = $this->configs->getConfig('games_search.search_configuration');
+        } catch (\Exception $e) {
+            $config = [];
+        }
+
+        return [
+            'search_config' => $config
+        ];
     }
 }
