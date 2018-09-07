@@ -174,3 +174,16 @@ form.sms-verification-code-form {
         text-align: left;
     }
 }
+
+#profile-verification {
+    table {
+        td {
+            word-break: break-all;
+        }
+
+        .table-header-text {
+            width: 50%;
+        }
+
+    }
+}
