@@ -41,6 +41,7 @@ export class GamesSearch {
         this.listenChangeGameSearch();
         this.listenClickSearchButton();
         this.listenClickBackButton();
+        this.listenClickFavoriteOnPreview();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean, search_config: any }) {
@@ -187,6 +188,13 @@ export class GamesSearch {
         this.element.querySelector(".games-search-input").value = "";
     }
 
+    /*
+     * Function that sorts search result
+     */
+    private sortSearchResult() {
+        // placeholder
+    }
+
     /**
      * Function that shows search lightbox.
      */
@@ -246,6 +254,16 @@ export class GamesSearch {
                 this.showActiveCategoryTab();
                 Modal.close("#games-search-lightbox");
             }
+        });
+    }
+
+    /**
+     * Listens for click event on successful adding of favorites.
+     * Updates favorites icon state.
+     */
+    private listenClickFavoriteOnPreview() {
+        ComponentManager.subscribe("games.favorite", (event, src, data) => {
+            utility.toggleClass(data.srcElement, "active");
         });
     }
 }

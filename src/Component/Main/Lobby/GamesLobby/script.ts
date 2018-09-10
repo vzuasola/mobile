@@ -309,6 +309,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     if (result.success) {
                         this.response = null;
                         this.generateLobby();
+                        ComponentManager.broadcast("games.favorite", { srcElement: el });
                     }
                 }).fail((error, message) => {
                     console.log(error);
