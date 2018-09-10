@@ -86,10 +86,13 @@
                 "options": [],
                 "command": [
                     "lighthouse-ci",
-                    "https://dev-m.elysium-dfbt.com/en",
+                    "$LIGHTHOUSE_DEV_TARGET_URL",
                     "--report=./automation/deployed",
-                    "--accessibility=70",
-                    "--seo=85"
+                    "--performance=$LIGHTHOUSE_PERFORMANCE_SCORE",
+                    "--pwa=$LIGHTHOUSE_PWA_SCORE",
+                    "--best-practice=$LIGHTHOUSE_BEST_PRACTICES_SCORE",
+                    "--accessibility=$LIGHTHOUSE_ACCESSIBILITY_SCORE",
+                    "--seo=$LIGHTHOUSE_SEO_SCORE"
                 ],
                 "volumes": [
                     "$PWD:/app"
@@ -105,10 +108,13 @@
                 "options": [],
                 "command": [
                     "lighthouse-ci",
-                    "https://qa1-m.elysium-dfbt.com/en",
+                    "$LIGHTHOUSE_QA1_TARGET_URL",
                     "--report=./automation/deployed",
-                    "--accessibility=70",
-                    "--seo=85"
+                    "--performance=$LIGHTHOUSE_PERFORMANCE_SCORE",
+                    "--pwa=$LIGHTHOUSE_PWA_SCORE",
+                    "--best-practice=$LIGHTHOUSE_BEST_PRACTICES_SCORE",
+                    "--accessibility=$LIGHTHOUSE_ACCESSIBILITY_SCORE",
+                    "--seo=$LIGHTHOUSE_SEO_SCORE"
                 ],
                 "volumes": [
                     "$PWD:/app"
@@ -124,10 +130,13 @@
                 "options": [],
                 "command": [
                     "lighthouse-ci",
-                    "https://tct-m.elysium-dfbt.com/en",
+                    "$LIGHTHOUSE_TCT_TARGET_URL",
                     "--report=./automation/deployed",
-                    "--accessibility=70",
-                    "--seo=85"
+                    "--performance=$LIGHTHOUSE_PERFORMANCE_SCORE",
+                    "--pwa=$LIGHTHOUSE_PWA_SCORE",
+                    "--best-practice=$LIGHTHOUSE_BEST_PRACTICES_SCORE",
+                    "--accessibility=$LIGHTHOUSE_ACCESSIBILITY_SCORE",
+                    "--seo=$LIGHTHOUSE_SEO_SCORE"
                 ],
                 "volumes": [
                     "$PWD:/app"
@@ -143,10 +152,13 @@
                 "options": [],
                 "command": [
                     "lighthouse-ci",
-                    "https://stg-m.elysium-dfbt.com/en",
+                    "$LIGHTHOUSE_STG_TARGET_URL",
                     "--report=./automation/deployed",
-                    "--accessibility=70",
-                    "--seo=85"
+                    "--performance=$LIGHTHOUSE_PERFORMANCE_SCORE",
+                    "--pwa=$LIGHTHOUSE_PWA_SCORE",
+                    "--best-practice=$LIGHTHOUSE_BEST_PRACTICES_SCORE",
+                    "--accessibility=$LIGHTHOUSE_ACCESSIBILITY_SCORE",
+                    "--seo=$LIGHTHOUSE_SEO_SCORE"
                 ],
                 "volumes": [
                     "$PWD:/app"
@@ -162,10 +174,13 @@
                 "options": [],
                 "command": [
                     "lighthouse-ci",
-                    "https://uat-m.elysium-dfbt.com/en",
+                    "$LIGHTHOUSE_UAT_TARGET_URL",
                     "--report=./automation/deployed",
-                    "--accessibility=70",
-                    "--seo=85"
+                    "--performance=$LIGHTHOUSE_PERFORMANCE_SCORE",
+                    "--pwa=$LIGHTHOUSE_PWA_SCORE",
+                    "--best-practice=$LIGHTHOUSE_BEST_PRACTICES_SCORE",
+                    "--accessibility=$LIGHTHOUSE_ACCESSIBILITY_SCORE",
+                    "--seo=$LIGHTHOUSE_SEO_SCORE"
                 ],
                 "volumes": [
                     "$PWD:/app"
