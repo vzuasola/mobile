@@ -7,7 +7,7 @@
         @include translate(0, 0%);
         top: 0;
         height: 100%;
-        max-height: 95%;
+        max-height: 100%;
         width: 100%;
         max-width: 100%;
         background: transparent;
@@ -89,6 +89,50 @@
             margin: 0.5rem 0 0 -1.5rem;
             width: 3rem;
             fill: #fff;
+        }
+    }
+
+    &-result {
+        ul {
+            display: block;
+            padding-left: 0;
+            list-style-type: none;
+            margin-top: 6rem;
+
+            a {
+                width: 100%;
+                display: block;
+                margin-top: 1rem;
+                padding-bottom: 1rem;
+                border-bottom: 0.1rem solid $gray;
+
+                img {
+                    width: 33.33333333% !important;
+                    float: left;
+                }
+
+                span {
+                    position: absolute;
+                    left: 12.5rem;
+                    top: 3rem;
+                    color: $white;
+                }
+
+                svg {
+                    position: absolute;
+                    top: 3rem;
+                    right: 0;
+                    width: 1.2rem;
+                    @include rotate(-180);
+                    fill: $white;
+                }
+            }
+
+            li:last-child {
+                a {
+                    border: 0;
+                }
+            }
         }
     }
 }
