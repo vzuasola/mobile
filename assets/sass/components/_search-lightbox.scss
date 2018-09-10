@@ -83,6 +83,7 @@
         border: 0;
         background: $dark-red;
         float: left;
+        overflow: hidden;
 
         svg {
             outline: none;
@@ -94,45 +95,93 @@
 
     &-result {
         ul {
+            width: 100%;
             display: block;
             padding-left: 0;
             list-style-type: none;
-            margin-top: 6rem;
+            margin-top: 1.5rem;
+            float: left;
 
-            a {
-                width: 100%;
+            li {
                 display: block;
                 margin-top: 1rem;
                 padding-bottom: 1rem;
                 border-bottom: 0.1rem solid $gray;
+                width: 100%;
+                float: left;
 
-                img {
-                    width: 33.33333333% !important;
-                    float: left;
-                }
-
-                span {
-                    position: absolute;
-                    left: 12.5rem;
-                    top: 3rem;
-                    color: $white;
-                }
-
-                svg {
-                    position: absolute;
-                    top: 3rem;
-                    right: 0;
-                    width: 1.2rem;
-                    @include rotate(-180);
-                    fill: $white;
+                a {
+                    width: 100%;
                 }
             }
 
             li:last-child {
-                a {
                     border: 0;
+            }
+        }
+
+        &-left,
+        &-right {
+            display: inline-block;
+            float: left;
+        }
+
+        &-left {
+            width: 33.33333333%;
+            position: relative;
+
+            .game-favorite {
+                position: absolute;
+                right: 0;
+                outline: none;
+                border: 0;
+                cursor: pointer;
+
+                svg {
+                    width: 1.7rem;
+                    top: 0.5rem;
+                    right: 0.5rem;
+                    outline: none;
+                    border: 0;
+                    cursor: pointer;
+                    fill: $white;
+                    margin: 15% 0 0 55%;
+
                 }
             }
+
+            .game-favorite.active {
+                svg {
+                    fill: $yellow;
+                }
+            }
+
+            img {
+                border: 0.1rem solid $light-gray;
+            }
+        }
+
+        &-right {
+            width: 59.666667%;
+            margin: 0 3% 0 4%;
+
+            p {
+                margin: 0;
+                text-align: left;
+                color: $white;
+                position: absolute;
+                @include translate(0, 50%);
+                bottom: 50%;
+            }
+        }
+
+        svg {
+            position: absolute;
+            top: 3rem;
+            right: 0;
+            width: 1.2rem;
+            @include rotate(-180);
+            fill: $white;
         }
     }
 }
