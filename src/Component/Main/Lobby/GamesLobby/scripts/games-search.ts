@@ -33,9 +33,14 @@ export class GamesSearch {
         });
     }
 
-    handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean, search_config: any }) {
+    handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean,
+            title_weight: number,
+            keywords_weight: 0,
+            no_result_msg: string,
+            search_blurb: string,
+        }) {
         this.isLogin = attachments.authenticated;
-        this.config = attachments.search_config;
+        this.config = attachments;
         this.element = element;
         this.listenActivateSearchLightbox();
         this.listenChangeGameSearch();
@@ -44,9 +49,14 @@ export class GamesSearch {
         this.listenClickFavoriteOnPreview();
     }
 
-    handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean, search_config: any }) {
+    handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean,
+            title_weight: number,
+            keywords_weight: 0,
+            no_result_msg: string,
+            search_blurb: string,
+        }) {
         this.isLogin = attachments.authenticated;
-        this.config = attachments.search_config;
+        this.config = attachments;
         this.element = element;
     }
 

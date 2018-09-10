@@ -29,7 +29,13 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.gamesSearch = new GamesSearch();
     }
 
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean, search_config: any }) {
+    onLoad(element: HTMLElement, attachments: {
+            authenticated: boolean,
+            title_weight: number,
+            keywords_weight: 0,
+            no_result_msg: string,
+            search_blurb: string,
+        }) {
         this.response = null;
         this.element = element;
         this.isLogin = attachments.authenticated;
@@ -42,7 +48,13 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.gamesSearch.handleOnLoad(this.element, attachments);
     }
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean, search_config: any }) {
+    onReload(element: HTMLElement, attachments: {
+            authenticated: boolean,
+            title_weight: number,
+            keywords_weight: 0,
+            no_result_msg: string,
+            search_blurb: string,
+        }) {
         this.response = null;
         this.element = element;
         this.isLogin = attachments.authenticated;

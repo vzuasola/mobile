@@ -58,13 +58,13 @@ class GamesLobbyComponent implements ComponentWidgetInterface
     public function getData()
     {
         try {
-            $search_config = $this->configs->getConfig('games_search.search_configuration');
+            $searchConfig = $this->configs->getConfig('games_search.search_configuration');
         } catch (\Exception $e) {
             $search_config = [];
         }
 
         return [
-            'search_config' => $search_config
+            'title' => $searchConfig['title'] ?? ""
         ];
     }
 }
