@@ -256,28 +256,24 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private listenGameLaunch() {
         ComponentManager.subscribe("game.launch", (event, src, data) => {
-            const el = utility.hasClass(data.src, "game-listing-item", true);
+            const el = utility.hasClass(data.src, "game-list", true);
             if (el) {
-                if (!this.isLogin) {
-                    ComponentManager.broadcast("header.login");
-                } else {
-                    const gameCode = el.getAttribute("data-game-code");
-                    xhr({
-                        url: Router.generateRoute("games_lobby", "recent"),
-                        type: "json",
-                        method: "post",
-                        data: {
-                            gameCode,
-                        },
-                    }).then((result) => {
-                        if (result.success) {
-                            this.response = null;
-                            this.generateLobby();
-                        }
-                    }).fail((error, message) => {
-                        console.log(error);
-                    });
-                }
+                const gameCode = el.getAttribute("data-game-code");
+                xhr({
+                    url: Router.generateRoute("games_lobby", "recent"),
+                    type: "json",
+                    method: "post",
+                    data: {
+                        gameCode,
+                    },
+                }).then((result) => {
+                    if (result.success) {
+                        this.response = null;
+                        this.generateLobby();
+                    }
+                }).fail((error, message) => {
+                    console.log(error);
+                });
             }
         });
     }
