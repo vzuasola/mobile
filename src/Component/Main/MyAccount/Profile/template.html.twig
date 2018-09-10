@@ -7,7 +7,10 @@
     <a href="#verify-mobile-number" class="verify-mobile verify-mobile-selector hidden" id="verify-mobile-modal"> {{ verifyText }} </a>
     <span class="btn btn-small btn-yellow verify-mobile-loading verify-mobile hidden"><img src="../images/balance-loader-white.gif"></span>
 </div>
-<a id="add-new-mobile" href="" class="add-new-mobile hidden">{{ addMobileLabel }}</a>
+<a id="add-new-mobile" href="" class="add-new-mobile hidden">
+    {% include '@app/web/images/svg/plus-icon.svg' ignore missing %}
+    {{ addMobileLabel }}
+</a>
 
 <div id="verify-mobile-number" class="modal modal-standard">
     <div class="modal-content">
@@ -17,26 +20,21 @@
                 <div class="alert alert-error hidden" id="modal-verification-error"> </div>
                 <div class="alert alert-success hidden" id="modal-verification-success"> </div>
                 <p class="mb-30">{{ modalVerifyBodyText | raw }}</p>
-                <form class="pure-form sms-verification-code-form" name="sms-verification-code-form" id="verify-sms-form" method="post">
-                    <div class="form-item verification-code-field-wrapper">
-                        <div class="form-field">
-                            <input type="text" name="verification-code-field" id="verification-code-field" placeholder="{{ modalVerificationCodePlaceholder }}" class="input-block-level form-field-element verification-code-field" />
-                            <span class="validation-icon"></span>
-                            <span class="validation-error-message text-red"></span>
-                            <a href="" class="resend-code" id="verify-mobile-resend"> {{ modalVerificationResendCodeText }} </a>
-                        </div>
-                    </div>
-                    <div class="form-item verify-mobile-reload-wrapper">
-                        <div class="form-field">
-                            <!--[if lte IE 8]><input type="text" style="display: none" disabled="disabled" /><![endif]-->
-                            <input type="submit" value="{{ modalVerificationSubmitText }}" class="send-code-submit btn btn-small btn-yellow btn-lower-case" id="verify-mobile-submit">
-                            <button class="send-code-submit btn btn-small btn-yellow hidden" id="verify-mobile-reload"> <img src="../images/balance-loader-white.gif" /> </button>
-                        </div>
-                    </div>
-                </form>
+
+
+                {% form_theme SmsVerificationForm '@base/form/standard.html.twig' %}
+                {{ form_start(SmsVerificationForm, {'attr': {'class': 'pure-form sms-verification-code-form', 'id': 'verify-sms-form'}}) }}
+                <div class="alert alert-error hidden" id="verification-error"> </div>
+                {{ form_end(SmsVerificationForm) }}
+
             </div>
             {% include '@app/web/images/svg/closed.svg' ignore missing %}
         </div>
     </div>
 </div>
 {{ include('@component/Main/MyAccount/Profile/templates/profile-verification.html.twig') }}
+
+{# Question mark icon #}
+<span class="hidden">
+    {% include '@app/web/images/svg/rounded-questionmark.svg' ignore missing %}
+</span>

@@ -44,11 +44,14 @@ function Tab(options) {
         $this.additionalTabContent();
 
         var tabWithActiveClass = [];
+        var locationHash = utility.getHash(location.href);
 
         utility.forEach($this.tabLinks, function (item) {
 
             // Set active Tab on selector with 'active' class
-            if (utility.hasClass(item.parentNode, 'active')) {
+            if (utility.getHash(item.href) === locationHash) {
+                $this.setActiveTab(item);
+            } else if (utility.hasClass(item.parentNode, 'active')) {
                 $this.setActiveTab(item);
             }
 
