@@ -4,19 +4,27 @@
     position: relative;
 
     .game-search {
-        a {
+        .search-tab {
             width: 3rem;
             height: 2.75rem;
             position: absolute;
             z-index: 11;
             background: $cat-tab-bg;
+
+            svg {
+                outline: none;
+                fill: $white;
+                margin: 0.7rem 0 0 0.5rem;
+                width: 1.7rem;
+            }
         }
 
-        svg {
-            outline: none;
-            fill: #fff;
-            margin: 0.7rem 0 0 0.5rem;
-            width: 1.7rem;
+        .search-tab.active {
+            background: $dark-red;
+
+            svg {
+                fill: $yellow;
+            }
         }
     }
 }
