@@ -63,18 +63,26 @@ export class GamesSearch {
         }
     }
 
+    clearSearchBlurb() {
+        const searchBlurbEl = this.element.querySelectorAll(".search-blurb");
+        for (const blurbEl of searchBlurbEl) {
+            blurbEl.innerHTML = "";
+        }
+    }
+
     /**
      * Callback function on search success on search preview
      * and search games result via lobby
      */
     private onSuccessSearch(response, keyword) {
+        const blurb = this.config.search_blurb;
         const previewTemplate = gamesSearchTemplate({
             games: response,
             favorites: this.favoritesList,
             isLogin: this.isLogin,
         });
 
-        this.updateSearchBlurb(response.length, keyword);
+        this.updateSearchBlurb(blurb, { count: response.length, keyword });
         const gamesPreview = this.element.querySelector(".games-search-result");
 
         if (gamesPreview) {
@@ -92,13 +100,16 @@ export class GamesSearch {
 
         for (const games of response) {
             gamesList.push(games);
-            groupedGames[counter] = gamesList;
             if (counter % 3 === 0) {
+                groupedGames[counter] = gamesList;
                 gamesList = [];
                 counter = 1;
             }
-
             counter++;
+        }
+
+        if (gamesList.length) {
+            groupedGames.push(gamesList);
         }
 
         // set search tab as active tab
@@ -116,7 +127,11 @@ export class GamesSearch {
      * Callback function on search fail
      */
     private onFailedSearch(keyword) {
-        // placeholder
+        const blurb = this.config.no_result_msg;
+        this.updateSearchBlurb(blurb, { count: 0, keyword });
+
+        this.element.querySelector(".games-search-result").innerHTML = "";
+        this.element.querySelector("#game-container").innerHTML = "";
     }
 
     /**
@@ -124,11 +139,13 @@ export class GamesSearch {
      * @param {[int]} count   [number of results found]
      * @param {[string]} keyword [search query]
      */
-    private updateSearchBlurb(count, keyword) {
-        const blurb = this.config.search_blurb;
-        if (this.config.search_blurb) {
-            this.element.querySelector(".search-blurb").innerHTML = blurb.replace("{count}", count)
-               .replace("{keyword}", keyword);
+    private updateSearchBlurb(blurb, data: { count: number, keyword: string}) {
+         if (blurb) {
+            const searchBlurbEl = this.element.querySelectorAll(".search-blurb");
+            for (const blurbEl of searchBlurbEl) {
+                blurbEl.innerHTML = blurb.replace("{count}", data.count)
+                   .replace("{keyword}", data.keyword);
+            }
         }
     }
 
@@ -168,7 +185,6 @@ export class GamesSearch {
     private clearSearchResult() {
         this.element.querySelector(".games-search-result").innerHTML = "";
         this.element.querySelector(".games-search-input").value = "";
-        this.element.querySelector(".search-blurb").innerHTML = "";
     }
 
     /**
@@ -179,6 +195,7 @@ export class GamesSearch {
             const el = utility.hasClass(src, "search-tab", true);
             if (el) {
                 event.preventDefault();
+                this.clearSearchBlurb();
                 ComponentManager.broadcast("games.search");
             }
         });
@@ -196,6 +213,8 @@ export class GamesSearch {
             const keyword =  this.element.querySelector(".games-search-input");
             if (keyword && keyword.value) {
                 this.searchObj.search(keyword.value);
+            } else {
+                this.clearSearchResult();
             }
         });
     }
@@ -209,7 +228,6 @@ export class GamesSearch {
             const el = utility.hasClass(src, "games-search-submit", true);
             const keyword = this.element.querySelector(".games-search-input");
             if (el && keyword.value) {
-                this.searchObj.search(keyword.value);
                 this.clearSearchResult();
                 Modal.close("#games-search-lightbox");
             }
