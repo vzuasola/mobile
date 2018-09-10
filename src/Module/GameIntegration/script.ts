@@ -20,8 +20,10 @@ export class GameIntegrationModule implements ModuleInterface {
     onLoad(attachments: {}) {
         const pas: any = ComponentManager.getModuleInstance("pas_integration");
         const voidbridge: any = ComponentManager.getModuleInstance("voidbridge_integration");
+        const skywind: any = ComponentManager.getModuleInstance("skywind_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("voidbridge", voidbridge);
+        this.gameLauncher.setProvider("skywind", skywind);
         this.gameLauncher.init();
     }
 }

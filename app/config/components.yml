@@ -156,6 +156,9 @@ modules:
   voidbridge_integration:
     class: App\MobileEntry\Module\GameIntegration\Voidbridge\VoidbridgeModule
 
+  skywind_integration:
+    class: App\MobileEntry\Module\GameIntegration\Skywind\SkywindModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 

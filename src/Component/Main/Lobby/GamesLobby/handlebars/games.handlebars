@@ -1,13 +1,14 @@
 {{#each games}}
     <div class="game-listing">
         {{#each this}}
-        <a class="game-listing-item {{this.size}}"
+        <a class="game-list game-listing-item {{this.size}}"
         {{#if ../../isLogin}}
         data-game-launch="true"
         {{/if}}
         data-game-provider="{{this.game_provider}}"
         data-game-code="{{this.game_code}}"
         data-game-keywords ="{{this.keywords}}"
+        data-game-target="{{this.target}}"
         >
             {{#if this.ribbon}}
                 <div class="game-ribbon"

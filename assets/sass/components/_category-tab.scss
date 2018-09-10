@@ -22,24 +22,30 @@
 }
 
 .category-tab-list {
-    @extend %clearfix;
-    float: left;
-    list-style-type: none;
+    white-space: nowrap;
+    overflow-x: auto;
+   -webkit-overflow-scrolling: touch;
+   -ms-overflow-style: -ms-autohiding-scrollbar;
+   margin-left: 3rem;
 
-    .xlider-item {
-        width: auto !important;
-    }
+   .game-category {
+        @extend %clearfix;
+        float: left;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
 
-    .game-category {
-        text-align: center;
-    }
-
-    .game-category.active {
-        .active {
-            background: $dark-red;
-            color: $yellow;
+        &-item {
+        display: inline-block;
         }
-    }
+
+        &-item.active {
+            .active {
+                background: $dark-red;
+                color: $yellow;
+            }
+        }
+   }
 
     a {
         display: inline-block;
@@ -50,4 +56,8 @@
         font-weight: 600;
         padding: 0.5rem 1rem;
     }
+}
+
+.category-tab-list::-webkit-scrollbar {
+    display: none;
 }
