@@ -45,6 +45,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.listenFavoriteClick();
         this.generateLobby();
+        this.listenToCategory();
         this.gamesSearch.handleOnLoad(this.element, attachments);
     }
 
@@ -133,6 +134,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         if (categoriesEl) {
             categoriesEl.innerHTML = template;
         }
+
+        ComponentManager.broadcast("category.set");
     }
 
     /**
@@ -290,6 +293,27 @@ export class GamesLobbyComponent implements ComponentInterface {
                     console.log(error);
                 });
             }
+        });
+    }
+
+    private listenToCategory() {
+        ComponentManager.subscribe("category.set", (event, src, data) => {
+            const categoriesEl = this.element.querySelector("#game-categories");
+            const activeLink = categoriesEl.querySelector(".category-tab .active a");
+            const categories = categoriesEl.querySelectorAll(".category-tab");
+            const categoryScroll = categoriesEl.querySelector("#category-tab");
+            let scroll = 0;
+            for (const id in categories) {
+                if (categories.hasOwnProperty(id)) {
+                    const category = categories[id];
+                    scroll += category.getBoundingClientRect().width;
+                    if (utility.hasClass(category, "active")) {
+                        scroll -= category.getBoundingClientRect().width;
+                        break;
+                    }
+               }
+           }
+            categoryScroll.scrollLeft = scroll;
         });
     }
 }
