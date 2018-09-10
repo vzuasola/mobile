@@ -1,6 +1,6 @@
 import * as utility from "@core/assets/js/components/utility";
 
-import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 
 import Xlider from "@app/assets/script/components/xlider";
 
@@ -10,6 +10,7 @@ import Xlider from "@app/assets/script/components/xlider";
 export class LobbySliderComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.activateSlider(element);
+        this.listenClickslider();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -79,5 +80,28 @@ export class LobbySliderComponent implements ComponentInterface {
             utility.addClass(lastSlide, classAdded);
         }
 
+    }
+
+    /**
+     * Event listener for game item slider click
+     */
+    private listenClickslider() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.find(src, (element) => {
+                if (element.getAttribute("data-game-provider") &&
+                    element.getAttribute("data-game-code") &&
+                    utility.hasClass(element, "game-list")
+                ) {
+                    return true;
+                }
+            });
+
+            if (el) {
+                event.preventDefault();
+                ComponentManager.broadcast("header.login", {
+                    src: el,
+                });
+            }
+        });
     }
 }

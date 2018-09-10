@@ -1,7 +1,7 @@
 {{#each games}}
     <div class="game-listing">
         {{#each this}}
-        <a class="game-listing-item {{this.size}}"
+        <a class="game-list game-listing-item {{this.size}}"
         {{#if ../../isLogin}}
         data-game-launch="true"
         {{/if}}

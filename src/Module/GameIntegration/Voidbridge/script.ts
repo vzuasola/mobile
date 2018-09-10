@@ -67,7 +67,7 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
     }
 
     private launchGame(target) {
-        if (target === "_self") {
+        if (target === "_self" || target === "_top") {
             this.windowObject = window;
         } else {
             const prop = {
