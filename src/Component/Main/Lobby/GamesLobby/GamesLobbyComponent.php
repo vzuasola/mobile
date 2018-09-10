@@ -60,7 +60,7 @@ class GamesLobbyComponent implements ComponentWidgetInterface
         try {
             $searchConfig = $this->configs->getConfig('games_search.search_configuration');
         } catch (\Exception $e) {
-            $search_config = [];
+            $searchConfig = [];
         }
 
         return [
