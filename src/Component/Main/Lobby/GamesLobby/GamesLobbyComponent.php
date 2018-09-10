@@ -14,7 +14,7 @@ class GamesLobbyComponent implements ComponentWidgetInterface
     /**
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
-    private $config;
+    private $configs;
 
     private $product;
 
@@ -58,13 +58,13 @@ class GamesLobbyComponent implements ComponentWidgetInterface
     public function getData()
     {
         try {
-            $config = $this->configs->getConfig('games_search.search_configuration');
+            $search_config = $this->configs->getConfig('games_search.search_configuration');
         } catch (\Exception $e) {
-            $config = [];
+            $search_config = [];
         }
 
         return [
-            'search_config' => $config
+            'search_config' => $search_config
         ];
     }
 }
