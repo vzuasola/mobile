@@ -126,9 +126,10 @@ export class GamesSearch {
      */
     private updateSearchBlurb(count, keyword) {
         const blurb = this.config.search_blurb;
-
-        this.element.querySelector(".search-blurb").innerHTML = blurb.replace("{count}", count)
-            .replace("{keyword}", keyword);
+        if (this.config.search_blurb) {
+            this.element.querySelector(".search-blurb").innerHTML = blurb.replace("{count}", count)
+               .replace("{keyword}", keyword);
+        }
     }
 
     /**
