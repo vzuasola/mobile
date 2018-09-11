@@ -312,7 +312,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                         break;
                     }
                }
-           }
+            }
             categoryScroll.scrollLeft = scroll;
         });
     }
