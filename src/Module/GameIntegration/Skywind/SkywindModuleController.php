@@ -42,7 +42,7 @@ class SkywindModuleController
             $responseData = $this->voidbridge->getGameUrlById('icore_sw', $requestData['gameCode'], [
                 'options' => [
                     'languageCode' => $requestData['langCode'],
-                    'gameName' => $requestData['gameCode'],
+                    'playMode' => true
                 ]
             ]);
             if ($responseData['url']) {
