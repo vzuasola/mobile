@@ -132,3 +132,26 @@ export abstract class FormBase {
         return element;
     }
 }
+
+export const resetForm = (form): void => {
+    form.reset();
+
+    // remove icon-validation
+    const icons = form.querySelectorAll(".icon-validation");
+    utility.forEach(icons, (icon) => {
+        icon.remove();
+    });
+
+    // remove helper block
+    const messages = form.querySelectorAll(".form-help-block");
+    utility.forEach(messages, (message) => {
+        message.remove();
+    });
+
+    // remove has-success/error class
+    const formItems = form.querySelectorAll(".form-item");
+    utility.forEach(formItems, (item) => {
+        utility.removeClass(item, "has-error");
+        utility.removeClass(item, "has-success");
+    });
+};

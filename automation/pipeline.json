@@ -78,6 +78,116 @@
             }
         }
     },
+    "lighthouse": {
+        "steps": {
+            "lighthouse": {
+                "dockerfile": "automation/Dockerfile.lighthouse",
+                "docker-image-suffix": "-lighthouse",
+                "options": [],
+                "command": [
+                    "lighthouse-ci",
+                    "$LIGHTHOUSE_DEV_TARGET_URL",
+                    "--report=./automation/deployed",
+                    "--performance=$LIGHTHOUSE_PERFORMANCE_SCORE",
+                    "--pwa=$LIGHTHOUSE_PWA_SCORE",
+                    "--best-practice=$LIGHTHOUSE_BEST_PRACTICES_SCORE",
+                    "--accessibility=$LIGHTHOUSE_ACCESSIBILITY_SCORE",
+                    "--seo=$LIGHTHOUSE_SEO_SCORE"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
+    "lighthouse-test": {
+        "steps": {
+            "lighthouse": {
+                "dockerfile": "automation/Dockerfile.lighthouse",
+                "docker-image-suffix": "-lighthouse",
+                "options": [],
+                "command": [
+                    "lighthouse-ci",
+                    "$LIGHTHOUSE_QA1_TARGET_URL",
+                    "--report=./automation/deployed",
+                    "--performance=$LIGHTHOUSE_PERFORMANCE_SCORE",
+                    "--pwa=$LIGHTHOUSE_PWA_SCORE",
+                    "--best-practice=$LIGHTHOUSE_BEST_PRACTICES_SCORE",
+                    "--accessibility=$LIGHTHOUSE_ACCESSIBILITY_SCORE",
+                    "--seo=$LIGHTHOUSE_SEO_SCORE"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
+    "lighthouse-tct": {
+        "steps": {
+            "lighthouse": {
+                "dockerfile": "automation/Dockerfile.lighthouse",
+                "docker-image-suffix": "-lighthouse",
+                "options": [],
+                "command": [
+                    "lighthouse-ci",
+                    "$LIGHTHOUSE_TCT_TARGET_URL",
+                    "--report=./automation/deployed",
+                    "--performance=$LIGHTHOUSE_PERFORMANCE_SCORE",
+                    "--pwa=$LIGHTHOUSE_PWA_SCORE",
+                    "--best-practice=$LIGHTHOUSE_BEST_PRACTICES_SCORE",
+                    "--accessibility=$LIGHTHOUSE_ACCESSIBILITY_SCORE",
+                    "--seo=$LIGHTHOUSE_SEO_SCORE"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
+    "lighthouse-stg": {
+        "steps": {
+            "lighthouse": {
+                "dockerfile": "automation/Dockerfile.lighthouse",
+                "docker-image-suffix": "-lighthouse",
+                "options": [],
+                "command": [
+                    "lighthouse-ci",
+                    "$LIGHTHOUSE_STG_TARGET_URL",
+                    "--report=./automation/deployed",
+                    "--performance=$LIGHTHOUSE_PERFORMANCE_SCORE",
+                    "--pwa=$LIGHTHOUSE_PWA_SCORE",
+                    "--best-practice=$LIGHTHOUSE_BEST_PRACTICES_SCORE",
+                    "--accessibility=$LIGHTHOUSE_ACCESSIBILITY_SCORE",
+                    "--seo=$LIGHTHOUSE_SEO_SCORE"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
+    "lighthouse-uat": {
+        "steps": {
+            "lighthouse": {
+                "dockerfile": "automation/Dockerfile.lighthouse",
+                "docker-image-suffix": "-lighthouse",
+                "options": [],
+                "command": [
+                    "lighthouse-ci",
+                    "$LIGHTHOUSE_UAT_TARGET_URL",
+                    "--report=./automation/deployed",
+                    "--performance=$LIGHTHOUSE_PERFORMANCE_SCORE",
+                    "--pwa=$LIGHTHOUSE_PWA_SCORE",
+                    "--best-practice=$LIGHTHOUSE_BEST_PRACTICES_SCORE",
+                    "--accessibility=$LIGHTHOUSE_ACCESSIBILITY_SCORE",
+                    "--seo=$LIGHTHOUSE_SEO_SCORE"
+                ],
+                "volumes": [
+                    "$PWD:/app"
+                ]
+            }
+        }
+    },
     "sensiolab-security-checker": {
         "steps": {
             "sensiolab-security-checker": {
