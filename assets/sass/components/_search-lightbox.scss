@@ -68,8 +68,8 @@
         cursor: pointer;
 
         svg {
-            width: 2rem;
-            height: 2rem;
+            width: 2.2rem;
+            height: 2.2rem;
             fill: $white;
         }
     }
@@ -221,7 +221,7 @@
 .close-icon:after {
     position: absolute;
     right: 1.5rem;
-    top: 1rem;
+    top: 1.2rem;
     content: "X";
     display: block;
     color: $dark-gray;
