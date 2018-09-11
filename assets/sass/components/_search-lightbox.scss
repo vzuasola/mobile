@@ -193,9 +193,11 @@
 
         svg {
             position: absolute;
-            top: 3rem;
             right: 0;
+            bottom: 40%;
+            margin: 0;
             width: 1.2rem;
+            @include translate(0, 50%);
             @include rotate(-180);
             fill: $white;
         }
