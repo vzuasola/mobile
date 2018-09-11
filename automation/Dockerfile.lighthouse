@@ -1,0 +1,33 @@
+# Lighthouse CI Docker
+#
+# Custom Docker executable to run lighthouse CI using headless chrome
+#
+# Usage:
+# docker run -it --rm lighthouse https://qa1-m.elysium-dfbt.com/en --accessibility=50 --best-practices=80 --seo=90
+
+FROM node:8-slim
+
+# Add chrome
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update && apt-get install -y google-chrome-unstable --no-install-recommends \
+    && apt-get install -y git \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /src/*.deb
+
+# Install lighthouse cli
+ARG CACHEBUST=1
+RUN npm i https://github.com/alexecus/lighthouse-ci#aab98c3c6eece4e8790e2238b40867bd27b8b07c -g
+
+# Add a chrome user and setup home dir
+RUN groupadd --system chrome && \
+    useradd --system --create-home --gid chrome --groups audio,video chrome && \
+    mkdir --parents /home/chrome/reports && \
+    chown --recursive chrome:chrome /home/chrome
+
+USER root
+
+VOLUME ["/app"]
+WORKDIR /app
+
+ENTRYPOINT []
