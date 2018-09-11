@@ -103,7 +103,7 @@ export class GamesSearch {
             gamesPreview.innerHTML = previewTemplate;
         }
 
-        this.onSuccessSearchLobby(response);
+        this.onSuccessSearchLobby(sortedGames);
     }
 
     private onSuccessSearchLobby(response) {
@@ -115,9 +115,9 @@ export class GamesSearch {
         for (const games of response) {
             gamesList.push(games);
             if (counter % 3 === 0) {
-                groupedGames[counter] = gamesList;
+                groupedGames.push(gamesList);
                 gamesList = [];
-                counter = 1;
+                counter = 0;
             }
             counter++;
         }
