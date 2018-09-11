@@ -166,7 +166,7 @@ export class GamesSearch {
     /**
      * Function that shows active category games before initiating a search.
      */
-    private showActiveCategoryTab() {
+    private showActiveCategoryTab(srcElement) {
         const activeCategory = utility.getHash(window.location.href);
         if (this.gamesList.games[activeCategory]) {
             // repopulate list of games for active tab
@@ -202,7 +202,7 @@ export class GamesSearch {
     }
 
     /*
-     * Function that sorts search result
+     * Function that computes sort weight for search results
      */
     private setSortWeightPerGame(keyword, result) {
         const sortedGames = [];
@@ -299,8 +299,9 @@ export class GamesSearch {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "games-search-back", true);
             if (el) {
+                event.preventDefault();
                 this.clearSearchResult();
-                this.showActiveCategoryTab();
+                this.showActiveCategoryTab(el);
                 Modal.close("#games-search-lightbox");
             }
         });
