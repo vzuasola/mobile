@@ -17,10 +17,11 @@ export class GamesSearch {
     private element;
     private config: any;
     private gamesList: any;
+    private searchFields = ["title", "keywords"];
 
     constructor() {
         this.searchObj = new Search({
-            fields: ["title", "keywords"],
+            fields: this.searchFields,
             onSuccess: (response, keyword) => {
                 return this.onSuccessSearch(response, keyword);
             },
@@ -74,7 +75,8 @@ export class GamesSearch {
         }
     }
 
-    clearSearchBlurb() {
+    clearSearchTab() {
+        utility.removeClass(this.element.querySelector(".search-tab"), "active");
         const searchBlurbEl = this.element.querySelectorAll(".search-blurb");
         for (const blurbEl of searchBlurbEl) {
             blurbEl.innerHTML = "";
@@ -87,8 +89,9 @@ export class GamesSearch {
      */
     private onSuccessSearch(response, keyword) {
         const blurb = this.config.search_blurb;
+        const sortedGames = this.sortSearchResult(keyword, response);
         const previewTemplate = gamesSearchTemplate({
-            games: response,
+            games: sortedGames,
             favorites: this.favoritesList,
             isLogin: this.isLogin,
         });
@@ -201,8 +204,44 @@ export class GamesSearch {
     /*
      * Function that sorts search result
      */
-    private sortSearchResult() {
-        // placeholder
+    private setSortWeightPerGame(keyword, result) {
+        const sortedGames = [];
+        const sortWeight = {
+            title: this.config.title_weight,
+            keywords: this.config.keywords_weight,
+        };
+
+        const keywords = utility.clone(keyword).split(" ");
+
+        for (const game of result) {
+            let weight: number = 0;
+            for (const searchField of this.searchFields) {
+                for (const query of keywords) {
+                    const gameSearchValues = utility.clone(game[searchField]).split(" ");
+                    for (const gameSearchValue of gameSearchValues) {
+                        if (gameSearchValue.indexOf(query) !== -1) {
+                            weight = weight + parseFloat(sortWeight[searchField]);
+                        }
+                    }
+                }
+            }
+            game.weight = weight.toFixed(2);
+            sortedGames.push(game);
+        }
+
+        return sortedGames;
+    }
+
+    /*
+     * Function that sorts search result
+     */
+    private sortSearchResult(keyword, result) {
+        const sortedGames = this.setSortWeightPerGame(keyword, result);
+        sortedGames.sort((a, b) => {
+            return parseFloat(b.weight) - parseFloat(a.weight);
+        });
+
+        return sortedGames;
     }
 
     /**
@@ -213,7 +252,7 @@ export class GamesSearch {
             const el = utility.hasClass(src, "search-tab", true);
             if (el) {
                 event.preventDefault();
-                this.clearSearchBlurb();
+                this.clearSearchTab();
                 ComponentManager.broadcast("games.search");
             }
         });
