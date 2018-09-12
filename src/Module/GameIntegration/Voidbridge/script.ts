@@ -64,7 +64,7 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                     this.unsupportedCurrency(options);
                 }
             }).fail((error, message) => {
-                //Do nothing
+                // Do nothing
             });
         }
     }
@@ -148,7 +148,7 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                 }
             }
         }).fail((error, message) => {
-            //Do nothing
+            // Do nothing
         });
     }
 }
