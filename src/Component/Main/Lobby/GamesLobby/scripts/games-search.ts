@@ -124,6 +124,7 @@ export class GamesSearch {
         // set search tab as active tab
         utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.addClass(this.element.querySelector(".search-tab"), "active");
+        utility.addClass(this.element.querySelector(".search-blurb"), "active");
         // populate search results in games lobby search tab
         this.setGames(groupedGames);
     }
@@ -168,6 +169,7 @@ export class GamesSearch {
             this.setGames(this.gamesList.games[activeCategory]);
             // remove active state of search tab
             utility.removeClass(this.element.querySelector(".search-tab"), "active");
+            utility.removeClass(this.element.querySelector(".search-blurb"), "active");
             utility.addClass(this.element.querySelector(".category-" + activeCategory), "active");
         }
     }
