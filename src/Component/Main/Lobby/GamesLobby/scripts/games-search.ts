@@ -44,6 +44,7 @@ export class GamesSearch {
         this.config = attachments;
         this.element = element;
         this.listenActivateSearchLightbox();
+        this.listenActivateSearchFilterLightbox();
         this.listenChangeGameSearch();
         this.listenClickSearchButton();
         this.listenClickBackButton();
@@ -265,6 +266,23 @@ export class GamesSearch {
 
         ComponentManager.subscribe("games.search", (event, src) => {
             Modal.open("#games-search-lightbox");
+        });
+    }
+
+    /**
+     * Function that shows search filter lightbox.
+     */
+    private listenActivateSearchFilterLightbox() {
+        ComponentManager.subscribe("click", (event, src) => {
+            const el = utility.hasClass(src, "games-filter", true);
+            if (el) {
+                event.preventDefault();
+                ComponentManager.broadcast("games.search.filter");
+            }
+        });
+
+        ComponentManager.subscribe("games.search.filter", (event, src) => {
+            Modal.open("#games-search-filter-lightbox");
         });
     }
 
