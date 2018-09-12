@@ -49,6 +49,7 @@ export class GamesSearch {
         this.listenClickBackButton();
         this.listenClickFavoriteOnPreview();
         this.listenCategoryChange();
+        this.listenClickClearIcon();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean,
@@ -328,6 +329,15 @@ export class GamesSearch {
         ComponentManager.subscribe("category.change", (event, src, data) => {
             this.deactivateSearchTab();
             this.clearSearchBlurb();
+        });
+    }
+
+    private listenClickClearIcon() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.hasClass(src, "close-icon", true);
+            if (el) {
+                this.clearSearchResult();
+            }
         });
     }
 }
