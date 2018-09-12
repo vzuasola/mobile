@@ -106,25 +106,27 @@ export default function ErrorHandler(errors, event, formValidations) {
      *
      */
     this.showError = function (element, message) {
-        if (utility.isNodeList(element)) {
-            var parent;
+        if (element.tagName !== "FORM") {
+            if (utility.isNodeList(element)) {
+                var parent;
 
-            for (var i = 0; i < element.length; i++) {
-                parent = element[i].parentNode.parentNode;
+                for (var i = 0; i < element.length; i++) {
+                    parent = element[i].parentNode.parentNode;
+                }
+
+                element = parent;
             }
 
-            element = parent;
-        }
+            var field = utility.findParent(element, '.form-item');
 
-        var field = utility.findParent(element, '.form-item');
+            removeErrorMessage(element);
+            if (element && !element.hasAttribute("disabled")) {
+                utility.addClass(field, 'has-error');
+                utility.removeClass(field, 'has-success');
 
-        removeErrorMessage(element);
-        if (!element.hasAttribute("disabled")) {
-            utility.addClass(field, 'has-error');
-            utility.removeClass(field, 'has-success');
-
-            createErrorMessage(element, message);
-            createErrorIcon(element);
+                createErrorMessage(element, message);
+                createErrorIcon(element);
+            }
         }
     };
 
@@ -179,20 +181,23 @@ export default function ErrorHandler(errors, event, formValidations) {
      *
      */
     this.hideError = function (element) {
-        if (utility.isNodeList(element) ||
-            element.type === 'checkbox' ||
-            element.type === 'radio'
-        ) {
-            element = element.parentNode.parentNode;
+
+        if (element.tagName !== "FORM") {
+            if (utility.isNodeList(element) ||
+                element.type === 'checkbox' ||
+                element.type === 'radio'
+            ) {
+                element = element.parentNode.parentNode;
+            }
+
+            var field = utility.findParent(element, '.form-item');
+
+            utility.removeClass(field, 'has-error');
+            utility.addClass(field, 'has-success');
+
+            removeErrorMessage(element);
+            createErrorIcon(element);
         }
-
-        var field = utility.findParent(element, '.form-item');
-
-        utility.removeClass(field, 'has-error');
-        utility.addClass(field, 'has-success');
-
-        removeErrorMessage(element);
-        createErrorIcon(element);
     };
 
     /**

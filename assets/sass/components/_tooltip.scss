@@ -1,0 +1,38 @@
+.tooltip {
+    // Tooltip trigger
+    &-trigger {
+        position: relative;
+        margin-left: 0.4rem;
+
+        &:before {
+            @include triangle(top, 0.5rem, #141414);
+            @include translateX(-50%);
+            display: none;
+            position: absolute;
+            bottom: -1.6rem;
+            left: 50%;
+            border-bottom-width: 0.9rem;
+            content: "";
+        }
+
+        &.active {
+            &:before {
+                display: block;
+            }
+        }
+    }
+
+    // Tooltip content
+    &-container {
+        position: absolute;
+        top: 4.4rem;
+        z-index: 1;
+        width: calc(100vw - 1.5rem * 4);
+        padding: 1rem 2rem;
+        border-radius: 0.3rem;
+        background: #141414;
+        color: $yellow;
+        font-weight: normal;
+        font-style: italic;
+    }
+}
