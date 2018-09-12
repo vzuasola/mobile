@@ -17,10 +17,11 @@ export class GamesSearch {
     private element;
     private config: any;
     private gamesList: any;
+    private searchFields = ["title", "keywords"];
 
     constructor() {
         this.searchObj = new Search({
-            fields: ["title", "keywords"],
+            fields: this.searchFields,
             onSuccess: (response, keyword) => {
                 return this.onSuccessSearch(response, keyword);
             },
@@ -47,6 +48,8 @@ export class GamesSearch {
         this.listenClickSearchButton();
         this.listenClickBackButton();
         this.listenClickFavoriteOnPreview();
+        this.listenCategoryChange();
+        this.listenClickClearIcon();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean,
@@ -74,21 +77,15 @@ export class GamesSearch {
         }
     }
 
-    clearSearchBlurb() {
-        const searchBlurbEl = this.element.querySelectorAll(".search-blurb");
-        for (const blurbEl of searchBlurbEl) {
-            blurbEl.innerHTML = "";
-        }
-    }
-
     /**
      * Callback function on search success on search preview
      * and search games result via lobby
      */
     private onSuccessSearch(response, keyword) {
         const blurb = this.config.search_blurb;
+        const sortedGames = this.sortSearchResult(keyword, response);
         const previewTemplate = gamesSearchTemplate({
-            games: response,
+            games: sortedGames,
             favorites: this.favoritesList,
             isLogin: this.isLogin,
         });
@@ -100,7 +97,7 @@ export class GamesSearch {
             gamesPreview.innerHTML = previewTemplate;
         }
 
-        this.onSuccessSearchLobby(response);
+        this.onSuccessSearchLobby(sortedGames);
     }
 
     private onSuccessSearchLobby(response) {
@@ -112,9 +109,9 @@ export class GamesSearch {
         for (const games of response) {
             gamesList.push(games);
             if (counter % 3 === 0) {
-                groupedGames[counter] = gamesList;
+                groupedGames.push(gamesList);
                 gamesList = [];
-                counter = 1;
+                counter = 0;
             }
             counter++;
         }
@@ -163,7 +160,7 @@ export class GamesSearch {
     /**
      * Function that shows active category games before initiating a search.
      */
-    private showActiveCategoryTab() {
+    private showActiveCategoryTab(srcElement) {
         const activeCategory = utility.getHash(window.location.href);
         if (this.gamesList.games[activeCategory]) {
             // repopulate list of games for active tab
@@ -196,13 +193,61 @@ export class GamesSearch {
     private clearSearchResult() {
         this.element.querySelector(".games-search-result").innerHTML = "";
         this.element.querySelector(".games-search-input").value = "";
+        this.clearSearchBlurb();
+    }
+
+    private clearSearchBlurb() {
+        const searchBlurbEl = this.element.querySelectorAll(".search-blurb");
+        for (const blurbEl of searchBlurbEl) {
+            blurbEl.innerHTML = "";
+        }
+    }
+
+    private deactivateSearchTab() {
+        utility.removeClass(this.element.querySelector(".search-tab"), "active");
+    }
+
+    /*
+     * Function that computes sort weight for search results
+     */
+    private setSortWeightPerGame(keyword, result) {
+        const sortedGames = [];
+        const sortWeight = {
+            title: this.config.title_weight,
+            keywords: this.config.keywords_weight,
+        };
+
+        const keywords = utility.clone(keyword).split(" ");
+
+        for (const game of result) {
+            let weight: number = 0;
+            for (const searchField of this.searchFields) {
+                for (const query of keywords) {
+                    const gameSearchValues = utility.clone(game[searchField]).split(" ");
+                    for (const gameSearchValue of gameSearchValues) {
+                        if (gameSearchValue.indexOf(query) !== -1) {
+                            weight = weight + parseFloat(sortWeight[searchField]);
+                        }
+                    }
+                }
+            }
+            game.weight = weight.toFixed(2);
+            sortedGames.push(game);
+        }
+
+        return sortedGames;
     }
 
     /*
      * Function that sorts search result
      */
-    private sortSearchResult() {
-        // placeholder
+    private sortSearchResult(keyword, result) {
+        const sortedGames = this.setSortWeightPerGame(keyword, result);
+        sortedGames.sort((a, b) => {
+            return parseFloat(b.weight) - parseFloat(a.weight);
+        });
+
+        return sortedGames;
     }
 
     /**
@@ -213,7 +258,7 @@ export class GamesSearch {
             const el = utility.hasClass(src, "search-tab", true);
             if (el) {
                 event.preventDefault();
-                this.clearSearchBlurb();
+                this.clearSearchResult();
                 ComponentManager.broadcast("games.search");
             }
         });
@@ -247,7 +292,9 @@ export class GamesSearch {
             const keyword = this.element.querySelector(".games-search-input");
             if (el && keyword.value) {
                 this.clearSearchResult();
+                this.searchObj.search(keyword.value);
                 Modal.close("#games-search-lightbox");
+
             }
         });
     }
@@ -260,8 +307,9 @@ export class GamesSearch {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "games-search-back", true);
             if (el) {
+                event.preventDefault();
                 this.clearSearchResult();
-                this.showActiveCategoryTab();
+                this.showActiveCategoryTab(el);
                 Modal.close("#games-search-lightbox");
             }
         });
@@ -274,6 +322,22 @@ export class GamesSearch {
     private listenClickFavoriteOnPreview() {
         ComponentManager.subscribe("games.favorite", (event, src, data) => {
             utility.toggleClass(data.srcElement, "active");
+        });
+    }
+
+    private listenCategoryChange() {
+        ComponentManager.subscribe("category.change", (event, src, data) => {
+            this.deactivateSearchTab();
+            this.clearSearchBlurb();
+        });
+    }
+
+    private listenClickClearIcon() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.hasClass(src, "close-icon", true);
+            if (el) {
+                this.clearSearchResult();
+            }
         });
     }
 }

@@ -1,6 +1,11 @@
 #game-container,
 .game-container {
     background: $dark-red;
+
+    .search-blurb {
+        display: block;
+        margin: 1rem 0 0 1rem;
+    }
 }
 
 .game-tiles {

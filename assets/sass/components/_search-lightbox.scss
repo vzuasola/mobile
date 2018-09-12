@@ -20,8 +20,22 @@
     .modal-body {
         margin: 1.6rem 0;
 
+        form {
+            display: block;
+            height: 4.4rem;
+            margin: 0;
+        }
+
         h2 {
             color: $light-gray;
+        }
+
+        .search-blurb {
+            margin-top: 1rem;
+            display: block;
+            float: left;
+            width: 100%;
+            text-align: left;
         }
     }
 
@@ -36,7 +50,7 @@
     &-filter {
         position: absolute;
         top: 1rem;
-        right: 2rem;
+        right: 1.5rem;
         outline: none;
         cursor: pointer;
 
@@ -50,20 +64,20 @@
     &-back {
         position: absolute;
         top: 1rem;
-        left: 1.5rem;
+        left: 0.5rem;
         outline: none;
         cursor: pointer;
 
         svg {
-            width: 2rem;
-            height: 2rem;
+            width: 2.2rem;
+            height: 2.2rem;
             fill: $white;
         }
     }
 
     // Search Area
     &-input {
-        width: 84%;
+        width: 85%;
         padding: 1.25rem 0.5rem;
         border: none;
         background: $white;
@@ -74,18 +88,20 @@
     }
 
     &-submit {
-        width: 10%;
-        background: transparent;
+        width: 15%;
         filter: none;
         font-size: 0;
-        padding: 0 2.5rem;
+        padding: 0;
         vertical-align: middle;
         border: 0;
         background: $dark-red;
-        float: left;
         overflow: hidden;
+        position: relative;
+        height: 4.4rem;
 
         svg {
+            position: absolute;
+            top: 0.4rem;
             outline: none;
             margin: 0.5rem 0 0 -1.5rem;
             width: 3rem;
@@ -99,7 +115,7 @@
             display: block;
             padding-left: 0;
             list-style-type: none;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             float: left;
 
             li {
@@ -177,9 +193,11 @@
 
         svg {
             position: absolute;
-            top: 3rem;
             right: 0;
+            bottom: 40%;
+            margin: 0;
             width: 1.2rem;
+            @include translate(0, 50%);
             @include rotate(-180);
             fill: $white;
         }
@@ -206,7 +224,7 @@
 .close-icon:after {
     position: absolute;
     right: 1.5rem;
-    top: 1rem;
+    top: 1.2rem;
     content: "X";
     display: block;
     color: $dark-gray;
