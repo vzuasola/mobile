@@ -61,7 +61,7 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                 }
 
                 if (!response.currency) {
-                    this.unsupportedCurrency();
+                    this.unsupportedCurrency(options);
                 }
             }).fail((error, message) => {
                 console.log(error);
@@ -124,19 +124,28 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
         }
     }
 
-    private unsupportedCurrency() {
+    private unsupportedCurrency(data) {
         xhr({
             url: Router.generateModuleRoute("voidbridge_integration", "unsupported"),
             type: "json",
             method: "get",
         }).then((response) => {
             if (response.status) {
+                let body = response.message;
+                body = body.replace("{game_name}", data.title);
+                body = body.replace("{game_provider}", response.provider);
                 const template = uclTemplate({
                     title: response.title,
-                    message: response.message,
+                    message: body,
                     button: response.button,
                 });
-                Modal.openTemplate(template, "#unsupported-lightbox");
+
+                const categoriesEl = document.querySelector("#unsupported-lightbox");
+
+                if (categoriesEl) {
+                    categoriesEl.innerHTML = template;
+                }
+                Modal.open("#unsupported-lightbox");
             }
         }).fail((error, message) => {
             console.log(error);

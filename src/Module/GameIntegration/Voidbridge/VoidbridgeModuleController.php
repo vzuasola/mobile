@@ -45,8 +45,11 @@ class VoidbridgeModuleController
     {
         try {
             $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
+            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
+            $data['provider'] = $providerMapping[self::KEY];
             $data['title'] = $config['unsupported_currencies_title'] ?? $config['fallback_error_title'];
-            $data['message'] = $config['unsupported_currencies_message']['value'] ?? $config['fallback_error_message']['value'];
+            $data['message'] =
+                $config['unsupported_currencies_message']['value'] ?? $config['fallback_error_message']['value'];
             $data['button'] = $config['unsupported_currencies_button'] ?? $config['fallback_error_button'];
             $data['status'] = true;
 
@@ -90,9 +93,7 @@ class VoidbridgeModuleController
     {
         try {
             $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
             $currencies = explode("\r\n", $config[self::KEY . '_currency']);
-            $providerName = $providerMapping[self::KEY];
             $playerCurrency = $this->player->getCurrency();
 
             if (in_array($playerCurrency, $currencies)) {

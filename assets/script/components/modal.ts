@@ -10,30 +10,6 @@ class Modal {
         });
     }
 
-    openTemplate(template, selector) {
-        const parser = new DOMParser();
-        const element: HTMLElement = parser.parseFromString(template, "text/xml").querySelector(selector);
-        console.log(element);
-        utility.invoke(document, "modal.open");
-        utility.addClass(element, "modal-active");
-        console.log(element);
-        // Avoid scrolling when modal is displayed
-        document.body.style.overflow = "hidden";
-
-        if (!element.querySelector(".modal-overlay")) {
-            const overlay = document.createElement("div");
-
-            overlay.className = "modal-overlay";
-            element.insertBefore(overlay, element.firstChild);
-
-            if (utility.hasClass(element, "modal-active")) {
-                document.body.style.overflow = "hidden";
-            }
-        }
-
-        this.listenOnClose(selector, element);
-    }
-
     open(selector: string, height: number = 500) {
         const element: HTMLElement = document.querySelector(selector);
 
