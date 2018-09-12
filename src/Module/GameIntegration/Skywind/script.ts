@@ -65,7 +65,7 @@ export class SkywindModule implements ModuleInterface, GameInterface {
                     this.unsupportedCurrency(options);
                 }
             }).fail((error, message) => {
-                console.log(error);
+                //Do nothing
             });
         }
     }
@@ -145,11 +145,11 @@ export class SkywindModule implements ModuleInterface, GameInterface {
 
                 if (categoriesEl) {
                     categoriesEl.innerHTML = template;
+                    Modal.open("#unsupported-lightbox");
                 }
-                Modal.open("#unsupported-lightbox");
             }
         }).fail((error, message) => {
-            console.log(error);
+            //Do nothing
         });
     }
 }

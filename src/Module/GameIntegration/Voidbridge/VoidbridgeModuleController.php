@@ -98,9 +98,9 @@ class VoidbridgeModuleController
             if (in_array($playerCurrency, $currencies)) {
                 return true;
             }
-            return false;
         } catch (\Exception $e) {
             // Do nothing
         }
+        return false;
     }
 }
