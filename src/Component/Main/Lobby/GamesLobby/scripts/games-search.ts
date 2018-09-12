@@ -275,7 +275,6 @@ export class GamesSearch {
     private listenActivateSearchFilterLightbox() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "games-filter", true);
-            console.log(el);
             if (el) {
                 event.preventDefault();
                 ComponentManager.broadcast("games.search.filter");
