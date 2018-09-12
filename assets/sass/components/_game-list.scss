@@ -1,12 +1,25 @@
-#game-container,
 .game-container {
     background: $dark-red;
 
+    #game-container {
+        margin-top: 1.5rem;
+    }
+
     .search-blurb {
         display: block;
-        margin: 1rem 0 0 1rem;
+        position: relative;
     }
+
+    .search-blurb.active {
+        margin: 2.5rem 0 0 1rem;
+    }
+
+    .search-blurb.active + #game-container {
+        margin-top: 0;
+    }
+
 }
+
 
 .game-tiles {
     display: inline-block;
