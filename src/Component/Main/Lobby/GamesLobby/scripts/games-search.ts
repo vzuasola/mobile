@@ -226,7 +226,7 @@ export class GamesSearch {
                 for (const query of keywords) {
                     const gameSearchValues = utility.clone(game[searchField]).split(" ");
                     for (const gameSearchValue of gameSearchValues) {
-                        if (gameSearchValue.indexOf(query) !== -1) {
+                        if (gameSearchValue.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
                             weight = weight + parseFloat(sortWeight[searchField]);
                         }
                     }
@@ -245,7 +245,19 @@ export class GamesSearch {
     private sortSearchResult(keyword, result) {
         const sortedGames = this.setSortWeightPerGame(keyword, result);
         sortedGames.sort((a, b) => {
-            return parseFloat(b.weight) - parseFloat(a.weight);
+            if (a.weight > b.weight) {
+                return -1;
+            }
+
+            // if weights are equal sort by name asc
+            if (a.title < b.title) {
+                return -1;
+            }
+            if (a.title > b.title) {
+                return 1;
+            }
+
+            return 0;
         });
 
         return sortedGames;
