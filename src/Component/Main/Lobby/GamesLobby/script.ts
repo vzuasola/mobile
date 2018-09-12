@@ -337,8 +337,10 @@ export class GamesLobbyComponent implements ComponentInterface {
                 });
 
                 if (gamesEl && gameLoader) {
-                    gameLoader.remove();
+                    const loader = gameLoader.querySelector(".mobile-game-loader");
+                    utility.removeClass(loader, "hidden");
                     setTimeout(() => {
+                        gameLoader.remove();
                         gamesEl.innerHTML += template;
                     }, 1000);
                 }
