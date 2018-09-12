@@ -52,7 +52,6 @@ class VoidbridgeModuleController
                 $config['unsupported_currencies_message']['value'] ?? $config['fallback_error_message']['value'];
             $data['button'] = $config['unsupported_currencies_button'] ?? $config['fallback_error_button'];
             $data['status'] = true;
-
         } catch (\Exception $e) {
             $data['status'] = false;
         }
