@@ -4,6 +4,9 @@ import PopupWindow from "@core/assets/js/components/utils/popup";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Modal} from "@app/assets/script/components/modal";
+
+import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
 import {GameInterface} from "./../scripts/game.interface";
 
@@ -43,7 +46,6 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                 langCode = this.languages[lang];
             }
 
-            this.launchGame(options.target);
             xhr({
                 url: Router.generateModuleRoute("voidbridge_integration", "launch"),
                 type: "json",
@@ -54,10 +56,15 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
+                    this.launchGame(options.target);
                     this.updatePopupWindow(response.gameurl);
                 }
+
+                if (!response.currency) {
+                    this.unsupportedCurrency(options);
+                }
             }).fail((error, message) => {
-                console.log(error);
+                // Do nothing
             });
         }
     }
@@ -115,5 +122,33 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                 this.windowObject.focus();
             }
         }
+    }
+
+    private unsupportedCurrency(data) {
+        xhr({
+            url: Router.generateModuleRoute("voidbridge_integration", "unsupported"),
+            type: "json",
+            method: "get",
+        }).then((response) => {
+            if (response.status) {
+                let body = response.message;
+                body = body.replace("{game_name}", data.title);
+                body = body.replace("{game_provider}", response.provider);
+                const template = uclTemplate({
+                    title: response.title,
+                    message: body,
+                    button: response.button,
+                });
+
+                const categoriesEl = document.querySelector("#unsupported-lightbox");
+
+                if (categoriesEl) {
+                    categoriesEl.innerHTML = template;
+                    Modal.open("#unsupported-lightbox");
+                }
+            }
+        }).fail((error, message) => {
+            // Do nothing
+        });
     }
 }
