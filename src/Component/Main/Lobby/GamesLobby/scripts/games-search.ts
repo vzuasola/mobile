@@ -51,6 +51,7 @@ export class GamesSearch {
         this.listenClickFavoriteOnPreview();
         this.listenCategoryChange();
         this.listenClickClearIcon();
+        this.listenOnLogin();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean,
@@ -369,6 +370,16 @@ export class GamesSearch {
             const el = utility.hasClass(src, "close-icon", true);
             if (el) {
                 this.clearSearchResult();
+            }
+        });
+    }
+
+     private listenOnLogin() {
+        ComponentManager.subscribe("header.login", (event, src, data) => {
+            const el = utility.hasClass(data.src, "game-listing-item", true);
+            if (el && utility.hasClass(this.element.querySelector("#games-search-lightbox"),
+                "modal-active")) {
+                Modal.close("#games-search-lightbox");
             }
         });
     }
