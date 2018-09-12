@@ -152,6 +152,8 @@
                 outline: none;
                 border: 0;
                 cursor: pointer;
+                width: 40%;
+                height: 40%;
 
                 svg {
                     width: 1.7rem;
@@ -197,8 +199,6 @@
             bottom: 40%;
             margin: 0;
             width: 1.2rem;
-            @include translate(0, 50%);
-            @include rotate(-180);
             fill: $white;
         }
     }
