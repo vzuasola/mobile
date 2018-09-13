@@ -60,6 +60,7 @@ tr td,
 tr th {
     border: 0.1rem solid #fff;
     text-align: left; /* LTR */
+    word-break: break-word; // Don't extend text when it's long
 }
 
 .tabledrag-handle:hover,
