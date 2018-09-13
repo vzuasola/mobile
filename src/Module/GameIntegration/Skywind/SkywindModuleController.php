@@ -64,19 +64,23 @@ class SkywindModuleController
     public function launch($request, $response)
     {
         $data['gameurl'] = false;
-        $requestData = $request->getParsedBody();
-        try {
-            $responseData = $this->skywind->getGameUrlById('icore_sw', $requestData['gameCode'], [
-                'options' => [
-                    'languageCode' => $requestData['langCode'],
-                    'playMode' => true
-                ]
-            ]);
-            if ($responseData['url']) {
-                $data['gameurl'] = $responseData['url'];
+        $data['currency'] = false;
+        if ($this->checkCurrency()) {
+            $data['currency'] = true;
+            $requestData = $request->getParsedBody();
+            try {
+                $responseData = $this->skywind->getGameUrlById('icore_sw', $requestData['gameCode'], [
+                    'options' => [
+                        'languageCode' => $requestData['langCode'],
+                        'playMode' => true
+                    ]
+                ]);
+                if ($responseData['url']) {
+                    $data['gameurl'] = $responseData['url'];
+                }
+            } catch (\Exception $e) {
+                $data = [];
             }
-        } catch (\Exception $e) {
-            $data = [];
         }
 
         return $this->rest->output($response, $data);
