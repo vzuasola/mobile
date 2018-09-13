@@ -1,7 +1,25 @@
-#game-container,
 .game-container {
     background: $dark-red;
+
+    #game-container {
+        margin-top: 1.5rem;
+    }
+
+    .search-blurb {
+        display: block;
+        position: relative;
+    }
+
+    .search-blurb.active {
+        margin: 2.5rem 0 0 1rem;
+    }
+
+    .search-blurb.active + #game-container {
+        margin-top: 0;
+    }
+
 }
+
 
 .game-tiles {
     display: inline-block;
@@ -101,4 +119,23 @@
 
 .game-list-thumb {
     width: 100%;
+}
+
+.game-loader {
+    float: left;
+
+    &-load-more {
+        font-size: 0;
+    }
+
+    .mobile-game-loader {
+        width: 100vw;
+        height: 20vw;
+        z-index: 1;
+
+        .sk-fading-circle {
+            width: 6rem;
+            height: 6rem;
+        }
+    }
 }

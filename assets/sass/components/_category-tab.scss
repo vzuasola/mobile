@@ -4,19 +4,27 @@
     position: relative;
 
     .game-search {
-        a {
+        .search-tab {
             width: 3rem;
-            height: 2.75rem;
+            height: 2.8rem;
             position: absolute;
             z-index: 11;
             background: $cat-tab-bg;
+
+            svg {
+                outline: none;
+                fill: $white;
+                margin: 0.5rem 0 0 0.7rem;
+                width: 1.7rem;
+            }
         }
 
-        svg {
-            outline: none;
-            fill: #fff;
-            margin: 0.7rem 0 0 0.5rem;
-            width: 1.7rem;
+        .search-tab.active {
+            background: $dark-red;
+
+            svg {
+                fill: $yellow;
+            }
         }
     }
 }
@@ -26,7 +34,8 @@
     overflow-x: auto;
    -webkit-overflow-scrolling: touch;
    -ms-overflow-style: -ms-autohiding-scrollbar;
-   margin-left: 3rem;
+   margin: 0 0 -1.5rem 3rem;
+   background: $cat-tab-bg;
 
    .game-category {
         @extend %clearfix;
