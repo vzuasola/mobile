@@ -48,9 +48,10 @@ form.sms-verification-code-form {
         @extend %form-item-two-cols;
         @extend %form-item-two-cols-bottom;
     }
+}
 
-    // Individual form items =======================================================
-
+// Individual form items =======================================================
+form.profile-form {
     // Gender
     .MyProfileForm_gender {
         position: relative;
@@ -162,7 +163,9 @@ form.sms-verification-code-form {
     .MyProfileForm_mobile_number_2:not(.hidden) {
         @extend %mobile-layout;
     }
+}
 
+form.sms-verification-code-form {
     // Verification Code
     .SmsVerificationForm_resend_markup {
         .resend-code {
