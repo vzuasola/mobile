@@ -66,6 +66,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.generateLobby();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
+        this.pager = 0;
+        this.currentPage = 0;
     }
 
     private getActiveIndex(list: HTMLElement) {
