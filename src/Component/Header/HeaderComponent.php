@@ -47,7 +47,7 @@ class HeaderComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession, $menu, $views)
+    public function __construct($request, $configs, $playerSession, $menu, $views)
     {
         $this->request = $request;
         $this->configs = $configs;
