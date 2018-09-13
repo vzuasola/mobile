@@ -248,8 +248,8 @@ export class GamesSearch {
     private sortSearchResult(keyword, result) {
         const sortedGames = this.setSortWeightPerGame(keyword, result);
         sortedGames.sort((a, b) => {
-            if (a.weight > b.weight) {
-                return -1;
+            if (a.weight !== b.weight) {
+                return b.weight - a.weight;
             }
 
             // if weights are equal sort by name asc
