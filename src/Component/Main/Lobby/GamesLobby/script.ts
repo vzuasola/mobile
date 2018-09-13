@@ -25,6 +25,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private gamesSearch: GamesSearch;
     private currentPage: number;
     private pager: number;
+    private load: boolean;
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -51,6 +52,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenToScroll();
         this.pager = 0;
         this.currentPage = 0;
+        this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
     }
 
@@ -68,6 +70,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.gamesSearch.handleOnReLoad(this.element, attachments);
         this.pager = 0;
         this.currentPage = 0;
+        this.load = true;
     }
 
     private getActiveIndex(list: HTMLElement) {
@@ -328,22 +331,23 @@ export class GamesLobbyComponent implements ComponentInterface {
         utility.addEventListener(window, "scroll", (event, src) => {
             const gameLoader: HTMLElement = this.element.querySelector("#game-loader");
             if (this.isSeen(gameLoader) && this.pager > 1 && this.pager - 1 > this.currentPage) {
-                this.currentPage += 1;
                 const gamesEl = this.element.querySelector("#game-container");
-                const hash = utility.getHash(window.location.href);
-                const pager = this.getPagedContent(this.response.games[hash]);
-                const template = gameTemplate({
-                    games: pager[this.currentPage],
-                    favorites: this.response.favorite_list,
-                    isLogin: this.isLogin,
-                });
-
-                if (gamesEl && gameLoader) {
+                if (gamesEl && gameLoader && this.load) {
+                    this.currentPage += 1;
+                    const hash = utility.getHash(window.location.href);
+                    const pager = this.getPagedContent(this.response.games[hash]);
+                    const template = gameTemplate({
+                        games: pager[this.currentPage],
+                        favorites: this.response.favorite_list,
+                        isLogin: this.isLogin,
+                    });
                     const loader = gameLoader.querySelector(".mobile-game-loader");
                     utility.removeClass(loader, "hidden");
+                    this.load = false;
                     setTimeout(() => {
                         gameLoader.remove();
                         gamesEl.innerHTML += template;
+                        this.load = true;
                     }, 1000);
                 }
 
