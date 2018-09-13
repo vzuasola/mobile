@@ -6,6 +6,8 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class HeaderComponent implements ComponentWidgetInterface
 {
+    private $request;
+
     /**
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
@@ -23,12 +25,18 @@ class HeaderComponent implements ComponentWidgetInterface
 
     private $menu;
 
+    private const HOME = [
+        '/',
+        '/games'
+    ];
+
     /**
      *
      */
     public static function create($container)
     {
         return new static(
+            $container->get('router_request'),
             $container->get('config_fetcher'),
             $container->get('player_session'),
             $container->get('menu_fetcher'),
@@ -39,8 +47,9 @@ class HeaderComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession, $menu, $views)
+    public function __construct($request, $configs, $playerSession, $menu, $views)
     {
+        $this->request = $request;
         $this->configs = $configs;
         $this->playerSession = $playerSession;
         $this->menu = $menu;
@@ -65,6 +74,14 @@ class HeaderComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+        $data['is_front'] = false;
+        try {
+            if (in_array($this->request->getUri()->getPath(), $this::HOME)) {
+                $data['is_front'] = true;
+            }
+        } catch (\Exception $e) {
+            // Do nothing
+        }
 
         try {
             $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
