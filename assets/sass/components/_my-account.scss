@@ -163,6 +163,14 @@ form.profile-form {
     .MyProfileForm_mobile_number_2:not(.hidden) {
         @extend %mobile-layout;
     }
+
+    .MyProfileForm_mobile_number_1,
+    .MyProfileForm_mobile_number_2 {
+        // Italize primary label
+        .pure-checkbox {
+            font-style: italic;
+        }
+    }
 }
 
 form.sms-verification-code-form {
