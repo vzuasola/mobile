@@ -14,6 +14,7 @@ export class HeaderComponent implements ComponentInterface {
         this.element = element;
         this.attachments = attachments;
         this.refreshBalance();
+        this.cashierGaEventCode(element);
 
         Router.on(RouterClass.afterNavigate, (event) => {
             if (this.attachments.authenticated) {
@@ -33,6 +34,7 @@ export class HeaderComponent implements ComponentInterface {
         this.element = element;
         this.attachments = attachments;
         this.refreshBalance();
+        this.cashierGaEventCode(element);
     }
 
     private refreshBalance() {
@@ -72,6 +74,16 @@ export class HeaderComponent implements ComponentInterface {
                     }
                 }
             },
+        });
+    }
+
+    private cashierGaEventCode(element) {
+        utility.listen(element, "click", (event, src) => {
+            const accountBalance = utility.hasClass(src, "account-balance", true);
+
+            if (accountBalance) {
+                ga("send", "event", { eventCategory: "successpage", eventAction: "click", eventLabel: "cashier"});
+            }
         });
     }
 }
