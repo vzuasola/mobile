@@ -1,4 +1,5 @@
 import * as utility from "@core/assets/js/components/utility";
+import Swipe from "@app/assets/script/components/custom-touch/swipe";
 import * as Handlebars from "handlebars/runtime";
 
 import * as xhr from "@core/assets/js/vendor/reqwest";
@@ -50,6 +51,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.generateLobby();
         this.listenToCategory();
         this.listenToScroll();
+        this.listenToSwipe();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -145,7 +147,9 @@ export class GamesLobbyComponent implements ComponentInterface {
             categoriesEl.innerHTML = template;
         }
 
-        ComponentManager.broadcast("category.set");
+        ComponentManager.broadcast("category.set", {
+            scroll: false,
+        });
     }
 
     /**
@@ -330,18 +334,70 @@ export class GamesLobbyComponent implements ComponentInterface {
             const categories = categoriesEl.querySelectorAll(".category-tab");
             const categoryScroll = categoriesEl.querySelector("#category-tab");
             let scroll = 0;
+            if (data.scroll === "prev") {
+                scroll = -30;
+            }
+
             for (const id in categories) {
                 if (categories.hasOwnProperty(id)) {
                     const category = categories[id];
                     scroll += category.getBoundingClientRect().width;
                     if (utility.hasClass(category, "active")) {
-                        scroll -= category.getBoundingClientRect().width;
+                        if (data.scroll === "prev") {
+                            scroll -= category.getBoundingClientRect().width;
+                        }
+
+                        if (data.scroll !== "next") {
+                            scroll -= category.getBoundingClientRect().width;
+                        }
                         break;
                     }
                }
             }
+
             categoryScroll.scrollLeft = scroll;
         });
+    }
+
+    private listenToSwipe() {
+        const games = this.element.querySelector("#game-container");
+        const swipe: Swipe = new Swipe(games);
+        if (games) {
+            // Left Swipe
+            utility.addEventListener(games, "swipeleft", (event, src) => {
+                // Active category go right
+                const categoriesEl = this.element.querySelector("#game-categories");
+                const activeLi = categoriesEl.querySelector(".category-tab .active");
+                const activeLink = activeLi.querySelector("a");
+                const sibling = utility.nextElementSibling(activeLi);
+                if (sibling) {
+                    const siblingUrl = sibling.querySelector("a").getAttribute("href");
+                    window.location.hash = siblingUrl;
+                    ComponentManager.broadcast("category.set", {
+                        scroll: "next",
+                    });
+                } else {
+                    console.log("no sibs bounce");
+                }
+            });
+            // Right Swipe
+            utility.addEventListener(games, "swiperight", (event, src) => {
+                // Active category go left
+                const categoriesEl = this.element.querySelector("#game-categories");
+                const activeLi = categoriesEl.querySelector(".category-tab .active");
+                const activeLink = activeLi.querySelector("a");
+                const sibling = utility.previousElementSibling(activeLi);
+                if (sibling) {
+                    const siblingUrl = sibling.querySelector("a").getAttribute("href");
+                    window.location.hash = siblingUrl;
+                    ComponentManager.broadcast("category.set", {
+                        scroll: "prev",
+                    });
+                } else {
+                    console.log("no sibs bounce");
+                }
+            });
+        }
     }
 
     private listenToScroll() {
