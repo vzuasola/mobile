@@ -150,6 +150,6 @@ export class MenuComponent implements ComponentInterface {
     }
 
     private activateCashierGaCode(element) {
-        cashierGaCode(element, "cashier-ga-code", "cashier nav menu");
+        cashierGaCode(element, "cashier-button", "cashier nav menu");
     }
 }
