@@ -253,10 +253,10 @@ export class GamesSearch {
             }
 
             // if weights are equal sort by name asc
-            if (a.title < b.title) {
+            if (a.title.toLowerCase() < b.title.toLowerCase()) {
                 return -1;
             }
-            if (a.title > b.title) {
+            if (a.title.toLowerCase() > b.title.toLowerCase()) {
                 return 1;
             }
 
