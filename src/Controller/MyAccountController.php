@@ -17,11 +17,11 @@ class MyAccountController extends BaseController
         var_dump($state);
 
         if ($state) {
-            printr("Success");
+            print_r("Success");
             die();
             return $this->widgets->render($response, '@site/page.html.twig', $data);
         } else {
-            printr("Failed");
+            print_r("Failed");
             die();
             throw new NotFoundException($request, $response);
         }
