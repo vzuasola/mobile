@@ -8,6 +8,7 @@ import {Menu} from "./scripts/menu";
 import {PushNotification} from "./scripts/push-notification";
 
 import EqualHeight from "@app/assets/script/components/equal-height";
+import cashierGaCode from "@app/assets/script/components/cashierGaCode";
 
 /**
  *
@@ -26,6 +27,7 @@ export class MenuComponent implements ComponentInterface {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
+        this.activateCashierGaCode(element);
         this.isLogin = attachments.authenticated;
 
         this.activateMenu(element);
@@ -54,6 +56,7 @@ export class MenuComponent implements ComponentInterface {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
+        this.activateCashierGaCode(element);
 
         this.activateMenu(element);
         this.attachProduct();
@@ -144,5 +147,9 @@ export class MenuComponent implements ComponentInterface {
             }
 
         }
+    }
+
+    private activateCashierGaCode(element) {
+        cashierGaCode(element, "cashier-ga-code", "cashier nav menu");
     }
 }

@@ -2,6 +2,7 @@ import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
+import cashierGaCode from "@app/assets/script/components/cashierGaCode";
 
 /**
  *
@@ -14,7 +15,7 @@ export class HeaderComponent implements ComponentInterface {
         this.element = element;
         this.attachments = attachments;
         this.refreshBalance();
-        this.cashierGaEventCode(element);
+        this.activateCashierGaCode(element);
 
         Router.on(RouterClass.afterNavigate, (event) => {
             if (this.attachments.authenticated) {
@@ -34,7 +35,7 @@ export class HeaderComponent implements ComponentInterface {
         this.element = element;
         this.attachments = attachments;
         this.refreshBalance();
-        this.cashierGaEventCode(element);
+        this.activateCashierGaCode(element);
     }
 
     private refreshBalance() {
@@ -77,13 +78,7 @@ export class HeaderComponent implements ComponentInterface {
         });
     }
 
-    private cashierGaEventCode(element) {
-        utility.listen(element, "click", (event, src) => {
-            const accountBalance = utility.hasClass(src, "account-balance", true);
-
-            if (accountBalance) {
-                ga("send", "event", { eventCategory: "successpage", eventAction: "click", eventLabel: "cashier"});
-            }
-        });
+    private activateCashierGaCode(element) {
+        cashierGaCode(element, "account-balance", "cashier header");
     }
 }
