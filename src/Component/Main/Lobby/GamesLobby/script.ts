@@ -169,14 +169,31 @@ export class GamesLobbyComponent implements ComponentInterface {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
 
-        const template = gameTemplate({
+        let template = gameTemplate({
             games: pager[page],
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
         });
 
+        if (this.currentPage > page) {
+            template = "";
+            for (let ctr = 0; ctr <= this.currentPage; ctr++) {
+                template += gameTemplate({
+                    games: pager[ctr],
+                    favorites: this.response.favorite_list,
+                    isLogin: this.isLogin,
+                });
+            }
+        }
+
         if (gamesEl) {
             gamesEl.innerHTML = template;
+            const loaders = gamesEl.querySelectorAll(".game-loader");
+            if (loaders.length > 1) {
+                for (let ctr = 0; ctr < loaders.length - 1; ctr++) {
+                    loaders[ctr].remove();
+                }
+            }
         }
     }
 
