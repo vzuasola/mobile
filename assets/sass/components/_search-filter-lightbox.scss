@@ -19,7 +19,7 @@
         svg {
             width: 2.5rem;
             height: 2.5rem;
-            top: 0.5rem;
+            top: 1rem;
             fill: $white;
 
             rect {
@@ -30,7 +30,7 @@
 
     // Heading text
     h2 {
-        margin: 0rem 1rem 1rem;
+        margin: 0.5rem 1rem 1rem;
         color: $light-gray;
         font-size: 1.6rem;
         font-weight: 600;
@@ -50,7 +50,7 @@
     }
 
     &-body {
-        margin-top: 2.5rem;
+        margin-top: 1.5rem;
     }
 
     &-list {
