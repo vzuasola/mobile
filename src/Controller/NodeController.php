@@ -18,8 +18,6 @@ class NodeController extends BaseController
         try {
             $node = $this->get('node_fetcher')->getNodeByAlias($path);
         } catch (\Exception $e) {
-            print_r('testing');
-            die();
             throw new NotFoundException($request, $response);
         }
 
@@ -46,6 +44,8 @@ class NodeController extends BaseController
             $states = array_column((array) $node['field_promo_availability'], 'value');
 
             if (!in_array($state, $states)) {
+                print_r('testing');
+                die();
                 throw new NotFoundException($request, $response);
             }
         }
