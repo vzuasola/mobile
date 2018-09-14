@@ -377,7 +377,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                         scroll: "next",
                     });
                 } else {
-                    console.log("no sibs bounce");
+                    // Add bounce effect
                 }
             });
             // Right Swipe
@@ -394,7 +394,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                         scroll: "prev",
                     });
                 } else {
-                    console.log("no sibs bounce");
+                    // Add bounce effect
                 }
             });
         }
