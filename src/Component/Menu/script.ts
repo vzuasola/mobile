@@ -26,6 +26,7 @@ export class MenuComponent implements ComponentInterface {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
+        this.cashierGaEventCode(element);
         this.isLogin = attachments.authenticated;
 
         this.activateMenu(element);
@@ -54,6 +55,7 @@ export class MenuComponent implements ComponentInterface {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
+        this.cashierGaEventCode(element);
 
         this.activateMenu(element);
         this.attachProduct();
@@ -143,6 +145,18 @@ export class MenuComponent implements ComponentInterface {
                 }
             }
 
+        }
+    }
+
+    private cashierGaEventCode(element) {
+        const cashierBtn = element.querySelector("a.cashier-ga-code");
+
+        if (cashierBtn) {
+            utility.listen(element, "click", (event, src) => {
+                if (src === cashierBtn) {
+                    ga("send", "event", { eventCategory: "successpage", eventAction: "click", eventLabel: "cashier"});
+                }
+            });
         }
     }
 }
