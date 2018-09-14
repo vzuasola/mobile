@@ -86,8 +86,8 @@ components:
 
   my_account:
     class: App\MobileEntry\Component\Main\MyAccount\MyAccountComponent
-    # headers:
-    #   Cache-Control: no-cache, no-store, must-revalidate
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
 
   profile:
     class: App\MobileEntry\Component\Main\MyAccount\Profile\ProfileComponent

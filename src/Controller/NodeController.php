@@ -18,6 +18,8 @@ class NodeController extends BaseController
         try {
             $node = $this->get('node_fetcher')->getNodeByAlias($path);
         } catch (\Exception $e) {
+            print_r('testing');
+            die();
             throw new NotFoundException($request, $response);
         }
 
