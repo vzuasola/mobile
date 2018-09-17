@@ -253,19 +253,14 @@ export class GamesSearch {
             }
 
             // if weights are equal sort by name asc
-            const titleA = a.title.toLowerCase();
-            const titleB = b.title.toLowerCase();
-            const reAlpha = /[^a-zA-Z]/g;
-            const reNum = /[^0-9]/g;
-            const aA = titleA.replace(reAlpha, "");
-            const bA = titleB.replace(reAlpha, "");
-            if (aA === bA) {
-                const aN = parseInt(titleA.replace(reNum, ""), 10);
-                const bN = parseInt(titleB.replace(reNum, ""), 10);
-                return aN === bN ? 0 : aN > bN ? 1 : -1;
+            if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                return -1;
+            }
+            if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                return 1;
             }
 
-            return aA > bA ? 1 : -1;
+            return 0;
 
         });
 
