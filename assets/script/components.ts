@@ -21,7 +21,7 @@ import {ProfilerComponent} from "@app/src/Component/Profiler/script";
 import {CantLoginComponent} from "@app/src/Component/Main/CantLogin/script";
 import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script";
 import {SessionComponent} from "@app/src/Component/Main/Session/script";
-import { SessionLegacyComponent } from "@app/src/Component/Main/SessionLegacy/script";
+import {SessionLegacyComponent} from "@app/src/Component/Main/SessionLegacy/script";
 import {CantLoginForgotPasswordComponent} from "@app/src/Component/Main/CantLogin/ForgotPassword/script";
 import {CantLoginForgotUsernameComponent} from "@app/src/Component/Main/CantLogin/ForgotUsername/script";
 import {CantLoginResetPasswordComponent} from "@app/src/Component/Main/CantLogin/ResetPassword/script";
