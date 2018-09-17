@@ -13,7 +13,6 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
-import Xlider from "@app/assets/script/components/xlider";
 
 /**
  *
@@ -69,6 +68,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.generateLobby();
+        this.listenToSwipe();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
         this.pager = 0;
         this.currentPage = 0;
