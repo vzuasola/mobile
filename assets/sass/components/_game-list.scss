@@ -139,3 +139,43 @@
         }
     }
 }
+
+
+@-webkit-keyframes bounce-left {
+    0%, 20%, 50%, 80%, 100% {-webkit-transform: translateX(0);}
+    40% {-webkit-transform: translateX(-30px);}
+    60% {-webkit-transform: translateX(-20px);}
+} 
+@keyframes bounce-left {
+    0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
+    40% {transform: translateX(-30px);}
+    60% {transform: translateX(-20px);}
+} 
+
+
+.bounce-left {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: bounce-left;
+    animation-name: bounce-left;
+}
+
+
+@-webkit-keyframes bounce-right {
+    0%, 20%, 50%, 80%, 100% {-webkit-transform: translateX(0);}
+    40% {-webkit-transform: translateX(30px);}
+    60% {-webkit-transform: translateX(20px);}
+} 
+@keyframes bounce-right {
+    0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
+    40% {transform: translateX(30px);}
+    60% {transform: translateX(20px);}
+} 
+
+
+.bounce-right {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-name: bounce-right;
+    animation-name: bounce-right;
+}

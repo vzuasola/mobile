@@ -360,7 +360,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     private listenToSwipe() {
-        const games = this.element.querySelector("#game-container");
+        const games: any = this.element.querySelector("#game-container");
         const swipe: Swipe = new Swipe(games);
         if (games) {
             // Left Swipe
@@ -378,6 +378,10 @@ export class GamesLobbyComponent implements ComponentInterface {
                     });
                 } else {
                     // Add bounce effect
+                    utility.addClass(games, "bounce-right");
+                    setTimeout(() => {
+                        utility.removeClass(games, "bounce-right");
+                    }, 1000);
                 }
             });
             // Right Swipe
@@ -395,6 +399,10 @@ export class GamesLobbyComponent implements ComponentInterface {
                     });
                 } else {
                     // Add bounce effect
+                    utility.addClass(games, "bounce-left");
+                    setTimeout(() => {
+                        utility.removeClass(games, "bounce-left");
+                    }, 1000);
                 }
             });
         }
