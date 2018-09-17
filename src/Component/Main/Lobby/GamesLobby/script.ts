@@ -378,9 +378,9 @@ export class GamesLobbyComponent implements ComponentInterface {
                     });
                 } else {
                     // Add bounce effect
-                    utility.addClass(games, "bounce-right");
+                    utility.addClass(games, "bounce-left");
                     setTimeout(() => {
-                        utility.removeClass(games, "bounce-right");
+                        utility.removeClass(games, "bounce-left");
                     }, 1000);
                 }
             });
@@ -399,9 +399,9 @@ export class GamesLobbyComponent implements ComponentInterface {
                     });
                 } else {
                     // Add bounce effect
-                    utility.addClass(games, "bounce-left");
+                    utility.addClass(games, "bounce-right");
                     setTimeout(() => {
-                        utility.removeClass(games, "bounce-left");
+                        utility.removeClass(games, "bounce-right");
                     }, 1000);
                 }
             });
