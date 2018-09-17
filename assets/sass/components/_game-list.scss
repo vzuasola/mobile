@@ -2,7 +2,10 @@
     background: $dark-red;
 
     #game-container {
-        margin-top: 1.5rem;
+        position: relative;
+        margin-top: 0.6rem;
+        padding-top: 0.6rem;
+        transition:all 0.5s ease-in-out;
     }
 
     .search-blurb {
@@ -140,16 +143,15 @@
     }
 }
 
-
 @-webkit-keyframes bounce-left {
     0%, 20%, 50%, 80%, 100% {-webkit-transform: translateX(0);}
-    40% {-webkit-transform: translateX(-30px);}
-    60% {-webkit-transform: translateX(-20px);}
+    40% {-webkit-transform: translateX(-3.0rem);}
+    60% {-webkit-transform: translateX(-2.0rem);}
 } 
 @keyframes bounce-left {
     0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
-    40% {transform: translateX(-30px);}
-    60% {transform: translateX(-20px);}
+    40% {transform: translateX(-3.0rem);}
+    60% {transform: translateX(-2.0rem);}
 } 
 
 
@@ -160,16 +162,15 @@
     animation-name: bounce-left;
 }
 
-
 @-webkit-keyframes bounce-right {
     0%, 20%, 50%, 80%, 100% {-webkit-transform: translateX(0);}
-    40% {-webkit-transform: translateX(30px);}
-    60% {-webkit-transform: translateX(20px);}
+    40% {-webkit-transform: translateX(3.0rem);}
+    60% {-webkit-transform: translateX(2.0rem);}
 } 
 @keyframes bounce-right {
     0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
-    40% {transform: translateX(30px);}
-    60% {transform: translateX(20px);}
+    40% {transform: translateX(3.0rem);}
+    60% {transform: translateX(2.0rem);}
 } 
 
 
