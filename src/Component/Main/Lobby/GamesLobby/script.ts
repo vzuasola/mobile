@@ -6,6 +6,8 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as categoriesTemplate from "./handlebars/categories.handlebars";
 import * as gameTemplate from "./handlebars/games.handlebars";
+import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
+import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
 
 import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
@@ -13,6 +15,7 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
+import {Marker} from "@app/assets/script/components/marker";
 
 /**
  *
@@ -51,6 +54,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenToCategory();
         this.listenToScroll();
         this.listenToSwipe();
+        this.initMarker();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -69,10 +73,20 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.generateLobby();
         this.listenToSwipe();
+        this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
+    }
+
+    private initMarker() {
+        // Checkbox
+        new Marker({
+            parent: ".games-search-filter-body",
+            iconDefault: iconUnCheckedTemplate(),
+            iconActive: iconCheckedTemplate(),
+        });
     }
 
     private getActiveIndex(list: HTMLElement) {
