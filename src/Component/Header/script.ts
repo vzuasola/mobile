@@ -2,7 +2,6 @@ import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
-import cashierGaCode from "@app/assets/script/components/cashierGaCode";
 
 /**
  *
@@ -15,7 +14,6 @@ export class HeaderComponent implements ComponentInterface {
         this.element = element;
         this.attachments = attachments;
         this.refreshBalance();
-        this.activateCashierGaCode(element);
 
         Router.on(RouterClass.afterNavigate, (event) => {
             if (this.attachments.authenticated) {
@@ -35,7 +33,6 @@ export class HeaderComponent implements ComponentInterface {
         this.element = element;
         this.attachments = attachments;
         this.refreshBalance();
-        this.activateCashierGaCode(element);
     }
 
     private refreshBalance() {
@@ -76,9 +73,5 @@ export class HeaderComponent implements ComponentInterface {
                 }
             },
         });
-    }
-
-    private activateCashierGaCode(element) {
-        cashierGaCode(element, "account-balance", "cashier header");
     }
 }
