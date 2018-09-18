@@ -54,7 +54,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenToCategory();
         this.listenToScroll();
         this.listenToSwipe();
-        this.initMarker(element);
+        this.initMarker();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -73,14 +73,14 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.generateLobby();
         this.listenToSwipe();
-        this.initMarker(element);
+        this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
     }
 
-    private initMarker(element) {
+    private initMarker() {
         // Checkbox
         new Marker({
             parent: ".games-search-filter-body",
