@@ -1,5 +1,3 @@
-@import "my-account-notification";
-
 form.profile-form,
 form.change-password-form,
 form.verify-password-form,
@@ -15,7 +13,8 @@ form.sms-verification-code-form {
     }
 
     // Middle form items
-    & > .form-item {
+    & > .form-item,
+    & > .blurb {
         @extend %form-item-round;
     }
 
@@ -27,7 +26,7 @@ form.sms-verification-code-form {
     & > .ChangePasswordForm_current_password_field,
     & > .ChangePasswordForm_current_password,
     & > .VerifyPasswordForm_verify_password,
-    & > .verification-code-field-wrapper {
+    & > .SmsVerificationForm_verification_code {
         @extend %form-item-round-top;
     }
 
@@ -39,7 +38,7 @@ form.sms-verification-code-form {
     & > .ChangePasswordForm_change_password_submit_field,
     & > .ChangePasswordForm_submit,
     & > .VerifyPasswordForm_submit,
-    & > .verify-mobile-reload-wrapper {
+    & > .SmsVerificationForm_submit {
         @extend %form-item-round-bottom;
     }
 
@@ -58,6 +57,7 @@ form.sms-verification-code-form {
 
         .form-label {
             display: inline-block;
+            margin-right: 3rem;
         }
 
         .form-item {
@@ -70,14 +70,27 @@ form.sms-verification-code-form {
 
             .radio-inline {
                 display: inline-block;
-                margin-left: 3rem;
+                margin-right: 3rem;
             }
         }
 
-        // adjust validation icon position
+        // hide validation icon
         .icon-validation {
-            top: 1.5rem;
-            right: 1.5rem;
+            display: none;
+        }
+    }
+
+    // Communication details
+    .MyProfileForm_communication_markup {
+        svg {
+            width: 1.7rem;
+            margin-left: 0.4rem;
+            vertical-align: middle;
+            fill: $light-gray;
+
+            &:hover {
+                fill: $yellow;
+            }
         }
     }
 
@@ -97,6 +110,7 @@ form.sms-verification-code-form {
         .contact-preference-label {
             position: relative;
             padding-left: 3rem;
+            font-weight: 400;
 
             .marker-svg {
                 position: absolute;
@@ -107,6 +121,7 @@ form.sms-verification-code-form {
 
         .contact-preference-bottom-blurb {
             padding-left: 3rem;
+            font-weight: 400;
         }
     }
 
@@ -128,12 +143,18 @@ form.sms-verification-code-form {
 
         .add-new-mobile {
             width: 100%;
-            padding: .5rem;
+            padding: 0.6rem 0.5rem 0.5rem;
             border: 1px solid $form-border-color;
             border-radius: 0.5rem;
             background: #2b2829;
             color: $light-gray;
             text-align: center;
+
+            svg {
+                width: 1.2rem;
+                margin-right: 0.5rem;
+                fill: $light-gray;
+            }
         }
     }
 
@@ -143,9 +164,26 @@ form.sms-verification-code-form {
     }
 
     // Verification Code
-    .verification-code-field-wrapper {
+    .SmsVerificationForm_resend_markup {
         .resend-code {
             color: $yellow;
         }
+    }
+
+    .SmsVerificationForm_verification_code {
+        text-align: left;
+    }
+}
+
+#profile-verification {
+    table {
+        td {
+            word-break: break-all;
+        }
+
+        .table-header-text {
+            width: 50%;
+        }
+
     }
 }

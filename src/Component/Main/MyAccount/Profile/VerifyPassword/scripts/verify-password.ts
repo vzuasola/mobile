@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
-import {FormBase} from "@app/assets/script/components/form-base";
+import {FormBase, resetForm} from "@app/assets/script/components/form-base";
 import Notification from "@app/assets/script/components/notification";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
@@ -39,13 +39,13 @@ export class VerifyPassword extends FormBase {
             this.validator = this.validateForm(this.form);
             this.errorNotification = new Notification(
                 document.body,
-                "password-message-error",
+                "notification-error",
                 true,
                 this.attachments.messageTimeout,
             );
             this.successNotification = new Notification(
                 document.body,
-                "password-message-success",
+                "notification-success",
                 true,
                 this.attachments.messageTimeout,
             );
@@ -116,6 +116,7 @@ export class VerifyPassword extends FormBase {
                 if (resp.success) {
                     callback();
                 } else {
+                    resetForm(this.form);
                     this.closeModal();
                     this.errorNotification.show(this.attachments.messages.UPDATE_PROFILE_FAILED);
                 }

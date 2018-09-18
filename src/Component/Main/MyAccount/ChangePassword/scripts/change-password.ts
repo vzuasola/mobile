@@ -2,7 +2,7 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Loader} from "@app/assets/script/components/loader";
-import {FormBase} from "@app/assets/script/components/form-base";
+import {FormBase, resetForm} from "@app/assets/script/components/form-base";
 import PasswordMeter from "@app/assets/script/components/password-meter";
 
 /**
@@ -121,8 +121,7 @@ export class ChangePassword extends FormBase {
     }
 
     private onFormReset(form) {
-        // reset form
-        form.reset();
+        resetForm(form);
 
         // enable fields
         utility.forEach(form.elements, (input) => {
@@ -131,17 +130,5 @@ export class ChangePassword extends FormBase {
 
         // remove password meter
         this.passwordMeter.passwordMeterRender("hidden");
-
-        // remove icon-validation
-        const icons = form.querySelectorAll(".icon-validation");
-        utility.forEach(icons, (icon) => {
-            icon.remove();
-        });
-
-        // remove helper block
-        const messages = form.querySelectorAll(".form-help-block");
-        utility.forEach(messages, (message) => {
-            message.remove();
-        });
     }
 }
