@@ -51,6 +51,11 @@
 
     &-body {
         margin-top: 1.5rem;
+
+        input[type=reset]:disabled,
+        input[type=submit]:disabled {
+            opacity: 0.25;
+        }
     }
 
     &-list {
@@ -69,29 +74,35 @@
             float: left;
 
             li {
+                position: relative;
                 display: block;
                 margin-top: 1rem;
-                padding: 0.75rem 0.5rem;
                 width: 100%;
-                float: left;
-                text-align: left;
                 border: 0.1rem solid #5f5e5e;
                 border-radius: 0.5rem;
+                padding: 0.75rem 0.5rem;
             }
 
-            // active/hover state
-            .selected {
+            label {
+                position: relative;
+                display: block;
+                text-align: left;
+            }
+
+            .marker-svg {
+                position: absolute;
+                top: 0.4rem;
+                right: 0.4rem;
+
+                svg {
+                    width: 1.7rem;
+                    height: 2.7rem;
+                }
+            }
+
+            .active {
                 border: 0.1rem solid $yellow;
                 color: $yellow;
-            }
-
-            // Arrow icon 
-            .selected:after {
-                @include image-replacement($sprite-mobile, 0, -7.3rem, 3rem, 2.5rem, 2.5rem);
-                position: absolute;
-                top: 1.25rem;
-                right: 1.5rem;
-                content: "";
             }
         }
     }
