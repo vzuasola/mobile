@@ -75,7 +75,7 @@
     }
 
     // Search Area
-    &-input {
+    input[type="search"] {
         width: 85%;
         height: 4.4rem;
         padding: 1.25rem 0.5rem;
@@ -85,6 +85,10 @@
         border-radius: 0.5rem 0 0 0.5rem;
         outline: none;
         float: left;
+        -webkit-appearance: textfield; // 1
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box; // 2
+        box-sizing: border-box;
     }
 
     &-submit {
