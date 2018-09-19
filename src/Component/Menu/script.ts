@@ -155,19 +155,28 @@ export class MenuComponent implements ComponentInterface {
     private attachProductToLogin() {
         const product = ComponentManager.getAttribute("product");
         const loginButton = this.element.querySelector(".login-trigger");
+        const joinButton = this.element.querySelector(".join-btn");
 
-        if (product !== "mobile-entrypage" && loginButton) {
-            if (this.products.hasOwnProperty(product)) {
+        if (product !== "mobile-entrypage") {
+            if (this.products && this.products.hasOwnProperty(product)) {
                 const currentProduct = this.products[product];
 
-                loginButton.setAttribute(
-                    "data-product-login-via",
-                    currentProduct.field_product_login_via[0].value,
-                );
-                loginButton.setAttribute(
-                    "data-product-reg-via",
-                    currentProduct.field_registration_url[0].value,
-                );
+                if (loginButton) {
+                    loginButton.setAttribute(
+                        "data-product-login-via",
+                        currentProduct.login_via,
+                    );
+                    loginButton.setAttribute(
+                        "data-product-reg-via",
+                        currentProduct.reg_via,
+                    );
+                }
+                if (joinButton) {
+                    joinButton.setAttribute(
+                        "href",
+                        currentProduct.reg_via,
+                    );
+                }
             }
         }
     }

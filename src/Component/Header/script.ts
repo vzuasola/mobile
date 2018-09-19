@@ -84,16 +84,16 @@ export class HeaderComponent implements ComponentInterface {
         const loginButton = this.element.querySelector(".login-trigger");
 
         if (product !== "mobile-entrypage" && loginButton) {
-            if (this.attachments.products.hasOwnProperty(product)) {
+            if (this.attachments.products && this.attachments.products.hasOwnProperty(product)) {
                 const currentProduct = this.attachments.products[product];
 
                 loginButton.setAttribute(
                     "data-product-login-via",
-                    currentProduct.field_product_login_via[0].value,
+                    currentProduct.login_via,
                 );
                 loginButton.setAttribute(
                     "data-product-reg-via",
-                    currentProduct.field_registration_url[0].value,
+                    currentProduct.reg_via,
                 );
             }
         }

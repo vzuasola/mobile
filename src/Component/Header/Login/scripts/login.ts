@@ -284,6 +284,7 @@ export class Login {
             if (data && typeof data.regVia !== "undefined" && data.regVia) {
                 if (btnJoin) {
                     btnJoin.setAttribute("href", data.regVia);
+                    btnJoin.setAttribute("data-join-url", data.regVia);
                 }
             }
 
