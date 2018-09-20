@@ -18,17 +18,19 @@ export class MenuComponent implements ComponentInterface {
     private element: HTMLElement;
     private isLogin: boolean;
     private products: any[];
+    private joinUrl: string;
 
     constructor() {
         this.pushNotification = new PushNotification();
     }
 
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean, products: any[]}) {
+    onLoad(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
         this.isLogin = attachments.authenticated;
         this.products = attachments.products;
+        this.joinUrl = attachments.join_now_url;
 
         this.activateMenu(element);
         this.attachProduct();
@@ -54,11 +56,12 @@ export class MenuComponent implements ComponentInterface {
 
     }
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean, products: any[]}) {
+    onReload(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
         this.products = attachments.products;
+        this.joinUrl = attachments.join_now_url;
 
         this.activateMenu(element);
         this.attachProduct();
@@ -177,6 +180,23 @@ export class MenuComponent implements ComponentInterface {
                         currentProduct.reg_via,
                     );
                 }
+            }
+        } else {
+            if (loginButton) {
+                loginButton.setAttribute(
+                    "data-product-login-via",
+                    "",
+                );
+                loginButton.setAttribute(
+                    "data-product-reg-via",
+                    "",
+                );
+            }
+            if (joinButton) {
+                joinButton.setAttribute(
+                    "href",
+                    this.joinUrl,
+                );
             }
         }
     }

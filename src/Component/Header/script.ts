@@ -96,6 +96,15 @@ export class HeaderComponent implements ComponentInterface {
                     currentProduct.reg_via,
                 );
             }
+        } else {
+            loginButton.setAttribute(
+                "data-product-login-via",
+                "",
+            );
+            loginButton.setAttribute(
+                "data-product-reg-via",
+                "",
+            );
         }
     }
 }

@@ -10,9 +10,4 @@ class Products
     const PRODUCT_MAPPING = [
         'games' => 'mobile-games'
     ];
-
-    public static function create()
-    {
-        return new static();
-    }
 }

@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\Header;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
+use App\MobileEntry\Services\Product\Products;
 
 /**
  *
@@ -17,8 +18,6 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 
     private $tokenParser;
 
-    private $products;
-
     /**
      *
      */
@@ -28,21 +27,19 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
             $container->get('player_session'),
             $container->get('config_fetcher'),
             $container->get('views_fetcher'),
-            $container->get('token_parser'),
-            $container->get('products')
+            $container->get('token_parser')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $loginConfig, $views, $tokenParser, $products)
+    public function __construct($playerSession, $loginConfig, $views, $tokenParser)
     {
         $this->playerSession = $playerSession;
         $this->loginConfig = $loginConfig;
         $this->views = $views;
         $this->tokenParser = $tokenParser;
-        $this->products = $products;
     }
 
     /**
@@ -77,8 +74,8 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 
             foreach ($products as $product) {
                 $instanceId = $product['field_product_instance_id'][0]['value'];
-                if (array_key_exists($instanceId, $this->products::PRODUCT_MAPPING)) {
-                    $result[$this->products::PRODUCT_MAPPING[$instanceId]] = [
+                if (array_key_exists($instanceId, Products::PRODUCT_MAPPING)) {
+                    $result[Products::PRODUCT_MAPPING[$instanceId]] = [
                         'login_via' => $product['field_product_login_via'][0]['value'],
                         'reg_via' => $this->tokenParser->processTokens($product['field_registration_url'][0]['value'])
                     ];

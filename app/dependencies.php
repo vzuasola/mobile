@@ -29,7 +29,3 @@ $container['accounts_service'] = function ($c) {
 $container['product_resolver'] = function ($c) {
     return ProductResolver::create($c);
 };
-
-$container['products'] = function () {
-    return Products::create();
-};
