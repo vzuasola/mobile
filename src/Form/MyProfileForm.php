@@ -297,7 +297,7 @@ class MyProfileForm extends FormBase implements FormInterface
     {
         $definition['submit']['options']['attr']['data-redirect'] = 0;
 
-        foreach ($this->disabledFields as $key => $value) {
+        foreach ($this->disabledFields as $value) {
             if (strtoupper($definition[$value]['options']['attr']['value']) == 'FIRST NAME' ||
                 strtoupper($definition[$value]['options']['attr']['value']) == 'LAST NAME') {
                 $definition[$value]['options']['attr']['value'] = "";
