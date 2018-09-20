@@ -45,7 +45,7 @@
                 >
                     <img 
                         src="{{ asset(slide['field_post_banner_image'][0]['url'], product) }}" 
-                        alt="{{ asset(slide['field_post_banner_image'][0]['alt'], product) }}" 
+                        alt="{{ slide['field_banner_image'][0]['alt']}}" 
                         class="w-100"
                     >
                     <div class="xlider-blurb {{slide['field_post_content_position'][0]['value'] }} {{enable_transition_slider }}">
