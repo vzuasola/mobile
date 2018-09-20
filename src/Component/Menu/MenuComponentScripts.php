@@ -57,7 +57,6 @@ class MenuComponentScripts implements ComponentAttachmentInterface
                 }
             }
         } catch (\Exception $e) {
-            
             $data['top_menu'] = [];
         }
 
