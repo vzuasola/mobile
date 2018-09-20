@@ -29,6 +29,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private currentPage: number;
     private pager: number;
     private load: boolean;
+    private product: any[];
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -41,10 +42,12 @@ export class GamesLobbyComponent implements ComponentInterface {
             keywords_weight: 0,
             no_result_msg: string,
             search_blurb: string,
+            product: any[],
         }) {
         this.response = null;
         this.element = element;
         this.isLogin = attachments.authenticated;
+        this.product = attachments.product;
         this.listenChangeCategory();
         this.listenHashChange();
         this.listenClickGameTile();
@@ -67,10 +70,12 @@ export class GamesLobbyComponent implements ComponentInterface {
             keywords_weight: 0,
             no_result_msg: string,
             search_blurb: string,
+            product: any[],
         }) {
         this.response = null;
         this.element = element;
         this.isLogin = attachments.authenticated;
+        this.product = attachments.product;
         this.generateLobby();
         this.listenToSwipe();
         this.initMarker();
@@ -282,6 +287,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (el && !this.isLogin) {
                 ComponentManager.broadcast("header.login", {
                     src: el,
+                    productVia: this.product[0].login_via,
+                    regVia: this.product[0].reg_via,
                 });
             }
         });

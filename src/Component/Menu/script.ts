@@ -18,17 +18,19 @@ export class MenuComponent implements ComponentInterface {
     private element: HTMLElement;
     private isLogin: boolean;
     private products: any[];
+    private joinUrl: string;
 
     constructor() {
         this.pushNotification = new PushNotification();
     }
 
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean, products: any[]}) {
+    onLoad(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
         this.isLogin = attachments.authenticated;
         this.products = attachments.products;
+        this.joinUrl = attachments.join_now_url;
 
         this.activateMenu(element);
         this.attachProduct();
@@ -54,11 +56,12 @@ export class MenuComponent implements ComponentInterface {
 
     }
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean, products: any[]}) {
+    onReload(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
         this.products = attachments.products;
+        this.joinUrl = attachments.join_now_url;
 
         this.activateMenu(element);
         this.attachProduct();
@@ -155,18 +158,44 @@ export class MenuComponent implements ComponentInterface {
     private attachProductToLogin() {
         const product = ComponentManager.getAttribute("product");
         const loginButton = this.element.querySelector(".login-trigger");
+        const joinButton = this.element.querySelector(".join-btn");
 
-        if (product !== "mobile-entrypage" && loginButton) {
-            if (this.products.hasOwnProperty(product)) {
+        if (product !== "mobile-entrypage") {
+            if (this.products && this.products.hasOwnProperty(product)) {
                 const currentProduct = this.products[product];
 
+                if (loginButton) {
+                    loginButton.setAttribute(
+                        "data-product-login-via",
+                        currentProduct.login_via,
+                    );
+                    loginButton.setAttribute(
+                        "data-product-reg-via",
+                        currentProduct.reg_via,
+                    );
+                }
+                if (joinButton) {
+                    joinButton.setAttribute(
+                        "href",
+                        currentProduct.reg_via,
+                    );
+                }
+            }
+        } else {
+            if (loginButton) {
                 loginButton.setAttribute(
                     "data-product-login-via",
-                    currentProduct.field_product_login_via[0].value,
+                    "",
                 );
                 loginButton.setAttribute(
                     "data-product-reg-via",
-                    currentProduct.field_registration_url[0].value,
+                    "",
+                );
+            }
+            if (joinButton) {
+                joinButton.setAttribute(
+                    "href",
+                    this.joinUrl,
                 );
             }
         }

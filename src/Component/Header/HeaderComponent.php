@@ -18,11 +18,6 @@ class HeaderComponent implements ComponentWidgetInterface
      */
     private $playerSession;
 
-     /**
-     * @var App\Fetcher\Drupal\ViewsFetcher
-     */
-    private $views;
-
     private $menu;
 
     private const HOME = [
@@ -39,21 +34,19 @@ class HeaderComponent implements ComponentWidgetInterface
             $container->get('router_request'),
             $container->get('config_fetcher'),
             $container->get('player_session'),
-            $container->get('menu_fetcher'),
-            $container->get('views_fetcher')
+            $container->get('menu_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($request, $configs, $playerSession, $menu, $views)
+    public function __construct($request, $configs, $playerSession, $menu)
     {
         $this->request = $request;
         $this->configs = $configs;
         $this->playerSession = $playerSession;
         $this->menu = $menu;
-        $this->views = $views;
     }
 
     /**

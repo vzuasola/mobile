@@ -18,6 +18,7 @@ export class GamesSearch {
     private config: any;
     private gamesList: any;
     private searchFields = ["title", "keywords"];
+    private product: any[];
     private searchResult;
     private searchKeyword;
 
@@ -41,6 +42,7 @@ export class GamesSearch {
             keywords_weight: 0,
             no_result_msg: string,
             search_blurb: string,
+            product: any[],
         }) {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
@@ -61,6 +63,7 @@ export class GamesSearch {
             keywords_weight: 0,
             no_result_msg: string,
             search_blurb: string,
+            product: any[],
         }) {
         this.isLogin = attachments.authenticated;
         this.config = attachments;

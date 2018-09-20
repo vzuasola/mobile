@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\Main\Lobby\GamesLobby;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
+use App\MobileEntry\Services\Product\Products;
 
 /**
  *
@@ -17,6 +18,11 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
     private $playerSession;
 
     private $product;
+
+    private $tokenParser;
+
+    private $views;
+
     /**
      *
      */
@@ -25,18 +31,22 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
         return new static(
             $container->get('player_session'),
             $container->get('config_fetcher'),
-            $container->get('product_resolver')
+            $container->get('product_resolver'),
+            $container->get('token_parser'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $configs, $product)
+    public function __construct($playerSession, $configs, $product, $tokenParser, $views)
     {
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
+        $this->tokenParser = $tokenParser;
+        $this->views = $views;
     }
 
     /**
@@ -55,7 +65,31 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
             'search_blurb' => $config['search_blurb'] ?? "",
             'no_result_msg' => $config['no_result_msg'] ?? "",
             'title_weight' => $config['title_weight'] ?? 0,
-            'keywords_weight' => $config['keywords_weight'] ?? 0
+            'keywords_weight' => $config['keywords_weight'] ?? 0,
+            'product' => $this->getProductIntegration()
         ];
+    }
+
+    private function getProductIntegration()
+    {
+        try {
+            $result = [];
+            $products = $this->views->getViewById('products');
+
+            foreach ($products as $product) {
+                $instanceId = $product['field_product_instance_id'][0]['value'];
+                if (array_key_exists($instanceId, Products::PRODUCT_MAPPING)
+                    && $this->product->getProduct() === Products::PRODUCT_MAPPING[$instanceId]) {
+                    $result[] = [
+                        'login_via' => $product['field_product_login_via'][0]['value'],
+                        'reg_via' => $this->tokenParser->processTokens($product['field_registration_url'][0]['value'])
+                    ];
+                }
+            }
+        } catch (\Exception $e) {
+            $result = [];
+        }
+
+        return $result;
     }
 }
