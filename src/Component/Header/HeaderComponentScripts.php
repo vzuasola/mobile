@@ -80,9 +80,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
                 if (array_key_exists($instanceId, $this::PRODUCT_MAPPING)) {
                     $result[$this::PRODUCT_MAPPING[$instanceId]] = [
                         'login_via' => $product['field_product_login_via'][0]['value'],
-                        'reg_via' => $this->tokenParser->processTokens(
-                            $product['field_registration_url'][0]['value']
-                         )
+                        'reg_via' => $this->tokenParser->processTokens($product['field_registration_url'][0]['value'])
                     ];
                 }
             }
