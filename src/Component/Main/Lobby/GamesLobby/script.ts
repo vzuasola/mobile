@@ -6,6 +6,8 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as categoriesTemplate from "./handlebars/categories.handlebars";
 import * as gameTemplate from "./handlebars/games.handlebars";
+import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
+import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
 
 import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
@@ -13,7 +15,7 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
-import Xlider from "@app/assets/script/components/xlider";
+import {Marker} from "@app/assets/script/components/marker";
 
 /**
  *
@@ -55,6 +57,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenToCategory();
         this.listenToScroll();
         this.listenToSwipe();
+        this.initMarker();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -74,10 +77,21 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.generateLobby();
+        this.listenToSwipe();
+        this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
+    }
+
+    private initMarker() {
+        // Checkbox
+        new Marker({
+            parent: ".games-search-filter-body",
+            iconDefault: iconUnCheckedTemplate(),
+            iconActive: iconCheckedTemplate(),
+        });
     }
 
     private getActiveIndex(list: HTMLElement) {
@@ -222,6 +236,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 utility.addClass(src.parentElement, "active");
 
                 const key = src.getAttribute("data-category-filter-id");
+                this.setGames(this.response.games[key]);
                 ComponentManager.broadcast("category.change");
             }
         });
@@ -367,7 +382,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     private listenToSwipe() {
-        const games = this.element.querySelector("#game-container");
+        const games: any = this.element.querySelector("#game-container");
         const swipe: Swipe = new Swipe(games);
         if (games) {
             // Left Swipe
@@ -385,6 +400,10 @@ export class GamesLobbyComponent implements ComponentInterface {
                     });
                 } else {
                     // Add bounce effect
+                    utility.addClass(games, "bounce-left");
+                    setTimeout(() => {
+                        utility.removeClass(games, "bounce-left");
+                    }, 1000);
                 }
             });
             // Right Swipe
@@ -402,6 +421,10 @@ export class GamesLobbyComponent implements ComponentInterface {
                     });
                 } else {
                     // Add bounce effect
+                    utility.addClass(games, "bounce-right");
+                    setTimeout(() => {
+                        utility.removeClass(games, "bounce-right");
+                    }, 1000);
                 }
             });
         }

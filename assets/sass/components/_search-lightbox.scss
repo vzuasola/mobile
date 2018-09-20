@@ -75,16 +75,22 @@
     }
 
     // Search Area
-    &-input {
+    input[type="search"] {
         width: 85%;
         height: 4.4rem;
-        padding: 1.25rem 0.5rem;
+        padding: 0;
+        text-indent: 1rem;
         border: none;
         background: $white;
         color: $black;
         border-radius: 0.5rem 0 0 0.5rem;
         outline: none;
         float: left;
+        -webkit-appearance: none;
+        -moz-appearance:none;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
     }
 
     &-submit {

@@ -12,52 +12,115 @@
                 <div class="games-search-filter-list col-12 clearfix">
                     <p>Sort by Max Wins</p>
                     <ul class="col-6">
-                        <li class="selected">$100</li>
-                        <li>$10,000</li>
-                        <li>100,000</li>
+                        <li>
+                            <label for="482">$100</label>
+                            <input class="filter-checkbox" type="checkbox" id="482" data-parent="480" value="482">
+                        </li>
+                        <li>
+                            <label for="483">$10,000</label>
+                            <input class="filter-checkbox" type="checkbox" id="483" data-parent="480" value="483">
+                        </li>
+                        <li>
+                            <label for="484">$100,000</label>
+                            <input class="filter-checkbox" type="checkbox" id="484" data-parent="480" value="484">
+                        </li>
                     </ul>
                     <ul class="col-6">
-                        <li>$1,000</li>
-                        <li>$50,000</li>
+                        <li>
+                            <label for="485">$1,000</label>
+                            <input class="filter-checkbox" type="checkbox" id="485" data-parent="480" value="483">
+                        </li>
+                        <li>
+                            <label for="486">$50,000</label>
+                            <input class="filter-checkbox" type="checkbox" id="486" data-parent="480" value="484">
+                        </li>
                     </ul>
                 </div>
                 <div class="games-search-filter-list col-12 clearfix">
                     <p>Paylines</p>
                     <ul class="col-6">
-                        <li class="selected">8 Lines</li>
-                        <li>18 Lines</li>
-                        <li>100 Lines</li>
+                        <li>
+                            <label for="487">8 Lines</label>
+                            <input class="filter-checkbox" type="checkbox" id="487" data-parent="481" value="487">
+                        </li>
+                        <li>
+                            <label for="488">18 Lines</label>
+                            <input class="filter-checkbox" type="checkbox" id="488" data-parent="481" value="488">
+                        </li>
+                        <li>
+                            <label for="489">100 Lines</label>
+                            <input class="filter-checkbox" type="checkbox" id="489" data-parent="481" value="489">
+                        </li>
                     </ul>
                     <ul class="col-6">
-                        <li>10 nes</li>
-                        <li>50 Lines</li>
+                        <li>
+                            <label for="490">10 Lines</label>
+                            <input class="filter-checkbox" type="checkbox" id="490" data-parent="481" value="490">
+                        </li>
+                        <li>
+                            <label for="491">50 Lines</label>
+                            <input class="filter-checkbox" type="checkbox" id="491" data-parent="481" value="491">
+                        </li>
                     </ul>
                 </div>
                 <div class="games-search-filter-list col-12 clearfix">
                     <p>Themes</p>
                     <ul class="col-6">
-                        <li class="selected">Adventure</li>
-                        <li>Roulette</li>
-                        <li>Jackpot</li>
-                        <li>Gems</li>
-                        <li>Nature</li>
+                        <li>
+                            <label for="492">Adventure</label>
+                            <input class="filter-checkbox" type="checkbox" id="492" data-parent="482" value="492">
+                        </li>
+                        <li>
+                            <label for="493">Roulette</label>
+                            <input class="filter-checkbox" type="checkbox" id="493" data-parent="482" value="493">
+                        </li>
+                        <li>
+                            <label for="494">Jackpot</label>
+                            <input class="filter-checkbox" type="checkbox" id="494" data-parent="482" value="494">
+                        </li>
+                        <li>
+                            <label for="495">Gems</label>
+                            <input class="filter-checkbox" type="checkbox" id="495" data-parent="482" value="495">
+                        </li>
+                        <li>
+                            <label for="496">Nature</label>
+                            <input class="filter-checkbox" type="checkbox" id="496" data-parent="482" value="496">
+                        </li>
                     </ul>
                     <ul class="col-6">
-                        <li>Arcade</li>
-                        <li>Cards</li>
-                        <li>Fairy Tale</li>
-                        <li>Movie</li>
-                        <li>Pirate</li>
+                        <li>
+                            <label for="497">Arcade</label>
+                            <input class="filter-checkbox" type="checkbox" id="497" data-parent="482" value="497">
+                        </li>
+                        <li>
+                            <label for="498">Cards</label>
+                            <input class="filter-checkbox" type="checkbox" id="498" data-parent="482" value="498">
+                        </li>
+                        <li>
+                            <label for="499">Fairy Tale</label>
+                            <input class="filter-checkbox" type="checkbox" id="499" data-parent="482" value="499">
+                        </li>
+                        <li>
+                            <label for="500">Movie</label>
+                            <input class="filter-checkbox" type="checkbox" id="500" data-parent="482" value="500">
+                        </li>
+                        <li>
+                            <label for="501">Pirate</label>
+                            <input class="filter-checkbox" type="checkbox" id="501" data-parent="482" value="501">
+                        </li>
                     </ul>
                 </div>
                 <div class="filter-form-field">
-                    <button type="submit" class="filter-form-field-btn btn btn-small btn-yellow  btn-lower-case">Submit</button>
+                    <input id="filterSubmit" class="filter-form-field-btn btn btn-small btn-yellow btn-lower-case" type="submit" name="filter-submit" value="Submit" disabled="disabled">
                 </div>
                 <div class="filter-form-field">
-                    <button type="button"  class="filter-form-field-btn btn btn-small btn-gray btn-lower-case">Clear</button>
+                    <input id="filterReset" class="filter-form-field-btn btn btn-small btn-gray btn-lower-case" type="reset" name="filter-reset" value="Clear" disabled="disabled">
                 </div>
             </div>
         </div>
     </div>
 </div>
+<span class="hidden">
+    {% include '@app/web/images/svg/lobby/search-checked.svg' ignore missing %}
+</span>
 

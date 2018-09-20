@@ -219,3 +219,13 @@ To configure/add manually, go to your projects `Settings` -> `Pipeline`. On the 
 | **DEPLOY_PROD_TOWER_HOST**           | `trc-ptc-itass01.msred.dom`                                              | Ansible tower host.                                           |
 | **DEPLOY_PROD_USERNAME**      | _Can be any string_                                                                          | Username used by your app to trigger deployment job in Ansible Tower.                                      |
 | **DEPLOY_PROD_PASSWORD**      | _Can be any string_                                                                          | Password used by your app to trigger deployment job in Ansible Tower.                                      |
+| **LIGHTHOUSE_PWA_SCORE** | _An integer between 1 to 100_ | Defines the acceptable score for the PWA category |
+| **LIGHTHOUSE_ACCESSIBILITY_SCORE** | _An integer between 1 to 100_ | Defines the acceptable score for the Accessibility category |
+| **LIGHTHOUSE_BEST_PRACTICES_SCORE** | _An integer between 1 to 100_ | Defines the acceptable score for the Best Practices category |
+| **LIGHTHOUSE_PERFORMANCE_SCORE** | _An integer between 1 to 100_ | Defines the acceptable score for the Performance category |
+| **LIGHTHOUSE_SEO_SCORE** | _An integer between 1 to 100_ | Defines the acceptable score for the SEO category |
+| **LIGHTHOUSE_DEV_TARGET_URL** | _An absolute URL_ | Defines the URL lighthouse will run against for DEV |
+| **LIGHTHOUSE_QA1_TARGET_URL** | _An absolute URL_ | Defines the URL lighthouse will run against for QA1 |
+| **LIGHTHOUSE_TCT_TARGET_URL** | _An absolute URL_ | Defines the URL lighthouse will run against for TCT |
+| **LIGHTHOUSE_STG_TARGET_URL** | _An absolute URL_ | Defines the URL lighthouse will run against for STG |
+| **LIGHTHOUSE_UAT_TARGET_URL** | _An absolute URL_ | Defines the URL lighthouse will run against for UAT |

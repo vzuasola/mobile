@@ -41,7 +41,7 @@ class CookieService
         if (preg_match('/https?:\/\/(?<env>[a-z0-9]+)-(mobile|m)/', $baseUrl, $matches)) {
             $override = $container->get('parameters')['appsvc.origin.' . $matches['env']];
 
-            if (empty($override)) {
+            if (!empty($override)) {
                 $hostname = $override;
             }
         }
