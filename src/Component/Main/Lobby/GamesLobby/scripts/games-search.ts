@@ -306,6 +306,9 @@ export class GamesSearch {
             const keyword =  this.element.querySelector(".games-search-input");
             if (keyword && keyword.value) {
                 this.searchObj.search(keyword.value);
+                if (event.keyCode === 13) {
+                    this.showResultInLobby();
+                }
             } else {
                 this.clearSearchResult();
             }
@@ -321,17 +324,20 @@ export class GamesSearch {
             const el = utility.hasClass(src, "games-search-submit", true);
             const keyword = this.element.querySelector(".games-search-input");
             if (el && keyword.value) {
-                this.activateSearchTab();
-                if (this.searchResult.length) {
-                    this.onSuccessSearchLobby(this.searchResult, this.searchKeyword);
-                } else {
-                    this.element.querySelector("#game-container").innerHTML = "";
-                }
-
-                Modal.close("#games-search-lightbox");
-
+                this.showResultInLobby();
             }
         });
+    }
+
+    private showResultInLobby() {
+        this.activateSearchTab();
+        if (this.searchResult.length) {
+            this.onSuccessSearchLobby(this.searchResult, this.searchKeyword);
+        } else {
+            this.element.querySelector("#game-container").innerHTML = "";
+        }
+
+        Modal.close("#games-search-lightbox");
     }
 
     /**
