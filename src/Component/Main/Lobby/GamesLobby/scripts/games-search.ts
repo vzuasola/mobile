@@ -18,6 +18,8 @@ export class GamesSearch {
     private config: any;
     private gamesList: any;
     private searchFields = ["title", "keywords"];
+    private searchResult;
+    private searchKeyword;
 
     constructor() {
         this.searchObj = new Search({
@@ -99,11 +101,12 @@ export class GamesSearch {
             gamesPreview.innerHTML = previewTemplate;
         }
 
-        this.onSuccessSearchLobby(sortedGames);
+        this.searchResult = sortedGames;
+        this.searchKeyword = keyword;
     }
 
-    private onSuccessSearchLobby(response) {
-        const activeCategory = utility.getHash(window.location.href);
+    private onSuccessSearchLobby(response, keyword) {
+        const blurb = this.config.search_blurb;
         const groupedGames: any = [];
         let gamesList: any = [];
         let counter: number = 1;
@@ -122,12 +125,10 @@ export class GamesSearch {
             groupedGames.push(gamesList);
         }
 
-        // set search tab as active tab
-        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
-        utility.addClass(this.element.querySelector(".search-tab"), "active");
-        utility.addClass(this.element.querySelector(".search-blurb"), "active");
         // populate search results in games lobby search tab
         this.setGames(groupedGames);
+        // set search blurb
+        this.updateSearchBlurb(blurb, { count: response.length, keyword });
     }
 
     private onBeforeSearch(data) {
@@ -142,7 +143,9 @@ export class GamesSearch {
         this.updateSearchBlurb(blurb, { count: 0, keyword });
 
         this.element.querySelector(".games-search-result").innerHTML = "";
-        this.element.querySelector("#game-container").innerHTML = "";
+
+        this.searchResult = [];
+        this.searchKeyword = keyword;
     }
 
     /**
@@ -157,21 +160,6 @@ export class GamesSearch {
                 blurbEl.innerHTML = blurb.replace("{count}", data.count)
                    .replace("{keyword}", data.keyword);
             }
-        }
-    }
-
-    /**
-     * Function that shows active category games before initiating a search.
-     */
-    private showActiveCategoryTab(srcElement) {
-        const activeCategory = utility.getHash(window.location.href);
-        if (this.gamesList.games[activeCategory]) {
-            // repopulate list of games for active tab
-            this.setGames(this.gamesList.games[activeCategory]);
-            // remove active state of search tab
-            utility.removeClass(this.element.querySelector(".search-tab"), "active");
-            utility.removeClass(this.element.querySelector(".search-blurb"), "active");
-            utility.addClass(this.element.querySelector(".category-" + activeCategory), "active");
         }
     }
 
@@ -205,6 +193,14 @@ export class GamesSearch {
         for (const blurbEl of searchBlurbEl) {
             blurbEl.innerHTML = "";
         }
+    }
+
+    private activateSearchTab() {
+        const activeCategory = utility.getHash(window.location.href);
+        // set search tab as active tab
+        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        utility.addClass(this.element.querySelector(".search-tab"), "active");
+        utility.addClass(this.element.querySelector(".search-blurb"), "active");
     }
 
     private deactivateSearchTab() {
@@ -310,6 +306,9 @@ export class GamesSearch {
             const keyword =  this.element.querySelector(".games-search-input");
             if (keyword && keyword.value) {
                 this.searchObj.search(keyword.value);
+                if (event.keyCode === 13) {
+                    this.showResultInLobby();
+                }
             } else {
                 this.clearSearchResult();
             }
@@ -325,12 +324,20 @@ export class GamesSearch {
             const el = utility.hasClass(src, "games-search-submit", true);
             const keyword = this.element.querySelector(".games-search-input");
             if (el && keyword.value) {
-                this.clearSearchResult();
-                this.searchObj.search(keyword.value);
-                Modal.close("#games-search-lightbox");
-
+                this.showResultInLobby();
             }
         });
+    }
+
+    private showResultInLobby() {
+        this.activateSearchTab();
+        if (this.searchResult.length) {
+            this.onSuccessSearchLobby(this.searchResult, this.searchKeyword);
+        } else {
+            this.element.querySelector("#game-container").innerHTML = "";
+        }
+
+        Modal.close("#games-search-lightbox");
     }
 
     /**
@@ -343,7 +350,6 @@ export class GamesSearch {
             if (el) {
                 event.preventDefault();
                 this.clearSearchResult();
-                this.showActiveCategoryTab(el);
                 Modal.close("#games-search-lightbox");
             }
         });
