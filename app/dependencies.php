@@ -6,6 +6,7 @@ use App\MobileEntry\Services\CookieService\CookieService;
 use App\MobileEntry\Services\Domains\IDDomain;
 use App\MobileEntry\Services\Accounts\Accounts;
 use App\MobileEntry\Services\Product\ProductResolver;
+use App\MobileEntry\Services\Product\Products;
 
 require APP_ROOT . '/core/app/dependencies.php';
 
@@ -27,4 +28,8 @@ $container['accounts_service'] = function ($c) {
 
 $container['product_resolver'] = function ($c) {
     return ProductResolver::create($c);
+};
+
+$container['products'] = function () {
+    return Products::create();
 };
