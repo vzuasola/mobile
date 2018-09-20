@@ -295,8 +295,16 @@ class MyProfileForm extends FormBase implements FormInterface
      */
     private function setDisabledFields($definition)
     {
-        foreach ($this->disabledFields as $fieldKey) {
-            $definition[$fieldKey]['options']['attr']['disabled'] = "disabled";
+        $definition['submit']['options']['attr']['data-redirect'] = 0;
+
+        foreach ($this->disabledFields as $key => $value) {
+            if (strtoupper($definition[$value]['options']['attr']['value']) == 'FIRST NAME' ||
+                strtoupper($definition[$value]['options']['attr']['value']) == 'LAST NAME') {
+                $definition[$value]['options']['attr']['value'] = "";
+                $definition['submit']['options']['attr']['data-redirect'] = 1;
+            } else {
+                $definition[$value]['options']['attr']['disabled'] = "disabled";
+            }
         }
 
         return $definition;
