@@ -82,7 +82,7 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
                 $instanceId = $product['field_product_instance_id'][0]['value'];
                 if (array_key_exists($instanceId, $this::PRODUCT_MAPPING)
                     && $this->product->getProduct() === $this::PRODUCT_MAPPING[$instanceId]) {
-                   $result[] = [
+                    $result[] = [
                         'login_via' => $product['field_product_login_via'][0]['value'],
                         'reg_via' => $this->tokenParser->processTokens($product['field_registration_url'][0]['value'])
                     ];
