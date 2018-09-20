@@ -28,6 +28,7 @@ export class Profile extends FormBase {
     }
 
     init() {
+        this.willRedirect();
         this.form = this.element.querySelector(".profile-form");
         this.notification = new Notification(
             document.body,
@@ -53,6 +54,16 @@ export class Profile extends FormBase {
         this.activateTooltip();
     }
 
+    private willRedirect() {
+        const willRedirect = utility.getParameterByName("redirect");
+        const timeout = this.attachments.fastRegTimeout * 1000;
+        if (willRedirect) {
+            setTimeout(() => {
+                window.location.href = this.attachments.fastRegRedirect;
+            }, timeout);
+        }
+    }
+
     private contactPreference() {
         const checkbox: HTMLFormElement = this.element.querySelector("#ProfileForm_contact_preference");
         if (this.attachments.user.receive_news) {
@@ -63,6 +74,8 @@ export class Profile extends FormBase {
 
     private getValues() {
         return {
+            firstname: this.form.MyProfileForm_first_name.value,
+            lastname: this.form.MyProfileForm_last_name.value,
             gender: this.getGenderText(),
             language: this.getLanguageText(),
             mobile: this.form.MyProfileForm_mobile_number_1.value,
@@ -78,6 +91,8 @@ export class Profile extends FormBase {
 
     private getLabels() {
         return {
+            firstname: this.form.querySelector(".MyProfileForm_first_name .form-label-text").textContent,
+            lastname: this.form.querySelector(".MyProfileForm_last_name .form-label-text").textContent,
             gender: this.form.querySelector(".MyProfileForm_gender .form-label-text").textContent,
             language: this.form.querySelector(".MyProfileForm_language .form-label-text").textContent,
             mobile: this.form.querySelector(".MyProfileForm_mobile_number_1 .form-label-text").textContent,
