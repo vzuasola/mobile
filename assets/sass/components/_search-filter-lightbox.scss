@@ -16,9 +16,18 @@
         border-radius: 0;
         margin-bottom: 0.8rem;
 
+        .games-search-back {
+            position: absolute;
+            top: 0;
+            right: 0;
+            outline: none;
+            cursor: pointer;
+
+        }
+
         svg {
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 2.2rem;
+            height: 2.2rem;
             top: 1rem;
             fill: $white;
 
