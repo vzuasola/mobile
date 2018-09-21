@@ -15,6 +15,7 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
+import {GamesFilter} from "./scripts/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
 
 /**
@@ -26,6 +27,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private isLogin: boolean;
     private gameLauncher;
     private gamesSearch: GamesSearch;
+    private gamesFilter: GamesFilter;
     private currentPage: number;
     private pager: number;
     private load: boolean;
@@ -34,6 +36,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     constructor() {
         this.gameLauncher = GameLauncher;
         this.gamesSearch = new GamesSearch();
+        this.gamesFilter = new GamesFilter();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -62,6 +65,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.currentPage = 0;
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
+        this.gamesFilter.handleOnLoad(this.element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {
