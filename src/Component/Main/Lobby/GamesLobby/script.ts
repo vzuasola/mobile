@@ -42,12 +42,17 @@ export class GamesLobbyComponent implements ComponentInterface {
             keywords_weight: 0,
             no_result_msg: string,
             search_blurb: string,
+            msg_has_recommended: string,
+            msg_no_recommended: string,
             product: any[],
         }) {
         this.response = null;
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
+        this.pager = 0;
+        this.currentPage = 0;
+        this.load = true;
         this.listenChangeCategory();
         this.listenHashChange();
         this.listenClickGameTile();
@@ -58,9 +63,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenToScroll();
         this.listenToSwipe();
         this.initMarker();
-        this.pager = 0;
-        this.currentPage = 0;
-        this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
     }
 
@@ -70,19 +72,21 @@ export class GamesLobbyComponent implements ComponentInterface {
             keywords_weight: 0,
             no_result_msg: string,
             search_blurb: string,
+            msg_has_recommended: string,
+            msg_no_recommended: string,
             product: any[],
         }) {
         this.response = null;
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
+        this.pager = 0;
+        this.currentPage = 0;
+        this.load = true;
         this.generateLobby();
         this.listenToSwipe();
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
-        this.pager = 0;
-        this.currentPage = 0;
-        this.load = true;
     }
 
     private initMarker() {
@@ -226,6 +230,8 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenChangeCategory() {
         ComponentManager.subscribe("click", (event: Event, src) => {
             if (src.getAttribute("data-category-filter-id")) {
+                // this.currentPage = 0;
+                // this.pager = 0;
                 const categoriesEl = this.element.querySelector("#game-categories");
                 const activeLink = categoriesEl.querySelector(".category-tab .active a");
 

@@ -7,6 +7,7 @@ import * as utility from "@core/assets/js/components/utility";
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Loader} from "@app/assets/script/components/loader";
 import {Modal} from "@app/assets/script/components/modal";
+import {RecommendedGames} from "./recommended-games";
 /**
  *
  */
@@ -21,6 +22,7 @@ export class GamesSearch {
     private product: any[];
     private searchResult;
     private searchKeyword;
+    private recommendedGames;
 
     constructor() {
         this.searchObj = new Search({
@@ -42,6 +44,8 @@ export class GamesSearch {
             keywords_weight: 0,
             no_result_msg: string,
             search_blurb: string,
+            msg_has_recommended: string,
+            msg_no_recommended: string,
             product: any[],
         }) {
         this.isLogin = attachments.authenticated;
@@ -63,8 +67,11 @@ export class GamesSearch {
             keywords_weight: 0,
             no_result_msg: string,
             search_blurb: string,
+            msg_has_recommended: string,
+            msg_no_recommended: string,
             product: any[],
         }) {
+
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
@@ -81,6 +88,7 @@ export class GamesSearch {
             this.gamesList = gamesList;
             this.favoritesList = gamesList.favorite_list;
             this.searchObj.setData(allGames);
+            this.recommendedGames = new RecommendedGames(this.gamesList, this.config);
         }
     }
 
@@ -91,25 +99,54 @@ export class GamesSearch {
     private onSuccessSearch(response, keyword) {
         const blurb = this.config.search_blurb;
         const sortedGames = this.sortSearchResult(keyword, response);
-        const previewTemplate = gamesSearchTemplate({
-            games: sortedGames,
-            favorites: this.favoritesList,
-            isLogin: this.isLogin,
-        });
-
-        this.updateSearchBlurb(blurb, { count: response.length, keyword });
-        const gamesPreview = this.element.querySelector(".games-search-result");
-
-        if (gamesPreview) {
-            gamesPreview.innerHTML = previewTemplate;
-        }
-
         this.searchResult = sortedGames;
         this.searchKeyword = keyword;
+
+        // set search blurb
+        this.updateSearchBlurb(blurb, { count: response.length, keyword });
+        // populate search results in games preview
+        this.setGamesResultPreview(sortedGames);
     }
 
     private onSuccessSearchLobby(response, keyword) {
         const blurb = this.config.search_blurb;
+        const groupedGames = this.groupGames(response);
+
+        // populate search results in games lobby search tab
+        this.setGamesResultLobby(groupedGames);
+        // set search blurb
+        this.updateSearchBlurb(blurb, { count: response.length, keyword });
+    }
+
+    private onBeforeSearch(data) {
+        // placeholder
+    }
+
+    /**
+     * Callback function on search fail
+     */
+    private onFailedSearch(keyword) {
+        let blurb = this.config.no_result_msg;
+        const recommendedGames = this.recommendedGames.getGames();
+        const recommendedBlurb = this.recommendedGames.getBlurb();
+        blurb = blurb + recommendedBlurb;
+        this.searchKeyword = keyword;
+        this.updateSearchBlurb(blurb, { count: 0, keyword });
+
+        if (recommendedGames.length) {
+            this.setGamesResultPreview(recommendedGames);
+            this.searchResult = recommendedGames;
+        } else {
+            this.element.querySelector(".games-search-result").innerHTML = "";
+            this.searchResult = [];
+        }
+    }
+
+    /**
+     * Group games 3 each row
+     * @param {any} response
+     */
+    private groupGames(response) {
         const groupedGames: any = [];
         let gamesList: any = [];
         let counter: number = 1;
@@ -128,27 +165,7 @@ export class GamesSearch {
             groupedGames.push(gamesList);
         }
 
-        // populate search results in games lobby search tab
-        this.setGames(groupedGames);
-        // set search blurb
-        this.updateSearchBlurb(blurb, { count: response.length, keyword });
-    }
-
-    private onBeforeSearch(data) {
-        // placeholder
-    }
-
-    /**
-     * Callback function on search fail
-     */
-    private onFailedSearch(keyword) {
-        const blurb = this.config.no_result_msg;
-        this.updateSearchBlurb(blurb, { count: 0, keyword });
-
-        this.element.querySelector(".games-search-result").innerHTML = "";
-
-        this.searchResult = [];
-        this.searchKeyword = keyword;
+        return groupedGames;
     }
 
     /**
@@ -167,9 +184,26 @@ export class GamesSearch {
     }
 
     /**
+     * Function that populates game tiles in games preview.
+     */
+    private setGamesResultPreview(sortedGames) {
+        const previewTemplate = gamesSearchTemplate({
+            games: sortedGames,
+            favorites: this.favoritesList,
+            isLogin: this.isLogin,
+        });
+
+        const gamesPreview = this.element.querySelector(".games-search-result");
+
+        if (gamesPreview) {
+            gamesPreview.innerHTML = previewTemplate;
+        }
+    }
+
+    /**
      * Function that populates game tiles in games lobby.
      */
-    private setGames(gamesList) {
+    private setGamesResultLobby(gamesList) {
         const gamesLobby = this.element.querySelector("#game-container");
         if (gamesLobby) {
             const lobbyTemplate = gameTemplate({
@@ -207,6 +241,8 @@ export class GamesSearch {
     }
 
     private deactivateSearchTab() {
+        const activeCategory = utility.getHash(window.location.href);
+        utility.addClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.removeClass(this.element.querySelector(".search-tab"), "active");
         utility.removeClass(this.element.querySelector(".search-blurb"), "active");
     }
@@ -355,6 +391,7 @@ export class GamesSearch {
                 event.preventDefault();
                 this.clearSearchResult();
                 Modal.close("#games-search-lightbox");
+                ComponentManager.broadcast("games.search.closed");
             }
         });
     }
