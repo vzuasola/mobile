@@ -6,104 +6,24 @@
                     <use xlink:href="#arrow" />
                 </svg>
             </a>
-            <h2>FILTER</h2>
+            <h2>{{ filter_title }}</h2>
             {% include '@app/web/images/svg/closed.svg' %}
             <div class="modal-body games-search-filter-body clearfix">
-                <div class="games-search-filter-list clearfix">
-                    <p>Sort by Max Wins</p>
+                {% for parent in parent_filters %}
+                    <div class="games-search-filter-list clearfix">
+                    <p>{{ parent.name }}</p>
                     <ul class="col-12">
-                        <li>
-                            <label for="482">$100</label>
-                            <input class="filter-checkbox" type="checkbox" id="482" data-parent="480" value="482">
-                        </li>
-                        <li>
-                            <label for="485">$1,000</label>
-                            <input class="filter-checkbox" type="checkbox" id="485" data-parent="480" value="483">
-                        </li>
-                        <li>
-                            <label for="483">$10,000</label>
-                            <input class="filter-checkbox" type="checkbox" id="483" data-parent="480" value="483">
-                        </li>
-                        <li>
-                            <label for="486">$50,000</label>
-                            <input class="filter-checkbox" type="checkbox" id="486" data-parent="480" value="484">
-                        </li>
-                        <li>
-                            <label for="484">$100,000</label>
-                            <input class="filter-checkbox" type="checkbox" id="484" data-parent="480" value="484">
-                        </li>
+                        {% for dataFilter in filters %}
+                            {% if dataFilter.parent == parent.value %}
+                                <li>
+                                    <label for="{{ dataFilter.value }}">{{ dataFilter.name }}</label>
+                                    <input class="filter-checkbox" type="checkbox" id="{{ dataFilter.value }}" data-parent="{{ parent.value }}" value="{{ dataFilter.value }}">
+                                </li>
+                            {% endif %}
+                        {% endfor %}
                     </ul>
-                </div>
-                <div class="games-search-filter-list clearfix">
-                    <p>Paylines</p>
-                    <ul class="col-12">
-                        <li>
-                            <label for="487">8 Lines</label>
-                            <input class="filter-checkbox" type="checkbox" id="487" data-parent="481" value="487">
-                        </li>
-                        <li>
-                            <label for="488">18 Lines</label>
-                            <input class="filter-checkbox" type="checkbox" id="488" data-parent="481" value="488">
-                        </li>
-                        <li>
-                            <label for="489">100 Lines</label>
-                            <input class="filter-checkbox" type="checkbox" id="489" data-parent="481" value="489">
-                        </li>
-                        <li>
-                            <label for="490">10 Lines</label>
-                            <input class="filter-checkbox" type="checkbox" id="490" data-parent="481" value="490">
-                        </li>
-                        <li>
-                            <label for="491">50 Lines</label>
-                            <input class="filter-checkbox" type="checkbox" id="491" data-parent="481" value="491">
-                        </li>
-                    </ul>
-                </div>
-                <div class="games-search-filter-list clearfix">
-                    <p>Themes</p>
-                    <ul class="col-12">
-                        <li>
-                            <label for="492">Adventure</label>
-                            <input class="filter-checkbox" type="checkbox" id="492" data-parent="482" value="492">
-                        </li>
-                        <li>
-                            <label for="493">Roulette</label>
-                            <input class="filter-checkbox" type="checkbox" id="493" data-parent="482" value="493">
-                        </li>
-                        <li>
-                            <label for="494">Jackpot</label>
-                            <input class="filter-checkbox" type="checkbox" id="494" data-parent="482" value="494">
-                        </li>
-                        <li>
-                            <label for="495">Gems</label>
-                            <input class="filter-checkbox" type="checkbox" id="495" data-parent="482" value="495">
-                        </li>
-                        <li>
-                            <label for="496">Nature</label>
-                            <input class="filter-checkbox" type="checkbox" id="496" data-parent="482" value="496">
-                        </li>
-                        <li>
-                            <label for="497">Arcade</label>
-                            <input class="filter-checkbox" type="checkbox" id="497" data-parent="482" value="497">
-                        </li>
-                        <li>
-                            <label for="498">Cards</label>
-                            <input class="filter-checkbox" type="checkbox" id="498" data-parent="482" value="498">
-                        </li>
-                        <li>
-                            <label for="499">Fairy Tale</label>
-                            <input class="filter-checkbox" type="checkbox" id="499" data-parent="482" value="499">
-                        </li>
-                        <li>
-                            <label for="500">Movie</label>
-                            <input class="filter-checkbox" type="checkbox" id="500" data-parent="482" value="500">
-                        </li>
-                        <li>
-                            <label for="501">Pirate</label>
-                            <input class="filter-checkbox" type="checkbox" id="501" data-parent="482" value="501">
-                        </li>
-                    </ul>
-                </div>
+                    </div>
+                {% endfor %}
                 <div class="filter-form-field">
                     <input id="filterSubmit" class="filter-form-field-btn btn btn-small btn-yellow btn-lower-case" type="submit" name="filter-submit" value="Submit" disabled="disabled">
                 </div>
