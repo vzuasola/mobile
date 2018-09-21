@@ -4,6 +4,9 @@
             <li class="active"><a href="#my-profile-content">{{ myProfileTab }}</a></li>
             <li><a href="#change-password-content">{{ changePasswordTab }}</a></li>
         </ul>
+        {% if (isFastReg) %}
+            <div class="alert" id="fast-reg-notification"> {{ flashMessage|raw}} </div>
+        {% endif %}
         <div class="container">
             <div class="tab-content" id="my-profile-content">
                 {{ widget('profile') }}
