@@ -15,6 +15,7 @@ export class GamesFilter {
     private element;
     handleOnLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
+        this.listenOnOpen();
         this.listenOnClick();
     }
 
@@ -22,14 +23,20 @@ export class GamesFilter {
         this.element = element;
     }
 
-    private listenOnClick() {
-        ComponentManager.subscribe("click", (event: Event, src) => {
-            this.toggleFilters(src);
-            this.clearFilters(src);
+    private listenOnOpen() {
+        ComponentManager.subscribe("games.search.filter", (event, src) => {
+            this.clearFilters();
         });
     }
 
-    private toggleFilters(src) {
+    private listenOnClick() {
+        ComponentManager.subscribe("click", (event: Event, src) => {
+            this.onToggleFilters(src);
+            this.onClickClearFilters(src);
+        });
+    }
+
+    private onToggleFilters(src) {
         if (utility.hasClass(src, "filter-checkbox")) {
             const filter = utility.findParent(src, "li");
             if (filter) {
@@ -51,27 +58,31 @@ export class GamesFilter {
         }
     }
 
-    private clearFilters(src) {
+    private onClickClearFilters(src) {
         if (src.getAttribute("name") === "filter-reset") {
-            const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
-            if (filterLightbox) {
-                const actives = filterLightbox.querySelectorAll(".active");
-                const submit = filterLightbox.querySelector("#filterSubmit");
-                const reset = filterLightbox.querySelector("#filterReset");
+            this.clearFilters();
+        }
+    }
 
-                for (const activeKey in actives) {
-                    if (actives.hasOwnProperty(activeKey)) {
-                        const active = actives[activeKey];
-                        const checkbox = active.querySelector(".filter-checkbox");
+    private clearFilters() {
+        const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
+        if (filterLightbox) {
+            const actives = filterLightbox.querySelectorAll(".active");
+            const submit = filterLightbox.querySelector("#filterSubmit");
+            const reset = filterLightbox.querySelector("#filterReset");
 
-                        checkbox.checked = false;
-                        utility.removeClass(active, "active");
-                    }
+            for (const activeKey in actives) {
+                if (actives.hasOwnProperty(activeKey)) {
+                    const active = actives[activeKey];
+                    const checkbox = active.querySelector(".filter-checkbox");
+
+                    checkbox.checked = false;
+                    utility.removeClass(active, "active");
                 }
-
-                submit.setAttribute("disabled", "disabled");
-                reset.setAttribute("disabled", "disabled");
             }
+
+            submit.setAttribute("disabled", "disabled");
+            reset.setAttribute("disabled", "disabled");
         }
     }
 }
