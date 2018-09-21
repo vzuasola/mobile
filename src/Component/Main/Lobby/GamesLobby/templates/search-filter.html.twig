@@ -2,12 +2,14 @@
     <div class="modal-content games-search-filter-content">
         <div class="modal-inner-container">
             <a href="#" class="games-search-filter-back page-title-back-button">
-                <svg viewBox="0 30 24 44.999">
+                <svg data-name="closed" class="modal-close" viewBox="0 30 24 44.999">
                     <use xlink:href="#arrow" />
                 </svg>
             </a>
             <h2>{{ filter_title }}</h2>
-            {% include '@app/web/images/svg/closed.svg' %}
+            <a href="#" class="games-search-back">
+                {% include '@app/web/images/svg/closed.svg' %}
+            </a>
             <div class="modal-body games-search-filter-body clearfix">
                 {% for parent in parent_filters %}
                     <div class="games-search-filter-list clearfix">

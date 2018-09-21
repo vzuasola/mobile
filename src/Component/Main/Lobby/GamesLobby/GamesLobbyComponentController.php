@@ -252,6 +252,16 @@ class GamesLobbyComponentController
                 ];
             }
 
+            if (count($game['field_game_filter']) > 0) {
+
+                $filterString = '';
+                foreach ($game['field_game_filter'] as $filter) {
+                    $filterString .= $filter['field_games_filter_value'][0]['value'] . ',';
+                }
+
+                $processGame['filters'] = rtrim($filterString, ',');
+            }
+
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";

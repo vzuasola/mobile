@@ -30,6 +30,7 @@ import {MyAccountComponent} from "@app/src/Component/Main/MyAccount/script";
 import {MyAccountProfileComponent} from "@app/src/Component/Main/MyAccount/Profile/script";
 import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/MyAccount/Profile/VerifyPassword/script";
 import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
+import {FooterComponent} from "@app/src/Component/Footer/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -62,4 +63,5 @@ ComponentManager.setComponents({
     profile: new MyAccountProfileComponent(),
     profile_verify_password: new MyAccountProfileVerifyPasswordComponent(),
     change_password: new MyAccountChangePasswordComponent(),
+    footer: new FooterComponent(),
 });
