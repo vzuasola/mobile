@@ -208,6 +208,7 @@ export class GamesSearch {
 
     private deactivateSearchTab() {
         utility.removeClass(this.element.querySelector(".search-tab"), "active");
+        utility.removeClass(this.element.querySelector(".search-blurb"), "active");
     }
 
     /*
