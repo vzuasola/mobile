@@ -165,6 +165,7 @@ class MyProfileForm extends FormBase implements FormInterface
                 (strpos($formField['type'], 'TextType') !== false ||
                 strpos($formField['type'], 'TextAreaType') !== false)
             ) {
+                $this->moveAttribute($definition, $key, 'annotation', 'data-annotation');
                 $definition[$key]['options']['attr']['placeholder'] = $definition[$key]['options']['placeholder'];
                 $definition[$key]['options']['attr']['autocomplete'] = "off";
                 unset($definition[$key]['options']['placeholder']);
