@@ -15,14 +15,16 @@
                     <div class="games-search-filter-list clearfix">
                     <p>{{ parent.name }}</p>
                     <ul class="col-12">
-                        {% for dataFilter in filters %}
-                            {% if dataFilter.parent == parent.value %}
-                                <li>
-                                    <label for="{{ dataFilter.value }}">{{ dataFilter.name }}</label>
-                                    <input class="filter-checkbox" type="checkbox" id="{{ dataFilter.value }}" data-parent="{{ parent.value }}" value="{{ dataFilter.value }}">
-                                </li>
-                            {% endif %}
-                        {% endfor %}
+                        {% if filters %}
+                            {% for dataFilter in filters %}
+                                {% if dataFilter.parent == parent.value %}
+                                    <li>
+                                        <label for="{{ dataFilter.value }}">{{ dataFilter.name }}</label>
+                                        <input class="filter-checkbox" type="checkbox" id="{{ dataFilter.value }}" data-parent="{{ parent.value }}" value="{{ dataFilter.value }}">
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
                     </ul>
                     </div>
                 {% endfor %}

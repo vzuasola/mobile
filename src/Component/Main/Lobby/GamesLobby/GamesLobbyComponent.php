@@ -73,10 +73,10 @@ class GamesLobbyComponent implements ComponentWidgetInterface
         }
 
         return [
-            'title' => $searchConfig['title'] ?? "",
+            'title' => $searchConfig['search_title'] ?? "",
             'filter_title' => $searchConfig['games_filter_title'] ?? "",
-            'filters' => $dataFilters,
-            'parent_filters' => $parentFilters,
+            'filters' => $dataFilters ?? [],
+            'parent_filters' => $parentFilters ?? [],
         ];
     }
 

@@ -29,6 +29,11 @@ class GamesLobbyComponentController
 
     private $favorite;
 
+    const RECOMMENDED_GAMES = 'recommended-games';
+    const ALL_GAMES = 'all-games';
+    const RECENTLY_PLAYED_GAMES = 'recently-played';
+    const FAVORITE_GAMES = 'favorites';
+
     /**
      *
      */
@@ -180,16 +185,16 @@ class GamesLobbyComponentController
         $gamesList = [];
         foreach ($specialCategories as $category) {
             switch ($category['field_games_alias']) {
-                case 'all-games':
+                case $this::ALL_GAMES:
                     $gamesList[$category['field_games_alias']] = $allGames;
                     break;
-                case 'recently-played':
+                case $this::RECENTLY_PLAYED_GAMES:
                     $games = $this->getRecentlyPlayedGames($allGames);
                     if ($games) {
                         $gamesList[$category['field_games_alias']] = $games;
                     }
                     break;
-                case 'favorites':
+                case $this::FAVORITE_GAMES:
                     $games = $this->getFavoriteGames($allGames);
                     if ($games) {
                         $gamesList[$category['field_games_alias']] = $games;
@@ -281,6 +286,11 @@ class GamesLobbyComponentController
     {
         $categoryList = [];
         foreach ($categories as $category) {
+            // remove recommended games from category as it will not have its own tab.
+            if ($category['field_games_alias'] === $this::RECOMMENDED_GAMES) {
+                continue;
+            }
+
             if (isset($gamesList[$category['field_games_alias']])) {
                 $categoryList[] = $category;
             }
