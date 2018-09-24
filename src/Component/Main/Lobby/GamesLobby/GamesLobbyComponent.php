@@ -64,7 +64,7 @@ class GamesLobbyComponent implements ComponentWidgetInterface
         }
 
         return [
-            'title' => $searchConfig['title'] ?? ""
+            'title' => $searchConfig['search_title'] ?? ""
         ];
     }
 }

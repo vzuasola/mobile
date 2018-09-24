@@ -109,13 +109,10 @@ export class GamesSearch {
     }
 
     private onSuccessSearchLobby(response, keyword) {
-        const blurb = this.config.search_blurb;
         const groupedGames = this.groupGames(response);
 
         // populate search results in games lobby search tab
         this.setGamesResultLobby(groupedGames);
-        // set search blurb
-        this.updateSearchBlurb(blurb, { count: response.length, keyword });
     }
 
     private onBeforeSearch(data) {
@@ -129,7 +126,7 @@ export class GamesSearch {
         let blurb = this.config.no_result_msg;
         const recommendedGames = this.recommendedGames.getGames();
         const recommendedBlurb = this.recommendedGames.getBlurb();
-        blurb = blurb + recommendedBlurb;
+        blurb = blurb.concat("<br>", recommendedBlurb);
         this.searchKeyword = keyword;
         this.updateSearchBlurb(blurb, { count: 0, keyword });
 
@@ -225,6 +222,9 @@ export class GamesSearch {
         this.clearSearchBlurb();
     }
 
+    /*
+     * Clears search blurb in preview and lobby.
+     */
     private clearSearchBlurb() {
         const searchBlurbEl = this.element.querySelectorAll(".search-blurb");
         for (const blurbEl of searchBlurbEl) {
@@ -232,6 +232,9 @@ export class GamesSearch {
         }
     }
 
+    /*
+     * Function that enables search tab and sets category in URL to inactive
+     */
     private activateSearchTab() {
         const activeCategory = utility.getHash(window.location.href);
         // set search tab as active tab
@@ -240,6 +243,9 @@ export class GamesSearch {
         utility.addClass(this.element.querySelector(".search-blurb"), "active");
     }
 
+    /*
+     * Function that disables search tab and sets category in URL to active
+     */
     private deactivateSearchTab() {
         const activeCategory = utility.getHash(window.location.href);
         utility.addClass(this.element.querySelector(".category-" + activeCategory), "active");
@@ -304,6 +310,17 @@ export class GamesSearch {
     }
 
     /**
+     * Function that shows active category games before initiating a search.
+     */
+    private showPreviousCategoryTab() {
+        const activeCategory = utility.getHash(window.location.href);
+        if (this.gamesList.games[activeCategory]) {
+            // repopulate list of games for active tab
+            this.setGamesResultLobby(this.gamesList.games[activeCategory]);
+        }
+    }
+
+    /**
      * Function that shows search lightbox.
      */
     private listenActivateSearchLightbox() {
@@ -364,11 +381,15 @@ export class GamesSearch {
             const el = utility.hasClass(src, "games-search-submit", true);
             const keyword = this.element.querySelector(".games-search-input");
             if (el && keyword.value) {
+                event.preventDefault();
                 this.showResultInLobby();
             }
         });
     }
 
+    /**
+     * Shows search result in games lobby.
+     */
     private showResultInLobby() {
         this.activateSearchTab();
         if (this.searchResult.length) {
@@ -389,9 +410,9 @@ export class GamesSearch {
             const el = utility.hasClass(src, "games-search-back", true);
             if (el) {
                 event.preventDefault();
-                this.clearSearchResult();
+                this.showPreviousCategoryTab();
+                ComponentManager.broadcast("category.change");
                 Modal.close("#games-search-lightbox");
-                ComponentManager.broadcast("games.search.closed");
             }
         });
     }
@@ -406,6 +427,10 @@ export class GamesSearch {
         });
     }
 
+    /**
+     * Listens for click event on category tabs to deactivate search tab
+     * as well as clear all search blurb.
+     */
     private listenCategoryChange() {
         ComponentManager.subscribe("category.change", (event, src, data) => {
             this.deactivateSearchTab();
@@ -413,6 +438,9 @@ export class GamesSearch {
         });
     }
 
+    /**
+     * Clears search result and search blurb when clear icon is clicked.
+     */
     private listenClickClearIcon() {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "close-icon", true);
@@ -422,6 +450,9 @@ export class GamesSearch {
         });
     }
 
+    /**
+     * Closes games search lightbox when login lightbox is triggered.
+     */
      private listenOnLogin() {
         ComponentManager.subscribe("header.login", (event, src, data) => {
             const el = utility.hasClass(data.src, "game-listing-item", true);

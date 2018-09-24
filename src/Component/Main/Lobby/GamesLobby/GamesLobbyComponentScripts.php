@@ -63,7 +63,7 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'search_blurb' => $config['search_blurb'] ?? "",
-            'no_result_msg' => $config['no_result_msg'] ?? "",
+            'no_result_msg' => $config['search_no_result_msg'] ?? "",
             'msg_has_recommended' => $config['msg_recommended_available'] ?? "",
             'msg_no_recommended' => $config['msg_no_recommended'] ?? "",
             'title_weight' => $config['title_weight'] ?? 0,

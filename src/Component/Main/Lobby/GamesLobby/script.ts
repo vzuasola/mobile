@@ -230,8 +230,6 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenChangeCategory() {
         ComponentManager.subscribe("click", (event: Event, src) => {
             if (src.getAttribute("data-category-filter-id")) {
-                // this.currentPage = 0;
-                // this.pager = 0;
                 const categoriesEl = this.element.querySelector("#game-categories");
                 const activeLink = categoriesEl.querySelector(".category-tab .active a");
 
