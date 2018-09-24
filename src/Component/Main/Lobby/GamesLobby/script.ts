@@ -23,6 +23,7 @@ import {Marker} from "@app/assets/script/components/marker";
  */
 export class GamesLobbyComponent implements ComponentInterface {
     private element: HTMLElement;
+    private attachments: any;
     private response: any;
     private isLogin: boolean;
     private gameLauncher;
@@ -45,6 +46,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             title_weight: number,
             keywords_weight: 0,
             search_no_result_msg: string,
+            filter_no_result_msg: string,
             search_blurb: string,
             msg_recommended_available: string,
             msg_no_recommended: string,
@@ -52,6 +54,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         }) {
         this.response = null;
         this.element = element;
+        this.attachments = attachments;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.pager = 0;
@@ -81,6 +84,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             title_weight: number,
             keywords_weight: 0,
             search_no_result_msg: string,
+            filter_no_result_msg: string,
             search_blurb: string,
             msg_recommended_available: string,
             msg_no_recommended: string,
@@ -88,6 +92,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         }) {
         this.response = null;
         this.element = element;
+        this.attachments = attachments;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.pager = 0;
@@ -451,16 +456,26 @@ export class GamesLobbyComponent implements ComponentInterface {
 
     private listenOnFilter() {
         ComponentManager.subscribe("games.filter.success", (event: Event, src, data) => {
-            if (data.filteredGames.length > 0) {
+            if (data.filteredGames) {
                 this.activateSearchTab();
                 this.searchResults = data.filteredGames;
                 this.setGames(data.filteredGames);
             } else {
+                const gamesEl = this.element.querySelector("#game-container");
+                gamesEl.innerHTML = "";
                 this.activateSearchTab();
-                this.searchResults = this.response.games["recommended-games"];
-                this.setGames(this.response.games["recommended-games"]);
+                if (this.response.games["recommended-games"]) {
+                    this.searchResults = this.response.games["recommended-games"];
+                    this.setGames(this.response.games["recommended-games"]);
+                }
+                this.updateBlurbForFilter();
             }
         });
+    }
+
+    private updateBlurbForFilter() {
+        const searchBlurbEl = this.element.querySelector(".game-container .search-blurb");
+        searchBlurbEl.innerHTML = this.attachments.filter_no_result_msg;
     }
 
     private listenToScroll() {

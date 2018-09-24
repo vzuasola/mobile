@@ -29,10 +29,10 @@
                     </div>
                 {% endfor %}
                 <div class="filter-form-field">
-                    <input id="filterSubmit" class="filter-form-field-btn btn btn-small btn-yellow btn-lower-case" type="submit" name="filter-submit" value="Submit" disabled="disabled">
+                    <input id="filterSubmit" class="filter-form-field-btn btn btn-small btn-yellow btn-lower-case" type="submit" name="filter-submit" value="{{ games_filter_submit }}" disabled="disabled">
                 </div>
                 <div class="filter-form-field">
-                    <input id="filterReset" class="filter-form-field-btn btn btn-small btn-gray btn-lower-case" type="reset" name="filter-reset" value="Clear" disabled="disabled">
+                    <input id="filterReset" class="filter-form-field-btn btn btn-small btn-gray btn-lower-case" type="reset" name="filter-reset" value="{{ games_filter_cancel }}" disabled="disabled">
                 </div>
             </div>
         </div>

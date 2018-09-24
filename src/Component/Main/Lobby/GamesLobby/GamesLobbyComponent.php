@@ -75,6 +75,8 @@ class GamesLobbyComponent implements ComponentWidgetInterface
         return [
             'title' => $searchConfig['search_title'] ?? "",
             'filter_title' => $searchConfig['games_filter_title'] ?? "",
+            'games_filter_submit' => $searchConfig['games_filter_submit'] ?? "Submit",
+            'games_filter_cancel' => $searchConfig['games_filter_cancel'] ?? "Cancel",
             'filters' => $dataFilters ?? [],
             'parent_filters' => $parentFilters ?? [],
         ];
