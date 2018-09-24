@@ -42,9 +42,9 @@ export class GamesSearch {
     handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean,
             title_weight: number,
             keywords_weight: 0,
-            no_result_msg: string,
+            search_no_result_msg: string,
             search_blurb: string,
-            msg_has_recommended: string,
+            msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
         }) {
@@ -65,9 +65,9 @@ export class GamesSearch {
     handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean,
             title_weight: number,
             keywords_weight: 0,
-            no_result_msg: string,
+            search_no_result_msg: string,
             search_blurb: string,
-            msg_has_recommended: string,
+            msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
         }) {
@@ -123,7 +123,7 @@ export class GamesSearch {
      * Callback function on search fail
      */
     private onFailedSearch(keyword) {
-        let blurb = this.config.no_result_msg;
+        let blurb = this.config.search_no_result_msg;
         const recommendedGames = this.recommendedGames.getGames();
         const recommendedBlurb = this.recommendedGames.getBlurb();
         blurb = blurb.concat("<br>", recommendedBlurb);

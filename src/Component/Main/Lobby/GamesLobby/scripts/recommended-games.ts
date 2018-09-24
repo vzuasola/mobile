@@ -33,7 +33,7 @@ export class RecommendedGames {
      */
     getBlurb() {
         if (this.recommendedGames.length) {
-            return this.config.msg_has_recommended;
+            return this.config.msg_recommended_available;
         }
 
         return this.config.msg_no_recommended;

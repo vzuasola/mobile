@@ -40,9 +40,9 @@ export class GamesLobbyComponent implements ComponentInterface {
             authenticated: boolean,
             title_weight: number,
             keywords_weight: 0,
-            no_result_msg: string,
+            search_no_result_msg: string,
             search_blurb: string,
-            msg_has_recommended: string,
+            msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
         }) {
@@ -70,9 +70,9 @@ export class GamesLobbyComponent implements ComponentInterface {
             authenticated: boolean,
             title_weight: number,
             keywords_weight: 0,
-            no_result_msg: string,
+            search_no_result_msg: string,
             search_blurb: string,
-            msg_has_recommended: string,
+            msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
         }) {
