@@ -1,7 +1,6 @@
 import Search from "@app/assets/script/components/search";
 import * as Handlebars from "handlebars/runtime";
 import * as gamesSearchTemplate from "../handlebars/games-search-result.handlebars";
-import * as gameTemplate from "../handlebars/games.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
@@ -112,7 +111,7 @@ export class GamesSearch {
         const groupedGames = this.groupGames(response);
 
         // populate search results in games lobby search tab
-        this.setGamesResultLobby(groupedGames);
+        ComponentManager.broadcast("games.search.success", {games: groupedGames});
     }
 
     private onBeforeSearch(data) {
@@ -194,22 +193,6 @@ export class GamesSearch {
 
         if (gamesPreview) {
             gamesPreview.innerHTML = previewTemplate;
-        }
-    }
-
-    /**
-     * Function that populates game tiles in games lobby.
-     */
-    private setGamesResultLobby(gamesList) {
-        const gamesLobby = this.element.querySelector("#game-container");
-        if (gamesLobby) {
-            const lobbyTemplate = gameTemplate({
-                games: gamesList,
-                favorites: this.favoritesList,
-                isLogin: this.isLogin,
-            });
-
-            gamesLobby.innerHTML = lobbyTemplate;
         }
     }
 
@@ -316,7 +299,7 @@ export class GamesSearch {
         const activeCategory = utility.getHash(window.location.href);
         if (this.gamesList.games[activeCategory]) {
             // repopulate list of games for active tab
-            this.setGamesResultLobby(this.gamesList.games[activeCategory]);
+            ComponentManager.broadcast("games.search.success", {games: this.gamesList.games[activeCategory]});
         }
     }
 

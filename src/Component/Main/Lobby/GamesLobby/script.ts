@@ -63,6 +63,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenToScroll();
         this.listenToSwipe();
         this.initMarker();
+        this.listenOnSearch();
         this.gamesSearch.handleOnLoad(this.element, attachments);
     }
 
@@ -194,7 +195,10 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private setGames(data, page: number = 0) {
         const gamesEl = this.element.querySelector("#game-container");
+        console.log(data);
         const pager = this.getPagedContent(data);
+        console.log(pager);
+        console.log(page);
 
         let template = gameTemplate({
             games: pager[page],
@@ -460,6 +464,12 @@ export class GamesLobbyComponent implements ComponentInterface {
 
             }
         });
+    }
+
+    private listenOnSearch() {
+         ComponentManager.subscribe("games.search.success", (event, src, data) => {
+             this.setGames(data.games);
+         });
     }
 
     private isSeen(el) {
