@@ -96,7 +96,8 @@ export class GamesSearch {
      * and search games result via lobby
      */
     private onSuccessSearch(response, keyword) {
-        const blurb = this.config.search_blurb;
+        let blurb = this.config.search_blurb;
+        blurb = "<span>" + blurb + "</span>";
         const sortedGames = this.sortSearchResult(keyword, response);
         this.searchResult = sortedGames;
         this.searchKeyword = keyword;
@@ -123,9 +124,14 @@ export class GamesSearch {
      */
     private onFailedSearch(keyword) {
         let blurb = this.config.search_no_result_msg;
+        blurb = "<span>" + blurb + "</span>";
         const recommendedGames = this.recommendedGames.getGames();
-        const recommendedBlurb = this.recommendedGames.getBlurb();
-        blurb = blurb.concat("<br>", recommendedBlurb);
+        let recommendedBlurb = this.recommendedGames.getBlurb();
+        if (recommendedBlurb) {
+            recommendedBlurb = "<span>" + recommendedBlurb + "</span>";
+            blurb = blurb.concat(recommendedBlurb);
+        }
+
         this.searchKeyword = keyword;
         this.updateSearchBlurb(blurb, { count: 0, keyword });
 
@@ -202,17 +208,14 @@ export class GamesSearch {
     private clearSearchResult() {
         this.element.querySelector(".games-search-result").innerHTML = "";
         this.element.querySelector(".games-search-input").value = "";
-        this.clearSearchBlurb();
     }
 
-    /*
-     * Clears search blurb in preview and lobby.
-     */
-    private clearSearchBlurb() {
-        const searchBlurbEl = this.element.querySelectorAll(".search-blurb");
-        for (const blurbEl of searchBlurbEl) {
-            blurbEl.innerHTML = "";
-        }
+    private clearSearchBlurbPreview() {
+        this.element.querySelector("#blurb-preview").innerHTML = "";
+    }
+
+    private clearSearchBlurbLobby() {
+        this.element.querySelector("#blurb-lobby").innerHTML = "";
     }
 
     /*
@@ -312,6 +315,7 @@ export class GamesSearch {
             if (el) {
                 event.preventDefault();
                 this.clearSearchResult();
+                this.clearSearchBlurbPreview();
                 ComponentManager.broadcast("games.search");
             }
         });
@@ -393,8 +397,6 @@ export class GamesSearch {
             const el = utility.hasClass(src, "games-search-back", true);
             if (el) {
                 event.preventDefault();
-                this.showPreviousCategoryTab();
-                ComponentManager.broadcast("category.change");
                 Modal.close("#games-search-lightbox");
             }
         });
@@ -417,7 +419,7 @@ export class GamesSearch {
     private listenCategoryChange() {
         ComponentManager.subscribe("category.change", (event, src, data) => {
             this.deactivateSearchTab();
-            this.clearSearchBlurb();
+            this.clearSearchBlurbLobby();
         });
     }
 
@@ -429,6 +431,7 @@ export class GamesSearch {
             const el = utility.hasClass(src, "close-icon", true);
             if (el) {
                 this.clearSearchResult();
+                this.clearSearchBlurbPreview();
             }
         });
     }
