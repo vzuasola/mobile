@@ -162,7 +162,7 @@ class GamesLobbyComponentController
         try {
             $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
-                $allGames[$game['field_game_code'][0]['value']] = $this->processGame($game, true);
+                $allGames[] = $this->processGame($game, true);
             }
         } catch (\Exception $e) {
             $allGames = [];
@@ -250,6 +250,15 @@ class GamesLobbyComponentController
                             ['product' => 'mobile-games']
                         )
                 ];
+            }
+
+            if (count($game['field_game_filter']) > 0) {
+                $filterString = '';
+                foreach ($game['field_game_filter'] as $filter) {
+                    $filterString .= $filter['field_games_filter_value'][0]['value'] . ',';
+                }
+
+                $processGame['filters'] = rtrim($filterString, ',');
             }
 
             $processGame['title'] = $game['title'][0]['value'] ?? "";
