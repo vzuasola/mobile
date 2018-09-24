@@ -209,10 +209,7 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private setGames(data, page: number = 0) {
         const gamesEl = this.element.querySelector("#game-container");
-        console.log(data);
         const pager = this.getPagedContent(data);
-        console.log(pager);
-        console.log(page);
 
         let template = gameTemplate({
             games: pager[page],
