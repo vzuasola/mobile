@@ -32,6 +32,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private pager: number;
     private load: boolean;
     private product: any[];
+    private searchResults;
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -455,9 +456,11 @@ export class GamesLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("games.filter.success", (event: Event, src, data) => {
             if (data.filteredGames.length > 0) {
                 this.activateSearchTab();
+                this.searchResults = data.filteredGames;
                 this.setGames(data.filteredGames);
             } else {
                 this.activateSearchTab();
+                this.searchResults = this.response.games["recommended-games"];
                 this.setGames(this.response.games["recommended-games"]);
             }
         });
@@ -471,7 +474,12 @@ export class GamesLobbyComponent implements ComponentInterface {
                 if (gamesEl && gameLoader && this.load) {
                     this.currentPage += 1;
                     const hash = utility.getHash(window.location.href);
-                    const pager = this.getPagedContent(this.response.games[hash]);
+                    let pager = this.getPagedContent(this.response.games[hash]);
+
+                    if (utility.hasClass(this.element.querySelector(".search-tab"), "active")) {
+                        pager = this.getPagedContent(this.searchResults);
+                    }
+
                     const template = gameTemplate({
                         games: pager[this.currentPage],
                         favorites: this.response.favorite_list,
@@ -493,6 +501,7 @@ export class GamesLobbyComponent implements ComponentInterface {
 
     private listenOnSearch() {
          ComponentManager.subscribe("games.search.success", (event, src, data) => {
+             this.searchResults = data.games;
              this.setGames(data.games);
          });
      }
