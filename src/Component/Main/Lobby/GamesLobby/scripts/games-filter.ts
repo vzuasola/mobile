@@ -13,6 +13,7 @@ import {Modal} from "@app/assets/script/components/modal";
  */
 export class GamesFilter {
     private element;
+    private gamesList: any;
     handleOnLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.listenOnOpen();
@@ -21,6 +22,18 @@ export class GamesFilter {
 
     handleOnReLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
+    }
+
+    setGamesList(gamesList) {
+        if (gamesList) {
+            const allGames = [];
+            for (const games of gamesList.games["all-games"]) {
+                for (const game of games) {
+                    allGames.push(game);
+                }
+            }
+            this.gamesList = allGames;
+        }
     }
 
     private listenOnOpen() {
@@ -47,8 +60,8 @@ export class GamesFilter {
                     const submit = filterLightbox.querySelector("#filterSubmit");
                     const reset = filterLightbox.querySelector("#filterReset");
                     if (actives && actives.length > 0) {
-                        submit.removeAttribute("disabled", false);
-                        reset.removeAttribute("disabled", false);
+                        submit.removeAttribute("disabled");
+                        reset.removeAttribute("disabled");
                     } else {
                         submit.setAttribute("disabled", "disabled");
                         reset.setAttribute("disabled", "disabled");
@@ -61,6 +74,10 @@ export class GamesFilter {
     private onClickClearFilters(src) {
         if (src.getAttribute("name") === "filter-reset") {
             this.clearFilters();
+        }
+
+        if (src.getAttribute("name") === "filter-submit") {
+            this.submitFilters();
         }
     }
 
@@ -83,6 +100,65 @@ export class GamesFilter {
 
             submit.setAttribute("disabled", "disabled");
             reset.setAttribute("disabled", "disabled");
+        }
+    }
+
+    private submitFilters() {
+        const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
+        if (filterLightbox) {
+            const actives = filterLightbox.querySelectorAll(".active");
+            let filteredGames = [];
+            for (const activeKey in actives) {
+                if (actives.hasOwnProperty(activeKey)) {
+                    const active = actives[activeKey];
+                    const checkValue = active.querySelector(".filter-checkbox").value;
+
+                    for (const gameKey in this.gamesList) {
+                        if (this.gamesList.hasOwnProperty(gameKey)) {
+                            const game = this.gamesList[gameKey];
+
+                            if (typeof game.filters !== "undefined" && game.filters.indexOf(checkValue) !== -1) {
+                                filteredGames[gameKey] = game;
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            filteredGames = filteredGames.filter(() => {
+                return true;
+            });
+
+            filteredGames = filteredGames.sort((a, b) => {
+                // if weights are equal sort by name asc
+                if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                    return -1;
+                }
+                if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                    return 1;
+                }
+
+                return 0;
+            });
+
+            filteredGames = this.groupGamesList(filteredGames);
+            Modal.close("#games-search-filter-lightbox");
+            Modal.close("#games-search-lightbox");
+            ComponentManager.broadcast("games.filter.success", {
+                filteredGames,
+            });
+        }
+    }
+
+    private groupGamesList(data) {
+        if (data.length > 0) {
+            const temp = data.slice(0);
+            const batch: any = [];
+            while (temp.length > 0) {
+                batch.push(temp.splice(0, 3));
+            }
+            return batch;
         }
     }
 }
