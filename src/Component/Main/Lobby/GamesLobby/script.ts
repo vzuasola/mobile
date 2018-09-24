@@ -15,6 +15,7 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
+import {GamesFilter} from "./scripts/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
 
 /**
@@ -26,6 +27,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private isLogin: boolean;
     private gameLauncher;
     private gamesSearch: GamesSearch;
+    private gamesFilter: GamesFilter;
     private currentPage: number;
     private pager: number;
     private load: boolean;
@@ -34,6 +36,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     constructor() {
         this.gameLauncher = GameLauncher;
         this.gamesSearch = new GamesSearch();
+        this.gamesFilter = new GamesFilter();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -64,7 +67,12 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenToSwipe();
         this.initMarker();
         this.listenOnSearch();
+        this.listenOnFilter();
+        this.pager = 0;
+        this.currentPage = 0;
+        this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
+        this.gamesFilter.handleOnLoad(this.element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -88,6 +96,10 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenToSwipe();
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
+        this.gamesFilter.handleOnReLoad(this.element, attachments);
+        this.pager = 0;
+        this.currentPage = 0;
+        this.load = true;
     }
 
     private initMarker() {
@@ -136,6 +148,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         }).then((response) => {
             this.response = response;
             this.gamesSearch.setGamesList(response);
+            this.gamesFilter.setGamesList(response);
             this.setLobby();
         }).fail((error, message) => {
             console.log(error);
@@ -438,6 +451,18 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
     }
 
+    private listenOnFilter() {
+        ComponentManager.subscribe("games.filter.success", (event: Event, src, data) => {
+            if (data.filteredGames.length > 0) {
+                this.activateSearchTab();
+                this.setGames(data.filteredGames);
+            } else {
+                this.activateSearchTab();
+                this.setGames(this.response.games["recommended-games"]);
+            }
+        });
+    }
+
     private listenToScroll() {
         utility.addEventListener(window, "scroll", (event, src) => {
             const gameLoader: HTMLElement = this.element.querySelector("#game-loader");
@@ -470,6 +495,14 @@ export class GamesLobbyComponent implements ComponentInterface {
          ComponentManager.subscribe("games.search.success", (event, src, data) => {
              this.setGames(data.games);
          });
+     }
+
+    private activateSearchTab() {
+        const activeCategory = utility.getHash(window.location.href);
+        // set search tab as active tab
+        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        utility.addClass(this.element.querySelector(".search-tab"), "active");
+        utility.addClass(this.element.querySelector(".search-blurb"), "active");
     }
 
     private isSeen(el) {

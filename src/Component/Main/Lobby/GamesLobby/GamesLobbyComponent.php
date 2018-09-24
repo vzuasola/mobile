@@ -63,8 +63,67 @@ class GamesLobbyComponent implements ComponentWidgetInterface
             $searchConfig = [];
         }
 
+        try {
+            $filterView = $this->views->withProduct($this->product->getProduct());
+            $filters = $filterView->getViewById('games_filter');
+            $parentFilters = $this->getFilterParent($filters);
+            $dataFilters = $this->getFilters($filters);
+        } catch (\Exception $e) {
+            $searchConfig = [];
+        }
+
         return [
             'title' => $searchConfig['search_title'] ?? ""
+            'filter_title' => $searchConfig['games_filter_title'] ?? "",
+            'filters' => $dataFilters,
+            'parent_filters' => $parentFilters,
         ];
+    }
+
+    private function getFilters($filters)
+    {
+        try {
+            $dataFilters = [];
+            foreach ($filters as $filter) {
+                $dataFilters[] = $this->proccessFilter($filter);
+            }
+        } catch (\Exception $e) {
+            $dataFilters = [];
+        }
+
+        return $dataFilters;
+    }
+
+    private function proccessFilter($data)
+    {
+        try {
+            $filter = [];
+            $filter['name'] = $data['name'][0]['value'];
+            $filter['value'] = $data['field_games_filter_value'][0]['value'];
+            $filter['parent'] = $data['parent']['field_games_filter_value'][0]['value'];
+        } catch (\Exception $e) {
+            $result = [];
+        }
+
+        return $filter;
+    }
+
+    private function getFilterParent($filters)
+    {
+        try {
+            $parents = [];
+            foreach ($filters as $filter) {
+                if (!isset($parents[$filter['parent']['field_games_filter_value'][0]['value']])) {
+                    $parents[$filter['parent']['name'][0]['value']]['name']
+                        = $filter['parent']['name'][0]['value'];
+                    $parents[$filter['parent']['name'][0]['value']]['value']
+                        = $filter['parent']['field_games_filter_value'][0]['value'];
+                }
+            }
+        } catch (\Exception $e) {
+            $parents = [];
+        }
+
+        return $parents;
     }
 }
