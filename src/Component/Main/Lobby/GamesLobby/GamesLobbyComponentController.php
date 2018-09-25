@@ -214,7 +214,7 @@ class GamesLobbyComponentController
         $gamesList = [];
 
         foreach ($games as $game) {
-            $special = ($categoryId === $this::RECOMMENDED_GAMES) ? true : false;
+            $special = ($categoryId === $this::RECOMMENDED_GAMES);
             $gamesList[] = $this->processGame($game, $special);
         }
 
