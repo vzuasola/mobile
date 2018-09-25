@@ -21,6 +21,7 @@ export class GamesSearch {
     private product: any[];
     private searchResult;
     private searchKeyword;
+    private searchBlurb;
     private recommendedGames;
 
     constructor() {
@@ -101,9 +102,11 @@ export class GamesSearch {
         const sortedGames = this.sortSearchResult(keyword, response);
         this.searchResult = sortedGames;
         this.searchKeyword = keyword;
+        this.searchBlurb = blurb;
 
         // set search blurb
-        this.updateSearchBlurb(blurb, { count: response.length, keyword });
+        this.updateSearchBlurb(blurb, this.element.querySelector("#blurb-preview"),
+            { count: response.length, keyword });
         // populate search results in games preview
         this.setGamesResultPreview(sortedGames);
     }
@@ -133,7 +136,8 @@ export class GamesSearch {
         }
 
         this.searchKeyword = keyword;
-        this.updateSearchBlurb(blurb, { count: 0, keyword });
+        this.searchBlurb = blurb;
+        this.updateSearchBlurb(blurb, this.element.querySelector("#blurb-preview"), { count: 0, keyword });
 
         if (recommendedGames.length) {
             this.setGamesResultPreview(recommendedGames);
@@ -175,13 +179,10 @@ export class GamesSearch {
      * @param {[int]} count   [number of results found]
      * @param {[string]} keyword [search query]
      */
-    private updateSearchBlurb(blurb, data: { count: number, keyword: string}) {
-         if (blurb) {
-            const searchBlurbEl = this.element.querySelectorAll(".search-blurb");
-            for (const blurbEl of searchBlurbEl) {
-                blurbEl.innerHTML = blurb.replace("{count}", data.count)
+    private updateSearchBlurb(blurb, blurbEl, data: { count: number, keyword: string}) {
+         if (blurb && blurbEl) {
+            blurbEl.innerHTML = blurb.replace("{count}", data.count)
                    .replace("{keyword}", data.keyword);
-            }
         }
     }
 
@@ -381,6 +382,8 @@ export class GamesSearch {
         this.activateSearchTab();
         if (this.searchResult.length) {
             this.onSuccessSearchLobby(this.searchResult, this.searchKeyword);
+            this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
+                { count: this.searchResult.length, keyword: this.searchKeyword });
         } else {
             this.element.querySelector("#game-container").innerHTML = "";
         }
