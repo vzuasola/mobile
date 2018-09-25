@@ -136,7 +136,7 @@ class GamesLobbyComponentController
                     'category' => $category['tid']
                 ]);
                 if ($games) {
-                    $gamesList[$categoryId] = $this->arrangeGames($games);
+                    $gamesList[$categoryId] = $this->arrangeGames($games, $categoryId);
                 }
             }
         }
@@ -209,12 +209,13 @@ class GamesLobbyComponentController
     /**
      * Arrange games per category
      */
-    private function arrangeGames($games)
+    private function arrangeGames($games, $categoryId)
     {
         $gamesList = [];
 
         foreach ($games as $game) {
-            $gamesList[] = $this->processGame($game);
+            $special = ($categoryId === $this::RECOMMENDED_GAMES);
+            $gamesList[] = $this->processGame($game, $special);
         }
 
         return $gamesList;

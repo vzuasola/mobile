@@ -20,6 +20,8 @@ class HeaderComponent implements ComponentWidgetInterface
 
     private $menu;
 
+    private $product;
+
     private const HOME = [
         '/',
         '/games'
@@ -34,19 +36,21 @@ class HeaderComponent implements ComponentWidgetInterface
             $container->get('router_request'),
             $container->get('config_fetcher'),
             $container->get('player_session'),
-            $container->get('menu_fetcher')
+            $container->get('menu_fetcher'),
+            $container->get('product_resolver')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($request, $configs, $playerSession, $menu)
+    public function __construct($request, $configs, $playerSession, $menu, $product)
     {
         $this->request = $request;
         $this->configs = $configs;
         $this->playerSession = $playerSession;
         $this->menu = $menu;
+        $this->product = $product;
     }
 
     /**
@@ -84,7 +88,15 @@ class HeaderComponent implements ComponentWidgetInterface
             $cashierMenu = [];
         }
 
-        $data['logo_title'] = $headerConfigs['logo_title'] ?? 'Dafabet';
+        try {
+            $headerConfigsByProduct = $this->configs
+                ->withProduct($this->product->getProduct())
+                ->getConfig('webcomposer_config.header_configuration');
+        } catch (\Exception $e) {
+            $headerConfigsByProduct = [];
+        }
+
+        $data['logo_title'] = $headerConfigsByProduct['logo_title'] ?? 'Dafabet';
         $data['join_now_text'] = $headerConfigs['join_now_text'] ?? 'Join Now';
         $data['login_issue_text'] = $headerConfigs['login_issue_text'] ?? 'Cant Login ?';
         $data['login_issue_link'] = $headerConfigs['login_issue_link'] ?? [];

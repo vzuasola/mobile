@@ -227,17 +227,13 @@ export class GamesSearch {
         // set search tab as active tab
         utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.addClass(this.element.querySelector(".search-tab"), "active");
-        utility.addClass(this.element.querySelector(".search-blurb"), "active");
     }
 
     /*
      * Function that disables search tab and sets category in URL to active
      */
     private deactivateSearchTab() {
-        const activeCategory = utility.getHash(window.location.href);
-        utility.addClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.removeClass(this.element.querySelector(".search-tab"), "active");
-        utility.removeClass(this.element.querySelector(".search-blurb"), "active");
     }
 
     /*
@@ -356,6 +352,7 @@ export class GamesSearch {
                 }
             } else {
                 this.clearSearchResult();
+                this.clearSearchBlurbPreview();
             }
         });
     }
@@ -380,10 +377,10 @@ export class GamesSearch {
      */
     private showResultInLobby() {
         this.activateSearchTab();
+        this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
+                { count: this.searchResult.length, keyword: this.searchKeyword });
         if (this.searchResult.length) {
             this.onSuccessSearchLobby(this.searchResult, this.searchKeyword);
-            this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
-                { count: this.searchResult.length, keyword: this.searchKeyword });
         } else {
             this.element.querySelector("#game-container").innerHTML = "";
         }
