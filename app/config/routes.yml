@@ -62,7 +62,7 @@ routes:
         components:
           main: my_account
 
-    /games:
+    /{id:games|slots|flashgames|laohuji|playflash|spinwin}:
         method: GET
         action: App\MobileEntry\Controller\GamesController:view
         components:
