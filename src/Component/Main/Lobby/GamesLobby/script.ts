@@ -463,20 +463,27 @@ export class GamesLobbyComponent implements ComponentInterface {
                 this.setGames(data.filteredGames);
             } else {
                 const gamesEl = this.element.querySelector("#game-container");
+                let recommended: boolean = false;
                 gamesEl.innerHTML = "";
                 this.activateSearchTab();
                 if (this.response.games["recommended-games"]) {
                     this.searchResults = this.response.games["recommended-games"];
                     this.setGames(this.response.games["recommended-games"]);
+                    recommended = true;
                 }
-                this.updateBlurbForFilter();
+                this.updateBlurbForFilter(recommended);
             }
         });
     }
 
-    private updateBlurbForFilter() {
-        const searchBlurbEl = this.element.querySelector("#blurb-lobby span");
-        searchBlurbEl.innerHTML = this.attachments.filter_no_result_msg;
+    private updateBlurbForFilter(recommended: boolean) {
+        const searchBlurbEl = this.element.querySelector("#blurb-lobby");
+        let recommendedBlurb = this.attachments.msg_no_recommended;
+        if (recommended) {
+            recommendedBlurb = this.attachments.msg_recommended_available;
+        }
+        recommendedBlurb = "<span>" + recommendedBlurb + "</span>";
+        searchBlurbEl.innerHTML = this.attachments.filter_no_result_msg + recommendedBlurb;
     }
 
     private listenToScroll() {
