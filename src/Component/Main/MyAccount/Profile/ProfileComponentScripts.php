@@ -55,7 +55,7 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
         $modalConfig = $this->configFetcher->getConfigById('my_account_profile_modal_preview');
         $labelConfig = $this->configFetcher->getConfigById('my_account_profile_labels');
 
-        $fastRegUrlToken = $generalConfig['fastreg_redirect'] ?? '';
+        $fastRegUrlToken = $generalConfig['fastreg_mobile_redirect'] ?? '';
         $fastRegRedirect = $this->tokenParser->processTokens($fastRegUrlToken);
 
         return [
