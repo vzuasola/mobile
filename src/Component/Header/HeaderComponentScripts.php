@@ -16,8 +16,6 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 
     private $views;
 
-    private $tokenParser;
-
     /**
      *
      */
@@ -26,20 +24,18 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
         return new static(
             $container->get('player_session'),
             $container->get('config_fetcher'),
-            $container->get('views_fetcher'),
-            $container->get('token_parser')
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $loginConfig, $views, $tokenParser)
+    public function __construct($playerSession, $loginConfig, $views)
     {
         $this->playerSession = $playerSession;
         $this->loginConfig = $loginConfig;
         $this->views = $views;
-        $this->tokenParser = $tokenParser;
     }
 
     /**
@@ -77,7 +73,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
                 if (array_key_exists($instanceId, Products::PRODUCT_MAPPING)) {
                     $result[Products::PRODUCT_MAPPING[$instanceId]] = [
                         'login_via' => $product['field_product_login_via'][0]['value'],
-                        'reg_via' => $this->tokenParser->processTokens($product['field_registration_url'][0]['value'])
+                        'reg_via' => $product['field_registration_url'][0]['value'],
                     ];
                 }
             }
