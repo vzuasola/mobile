@@ -89,7 +89,8 @@ class HeaderComponent implements ComponentWidgetInterface
         }
 
         try {
-            $headerConfigsByProduct = $this->configs->withProduct($this->product->getProduct())
+            $headerConfigsByProduct = $this->configs
+                ->withProduct($this->product->getProduct())
                 ->getConfig('webcomposer_config.header_configuration');
         } catch (\Exception $e) {
             $headerConfigsByProduct = [];
