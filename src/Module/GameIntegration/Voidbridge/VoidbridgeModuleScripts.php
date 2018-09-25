@@ -50,16 +50,18 @@ class VoidbridgeModuleScripts implements ComponentAttachmentInterface
         try {
             $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
             $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
+
+            $data = [
+                'authenticated' => $this->playerSession->isLogin(),
+                'lang' => $this->lang,
+                'currencies' => explode(PHP_EOL, $config[self::KEY . '_currency']),
+                'languages' => Config::parse($config[self::KEY . '_language_mapping'] ?? ''),
+                'providerName' => $providerMapping[self::KEY],
+            ];
         } catch (\Exception $e) {
-            // Do nothing
+            $data = [];
         }
 
-        return [
-            'authenticated' => $this->playerSession->isLogin(),
-            'lang' => $this->lang,
-            'currencies' => explode(PHP_EOL, $config[self::KEY . '_currency']),
-            'languages' => Config::parse($config[self::KEY . '_language_mapping'] ?? ''),
-            'providerName' => $providerMapping[self::KEY],
-        ];
+        return $data;
     }
 }

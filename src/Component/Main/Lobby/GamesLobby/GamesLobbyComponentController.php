@@ -167,7 +167,7 @@ class GamesLobbyComponentController
         try {
             $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
-                $allGames[] = $this->processGame($game, true);
+                $allGames[$game['field_game_code'][0]['value']] = $this->processGame($game, true);
             }
         } catch (\Exception $e) {
             $allGames = [];
