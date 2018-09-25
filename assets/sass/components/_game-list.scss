@@ -12,6 +12,9 @@
     .search-blurb {
         display: block;
         position: relative;
+        span {
+            display: block;
+        }
     }
 
     .search-blurb.active {
