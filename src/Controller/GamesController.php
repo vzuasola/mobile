@@ -11,7 +11,16 @@ class GamesController extends BaseController
      */
     public function view($request, $response)
     {
-        $data['title'] = 'Games';
+        try {
+            $config = $this->get('config_fetcher')
+            ->withProduct($this->get('product_resolver')->getProduct())
+            ->getConfig('webcomposer_config.header_configuration');
+
+        } catch (\Exception $e) {
+            $config = [];
+        }
+
+        $data['title'] = $config["lobby_page_title"] ?? 'Games';
 
         return $this->widgets->render($response, '@site/page.html.twig', $data);
     }
