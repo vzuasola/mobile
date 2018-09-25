@@ -377,10 +377,10 @@ export class GamesSearch {
      */
     private showResultInLobby() {
         this.activateSearchTab();
+        this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
+                { count: this.searchResult.length, keyword: this.searchKeyword });
         if (this.searchResult.length) {
             this.onSuccessSearchLobby(this.searchResult, this.searchKeyword);
-            this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
-                { count: this.searchResult.length, keyword: this.searchKeyword });
         } else {
             this.element.querySelector("#game-container").innerHTML = "";
         }
