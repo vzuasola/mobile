@@ -13,8 +13,8 @@ class GamesController extends BaseController
     {
         try {
             $config = $this->get('config_fetcher')
-            ->withProduct($this->get('product_resolver')->getProduct())
-            ->getConfig('webcomposer_config.header_configuration');
+                ->withProduct($this->get('product_resolver')->getProduct())
+                ->getConfig('webcomposer_config.header_configuration');
         } catch (\Exception $e) {
             $config = [];
         }
