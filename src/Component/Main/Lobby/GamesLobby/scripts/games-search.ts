@@ -233,8 +233,6 @@ export class GamesSearch {
      * Function that disables search tab and sets category in URL to active
      */
     private deactivateSearchTab() {
-        const activeCategory = utility.getHash(window.location.href);
-        utility.addClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.removeClass(this.element.querySelector(".search-tab"), "active");
     }
 
@@ -354,6 +352,7 @@ export class GamesSearch {
                 }
             } else {
                 this.clearSearchResult();
+                this.clearSearchBlurbPreview();
             }
         });
     }
