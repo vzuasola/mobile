@@ -6,6 +6,7 @@ import * as iconCheckedTemplate from "@app/templates/handlebars/icon-checked.han
 import * as iconUnCheckedTemplate from "@app/templates/handlebars/icon-unchecked.handlebars";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 import EqualHeight from "@app/assets/script/components/equal-height";
+import {annotation} from "@app/assets/script/components/form-annotation";
 
 /**
  *
@@ -24,6 +25,7 @@ export class MyAccountComponent implements ComponentInterface {
         this.equalizeActionButtonHeight();
 
         new Tab();
+        this.activateFormAnnotation(element);
 
         // Checkbox
         new Marker({
@@ -36,6 +38,10 @@ export class MyAccountComponent implements ComponentInterface {
         new Marker({
             parent: "#MyProfileForm_gender",
         });
+    }
+
+    private activateFormAnnotation(element) {
+        annotation(element);
     }
 
     private toggleLogoutLink() {
