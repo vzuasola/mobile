@@ -227,7 +227,6 @@ export class GamesSearch {
         // set search tab as active tab
         utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.addClass(this.element.querySelector(".search-tab"), "active");
-        utility.addClass(this.element.querySelector(".search-blurb"), "active");
     }
 
     /*
@@ -237,7 +236,6 @@ export class GamesSearch {
         const activeCategory = utility.getHash(window.location.href);
         utility.addClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.removeClass(this.element.querySelector(".search-tab"), "active");
-        utility.removeClass(this.element.querySelector(".search-blurb"), "active");
     }
 
     /*

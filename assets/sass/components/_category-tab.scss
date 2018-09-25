@@ -33,12 +33,12 @@
 }
 
 .category-tab-list {
+    background: $cat-tab-bg;
+    margin-left: 3rem;
     white-space: nowrap;
     overflow-x: auto;
    -webkit-overflow-scrolling: touch;
    -ms-overflow-style: -ms-autohiding-scrollbar;
-   margin: 0 0 -1.5rem 3rem;
-   background: $cat-tab-bg;
 
    .game-category {
         @extend %clearfix;
