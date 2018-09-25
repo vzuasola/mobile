@@ -3,26 +3,18 @@
 
     #game-container {
         position: relative;
-        margin-top: 0.6rem;
-        padding-top: 0.6rem;
         transition:all 0.5s ease-in-out;
         z-index: 0;
     }
 
     .search-blurb {
+        margin: 1rem 0 1rem 1rem;
         display: block;
         position: relative;
+
         span {
             display: block;
         }
-    }
-
-    .search-blurb.active {
-        margin: 2.5rem 0 0 1rem;
-    }
-
-    .search-blurb.active + #game-container {
-        margin-top: 0;
     }
 
 }
@@ -105,10 +97,6 @@
     .size-large:nth-child(odd) + .size-small {
         padding-bottom: 1.5%;
     }
-}
-
-.game-listing:first-child {
-    margin-top: 2%;
 }
 
 // Game Ribbon
