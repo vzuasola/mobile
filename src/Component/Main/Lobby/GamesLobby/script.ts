@@ -253,12 +253,6 @@ export class GamesLobbyComponent implements ComponentInterface {
                 const categoriesEl = this.element.querySelector("#game-categories");
                 const activeLink = categoriesEl.querySelector(".category-tab .active a");
 
-                utility.removeClass(activeLink, "active");
-                utility.removeClass(activeLink.parentElement, "active");
-
-                utility.addClass(src, "active");
-                utility.addClass(src.parentElement, "active");
-
                 const key = src.getAttribute("data-category-filter-id");
                 this.setGames(this.response.games[key]);
                 ComponentManager.broadcast("category.change");
@@ -415,20 +409,26 @@ export class GamesLobbyComponent implements ComponentInterface {
                 const categoriesEl = this.element.querySelector("#game-categories");
                 const activeLi = categoriesEl.querySelector(".category-tab .active");
                 const activeLink = activeLi.querySelector("a");
-                const sibling = utility.nextElementSibling(activeLi);
-                if (sibling) {
-                    const siblingUrl = sibling.querySelector("a").getAttribute("href");
-                    window.location.hash = siblingUrl;
-                    ComponentManager.broadcast("category.set", {
-                        scroll: "next",
-                    });
+
+                if (utility.hasClass(activeLi, "search-tab")) {
+                    window.location.hash = "";
                 } else {
-                    // Add bounce effect
-                    utility.addClass(games, "bounce-left");
-                    setTimeout(() => {
-                        utility.removeClass(games, "bounce-left");
-                    }, 1000);
+                    const sibling = utility.nextElementSibling(activeLi);
+                    if (sibling) {
+                        const siblingUrl = sibling.querySelector("a").getAttribute("href");
+                        window.location.hash = siblingUrl;
+                        ComponentManager.broadcast("category.set", {
+                            scroll: "next",
+                        });
+                    } else {
+                        // Add bounce effect
+                        utility.addClass(games, "bounce-left");
+                        setTimeout(() => {
+                            utility.removeClass(games, "bounce-left");
+                        }, 1000);
+                    }
                 }
+
             });
             // Right Swipe
             utility.addEventListener(games, "swiperight", (event, src) => {
@@ -457,6 +457,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenOnFilter() {
         ComponentManager.subscribe("games.filter.success", (event: Event, src, data) => {
             if (data.filteredGames) {
+                this.element.querySelector("#blurb-lobby").innerHTML = "";
                 this.activateSearchTab();
                 this.searchResults = data.filteredGames;
                 this.setGames(data.filteredGames);
@@ -474,7 +475,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     private updateBlurbForFilter() {
-        const searchBlurbEl = this.element.querySelector(".game-container .search-blurb");
+        const searchBlurbEl = this.element.querySelector("#blurb-lobby span");
         searchBlurbEl.innerHTML = this.attachments.filter_no_result_msg;
     }
 
