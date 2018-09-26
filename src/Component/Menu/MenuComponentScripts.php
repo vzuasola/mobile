@@ -10,13 +10,7 @@ use App\MobileEntry\Services\Product\Products;
  */
 class MenuComponentScripts implements ComponentAttachmentInterface
 {
-    /**
-     * @var App\Fetcher\Drupal\ConfigFetcher
-     */
     private $menus;
-
-    private $tokenParser;
-
     private $views;
 
     /**
@@ -27,7 +21,6 @@ class MenuComponentScripts implements ComponentAttachmentInterface
         return new static(
             $container->get('player_session'),
             $container->get('views_fetcher'),
-            $container->get('token_parser'),
             $container->get('menu_fetcher')
         );
     }
@@ -35,11 +28,10 @@ class MenuComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $tokenParser, $menus)
+    public function __construct($playerSession, $views, $menus)
     {
         $this->playerSession = $playerSession;
         $this->views = $views;
-        $this->tokenParser = $tokenParser;
         $this->menus = $menus;
     }
 
@@ -50,6 +42,7 @@ class MenuComponentScripts implements ComponentAttachmentInterface
     {
         try {
             $data['top_menu'] = $this->menus->getMultilingualMenu('mobile-pre-login');
+
             foreach ($data['top_menu'] as $top_menu) {
                 if (stristr($top_menu['attributes']['class'], 'join-btn')) {
                     $join_now_url = $this->tokenParser->processTokens($top_menu['uri']);
@@ -75,10 +68,11 @@ class MenuComponentScripts implements ComponentAttachmentInterface
 
             foreach ($products as $product) {
                 $instanceId = $product['field_product_instance_id'][0]['value'];
+
                 if (array_key_exists($instanceId, Products::PRODUCT_MAPPING)) {
                     $result[Products::PRODUCT_MAPPING[$instanceId]] = [
                         'login_via' => $product['field_product_login_via'][0]['value'],
-                        'reg_via' => $this->tokenParser->processTokens($product['field_registration_url'][0]['value']),
+                        'reg_via' => $product['field_registration_url'][0]['value'],
                     ];
                 }
             }
