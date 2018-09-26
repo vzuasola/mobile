@@ -285,6 +285,7 @@ class GamesLobbyComponentController
      */
     private function getArrangedCategoriesByGame($categories, $gamesList)
     {
+        // ddd(htmlspecialchars_decode("Asia&#039;s Finest"));
         $categoryList = [];
         foreach ($categories as $category) {
             // remove recommended games from category as it will not have its own tab.
@@ -293,6 +294,7 @@ class GamesLobbyComponentController
             }
 
             if (isset($gamesList[$category['field_games_alias']])) {
+                $category["name"] = htmlspecialchars_decode($category["name"], ENT_QUOTES);
                 $categoryList[] = $category;
             }
         }
