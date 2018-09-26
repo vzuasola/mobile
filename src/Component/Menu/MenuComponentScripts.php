@@ -45,7 +45,7 @@ class MenuComponentScripts implements ComponentAttachmentInterface
 
             foreach ($data['top_menu'] as $top_menu) {
                 if (stristr($top_menu['attributes']['class'], 'join-btn')) {
-                    $join_now_url = $this->tokenParser->processTokens($top_menu['uri']);
+                    $join_now_url = $top_menu['uri'];
                     break;
                 }
             }
