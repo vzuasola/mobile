@@ -22,7 +22,7 @@ class HeaderComponent implements ComponentWidgetInterface
 
     private $product;
 
-    private const HOME = [
+    const HOME = [
         '/',
         '/games'
     ];
@@ -73,7 +73,7 @@ class HeaderComponent implements ComponentWidgetInterface
         $data = [];
         $data['is_front'] = false;
         try {
-            if (in_array($this->request->getUri()->getPath(), $this::HOME)) {
+            if (in_array($this->request->getUri()->getPath(), self::HOME)) {
                 $data['is_front'] = true;
             }
         } catch (\Exception $e) {
