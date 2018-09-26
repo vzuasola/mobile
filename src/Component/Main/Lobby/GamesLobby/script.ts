@@ -547,7 +547,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         const temp = data.slice(0);
         const batch: any = [];
 
-        console.log(this.attachments.infinite_scroll);
         if (!this.attachments.infinite_scroll) {
             batch.push(temp);
             return batch;
