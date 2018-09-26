@@ -3,7 +3,7 @@
     {% for menu in otherlinks %}
             <li class="mobile-menu-item">
                 <a
-                href="{{ url(menu.uri) }}"
+                href="{{ url(menu.uri)|raw }}"
                 class="mobile-menu-link menu-item-internal {{ menu.attributes.class }}"
                 target="{{ menu.attributes.target }}"
                 data-router="true"

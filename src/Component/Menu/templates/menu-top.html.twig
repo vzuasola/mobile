@@ -3,7 +3,7 @@
     {% for menu in top_menu %}
         <li>
             <a 
-                href="{{ url(menu.uri) }}" 
+                href="{{ url(menu.uri)|raw }}" 
                 target="{{ menu.attributes.target }}"
                 class="btn btn-small btn-{{ menu.attributes.class }}"
             >
