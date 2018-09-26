@@ -252,6 +252,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (src.getAttribute("data-category-filter-id")) {
                 const categoriesEl = this.element.querySelector("#game-categories");
                 const activeLink = categoriesEl.querySelector(".category-tab .active a");
+                utility.addClass(activeLink, "active");
 
                 const key = src.getAttribute("data-category-filter-id");
                 this.setGames(this.response.games[key]);
