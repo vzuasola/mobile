@@ -51,6 +51,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
+            infinite_scroll: boolean,
         }) {
         this.response = null;
         this.element = element;
@@ -89,6 +90,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
+            infinite_scroll: boolean,
         }) {
         this.response = null;
         this.element = element;
@@ -544,6 +546,13 @@ export class GamesLobbyComponent implements ComponentInterface {
     private getPagedContent(data) {
         const temp = data.slice(0);
         const batch: any = [];
+
+        console.log(this.attachments.infinite_scroll);
+        if (!this.attachments.infinite_scroll) {
+            batch.push(temp);
+            return batch;
+        }
+
         while (temp.length > 0) {
             batch.push(temp.splice(0, 4));
         }

@@ -56,6 +56,7 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
     {
         try {
             $config = $this->configs->getConfig('games_search.search_configuration');
+            $gtsGeneralConfig = $this->configs->getConfig('gts.gts_configuration');
         } catch (\Exception $e) {
             $config = [];
         }
@@ -69,7 +70,8 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
             'msg_no_recommended' => $config['msg_no_recommended'] ?? "",
             'title_weight' => $config['title_weight'] ?? 0,
             'keywords_weight' => $config['keywords_weight'] ?? 0,
-            'product' => $this->getProductIntegration()
+            'product' => $this->getProductIntegration(),
+            'infinite_scroll' => $gtsGeneralConfig['gts_lobby_infinite_scroll'] ?? true
         ];
     }
 
