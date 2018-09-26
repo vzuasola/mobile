@@ -293,6 +293,7 @@ class GamesLobbyComponentController
             }
 
             if (isset($gamesList[$category['field_games_alias']])) {
+                $category["name"] = htmlspecialchars_decode($category["name"], ENT_QUOTES);
                 $categoryList[] = $category;
             }
         }
