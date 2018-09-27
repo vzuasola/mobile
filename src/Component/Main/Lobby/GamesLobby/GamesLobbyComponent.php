@@ -100,7 +100,7 @@ class GamesLobbyComponent implements ComponentWidgetInterface
     {
         try {
             $filter = [];
-            $filter['name'] = $data['name'][0]['value'];
+            $filter['name'] = $data['field_games_filter_label'][0]['value'];
             $filter['value'] = $data['field_games_filter_value'][0]['value'];
             $filter['parent'] = $data['parent']['field_games_filter_value'][0]['value'];
         } catch (\Exception $e) {
@@ -117,7 +117,7 @@ class GamesLobbyComponent implements ComponentWidgetInterface
             foreach ($filters as $filter) {
                 if (!isset($parents[$filter['parent']['field_games_filter_value'][0]['value']])) {
                     $parents[$filter['parent']['name'][0]['value']]['name']
-                        = $filter['parent']['name'][0]['value'];
+                        = $filter['parent']['field_games_filter_label'][0]['value'];
                     $parents[$filter['parent']['name'][0]['value']]['value']
                         = $filter['parent']['field_games_filter_value'][0]['value'];
                 }
