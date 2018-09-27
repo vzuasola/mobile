@@ -1,13 +1,13 @@
 middlewares:
   request:
     slashes: App\Middleware\Request\Slashes
+    case_insensitive: App\Middleware\Request\CaseInsensitiveRoute
     page_cache: App\MobileEntry\Middleware\ResponseCache
     languages: App\Middleware\Request\Languages
     bootstrap: App\Middleware\Request\Bootstrap
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetInit
     legacy_auth: App\Middleware\Request\LegacyAuthentication
     session: App\Middleware\Request\Session
-    case_insensitive: App\Middleware\Request\CaseInsensitiveRoute
 
   response:
     token: App\Middleware\Response\Token
