@@ -60,6 +60,7 @@ export class GamesSearch {
         this.listenCategoryChange();
         this.listenClickClearIcon();
         this.listenOnLogin();
+        this.listenSubmitGameSearch();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean,
@@ -78,7 +79,7 @@ export class GamesSearch {
     }
 
     setGamesList(gamesList) {
-        if (gamesList) {
+        if (gamesList && gamesList.games["all-games"]) {
             const allGames = [];
             for (const games of gamesList.games["all-games"]) {
                 for (const game of games) {
@@ -347,12 +348,18 @@ export class GamesSearch {
             const keyword =  this.element.querySelector(".games-search-input");
             if (keyword && keyword.value) {
                 this.searchObj.search(keyword.value);
-                if (event.keyCode === 13) {
-                    this.showResultInLobby();
-                }
             } else {
                 this.clearSearchResult();
                 this.clearSearchBlurbPreview();
+            }
+        });
+    }
+
+    private listenSubmitGameSearch() {
+        ComponentManager.subscribe("submit", (event, src) => {
+            const el = utility.hasClass(src, "games-search-form", true);
+            if (el) {
+                this.showResultInLobby();
             }
         });
     }
