@@ -46,6 +46,7 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
+        display: inline-block;
 
         &-item {
         display: inline-block;
@@ -60,6 +61,7 @@
    }
 
     a {
+        position: relative;
         display: inline-block;
         background: $cat-tab-bg;
         color: $cat-tab-color;
