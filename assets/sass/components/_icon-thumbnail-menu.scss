@@ -24,7 +24,8 @@
             }
 
             &.active a,
-            a:hover {
+            a:hover,
+            a.active {
                 border: 0.1rem solid $yellow;
                 color: $yellow;
             }
@@ -75,6 +76,12 @@
                 svg {
                     margin-top: 0.5rem;
                     width: 5rem;
+                }
+            }
+
+            .active {
+                svg {
+                    fill: $yellow;
                 }
             }
         }
@@ -197,6 +204,12 @@
             .quicklinks-settings {
                 svg {
                     margin-left: 2.6rem;
+                }
+            }
+
+            .active {
+                svg {
+                    fill: $yellow;
                 }
             }
         }

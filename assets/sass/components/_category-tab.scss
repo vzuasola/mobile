@@ -1,0 +1,77 @@
+.category-tab {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    @extend %clearfix;
+    background: $cat-tab-bg;
+
+    .game-search {
+        .search-tab {
+            width: 3rem;
+            height: 2.8rem;
+            position: absolute;
+            z-index: 11;
+            background: $cat-tab-bg;
+
+            svg {
+                outline: none;
+                fill: $white;
+                margin: 0.5rem 0 0 0.7rem;
+                width: 1.7rem;
+            }
+        }
+
+        .search-tab.active {
+            background: $dark-red;
+
+            svg {
+                fill: $yellow;
+            }
+        }
+    }
+}
+
+.category-tab-list {
+    background: $cat-tab-bg;
+    margin-left: 3rem;
+    white-space: nowrap;
+    overflow-x: auto;
+   -webkit-overflow-scrolling: touch;
+   -ms-overflow-style: -ms-autohiding-scrollbar;
+
+   .game-category {
+        @extend %clearfix;
+        float: left;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+
+        &-item {
+        display: inline-block;
+        }
+
+        &-item.active {
+            .active {
+                background: $dark-red;
+                color: $yellow;
+            }
+        }
+   }
+
+    a {
+        position: relative;
+        display: inline-block;
+        background: $cat-tab-bg;
+        color: $cat-tab-color;
+        font-size: 1.4rem;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+    }
+}
+
+.category-tab-list::-webkit-scrollbar {
+    display: none;
+}

@@ -17,20 +17,25 @@ export class MenuComponent implements ComponentInterface {
 
     private element: HTMLElement;
     private isLogin: boolean;
+    private products: any[];
+    private joinUrl: string;
 
     constructor() {
         this.pushNotification = new PushNotification();
     }
 
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onLoad(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
         this.toggleLogoutLink();
         this.isLogin = attachments.authenticated;
+        this.products = attachments.products;
+        this.joinUrl = attachments.join_now_url;
 
         this.activateMenu(element);
         this.attachProduct();
+        this.attachProductToLogin();
 
         this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
@@ -47,17 +52,21 @@ export class MenuComponent implements ComponentInterface {
 
         Router.on(RouterClass.afterNavigate, (event) => {
             this.attachProduct();
+            this.attachProductToLogin();
         });
 
     }
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onReload(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
+        this.products = attachments.products;
+        this.joinUrl = attachments.join_now_url;
 
         this.activateMenu(element);
         this.attachProduct();
+        this.attachProductToLogin();
 
         this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
@@ -162,6 +171,52 @@ export class MenuComponent implements ComponentInterface {
                 }
             }
 
+        }
+    }
+
+    private attachProductToLogin() {
+        const product = ComponentManager.getAttribute("product");
+        const loginButton = this.element.querySelector(".login-trigger");
+        const joinButton = this.element.querySelector(".join-btn");
+
+        if (product !== "mobile-entrypage") {
+            if (this.products && this.products.hasOwnProperty(product)) {
+                const currentProduct = this.products[product];
+
+                if (loginButton) {
+                    loginButton.setAttribute(
+                        "data-product-login-via",
+                        currentProduct.login_via,
+                    );
+                    loginButton.setAttribute(
+                        "data-product-reg-via",
+                        currentProduct.reg_via,
+                    );
+                }
+                if (joinButton) {
+                    joinButton.setAttribute(
+                        "href",
+                        currentProduct.reg_via,
+                    );
+                }
+            }
+        } else {
+            if (loginButton) {
+                loginButton.setAttribute(
+                    "data-product-login-via",
+                    "",
+                );
+                loginButton.setAttribute(
+                    "data-product-reg-via",
+                    "",
+                );
+            }
+            if (joinButton) {
+                joinButton.setAttribute(
+                    "href",
+                    this.joinUrl,
+                );
+            }
         }
     }
 }

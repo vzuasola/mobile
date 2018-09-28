@@ -7,7 +7,7 @@
                 <a
                     href="{{ (is_login ) ? url(product.field_product_menu_url_post_log[0].uri) : url(product.field_product_menu_url_pre_log[0].uri) }}"
                     data-post-login-url="{{ product.field_post_login_url_encoded }}"
-
+                    data-router-active-link-class="active"
                     target="{{ product.field_mobile_product_menu_target[0].value }}"
 
                     {% if product.field_product_integration_id %}

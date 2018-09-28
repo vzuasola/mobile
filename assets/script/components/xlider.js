@@ -73,6 +73,9 @@ export default class Xlider extends Siema {
      * Generate prev/next button
      */
     createControls() {
+        if (this.innerElements.length <= this.perPage) {
+            return;
+        }
         if (this.config.controls) {
             const iconPrev = "<svg viewBox='0 0 70.233 162.231'><path d='M21.782 54.001L64.614 0l5.619 4.213L9.131 81.467l61.102 76.551-5.619 4.213L0 81.467l21.782-27.466'/></svg>";
             const iconNext = "<svg viewBox='0 0 70.233 162.231'><path d='M48.451 108.229L5.619 162.23 0 158.017l61.102-77.254L0 4.212 5.619 0l64.614 80.764-21.782 27.465'/></svg>";

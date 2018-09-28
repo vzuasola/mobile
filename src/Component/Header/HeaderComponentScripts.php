@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\Header;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
+use App\MobileEntry\Services\Product\Products;
 
 /**
  *
@@ -13,6 +14,8 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 
     private $loginConfig;
 
+    private $views;
+
     /**
      *
      */
@@ -20,17 +23,19 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('player_session'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $loginConfig)
+    public function __construct($playerSession, $loginConfig, $views)
     {
         $this->playerSession = $playerSession;
         $this->loginConfig = $loginConfig;
+        $this->views = $views;
     }
 
     /**
@@ -52,7 +57,30 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
             'error_message_invalid_passname' => $config['error_message_invalid_passname'],
             'error_message_service_not_available' => $config['error_message_service_not_available'],
             'error_message_account_suspended' => $config['error_message_account_suspended'],
-            'error_message_account_locked' => $config['error_message_account_locked']
+            'error_message_account_locked' => $config['error_message_account_locked'],
+            'products' => $this->getProducts()
         ];
+    }
+
+    private function getProducts()
+    {
+        try {
+            $result = [];
+            $products = $this->views->getViewById('products');
+
+            foreach ($products as $product) {
+                $instanceId = $product['field_product_instance_id'][0]['value'];
+                if (array_key_exists($instanceId, Products::PRODUCT_MAPPING)) {
+                    $result[Products::PRODUCT_MAPPING[$instanceId]] = [
+                        'login_via' => $product['field_product_login_via'][0]['value'],
+                        'reg_via' => $product['field_registration_url'][0]['value'],
+                    ];
+                }
+            }
+        } catch (\Exception $e) {
+            $result = [];
+        }
+
+        return $result;
     }
 }

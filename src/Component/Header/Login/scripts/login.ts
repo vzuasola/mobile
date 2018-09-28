@@ -224,9 +224,18 @@ export class Login {
                 if (element) {
                     event.preventDefault();
 
-                    ComponentManager.broadcast("header.login", {
-                        src: element,
-                    });
+                    if (element.getAttribute("data-product-login-via")
+                        && element.getAttribute("data-product-reg-via")) {
+                        ComponentManager.broadcast("header.login", {
+                            src: element,
+                            productVia: element.getAttribute("data-product-login-via"),
+                            regVia: element.getAttribute("data-product-reg-via"),
+                        });
+                    } else {
+                        ComponentManager.broadcast("header.login", {
+                            src: element,
+                        });
+                    }
                 }
             }
         });
@@ -275,6 +284,7 @@ export class Login {
             if (data && typeof data.regVia !== "undefined" && data.regVia) {
                 if (btnJoin) {
                     btnJoin.setAttribute("href", data.regVia);
+                    btnJoin.setAttribute("data-join-url", data.regVia);
                 }
             }
 
