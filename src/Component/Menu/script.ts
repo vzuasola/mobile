@@ -26,7 +26,7 @@ export class MenuComponent implements ComponentInterface {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
-        this.toggleLogoutLink(element);
+        this.toggleLogoutLink();
         this.isLogin = attachments.authenticated;
 
         this.activateMenu(element);
@@ -55,7 +55,6 @@ export class MenuComponent implements ComponentInterface {
         this.element = element;
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
-        this.toggleLogoutLink(element);
 
         this.activateMenu(element);
         this.attachProduct();
@@ -82,9 +81,9 @@ export class MenuComponent implements ComponentInterface {
         menu.activate();
     }
 
-    private toggleLogoutLink(element) {
+    private toggleLogoutLink() {
         ComponentManager.subscribe("menu.logout.hide", (event, src, data) => {
-            const logoutLink = element.querySelector(data.selector);
+            const logoutLink = this.element.querySelector(data.selector);
 
             if (logoutLink) {
                 logoutLink.parentNode.style.display = "none";
@@ -92,7 +91,7 @@ export class MenuComponent implements ComponentInterface {
         });
 
         ComponentManager.subscribe("menu.logout.show", (event, src, data) => {
-            const logoutLink = element.querySelector(data.selector);
+            const logoutLink = this.element.querySelector(data.selector);
 
             if (logoutLink) {
                 logoutLink.parentNode.style.display = "block";
