@@ -39,17 +39,19 @@ export class MyAccountComponent implements ComponentInterface {
     }
 
     private toggleLogoutLink() {
-        const logoutLink: any = document.body.querySelector(".quicklinks-logout");
+        setTimeout(() => {
+            const logoutLink: any = document.body.querySelector(".quicklinks-logout");
 
-        if (logoutLink) {
-            // Hide logout link
-            logoutLink.parentNode.style.display = "none";
+            if (logoutLink) {
+                // Hide logout link
+                logoutLink.parentNode.style.display = "none";
 
-            Router.on(RouterClass.afterNavigate, (event) => {
-                // Show logout link
-                logoutLink.parentNode.style.display = "block";
-            });
-        }
+                Router.on(RouterClass.afterNavigate, (event) => {
+                    // Show logout link
+                    logoutLink.parentNode.style.display = "block";
+                });
+            }
+        }, 150);
     }
 
     private equalizeActionButtonHeight() {
