@@ -359,6 +359,7 @@ export class GamesSearch {
         ComponentManager.subscribe("submit", (event, src) => {
             const el = utility.hasClass(src, "games-search-form", true);
             if (el) {
+                event.preventDefault();
                 this.showResultInLobby();
             }
         });
