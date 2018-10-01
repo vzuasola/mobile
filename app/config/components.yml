@@ -164,3 +164,6 @@ modules:
 
   exchange_integration:
     class: App\MobileEntry\Module\ProductIntegration\Exchange\ExchangeIntegrationModule
+
+  games_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Games\GamesIntegrationModule
