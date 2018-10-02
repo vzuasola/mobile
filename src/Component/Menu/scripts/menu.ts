@@ -7,17 +7,11 @@ export class Menu {
 }
 
     activate() {
-        const event = this.isTouch() ? "touchend" : "click";
-        this.bindEvents(event);
+        this.bindEvents();
     }
 
-    private isTouch() {
-        return "ontouchstart" in (window as any) ||
-            (window as any).DocumentTouch && document instanceof (window as any).DocumentTouch;
-    }
-
-    private bindEvents(event: string) {
-        ComponentManager.subscribe(event, (src, target) => {
+    private bindEvents() {
+        ComponentManager.subscribe("click", (src, target) => {
             const icon = this.element.querySelector(".mobile-menu-icon");
 
             if (target === icon || target.parentNode === icon) {

@@ -1,5 +1,5 @@
 import * as utility from "@core/assets/js/components/utility";
-import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import Tab from "@app/assets/script/components/tab";
 import {Marker} from "@app/assets/script/components/marker";
 import * as iconCheckedTemplate from "@app/templates/handlebars/icon-checked.handlebars";
@@ -21,7 +21,7 @@ export class MyAccountComponent implements ComponentInterface {
     }
 
     private init(element) {
-        this.toggleLogoutLink();
+        this.broadcastLogoutLink(element);
         this.equalizeActionButtonHeight();
 
         new Tab();
@@ -40,19 +40,15 @@ export class MyAccountComponent implements ComponentInterface {
         });
     }
 
-    private activateFormAnnotation(element) {
-        annotation(element);
-    }
-
-    private toggleLogoutLink() {
-        const logoutLink: any = document.body.querySelector(".quicklinks-logout");
-
-        // Hide logout link
-        logoutLink.parentNode.style.display = "none";
+    private broadcastLogoutLink(element) {
+        ComponentManager.broadcast("menu.logout.hide", {
+            selector: ".quicklinks-logout",
+        });
 
         Router.on(RouterClass.afterNavigate, (event) => {
-            // Show logout link
-            logoutLink.parentNode.style.display = "block";
+            ComponentManager.broadcast("menu.logout.show", {
+                selector: ".quicklinks-logout",
+            });
         });
     }
 

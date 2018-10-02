@@ -25,6 +25,7 @@ class LanguageComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
+            $container->get('product_resolver'),
             $container->get('config_fetcher'),
             $container->get('language_fetcher'),
             $container->get('lang')
@@ -34,10 +35,10 @@ class LanguageComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($configs, $language, $currentLanguage)
+    public function __construct($product, $configs, $language, $currentLanguage)
     {
         $this->configs = $configs;
-        $this->language = $language;
+        $this->language = $language->withProduct($product->getProduct());
         $this->currentLanguage = $currentLanguage;
     }
 

@@ -1,7 +1,10 @@
 {% if back_to_top %}
-<a href="#" class="back-to-top hide">
+<span class="back-to-top hide">
     <svg viewBox="0 30 24 44.999">
         <use xlink:href="#arrow" />
     </svg>
-</a>
+</span>
 {% endif %}
+<span class="hidden">
+    {% include '@app/web/images/svg/backtotop/dafabet-backtotop.svg' ignore missing %}
+</span>

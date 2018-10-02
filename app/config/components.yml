@@ -33,20 +33,28 @@ components:
     class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
     parent: node
 
-  home:
-    class: App\MobileEntry\Component\Main\Home\HomeComponent
+  lobby:
+    class: App\MobileEntry\Component\Main\Lobby\LobbyComponent
 
-  home_slider:
-    class: App\MobileEntry\Component\Main\Home\Slider\SliderComponent
-    parent: home
+  lobby_slider:
+    class: App\MobileEntry\Component\Main\Lobby\Slider\SliderComponent
+    parent: lobby
+
+  lobby_content:
+    class: App\MobileEntry\Component\Main\Lobby\Home\HomeComponent
+    parent: lobby
 
   home_products:
-    class: App\MobileEntry\Component\Main\Home\Products\ProductsComponent
-    parent: home
+    class: App\MobileEntry\Component\Main\Lobby\Home\Products\ProductsComponent
+    parent: lobby_content
 
   home_download:
-    class: App\MobileEntry\Component\Main\Home\Download\DownloadComponent
-    parent: home
+    class: App\MobileEntry\Component\Main\Lobby\Home\Download\DownloadComponent
+    parent: lobby_content
+
+  games_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\GamesLobby\GamesLobbyComponent
+    parent: lobby
 
   session:
     class: App\MobileEntry\Component\Main\Session\SessionComponent
@@ -110,9 +118,6 @@ components:
   backtotop:
     class: App\MobileEntry\Component\Backtotop\BacktotopComponent
 
-  games_lobby:
-    class: App\MobileEntry\Component\GamesLobby\GamesLobbyComponent
-
 # Define modules
 modules:
   session:
@@ -147,6 +152,12 @@ modules:
 
   pas_integration:
     class: App\MobileEntry\Module\GameIntegration\PAS\PASModule
+
+  voidbridge_integration:
+    class: App\MobileEntry\Module\GameIntegration\Voidbridge\VoidbridgeModule
+
+  skywind_integration:
+    class: App\MobileEntry\Module\GameIntegration\Skywind\SkywindModule
 
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule

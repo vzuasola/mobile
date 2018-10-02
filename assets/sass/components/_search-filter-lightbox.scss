@@ -1,0 +1,143 @@
+.games-search-filter {
+    .modal-overlay {
+        background: $dark-gray;
+    }
+
+    &-content {
+        @include translate(0, 0%);
+        top: 0;
+        height: 100%;
+        max-height: 100%;
+        width: 100%;
+        max-width: 100%;
+        background: transparent;
+        padding: 1rem;
+        border: 0;
+        border-radius: 0;
+        margin-bottom: 0.8rem;
+
+        .games-search-back {
+            position: absolute;
+            top: 0;
+            right: 0;
+            outline: none;
+            cursor: pointer;
+
+        }
+
+        svg {
+            width: 2.2rem;
+            height: 2.2rem;
+            top: 1rem;
+            fill: $white;
+
+            rect {
+                fill: #373737;
+            }
+        }
+    }
+
+    // Heading text
+    h2 {
+        margin: 0.5rem 1rem 1rem;
+        color: $light-gray;
+        font-size: 1.6rem;
+        font-weight: 600;
+    }
+
+    &-back {
+        position: absolute;
+        top: 1rem;
+        left: 0.5rem;
+        outline: none;
+        cursor: pointer;
+
+        svg {
+            fill: $white;
+
+        }
+    }
+
+    &-body {
+        margin-top: 1.5rem;
+
+        input[type=reset]:disabled,
+        input[type=submit]:disabled {
+            opacity: 0.25;
+        }
+    }
+
+    &-list {
+        padding: 0;
+
+        p {
+            font-size: 1.6rem;
+            background: #211f20;
+            text-align: left;
+            padding: 1rem;
+            margin: 0;
+        }
+
+        ul {
+            display: inline-block;
+            float: left;
+
+            li {
+                position: relative;
+                display: block;
+                margin-top: 1rem;
+                border: 0.1rem solid #5f5e5e;
+                border-radius: 0.5rem;
+                padding: 0.75rem 0.5rem;
+            }
+
+            li:nth-child(odd) {
+                width: 46%;
+                margin-right: 4%;
+                float: left;
+            }
+
+            li:nth-child(even) {
+                width: 46%;
+                margin-left: 4%;
+                float: right;
+
+            }
+
+            label {
+                position: relative;
+                display: block;
+                text-align: left;
+            }
+
+            .marker-svg {
+                position: absolute;
+                top: 0.4rem;
+                right: 0.4rem;
+
+                svg {
+                    width: 1.7rem;
+                    height: 2.7rem;
+                }
+            }
+
+            .active {
+                border: 0.1rem solid $yellow;
+                color: $yellow;
+            }
+        }
+    }
+}
+
+// Search Filter Button
+.filter-form-field {
+    width: 46%;
+    float: left;
+    display: inline-block;
+    margin: 0 2%;
+
+    &-btn {
+        width: 100%;
+        padding: 0.7rem;
+    }
+}

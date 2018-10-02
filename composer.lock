@@ -679,16 +679,16 @@
         },
         {
             "name": "layershifter/tld-extract",
-            "version": "1.2.5",
+            "version": "1.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/layershifter/TLDExtract.git",
-                "reference": "4cbd2e8f4ae6ad9195d88159ffaf143fc3bc863c"
+                "reference": "913f82f3d84d314350095aac9dab46df2fa3555d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/layershifter/TLDExtract/zipball/4cbd2e8f4ae6ad9195d88159ffaf143fc3bc863c",
-                "reference": "4cbd2e8f4ae6ad9195d88159ffaf143fc3bc863c",
+                "url": "https://api.github.com/repos/layershifter/TLDExtract/zipball/913f82f3d84d314350095aac9dab46df2fa3555d",
+                "reference": "913f82f3d84d314350095aac9dab46df2fa3555d",
                 "shasum": ""
             },
             "require": {
@@ -726,7 +726,7 @@
                 "TLDExtract",
                 "domain parser"
             ],
-            "time": "2018-06-19T12:09:01+00:00"
+            "time": "2018-09-28T10:05:58+00:00"
         },
         {
             "name": "layershifter/tld-support",
@@ -1748,7 +1748,7 @@
         },
         {
             "name": "symfony/asset",
-            "version": "v3.4.15",
+            "version": "v3.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/asset.git",
@@ -1804,16 +1804,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v3.4.15",
+            "version": "v3.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "caba4f9cfc77cef48ac88497ce8204368424d92c"
+                "reference": "4f29972d3fae5febec5c18db70e7dd2957e74ad6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/caba4f9cfc77cef48ac88497ce8204368424d92c",
-                "reference": "caba4f9cfc77cef48ac88497ce8204368424d92c",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/4f29972d3fae5febec5c18db70e7dd2957e74ad6",
+                "reference": "4f29972d3fae5febec5c18db70e7dd2957e74ad6",
                 "shasum": ""
             },
             "require": {
@@ -1870,11 +1870,11 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2018-08-24T09:47:29+00:00"
+            "time": "2018-09-25T07:13:51+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.4.15",
+            "version": "v3.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -2013,7 +2013,7 @@
         },
         {
             "name": "symfony/inflector",
-            "version": "v4.1.4",
+            "version": "v4.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/inflector.git",
@@ -2071,16 +2071,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v3.4.15",
+            "version": "v3.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "963f45ef0f4739eb776f088169563e6aa9e1e2aa"
+                "reference": "9d25efa9b69089d702ce760449e70256845fcdd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/963f45ef0f4739eb776f088169563e6aa9e1e2aa",
-                "reference": "963f45ef0f4739eb776f088169563e6aa9e1e2aa",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/9d25efa9b69089d702ce760449e70256845fcdd8",
+                "reference": "9d25efa9b69089d702ce760449e70256845fcdd8",
                 "shasum": ""
             },
             "require": {
@@ -2142,20 +2142,20 @@
                 "l10n",
                 "localization"
             ],
-            "time": "2018-07-31T09:47:14+00:00"
+            "time": "2018-09-22T18:49:52+00:00"
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v3.4.15",
+            "version": "v3.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "6debc476953a45969ab39afe8dee0b825f356dc7"
+                "reference": "1cf7d8e704a9cc4164c92e430f2dfa3e6983661d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/6debc476953a45969ab39afe8dee0b825f356dc7",
-                "reference": "6debc476953a45969ab39afe8dee0b825f356dc7",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/1cf7d8e704a9cc4164c92e430f2dfa3e6983661d",
+                "reference": "1cf7d8e704a9cc4164c92e430f2dfa3e6983661d",
                 "shasum": ""
             },
             "require": {
@@ -2196,7 +2196,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2018-07-26T08:45:46+00:00"
+            "time": "2018-09-17T17:29:18+00:00"
         },
         {
             "name": "symfony/polyfill-apcu",
@@ -2598,16 +2598,16 @@
         },
         {
             "name": "symfony/property-access",
-            "version": "v3.4.15",
+            "version": "v3.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-access.git",
-                "reference": "8c892ce455ef55b3e22769cc27a7aa2e0983bff1"
+                "reference": "35e277fabd77d42b747d017dc31f4b7fab5158fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-access/zipball/8c892ce455ef55b3e22769cc27a7aa2e0983bff1",
-                "reference": "8c892ce455ef55b3e22769cc27a7aa2e0983bff1",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/35e277fabd77d42b747d017dc31f4b7fab5158fc",
+                "reference": "35e277fabd77d42b747d017dc31f4b7fab5158fc",
                 "shasum": ""
             },
             "require": {
@@ -2662,20 +2662,20 @@
                 "property path",
                 "reflection"
             ],
-            "time": "2018-08-24T10:16:13+00:00"
+            "time": "2018-09-08T13:15:14+00:00"
         },
         {
             "name": "symfony/security-core",
-            "version": "v4.1.4",
+            "version": "v4.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
-                "reference": "d458678cc58685e83ecebcbc4b47f2224bf87b4e"
+                "reference": "2f7494cf07e2bb3f4b8e5a294f3d89da63b62742"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-core/zipball/d458678cc58685e83ecebcbc4b47f2224bf87b4e",
-                "reference": "d458678cc58685e83ecebcbc4b47f2224bf87b4e",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/2f7494cf07e2bb3f4b8e5a294f3d89da63b62742",
+                "reference": "2f7494cf07e2bb3f4b8e5a294f3d89da63b62742",
                 "shasum": ""
             },
             "require": {
@@ -2728,20 +2728,20 @@
             ],
             "description": "Symfony Security Component - Core Library",
             "homepage": "https://symfony.com",
-            "time": "2018-07-26T09:10:45+00:00"
+            "time": "2018-09-02T17:33:37+00:00"
         },
         {
             "name": "symfony/security-csrf",
-            "version": "v3.4.15",
+            "version": "v3.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-csrf.git",
-                "reference": "6877ab0e7ae1e42e0772118a0cf05d08a4669e42"
+                "reference": "3e165489937450297c5282e0b9f9bcebba9679c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-csrf/zipball/6877ab0e7ae1e42e0772118a0cf05d08a4669e42",
-                "reference": "6877ab0e7ae1e42e0772118a0cf05d08a4669e42",
+                "url": "https://api.github.com/repos/symfony/security-csrf/zipball/3e165489937450297c5282e0b9f9bcebba9679c9",
+                "reference": "3e165489937450297c5282e0b9f9bcebba9679c9",
                 "shasum": ""
             },
             "require": {
@@ -2789,7 +2789,7 @@
             ],
             "description": "Symfony Security Component - CSRF Library",
             "homepage": "https://symfony.com",
-            "time": "2018-07-26T09:06:28+00:00"
+            "time": "2018-09-04T06:27:33+00:00"
         },
         {
             "name": "symfony/twig-bridge",
@@ -2881,16 +2881,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.1.4",
+            "version": "v4.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "b832cc289608b6d305f62149df91529a2ab3c314"
+                "reference": "ac5af7c14c4f8abf0f77419e8397eff7a370df19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/b832cc289608b6d305f62149df91529a2ab3c314",
-                "reference": "b832cc289608b6d305f62149df91529a2ab3c314",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/ac5af7c14c4f8abf0f77419e8397eff7a370df19",
+                "reference": "ac5af7c14c4f8abf0f77419e8397eff7a370df19",
                 "shasum": ""
             },
             "require": {
@@ -2936,7 +2936,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-08-18T16:52:46+00:00"
+            "time": "2018-09-30T03:38:13+00:00"
         },
         {
             "name": "true/punycode",
@@ -3057,7 +3057,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "4981da7650deb0b2c6fc80aa81b1c8e2d0b1f52f"
+                "reference": "0683e3092ee54cd155298e66aab9d8f284c3a9f7"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.1",
@@ -3108,7 +3108,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2018-09-21T02:44:20+00:00"
+            "time": "2018-10-01T02:17:15+00:00"
         },
         {
             "name": "willdurand/negotiation",

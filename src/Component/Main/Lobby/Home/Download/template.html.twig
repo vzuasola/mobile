@@ -1,0 +1,30 @@
+{% if downloads_menu %}
+<div class="download mt-10 mb-10">
+        <ul class="app-download clearfix">
+        {% set menuLength = (downloads_menu|length == 2 or downloads_menu|length == 4) ? 'app-download-two' : 'app-download-three' %}
+        {% for menu in downloads_menu %}
+            <li class="app-download-list {{ menuLength }}">
+                <a
+                    href="{{ url(menu.uri) }}"
+                    class="{{ menu.attributes.class }} {{ menu.attributes.svg }} download-box"
+                    target="{{ menu.attributes.target }}"
+
+                    data-router="true"
+                    data-router-refresh="main"
+                >
+                    <svg viewBox="0 0 20 20">
+                      <use xlink:href="#{{ menu.attributes.svg }}" />
+                    </svg>
+
+                    <span class="app-download-list-text">
+                        {{ menu.title }}
+                    </span>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+</div>
+{% endif %}
+<span class="hidden">
+    {% include '@app/web/images/svg/downloads/download-icons.svg' ignore missing %}
+</span>

@@ -26,7 +26,10 @@
             </div>
         {% else %}
             <span class="mobile-action-button">
-                <a href="#"  class="login-trigger btn btn-yellow btn-small btn-mobile-login">
+                <a
+                    href="#"
+                    class="login-trigger btn btn-yellow btn-small btn-mobile-login"
+                >
                     {{ mobile_login_reg }}
                 </a>
             </span>
@@ -35,3 +38,6 @@
         {{ widget('header_login') }}
     </div>
 </header>
+<span class="hidden">
+    {% include '@app/web/images/svg/header/dafabet-header.svg' ignore missing %}
+</span>

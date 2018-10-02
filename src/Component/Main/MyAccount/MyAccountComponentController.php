@@ -2,6 +2,8 @@
 
 namespace App\MobileEntry\Component\Main\MyAccount;
 
+use App\Player\Player;
+
 /**
  *
  */
@@ -299,7 +301,8 @@ class MyAccountComponentController
             ]);
         }
 
-        $this->session->delete('player.details');
+        $this->session->delete(Player::CACHE_KEY);
+
         return $this->rest->output($response, [
             'success' => true,
             'status' => 'success'

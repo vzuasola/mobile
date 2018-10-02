@@ -1,0 +1,249 @@
+.games-search {
+    .modal-overlay {
+        background: $dark-gray;
+    }
+
+    &-content {
+        @include translate(0, 0%);
+        top: 0;
+        height: 100%;
+        max-height: 100%;
+        width: 100%;
+        max-width: 100%;
+        background: transparent;
+        padding: 1.5rem;
+        border: 0;
+        border-radius: 0;
+        margin-bottom: 0.8rem;
+    }
+
+    .modal-body {
+        margin: 1.6rem 0;
+
+        form {
+            display: block;
+            margin: 0;
+        }
+
+        h2 {
+            color: $light-gray;
+        }
+
+        .search-blurb {
+            margin-top: 1rem;
+            display: block;
+            float: left;
+            width: 100%;
+            text-align: left;
+
+            span {
+                display: block;
+            }
+        }
+    }
+
+    // Heading text
+    h2 {
+        margin: 0rem 1rem 1rem;
+        color: $light-gray;
+        font-size: 1.6rem;
+        font-weight: 600;
+    }
+
+    &-filter-icon {
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        outline: none;
+        cursor: pointer;
+
+        svg {
+            width: 2rem;
+            height: 2rem;
+            fill: $white;
+        }
+    }
+
+    &-back {
+        position: absolute;
+        top: 1rem;
+        left: 0.5rem;
+        outline: none;
+        cursor: pointer;
+
+        svg {
+            width: 2.2rem;
+            height: 2.2rem;
+            fill: $white;
+        }
+    }
+
+    // Search Area
+    input[type="search"] {
+        width: 85%;
+        height: 4.4rem;
+        padding: 0;
+        text-indent: 1rem;
+        border: none;
+        background: $white;
+        color: $black;
+        border-radius: 0.5rem 0 0 0.5rem;
+        outline: none;
+        float: left;
+        -webkit-appearance: none;
+        -moz-appearance:none;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    &-submit {
+        width: 15%;
+        height: 4.4rem;
+        filter: none;
+        font-size: 0;
+        padding: 0;
+        vertical-align: middle;
+        border: 0;
+        background: $dark-red;
+        overflow: hidden;
+        position: relative;
+
+        svg {
+            position: absolute;
+            top: 0.4rem;
+            outline: none;
+            margin: 0.5rem 0 0 -1.5rem;
+            width: 3rem;
+            fill: #fff;
+        }
+    }
+
+    &-result {
+        ul {
+            width: 100%;
+            display: block;
+            padding-left: 0;
+            list-style-type: none;
+            margin-top: 1rem;
+            float: left;
+
+            li {
+                display: block;
+                margin-top: 1rem;
+                padding-bottom: 1rem;
+                border-bottom: 0.1rem solid $gray;
+                width: 100%;
+                float: left;
+
+                a {
+                    width: 100%;
+                }
+            }
+
+            li:last-child {
+                    border: 0;
+            }
+        }
+
+        &-left,
+        &-right {
+            display: inline-block;
+            float: left;
+        }
+
+        &-left {
+            width: 33.33333333%;
+            position: relative;
+
+            .game-favorite {
+                position: absolute;
+                right: 0;
+                outline: none;
+                border: 0;
+                cursor: pointer;
+                width: 40%;
+                height: 40%;
+
+                svg {
+                    width: 1.7rem;
+                    top: 0;
+                    right: 12%;
+                    @include rotate(0);
+                    outline: none;
+                    border: 0;
+                    cursor: pointer;
+                    fill: $white;
+                    margin: 15% 0 0 55%;
+
+                }
+            }
+
+            .game-favorite.active {
+                svg {
+                    fill: $yellow;
+                }
+            }
+
+            img {
+                border: 0.1rem solid $light-gray;
+            }
+        }
+
+        &-right {
+            width: 59.666667%;
+            margin: 0 3% 0 4%;
+
+            p {
+                margin: 0;
+                text-align: left;
+                color: $white;
+                position: absolute;
+                @include translate(0, 50%);
+                bottom: 50%;
+            }
+        }
+
+        svg {
+            position: absolute;
+            right: 0;
+            bottom: 40%;
+            @include translate(0, 50%);
+            @include rotate(-180);
+            margin: 0;
+            width: 1.2rem;
+            fill: $white;
+        }
+    }
+}
+
+// X button "clear"
+.games-search-input,
+.games-search-body {
+    position: relative;
+}
+
+.close-icon {
+    position: absolute;
+    top: 0;
+    right: 16%;
+    border: 0.1rem solid transparent;
+    background-color: transparent;
+    display: inline-block;
+    vertical-align: middle;
+    outline: 0;
+    cursor: pointer;
+}
+.close-icon:after {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.2rem;
+    content: "X";
+    display: block;
+    color: $dark-gray;
+    cursor: pointer;
+    @include scale3d(2.5, 1.75, 1.75);
+}
+.games-search-input:not(:valid) ~ .close-icon {
+    display: none;
+}

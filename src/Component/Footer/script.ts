@@ -8,7 +8,7 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
  */
 export class FooterComponent implements ComponentInterface {
     private element: HTMLElement;
-    private originalOrl: string;
+    private originalUrl: string;
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
@@ -29,10 +29,12 @@ export class FooterComponent implements ComponentInterface {
 
     private getOriginalUrl() {
         const menu: HTMLElement = this.element.querySelector(".footer-desktop");
+
         if (menu) {
             const url = menu.getAttribute("href");
+
             if (url.indexOf("@product") !== -1) {
-                this.originalOrl = menu.getAttribute("href");
+                this.originalUrl = menu.getAttribute("href");
             }
         }
     }
@@ -41,16 +43,18 @@ export class FooterComponent implements ComponentInterface {
         const product = ComponentManager.getAttribute("product");
         const menu: HTMLElement = this.element.querySelector(".footer-desktop");
 
-        if (menu) {
-            let url = this.originalOrl;
-            if (product !== "mobile-entrypage") {
-                url = url.replace("@product", product.replace("mobile-", ""));
-            } else {
-                url = url.replace("@product", "");
+        if (menu && this.originalUrl) {
+            let url = this.originalUrl;
+
+            if (url.indexOf("@product") !== -1) {
+                if (product !== "mobile-entrypage") {
+                    url = url.replace("@product", product.replace("mobile-", ""));
+                } else {
+                    url = url.replace("@product", "");
+                }
             }
 
             menu.setAttribute("href", url);
-
         }
     }
 }
