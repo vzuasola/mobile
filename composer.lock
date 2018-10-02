@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "19f9cf4d8164a0974141a46306b5d97e",
+    "content-hash": "4a37b3df407c7a94b3f10f41dc85c7b1",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -3053,11 +3053,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.89.0",
+            "version": "dev-release-v1.95.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "0ccb821d46c2b739e0f5a3f1ebc7711799d7582c"
+                "reference": "5c2ad22e3f20860385e2c5bc7aced70d8289778e"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.1",
@@ -3108,7 +3108,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2018-09-11T07:36:33+00:00"
+            "time": "2018-09-28T06:16:25+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -3936,16 +3936,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.5.12",
+            "version": "6.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "24da433d7384824d65ea93fbb462e2f31bbb494e"
+                "reference": "7bab54cb366076023bbf457a2a0d513332cd40f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/24da433d7384824d65ea93fbb462e2f31bbb494e",
-                "reference": "24da433d7384824d65ea93fbb462e2f31bbb494e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7bab54cb366076023bbf457a2a0d513332cd40f2",
+                "reference": "7bab54cb366076023bbf457a2a0d513332cd40f2",
                 "shasum": ""
             },
             "require": {
@@ -4016,7 +4016,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-08-22T06:32:48+00:00"
+            "time": "2018-08-07T07:05:35+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

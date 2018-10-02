@@ -1,6 +1,7 @@
 middlewares:
   request:
     slashes: App\Middleware\Request\Slashes
+    case_insensitive: App\Middleware\Request\CaseInsensitiveRoute
     page_cache: App\MobileEntry\Middleware\ResponseCache
     languages: App\Middleware\Request\Languages
     bootstrap: App\Middleware\Request\Bootstrap

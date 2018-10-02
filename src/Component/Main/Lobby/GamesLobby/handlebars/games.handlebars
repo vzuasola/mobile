@@ -1,0 +1,54 @@
+{{#each games}}
+    <div class="game-listing">
+        {{#each this}}
+        <a class="game-list game-listing-item {{this.size}}"
+        {{#if ../../isLogin}}
+        data-game-launch="true"
+        {{/if}}
+        data-game-provider="{{this.game_provider}}"
+        data-game-code="{{this.game_code}}"
+        data-game-keywords ="{{this.keywords}}"
+        data-game-title="{{this.title}}"
+        data-sort-weight="{{this.weight}}"
+        data-game-target="{{this.target}}"
+        data-game-filters="[ {{this.filters }} ]"
+        >
+            {{#if this.ribbon}}
+                <div class="game-ribbon"
+                    style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
+                >
+                    {{this.ribbon.name}}
+                </div>
+            {{/if}}
+            {{#if ../../isLogin}}
+            <span class="game-favorite {{lookup ../../favorites this.game_code}}">
+                <svg viewBox="0 0 86 86">
+                    <path d="M45.49 4.38l10.62 21.53A3.79 3.79 0 0 0 59 28l23.76 3.45a2.78 2.78 0 0 1 1.54 4.73L67.06 52.91A3.79 3.79 0 0 0 66 56.26l4 23.66a2.77 2.77 0 0 1-4 2.92L44.76 71.67a3.78 3.78 0 0 0-3.52 0L20 82.84a2.77 2.77 0 0 1-4-2.92l4-23.66a3.79 3.79 0 0 0-1.09-3.35L1.75 36.16a2.78 2.78 0 0 1 1.54-4.73L27.05 28a3.79 3.79 0 0 0 2.84-2.07L40.51 4.38a2.78 2.78 0 0 1 4.98 0z"/>
+                </svg>
+            </span>
+            {{/if}}
+
+            <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
+        </a>
+        {{/each}}
+    </div>
+{{/each}}
+<div id="game-loader" class="game-loader">
+    <span class="game-loader-load-more">Load More</span>
+    <div class="sk-fading-circle mobile-game-loader hidden">
+        <div class="sk-fading-circle">
+            <div class="sk-circle1 sk-circle"></div>
+            <div class="sk-circle2 sk-circle"></div>
+            <div class="sk-circle3 sk-circle"></div>
+            <div class="sk-circle4 sk-circle"></div>
+            <div class="sk-circle5 sk-circle"></div>
+            <div class="sk-circle6 sk-circle"></div>
+            <div class="sk-circle7 sk-circle"></div>
+            <div class="sk-circle8 sk-circle"></div>
+            <div class="sk-circle9 sk-circle"></div>
+            <div class="sk-circle10 sk-circle"></div>
+            <div class="sk-circle11 sk-circle"></div>
+            <div class="sk-circle12 sk-circle"></div>
+        </div>
+    </div>
+</div>
