@@ -40,6 +40,10 @@ export class MyAccountComponent implements ComponentInterface {
         });
     }
 
+    private activateFormAnnotation(element) {
+        annotation(element);
+    }
+
     private broadcastLogoutLink(element) {
         ComponentManager.broadcast("menu.logout.hide", {
             selector: ".quicklinks-logout",
