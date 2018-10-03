@@ -8,7 +8,7 @@
                 {% for announcement in announcements %}
                     {% if announcement.show %}
                     <li class="announcement-item"  data="{{ announcement.nid }}">
-                        <strong class="text-red announcement-item-title">{{ announcement.name }}</strong>
+                        <strong class="text-red announcement-item-title">{{ announcement.title }}</strong>
                         {{ announcement.text|raw }}
                     </li>
                     {% endif %}
