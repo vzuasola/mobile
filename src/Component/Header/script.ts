@@ -30,8 +30,6 @@ export class HeaderComponent implements ComponentInterface {
                 this.attachProduct();
             }
         });
-
-        ComponentManager.broadcast("header.load");
     }
 
     onReload(element: HTMLElement, attachments: { authenticated: boolean, products: any[]}) {
@@ -39,7 +37,6 @@ export class HeaderComponent implements ComponentInterface {
         this.attachments = attachments;
         this.attachProduct();
         this.refreshBalance();
-        ComponentManager.broadcast("header.load");
     }
 
     private refreshBalance() {

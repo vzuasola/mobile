@@ -19,9 +19,17 @@ export class MetaComponent implements ComponentInterface {
     }
 
     private listenToHeader() {
-        ComponentManager.subscribe("header.load", (event: Event, src) => {
-            const meta = this.element.querySelector(".meta");
-            meta.remove();
+        ComponentManager.subscribe("components.finish", () => {
+            this.removeMetaElement();
         });
+
+        Router.on(RouterClass.navigateError, (event) => {
+            this.removeMetaElement();
+        });
+    }
+
+    private removeMetaElement() {
+        const meta = this.element.querySelector(".meta");
+        meta.remove();
     }
 }
