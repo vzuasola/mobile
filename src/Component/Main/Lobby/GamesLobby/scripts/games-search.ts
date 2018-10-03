@@ -13,6 +13,7 @@ import {RecommendedGames} from "./recommended-games";
 export class GamesSearch {
     private searchObj: Search;
     private isLogin: boolean;
+    private isRecommended: boolean;
     private favoritesList;
     private element;
     private config: any;
@@ -116,11 +117,12 @@ export class GamesSearch {
         const groupedGames = this.groupGames(response);
 
         // populate search results in games lobby search tab
-        ComponentManager.broadcast("games.search.success", {games: groupedGames});
+        ComponentManager.broadcast("games.search.success", {games: groupedGames, isRecommended: this.isRecommended});
     }
 
     private onBeforeSearch(data) {
         // placeholder
+        this.isRecommended = false;
     }
 
     /**
@@ -141,6 +143,7 @@ export class GamesSearch {
         this.updateSearchBlurb(blurb, this.element.querySelector("#blurb-preview"), { count: 0, keyword });
 
         if (recommendedGames.length) {
+            this.isRecommended = true;
             this.setGamesResultPreview(recommendedGames);
             this.searchResult = recommendedGames;
         } else {
@@ -195,6 +198,7 @@ export class GamesSearch {
             games: sortedGames,
             favorites: this.favoritesList,
             isLogin: this.isLogin,
+            isRecommended: this.isRecommended,
         });
 
         const gamesPreview = this.element.querySelector(".games-search-result");

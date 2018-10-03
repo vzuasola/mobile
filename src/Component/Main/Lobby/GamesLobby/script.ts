@@ -214,7 +214,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, page: number = 0) {
+    private setGames(data, page: number = 0, isRecommend = false) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
 
@@ -222,6 +222,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             games: pager[page],
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
+            isRecommended: isRecommend,
         });
 
         if (this.currentPage > page) {
@@ -471,7 +472,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 this.activateSearchTab();
                 if (this.response.games["recommended-games"]) {
                     this.searchResults = this.response.games["recommended-games"];
-                    this.setGames(this.response.games["recommended-games"]);
+                    this.setGames(this.response.games["recommended-games"], 0, true);
                     recommended = true;
                 }
                 this.updateBlurbForFilter(recommended);
@@ -525,7 +526,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenOnSearch() {
          ComponentManager.subscribe("games.search.success", (event, src, data) => {
              this.searchResults = data.games;
-             this.setGames(data.games);
+             this.setGames(data.games, 0, data.isRecommended);
          });
      }
 
