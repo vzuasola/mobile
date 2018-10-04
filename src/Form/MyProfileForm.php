@@ -303,17 +303,12 @@ class MyProfileForm extends FormBase implements FormInterface
      */
     private function setDisabledFields($definition)
     {
-        $definition['submit']['options']['attr']['data-redirect'] = 0;
-
-        if ($this->request->getQueryParam("pmid")) {
-            $definition['submit']['options']['attr']['data-redirect'] = 1;
-        }
-
         foreach ($this->disabledFields as $field) {
             $dummyName = substr($definition[$field]['options']['attr']['value'], 0, 5);
 
             if (strtoupper($dummyName) == 'DFRFN' ||
                 strtoupper($dummyName) == 'DFRLN') {
+                $definition['submit']['options']['attr']['data-redirect'] = 1;
                 $definition[$field]['options']['attr']['value'] = "";
             } else {
                 $definition[$field]['options']['attr']['disabled'] = "disabled";
