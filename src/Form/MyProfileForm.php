@@ -309,14 +309,14 @@ class MyProfileForm extends FormBase implements FormInterface
             $definition['submit']['options']['attr']['data-redirect'] = 1;
         }
 
-        foreach ($this->disabledFields as $key => $value) {
-            $dummyName = substr($definition[$value]['options']['attr']['value'], 0, 5);
+        foreach ($this->disabledFields as $field) {
+            $dummyName = substr($definition[$field]['options']['attr']['value'], 0, 5);
 
             if (strtoupper($dummyName) == 'DFRFN' ||
                 strtoupper($dummyName) == 'DFRLN') {
-                $definition[$value]['options']['attr']['value'] = "";
+                $definition[$field]['options']['attr']['value'] = "";
             } else {
-                $definition[$value]['options']['attr']['disabled'] = "disabled";
+                $definition[$field]['options']['attr']['disabled'] = "disabled";
             }
         }
 
