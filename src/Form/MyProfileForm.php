@@ -303,6 +303,8 @@ class MyProfileForm extends FormBase implements FormInterface
      */
     private function setDisabledFields($definition)
     {
+        $definition['submit']['options']['attr']['data-redirect'] = 0;
+
         foreach ($this->disabledFields as $field) {
             $dummyName = substr($definition[$field]['options']['attr']['value'], 0, 5);
 

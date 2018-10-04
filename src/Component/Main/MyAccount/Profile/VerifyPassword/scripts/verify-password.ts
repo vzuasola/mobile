@@ -184,9 +184,9 @@ export class VerifyPassword extends FormBase {
         if (isSuccess && isFastReg) {
             let myUrl = window.location.href;
 
-            if (myUrl.indexOf("?") > -1 && isFastReg) {
+            if (myUrl.indexOf("?") > -1 && (isFastReg !== "0")) {
                 myUrl += "&redirect=1";
-            } else if (myUrl.indexOf("?") === -1 && isFastReg) {
+            } else if (myUrl.indexOf("?") === -1 && (isFastReg !== "0")) {
                 myUrl += "?redirect=1";
             }
 
