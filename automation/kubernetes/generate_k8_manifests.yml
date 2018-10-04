@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+
+  - include_vars:
+      dir: vars/{{ environment_name }}
+      extensions: ['yml']
+
+  - name: Ensure destination directory exists
+    file:
+      path: manifests/{{ environment_name }}
+      state: directory
+
+  - name: Generate manifests
+    template:
+      src: "{{ item }}"
+      dest: manifests/{{ environment_name }}/{{ item | basename | replace('.j2', '') }}
+    with_fileglob: templates/*j2

@@ -1,0 +1,64 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - Deploy DEV in K8s (Helm)
+  - Deploy QA1 in K8s (Helm)
+  - Deploy TCT in K8s (Helm)
+  - Deploy UAT in K8s (Helm)
+  - Deploy STG in K8s (Helm)
+  - Deploy PRD in K8s (Helm)
+
+Deploy App (DEV):
+  stage: Deploy DEV in K8s (Helm)
+  script:
+    - python -u automation/run.py --stage deploy-k8-dev-helm
+  tags:
+    - devrunner
+  environment:
+    name: dev
+
+Deploy App (QA1):
+  stage: Deploy QA1 in K8s (Helm)
+  script:
+    - python -u automation/run.py --stage deploy-k8-qa1-helm
+  tags:
+    - devrunner
+  environment:
+    name: qa1
+
+Deploy App (TCT):
+  stage: Deploy TCT in K8s (Helm)
+  script:
+    - python -u automation/run.py --stage deploy-k8-tct-helm
+  tags:
+    - devrunner
+  environment:
+    name: tct
+
+Deploy App (UAT):
+  stage: Deploy UAT in K8s (Helm)
+  script:
+    - python -u automation/run.py --stage deploy-k8-uat-helm
+  tags:
+    - devrunner
+  environment:
+    name: uat
+
+Deploy App (STG):
+  stage: Deploy STG in K8s (Helm)
+  script:
+    - python -u automation/run.py --stage deploy-k8-stg-helm
+  tags:
+    - devrunner
+  environment:
+    name: stg
+
+Deploy App (PRD):
+  stage: Deploy PRD in K8s (Helm)
+  script:
+    - python -u automation/run.py --stage deploy-k8-prd-helm
+  tags:
+    - devrunner
+  environment:
+    name: prd
