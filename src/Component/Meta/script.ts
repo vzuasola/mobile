@@ -26,6 +26,10 @@ export class MetaComponent implements ComponentInterface {
         Router.on(RouterClass.navigateError, (event) => {
             this.removeMetaElement();
         });
+
+        Router.on(RouterClass.afterNavigate, (event) => {
+            this.removeMetaElement();
+        });
     }
 
     private removeMetaElement() {
