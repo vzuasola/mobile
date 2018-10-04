@@ -484,7 +484,11 @@ staging signoff:
   when: manual
   dependencies:
     - staging
+    - staging-mobile-stack
+    - staging-japan-stack
     - uat
+    - uat-mobile-stack
+    - uat-japan-stack
   artifacts:
     paths:
       - automation/deployed/*.jsonl

@@ -314,6 +314,40 @@ uat:
     - /^release-.*$/
     - tags
 
+uat-mobile-stack:
+  stage: deploy-staging
+  environment:
+    name: uat
+  script:
+    - DEPLOY_UAT=$DEPLOY_UAT_MOBILE python -u automation/run.py --stage deploy-uat
+  when: manual
+  dependencies:
+    - testing signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+uat-japan-stack:
+  stage: deploy-staging
+  environment:
+    name: uat
+  script:
+    - DEPLOY_UAT=$DEPLOY_UAT_JAPAN python -u automation/run.py --stage deploy-uat
+  when: manual
+  dependencies:
+    - testing signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
 .selenium tests uat:
   stage: integration-tests-staging
   script:
@@ -352,6 +386,40 @@ staging:
     name: staging
   script:
     - python -u automation/run.py --stage deploy-staging
+  when: manual
+  dependencies:
+    - testing signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+staging-mobile-stack:
+  stage: deploy-staging
+  environment:
+    name: staging
+  script:
+    - DEPLOY_STG=$DEPLOY_STG_MOBILE python -u automation/run.py --stage deploy-staging
+  when: manual
+  dependencies:
+    - testing signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+staging-japan-stack:
+  stage: deploy-staging
+  environment:
+    name: staging
+  script:
+    - DEPLOY_STG=$DEPLOY_STG_JAPAN python -u automation/run.py --stage deploy-staging
   when: manual
   dependencies:
     - testing signoff
@@ -417,7 +485,11 @@ staging signoff:
   when: manual
   dependencies:
     - staging
+    - staging-mobile-stack
+    - staging-japan-stack
     - uat
+    - uat-mobile-stack
+    - uat-japan-stack
   artifacts:
     paths:
       - automation/deployed/*.jsonl
@@ -432,6 +504,40 @@ production:
     name: production
   script:
     - python -u automation/run.py --stage deploy-production
+  when: manual
+  dependencies:
+   - staging signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+production-mobile-stack:
+  stage: deploy-production
+  environment:
+    name: production
+  script:
+    - DEPLOY_PROD=$DEPLOY_PROD_MOBILE python -u automation/run.py --stage deploy-production
+  when: manual
+  dependencies:
+   - staging signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+
+production-japan-stack:
+  stage: deploy-production
+  environment:
+    name: production
+  script:
+    - DEPLOY_PROD=$DEPLOY_PROD_JAPAN python -u automation/run.py --stage deploy-production
   when: manual
   dependencies:
    - staging signoff
