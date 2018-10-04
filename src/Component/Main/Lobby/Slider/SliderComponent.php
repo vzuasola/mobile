@@ -43,6 +43,4 @@ class SliderComponent implements ComponentWidgetInterface
     {
         return [];
     }
-
-
 }

@@ -68,7 +68,6 @@ class SliderComponentController
      */
     public function sliders($request, $response)
     {
-        
         try {
             $data['product'] = [];
             $params = $request->getQueryParams();
