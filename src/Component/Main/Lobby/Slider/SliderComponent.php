@@ -74,7 +74,8 @@ class SliderComponent implements ComponentWidgetInterface
         }
 
         try {
-            $data['slides'] = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
+            $sliders = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
+            $data['slides'] = $this->processSlides($sliders);
         } catch (\Exception $e) {
             $data['slides'] = [];
         }
@@ -92,7 +93,57 @@ class SliderComponent implements ComponentWidgetInterface
         } catch (\Exception $e) {
             $data['is_login'] = false;
         }
-
         return $data;
+    }
+
+    private function processSlides($data)
+    {
+        try {
+            $sliders = [];
+            foreach ($data as $slide) {
+                $slider = [];
+                $slider['show_both'] = $slide['field_log_in_state'] > 1;
+                $slider['login_state'] = $slide['field_log_in_state'][0]['value'] ?? 0;
+                $ribbonLabel = $slide['field_ribbon_product_label']['0']['value'] ?? false;
+                $fieldProduct = '';
+                $fieldProductId = '';
+                if (isset($slide['field_product'])) {
+                    $fieldProduct = $slide['field_product']['0']['name'][0]['value'] ?? '';
+                    $fieldProductId = $slide['field_product']['0']['field_product_id'][0]['value'] ?? '';
+                }
+
+                $slider['default_ribbon'] = $ribbonLabel;
+                $slider['product_ribbon_tag'] =
+                    ($ribbonLabel) ? $ribbonLabel : $fieldProduct;
+                $slider['bg_color'] = $slide['field_ribbon_background_color']['0']['color'] ?? '';
+                $slider['text_color'] = $slide['field_ribbon_label_color']['0']['color'] ?? '';
+                $slider['product'] = $fieldProductId;
+                
+                $slider['game_code'] = $slide['field_slider_game_code'][0]['value'] ?? '';
+                $slider['game_provider'] = $slide['field_slider_game_provider'][0]['value'] ?? '';
+                $slider['field_title'] = $slide['field_title'][0]['value'] ?? '';
+
+                $slider['banner_url'] = $slide['field_banner_link'][0]['uri'] ?? '';
+                $slider['banner_target'] = $slide['field_banner_link_target'][0]['value'] ?? '';
+                $slider['banner_img'] = $slide['field_banner_image'][0]['url'] ?? '';
+                $slider['banner_alt'] = $slide['field_banner_image'][0]['alt'] ?? '';
+                $slider['banner_pos'] = $slide['field_content_position'][0]['value'] ?? '';
+                $slider['banner_blurb'] = $slide['field_banner_blurb'][0]['value'] ?? '';
+
+                if ($this->playerSession->isLogin()) {
+                    $slider['banner_url'] = $slide['field_post_banner_link'][0]['uri'] ?? '';
+                    $slider['banner_target'] = $slide['field_post_banner_link_target'][0]['value'] ?? '';
+                    $slider['banner_img'] = slide['field_post_banner_image'][0]['url'] ?? '';
+                    $slider['banner_alt'] = $slide['field_post_banner_image'][0]['alt'] ?? '';
+                    $slider['banner_pos'] = $slide['field_post_content_position'][0]['value'] ?? '';
+                    $slider['banner_blurb'] = $slide['field_post_banner_blurb'][0]['value'] ?? '';
+                }
+
+                $sliders[] = $slider;
+            }
+        } catch (\Exception $e) {
+            $sliders = [];
+        }
+        return $sliders;
     }
 }

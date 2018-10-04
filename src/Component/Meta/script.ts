@@ -16,6 +16,7 @@ export class MetaComponent implements ComponentInterface {
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
+        this.removeMetaElement();
     }
 
     private listenToHeader() {
@@ -27,9 +28,6 @@ export class MetaComponent implements ComponentInterface {
             this.removeMetaElement();
         });
 
-        Router.on(RouterClass.afterNavigate, (event) => {
-            this.removeMetaElement();
-        });
     }
 
     private removeMetaElement() {
