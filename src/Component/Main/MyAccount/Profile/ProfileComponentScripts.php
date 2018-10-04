@@ -29,19 +29,21 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             $container->get('user_fetcher'),
             $container->get('receive_news'),
             $container->get('config_fetcher'),
-            $container->get('token_parser')
+            $container->get('token_parser'),
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($userFetcher, $playerSubscription, $configFetcher, $tokenParser)
+    public function __construct($userFetcher, $playerSubscription, $configFetcher, $tokenParser, $playerSession)
     {
         $this->user = $userFetcher;
         $this->playerSubscription = $playerSubscription;
         $this->configFetcher = $configFetcher->withProduct('account');
         $this->tokenParser = $tokenParser;
+        $this->playerSession = $playerSession;
     }
 
     /**
@@ -75,6 +77,7 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'contactPreferenceNo' => $labelConfig['contact_preference_no'] ?? 'no',
             'fastRegRedirect' => $fastRegRedirect,
             'fastRegTimeout' => $generalConfig['fastreg_timeout_redirect'] ?? 4,
+            'sessionToken' => $this->playerSession->getToken()
         ];
     }
 
