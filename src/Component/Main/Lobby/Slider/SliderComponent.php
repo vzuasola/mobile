@@ -118,7 +118,7 @@ class SliderComponent implements ComponentWidgetInterface
                 $slider['bg_color'] = $slide['field_ribbon_background_color']['0']['color'] ?? '';
                 $slider['text_color'] = $slide['field_ribbon_label_color']['0']['color'] ?? '';
                 $slider['product'] = $fieldProductId;
-                
+
                 $slider['game_code'] = $slide['field_slider_game_code'][0]['value'] ?? '';
                 $slider['game_provider'] = $slide['field_slider_game_provider'][0]['value'] ?? '';
                 $slider['field_title'] = $slide['field_title'][0]['value'] ?? '';
