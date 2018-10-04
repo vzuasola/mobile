@@ -60,7 +60,7 @@ export class Profile extends FormBase {
         const timeout = this.attachments.fastRegTimeout * 1000;
 
         if (willRedirect && this.attachments.fastRegRedirect) {
-            let href = this.attachments.fastRegRedirect;
+            let href = this.attachments.fastRegRedirect + "?ticket=" + this.attachments.sessionToken;
 
             if (pm) {
                 href = this.attachments.fastRegRedirect + "/node/" + pm + "?ticket=" + this.attachments.sessionToken;

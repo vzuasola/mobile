@@ -182,7 +182,14 @@ export class VerifyPassword extends FormBase {
         const isFastReg = profileSubmitButton.getAttribute("data-redirect");
 
         if (isSuccess && isFastReg) {
-            const myUrl = window.location.href + "?redirect=1";
+            let myUrl = window.location.href;
+
+            if (myUrl.indexOf("?") > -1 && (isFastReg !== "0")) {
+                myUrl += "&redirect=1";
+            } else if (myUrl.indexOf("?") === -1 && (isFastReg !== "0")) {
+                myUrl += "?redirect=1";
+            }
+
             window.history.replaceState({}, document.title, myUrl);
         }
 
