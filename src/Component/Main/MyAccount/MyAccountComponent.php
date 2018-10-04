@@ -56,8 +56,11 @@ class MyAccountComponent implements ComponentWidgetInterface
         $flashMessage = "";
         $isFastReg = false;
 
-        if (strtoupper($user['firstName']) == "FIRST NAME" ||
-            strtoupper($user['lastName']) == "LAST NAME"
+        $fname = substr($user['firstName'], 0, 5);
+        $lname = substr($user['lastName'], 0, 5);
+
+        if (strtoupper($fname) == "DFRFN" ||
+            strtoupper($lname) == "DFRLN"
         ) {
             $flashMessage = $myProfileConfig['fast_reg_flash_message']['value'] ?? "";
             $isFastReg = true;

@@ -261,6 +261,13 @@ class MyProfileForm extends FormBase implements FormInterface
             $mobile1Value = $apiValues['mobileNumbers']['Mobile 1']['number'] ?? null;
         }
 
+        $countryCode = $this->countryCodeMapping();
+        $fastRegMobileValue = $countryCode . "000000";
+        $mobileNumber1 = $apiValues['mobileNumbers']['Home']['number'];
+        if ($fastRegMobileValue == $apiValues['mobileNumbers']['Home']['number']) {
+            $mobileNumber1 = $countryCode;
+        }
+
         $result = [
             'username' => $apiValues['username'],
             'currency' => $apiValues['currency'],
@@ -272,7 +279,7 @@ class MyProfileForm extends FormBase implements FormInterface
             'country' => $apiValues['countryName'],
             'countryId' => $apiValues['countryId'],
             'email' => $this->obfuscateEmail($apiValues['email']),
-            'mobile_number_1' => $apiValues['mobileNumbers']['Home']['number'],
+            'mobile_number_1' => $mobileNumber1,
             'mobile_number_2' => (($mobile1Value === '') || ($mobile1Value === null)) ? '' : $mobile1Value,
             'language_field' => $this->locale,
             'sms_1_verified' => $apiValues['mobileNumbers']['Home']['verified'] ?? null,
@@ -298,11 +305,16 @@ class MyProfileForm extends FormBase implements FormInterface
     {
         $definition['submit']['options']['attr']['data-redirect'] = 0;
 
-        foreach ($this->disabledFields as $value) {
-            if (strtoupper($definition[$value]['options']['attr']['value']) == 'FIRST NAME' ||
-                strtoupper($definition[$value]['options']['attr']['value']) == 'LAST NAME') {
+        if ($this->request->getQueryParam("pmid")) {
+            $definition['submit']['options']['attr']['data-redirect'] = 1;
+        }
+
+        foreach ($this->disabledFields as $key => $value) {
+            $dummyName = substr($definition[$value]['options']['attr']['value'], 0, 5);
+
+            if (strtoupper($dummyName) == 'DFRFN' ||
+                strtoupper($dummyName) == 'DFRLN') {
                 $definition[$value]['options']['attr']['value'] = "";
-                $definition['submit']['options']['attr']['data-redirect'] = 1;
             } else {
                 $definition[$value]['options']['attr']['disabled'] = "disabled";
             }

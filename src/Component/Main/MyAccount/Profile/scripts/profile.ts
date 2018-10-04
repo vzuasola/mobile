@@ -56,10 +56,18 @@ export class Profile extends FormBase {
 
     private willRedirect() {
         const willRedirect = utility.getParameterByName("redirect");
+        const pm = utility.getParameterByName("pmid");
         const timeout = this.attachments.fastRegTimeout * 1000;
-        if (willRedirect) {
+
+        if (willRedirect && this.attachments.fastRegRedirect) {
+            let href = this.attachments.fastRegRedirect;
+
+            if (pm) {
+                href = this.attachments.fastRegRedirect + "/node/" + pm + "?ticket=" + this.attachments.sessionToken;
+            }
+
             setTimeout(() => {
-                window.location.href = this.attachments.fastRegRedirect;
+                window.location.href = href;
             }, timeout);
         }
     }
