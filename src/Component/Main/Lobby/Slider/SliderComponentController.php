@@ -97,6 +97,7 @@ class SliderComponentController
         }
 
         try {
+            $this->viewsFetcher = $this->viewsFetcher->withProduct('mobile-games');
             $sliders = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
             $data['slides'] = $this->processSlides($sliders, $data['product']);
         } catch (\Exception $e) {
@@ -185,6 +186,7 @@ class SliderComponentController
         } catch (\Exception $e) {
             $sliders = [];
         }
+
         return $sliders;
     }
 
@@ -205,25 +207,22 @@ class SliderComponentController
             if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >=$currentDate) {
                 return true;
             }
-            return false;
         }
 
-        if ($dateStart) {
+        if ($dateStart && !$dateEnd) {
             $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
             $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             if ($startDate->getTimestamp() <= $currentDate) {
                 return true;
             }
-            return false;
         }
 
-        if ($dateEnd) {
+        if ($dateEnd && !$dateStart) {
             $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
             $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             if ($endDate->getTimestamp() >=$currentDate) {
                 return true;
             }
-            return false;
         }
 
         return false;
