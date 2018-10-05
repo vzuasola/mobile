@@ -25,6 +25,10 @@ class SliderComponentController
 
     private $rest;
 
+    private $asset;
+
+    private $url;
+
     /**
      *
      */
@@ -35,20 +39,31 @@ class SliderComponentController
             $container->get('config_fetcher'),
             $container->get('views_fetcher'),
             $container->get('player_session'),
-            $container->get('rest')
+            $container->get('rest'),
+            $container->get('asset'),
+            $container->get('uri')
         );
     }
 
     /**
      *
      */
-    public function __construct($product, $configs, $viewsFetcher, $playerSession, $rest)
-    {
+    public function __construct(
+        $product,
+        $configs,
+        $viewsFetcher,
+        $playerSession,
+        $rest,
+        $asset,
+        $url
+    ) {
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
         $this->viewsFetcher = $viewsFetcher->withProduct($product->getProduct());
         $this->playerSession = $playerSession;
         $this->rest = $rest;
+        $this->asset = $asset;
+        $this->url = $url;
     }
 
     /**
@@ -69,7 +84,7 @@ class SliderComponentController
     public function sliders($request, $response)
     {
         try {
-            $data['product'] = [];
+            $data['product'] = ['product' => 'mobile-entrypage'];
             $params = $request->getQueryParams();
             if (isset($params['product']) && $params['product'] != 'mobile-entrypage') {
                 $product = $params['product'];
@@ -83,7 +98,7 @@ class SliderComponentController
 
         try {
             $sliders = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
-            $data['slides'] = $this->processSlides($sliders);
+            $data['slides'] = $this->processSlides($sliders, $data['product']);
         } catch (\Exception $e) {
             $data['slides'] = [];
         }
@@ -105,7 +120,7 @@ class SliderComponentController
         return $this->rest->output($response, $data);
     }
 
-    private function processSlides($data)
+    private function processSlides($data, $options)
     {
         try {
             $sliders = [];
@@ -132,17 +147,26 @@ class SliderComponentController
                 $slider['game_provider'] = $slide['field_slider_game_provider'][0]['value'] ?? '';
                 $slider['field_title'] = $slide['field_title'][0]['value'] ?? '';
 
-                $slider['banner_url'] = $slide['field_banner_link'][0]['uri'] ?? '';
+                $sliderUrl = $slide['field_banner_link'][0]['uri'] ?? '';
+                $slider['banner_url'] = $this->url->generateUri($sliderUrl, ['skip_parsers' => true]);
+
                 $slider['banner_target'] = $slide['field_banner_link_target'][0]['value'] ?? '';
-                $slider['banner_img'] = $slide['field_banner_image'][0]['url'] ?? '';
+
+                $sliderImg = $slide['field_banner_image'][0]['url'] ?? '';
+                $slider['banner_img'] = $this->asset->generateAssetUri($sliderImg, $options);
                 $slider['banner_alt'] = $slide['field_banner_image'][0]['alt'] ?? '';
                 $slider['banner_pos'] = $slide['field_content_position'][0]['value'] ?? '';
                 $slider['banner_blurb'] = $slide['field_banner_blurb'][0]['value'] ?? '';
 
                 if ($this->playerSession->isLogin()) {
-                    $slider['banner_url'] = $slide['field_post_banner_link'][0]['uri'] ?? '';
+                    $sliderUrl = $slide['field_post_banner_link'][0]['uri'] ?? '';
+                    $slider['banner_url'] = $this->url->generateUri($sliderUrl, ['skip_parsers' => true]);
+
                     $slider['banner_target'] = $slide['field_post_banner_link_target'][0]['value'] ?? '';
-                    $slider['banner_img'] = $slide['field_post_banner_image'][0]['url'] ?? '';
+
+                    $sliderImg = $slide['field_post_banner_image'][0]['url'] ?? '';
+                    $slider['banner_img'] = $this->asset->generateAssetUri($sliderImg, $options);
+
                     $slider['banner_alt'] = $slide['field_post_banner_image'][0]['alt'] ?? '';
                     $slider['banner_pos'] = $slide['field_post_content_position'][0]['value'] ?? '';
                     $slider['banner_blurb'] = $slide['field_post_banner_blurb'][0]['value'] ?? '';
