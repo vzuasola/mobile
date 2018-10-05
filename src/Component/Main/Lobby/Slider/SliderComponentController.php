@@ -123,9 +123,21 @@ class SliderComponentController
     private function processSlides($data, $options)
     {
         try {
+            $time = date('Y-m-d H:i:s');
+            $date = new \DateTime($time, new \DateTimeZone('UTC'));
+  
             $sliders = [];
             foreach ($data as $slide) {
                 $slider = [];
+
+                $dateStart = $slide['field_publish_date'][0]['value'] ?? '';
+                $dateEnd = $slide['field_unpublish_date'][0]['value'] ?? '';
+                $slider['published'] = $this->checkIfPublished(
+                    $dateStart,
+                    $dateEnd,
+                    $date->getTimestamp()
+                );
+
                 $slider['show_both'] = $slide['field_log_in_state'] > 1;
                 $slider['login_state'] = $slide['field_log_in_state'][0]['value'] ?? 0;
                 $ribbonLabel = $slide['field_ribbon_product_label']['0']['value'] ?? false;
@@ -177,6 +189,40 @@ class SliderComponentController
         } catch (\Exception $e) {
             $sliders = [];
         }
+
         return $sliders;
+    }
+
+    private function checkIfPublished($startDate, $endDate, $currentDate)
+    {
+        if (!$startDate && !$endDate) {
+            return true;
+        }
+
+        if ($startDate && $endDate) {
+            $startDate = strtotime($startDate);
+            $endDate = strtotime($endDate);
+
+            if ($startDate <= $currentDate && $endDate >=$currentDate) {
+                return true;
+            }
+
+        }
+
+        if ($startDate) {
+            $startDate = strtotime($startDate);
+            if ($startDate <= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($endDate) {
+            $endDate = strtotime($endDate);
+            if ($endDate >=$currentDate) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
