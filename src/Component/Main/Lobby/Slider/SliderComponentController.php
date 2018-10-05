@@ -84,7 +84,7 @@ class SliderComponentController
     public function sliders($request, $response)
     {
         try {
-            $data['product'] = ['product' => 'mobile-entrypage'];
+            $data['product'] = ['product' => 'mobile-games'];
             $params = $request->getQueryParams();
             if (isset($params['product']) && $params['product'] != 'mobile-entrypage') {
                 $product = $params['product'];
@@ -123,9 +123,6 @@ class SliderComponentController
     private function processSlides($data, $options)
     {
         try {
-            $time = date('Y-m-d H:i:s');
-            $date = new \DateTime($time, new \DateTimeZone('UTC'));
-  
             $sliders = [];
             foreach ($data as $slide) {
                 $slider = [];
@@ -134,8 +131,7 @@ class SliderComponentController
                 $dateEnd = $slide['field_unpublish_date'][0]['value'] ?? '';
                 $slider['published'] = $this->checkIfPublished(
                     $dateStart,
-                    $dateEnd,
-                    $date->getTimestamp()
+                    $dateEnd
                 );
 
                 $slider['show_both'] = $slide['field_log_in_state'] > 1;
@@ -189,38 +185,45 @@ class SliderComponentController
         } catch (\Exception $e) {
             $sliders = [];
         }
-
         return $sliders;
     }
 
-    private function checkIfPublished($startDate, $endDate, $currentDate)
+    private function checkIfPublished($dateStart, $dateEnd)
     {
-        if (!$startDate && !$endDate) {
+        if (!$dateStart && !$dateEnd) {
             return true;
         }
 
-        if ($startDate && $endDate) {
-            $startDate = strtotime($startDate);
-            $endDate = strtotime($endDate);
+        $currentDate = time();
+        if ($dateStart && $dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 
-            if ($startDate <= $currentDate && $endDate >=$currentDate) {
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >=$currentDate) {
                 return true;
             }
-
+            return false;
         }
 
-        if ($startDate) {
-            $startDate = strtotime($startDate);
-            if ($startDate <= $currentDate) {
+        if ($dateStart) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate) {
                 return true;
             }
+            return false;
         }
 
-        if ($endDate) {
-            $endDate = strtotime($endDate);
-            if ($endDate >=$currentDate) {
+        if ($dateEnd) {
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($endDate->getTimestamp() >=$currentDate) {
                 return true;
             }
+            return false;
         }
 
         return false;
