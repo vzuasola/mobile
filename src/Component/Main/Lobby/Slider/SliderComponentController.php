@@ -84,7 +84,7 @@ class SliderComponentController
     public function sliders($request, $response)
     {
         try {
-            $data['product'] = ['product' => 'mobile-entrypage'];
+            $data['product'] = [];
             $params = $request->getQueryParams();
             if (isset($params['product']) && $params['product'] != 'mobile-entrypage') {
                 $product = $params['product'];
