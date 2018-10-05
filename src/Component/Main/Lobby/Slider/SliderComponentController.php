@@ -204,7 +204,7 @@ class SliderComponentController
             $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
             $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 
-            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >=$currentDate) {
+            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
                 return true;
             }
         }
