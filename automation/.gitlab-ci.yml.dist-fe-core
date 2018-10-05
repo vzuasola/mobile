@@ -31,7 +31,7 @@ sensiolabs security checker:
     - python -u automation/run.py --stage sensiolab-security-checker
   allow_failure: true
 
-hp fortify scan:
+.hp fortify scan:
   stage: tests
   script:
     - python -u automation/run.py --stage code-scan-testing
