@@ -97,7 +97,6 @@ class SliderComponentController
         }
 
         try {
-            $this->viewsFetcher = $this->viewsFetcher->withProduct('mobile-games');
             $sliders = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
             $data['slides'] = $this->processSlides($sliders, $data['product']);
         } catch (\Exception $e) {
