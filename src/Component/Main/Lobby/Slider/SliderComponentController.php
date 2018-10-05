@@ -25,6 +25,10 @@ class SliderComponentController
 
     private $rest;
 
+    private $asset;
+
+    private $url;
+
     /**
      *
      */
@@ -35,20 +39,31 @@ class SliderComponentController
             $container->get('config_fetcher'),
             $container->get('views_fetcher'),
             $container->get('player_session'),
-            $container->get('rest')
+            $container->get('rest'),
+            $container->get('asset'),
+            $container->get('uri')
         );
     }
 
     /**
      *
      */
-    public function __construct($product, $configs, $viewsFetcher, $playerSession, $rest)
-    {
+    public function __construct(
+        $product,
+        $configs,
+        $viewsFetcher,
+        $playerSession,
+        $rest,
+        $asset,
+        $url
+    ) {
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
         $this->viewsFetcher = $viewsFetcher->withProduct($product->getProduct());
         $this->playerSession = $playerSession;
         $this->rest = $rest;
+        $this->asset = $asset;
+        $this->url = $url;
     }
 
     /**
@@ -69,7 +84,7 @@ class SliderComponentController
     public function sliders($request, $response)
     {
         try {
-            $data['product'] = [];
+            $data['product'] = ['product' => 'mobile-games'];
             $params = $request->getQueryParams();
             if (isset($params['product']) && $params['product'] != 'mobile-entrypage') {
                 $product = $params['product'];
@@ -82,8 +97,9 @@ class SliderComponentController
         }
 
         try {
+            $this->viewsFetcher = $this->viewsFetcher->withProduct('mobile-games');
             $sliders = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
-            $data['slides'] = $this->processSlides($sliders);
+            $data['slides'] = $this->processSlides($sliders, $data['product']);
         } catch (\Exception $e) {
             $data['slides'] = [];
         }
@@ -105,12 +121,20 @@ class SliderComponentController
         return $this->rest->output($response, $data);
     }
 
-    private function processSlides($data)
+    private function processSlides($data, $options)
     {
         try {
             $sliders = [];
             foreach ($data as $slide) {
                 $slider = [];
+
+                $dateStart = $slide['field_publish_date'][0]['value'] ?? '';
+                $dateEnd = $slide['field_unpublish_date'][0]['value'] ?? '';
+                $slider['published'] = $this->checkIfPublished(
+                    $dateStart,
+                    $dateEnd
+                );
+
                 $slider['show_both'] = $slide['field_log_in_state'] > 1;
                 $slider['login_state'] = $slide['field_log_in_state'][0]['value'] ?? 0;
                 $ribbonLabel = $slide['field_ribbon_product_label']['0']['value'] ?? false;
@@ -132,17 +156,26 @@ class SliderComponentController
                 $slider['game_provider'] = $slide['field_slider_game_provider'][0]['value'] ?? '';
                 $slider['field_title'] = $slide['field_title'][0]['value'] ?? '';
 
-                $slider['banner_url'] = $slide['field_banner_link'][0]['uri'] ?? '';
+                $sliderUrl = $slide['field_banner_link'][0]['uri'] ?? '';
+                $slider['banner_url'] = $this->url->generateUri($sliderUrl, ['skip_parsers' => true]);
+
                 $slider['banner_target'] = $slide['field_banner_link_target'][0]['value'] ?? '';
-                $slider['banner_img'] = $slide['field_banner_image'][0]['url'] ?? '';
+
+                $sliderImg = $slide['field_banner_image'][0]['url'] ?? '';
+                $slider['banner_img'] = $this->asset->generateAssetUri($sliderImg, $options);
                 $slider['banner_alt'] = $slide['field_banner_image'][0]['alt'] ?? '';
                 $slider['banner_pos'] = $slide['field_content_position'][0]['value'] ?? '';
                 $slider['banner_blurb'] = $slide['field_banner_blurb'][0]['value'] ?? '';
 
                 if ($this->playerSession->isLogin()) {
-                    $slider['banner_url'] = $slide['field_post_banner_link'][0]['uri'] ?? '';
+                    $sliderUrl = $slide['field_post_banner_link'][0]['uri'] ?? '';
+                    $slider['banner_url'] = $this->url->generateUri($sliderUrl, ['skip_parsers' => true]);
+
                     $slider['banner_target'] = $slide['field_post_banner_link_target'][0]['value'] ?? '';
-                    $slider['banner_img'] = $slide['field_post_banner_image'][0]['url'] ?? '';
+
+                    $sliderImg = $slide['field_post_banner_image'][0]['url'] ?? '';
+                    $slider['banner_img'] = $this->asset->generateAssetUri($sliderImg, $options);
+
                     $slider['banner_alt'] = $slide['field_post_banner_image'][0]['alt'] ?? '';
                     $slider['banner_pos'] = $slide['field_post_content_position'][0]['value'] ?? '';
                     $slider['banner_blurb'] = $slide['field_post_banner_blurb'][0]['value'] ?? '';
@@ -153,6 +186,45 @@ class SliderComponentController
         } catch (\Exception $e) {
             $sliders = [];
         }
+
         return $sliders;
+    }
+
+    private function checkIfPublished($dateStart, $dateEnd)
+    {
+        if (!$dateStart && !$dateEnd) {
+            return true;
+        }
+
+        $currentDate = time();
+        if ($dateStart && $dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateStart && !$dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateEnd && !$dateStart) {
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($endDate->getTimestamp() >=$currentDate) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
