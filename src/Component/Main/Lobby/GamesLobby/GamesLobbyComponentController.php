@@ -79,7 +79,7 @@ class GamesLobbyComponentController
         $this->recentGames = $recentGames;
         $this->favorite = $favorite;
         $this->configAsync = $configAsync;
-        $this->viewsAsync = $viewsAsync->withProduct('mobile-games');;
+        $this->viewsAsync = $viewsAsync->withProduct('mobile-games');
     }
 
     public function lobby($request, $response)
@@ -162,8 +162,6 @@ class GamesLobbyComponentController
                     ]);
                     continue;
                 }
-
-
             }
         } catch (\Exception $e) {
             $definitions = [];
@@ -190,15 +188,14 @@ class GamesLobbyComponentController
         foreach ($categories as $category) {
             if (strtolower($category['field_isordinarycategory']) === "true" &&
                 $data[$category['field_games_alias']]
-        ) {
-                $categoryId = $category['field_games_alias'];
-                $games = $data[$category['field_games_alias']];
-                if ($games) {
-                    $gamesList[$categoryId] = $this->arrangeGames($games, $categoryId);
+            ) {
+                    $categoryId = $category['field_games_alias'];
+                    $games = $data[$category['field_games_alias']];
+                    if ($games) {
+                        $gamesList[$categoryId] = $this->arrangeGames($games, $categoryId);
+                    }
                 }
             }
-        }
-
         return $gamesList;
     }
 
