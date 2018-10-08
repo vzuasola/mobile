@@ -189,13 +189,13 @@ class GamesLobbyComponentController
             if (strtolower($category['field_isordinarycategory']) === "true" &&
                 $data[$category['field_games_alias']]
             ) {
-                    $categoryId = $category['field_games_alias'];
-                    $games = $data[$category['field_games_alias']];
-                    if ($games) {
-                        $gamesList[$categoryId] = $this->arrangeGames($games, $categoryId);
-                    }
+                $categoryId = $category['field_games_alias'];
+                $games = $data[$category['field_games_alias']];
+                if ($games) {
+                    $gamesList[$categoryId] = $this->arrangeGames($games, $categoryId);
                 }
             }
+        }
         return $gamesList;
     }
 
