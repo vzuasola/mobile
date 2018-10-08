@@ -367,6 +367,7 @@ class GamesLobbyComponentController
     {
         $gameList = [];
         if ($this->playerSession->isLogin()) {
+            $favGames = $this->proccessSpecialGames($favGames);
             if (is_array($favGames)) {
                 foreach ($favGames as $gameCode) {
                     $gameList[$gameCode['id']] = 'active';
@@ -384,6 +385,7 @@ class GamesLobbyComponentController
         try {
             $gameList = [];
             if ($this->playerSession->isLogin()) {
+                $favGames = $this->proccessSpecialGames($favGames);
                 if (is_array($favGames)) {
                     foreach ($favGames as $gameCode) {
                         if (array_key_exists($gameCode['id'], $games)) {
@@ -392,6 +394,24 @@ class GamesLobbyComponentController
                     }
                 }
             }
+            return $gameList;
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        return $gameList;
+    }
+
+    private function proccessSpecialGames($games)
+    {
+        try {
+            $gameList = [];
+
+            foreach ($games as $key => $timestamp) {
+                $gameList[$key]['id'] = $key;
+                $gameList[$key]['timestamp'] = $timestamp;
+            }
+
             return $gameList;
         } catch (\Exception $e) {
             return [];
@@ -409,6 +429,8 @@ class GamesLobbyComponentController
         try {
             if ($this->playerSession->isLogin()) {
                 $favoriteGames = $this->favorite->getFavorites();
+                $favoriteGames = $favoriteGames->resolve();
+                $favoriteGames = $this->proccessSpecialGames($favoriteGames);
                 $favoriteGames = (is_array($favoriteGames)) ? $favoriteGames : [];
                 $favorites = [];
                 foreach ($favoriteGames as $games) {
@@ -443,6 +465,7 @@ class GamesLobbyComponentController
         try {
             $gameList = [];
             if ($this->playerSession->isLogin()) {
+                $recentlyPlayed = $this->proccessSpecialGames($recentlyPlayed);
                 usort($recentlyPlayed, [$this, 'sortRecentGames']);
                 if (is_array($recentlyPlayed)) {
                     foreach ($recentlyPlayed as $gameCode) {
@@ -469,6 +492,8 @@ class GamesLobbyComponentController
         try {
             if ($this->playerSession->isLogin()) {
                 $recentlyPlayed = $this->recentGames->getRecents();
+                $recentlyPlayed = $recentlyPlayed->resolve();
+                $recentlyPlayed = $this->proccessSpecialGames($recentlyPlayed);
                 $recentlyPlayed = (is_array($recentlyPlayed)) ? $recentlyPlayed : [];
                 usort($recentlyPlayed, [$this, 'sortRecentGames']);
                 $recent = [];
