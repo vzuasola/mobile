@@ -25,7 +25,13 @@ export class GamesIntegrationModule extends Redirectable implements ModuleInterf
                 },
             }).then((response) => {
                 if (typeof response.url !== "undefined") {
-                    window.location.href = response.url;
+                    if (utility.isExternal(response.url)) {
+                        window.location.href = response.url;
+                        return;
+                    }
+
+                    Router.navigate(response.url, ["*"]);
+                    this.loader.hide();
                     return;
                 }
 
