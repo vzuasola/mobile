@@ -354,15 +354,6 @@ class GamesLobbyComponentController
         return $categoryList;
     }
 
-    private function getFavoriteGamesRequest()
-    {
-        $favGames = $this->favorite->getFavorites();
-        if ($favGames) {
-            usort($favGames, [$this, 'sortRecentGames']);
-        }
-        return $favGames;
-    }
-
     private function getFavoriteGamesList($favGames)
     {
         $gameList = [];
@@ -386,6 +377,9 @@ class GamesLobbyComponentController
             $gameList = [];
             if ($this->playerSession->isLogin()) {
                 $favGames = $this->proccessSpecialGames($favGames);
+                if ($favGames) {
+                    usort($favGames, [$this, 'sortRecentGames']);
+                }
                 if (is_array($favGames)) {
                     foreach ($favGames as $gameCode) {
                         if (array_key_exists($gameCode['id'], $games)) {
