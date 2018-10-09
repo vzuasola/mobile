@@ -28,6 +28,7 @@ export class Profile extends FormBase {
     }
 
     init() {
+        this.willRedirect();
         this.form = this.element.querySelector(".profile-form");
         this.notification = new Notification(
             document.body,
@@ -53,6 +54,24 @@ export class Profile extends FormBase {
         this.activateTooltip();
     }
 
+    private willRedirect() {
+        const willRedirect = utility.getParameterByName("redirect");
+        const pm = utility.getParameterByName("pmid");
+        const timeout = this.attachments.fastRegTimeout * 1000;
+
+        if (willRedirect && this.attachments.fastRegRedirect) {
+            let href = this.attachments.fastRegRedirect + "?ticket=" + this.attachments.sessionToken;
+
+            if (pm) {
+                href = this.attachments.fastRegRedirect + "/node/" + pm + "?ticket=" + this.attachments.sessionToken;
+            }
+
+            setTimeout(() => {
+                window.location.href = href;
+            }, timeout);
+        }
+    }
+
     private contactPreference() {
         const checkbox: HTMLFormElement = this.element.querySelector("#ProfileForm_contact_preference");
         if (this.attachments.user.receive_news) {
@@ -63,6 +82,8 @@ export class Profile extends FormBase {
 
     private getValues() {
         return {
+            firstname: this.form.MyProfileForm_first_name.value,
+            lastname: this.form.MyProfileForm_last_name.value,
             gender: this.getGenderText(),
             language: this.getLanguageText(),
             mobile: this.form.MyProfileForm_mobile_number_1.value,
@@ -78,6 +99,8 @@ export class Profile extends FormBase {
 
     private getLabels() {
         return {
+            firstname: this.form.querySelector(".MyProfileForm_first_name .form-label-text").textContent,
+            lastname: this.form.querySelector(".MyProfileForm_last_name .form-label-text").textContent,
             gender: this.form.querySelector(".MyProfileForm_gender .form-label-text").textContent,
             language: this.form.querySelector(".MyProfileForm_language .form-label-text").textContent,
             mobile: this.form.querySelector(".MyProfileForm_mobile_number_1 .form-label-text").textContent,
@@ -125,6 +148,11 @@ export class Profile extends FormBase {
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
             const hasError = this.form.querySelectorAll(".has-error").length;
+            const validateMobile = this.validateCountryAreaCodeMobileNumberLength();
+
+            if (!validateMobile) {
+                return false;
+            }
 
             this.newValues = this.getValues();
             if (!hasError) {
@@ -207,5 +235,72 @@ export class Profile extends FormBase {
 
         // Init tooltip
         new Tooltip(iconContainer, tooltipContent, commBlurb);
+    }
+
+    // function to validate min and max length of mobile number base on selected country area code
+    private validateCountryAreaCodeMobileNumberLength() {
+        const mobileNumberInput: HTMLInputElement = this.form.querySelector("#MyProfileForm_mobile_number_1");
+        let mobileCountryAreaCodeMapping: any = mobileNumberInput.getAttribute("area_code_validation") || "";
+        const mobileNumberInputValue = mobileNumberInput.value;
+        const mobileNumberInput2: HTMLInputElement = this.form.querySelector("#MyProfileForm_mobile_number_2");
+        const mobileNumberInput2Value = mobileNumberInput2.value;
+
+        if (mobileCountryAreaCodeMapping) {
+            mobileCountryAreaCodeMapping = mobileCountryAreaCodeMapping.split("\n");
+        }
+
+        let result = true;
+        // return true if there's no config
+        if (!mobileCountryAreaCodeMapping) {
+            return true;
+        }
+
+        // iterate thru mapping to get selected country area code and validate the
+        // min and max length of input mobile number
+        utility.forEach(mobileCountryAreaCodeMapping, (value, index) => {
+            const mobileCountryAreaCodeMap = value.split("|");
+            const selectedCountryAreaCode = String(this.attachments.user.countryId);
+            let focusMobile1 = false;
+            let focusMobile2 = false;
+
+            if (mobileCountryAreaCodeMap[0] === selectedCountryAreaCode &&
+                !mobileNumberInput.hasAttribute("disabled")) {
+                if (!(mobileNumberInputValue.length >= Number(mobileCountryAreaCodeMap[1]) &&
+                    mobileNumberInputValue.length <= Number(mobileCountryAreaCodeMap[2]))) {
+                    focusMobile1 = true;
+                    this.createErrorMessage(mobileNumberInput, mobileCountryAreaCodeMap[3]);
+                    result = false;
+                }
+            }
+
+            if (mobileCountryAreaCodeMap[0] === selectedCountryAreaCode &&
+                !mobileNumberInput2.hasAttribute("disabled")) {
+                if (!(mobileNumberInput2Value.length >= Number(mobileCountryAreaCodeMap[1]) &&
+                    mobileNumberInput2Value.length <= Number(mobileCountryAreaCodeMap[2]))) {
+                    focusMobile2 = true;
+                    this.createErrorMessage(mobileNumberInput2, mobileCountryAreaCodeMap[3]);
+                    result = false;
+                }
+            }
+
+            if (focusMobile1) {
+                mobileNumberInput.focus();
+            }
+
+            if (focusMobile2 && !focusMobile1) {
+                mobileNumberInput2.focus();
+            }
+        });
+        return result;
+    }
+
+    private createErrorMessage(elem, msg) {
+        const parentElem = utility.findParent(elem, "div");
+        const parentFormItem = utility.findParent(parentElem, "div");
+        utility.addClass(parentFormItem, "has-error");
+        utility.removeClass(parentFormItem, "has-success");
+        const element = utility.createElem("span", "form-help-block", parentElem);
+        utility.addClass(element, "tag-color-apple-red");
+        element.appendChild(document.createTextNode(msg));
     }
 }

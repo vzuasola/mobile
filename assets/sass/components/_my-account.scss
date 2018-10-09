@@ -48,9 +48,10 @@ form.sms-verification-code-form {
         @extend %form-item-two-cols;
         @extend %form-item-two-cols-bottom;
     }
+}
 
-    // Individual form items =======================================================
-
+// Individual form items =======================================================
+form.profile-form {
     // Gender
     .MyProfileForm_gender {
         position: relative;
@@ -163,6 +164,16 @@ form.sms-verification-code-form {
         @extend %mobile-layout;
     }
 
+    .MyProfileForm_mobile_number_1,
+    .MyProfileForm_mobile_number_2 {
+        // Italize primary label
+        .pure-checkbox {
+            font-style: italic;
+        }
+    }
+}
+
+form.sms-verification-code-form {
     // Verification Code
     .SmsVerificationForm_resend_markup {
         .resend-code {
@@ -175,15 +186,8 @@ form.sms-verification-code-form {
     }
 }
 
-#profile-verification {
-    table {
-        td {
-            word-break: break-all;
-        }
-
-        .table-header-text {
-            width: 50%;
-        }
-
+form.verify-password-form {
+    .VerifyPasswordForm_verify_password {
+        text-align: left;
     }
 }

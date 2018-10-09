@@ -28,18 +28,22 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
         return new static(
             $container->get('user_fetcher'),
             $container->get('receive_news'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('token_parser'),
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($userFetcher, $playerSubscription, $configFetcher)
+    public function __construct($userFetcher, $playerSubscription, $configFetcher, $tokenParser, $playerSession)
     {
         $this->user = $userFetcher;
         $this->playerSubscription = $playerSubscription;
         $this->configFetcher = $configFetcher->withProduct('account');
+        $this->tokenParser = $tokenParser;
+        $this->playerSession = $playerSession;
     }
 
     /**
@@ -52,6 +56,9 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
         $generalConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
         $modalConfig = $this->configFetcher->getConfigById('my_account_profile_modal_preview');
         $labelConfig = $this->configFetcher->getConfigById('my_account_profile_labels');
+
+        $fastRegUrlToken = $generalConfig['fastreg_mobile_redirect'] ?? '';
+        $fastRegRedirect = $this->tokenParser->processTokens($fastRegUrlToken);
 
         return [
             'user' => $this->getFormValues(),
@@ -68,6 +75,9 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'messageTimeout' => $generalConfig['message_timeout'] ?? 5,
             'contactPreferenceYes' => $labelConfig['contact_preference_yes'] ?? 'yes',
             'contactPreferenceNo' => $labelConfig['contact_preference_no'] ?? 'no',
+            'fastRegRedirect' => $fastRegRedirect,
+            'fastRegTimeout' => $generalConfig['fastreg_timeout_redirect'] ?? 4,
+            'sessionToken' => $this->playerSession->getToken()
         ];
     }
 

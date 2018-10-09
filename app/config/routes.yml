@@ -55,12 +55,16 @@ routes:
         action: App\MobileEntry\Controller\CantLoginController:view
         components:
           main: cant_login
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
 
     /my-account:
         method: GET
         action: App\MobileEntry\Controller\MyAccountController:view
         components:
           main: my_account
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
 
     /{id:games|slots|flashgames|laohuji|playflash|spinwin}:
         method: GET
