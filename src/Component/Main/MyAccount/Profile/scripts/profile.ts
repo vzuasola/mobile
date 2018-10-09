@@ -148,6 +148,11 @@ export class Profile extends FormBase {
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
             const hasError = this.form.querySelectorAll(".has-error").length;
+            const validateMobile = this.validateCountryAreaCodeMobileNumberLength();
+
+            if (!validateMobile) {
+                return false;
+            }
 
             this.newValues = this.getValues();
             if (!hasError) {
@@ -230,5 +235,72 @@ export class Profile extends FormBase {
 
         // Init tooltip
         new Tooltip(iconContainer, tooltipContent, commBlurb);
+    }
+
+    // function to validate min and max length of mobile number base on selected country area code
+    private validateCountryAreaCodeMobileNumberLength() {
+        const mobileNumberInput: HTMLInputElement = this.form.querySelector("#MyProfileForm_mobile_number_1");
+        let mobileCountryAreaCodeMapping: any = mobileNumberInput.getAttribute("area_code_validation") || "";
+        const mobileNumberInputValue = mobileNumberInput.value;
+        const mobileNumberInput2: HTMLInputElement = this.form.querySelector("#MyProfileForm_mobile_number_2");
+        const mobileNumberInput2Value = mobileNumberInput2.value;
+
+        if (mobileCountryAreaCodeMapping) {
+            mobileCountryAreaCodeMapping = mobileCountryAreaCodeMapping.split("\n");
+        }
+
+        let result = true;
+        // return true if there's no config
+        if (!mobileCountryAreaCodeMapping) {
+            return true;
+        }
+
+        // iterate thru mapping to get selected country area code and validate the
+        // min and max length of input mobile number
+        utility.forEach(mobileCountryAreaCodeMapping, (value, index) => {
+            const mobileCountryAreaCodeMap = value.split("|");
+            const selectedCountryAreaCode = String(this.attachments.user.countryId);
+            let focusMobile1 = false;
+            let focusMobile2 = false;
+
+            if (mobileCountryAreaCodeMap[0] === selectedCountryAreaCode &&
+                !mobileNumberInput.hasAttribute("disabled")) {
+                if (!(mobileNumberInputValue.length >= Number(mobileCountryAreaCodeMap[1]) &&
+                    mobileNumberInputValue.length <= Number(mobileCountryAreaCodeMap[2]))) {
+                    focusMobile1 = true;
+                    this.createErrorMessage(mobileNumberInput, mobileCountryAreaCodeMap[3]);
+                    result = false;
+                }
+            }
+
+            if (mobileCountryAreaCodeMap[0] === selectedCountryAreaCode &&
+                !mobileNumberInput2.hasAttribute("disabled")) {
+                if (!(mobileNumberInput2Value.length >= Number(mobileCountryAreaCodeMap[1]) &&
+                    mobileNumberInput2Value.length <= Number(mobileCountryAreaCodeMap[2]))) {
+                    focusMobile2 = true;
+                    this.createErrorMessage(mobileNumberInput2, mobileCountryAreaCodeMap[3]);
+                    result = false;
+                }
+            }
+
+            if (focusMobile1) {
+                mobileNumberInput.focus();
+            }
+
+            if (focusMobile2 && !focusMobile1) {
+                mobileNumberInput2.focus();
+            }
+        });
+        return result;
+    }
+
+    private createErrorMessage(elem, msg) {
+        const parentElem = utility.findParent(elem, "div");
+        const parentFormItem = utility.findParent(parentElem, "div");
+        utility.addClass(parentFormItem, "has-error");
+        utility.removeClass(parentFormItem, "has-success");
+        const element = utility.createElem("span", "form-help-block", parentElem);
+        utility.addClass(element, "tag-color-apple-red");
+        element.appendChild(document.createTextNode(msg));
     }
 }
