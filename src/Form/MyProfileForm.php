@@ -94,6 +94,11 @@ class MyProfileForm extends FormBase implements FormInterface
         $definition = $this->setFormDefinitionValues($definition);
         $definition = $this->setDisabledFields($definition);
 
+        if (isset($definition['mobile_number_1']['options']['country_area_code_validation'])) {
+            $mobileNumberValidation = $definition['mobile_number_1']['options']['country_area_code_validation'];
+            $definition['mobile_number_1']['options']['attr']['area_code_validation'] = $mobileNumberValidation;
+        }
+
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-update btn-lower-case";
         $definition['button_cancel']['options']['attr']['class'] = "btn btn-small btn-gray btn-cancel btn-lower-case";
         return $definition;
