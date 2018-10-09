@@ -134,8 +134,14 @@ class SliderComponentController
                     $dateEnd
                 );
 
-                $slider['show_both'] = $slide['field_log_in_state'] > 1;
-                $slider['login_state'] = $slide['field_log_in_state'][0]['value'] ?? 0;
+                $showBoth = count($slide['field_log_in_state']) > 1;
+
+                $loginState = $slide['field_log_in_state'][0]['value'] ?? 0;
+
+                if (!$showBoth && $loginState != $this->playerSession->isLogin()) {
+                    $slider['published'] = false;
+                }
+
                 $ribbonLabel = $slide['field_ribbon_product_label']['0']['value'] ?? false;
                 $fieldProduct = '';
                 $fieldProductId = '';
