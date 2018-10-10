@@ -148,11 +148,11 @@ export class Profile extends FormBase {
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
             const hasError = this.form.querySelectorAll(".has-error").length;
-            const validateMobile = this.validateCountryAreaCodeMobileNumberLength();
 
             this.newValues = this.getValues();
             if (!hasError) {
                 // check for localized error after no error
+                const validateMobile = this.validateCountryAreaCodeMobileNumberLength();
                 if (!validateMobile) {
                     return false;
                 }
