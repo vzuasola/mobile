@@ -224,9 +224,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             const activeCategory = utility.getHash(window.location.href);
             const activeLink = categoriesEl.querySelector(".category-" + activeCategory);
             const activeLi = activeLink.parentElement;
-            const activeSearch = categoriesEl.querySelector(".search-tab");
             utility.addClass(activeLi, "active");
-            utility.addClass(activeSearch, "active");
         }
     }
 
