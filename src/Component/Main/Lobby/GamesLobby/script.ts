@@ -100,8 +100,6 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.listenFavoriteClick();
             this.listenToCategory();
             this.listenToScroll();
-            this.listenToSwipe();
-            this.initMarker();
             this.listenOnSearch();
             this.listenOnFilter();
         }
@@ -114,8 +112,11 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.currentPage = 0;
         this.load = true;
         this.generateLobby();
+        this.listenToSwipe();
+        this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
         this.gamesFilter.handleOnReLoad(this.element, attachments);
+
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -151,7 +152,9 @@ export class GamesLobbyComponent implements ComponentInterface {
     private generateLobby() {
 
         if (!this.response) {
-            this.doRequest();
+            this.doRequest(() => {
+                this.lobby();
+            });
         } else {
             this.setLobby();
         }
@@ -160,18 +163,26 @@ export class GamesLobbyComponent implements ComponentInterface {
     /**
      * Request games lobby to games lobby component controller lobby method
      */
-    private doRequest() {
+    private doRequest(callback) {
         xhr({
             url: Router.generateRoute("games_lobby", "lobby"),
             type: "json",
         }).then((response) => {
             this.response = response;
-            this.gamesSearch.setGamesList(response);
-            this.gamesFilter.setGamesList(response);
-            this.setLobby();
+
+            if (callback) {
+                callback();
+            }
+
         }).fail((error, message) => {
             console.log(error);
         });
+    }
+
+    private lobby() {
+        this.gamesSearch.setGamesList(this.response);
+        this.gamesFilter.setGamesList(this.response);
+        this.setLobby();
     }
 
     /**
