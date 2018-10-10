@@ -73,7 +73,18 @@ export class GamesSearch {
             msg_no_recommended: string,
             product: any[],
         }) {
-
+        if (!this.element) {
+            this.listenActivateSearchLightbox();
+            this.listenActivateSearchFilterLightbox();
+            this.listenChangeGameSearch();
+            this.listenClickSearchButton();
+            this.listenClickBackButton();
+            this.listenClickFavoriteOnPreview();
+            this.listenCategoryChange();
+            this.listenClickClearIcon();
+            this.listenOnLogin();
+            this.listenSubmitGameSearch();
+        }
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;

@@ -21,6 +21,10 @@ export class GamesFilter {
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {}) {
+        if (!this.element) {
+            this.listenOnOpen();
+            this.listenOnClick();
+        }
         this.element = element;
     }
 
