@@ -92,6 +92,19 @@ export class GamesLobbyComponent implements ComponentInterface {
             product: any[],
             infinite_scroll: boolean,
         }) {
+        if (!this.element) {
+            this.listenChangeCategory();
+            this.listenHashChange();
+            this.listenClickGameTile();
+            this.listenGameLaunch();
+            this.listenFavoriteClick();
+            this.listenToCategory();
+            this.listenToScroll();
+            this.listenToSwipe();
+            this.initMarker();
+            this.listenOnSearch();
+            this.listenOnFilter();
+        }
         this.response = null;
         this.element = element;
         this.attachments = attachments;
@@ -100,18 +113,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        this.listenChangeCategory();
-        this.listenHashChange();
-        this.listenClickGameTile();
-        this.listenGameLaunch();
-        this.listenFavoriteClick();
         this.generateLobby();
-        this.listenToCategory();
-        this.listenToScroll();
-        this.listenToSwipe();
-        this.initMarker();
-        this.listenOnSearch();
-        this.listenOnFilter();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
         this.gamesFilter.handleOnReLoad(this.element, attachments);
         this.pager = 0;
