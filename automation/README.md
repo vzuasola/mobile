@@ -78,6 +78,76 @@ cp automation/pipeline-package.json.dist  ./pipeline-package.json
 cp automation/pipeline-dependency.json.dist  ./pipeline-dependency.json
 ```  
 
+* For Kubernetes (via kubectl):
+
+```
+Kubernetes pipeline works by building the docker image files using docker-on-docker
+approach and pushing it to DEV nexus docker registry with the other instances proxying it.
+
+Kubernetes nodes on each environment will then pull image on its corresponding Nexus
+instance.
+
+It also makes use of ansible-playbook command to generate the manifests for each environment.
+
+1. Copy gitlab-ci for k8.
+# cp automation/.gitlab-ci.yml.kubernetes ./.gitlab-ci.yml
+
+2. Copy kubernetes directory.
+# cp -R automation/kubernetes .
+
+3. Populate kubernetes files
+  - kubernetes/config --> kubeconfig files per environment
+  - kubernetes/templates --> ansible templates
+  - kubernetes/vars --> ansible vars per environment
+
+  Notes on formats in template manifests:
+  - namespaces: name: {{ (project_name | lower) + '-' + environment_name }
+  - docker image path: "{{ docker_registry }}/sample-template/app:{{ branch_name }}-{{ pipeline_id }}"
+
+4. Create location for docker file.
+# mkdir -p docker/services/app
+
+5. Drop your dockerfile under docker/services/app and add .dockerignore also to exclude uneeded items from image.
+
+6. To start, populate required git variables on early stages. You may refer to the table below for the descriptions.
+  - CI_PROJECT_NAME
+  - DEV_DOCKER_REGISTRY_PASSWORD
+  - DEV_DOCKER_REGISTRY_PUSH
+  - DEV_DOCKER_REGISTRY_USER
+  - DEV_DOCKER_USER_EMAIL
+
+7. You can see sample kubernetes templates/vars and git variables at https://gitlab.ph.esl-asia.com/CMS/dafabet-ghana.
+```
+
+* For Kubernetes (via helm):
+
+```
+1. Copy gitlab-ci for helm.
+# cp automation/.gitlab-ci.yml.helm ./.gitlab-ci.yml
+
+2. Copy kubernetes directory.
+# cp -R automation/kubernetes .
+
+3. Populate kubernetes files
+  - kubernetes/config --> kubeconfig files per environment
+  - kubernetes/templates --> ansible templates
+  - kubernetes/vars --> ansible vars per environment
+
+  Notes on formats in template manifests:
+  - namespaces: name: {{ (project_name | lower) + '-' + environment_name }
+  - docker image path: "{{ docker_registry }}/sample-template/app:{{ branch_name }}-{{ pipeline_id }}"
+
+4. Populate environment specific variables. Here is an example for DEV. See description below for more info.
+  - CHART_NAME_DEV
+  - CHART_RELEASE_BASE_NAME_DEV
+  - HELM_REPO_DEV
+  - NAMESPACE_DEV
+
+  Notes:
+  - If you are using a chart located under your git repository, HELM_REPO_* should be set to "."
+
+```
+
 Now you only need to commit and push to your repository in order to have
 pipelines working.
 
@@ -219,6 +289,34 @@ To configure/add manually, go to your projects `Settings` -> `Pipeline`. On the 
 | **DEPLOY_PROD_TOWER_HOST**           | `trc-ptc-itass01.msred.dom`                                              | Ansible tower host.                                           |
 | **DEPLOY_PROD_USERNAME**      | _Can be any string_                                                                          | Username used by your app to trigger deployment job in Ansible Tower.                                      |
 | **DEPLOY_PROD_PASSWORD**      | _Can be any string_                                                                          | Password used by your app to trigger deployment job in Ansible Tower.                                      |
+| **DEV_DOCKER_REGISTRY_PASSWORD**      | _Can be any string_                                                                          | DEV docker registry password                                      |
+| **DEV_DOCKER_REGISTRY_PUSH**      | _Can be any string_                                                                          | DEV docker registry for push                                     |
+| **DEV_DOCKER_REGISTRY_USER**      | _Can be any string_                                                                          | DEV docker registry user for push                                     |
+| **DEV_DOCKER_USER_EMAIL**      | _Can be any string_                                                                         | DEV docker registry email                                     |
+| **CHART_NAME_DEV**      | _Can be any string_                                                                         | DEV chart name to use. A basic example is "tomcat" if you will get that from remote repo. Otherwise, you may use a local chart located inside your git repo like "/app/charts/sata-persistency/v0.0.3/" (format: /app/path/to/chart)                                    |
+| **CHART_RELEASE_BASE_NAME_DEV**      | _Can be any string_                                                                         | DEV release base name to use. Make sure to apped "-dev". Example is "sample-chart-dev".                                     |
+| **HELM_REPO_DEV**      | _Can be any string_                                                                         | DEV helm repo. Can be a a remote repo like "https://kubernetes-charts.storage.googleapis.com" or local repo which is specified by "."                                     |
+| **NAMESPACE_DEV**      | _Can be any string_                                                                         | DEV namespace. This is where the helm chart will be uploaded. Format should be $CI_PROJECT_NAME-$ENV. Example is myproject-dev.                                     |
+| **CHART_NAME_QA1**      | _Can be any string_                                                                         | QA1 chart name to use. A basic example is "tomcat" if you will get that from remote repo. Otherwise, you may use a local chart located inside your git repo like "/app/charts/sata-persistency/v0.0.3/" (format: /app/path/to/chart)                                    |
+| **CHART_RELEASE_BASE_NAME_QA1**      | _Can be any string_                                                                         | QA1 release base name to use. Make sure to apped "-qa1". Example is "sample-chart-qa1".                                     |
+| **HELM_REPO_QA1**      | _Can be any string_                                                                         | QA1 helm repo. Can be a a remote repo like "https://kubernetes-charts.storage.googleapis.com" or local repo which is specified by "."                                     |
+| **NAMESPACE_QA1**      | _Can be any string_                                                                         | QA1 namespace. This is where the helm chart will be uploaded. Format should be $CI_PROJECT_NAME-$ENV. Example is myproject-qa1.                                     |
+| **CHART_NAME_TCT**      | _Can be any string_                                                                         | TCT chart name to use. A basic example is "tomcat" if you will get that from remote repo. Otherwise, you may use a local chart located inside your git repo like "/app/charts/sata-persistency/v0.0.3/" (format: /app/path/to/chart)                                    |
+| **CHART_RELEASE_BASE_NAME_TCT**      | _Can be any string_                                                                         | TCT release base name to use. Make sure to apped "-tct". Example is "sample-chart-tct".                                     |
+| **HELM_REPO_TCT**      | _Can be any string_                                                                         | TCT helm repo. Can be a a remote repo like "https://kubernetes-charts.storage.googleapis.com" or local repo which is specified by "."                                     |
+| **NAMESPACE_TCT**      | _Can be any string_                                                                         | TCT namespace. This is where the helm chart will be uploaded. Format should be $CI_PROJECT_NAME-$ENV. Example is myproject-tct.                                     |
+| **CHART_NAME_UAT**      | _Can be any string_                                                                         | UAT chart name to use. A basic example is "tomcat" if you will get that from remote repo. Otherwise, you may use a local chart located inside your git repo like "/app/charts/sata-persistency/v0.0.3/" (format: /app/path/to/chart)                                    |
+| **CHART_RELEASE_BASE_NAME_UAT**      | _Can be any string_                                                                         | UAT release base name to use. Make sure to apped "-uat". Example is "sample-chart-uat".                                     |
+| **HELM_REPO_UAT**      | _Can be any string_                                                                         | UAT helm repo. Can be a a remote repo like "https://kubernetes-charts.storage.googleapis.com" or local repo which is specified by "."                                     |
+| **NAMESPACE_UAT**      | _Can be any string_                                                                         | UAT namespace. This is where the helm chart will be uploaded. Format should be $CI_PROJECT_NAME-$ENV. Example is myproject-uat.                                     |
+| **CHART_NAME_STG**      | _Can be any string_                                                                         | STG chart name to use. A basic example is "tomcat" if you will get that from remote repo. Otherwise, you may use a local chart located inside your git repo like "/app/charts/sata-persistency/v0.0.3/" (format: /app/path/to/chart)                                    |
+| **CHART_RELEASE_BASE_NAME_STG**      | _Can be any string_                                                                         | STG release base name to use. Make sure to apped "-stg". Example is "sample-chart-stg".                                     |
+| **HELM_REPO_STG**      | _Can be any string_                                                                         | STG helm repo. Can be a a remote repo like "https://kubernetes-charts.storage.googleapis.com" or local repo which is specified by "."                                     |
+| **NAMESPACE_STG**      | _Can be any string_                                                                         | STG namespace. This is where the helm chart will be uploaded. Format should be $CI_PROJECT_NAME-$ENV. Example is myproject-stg.                                     |
+| **CHART_NAME_PRD**      | _Can be any string_                                                                         | PRD chart name to use. A basic example is "tomcat" if you will get that from remote repo. Otherwise, you may use a local chart located inside your git repo like "/app/charts/sata-persistency/v0.0.3/" (format: /app/path/to/chart)                                    |
+| **CHART_RELEASE_BASE_NAME_PRD**      | _Can be any string_                                                                         | PRD release base name to use. Make sure to apped "-prd". Example is "sample-chart-prd".                                     |
+| **HELM_REPO_PRD**      | _Can be any string_                                                                         | PRD helm repo. Can be a a remote repo like "https://kubernetes-charts.storage.googleapis.com" or local repo which is specified by "."                                     |
+| **NAMESPACE_PRD**      | _Can be any string_                                                                         | PRD namespace. This is where the helm chart will be uploaded. Format should be $CI_PROJECT_NAME-$ENV. Example is myproject-prd.                                     |
 | **LIGHTHOUSE_PWA_SCORE** | _An integer between 1 to 100_ | Defines the acceptable score for the PWA category |
 | **LIGHTHOUSE_ACCESSIBILITY_SCORE** | _An integer between 1 to 100_ | Defines the acceptable score for the Accessibility category |
 | **LIGHTHOUSE_BEST_PRACTICES_SCORE** | _An integer between 1 to 100_ | Defines the acceptable score for the Best Practices category |

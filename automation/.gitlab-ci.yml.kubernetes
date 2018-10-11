@@ -1,0 +1,111 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - Code tests
+  - Build docker images
+  - Deploy DEV in K8s
+  - Deploy QA1 in K8s
+  - Deploy TCT in K8s
+  - Deploy UAT in K8s
+  - Deploy STG in K8s
+  - Staging Signoff
+  - Deploy PRD in K8s
+
+cache:
+  paths:
+  - public/
+
+static code analysis:
+  stage: Code tests
+  script:
+    - python -u automation/run.py --stage phpunit-sonarqube
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+  cache:
+    key: v2
+    paths:
+      - .composer-cache/
+      - .sonar-cache/
+  tags:
+    - devrunner
+  allow_failure: true
+
+php code sniffer:
+  stage: Code tests
+  script:
+    - python -u automation/run.py --stage phpcs
+  tags:
+    - devrunner
+  allow_failure: true
+
+es linter:
+  stage: Code tests
+  script:
+    - python -u automation/run.py --stage eslinter
+  tags:
+    - devrunner
+  allow_failure: true
+
+sensiolab security checker:
+  stage: Code tests
+  script:
+    - python -u automation/run.py --stage sensiolab-security-checker
+  allow_failure: true
+  tags:
+    - devrunner
+  allow_failure: true
+
+Build App:
+  stage: Build docker images
+  script:
+    - python -u automation/run.py --stage build-docker-image-app
+  tags:
+    - devrunner
+
+Deploy App (DEV):
+  stage: Deploy DEV in K8s
+  script:
+    - python -u automation/run.py --stage deploy-k8-dev
+  tags:
+    - devrunner
+  environment:
+    name: dev
+
+Deploy App (QA1):
+  stage: Deploy QA1 in K8s
+  script:
+    - python -u automation/run.py --stage deploy-k8-qa1
+  tags:
+    - devrunner
+  environment:
+    name: qa1
+
+Deploy App (TCT):
+  stage: Deploy TCT in K8s
+  script:
+    - python -u automation/run.py --stage deploy-k8-tct
+  tags:
+    - devrunner
+  environment:
+    name: tct
+
+Deploy App (UAT):
+  stage: Deploy UAT in K8s
+  script:
+    - python -u automation/run.py --stage deploy-k8-uat
+  environment:
+    name: uat
+
+Deploy App (STG):
+  stage: Deploy STG in K8s
+  script:
+    - python -u automation/run.py --stage deploy-k8-stg
+  environment:
+    name: stg
+
+Deploy App (PRD):
+  stage: Deploy PRD in K8s
+  script:
+    - python -u automation/run.py --stage deploy-k8-prd
+  environment:
+    name: prd

@@ -3,16 +3,18 @@
 namespace App\MobileEntry\Component\Main\MyAccount;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
-use App\MobileEntry\Form\ForgotPasswordForm;
-use App\MobileEntry\Form\ForgotUsernameForm;
-use App\MobileEntry\Form\ResetPasswordForm;
 
 class MyAccountComponent implements ComponentWidgetInterface
 {
-        /**
+    /**
      * Config Fetcher object.
      */
     private $configFetcher;
+
+    /**
+     * user Fetcher Object
+     */
+    private $userFetcher;
 
     /**
      *
@@ -21,17 +23,19 @@ class MyAccountComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('form_manager'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('user_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($formManager, $configFetcher)
+    public function __construct($formManager, $configFetcher, $userFetcher)
     {
         $this->formManager = $formManager;
         $this->configFetcher = $configFetcher->withProduct('account');
+        $this->userFetcher = $userFetcher;
     }
 
     /**
@@ -48,10 +52,25 @@ class MyAccountComponent implements ComponentWidgetInterface
     public function getData()
     {
         $myProfileConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
+        $user = $this->userFetcher->getPlayerDetails();
+        $flashMessage = "";
+        $isFastReg = false;
+
+        $fname = substr($user['firstName'], 0, 5);
+        $lname = substr($user['lastName'], 0, 5);
+
+        if (strtoupper($fname) == "DFRFN" ||
+            strtoupper($lname) == "DFRLN"
+        ) {
+            $flashMessage = $myProfileConfig['fast_reg_flash_message']['value'] ?? "";
+            $isFastReg = true;
+        }
 
         return [
             'myProfileTab' => $myProfileConfig['my_profile_tab'] ?? 'My Profile',
             'changePasswordTab' => $myProfileConfig['change_password_tab'] ?? 'Change Password',
+            'isFastReg' => $isFastReg,
+            'flashMessage' => $flashMessage,
         ];
     }
 }

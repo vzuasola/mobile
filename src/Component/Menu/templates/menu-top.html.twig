@@ -6,6 +6,8 @@
                 href="{{ url(menu.uri) }}"
                 target="{{ menu.attributes.target }}"
                 class="btn btn-small btn-{{ menu.attributes.class }}"
+                data-router="true"
+                data-router-refresh="main"
             >
                 {{ menu.title }}
             </a>

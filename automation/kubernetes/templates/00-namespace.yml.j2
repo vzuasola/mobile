@@ -1,0 +1,6 @@
+# sample only
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ (project_name | lower) + '-' + environment_name }}

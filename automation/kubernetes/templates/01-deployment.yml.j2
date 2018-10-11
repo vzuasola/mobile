@@ -1,0 +1,19 @@
+# sample only
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sample-template
+  labels:
+    app: sample-template
+  namespace: {{ (project_name | lower) + '-' + environment_name }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sample-template
+    spec:
+      containers:
+      - image: "{{ docker_registry }}/sample-template/app:{{ branch_name }}-{{ pipeline_id }}"
+        name: sample-template

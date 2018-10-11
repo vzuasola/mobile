@@ -76,6 +76,8 @@ export class VerifyPassword extends FormBase {
             city: profileForm.MyProfileForm_city.value,
             postal_code: profileForm.MyProfileForm_postal_code.value,
             receive_news: profileForm.ProfileForm_contact_preference.checked,
+            firstName: profileForm.MyProfileForm_first_name.value,
+            lastName: profileForm.MyProfileForm_last_name.value,
         };
     }
 
@@ -162,7 +164,7 @@ export class VerifyPassword extends FormBase {
     private onSuccess(message) {
         this.closeModal();
         this.successNotification.show(message);
-        this.refreshComponent();
+        this.refreshComponent(true);
     }
 
     private onError(message) {
@@ -175,7 +177,22 @@ export class VerifyPassword extends FormBase {
         utility.triggerEvent(document.querySelector("#profile-verification .modal-close-button"), "click");
     }
 
-    private refreshComponent() {
+    private refreshComponent(isSuccess?) {
+        const profileSubmitButton = document.querySelector("#MyProfileForm_submit");
+        const isFastReg = profileSubmitButton.getAttribute("data-redirect");
+
+        if (isSuccess && isFastReg) {
+            let myUrl = window.location.href;
+
+            if (myUrl.indexOf("?") > -1 && (isFastReg !== "0")) {
+                myUrl += "&redirect=1";
+            } else if (myUrl.indexOf("?") === -1 && (isFastReg !== "0")) {
+                myUrl += "?redirect=1";
+            }
+
+            window.history.replaceState({}, document.title, myUrl);
+        }
+
         ComponentManager.refreshComponent(
             ["main"],
         );

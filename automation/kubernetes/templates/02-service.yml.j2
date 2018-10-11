@@ -1,0 +1,24 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+# sample only
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: sample-template
+  name:  sample-template
+  namespace: {{ (project_name | lower) + '-' + environment_name }}
+spec:
+  type: NodePort
+  selector:
+    app: sample-template
+  ports:
+    - port: <container port>
+      targetPort: <container port>
+{% if environment_name == 'tct' %}
+      nodePort: <k8 port>
+{% elif environment_name == 'uat' %}
+      nodePort: <k8 port>
+{% else %}
+      nodePort: <k8 port>
+{% endif %}

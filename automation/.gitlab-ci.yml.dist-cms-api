@@ -183,7 +183,7 @@ qa1-japan-stack:
       - automation/deployed/*.jsonl
     expire_in: 1 month
 
-hp fortify scan qa1:
+.hp fortify scan qa1:
   stage: security-tests-test
   script:
     - python -u automation/run.py --stage code-scan-testing
@@ -287,7 +287,6 @@ testing signoff:
   dependencies:
     - qa1
     - tct
-    - hp fortify scan qa1
   artifacts:
     paths:
       - automation/deployed/*.jsonl
@@ -484,7 +483,11 @@ staging signoff:
   when: manual
   dependencies:
     - staging
+    - staging-mobile-stack
+    - staging-japan-stack
     - uat
+    - uat-mobile-stack
+    - uat-japan-stack
   artifacts:
     paths:
       - automation/deployed/*.jsonl
