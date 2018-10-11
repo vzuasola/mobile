@@ -60,7 +60,6 @@ class AnnouncementComponent implements ComponentWidgetInterface
             $announcementConfigs = [];
             $announcements = [];
         }
-
         $data['announcements'] = $announcements['list'] ?? [];
         $data['announcement_count'] = $announcements['count'] ?? 0;
         $data['title'] = $announcementConfigs['title'] ?? 'Announcement';
@@ -90,16 +89,6 @@ class AnnouncementComponent implements ComponentWidgetInterface
                 $content['field_availability'] :
                 $content['field_availability'][0]['value'];
 
-            $textWithTitle = $content['field_body'][0]['value'];
-            $paragraphs = explode('<p>', $textWithTitle);
-
-            if (isset($paragraphs[1])) {
-                $paragraphs[1] = "
-                    <strong class='text-red'>{$content['name'][0]['value']}</strong>&nbsp
-                    {$paragraphs[1]}
-                ";
-            }
-
             if (($availability == '0' && $isLogin) ||
                 ($availability == '1' && !$isLogin)
             ) {
@@ -112,8 +101,8 @@ class AnnouncementComponent implements ComponentWidgetInterface
                 'show' => $showItem,
                 'nid' =>  $content['id'][0]['value'],
                 'name' => $content['name'][0]['value'],
+                'title' => $content['field_title'][0]['value'] ?? "",
                 'text' => $content['field_body'][0]['value'],
-                'text_with_title' => implode('<p>', $paragraphs),
             ];
         }
 

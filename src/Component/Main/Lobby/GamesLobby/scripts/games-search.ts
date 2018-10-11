@@ -13,6 +13,7 @@ import {RecommendedGames} from "./recommended-games";
 export class GamesSearch {
     private searchObj: Search;
     private isLogin: boolean;
+    private isRecommended: boolean;
     private favoritesList;
     private element;
     private config: any;
@@ -72,7 +73,18 @@ export class GamesSearch {
             msg_no_recommended: string,
             product: any[],
         }) {
-
+        if (!this.element) {
+            this.listenActivateSearchLightbox();
+            this.listenActivateSearchFilterLightbox();
+            this.listenChangeGameSearch();
+            this.listenClickSearchButton();
+            this.listenClickBackButton();
+            this.listenClickFavoriteOnPreview();
+            this.listenCategoryChange();
+            this.listenClickClearIcon();
+            this.listenOnLogin();
+            this.listenSubmitGameSearch();
+        }
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
@@ -116,11 +128,12 @@ export class GamesSearch {
         const groupedGames = this.groupGames(response);
 
         // populate search results in games lobby search tab
-        ComponentManager.broadcast("games.search.success", {games: groupedGames});
+        ComponentManager.broadcast("games.search.success", {games: groupedGames, isRecommended: this.isRecommended});
     }
 
     private onBeforeSearch(data) {
         // placeholder
+        this.isRecommended = false;
     }
 
     /**
@@ -141,6 +154,7 @@ export class GamesSearch {
         this.updateSearchBlurb(blurb, this.element.querySelector("#blurb-preview"), { count: 0, keyword });
 
         if (recommendedGames.length) {
+            this.isRecommended = true;
             this.setGamesResultPreview(recommendedGames);
             this.searchResult = recommendedGames;
         } else {
@@ -195,6 +209,7 @@ export class GamesSearch {
             games: sortedGames,
             favorites: this.favoritesList,
             isLogin: this.isLogin,
+            isRecommended: this.isRecommended,
         });
 
         const gamesPreview = this.element.querySelector(".games-search-result");

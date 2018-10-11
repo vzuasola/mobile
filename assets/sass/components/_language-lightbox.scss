@@ -95,56 +95,66 @@
 
     .eu a:before,
     a.eu:before {
-        background-position: 0 -4.2rem;
+        background-position: 0 -3.6rem
     }
 
     .zh-hans a:before,
     a.zh-hans:before {
-        background-position: 0 -8.4rem;
+        background-position: 0 -7.6rem
     }
 
     .zh-hant a:before,
     a.zh-hant:before {
-        background-position: 0 -12.8rem;
+        background-position: 0 -11.6rem;
     }
 
     .th a:before,
     a.th:before {
-        background-position: 0 -17.2rem;
+        background-position: 0 -15.6rem;
     }
 
     .vi a:before,
     a.vi:before {
-        background-position: 0 -21.4rem;
+        background-position: 0 -19.6rem;
     }
 
     .id a:before,
     a.id:before {
-        background-position: 0 -25.8rem;
+        background-position: 0 -23.6rem;
     }
 
     .ja a:before,
     a.ja:before {
-        background-position: 0 -30.2rem;
+        background-position: 0 -27.6rem;
     }
 
     .ko a:before,
     a.ko:before {
-        background-position: 0 -34.6rem;
+        background-position: 0 -31.6rem;
     }
 
     .hi a:before,
     a.hi:before {
-        background-position: 0 -39.1rem;
+        background-position: 0 -35.6rem;
     }
 
     .el a:before,
     a.el:before {
-        background-position: 0 -43.4rem;
+        background-position: 0 -39.6rem;
     }
 
     .pl a:before,
     a.pl:before {
-        background-position: 0 -47.9rem;
+        background-position: 0 -43.6rem;
+    }
+
+    .es  a:before,
+    a.es :before {
+        background-position: 0 -47.6rem;
+    }
+
+    .pt-br  a:before,
+    a.pt-br :before {
+        background-position: 0 -51.6rem;
     }
 }

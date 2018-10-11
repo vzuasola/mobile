@@ -1,0 +1,42 @@
+{{#each sliderData.slides}}
+    {{#if this.published }}
+        <div class="xlide-item">
+            <a 
+                href="{{ this.banner_url }}" 
+                target="{{ this.banner_target }}"
+                {{#if this.game_code }}
+                    class = "game-list"
+                {{/if}}
+                data-game-provider="{{ this.game_provider }}"
+                data-game-code="{{ this.game_code }}"
+                data-game-target="{{ this.banner_target }}"
+                data-game-title="{{ this.field_title }}"
+                {{#if ../sliderData.is_login }}
+                    data-game-launch="true"
+                {{/if}}
+            >
+                <img 
+                    src="{{ this.banner_img }}" 
+                    alt="{{ this.banner_alt }}" 
+                    class="w-100"
+                >
+                <div class="xlider-blurb {{ this.banner_pos }} {{../sliderData.enable_transition_slider }}">
+                {{#if this.product_ribbon_tag}}
+                    <div class="product-tag">
+                        <div
+                            {{#if this.default_ribbon}}
+                                style="background-color: {{ this.bg_color }}; color: {{ this.text_color }}"
+                            {{else}}
+                                class="tag-{{ this.product }}"
+                            {{/if}}
+                        >
+                            {{ this.product_ribbon_tag }}
+                        </div>
+                    </div>
+                {{/if}}
+                {{{ this.banner_blurb }}}
+                </div>
+            </a>
+        </div>
+    {{/if}}
+{{/each}}

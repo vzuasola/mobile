@@ -21,15 +21,21 @@ export class GamesFilter {
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {}) {
+        if (!this.element) {
+            this.listenOnOpen();
+            this.listenOnClick();
+        }
         this.element = element;
     }
 
     setGamesList(gamesList) {
         if (gamesList) {
             const allGames = [];
-            for (const games of gamesList.games["all-games"]) {
-                for (const game of games) {
-                    allGames.push(game);
+            if (gamesList.games["all-games"]) {
+                for (const games of gamesList.games["all-games"]) {
+                    for (const game of games) {
+                        allGames.push(game);
+                    }
                 }
             }
             this.gamesList = allGames;
