@@ -50,8 +50,8 @@ class GamesLobbyComponentController
             $container->get('rest'),
             $container->get('config_fetcher'),
             $container->get('asset'),
-            $container->get('recent_games_fetcher'),
-            $container->get('favorite_games_fetcher'),
+            $container->get('recents_fetcher'),
+            $container->get('favorites_fetcher'),
             $container->get('config_fetcher_async'),
             $container->get('views_fetcher_async')
         );
@@ -90,10 +90,11 @@ class GamesLobbyComponentController
             try {
                 $categories = $this->views->getViewById('games_category');
                 $specialCategories = $this->getSpecialCategories($categories);
-
                 $definitions = $this->getDefinitionsByCategory($categories);
-
                 $asyncData = Async::resolve($definitions);
+
+                $specialGamesList = $this->getSpecialCategoriesGameList($specialCategories);
+                $asyncData += $specialGamesList;
 
                 $specialCategoryGames = $this->getSpecialGamesbyCategory(
                     $specialCategories,
@@ -138,6 +139,28 @@ class GamesLobbyComponentController
         }
     }
 
+    private function getSpecialCategoriesGameList($categories)
+    {
+        $definitions = [];
+        try {
+            foreach ($categories as $category) {
+                $categoryId = $category['field_games_alias'];
+                switch ($category['field_games_alias']) {
+                    case $this::RECENTLY_PLAYED_GAMES:
+                        $definitions[$categoryId] = $this->recentGames->getRecents();
+                        break;
+                    case $this::FAVORITE_GAMES:
+                        $definitions[$categoryId] = $this->favorite->getFavorites();
+                        break;
+                }
+            }
+        } catch (\Exception $e) {
+            $definitions = [];
+        }
+
+        return $definitions;
+    }
+
     private function getDefinitionsByCategory($categories)
     {
         $definitions = [];
@@ -147,12 +170,6 @@ class GamesLobbyComponentController
                 switch ($category['field_games_alias']) {
                     case $this::ALL_GAMES:
                         $definitions[$categoryId] = $this->viewsAsync->getViewById('games_list');
-                        break;
-                    case $this::RECENTLY_PLAYED_GAMES:
-                        $definitions[$categoryId] = $this->recentGames->getRecents();
-                        break;
-                    case $this::FAVORITE_GAMES:
-                        $definitions[$categoryId] = $this->favorite->getFavorites();
                         break;
                 }
 
@@ -423,7 +440,6 @@ class GamesLobbyComponentController
         try {
             if ($this->playerSession->isLogin()) {
                 $favoriteGames = $this->favorite->getFavorites();
-                $favoriteGames = $favoriteGames->resolve();
                 $favoriteGames = $this->proccessSpecialGames($favoriteGames);
                 $favoriteGames = (is_array($favoriteGames)) ? $favoriteGames : [];
                 $favorites = [];
@@ -486,7 +502,6 @@ class GamesLobbyComponentController
         try {
             if ($this->playerSession->isLogin()) {
                 $recentlyPlayed = $this->recentGames->getRecents();
-                $recentlyPlayed = $recentlyPlayed->resolve();
                 $recentlyPlayed = $this->proccessSpecialGames($recentlyPlayed);
                 $recentlyPlayed = (is_array($recentlyPlayed)) ? $recentlyPlayed : [];
                 usort($recentlyPlayed, [$this, 'sortRecentGames']);
