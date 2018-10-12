@@ -77,20 +77,13 @@ class GamesLobbyComponentController
 
     public function lobby($request, $response)
     {
-        $data = [];
-
-        $item = $this->cacher->getItem('views.games-lobby.' . $this->currentLanguage);
+        $item = $this->cacher->getItem('views.games-lobby-data.' . $this->currentLanguage);
 
         if (!$item->isHit()) {
-            $categories = $this->views->getViewById('games_category');
-            $definitions = $this->getDefinitionsByCategory($categories);
-            $asyncData = Async::resolve($definitions);
+            $data = $this->generateLobbyData();
 
             $item->set([
-                'body' => [
-                    'categories' => $categories,
-                    'asyncData' => $asyncData,
-                ],
+                'body' => $data,
             ]);
 
             $this->cacher->save($item, [
@@ -99,14 +92,28 @@ class GamesLobbyComponentController
         } else {
             $body = $item->get();
 
-            $categories = $body['body']['categories'];
-            $asyncData = $body['body']['asyncData'];
+            $data = $body['body'];
         }
 
-        $specialCategories = $this->getSpecialCategories($categories);
-        $specialGamesList = $this->getSpecialCategoriesGameList($specialCategories);
+        // Put post process here to get favorites and recents tab
 
-        $asyncData += $specialGamesList;
+        return $this->rest->output($response, $data);
+    }
+
+    private function generateLobbyData()
+    {
+        $data = [];
+
+        $categories = $this->views->getViewById('games_category');
+        $definitions = $this->getDefinitionsByCategory($categories);
+        $asyncData = Async::resolve($definitions);
+
+        $specialCategories = [];
+        $specialCategories = $this->getSpecialCategories($categories);
+
+        // DANIEL fix me
+        // $specialGamesList = $this->getSpecialCategoriesGameList($specialCategories);
+        // $asyncData += $specialGamesList;
 
         $specialCategoryGames = $this->getSpecialGamesbyCategory(
             $specialCategories,
@@ -125,7 +132,7 @@ class GamesLobbyComponentController
             $data['favorite_list'] = $this->getFavoriteGamesList($asyncData['favorites']);
         }
 
-        return $this->rest->output($response, $data);
+        return $data;
     }
 
     public function recent($request, $response)
