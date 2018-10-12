@@ -7,6 +7,7 @@ use App\Async\Async;
 
 class GamesLobbyComponentController
 {
+    const TIMEOUT = 1800;
     /**
      * @var App\Player\PlayerSession
      */
@@ -34,6 +35,10 @@ class GamesLobbyComponentController
 
     private $viewsAsync;
 
+    private $cacher;
+
+    private $currentLanguage;
+
     const RECOMMENDED_GAMES = 'recommended-games';
     const ALL_GAMES = 'all-games';
     const RECENTLY_PLAYED_GAMES = 'recently-played';
@@ -53,7 +58,9 @@ class GamesLobbyComponentController
             $container->get('recent_games_fetcher'),
             $container->get('favorite_games_fetcher'),
             $container->get('config_fetcher_async'),
-            $container->get('views_fetcher_async')
+            $container->get('views_fetcher_async'),
+            $container->get('redis_cache_adapter'),
+            $container->get('lang')
         );
     }
 
@@ -69,7 +76,9 @@ class GamesLobbyComponentController
         $recentGames,
         $favorite,
         $configAsync,
-        $viewsAsync
+        $viewsAsync,
+        $cacher,
+        $lang
     ) {
         $this->playerSession = $playerSession;
         $this->views = $views->withProduct('mobile-games');
@@ -80,6 +89,8 @@ class GamesLobbyComponentController
         $this->favorite = $favorite;
         $this->configAsync = $configAsync;
         $this->viewsAsync = $viewsAsync->withProduct('mobile-games');
+        $this->cacher = $cacher;
+        $this->currentLanguage = $lang;
     }
 
     public function lobby($request, $response)
@@ -88,24 +99,23 @@ class GamesLobbyComponentController
 
         try {
             try {
-                $categories = $this->views->getViewById('games_category');
-                $specialCategories = $this->getSpecialCategories($categories);
+                $asyncData = $this->getLobbyData();
 
-                $definitions = $this->getDefinitionsByCategory($categories);
+                $perUserData = Async::resolve($asyncData['definitions']['per_user']);
 
-                $asyncData = Async::resolve($definitions);
+                $asyncData += $perUserData;
 
                 $specialCategoryGames = $this->getSpecialGamesbyCategory(
-                    $specialCategories,
+                    $asyncData['specialCategories'],
                     $asyncData
                 );
 
                 $data['games'] = $this->getGamesbyCategory(
-                    $categories,
+                    $asyncData['categories'],
                     $asyncData
-                ) + $specialCategoryGames;
+                ) + $asyncData['specialCategories'];
 
-                $data['categories'] = $this->getArrangedCategoriesByGame($categories, $data['games']);
+                $data['categories'] = $this->getArrangedCategoriesByGame($asyncData['categories'], $data['games']);
                 $data['games'] = $this->groupGamesByContainer($data['games'], 3);
 
                 $data['favorite_list'] = $this->getFavoriteGamesList($asyncData['favorites']);
@@ -138,6 +148,72 @@ class GamesLobbyComponentController
         }
     }
 
+    /**
+     *
+     */
+    private function getLobbyData()
+    {
+        try {
+            $data = [];
+            $categories = $this->getLobbyCategoryData();
+
+            $definitions = $this->getDefinitionsByCategory($categories);
+
+            $data = $this->resolveAsyncCache($definitions['all_user']);
+            $data['specialCategories'] = $this->getSpecialCategories($categories);
+            $data['categories'] = $categories;
+            $data['definitions'] = $definitions;
+
+            return $data;
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    private function getLobbyCategoryData()
+    {
+        $item = $this->cacher->getItem('views.games_category.'. $this->currentLanguage);
+
+        if (!$item->isHit()) {
+            $data = $this->views->getViewById('games_category');
+
+            $item->set([
+                'body' => $data,
+            ]);
+
+            $this->cacher->save($item, [
+                'expires' => self::TIMEOUT,
+            ]);
+        } else {
+            $body = $item->get();
+            $data = $body['body'];
+        }
+
+        return $data;
+    }
+
+    private function resolveAsyncCache($definitions)
+    {
+        $item = $this->cacher->getItem('async.games_list.'. $this->currentLanguage);
+
+        if (!$item->isHit()) {
+            $data = Async::resolve($definitions);
+
+            $item->set([
+                'body' => $data,
+            ]);
+
+            $this->cacher->save($item, [
+                'expires' => self::TIMEOUT,
+            ]);
+        } else {
+            $body = $item->get();
+            $data = $body['body'];
+        }
+
+        return $data;
+    }
+
     private function getDefinitionsByCategory($categories)
     {
         $definitions = [];
@@ -146,18 +222,18 @@ class GamesLobbyComponentController
                 $categoryId = $category['field_games_alias'];
                 switch ($category['field_games_alias']) {
                     case $this::ALL_GAMES:
-                        $definitions[$categoryId] = $this->viewsAsync->getViewById('games_list');
+                        $definitions['all_user'][$categoryId] = $this->viewsAsync->getViewById('games_list');
                         break;
                     case $this::RECENTLY_PLAYED_GAMES:
-                        $definitions[$categoryId] = $this->recentGames->getRecents();
+                        $definitions['per_user'][$categoryId] = $this->recentGames->getRecents();
                         break;
                     case $this::FAVORITE_GAMES:
-                        $definitions[$categoryId] = $this->favorite->getFavorites();
+                        $definitions['per_user'][$categoryId] = $this->favorite->getFavorites();
                         break;
                 }
 
                 if (strtolower($category['field_isordinarycategory']) === "true") {
-                    $definitions[$categoryId] = $this->viewsAsync->getViewById('games_list', [
+                    $definitions['all_user'][$categoryId] = $this->viewsAsync->getViewById('games_list', [
                         'category' => $category['tid']
                     ]);
                     continue;
