@@ -104,7 +104,6 @@ class GamesLobbyComponentController
                 $perUserData = Async::resolve($asyncData['definitions']['per_user']);
 
                 $asyncData += $perUserData;
-
                 $specialCategoryGames = $this->getSpecialGamesbyCategory(
                     $asyncData['specialCategories'],
                     $asyncData
@@ -113,7 +112,7 @@ class GamesLobbyComponentController
                 $data['games'] = $this->getGamesbyCategory(
                     $asyncData['categories'],
                     $asyncData
-                ) + $asyncData['specialCategories'];
+                ) + $specialCategoryGames;
 
                 $data['categories'] = $this->getArrangedCategoriesByGame($asyncData['categories'], $data['games']);
                 $data['games'] = $this->groupGamesByContainer($data['games'], 3);
