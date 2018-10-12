@@ -94,6 +94,11 @@ class MyProfileForm extends FormBase implements FormInterface
         $definition = $this->setFormDefinitionValues($definition);
         $definition = $this->setDisabledFields($definition);
 
+        if (isset($definition['mobile_number_1']['options']['country_area_code_validation'])) {
+            $mobileNumberValidation = $definition['mobile_number_1']['options']['country_area_code_validation'];
+            $definition['mobile_number_1']['options']['attr']['area_code_validation'] = $mobileNumberValidation;
+        }
+
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-update btn-lower-case";
         $definition['button_cancel']['options']['attr']['class'] = "btn btn-small btn-gray btn-cancel btn-lower-case";
         return $definition;
@@ -165,6 +170,7 @@ class MyProfileForm extends FormBase implements FormInterface
                 (strpos($formField['type'], 'TextType') !== false ||
                 strpos($formField['type'], 'TextAreaType') !== false)
             ) {
+                $this->moveAttribute($definition, $key, 'annotation', 'data-annotation');
                 $definition[$key]['options']['attr']['placeholder'] = $definition[$key]['options']['placeholder'];
                 $definition[$key]['options']['attr']['autocomplete'] = "off";
                 unset($definition[$key]['options']['placeholder']);
@@ -260,6 +266,13 @@ class MyProfileForm extends FormBase implements FormInterface
             $mobile1Value = $apiValues['mobileNumbers']['Mobile 1']['number'] ?? null;
         }
 
+        $countryCode = $this->countryCodeMapping();
+        $fastRegMobileValue = $countryCode . "000000";
+        $mobileNumber1 = $apiValues['mobileNumbers']['Home']['number'];
+        if ($fastRegMobileValue == $apiValues['mobileNumbers']['Home']['number']) {
+            $mobileNumber1 = $countryCode;
+        }
+
         $result = [
             'username' => $apiValues['username'],
             'currency' => $apiValues['currency'],
@@ -271,7 +284,7 @@ class MyProfileForm extends FormBase implements FormInterface
             'country' => $apiValues['countryName'],
             'countryId' => $apiValues['countryId'],
             'email' => $this->obfuscateEmail($apiValues['email']),
-            'mobile_number_1' => $apiValues['mobileNumbers']['Home']['number'],
+            'mobile_number_1' => $mobileNumber1,
             'mobile_number_2' => (($mobile1Value === '') || ($mobile1Value === null)) ? '' : $mobile1Value,
             'language_field' => $this->locale,
             'sms_1_verified' => $apiValues['mobileNumbers']['Home']['verified'] ?? null,
@@ -295,8 +308,18 @@ class MyProfileForm extends FormBase implements FormInterface
      */
     private function setDisabledFields($definition)
     {
-        foreach ($this->disabledFields as $fieldKey) {
-            $definition[$fieldKey]['options']['attr']['disabled'] = "disabled";
+        $definition['submit']['options']['attr']['data-redirect'] = 0;
+
+        foreach ($this->disabledFields as $field) {
+            $dummyName = substr($definition[$field]['options']['attr']['value'], 0, 5);
+
+            if (strtoupper($dummyName) == 'DFRFN' ||
+                strtoupper($dummyName) == 'DFRLN') {
+                $definition['submit']['options']['attr']['data-redirect'] = 1;
+                $definition[$field]['options']['attr']['value'] = "";
+            } else {
+                $definition[$field]['options']['attr']['disabled'] = "disabled";
+            }
         }
 
         return $definition;

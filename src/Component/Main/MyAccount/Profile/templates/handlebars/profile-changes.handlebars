@@ -9,11 +9,33 @@
 <table class="table-primary w-100">
     <thead>
         <tr>
-            <th class="text-center table-header-text">{{ this.config.modalCurrentLabel }}</th>
-            <th class="text-center table-header-text">{{ this.config.modalNewLabel }}</th>
+            <th class="text-center w-50">{{ this.config.modalCurrentLabel }}</th>
+            <th class="text-center w-50">{{ this.config.modalNewLabel }}</th>
         </tr>
     </thead>
     <tbody>
+        {{#condition this.old.firstname "||" this.modified.firstname }}
+            <tr>
+                <th>{{this.labels.firstname}}</th>
+                <th>{{this.labels.firstname}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.firstname}}</td>
+                <td>{{this.modified.firstname}}</td>
+            </tr>
+        {{/condition}}
+
+        {{#condition this.old.lastname "||" this.modified.lastname }}
+            <tr>
+                <th>{{this.labels.lastname}}</th>
+                <th>{{this.labels.lastname}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.lastname}}</td>
+                <td>{{this.modified.lastname}}</td>
+            </tr>
+        {{/condition}}
+
         {{#condition this.old.gender "||" this.modified.gender }}
             <tr>
                 <th>{{this.labels.gender}}</th>

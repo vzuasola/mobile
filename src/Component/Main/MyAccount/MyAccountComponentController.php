@@ -270,8 +270,8 @@ class MyAccountComponentController
 
         $playerDetails = [
             'username' => $defaultValues['username'],
-            'firstname' => $defaultValues['firstName'],
-            'lastname' => $defaultValues['lastName'],
+            'firstname' => $profileFormValues['firstName'],
+            'lastname' => $profileFormValues['lastName'],
             'email' => $defaultValues['email'],
             'countryid' => $defaultValues['countryId'],
             'gender' => $profileFormValues['gender'],

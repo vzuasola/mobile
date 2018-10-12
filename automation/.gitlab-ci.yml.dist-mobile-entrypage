@@ -110,6 +110,19 @@ dev:
   tags:
     - jmeter
 
+lighthouse development:
+  stage: integration-tests-development
+  when: manual
+  script:
+    - python -u automation/run.py --stage lighthouse
+  artifacts:
+    when: always
+    paths:
+      - automation/deployed/*.html
+    expire_in: 1 month
+  tags:
+    - devrunner
+
 qa1:
   stage: deploy-test
   environment:
@@ -137,7 +150,7 @@ qa1:
       - automation/deployed/*.jsonl
     expire_in: 1 month
 
-hp fortify scan qa1:
+.hp fortify scan qa1:
   stage: security-tests-test
   script:
     - python -u automation/run.py --stage code-scan-testing
@@ -161,6 +174,19 @@ hp fortify scan qa1:
     expire_in: 1 month
   tags:
     - jmeter
+
+lighthouse qa1:
+  stage: integration-tests-test
+  when: manual
+  script:
+    - python -u automation/run.py --stage lighthouse-test
+  artifacts:
+    when: always
+    paths:
+      - automation/deployed/*.html
+    expire_in: 1 month
+  tags:
+    - tstrunner
 
 tct:
   stage: deploy-test
@@ -203,6 +229,19 @@ tct:
   tags:
     - jmeter
 
+lighthouse tct:
+  stage: integration-tests-test
+  when: manual
+  script:
+    - python -u automation/run.py --stage lighthouse-tct
+  artifacts:
+    when: always
+    paths:
+      - automation/deployed/*.html
+    expire_in: 1 month
+  tags:
+    - intrunner
+
 testing signoff:
   stage: testing-signoff
   script:
@@ -211,7 +250,6 @@ testing signoff:
   dependencies:
     - qa1
     - tct
-    - hp fortify scan qa1
   artifacts:
     paths:
       - automation/deployed/*.jsonl
@@ -269,6 +307,19 @@ uat:
   tags:
     - jmeter
 
+lighthouse uat:
+  stage: integration-tests-staging
+  when: manual
+  script:
+    - python -u automation/run.py --stage lighthouse-uat
+  artifacts:
+    when: always
+    paths:
+      - automation/deployed/*.html
+    expire_in: 1 month
+  tags:
+    - uatrunner
+
 staging:
   stage: deploy-staging
   environment:
@@ -317,6 +368,19 @@ staging:
     - tags
   tags:
     - jmeter
+
+lighthouse stg:
+  stage: integration-tests-staging
+  when: manual
+  script:
+    - python -u automation/run.py --stage lighthouse-stg
+  artifacts:
+    when: always
+    paths:
+      - automation/deployed/*.html
+    expire_in: 1 month
+  tags:
+    - stgrunner
 
 .acunetix staging:
   stage: security-tests-staging

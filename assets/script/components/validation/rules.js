@@ -68,8 +68,6 @@ validators.no_symbols = {
  */
 validators.numeric = {
     callback: function (value, param, field) {
-        value = utility.trim(value);
-
         var regex = new RegExp("^[0-9]+$");
 
         return regex.test(value);

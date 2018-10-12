@@ -6,6 +6,9 @@
         </ul>
         <div class="container">
             <div class="tab-content" id="my-profile-content">
+                {% if (isFastReg) %}
+                    <div class="alert ml-15 mr-15 mb-0 mt-10" id="fast-reg-notification"> {{ flashMessage|raw}} </div>
+                {% endif %}
                 {{ widget('profile') }}
             </div>
             <div class="tab-content" id="change-password-content">

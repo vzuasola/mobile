@@ -9,6 +9,7 @@ from __future__ import absolute_import
 import os
 import subprocess
 import json
+import re
 from .logger import logger
 from .progressbar import ProgressBar
 from .error import PipelineError
@@ -245,24 +246,39 @@ def expand_variables(string, return_error=False):
     """
     if '$' not in string:
         return string
-    pre, _, post = string.partition('$')
-    # take the first element of the string followed by ::space:: or all the
-    # string
-    env_variable = post.split(':')[0]
-    env_variable = env_variable.split('/')[0]
-    env_variable = env_variable.split(' ')[0]
-    env_variable = env_variable.split('.')[0]
-    # remove any '
-    env_variable = env_variable.replace("'", '')
-    # remove any "
-    env_variable = env_variable.replace('"', '')
-    # remove any space from the string
-    if env_variable not in os.environ:
-        msg = "{0} is not defined in your environment".format(env_variable)
-        if return_error:
-            return False
-        raise PipelineError(msg)
-    string = string.replace('${0}'.format(env_variable), os.environ[env_variable])
+    # used for multiple variables
+    if string.count('$') > 1:
+       env_variables = re.findall('\$[a-zA-Z0-9_]+', string)
+       invalid_vars = filter(lambda x: '-' in x, env_variables)
+       if invalid_vars:
+           msg = 'Invalid variable format {}: contains -'.format(" ".join(invalid_vars))
+           raise PipelineError(msg)
+       for e in env_variables:
+          var = e.strip('$')
+          if var not in os.environ:
+              msg = "{} is not defined in your environment".format(e)
+              raise PipelineError(msg)
+          else:
+              string = string.replace(e, os.environ[var])
+    else:
+        pre, _, post = string.partition('$')
+        # take the first element of the string followed by ::space:: or all the
+        # string
+        env_variable = post.split(':')[0]
+        env_variable = env_variable.split('/')[0]
+        env_variable = env_variable.split(' ')[0]
+        env_variable = env_variable.split('.')[0]
+        # remove any '
+        env_variable = env_variable.replace("'", '')
+        # remove any "
+        env_variable = env_variable.replace('"', '')
+        # remove any space from the string
+        if env_variable not in os.environ:
+            msg = "{0} is not defined in your environment".format(env_variable)
+            if return_error:
+                return False
+            raise PipelineError(msg)
+        string = string.replace('${0}'.format(env_variable), os.environ[env_variable])
     if "$" in string:
         return expand_variables(string)
     return string
@@ -272,11 +288,19 @@ def execute(image_name, dockerfile, options, command, volumes, output, pipeline_
 
     create_image(image_name=image_name, docker_file=dockerfile)
 
-    cmd = [docker_executable(),
-           'run',
-           '--rm', '-t', '--security-opt', 'label:type:unconfined_t',
-           '-v', '{0}:/root/.ssh/:ro'.format(ssh_dir()),
-           '--env', 'PIPELINE_STAGE={0}'.format(pipeline_stage)]
+    if 'build-docker-image' in pipeline_stage:
+        cmd = [docker_executable(),
+               'run',
+               '-v', '/var/run/docker.sock:/var/run/docker.sock',
+               '-v', '/home/gitlab-runner/.docker/config.json:/root/.docker/config.json:',
+               '-w', '/app']
+               # '--env', 'PIPELINE_STAGE={0}'.format(pipeline_stage)]
+    else:
+        cmd = [docker_executable(),
+               'run',
+               '--rm', '-t', '--security-opt', 'label:type:unconfined_t',
+               '-v', '{0}:/root/.ssh/:ro'.format(ssh_dir()),
+               '--env', 'PIPELINE_STAGE={0}'.format(pipeline_stage)]
 
     for volume in volumes:
         cmd.append('-v')
