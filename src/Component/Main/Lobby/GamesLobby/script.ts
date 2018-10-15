@@ -544,7 +544,12 @@ export class GamesLobbyComponent implements ComponentInterface {
                 const gamesEl = this.element.querySelector("#game-container");
                 if (gamesEl && gameLoader && this.load) {
                     this.currentPage += 1;
-                    const hash = utility.getHash(window.location.href);
+                    let hash = utility.getHash(window.location.href);
+                    if (!this.response.games[hash]) {
+                        const categoriesEl = this.element.querySelector("#game-categories");
+                        const activeLink = categoriesEl.querySelector(".category-tab .active a");
+                        hash = activeLink.getAttribute("data-category-filter-id");
+                    }
                     let pager = this.getPagedContent(this.response.games[hash]);
 
                     if (utility.hasClass(this.element.querySelector(".search-tab"), "active")) {
@@ -578,7 +583,9 @@ export class GamesLobbyComponent implements ComponentInterface {
      }
 
     private activateSearchTab() {
-        const activeCategory = utility.getHash(window.location.href);
+        const categoriesEl = this.element.querySelector("#game-categories");
+        const activeLink = categoriesEl.querySelector(".category-tab .active a");
+        const activeCategory = activeLink.getAttribute("data-category-filter-id");
         // set search tab as active tab
         utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.addClass(this.element.querySelector(".search-tab"), "active");
