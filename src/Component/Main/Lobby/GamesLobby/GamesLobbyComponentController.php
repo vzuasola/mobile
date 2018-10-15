@@ -96,6 +96,25 @@ class GamesLobbyComponentController
         }
 
         // Put post process here to get favorites and recents tab
+        $specialGamesList = $this->getSpecialCategoriesGameList($data['special_categories']);
+
+        $gamesData = $data['games'] + $specialGamesList;
+
+        $specialCategoryGames = $this->getSpecialGamesbyCategory(
+            $data['special_categories'],
+            $gamesData
+        );
+
+        $data['games'] += $specialCategoryGames;
+        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $data['games']);
+        $data['games'] = $this->groupGamesByContainer($data['games'], 3);
+
+        if (isset($specialGamesList['favorites'])) {
+            $data['favorite_list'] = $this->getFavoriteGamesList($specialGamesList['favorites']);
+        }
+
+        unset($data['categories_list']);
+        unset($data['special_categories']);
 
         return $this->rest->output($response, $data);
     }
@@ -111,26 +130,13 @@ class GamesLobbyComponentController
         $specialCategories = [];
         $specialCategories = $this->getSpecialCategories($categories);
 
-        // DANIEL fix me
-        // $specialGamesList = $this->getSpecialCategoriesGameList($specialCategories);
-        // $asyncData += $specialGamesList;
-
-        $specialCategoryGames = $this->getSpecialGamesbyCategory(
-            $specialCategories,
-            $asyncData
-        );
+        $data['special_categories'] = $specialCategories;
+        $data['categories_list'] = $categories;
 
         $data['games'] = $this->getGamesbyCategory(
             $categories,
             $asyncData
-        ) + $specialCategoryGames;
-
-        $data['categories'] = $this->getArrangedCategoriesByGame($categories, $data['games']);
-        $data['games'] = $this->groupGamesByContainer($data['games'], 3);
-
-        if (isset($asyncData['favorites'])) {
-            $data['favorite_list'] = $this->getFavoriteGamesList($asyncData['favorites']);
-        }
+        );
 
         return $data;
     }
@@ -217,8 +223,9 @@ class GamesLobbyComponentController
     {
         $gamesList = [];
         foreach ($categories as $category) {
-            if (strtolower($category['field_isordinarycategory']) === "true" &&
-                $data[$category['field_games_alias']]
+            if ((strtolower($category['field_isordinarycategory']) === "true" &&
+                $data[$category['field_games_alias']]) ||
+                $category['field_games_alias'] === $this::ALL_GAMES
             ) {
                 $categoryId = $category['field_games_alias'];
                 $games = $data[$category['field_games_alias']];
@@ -252,7 +259,7 @@ class GamesLobbyComponentController
     {
         try {
             foreach ($games as $game) {
-                $allGames[$game['field_game_code'][0]['value']] = $this->processGame($game, true);
+                $allGames[$game['game_code']] = $game;
             }
         } catch (\Exception $e) {
             $allGames = [];
@@ -268,12 +275,8 @@ class GamesLobbyComponentController
     {
         $allGames = $this->getAllGames($data['all-games']);
         $gamesList = [];
-
         foreach ($specialCategories as $category) {
             switch ($category['field_games_alias']) {
-                case $this::ALL_GAMES:
-                    $gamesList[$category['field_games_alias']] = $allGames;
-                    break;
                 case $this::RECENTLY_PLAYED_GAMES:
                     if (isset($data['recently-played'])) {
                         $games = $this->getRecentlyPlayedGames($allGames, $data['recently-played']);
