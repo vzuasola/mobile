@@ -300,9 +300,13 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
             this.currentPage = 0;
-            let key = this.response.categories[0].field_games_alias;
-            key = this.getActiveCategory(this.response.games, key);
-            window.location.hash = key;
+            const first = this.response.categories[0].field_games_alias;
+            const key = this.getActiveCategory(this.response.games, first);
+            if (utility.getHash(window.location.href) !== key &&
+                key !== first
+            ) {
+                window.location.hash = key;
+            }
 
             const categoriesEl = this.element.querySelector("#game-categories");
             const activeLink = categoriesEl.querySelector(".category-tab .active a");
