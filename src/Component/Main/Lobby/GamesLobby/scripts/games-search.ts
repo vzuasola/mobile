@@ -239,7 +239,10 @@ export class GamesSearch {
      * Function that enables search tab and sets category in URL to inactive
      */
     private activateSearchTab() {
-        const activeCategory = utility.getHash(window.location.href);
+        const categoriesEl = this.element.querySelector("#game-categories");
+        const activeLink = categoriesEl.querySelector(".category-tab .active a");
+        const activeCategory = activeLink.getAttribute("data-category-filter-id");
+
         // set search tab as active tab
         utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.addClass(this.element.querySelector(".search-tab"), "active");
