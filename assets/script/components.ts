@@ -4,6 +4,7 @@ import {AccessDeniedComponent} from "@app/src/Component/Main/AccessDenied/script
 import {HeaderComponent} from "@app/src/Component/Header/script";
 import {BacktotopComponent} from "@app/src/Component/Backtotop/script";
 import {MenuComponent} from "@app/src/Component/Menu/script";
+import {MetaComponent} from "@app/src/Component/Meta/script";
 import {LoginComponent} from "@app/src/Component/Header/Login/script";
 import {PromotionsComponent} from "@app/src/Component/Main/Promotions/script";
 import {DownloadComponent} from "@app/src/Component/Main/Lobby/Home/Download/script";
@@ -37,6 +38,7 @@ ComponentManager.setComponents({
     header: new HeaderComponent(),
     backtotop: new BacktotopComponent(),
     menu: new MenuComponent(),
+    meta: new MetaComponent(),
     header_login: new LoginComponent(),
     promotions: new PromotionsComponent(),
     home_download: new DownloadComponent(),

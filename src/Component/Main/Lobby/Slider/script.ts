@@ -1,6 +1,11 @@
 import * as utility from "@core/assets/js/components/utility";
 
+import * as xhr from "@core/assets/js/vendor/reqwest";
+
+import * as sliderTemplate from "./handlebars/slider.handlebars";
+
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import Xlider from "@app/assets/script/components/xlider";
 
@@ -8,17 +13,21 @@ import Xlider from "@app/assets/script/components/xlider";
  *
  */
 export class LobbySliderComponent implements ComponentInterface {
+    private element: HTMLElement;
+
     onLoad(element: HTMLElement, attachments: {}) {
-        this.activateSlider(element);
+        this.element = element;
+        this.getSliders();
         this.listenClickslider();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        this.activateSlider(element);
+        this.element = element;
+        this.getSliders();
     }
 
-    private activateSlider(element) {
-        const slider: HTMLElement = element.querySelector("#main-slider");
+    private activateSlider() {
+        const slider: HTMLElement = this.element.querySelector("#main-slider");
 
         if (slider && slider.querySelectorAll(".xlide-item").length > 0) {
             // tslint:disable-next-line:no-unused-expression
@@ -103,5 +112,30 @@ export class LobbySliderComponent implements ComponentInterface {
                 });
             }
         });
+    }
+
+    private getSliders() {
+        const product = ComponentManager.getAttribute("product");
+
+        xhr({
+            url: Router.generateRoute("lobby_slider", "sliders"),
+            type: "json",
+            data: {
+                product,
+            },
+        }).then((response) => {
+            this.generateSliderMarkup(response);
+            this.activateSlider();
+        });
+    }
+
+    private generateSliderMarkup(data) {
+        const slider: HTMLElement = this.element.querySelector("#main-slider");
+        const template = sliderTemplate({
+            sliderData: data,
+        });
+
+        slider.innerHTML = template;
+
     }
 }

@@ -13,6 +13,9 @@ components:
   menu:
     class: App\MobileEntry\Component\Menu\MenuComponent
 
+  meta:
+    class: App\MobileEntry\Component\Meta\MetaComponent
+
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
 
@@ -164,3 +167,6 @@ modules:
 
   exchange_integration:
     class: App\MobileEntry\Module\ProductIntegration\Exchange\ExchangeIntegrationModule
+
+  games_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Games\GamesIntegrationModule
