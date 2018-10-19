@@ -8,16 +8,18 @@
 <div class="category-tab-list" id="category-tab">
     <ul class="game-category">
     {{#each categories}}
-        <li class="game-category-item {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
-            <a
-                href="#{{this.field_games_alias}}"
-                class="category-tab category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
-                data-category-filter-id="{{this.field_games_alias}}"
-                data-category-filter-name="{{{this.name}}}"
-            >
-                {{{this.name}}}
-            </a>
-        </li>
+        {{#if this.published }}
+            <li class="game-category-item {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
+                <a
+                    href="#{{this.field_games_alias}}"
+                    class="category-tab category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
+                    data-category-filter-id="{{this.field_games_alias}}"
+                    data-category-filter-name="{{{this.name}}}"
+                >
+                    {{{this.name}}}
+                </a>
+            </li>
+        {{/if}}
     {{/each}}
     </ul>
 </div>

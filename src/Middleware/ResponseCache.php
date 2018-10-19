@@ -21,7 +21,7 @@ class ResponseCache extends Base
     /**
      * Gets the cache key
      */
-    protected function getCacheKey()
+    protected function getCacheKey($request)
     {
         $uri = $this->request->getUri();
 

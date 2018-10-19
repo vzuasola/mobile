@@ -390,11 +390,52 @@ class GamesLobbyComponentController
             }
 
             if (isset($gamesList[$category['field_games_alias']])) {
+                $category['published'] = $this->checkIfPublished(
+                    $category['field_publish_date'],
+                    $category['field_unpublish_date']
+                );
                 $categoryList[] = $category;
             }
         }
-
         return $categoryList;
+    }
+
+    private function checkIfPublished($dateStart, $dateEnd)
+    {
+        if (!$dateStart && !$dateEnd) {
+            return true;
+        }
+
+        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone('UTC'));
+        $currentDate = $currentDate->getTimestamp();
+        if ($dateStart && $dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateStart && !$dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateEnd && !$dateStart) {
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($endDate->getTimestamp() >=$currentDate) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getFavoriteGamesList($favGames)
