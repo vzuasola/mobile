@@ -81,7 +81,6 @@ class AnnouncementComponent implements ComponentWidgetInterface
         $announcement = [];
         $announcement['list'] = [];
         $announcementCount = 0;
-
         foreach ($contents as $content) {
             $showItem = true;
 
@@ -97,17 +96,62 @@ class AnnouncementComponent implements ComponentWidgetInterface
                 $announcementCount++;
             }
 
-            $announcement['list'][] = [
-                'show' => $showItem,
-                'nid' =>  $content['id'][0]['value'],
-                'name' => $content['name'][0]['value'],
-                'title' => $content['field_title'][0]['value'] ?? "",
-                'text' => $content['field_body'][0]['value'],
-            ];
+            $isPublished = $this->checkIfPublished(
+                $category['field_publish_date'],
+                $category['field_unpublish_date']
+            );
+
+            if ($isPublished) {
+                $announcement['list'][] = [
+                    'show' => $showItem,
+                    'nid' =>  $content['id'][0]['value'],
+                    'name' => $content['name'][0]['value'],
+                    'title' => $content['field_title'][0]['value'] ?? "",
+                    'text' => $content['field_body'][0]['value'],
+                ];
+            }
         }
 
         $announcement['count'] = $announcementCount;
 
         return $announcement;
+    }
+
+    private function checkIfPublished($dateStart, $dateEnd)
+    {
+        if (!$dateStart && !$dateEnd) {
+            return true;
+        }
+
+        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone('UTC'));
+        $currentDate = $currentDate->getTimestamp();
+        if ($dateStart && $dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateStart && !$dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateEnd && !$dateStart) {
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($endDate->getTimestamp() >=$currentDate) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

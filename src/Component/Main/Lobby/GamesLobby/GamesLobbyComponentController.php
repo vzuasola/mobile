@@ -390,11 +390,13 @@ class GamesLobbyComponentController
             }
 
             if (isset($gamesList[$category['field_games_alias']])) {
-                $category['published'] = $this->checkIfPublished(
+                $isPublished = $this->checkIfPublished(
                     $category['field_publish_date'],
                     $category['field_unpublish_date']
                 );
-                $categoryList[] = $category;
+                if ($isPublished) {
+                    $categoryList[] = $category;
+                }
             }
         }
         return $categoryList;
