@@ -201,7 +201,7 @@ class SliderComponentController
             return true;
         }
 
-        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone('UTC'));
+        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
         $currentDate = $currentDate->getTimestamp();
         if ($dateStart && $dateEnd) {
             $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));

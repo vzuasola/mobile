@@ -81,6 +81,7 @@ class AnnouncementComponent implements ComponentWidgetInterface
         $announcement = [];
         $announcement['list'] = [];
         $announcementCount = 0;
+
         foreach ($contents as $content) {
             $showItem = true;
 
@@ -88,21 +89,25 @@ class AnnouncementComponent implements ComponentWidgetInterface
                 $content['field_availability'] :
                 $content['field_availability'][0]['value'];
 
-            if (($availability == '0' && $isLogin) ||
-                ($availability == '1' && !$isLogin)
+            $dateStart = $content['field_publish_date'][0]['value'] ?? '';
+            $dateEnd = $content['field_unpublish_date'][0]['value'] ?? '';
+
+            $isPublished = $this->checkIfPublished(
+                $dateStart,
+                $dateEnd
+            );
+
+            if (($availability == '0' && $isLogin && !$isPublished) ||
+                ($availability == '1' && !$isLogin && !$isPublished)
             ) {
                 $showItem  = false;
             } else {
                 $announcementCount++;
             }
 
-            $isPublished = $this->checkIfPublished(
-                $category['field_publish_date'],
-                $category['field_unpublish_date']
-            );
-
             if ($isPublished) {
                 $announcement['list'][] = [
+                    'published' => $isPublished,
                     'show' => $showItem,
                     'nid' =>  $content['id'][0]['value'],
                     'name' => $content['name'][0]['value'],
@@ -111,7 +116,6 @@ class AnnouncementComponent implements ComponentWidgetInterface
                 ];
             }
         }
-
         $announcement['count'] = $announcementCount;
 
         return $announcement;
@@ -123,7 +127,7 @@ class AnnouncementComponent implements ComponentWidgetInterface
             return true;
         }
 
-        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone('UTC'));
+        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
         $currentDate = $currentDate->getTimestamp();
         if ($dateStart && $dateEnd) {
             $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
