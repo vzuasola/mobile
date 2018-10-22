@@ -395,6 +395,7 @@ class GamesLobbyComponentController
                     $category['field_unpublish_date']
                 );
                 if ($isPublished) {
+                    $category['published'] = $isPublished;
                     $categoryList[] = $category;
                 }
             }
