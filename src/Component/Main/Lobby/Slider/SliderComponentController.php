@@ -67,16 +67,6 @@ class SliderComponentController
     }
 
     /**
-     * Defines the template path
-     *
-     * @return string
-     */
-    public function getTemplate()
-    {
-        return '@component/Main/Lobby/Slider/template.html.twig';
-    }
-
-    /**
      * Defines the data to be passed to the twig template
      *
      * @return array
