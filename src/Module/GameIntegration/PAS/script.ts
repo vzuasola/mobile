@@ -46,6 +46,13 @@ export class PASModule implements ModuleInterface, GameInterface {
             iapiSetCallout("Logout", this.onLogout);
             iapiSetCallout("KeepAlive", this.onKeepAlive);
         }
+
+        if (this.isSessionAlive) {
+            // Persist session
+            this.sessionPersist();
+        } else if (this.store.get(this.sessionFlag) !== null) {
+            this.doLogout();
+        }
     }
 
     login(username, password) {
