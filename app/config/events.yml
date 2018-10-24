@@ -9,12 +9,12 @@ subscribers:
     hooks:
       - App\Handlers\Login\LegacyAuthentication
       - App\MobileEntry\Handlers\Login\Accounts
-      - App\MobileEntry\Handlers\Login\PlayerDetailsStore
+      - App\Handlers\Login\PlayerDetailsStore
   logout:
     hooks:
       - App\MobileEntry\Handlers\Logout\DSBLogout
       - App\MobileEntry\Handlers\Logout\Accounts
-      - App\MobileEntry\Handlers\Logout\PlayerDetailsRemove
+      - App\Handlers\Logout\PlayerDetailsRemove
   session_cleanup:
     hooks:
       - App\MobileEntry\Handlers\Session\HashCleanup
