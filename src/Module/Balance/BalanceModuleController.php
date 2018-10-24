@@ -13,7 +13,7 @@ class BalanceModuleController
     const SPECIAL_BALANCE_BEHAVIORS = [
         'casino' => 1,
         'casino_gold' => 2,
-        'poker' => 3,
+        // 'poker' => 3,
         'oneworks' => 4,
         'shared_wallet' => 5,
         'als' => 6,

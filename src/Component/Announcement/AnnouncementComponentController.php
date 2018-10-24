@@ -98,8 +98,8 @@ class AnnouncementComponentController
                 $dateEnd
             );
 
-            if (($availability == '0' && $isLogin && !$isPublished) ||
-                ($availability == '1' && !$isLogin && !$isPublished)
+            if (($availability == '0' && $isLogin && $isPublished) ||
+                ($availability == '1' && !$isLogin && $isPublished)
             ) {
                 $showItem  = false;
             } else {

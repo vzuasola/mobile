@@ -24,6 +24,9 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("voidbridge", voidbridge);
         this.gameLauncher.setProvider("skywind", skywind);
-        this.gameLauncher.init();
+
+        setTimeout(() => {
+            this.gameLauncher.init();
+        }, 20);
     }
 }
