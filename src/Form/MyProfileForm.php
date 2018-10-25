@@ -296,9 +296,8 @@ class MyProfileForm extends FormBase implements FormInterface
             'receive_news' => $receiveNews,
         ];
 
-        if ($result['sms_1_verified']) {
-            $result['mobile_number_1'] = $this->contactNumberMasking($result['mobile_number_1']);
-        }
+        $result['mobile_number_1'] = $this->contactNumberMasking($result['mobile_number_1']);
+        $result['mobile_number_2'] = $this->contactNumberMasking($result['mobile_number_2']);
 
         return $result;
     }
