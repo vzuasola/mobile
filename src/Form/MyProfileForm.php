@@ -296,8 +296,9 @@ class MyProfileForm extends FormBase implements FormInterface
             'receive_news' => $receiveNews,
         ];
 
-        $result['mobile_number_1'] = $this->contactNumberMasking($result['mobile_number_1']);
-        $result['mobile_number_2'] = $this->contactNumberMasking($result['mobile_number_2']);
+        if ($result['sms_1_verified']) {
+            $result['mobile_number_1'] = $this->contactNumberMasking($result['mobile_number_1']);
+        }
 
         return $result;
     }
@@ -316,6 +317,10 @@ class MyProfileForm extends FormBase implements FormInterface
                 strtoupper($dummyName) == 'DFRLN') {
                 $definition['submit']['options']['attr']['data-redirect'] = 1;
                 $definition[$field]['options']['attr']['value'] = "";
+
+                if ($this->request->getQueryParam("pmid")) {
+                    $definition['submit']['options']['attr']['data-redirect'] = 1;
+                }
             } else {
                 $definition[$field]['options']['attr']['disabled'] = "disabled";
             }
