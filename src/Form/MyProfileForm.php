@@ -316,6 +316,10 @@ class MyProfileForm extends FormBase implements FormInterface
                 strtoupper($dummyName) == 'DFRLN') {
                 $definition['submit']['options']['attr']['data-redirect'] = 1;
                 $definition[$field]['options']['attr']['value'] = "";
+
+                if ($this->request->getQueryParam("pmid")) {
+                    $definition['submit']['options']['attr']['data-redirect'] = 1;
+                }
             } else {
                 $definition[$field]['options']['attr']['disabled'] = "disabled";
             }
