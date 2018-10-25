@@ -4,8 +4,10 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import Storage from "@core/assets/js/components/utils/storage";
 
+import SyncEvents from "@core/assets/js/components/utils/sync-events";
+
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 
@@ -15,6 +17,7 @@ import {GameInterface} from "./../scripts/game.interface";
  */
 export class PASModule implements ModuleInterface, GameInterface {
     private store: Storage = new Storage();
+    private sync: SyncEvents = new SyncEvents();
 
     private isSessionAlive: boolean;
     private timer = null;
@@ -27,31 +30,33 @@ export class PASModule implements ModuleInterface, GameInterface {
     private languageMap: any;
     private lang: string;
 
+    private isGold: boolean;
+
     onLoad(attachments: {
         authenticated: boolean,
         iapiconfOverride: {},
         lang: string,
         langguageMap: {[name: string]: string},
         iapiConfigs: any,
+        isGold: boolean,
     }) {
         this.isSessionAlive = attachments.authenticated;
         this.iapiconfOverride = attachments.iapiconfOverride;
         this.lang = attachments.lang;
         this.languageMap = attachments.langguageMap;
         this.iapiConfs = attachments.iapiConfigs;
+        this.isGold = attachments.isGold;
+        this.keepAliveTrigger();
+        this.listenSessionLogin();
     }
 
     init() {
         if (typeof iapiSetCallout !== "undefined") {
             iapiSetCallout("Logout", this.onLogout);
-            iapiSetCallout("KeepAlive", this.onKeepAlive);
         }
 
         if (this.isSessionAlive) {
-            // Persist session
             this.sessionPersist();
-        } else if (this.store.get(this.sessionFlag) !== null) {
-            this.doLogout();
         }
     }
 
@@ -66,11 +71,11 @@ export class PASModule implements ModuleInterface, GameInterface {
                 url: `${uri}?username=${user}`,
             }).then((response) => {
                 let ctr = 0;
-
                 for (const key in this.iapiConfs) {
                     if (this.iapiConfs.hasOwnProperty(key)) {
+                        this.isGold = response.provisioned;
                         if (key === "dafagold" && !response.provisioned) {
-                            break;
+                            continue;
                         }
 
                         ++ ctr;
@@ -106,6 +111,12 @@ export class PASModule implements ModuleInterface, GameInterface {
         this.doLogout();
     }
 
+    private keepAliveTrigger() {
+        Router.on(RouterClass.afterNavigate, (event) => {
+            this.sessionPersist();
+        });
+    }
+
     private setiApiConfOverride() {
         for (const k in iapiConf) {
             if (typeof this.iapiconfOverride[k] !== "undefined") {
@@ -119,15 +130,6 @@ export class PASModule implements ModuleInterface, GameInterface {
      */
     private onLogout(response) {
         clearTimeout(this.timer);
-    }
-
-    /**
-     * Keeptimeout handler
-     */
-    private onKeepAlive(response) {
-        if (response.errorCode !== 0) {
-            clearTimeout(this.timer);
-        }
     }
 
     /**
@@ -145,18 +147,52 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     /**
+     * Listen to session login
+     */
+    private listenSessionLogin() {
+        ComponentManager.subscribe("session.login", (event) => {
+            this.sessionPersist();
+        });
+    }
+
+    /**
      * Call the keep alive iapi method, keepSessionTime is configured to 15mins
      * IMS default session timeout is configured to 30mins
      */
     private doKeepAlive() {
-        iapiSetCallout("GetLoggedInPlayer", (response) => {
-            if (this.verifyCookie(response)) {
-                iapiKeepAlive(1, this.keepSessionTime);
-            }
-        });
+        let ctr = 0;
+        const promises = [];
+        for (const key in this.iapiConfs) {
+            if (this.iapiConfs.hasOwnProperty(key)) {
+                if (key === "dafagold" && !this.isGold) {
+                    continue;
+                }
+                ++ ctr;
+                const promise = () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            iapiConf = this.iapiConfs[key];
+                            // Set the callback for the PAS login
+                            iapiSetCallout("KeepAlive", (response) => {
+                                if (response.errorCode !== 0) {
+                                    clearTimeout(this.timer);
+                                }
+                                resolve();
+                            });
+                            iapiKeepAlive(1, this.keepSessionTime);
 
-        // Trigger the session check
-        this.doCheckSession();
+                            // after n seconds, nothing still happen, I'll let the other
+                            // hooks to proceed
+                            setTimeout(() => {
+                                resolve();
+                            }, 10 * 1000);
+                        }, 1.5 * 500 * ctr);
+                    });
+                };
+                promises.push(promise);
+            }
+        }
+        this.sync.executeWithArgs(promises, []);
     }
 
     /**
