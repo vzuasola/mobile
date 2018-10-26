@@ -61,6 +61,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     login(username, password) {
+        this.isSessionAlive = true;
         return new Promise((resolve, reject) => {
             const user = username.toUpperCase();
             const real = 1;
@@ -113,7 +114,9 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private keepAliveTrigger() {
         Router.on(RouterClass.afterNavigate, (event) => {
-            this.sessionPersist();
+            if (this.isSessionAlive) {
+                this.sessionPersist();
+            }
         });
     }
 
@@ -219,17 +222,37 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Logs out the PAS session
      */
     private doLogout() {
-        const ctr = 0;
         this.isSessionAlive = false;
+        let ctr = 0;
+        const promises = [];
         for (const key in this.iapiConfs) {
             if (this.iapiConfs.hasOwnProperty(key)) {
                 if (key === "dafagold" && !this.isGold) {
                     continue;
                 }
-                iapiConf = this.iapiConfs[key];
-                iapiLogout(1, 1);
+                ++ ctr;
+                const promise = () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            iapiConf = this.iapiConfs[key];
+                            // Set the callback for the PAS login
+                            iapiSetCallout("Logout", (response) => {
+                                resolve();
+                            });
+                            iapiLogout(1, 1);
+
+                            // after n seconds, nothing still happen, I'll let the other
+                            // hooks to proceed
+                            setTimeout(() => {
+                                resolve();
+                            }, 10 * 1000);
+                        }, 1.5 * 500 * ctr);
+                    });
+                };
+                promises.push(promise);
             }
         }
+        this.sync.executeWithArgs(promises, []);
     }
 
     /**
