@@ -219,20 +219,17 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Logs out the PAS session
      */
     private doLogout() {
-        iapiSetCallout("GetLoggedInPlayer", (response) => {
-            // Remove the session flag to avoid recurring calls
-            this.store.remove(this.sessionFlag);
-            if (this.verifyCookie(response)) {
-                // If there's an existing cookie only then we trigger the logout
-                // So that we don't blindly call and bombard the logout endpoint
-                // 1 = logout to all platform
-                // 1 = realmode
+        const ctr = 0;
+        this.isSessionAlive = false;
+        for (const key in this.iapiConfs) {
+            if (this.iapiConfs.hasOwnProperty(key)) {
+                if (key === "dafagold" && !this.isGold) {
+                    continue;
+                }
+                iapiConf = this.iapiConfs[key];
                 iapiLogout(1, 1);
             }
-        });
-
-        // Trigger the session check
-        this.doCheckSession();
+        }
     }
 
     /**
