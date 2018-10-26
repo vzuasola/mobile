@@ -44,6 +44,10 @@ class GameLauncher {
         ComponentManager.subscribe("session.login", (event, src, data) => {
             this.onLogin(event, data.src);
         });
+
+        ComponentManager.subscribe("session.logout", (event, src, data) => {
+            this.invokeAll("logout");
+        });
     }
 
     private activateLoginHooks() {
