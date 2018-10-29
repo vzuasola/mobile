@@ -140,8 +140,6 @@ class PushNotificationComponentController
 
         $data['productTypeId'] = $products['productTypeId'];
         $data['productDetails'] = $products['products'];
-        // $data['productTypeIdMapping'] = $this->configProductMapping();
-        // $data['productTypeIdIcon'] = $this->configIconMapping();
         $data['retryCount'] = $this->pnxconfig['retry_count'];
 
         $data['dismiss']['button_label'] = $this->pnxconfig['dismiss_button_label'];
@@ -152,8 +150,6 @@ class PushNotificationComponentController
         $data['texts']['title'] = $this->pnxconfig['title'];
         $data['texts']['empty'] = $this->pnxconfig['empty'];
         $data['texts']['expired_message'] = $this->pnxconfig['expired_message'];
-        // $data['texts'] = $this->parseTranslatedTexts();
-        // $data['texts']['expired_message'] = $this->getConfigByPlayerLocale('expiry_error_message');
 
         $data['disableBonusAward'] = $this->pnxconfig['disableBonusAward'] ?? 0;
 
