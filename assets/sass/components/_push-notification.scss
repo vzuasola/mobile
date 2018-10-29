@@ -28,8 +28,8 @@
 
     &-dismiss-all {
         position: absolute;
-        top: 0;
-        left: 0.6rem;
+        top: 1.5rem;
+        left: 1.6rem;
         color: $light-gray;
     }
 
@@ -190,17 +190,36 @@
         right: 12.5rem;
     }
 }
+#pushnxDismissLightbox {
+    background: rgba(0, 0, 0, .6);
 
-.pushnx-lightbox-dismiss-all {
-    z-index: 99999;
+    .modal-content {
+        background: $white;
+        border-radius: 0.4rem;
+    }
+
+    .pushnx-lightbox {
+        background: $white;
+
+        p {
+            color: $black;
+        }
+
+        #dismiss-yes {
+            margin-right: 0.5rem;
+        }
+
+        #dismiss-no {
+            margin-left: 0.5rem;
+        }
+    }
 }
-
 .debug-expired {
-    color: red;
+    color:$red;
     font-size: 1rem;
 }
 
 .debug-active {
-    color: green;
+    color: $green;
     font-size: 1rem;
 }
