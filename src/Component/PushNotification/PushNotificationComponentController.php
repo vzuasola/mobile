@@ -156,7 +156,14 @@ class PushNotificationComponentController
         $ctabuttons = $this->configButtons($this->pnxconfig['cta_button_list']);
 
         $data['cta'] = $ctabuttons;
-        $data['pushnx_domains'] = ($this->pnxconfig['domains']) ? $this->parseDomains($this->pnxconfig['domains']) : [];
+
+        if ($this->pnxconfig['domains']) {
+            $domains = $this->parseDomains($this->pnxconfig['domains']);
+        } else {
+            $domains = [];
+        }
+
+        $data['pushnx_domains'] = $domains;
 
         return $this->rest->output($response, $data);
     }
