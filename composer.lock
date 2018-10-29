@@ -631,16 +631,16 @@
         },
         {
             "name": "layershifter/tld-database",
-            "version": "1.0.62",
+            "version": "1.0.63",
             "source": {
                 "type": "git",
                 "url": "https://github.com/layershifter/TLDDatabase.git",
-                "reference": "145d51f6788b3ac7a5b7d3e2710ef22f8d945fe5"
+                "reference": "ab6cf2c91c4e89da1404b7f74f6ca709882dac1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/layershifter/TLDDatabase/zipball/145d51f6788b3ac7a5b7d3e2710ef22f8d945fe5",
-                "reference": "145d51f6788b3ac7a5b7d3e2710ef22f8d945fe5",
+                "url": "https://api.github.com/repos/layershifter/TLDDatabase/zipball/ab6cf2c91c4e89da1404b7f74f6ca709882dac1c",
+                "reference": "ab6cf2c91c4e89da1404b7f74f6ca709882dac1c",
                 "shasum": ""
             },
             "require": {
@@ -678,7 +678,7 @@
                 "domain database",
                 "tld database"
             ],
-            "time": "2018-08-28T07:05:25+00:00"
+            "time": "2018-10-08T19:20:50+00:00"
         },
         {
             "name": "layershifter/tld-extract",
@@ -822,7 +822,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "Developer"
+                    "role": "developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -2795,7 +2795,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "bb8c659033553e9ee4bfd0046b8659b1fd37b57c"
+                "reference": "0b9f74911bc65a4e6c21908335abecfb8a8872be"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -2846,7 +2846,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2018-10-24T01:58:19+00:00"
+            "time": "2018-10-25T06:55:17+00:00"
         },
         {
             "name": "willdurand/negotiation",

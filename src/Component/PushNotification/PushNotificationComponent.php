@@ -62,58 +62,11 @@ class PushNotificationComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $this->pnxconfig = $this->config->getConfig('webcomposer_config.pushnx_configuration');
+        $this->pnxconfig = $this->config->getConfig('webcomposer_config.pushnx_configuration_v2');
 
-        if ($this->playerSession->isLogin()) {
-            $playerDetails = $this->user->getPlayerDetails();
-            $this->playerLocale = strtolower($playerDetails['locale']);
-        }
-
-        $translated = $this->parseTranslatedTexts($this->pnxconfig['translated_texts']);
-
-        $data['title'] = $translated['notifications'];
+        $data['title'] = $this->pnxconfig['title'];
         $data['dismiss_button_label'] = $this->pnxconfig['dismiss_button_label'];
 
         return $data;
-    }
-
-    /**
-     * Parse translated texts
-     */
-    private function parseTranslatedTexts($translation)
-    {
-        $map = array_map('trim', explode(PHP_EOL, $translation));
-        $map = str_replace(' ', '', $map);
-
-        $texts = [];
-
-        foreach ($map as $value) {
-            $key = strtolower($value);
-            $index = 'text_' . $key;
-            $data = $this->getConfigByPlayerLocale($index);
-            $texts[$key] = $data;
-        }
-
-        return $texts;
-    }
-
-    /**
-     * Get config by player locale
-     */
-    private function getConfigByPlayerLocale($index)
-    {
-        if (isset($this->pnxconfig[$index])) {
-            $map = array_map('trim', explode(PHP_EOL, $this->pnxconfig[$index]));
-            foreach ($map as $value) {
-                list($lang, $text) = explode('|', $value);
-                if (strtolower($lang) == $this->playerLocale) {
-                    return $text;
-                }
-                // Fallback for empty locale
-                if (!$this->playerLocale) {
-                    return $text;
-                }
-            }
-        }
     }
 }

@@ -72,14 +72,14 @@ export class PushNotification {
                 control: false, // default value true
                 height: "auto", // custom height
             },
-            dismiss: false, // dismiss all message - default value false
+            dismiss: true, // dismiss all message - default value false
             counter: true, // message counter custom event "pushnx.count.message"
             notify: true, // new message indicator custom event "pushnx.new.message"
             action: false, // bind message action buttons default value true custom event "pushnx.action"
             buttons: {
-                OK: "btn btn-small btn-yellow pushnx-lightbox-btn-ok",
-                ACCEPT: "btn btn-small btn-medium btn-yellow pushnx-lightbox-btn-accept",
-                DECLINE: "btn btn-small btn-medium btn-red pushnx-lightbox-btn-decline",
+                ok: "btn btn-small btn-yellow pushnx-lightbox-btn-ok",
+                accept: "btn btn-small btn-medium btn-yellow pushnx-lightbox-btn-accept",
+                decline: "btn btn-small btn-medium btn-red pushnx-lightbox-btn-decline",
             },
             icons: true,
             iconsvg: {
