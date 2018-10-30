@@ -50,9 +50,8 @@ export class PushNotification {
         this.listenSessionLogin();
 
         if (attachments.authenticated) {
-            // Router.setLanguage(attachments.regLang);
             xhr({
-                url: Router.generateRoute("push_notification", "pushnx"),
+                url: Router.generateRoute("push_notification", "pushnx", {lang: attachments.regLang}),
                 type: "json",
                 method: "post",
             }).then((response) => {

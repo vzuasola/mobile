@@ -4,7 +4,7 @@
 
 require APP_ROOT . '/core/app/settings.php';
 
-$settings['settings']['configurations']['inheritance'] = true;
+$settings['settings']['configurations']['inheritance'] = false;
 
 // Twig
 
