@@ -43,28 +43,30 @@ export class PushNotification {
     private islogin;
     private isconnected: boolean;
 
-    constructor(element, attachments: {authenticated: boolean}) {
+    constructor(element, attachments: {authenticated: boolean, regLang: string}) {
         this.element = element;
         this.isconnected = false;
 
         this.listenSessionLogin();
 
         if (attachments.authenticated) {
+            Router.setLanguage(attachments.regLang);
             xhr({
                 url: Router.generateRoute("push_notification", "pushnx"),
                 type: "json",
                 method: "post",
             }).then((response) => {
                 if (response.enabled) {
-                    this.startPushNx(attachments.authenticated, response);
+                    this.startPushNx(attachments.authenticated, attachments.regLang, response);
                 }
             });
         }
     }
 
-    private startPushNx(login: boolean, pushnx: object) {
+    private startPushNx(login: boolean, language: string, pushnx: object) {
         this.pushnx = new PushNX({
             islogin: login,
+            lang: language,
             enable: true, // start pushnx - default value true
             scrollbot: false, // use default scrollbot library
             modal: {
