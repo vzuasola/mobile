@@ -1,19 +1,2 @@
-{% if announcements[0] is defined and announcements[0].show %}
-<div class="mount-announcement hidden">
-    <ul class="announcement clearfix">
-        <li class="announcement-list" data="{{ announcements[0].nid }}">
-            {% include '@app/web/images/svg/announcement/announcement-news.svg' %}
-            {{ announcements[0].text|raw }}
-        </li>
-    </ul>
-    <div class="announcement-list-content-bottom">
-        <a href="#" class="btn-dismiss">
-            <strong>{{ dismiss_all }}</strong>
-        </a>
-        <a href="#announcement-lightbox" class="announcement-trigger btn-see-announcement">
-            <strong>{{ see_all }}</strong>
-        </a>
-    </div>
+<div id="announcements-container">
 </div>
-{% endif %}
-{{ include('@component/Announcement/templates/lightbox.html.twig') }}
