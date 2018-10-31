@@ -43,7 +43,8 @@ class PushNotificationComponentController
             $container->get('player_session'),
             $container->get('session_fetcher'),
             $container->get('block_utils'),
-            $container->get('lang')
+            $container->get('lang'),
+            $container->get('token_parser')
         );
     }
 
@@ -59,7 +60,8 @@ class PushNotificationComponentController
         $playerSession,
         $sessionFetcher,
         $blockUtils,
-        $lang
+        $lang,
+        $tokenParser
     ) {
         $this->request = $request;
         $this->rest = $rest;
@@ -71,11 +73,12 @@ class PushNotificationComponentController
         $this->sessionFetcher = $sessionFetcher;
         $this->blockUtils = $blockUtils;
         $this->lang = $lang;
+        $this->tokenParser = $tokenParser;
     }
 
     public function pushnx($request, $response)
     {
-        $this->pnxconfig = $this->config->getConfig('webcomposer_config.pushnx_configuration');
+        $this->pnxconfig = $this->config->getConfig('webcomposer_config.pushnx_configuration_v2');
 
         // first checkpoint is pushnx enabled
         if (!$this->isPushnxEnabled()) {
@@ -123,8 +126,8 @@ class PushNotificationComponentController
         $data['connection']['fallback']['replyUri'] = $this->getURI(false, $domain)[self::REPLY];
 
         $data['dateformat'] = [
-            'format' => $this->getConfigByPlayerLocale('date_format'),
-            'offset' => $this->getConfigByPlayerLocale('date_offset')
+            'format' => $this->pnxconfig['date_format'],
+            'offset' => $this->pnxconfig['date_offset']
         ];
 
         $data['delayCount'] = $this->pnxconfig['delay_count'];
@@ -132,10 +135,11 @@ class PushNotificationComponentController
         $data['displayExpiryDate'] = $this->pnxconfig['debug_display_expirydate'];
         $data['expiryDelayCount'] = $this->pnxconfig['expiry_delay_count'];
         $data['logging'] = $this->pnxconfig['debug_logging'];
-        $data['loginSelector'] = $this->pnxconfig['login_selector'];
-        $data['productTypeId'] = $this->configProductId($this->pnxconfig['producttype_id']);
-        $data['productTypeIdMapping'] = $this->configProductMapping();
-        $data['productTypeIdIcon'] = $this->configIconMapping();
+
+        $products = $this->configProduct($this->pnxconfig['product_list']);
+
+        $data['productTypeId'] = $products['productTypeId'];
+        $data['productDetails'] = $products['products'];
         $data['retryCount'] = $this->pnxconfig['retry_count'];
 
         $data['dismiss']['button_label'] = $this->pnxconfig['dismiss_button_label'];
@@ -143,10 +147,23 @@ class PushNotificationComponentController
         $data['dismiss']['yes'] = $this->pnxconfig['dismiss_yes'];
         $data['dismiss']['no'] = $this->pnxconfig['dismiss_no'];
 
-        $data['texts'] = $this->parseTranslatedTexts();
-        $data['texts']['expired_message'] = $this->getConfigByPlayerLocale('expiry_error_message');
+        $data['texts']['title'] = $this->pnxconfig['title'];
+        $data['texts']['empty'] = $this->pnxconfig['empty'];
+        $data['texts']['expired_message'] = $this->pnxconfig['expired_message'];
 
         $data['disableBonusAward'] = $this->pnxconfig['disableBonusAward'] ?? 0;
+
+        $ctabuttons = $this->configButtons($this->pnxconfig['cta_button_list']);
+
+        $data['cta'] = $ctabuttons;
+
+        if ($this->pnxconfig['domains']) {
+            $domains = $this->parseDomains($this->pnxconfig['domains']);
+        } else {
+            $domains = [];
+        }
+
+        $data['pushnx_domains'] = $domains;
 
         return $this->rest->output($response, $data);
     }
@@ -165,26 +182,6 @@ class PushNotificationComponentController
         }
 
         return false;
-    }
-
-    /**
-     * Get config by player locale
-     */
-    private function getConfigByPlayerLocale($index)
-    {
-        if (isset($this->pnxconfig[$index])) {
-            $map = array_map('trim', explode(PHP_EOL, $this->pnxconfig[$index]));
-            foreach ($map as $value) {
-                list($lang, $text) = explode('|', $value);
-                if (strtolower($lang) == $this->playerLocale) {
-                    return $text;
-                }
-                // Fallback for empty locale
-                if (!$this->playerLocale) {
-                    return $text;
-                }
-            }
-        }
     }
 
     /**
@@ -208,56 +205,80 @@ class PushNotificationComponentController
         ];
     }
 
-    private function configProductId($id)
+    private function configProduct($productlist)
     {
-        return array_map('trim', explode(',', $id));
+        $texts = array_map('trim', explode(PHP_EOL, $productlist));
+        $texts = str_replace(' ', '', $texts);
+
+        foreach ($texts as $text) {
+            $identifier = strtolower($text);
+
+            if (!$this->pnxconfig['product_exclude_' . $identifier]) {
+                if (!empty($this->pnxconfig['product_type_id_' . $identifier])) {
+                    $index = $this->pnxconfig['product_type_id_' . $identifier];
+                } else {
+                    $index = '0';
+                }
+
+                $details['productTypeId'][] = $index;
+
+                $details['products'][$index] = [
+                    'label' => $this->pnxconfig['product_label_' . $identifier],
+                    'typeid' => $this->pnxconfig['product_type_id_' . $identifier],
+                    'icon' => $this->pnxconfig['product_icon_' . $identifier],
+                    'allowtodismiss' => $this->pnxconfig['product_exclude_dismiss_'. $identifier]
+                ];
+            }
+        }
+
+        return $details;
     }
 
-    private function configProductMapping()
+    private function parseDomains($domains)
     {
-        $mapped = [];
-        $map = array_map('trim', explode(PHP_EOL, $this->pnxconfig['producttype_id_mapping']));
-        $map = str_replace(' ', '', $map);
+        $map = array_map('trim', explode(PHP_EOL, $domains));
 
         foreach ($map as $value) {
-            list($typeid, $text,) = explode('|', $value);
-            $mapped[$typeid] = strtolower($text);
+            list($key, $domain) = explode('|', $value);
+
+            $parsed = $this->tokenParser->processTokens($domain);
+            $mapped[$key] = $parsed;
         }
 
         return $mapped;
     }
 
-    private function configIconMapping()
+    private function configButtons($buttonlist)
     {
-        $mapped = [];
-        $map = array_map('trim', explode(PHP_EOL, $this->pnxconfig['producttype_id_mapping']));
-        $map = str_replace(' ', '', $map);
+        $texts = array_map('trim', explode(PHP_EOL, $buttonlist));
+        $texts = str_replace(' ', '', $texts);
 
-        foreach ($map as $value) {
-            list($typeid,, $icon) = explode('|', $value);
-            $mapped[$typeid] = strtolower($icon);
+        foreach ($texts as $text) {
+            $identifier = strtolower($text);
+
+            $details['buttons'][$identifier] = [
+                'label' => $this->pnxconfig['cta_label_' . $identifier],
+                'action' => $this->actionToken($this->pnxconfig['cta_actions_' . $identifier]),
+            ];
         }
 
-        return $mapped;
+        return $details;
     }
 
-    /**
-     * Parse translated texts
-     */
-    private function parseTranslatedTexts()
+    private function actionToken($action)
     {
-        $map = array_map('trim', explode(PHP_EOL, $this->pnxconfig['translated_texts']));
-        $map = str_replace(' ', '', $map);
+        if ($action) {
+            $arr = explode('::', $action);
 
-        $texts = [];
+            if (sizeof($arr) > 1) {
+                $domain = $this->tokenParser->processTokens($arr[1]);
 
-        foreach ($map as $value) {
-            $key = strtolower($value);
-            $index = 'text_' . $key;
-            $data = $this->getConfigByPlayerLocale($index);
-            $texts[$key] = $data;
+                $arr[1] = $domain;
+
+                return implode('::', $arr);
+            }
         }
 
-        return $texts;
+        return $action;
     }
 }

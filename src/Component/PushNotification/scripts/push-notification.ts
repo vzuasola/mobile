@@ -43,7 +43,7 @@ export class PushNotification {
     private islogin;
     private isconnected: boolean;
 
-    constructor(element, attachments: {authenticated: boolean}) {
+    constructor(element, attachments: {authenticated: boolean, regLang: string}) {
         this.element = element;
         this.isconnected = false;
 
@@ -51,20 +51,21 @@ export class PushNotification {
 
         if (attachments.authenticated) {
             xhr({
-                url: Router.generateRoute("push_notification", "pushnx"),
+                url: Router.generateRoute("push_notification", "pushnx", {lang: attachments.regLang}),
                 type: "json",
                 method: "post",
             }).then((response) => {
                 if (response.enabled) {
-                    this.startPushNx(attachments.authenticated, response);
+                    this.startPushNx(attachments.authenticated, attachments.regLang, response);
                 }
             });
         }
     }
 
-    private startPushNx(login: boolean, pushnx: object) {
+    private startPushNx(login: boolean, language: string, pushnx: object) {
         this.pushnx = new PushNX({
             islogin: login,
+            lang: language,
             enable: true, // start pushnx - default value true
             scrollbot: false, // use default scrollbot library
             modal: {
@@ -72,14 +73,14 @@ export class PushNotification {
                 control: false, // default value true
                 height: "auto", // custom height
             },
-            dismiss: false, // dismiss all message - default value false
+            dismiss: true, // dismiss all message - default value false
             counter: true, // message counter custom event "pushnx.count.message"
             notify: true, // new message indicator custom event "pushnx.new.message"
             action: false, // bind message action buttons default value true custom event "pushnx.action"
             buttons: {
-                OK: "btn btn-small btn-yellow pushnx-lightbox-btn-ok",
-                ACCEPT: "btn btn-small btn-medium btn-yellow pushnx-lightbox-btn-accept",
-                DECLINE: "btn btn-small btn-medium btn-red pushnx-lightbox-btn-decline",
+                ok: "btn btn-small btn-yellow pushnx-lightbox-btn-ok",
+                accept: "btn btn-small btn-medium btn-yellow pushnx-lightbox-btn-accept",
+                decline: "btn btn-small btn-medium btn-red pushnx-lightbox-btn-decline",
             },
             icons: true,
             iconsvg: {

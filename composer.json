@@ -5,7 +5,7 @@
     "require": {
         "php": ">=7.1.0",
         "oomphinc/composer-installers-extender": "^1.1",
-        "webcomposer/fe-core": "dev-working"
+        "webcomposer/fe-core": "dev-feature-PNX-740-pushnx-enhancement"
     },
     "autoload": {
         "psr-4": {
