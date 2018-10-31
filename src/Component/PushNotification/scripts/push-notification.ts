@@ -34,6 +34,8 @@ import * as productPoker from "./../handlebars/svg/product-poker.handlebars";
 import * as productPromotions from "./../handlebars/svg/product-promotions.handlebars";
 import * as productVirtuals from "./../handlebars/svg/product-virtuals.handlebars";
 import * as productWallet from "./../handlebars/svg/product-wallet.handlebars";
+import * as productAlpine from "./../handlebars/svg/product-alpine.handlebars";
+import * as productLbt from "./../handlebars/svg/product-lbt.handlebars";
 
 import * as productGeneric from "./../handlebars/svg/product-generic.handlebars";
 
@@ -101,6 +103,8 @@ export class PushNotification {
                 promotions: productPromotions,
                 virtuals: productVirtuals,
                 wallet: productWallet,
+                alpine: productAlpine,
+                lbt: productLbt,
             },
             template: { // override templates
                 body: bodyTemplate, // body
