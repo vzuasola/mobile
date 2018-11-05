@@ -69,6 +69,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.generateLobby(() => {
             this.lobby();
         });
+        this.moveCategory();
         this.listenToCategory();
         this.listenToScroll();
         this.listenToSwipe();
@@ -116,6 +117,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.generateLobby(() => {
             this.lobby();
         });
+        this.moveCategory();
         this.listenToSwipe();
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
@@ -124,6 +126,13 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
+    }
+
+    private moveCategory() {
+        const sliders = document.querySelector("#main-slider");
+        const categoriesEl = document.querySelector("#game-categories");
+
+        sliders.parentNode.insertBefore(categoriesEl, sliders);
     }
 
     private initMarker() {
@@ -204,7 +213,7 @@ export class GamesLobbyComponent implements ComponentInterface {
      *
      */
     private setCategories(data, key) {
-        const categoriesEl = this.element.querySelector("#game-categories");
+        const categoriesEl = document.querySelector("#game-categories");
 
         const template = categoriesTemplate({
             categories: data,
@@ -283,7 +292,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenChangeCategory() {
         ComponentManager.subscribe("click", (event: Event, src) => {
             if (src.getAttribute("data-category-filter-id")) {
-                const categoriesEl = this.element.querySelector("#game-categories");
+                const categoriesEl = document.querySelector("#game-categories");
                 const activeLink = categoriesEl.querySelector(".category-tab .active a");
                 utility.addClass(activeLink, "active");
 
@@ -308,7 +317,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 window.location.hash = key;
             }
 
-            const categoriesEl = this.element.querySelector("#game-categories");
+            const categoriesEl = document.querySelector("#game-categories");
             const activeLink = categoriesEl.querySelector(".category-tab .active a");
 
             const categories = categoriesEl.querySelectorAll(".category-tab");
@@ -410,7 +419,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     private updateCategorySpecial() {
-        const categoriesEl = this.element.querySelector("#game-categories");
+        const categoriesEl = document.querySelector("#game-categories");
         const activeSearch = this.element.querySelector(".search-tab");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
 
@@ -424,7 +433,7 @@ export class GamesLobbyComponent implements ComponentInterface {
 
     private listenToCategory() {
         ComponentManager.subscribe("category.set", (event, src, data) => {
-            const categoriesEl = this.element.querySelector("#game-categories");
+            const categoriesEl = document.querySelector("#game-categories");
             const activeLink = categoriesEl.querySelector(".category-tab .active a");
             const categories = categoriesEl.querySelectorAll(".category-tab");
             const categoryScroll = categoriesEl.querySelector("#category-tab");
@@ -461,7 +470,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             // Left Swipe
             utility.addEventListener(games, "swipeleft", (event, src) => {
                 // Active category go right
-                const categoriesEl = this.element.querySelector("#game-categories");
+                const categoriesEl = document.querySelector("#game-categories");
                 const activeLi = categoriesEl.querySelector(".category-tab .active");
                 const activeLink = activeLi.querySelector("a");
 
@@ -488,7 +497,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             // Right Swipe
             utility.addEventListener(games, "swiperight", (event, src) => {
                 // Active category go left
-                const categoriesEl = this.element.querySelector("#game-categories");
+                const categoriesEl = document.querySelector("#game-categories");
                 const activeLi = categoriesEl.querySelector(".category-tab .active");
                 const activeLink = activeLi.querySelector("a");
                 const sibling = utility.previousElementSibling(activeLi);
@@ -550,7 +559,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     this.currentPage += 1;
                     let hash = utility.getHash(window.location.href);
                     if (!this.response.games[hash]) {
-                        const categoriesEl = this.element.querySelector("#game-categories");
+                        const categoriesEl = document.querySelector("#game-categories");
                         const activeLink = categoriesEl.querySelector(".category-tab .active a");
                         hash = activeLink.getAttribute("data-category-filter-id");
                     }
@@ -587,7 +596,7 @@ export class GamesLobbyComponent implements ComponentInterface {
      }
 
     private activateSearchTab() {
-        const categoriesEl = this.element.querySelector("#game-categories");
+        const categoriesEl = document.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
         const activeCategory = activeLink.getAttribute("data-category-filter-id");
         // set search tab as active tab

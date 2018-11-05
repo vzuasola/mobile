@@ -16,6 +16,9 @@
                     data-category-filter-id="{{this.field_games_alias}}"
                     data-category-filter-name="{{{this.name}}}"
                 >
+                    {{#if this.field_games_category_logo }}
+                        <img src="{{this.field_games_category_logo}}" alt="{{{this.name}}}">
+                    {{/if}}
                     {{{this.name}}}
                 </a>
             </li>

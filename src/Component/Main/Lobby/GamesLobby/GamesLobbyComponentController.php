@@ -396,6 +396,12 @@ class GamesLobbyComponentController
                 );
                 if ($isPublished) {
                     $category['published'] = $isPublished;
+                    if($category['field_games_category_logo']) {
+                        $category['field_games_category_logo'] = $this->asset->generateAssetUri(
+                            str_replace('/' . $this->currentLanguage . '/', '/', $category['field_games_category_logo']),
+                            ['product' => 'mobile-games']
+                        );
+                    }
                     $categoryList[] = $category;
                 }
             }
