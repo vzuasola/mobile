@@ -397,7 +397,8 @@ class GamesLobbyComponentController
                 if ($isPublished) {
                     $category['published'] = $isPublished;
                     if ($category['field_games_category_logo']) {
-                        $categoryLogo = str_replace('/' . $this->currentLanguage . '/',
+                        $categoryLogo = str_replace(
+                            '/' . $this->currentLanguage . '/',
                             '/',
                             $category['field_games_category_logo']
                         );
