@@ -170,6 +170,12 @@
             display: block;
             text-align: right;
         }
+
+        &-product {
+            path {
+                fill: #000 !important;
+            }
+        }
     }
 
     &-btn-ok,
@@ -222,4 +228,10 @@
 .debug-active {
     color: green;
     font-size: 1rem;
+}
+
+.message-details {
+    width: 100% !important;
+    background-color: transparent !important;
+    padding: 0 !important;
 }
