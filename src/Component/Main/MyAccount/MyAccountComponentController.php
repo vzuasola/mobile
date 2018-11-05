@@ -256,12 +256,17 @@ class MyAccountComponentController
         $mobileNumber = $defaultValues['mobileNumbers']['Home']['number'] ?? "";
         $mobileNumberVerified = $defaultValues['mobileNumbers']['Home']['verified'] ?? false;
 
-        if (isset($profileFormValues['mobile']) && !$mobileNumberVerified) {
+        if (isset($profileFormValues['mobile']) &&
+            !$mobileNumberVerified &&
+            strpos($profileFormValues['mobile'], "*") === false) {
             $mobileNumber = $profileFormValues['mobile'];
         }
 
-        if (isset($profileFormValues['mobile1']) ?? $profileFormValues['mobile1']) {
+        if ((isset($profileFormValues['mobile1']) ?? $profileFormValues['mobile1'])) {
             $mobile1 = $profileFormValues['mobile1'];
+            if (strpos($profileFormValues['mobile1'], "*") !== false) {
+                $mobile1 = $defaultValues['mobileNumbers']['Mobile 1']['number'] ?? "";
+            }
         }
 
         if ($profileFormValues['receive_news'] === 'true') {

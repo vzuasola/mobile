@@ -154,9 +154,9 @@ export class VerifyPassword extends FormBase {
             })
             .fail((err, msg) => {
                 this.onError(this.attachments.messages.UPDATE_PROFILE_FAILED);
+                utility.addClass(this.updateProfileLoader, "hidden");
             })
             .always((resp) => {
-                utility.addClass(this.updateProfileLoader, "hidden");
                 this.enableFields(this.form);
             });
     }
@@ -165,6 +165,7 @@ export class VerifyPassword extends FormBase {
         this.closeModal();
         this.successNotification.show(message);
         this.refreshComponent(true);
+
     }
 
     private onError(message) {
@@ -195,6 +196,9 @@ export class VerifyPassword extends FormBase {
 
         ComponentManager.refreshComponent(
             ["main"],
+            () => {
+                utility.addClass(this.updateProfileLoader, "hidden");
+            },
         );
     }
 }
