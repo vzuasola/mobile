@@ -36,9 +36,6 @@
     background: $cat-tab-bg;
     margin-left: 3rem;
     white-space: nowrap;
-    overflow-x: auto;
-   -webkit-overflow-scrolling: touch;
-   -ms-overflow-style: -ms-autohiding-scrollbar;
 
    .game-category {
         @extend %clearfix;
@@ -47,9 +44,11 @@
         margin: 0;
         padding: 0;
         display: inline-block;
+        width: 100%;
+        overflow: hidden;
 
         &-item {
-        display: inline-block;
+            display: inline-block;
         }
 
         &-item.active {
@@ -64,14 +63,63 @@
         position: relative;
         display: inline-block;
         background: $cat-tab-bg;
-        color: $cat-tab-color;
-        font-size: 1.4rem;
-        text-decoration: none;
-        font-weight: 600;
-        padding: 0.5rem 1rem;
+        padding: 0.6rem 1rem;
     }
 }
 
-.category-tab-list::-webkit-scrollbar {
-    display: none;
+.sft-list {
+    margin-left: 0;
+    @extend .clearfix;
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+
+    &-menu {
+        @extend .clearfix;
+        width: 100%;
+        list-style-type: none;
+        margin: 0 auto;
+        padding: 0;
+        display: flex;
+    }
+
+    .sft-item {
+        float: left;
+        text-align: center;
+        width: 33.33333333333333%;
+
+        &.half {
+            width: 50%;
+        }
+
+        a {
+            position: relative;
+            display: block;
+            background: $cat-tab-bg;
+            color: $cat-tab-color;
+            font-size: 1.6rem;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.6rem 1rem;
+            border-right: 0.1rem solid $darker-red;
+            border-left: 0.1rem solid $fire-red;
+        }
+
+        &:first-child a {
+            border-left: none;
+        }
+
+        &:last-child a {
+            border-right: none;
+        }
+
+        svg {
+            outline: none;
+            fill: $white;
+            margin: 0 0 0 1rem;
+            width: 2rem;
+            vertical-align: text-top;
+        }
+    }
 }
