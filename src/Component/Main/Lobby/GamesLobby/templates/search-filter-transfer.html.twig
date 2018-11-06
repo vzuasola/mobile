@@ -1,0 +1,22 @@
+{% set liClass = (authenticated) ? 'search-item' : 'search-item half' %}
+<div id="search-filter-transfer-container">
+    <ul>
+        <li class="{{ liClass }}">
+            <a href="#" class="search-tab">
+                {{ title }}
+            </a>
+        </li>
+        <li class="{{ liClass }}">
+            <a href="#" class="games-filter main">
+                {{ filter_title }}
+            </a>
+        </li>
+        {% if authenticated %}
+            <li class="{{ liClass }}">
+                <a href="{{ url(transfer_url) }}" class="games-transfer">
+                    {{ transfer_title }}
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</div>

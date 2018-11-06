@@ -43,7 +43,13 @@ export class GamesFilter {
     }
 
     private listenOnOpen() {
-        ComponentManager.subscribe("games.search.filter", (event, src) => {
+        ComponentManager.subscribe("games.search.filter", (event, src, data) => {
+            const filterLB = this.element.querySelector("#games-search-filter-lightbox");
+            const backBtn = filterLB.querySelector(".games-search-filter-back");
+            utility.removeClass(backBtn, "hidden");
+            if (utility.hasClass(data.element, "main")) {
+                utility.addClass(backBtn, "hidden");
+            }
             this.clearFilters();
         });
     }

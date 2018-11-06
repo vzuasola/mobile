@@ -239,7 +239,7 @@ export class GamesSearch {
      * Function that enables search tab and sets category in URL to inactive
      */
     private activateSearchTab() {
-        const categoriesEl = this.element.querySelector("#game-categories");
+        const categoriesEl = document.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
         const activeCategory = activeLink.getAttribute("data-category-filter-id");
 
@@ -349,11 +349,13 @@ export class GamesSearch {
             const el = utility.hasClass(src, "games-filter", true);
             if (el) {
                 event.preventDefault();
-                ComponentManager.broadcast("games.search.filter");
+                ComponentManager.broadcast("games.search.filter", {
+                    element: el,
+                });
             }
         });
 
-        ComponentManager.subscribe("games.search.filter", (event, src) => {
+        ComponentManager.subscribe("games.search.filter", (event, src, data) => {
             Modal.open("#games-search-filter-lightbox");
         });
     }
