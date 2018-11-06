@@ -487,13 +487,14 @@ class GamesLobbyComponentController
     {
         try {
             $gameList = [];
+            if (is_array($games) && count($games) > 1) {.
+                foreach ($games as $key => $timestamp) {
+                    $gameList[$key]['id'] = $key;
+                    $gameList[$key]['timestamp'] = $timestamp;
+                }
 
-            foreach ($games as $key => $timestamp) {
-                $gameList[$key]['id'] = $key;
-                $gameList[$key]['timestamp'] = $timestamp;
+                return $gameList;
             }
-
-            return $gameList;
         } catch (\Exception $e) {
             return [];
         }
