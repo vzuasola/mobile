@@ -5,7 +5,7 @@
     "require": {
         "php": ">=7.1.0",
         "oomphinc/composer-installers-extender": "^1.1",
-        "webcomposer/fe-core": "dev-release-v1.106.0"
+        "webcomposer/fe-core": "dev-feature-pushnx-additional-notif-debug-label"
     },
     "autoload": {
         "psr-4": {
