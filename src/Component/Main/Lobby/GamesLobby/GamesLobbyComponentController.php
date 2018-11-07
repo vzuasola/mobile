@@ -314,7 +314,6 @@ class GamesLobbyComponentController
             $special = ($categoryId === $this::RECOMMENDED_GAMES);
             $gamesList[] = $this->processGame($game, $special);
         }
-
         return $gamesList;
     }
 
@@ -356,12 +355,13 @@ class GamesLobbyComponentController
             }
 
             if (count($game['field_game_filter']) > 0) {
-                $filterString = '';
+                $filters = [];
                 foreach ($game['field_game_filter'] as $filter) {
-                    $filterString .= $filter['field_games_filter_value'][0]['value'] . ',';
+                    $filters[$filter['parent'][0]['field_games_filter_value'][0]['value']][] =
+                        $filter['field_games_filter_value'][0]['value'];
                 }
 
-                $processGame['filters'] = rtrim($filterString, ',');
+                $processGame['filters'] = json_encode($filters);
             }
 
             $processGame['title'] = $game['title'][0]['value'] ?? "";

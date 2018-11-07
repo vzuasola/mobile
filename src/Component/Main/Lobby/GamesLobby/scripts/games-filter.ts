@@ -120,17 +120,23 @@ export class GamesFilter {
         if (filterLightbox) {
             const actives = filterLightbox.querySelectorAll(".active");
             let filteredGames = [];
+
             for (const activeKey in actives) {
                 if (actives.hasOwnProperty(activeKey)) {
                     const active = actives[activeKey];
+                    const activeParent = active.querySelector(".filter-checkbox").getAttribute("data-parent");
                     const checkValue = active.querySelector(".filter-checkbox").value;
 
                     for (const gameKey in this.gamesList) {
                         if (this.gamesList.hasOwnProperty(gameKey)) {
                             const game = this.gamesList[gameKey];
-
-                            if (typeof game.filters !== "undefined" && game.filters.indexOf(checkValue) !== -1) {
-                                filteredGames[gameKey] = game;
+                            if (typeof game.filters !== "undefined") {
+                                const gameFilter = JSON.parse(game.filters);
+                                if (typeof gameFilter[activeParent] !== "undefined"
+                                    && gameFilter[activeParent].indexOf(checkValue) !== -1
+                                ) {
+                                    filteredGames[gameKey] = game;
+                                }
                             }
                         }
                     }
