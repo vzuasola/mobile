@@ -146,6 +146,6 @@ class CasinoOptionComponentController
             'expire' => 0,
         ];
 
-        Cookies::set('mobile_revamp_casino_pref', $preferredCasino, $options);
+        Cookies::set('mobile_revamp_casino_prefer', $preferredCasino, $options);
     }
 }
