@@ -17,6 +17,9 @@ import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "./scripts/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
+import EqualHeight from "@app/assets/script/components/equal-height";
+
+import { ProviderDrawer } from "./scripts/provider-drawer";
 
 /**
  *
@@ -81,6 +84,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.gamesFilter.handleOnLoad(this.element, attachments);
+        this.activateProviderDrawer();
+        this.equalizeProviderHeight();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -126,6 +131,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
+        this.activateProviderDrawer();
+        this.equalizeProviderHeight();
     }
 
     private moveCategory() {
@@ -628,4 +635,20 @@ export class GamesLobbyComponent implements ComponentInterface {
         return batch;
     }
 
+    /**
+     * Enable Provider Drawer slide behavior
+     */
+    private activateProviderDrawer() {
+        const categoriesEl: any = document.querySelector("#game-categories");
+        const providerdrawer = new ProviderDrawer(categoriesEl);
+        providerdrawer.activate();
+    }
+
+    private equalizeProviderHeight() {
+        setTimeout(() => {
+            const equalProvider = new EqualHeight("#game-categories .provider-menu .game-category-list a");
+            equalProvider.init();
+        }, 1000);
+
+    }
 }
