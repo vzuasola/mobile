@@ -102,8 +102,6 @@ class AnnouncementComponentController
                 ($availability == '1' && !$isLogin && $isPublished)
             ) {
                 $showItem  = false;
-            } else {
-                $announcementCount++;
             }
 
             if ($isPublished) {
@@ -115,6 +113,10 @@ class AnnouncementComponentController
                     'title' => $content['field_title'][0]['value'] ?? "",
                     'text' => $content['field_body'][0]['value'],
                 ];
+
+                if ($showItem) {
+                    $announcementCount++;
+                }
             }
         }
         $announcement['count'] = $announcementCount;
