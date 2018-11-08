@@ -1,18 +1,20 @@
-{% set liClass = (authenticated) ? 'search-item' : 'search-item half' %}
-<div id="search-filter-transfer-container">
-    <ul>
-        <li class="{{ liClass }}">
+{% set liClass = (authenticated) ? 'sft-item' : 'sft-item half' %}
+<div id="search-filter-transfer-container" class="sft-list clearfix">
+    <ul class="sft-list-menu">
+        <li class="{{ liClass }} sft-list-menu-item">
             <a href="#" class="search-tab">
                 {{ title }}
+                {% include '@app/web/images/svg/lobby/search.svg' %}
             </a>
         </li>
-        <li class="{{ liClass }}">
+        <li class="{{ liClass }} sft-list-menu-item">
             <a href="#" class="games-filter main">
                 {{ filter_title }}
+                {% include '@app/web/images/svg/lobby/filter.svg' %}
             </a>
         </li>
         {% if authenticated %}
-            <li class="{{ liClass }}">
+            <li class="{{ liClass }} sft-list-menu-item">
                 <a href="{{ url(transfer_url) }}" class="games-transfer">
                     {{ transfer_title }}
                 </a>
