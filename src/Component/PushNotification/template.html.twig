@@ -1,8 +1,8 @@
 <div id="pushnxLightbox" class="modal pushnx-lightbox modal-default" data-backdrop="static">
-    {% if dismiss_button_label %}
-    <a href="#" class="pushnx-lightbox-dismiss-all">{{ dismiss_button_label }}</a>
-    {% endif %}
     <div class="modal-content pushnx-lightbox-content">
+        {% if dismiss_button_label %}
+        <a href="#" class="pushnx-lightbox-dismiss-all">{{ dismiss_button_label }}</a>
+        {% endif %}
         <h2 class="pushnx-lightbox-title">{{title}}</h2>
         <svg viewBox="0 0 70.24 70.24"  id="pushnx-close" class="modal-close pushnx-lightbox-title-button">
             <rect class="modal-close"/>
@@ -12,3 +12,5 @@
         </div>
     </div>
 </div>
+
+{{ include('@component/PushNotification/templates/push-notification-dismiss-lightbox.html.twig') }}
