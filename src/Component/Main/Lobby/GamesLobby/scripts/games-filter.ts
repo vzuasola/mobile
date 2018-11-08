@@ -13,6 +13,7 @@ import {Modal} from "@app/assets/script/components/modal";
  */
 export class GamesFilter {
     private element;
+    private gameMasterList: any;
     private gamesList: any;
     handleOnLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
@@ -31,6 +32,7 @@ export class GamesFilter {
     setGamesList(gamesList) {
         if (gamesList) {
             const allGames = [];
+            this.gameMasterList = gamesList.games;
             if (gamesList.games["all-games"]) {
                 for (const games of gamesList.games["all-games"]) {
                     for (const game of games) {
@@ -39,6 +41,7 @@ export class GamesFilter {
                 }
             }
             this.gamesList = allGames;
+            console.log(this.gameMasterList);
         }
     }
 
