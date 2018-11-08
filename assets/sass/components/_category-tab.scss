@@ -222,7 +222,11 @@
     background: $dark-gray;
 
     &-title {
-        position: relative;
+        @extend %clearfix;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        z-index: 13;
         display: block;
         color: $cat-tab-color;
         font-size: 1.8rem;
@@ -274,8 +278,14 @@
             border-top: 0.1rem solid $gray;
         }
 
+        &-list:nth-last-child(1) {
+            border-right: 0.1rem solid $gray;
+            margin-left: 0.1rem;
+        }
+
         &-list:nth-child(even) {
             border-right: 0;
+            margin-left: 0;
         }
 
         &-list:nth-child(odd) {
