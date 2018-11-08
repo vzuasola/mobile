@@ -24,7 +24,7 @@ export class CasinoIntegrationModule extends Redirectable implements ModuleInter
             if (response.success) {
                 // redirect to URL
                 if (response.redirect) {
-                    window.location.href = response.redirect;
+                    window.location.href = decodeURIComponent(response.redirect).replace(/\\/g, "");
                     return;
                 }
 

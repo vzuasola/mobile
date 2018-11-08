@@ -390,11 +390,55 @@ class GamesLobbyComponentController
             }
 
             if (isset($gamesList[$category['field_games_alias']])) {
-                $categoryList[] = $category;
+                $isPublished = $this->checkIfPublished(
+                    $category['field_publish_date'],
+                    $category['field_unpublish_date']
+                );
+                if ($isPublished) {
+                    $category['published'] = $isPublished;
+                    $categoryList[] = $category;
+                }
+            }
+        }
+        return $categoryList;
+    }
+
+    private function checkIfPublished($dateStart, $dateEnd)
+    {
+        if (!$dateStart && !$dateEnd) {
+            return true;
+        }
+
+        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
+        $currentDate = $currentDate->getTimestamp();
+        if ($dateStart && $dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
+                return true;
             }
         }
 
-        return $categoryList;
+        if ($dateStart && !$dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateEnd && !$dateStart) {
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($endDate->getTimestamp() >=$currentDate) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getFavoriteGamesList($favGames)
@@ -402,7 +446,7 @@ class GamesLobbyComponentController
         $gameList = [];
         if ($this->playerSession->isLogin()) {
             $favGames = $this->proccessSpecialGames($favGames);
-            if (is_array($favGames)) {
+            if (is_array($favGames) && count($favGames) > 0) {
                 foreach ($favGames as $gameCode) {
                     $gameList[$gameCode['id']] = 'active';
                 }
@@ -423,7 +467,7 @@ class GamesLobbyComponentController
                 if ($favGames) {
                     usort($favGames, [$this, 'sortRecentGames']);
                 }
-                if (is_array($favGames)) {
+                if (is_array($favGames) && count($favGames) > 0) {
                     foreach ($favGames as $gameCode) {
                         if (array_key_exists($gameCode['id'], $games)) {
                             $gameList[] = $games[$gameCode['id']];
@@ -443,13 +487,14 @@ class GamesLobbyComponentController
     {
         try {
             $gameList = [];
+            if (is_array($games) && count($games) > 1) {
+                foreach ($games as $key => $timestamp) {
+                    $gameList[$key]['id'] = $key;
+                    $gameList[$key]['timestamp'] = $timestamp;
+                }
 
-            foreach ($games as $key => $timestamp) {
-                $gameList[$key]['id'] = $key;
-                $gameList[$key]['timestamp'] = $timestamp;
+                return $gameList;
             }
-
-            return $gameList;
         } catch (\Exception $e) {
             return [];
         }
@@ -503,7 +548,7 @@ class GamesLobbyComponentController
             if ($this->playerSession->isLogin()) {
                 $recentlyPlayed = $this->proccessSpecialGames($recentlyPlayed);
                 usort($recentlyPlayed, [$this, 'sortRecentGames']);
-                if (is_array($recentlyPlayed)) {
+                if (is_array($recentlyPlayed) && count($recentlyPlayed) > 0) {
                     foreach ($recentlyPlayed as $gameCode) {
                         if (array_key_exists($gameCode['id'], $games)) {
                             $gameList[] = $games[$gameCode['id']];

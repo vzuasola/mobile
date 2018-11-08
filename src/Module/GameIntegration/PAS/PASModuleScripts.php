@@ -17,6 +17,8 @@ class PASModuleScripts implements ComponentAttachmentInterface
 
     private $lang;
 
+    private $paymentAccount;
+
     /**
      *
      */
@@ -25,18 +27,20 @@ class PASModuleScripts implements ComponentAttachmentInterface
         return new static(
             $container->get('player_session'),
             $container->get('config_fetcher'),
-            $container->get('lang')
+            $container->get('lang'),
+            $container->get('accounts_service')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang)
+    public function __construct($playerSession, $config, $lang, $paymentAccount)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
         $this->lang = $lang;
+        $this->paymentAccount = $paymentAccount;
     }
 
     /**
@@ -63,6 +67,7 @@ class PASModuleScripts implements ComponentAttachmentInterface
             'lang' => $this->lang ?? 'en',
             'langguageMap' => Config::parse($ptConfig['languages']),
             'iapiConfigs' => $iapiConfigs,
+            'isGold' => ($this->playerSession->isLogin()) ? $this->paymentAccount->hasAccount('casino-gold') : false,
         ];
     }
 }

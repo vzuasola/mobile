@@ -392,6 +392,7 @@ export class GamesSearch {
             const el = utility.hasClass(src, "games-search-submit", true);
             const keyword = this.element.querySelector(".games-search-input");
             if (el && keyword.value) {
+                keyword.blur();
                 event.preventDefault();
                 this.showResultInLobby();
             }

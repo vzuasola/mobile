@@ -1,14 +1,20 @@
 import * as utility from "@core/assets/js/components/utility";
 import Storage from "@core/assets/js/components/utils/storage";
 
+import * as xhr from "@core/assets/js/vendor/reqwest";
+
+import * as announcementTemplate from "./handlebars/announcement.handlebars";
+
 import {Modal} from "@app/assets/script/components/modal";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
+import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 export class AnnouncementComponent implements ComponentInterface {
     private storage: Storage;
     private refreshInterval: number = 300000;
     private element: HTMLElement;
+    private announcements: any;
 
     constructor() {
         this.storage = new Storage();
@@ -16,23 +22,39 @@ export class AnnouncementComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
-
-        this.activateAnnouncementBar(element);
-        this.bindDismissButton(element);
-
-        // lightbox
-        this.listenAnnouncementLightbox();
-        this.listenModalClose();
-        this.listenAutoRefresh(element);
-
-        this.getUnread(element);
+        this.getAnnouncements();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
+        this.getAnnouncements();
+    }
 
-         // lightbox
-        this.getUnread(element);
+    private getAnnouncements() {
+        xhr({
+            url: Router.generateRoute("announcement", "announcements"),
+            type: "json",
+        }).then((response) => {
+            this.generateAnnouncementMarkup(response);
+        });
+    }
+
+    private generateAnnouncementMarkup(data) {
+        const announcement: HTMLElement = this.element.querySelector("#announcements-container");
+        const template = announcementTemplate({
+            announcementData: data,
+        });
+
+        announcement.innerHTML = template;
+        this.activateAnnouncementBar(this.element);
+        this.bindDismissButton(this.element);
+
+        // lightbox
+        this.listenAnnouncementLightbox();
+        this.listenModalClose();
+        this.listenAutoRefresh(this.element);
+
+        this.getUnread(this.element);
     }
 
     /**
@@ -40,8 +62,7 @@ export class AnnouncementComponent implements ComponentInterface {
      */
     private activateAnnouncementBar(element) {
         let readItems = [];
-        let activeItem = element.querySelector(".announcement-list");
-
+        let activeItem: any = element.querySelector(".announcement-list");
         if (activeItem) {
             readItems = this.getReadItems();
             activeItem = activeItem.getAttribute("data");
