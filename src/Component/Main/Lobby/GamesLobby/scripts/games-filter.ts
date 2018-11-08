@@ -41,7 +41,6 @@ export class GamesFilter {
                 }
             }
             this.gamesList = allGames;
-            console.log(this.gameMasterList);
         }
     }
 

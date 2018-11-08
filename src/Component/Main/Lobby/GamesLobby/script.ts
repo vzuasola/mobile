@@ -73,9 +73,9 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.lobby();
         });
         this.moveCategory();
-        this.listenToCategory();
+        // this.listenToCategory();
         this.listenToScroll();
-        this.listenToSwipe();
+        // this.listenToSwipe();
         this.initMarker();
         this.listenOnSearch();
         this.listenOnFilter();
@@ -106,7 +106,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.listenClickGameTile();
             this.listenGameLaunch();
             this.listenFavoriteClick();
-            this.listenToCategory();
+            // this.listenToCategory();
             this.listenToScroll();
             this.listenOnSearch();
             this.listenOnFilter();
@@ -123,7 +123,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.lobby();
         });
         this.moveCategory();
-        this.listenToSwipe();
+        // this.listenToSwipe();
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
         this.gamesFilter.handleOnReLoad(this.element, attachments);
@@ -241,6 +241,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             const activeLi = activeLink.parentElement;
             utility.addClass(activeLi, "active");
         }
+
+        this.onLodeActiveMore();
     }
 
     /**
@@ -318,6 +320,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.currentPage = 0;
             const first = this.response.categories[0].field_games_alias;
             const key = this.getActiveCategory(this.response.games, first);
+            let counter = 1;
+            let sidebar = false;
             if (utility.getHash(window.location.href) !== key &&
                 key !== first
             ) {
@@ -328,7 +332,6 @@ export class GamesLobbyComponent implements ComponentInterface {
             const activeLink = categoriesEl.querySelector(".category-tab .active a");
 
             const categories = categoriesEl.querySelectorAll(".category-tab");
-
             for (const id in categories) {
                 if (categories.hasOwnProperty(id)) {
                     const category = categories[id];
@@ -336,18 +339,63 @@ export class GamesLobbyComponent implements ComponentInterface {
                         src = category;
                         break;
                     }
+                    counter++;
                }
            }
+
+            if (counter > 6) {
+                src = categoriesEl.querySelector(".game-category-more");
+                sidebar = true;
+            }
+
+            if (counter <= 6) {
+                utility.removeClass(categoriesEl.querySelector(".game-category-more"), "active");
+            }
+
+            this.activeCategorySidebar(categoriesEl, key);
 
             utility.removeClass(activeLink, "active");
             utility.removeClass(activeLink.parentElement, "active");
 
             utility.addClass(src, "active");
-            utility.addClass(src.parentElement, "active");
+
+            if (!sidebar) {
+                utility.addClass(src.parentElement, "active");
+            }
 
             this.setGames(this.response.games[key]);
             ComponentManager.broadcast("category.change");
         });
+    }
+
+    private activeCategorySidebar(categoriesEl, key) {
+        const sideCategory = categoriesEl.querySelector(".game-category-more .provider-menu .game-category");
+        const activeLink = sideCategory.querySelector(".game-category-list.active a");
+        const categories = categoriesEl.querySelectorAll(".category-provider-menu");
+        for (const id in categories) {
+            if (categories.hasOwnProperty(id)) {
+                const category = categories[id];
+                if (category.getAttribute("href") === "#" + key) {
+                    const src = category;
+
+                    utility.removeClass(activeLink, "active");
+                    utility.removeClass(activeLink.parentElement, "active");
+
+                    utility.addClass(src, "active");
+                    utility.addClass(src.parentElement, "active");
+                    break;
+                }
+           }
+       }
+    }
+
+    private onLodeActiveMore() {
+        const categoriesEl = document.querySelector("#game-categories");
+        const activeLink = categoriesEl.querySelector(".category-tab .active a");
+        if (!utility.hasClass(activeLink, "category-tab")) {
+            const src = categoriesEl.querySelector(".game-category-more");
+            utility.addClass(src, "active");
+        }
     }
 
     /**
