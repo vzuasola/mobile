@@ -577,14 +577,14 @@ export class GamesLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("games.filter.success", (event: Event, src, data) => {
             if (data.filteredGames) {
                 this.element.querySelector("#blurb-lobby").innerHTML = "";
-                this.activateSearchTab();
+                this.activateSearchTab(data.active);
                 this.searchResults = data.filteredGames;
                 this.setGames(data.filteredGames);
             } else {
                 const gamesEl = this.element.querySelector("#game-container");
                 let recommended: boolean = false;
                 gamesEl.innerHTML = "";
-                this.activateSearchTab();
+                this.activateSearchTab(data.active);
                 if (this.response.games["recommended-games"]) {
                     this.searchResults = this.response.games["recommended-games"];
                     this.setGames(this.response.games["recommended-games"], 0, true);
@@ -650,13 +650,13 @@ export class GamesLobbyComponent implements ComponentInterface {
          });
      }
 
-    private activateSearchTab() {
+    private activateSearchTab(active?: string) {
         const categoriesEl = document.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
         const activeCategory = activeLink.getAttribute("data-category-filter-id");
         // set search tab as active tab
         utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
-        utility.addClass(this.element.querySelector(".search-tab"), "active");
+        utility.addClass(this.element.querySelector(active), "active");
         utility.addClass(this.element.querySelector(".search-blurb"), "active");
     }
 
