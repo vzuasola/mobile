@@ -46,7 +46,8 @@
         overflow: hidden;
 
         &-item {
-            display: inline-block;
+            float: left;
+            text-align: center;
         }
 
         &-item.active {
@@ -58,6 +59,7 @@
             }
         }
 
+        .category-more.active,
         a {
             position: relative;
             display: inline-block;
@@ -66,7 +68,7 @@
             color: $white;
             width: 100%;
             text-align: center;
-     
+
             img {
                 height: 3rem;
                 width: 3rem;
@@ -76,6 +78,9 @@
 }
 
  .category-more {
+    display: inline-block;
+    padding: 1.2rem 0;
+
     svg {
         vertical-align: text-top;
         margin-left: 0.5rem;
@@ -124,6 +129,15 @@
             border-left: 0.1rem solid $fire-red;
         }
 
+        a.active {
+            background: $dark-red;
+            color: $yellow;
+
+            svg {
+                fill: $yellow;
+            }
+        }
+
         &:first-child a {
             border-left: none;
         }
@@ -140,42 +154,48 @@
             vertical-align: text-top;
         }
     }
+
+    .sft-list-menu-transfer {
+        svg {
+            margin-top: 0.2rem;
+        }
+    }
 }
 
 .provider-7,
 .provider-6 {
     .game-category-item {
-        width: 13.2857%;
+        width: 14.2857%;
     }
 }
 
 .provider-5 {
     .game-category-item {
-        width: 15.6667%;
+        width: 16.6667%;
     }
 }
 
 .provider-4 {
     .game-category-item {
-        width: 19%;
+        width: 20%;
     }
 }
 
 .provider-3 {
     .game-category-item {
-        width: 24%;
+        width: 25%;
     }
 }
 
 .provider-2 {
     .game-category-item {
-        width: 32.333333333%;
+        width: 33.333333333%;
     }
 }
 
 .provider-1 {
     .game-category-item {
-        width: 49%;
+        width: 40%;
     }
 }
 

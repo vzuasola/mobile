@@ -14,7 +14,7 @@
             </a>
         </li>
         {% if authenticated %}
-            <li class="{{ liClass }} sft-list-menu-item">
+            <li class="{{ liClass }} sft-list-menu-item sft-list-menu-transfer">
                 <a href="{{ url(transfer_url) }}" class="games-transfer">
                     {{ transfer_title }}
                     {% include '@app/web/images/svg/lobby/transfer.svg' %}
