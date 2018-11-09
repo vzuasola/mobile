@@ -352,8 +352,6 @@ export class GamesLobbyComponent implements ComponentInterface {
                 utility.removeClass(categoriesEl.querySelector(".game-category-more"), "active");
             }
 
-            this.activeCategorySidebar(categoriesEl, key);
-
             utility.removeClass(activeLink, "active");
             utility.removeClass(activeLink.parentElement, "active");
 
@@ -362,6 +360,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (!sidebar) {
                 utility.addClass(src.parentElement, "active");
             }
+
+            this.activeCategorySidebar(categoriesEl, key);
 
             this.setGames(this.response.games[key]);
             ComponentManager.broadcast("category.change");
