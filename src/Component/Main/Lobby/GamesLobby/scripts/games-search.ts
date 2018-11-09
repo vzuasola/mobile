@@ -244,7 +244,8 @@ export class GamesSearch {
         const activeCategory = activeLink.getAttribute("data-category-filter-id");
 
         // set search tab as active tab
-        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        this.deactivateSearchTab();
+        utility.removeClass(document.querySelector(".category-" + activeCategory), "active");
         utility.addClass(this.element.querySelector(".search-tab"), "active");
     }
 
@@ -253,6 +254,7 @@ export class GamesSearch {
      */
     private deactivateSearchTab() {
         utility.removeClass(this.element.querySelector(".search-tab"), "active");
+        utility.removeClass(this.element.querySelector(".games-filter"), "active");
     }
 
     /*

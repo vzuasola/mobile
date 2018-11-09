@@ -170,7 +170,7 @@ export class GamesFilter {
             const backBtn = filterLB.querySelector(".games-search-filter-back");
 
             let activeFilter = ".search-tab";
-            if (backBtn) {
+            if (utility.hasClass(backBtn, "hidden")) {
                 activeFilter = ".games-filter";
             }
             ComponentManager.broadcast("games.filter.success", {

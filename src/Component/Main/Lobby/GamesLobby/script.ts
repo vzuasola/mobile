@@ -655,9 +655,15 @@ export class GamesLobbyComponent implements ComponentInterface {
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
         const activeCategory = activeLink.getAttribute("data-category-filter-id");
         // set search tab as active tab
-        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        this.deactivateSearchTab();
+        utility.removeClass(document.querySelector(".category-" + activeCategory), "active");
         utility.addClass(this.element.querySelector(active), "active");
         utility.addClass(this.element.querySelector(".search-blurb"), "active");
+    }
+
+    private deactivateSearchTab() {
+        utility.removeClass(this.element.querySelector(".search-tab"), "active");
+        utility.removeClass(this.element.querySelector(".games-filter"), "active");
     }
 
     private isSeen(el) {
