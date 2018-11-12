@@ -1,9 +1,9 @@
 <div class="category-tab-list" id="category-tab">
     {{#condition categories.length ">" 6}}
-    <ul class="game-category provider-7">
+    <ul class="main-game-category game-category provider-7">
     {{/condition}}
     {{#condition categories.length "<=" 6}}
-    <ul class="game-category provider-{{categories.length}}">
+    <ul class="main-game-category game-category provider-{{categories.length}}">
     {{/condition}}
     {{#each categories}}
         {{#if this.published }}
