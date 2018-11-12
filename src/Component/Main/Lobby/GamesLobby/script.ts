@@ -242,7 +242,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             utility.addClass(activeLi, "active");
         }
 
-        this.onLodeActiveMore();
+        this.onLoadActiveMore();
     }
 
     /**
@@ -300,13 +300,16 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private listenChangeCategory() {
         ComponentManager.subscribe("click", (event: Event, src) => {
-            if (src.getAttribute("data-category-filter-id")) {
-                const categoriesEl = document.querySelector("#game-categories");
-                const activeLink = categoriesEl.querySelector(".category-tab .active a");
-                utility.addClass(activeLink, "active");
+            this.currentPage = 0;
+            const first = this.response.categories[0].field_games_alias;
+            const key = this.getActiveCategory(this.response.games, first);
+            const categoriesEl = document.querySelector("#game-categories");
 
-                const key = src.getAttribute("data-category-filter-id");
-                this.setGames(this.response.games[key]);
+            if (utility.hasClass(src, "game-category-item", true) &&
+                !utility.hasClass(src, "game-category-more", true) ||
+                utility.hasClass(src, "category-provider-menu", true)
+            ) {
+                window.location.hash = "";
                 ComponentManager.broadcast("category.change");
             }
         });
@@ -320,7 +323,6 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.currentPage = 0;
             const first = this.response.categories[0].field_games_alias;
             const key = this.getActiveCategory(this.response.games, first);
-            let counter = 1;
             let sidebar = false;
             if (utility.getHash(window.location.href) !== key &&
                 key !== first
@@ -331,65 +333,57 @@ export class GamesLobbyComponent implements ComponentInterface {
             const categoriesEl = document.querySelector("#game-categories");
             const activeLink = categoriesEl.querySelector(".category-tab .active a");
 
-            const categories = categoriesEl.querySelectorAll(".category-tab");
-            for (const id in categories) {
-                if (categories.hasOwnProperty(id)) {
-                    const category = categories[id];
-                    if (category.getAttribute("href") === "#" + key) {
-                        src = category;
-                        break;
-                    }
-                    counter++;
-               }
-           }
+            this.clearCategoriesActive(categoriesEl);
 
-            if (counter > 6) {
+            // Add active to categories
+            const actives = categoriesEl.querySelectorAll(".category-" + key);
+
+            if (actives.length === 1) {
                 src = categoriesEl.querySelector(".game-category-more");
+                utility.addClass(src, "active");
                 sidebar = true;
             }
 
-            if (counter <= 6) {
-                utility.removeClass(categoriesEl.querySelector(".game-category-more"), "active");
+            for (const id in actives) {
+                if (actives.hasOwnProperty(id)) {
+                    const active = actives[id];
+                    utility.addClass(active, "active");
+                    if (!sidebar) {
+                        utility.addClass(active.parentElement, "active");
+                    }
+               }
             }
-
-            utility.removeClass(activeLink, "active");
-            utility.removeClass(activeLink.parentElement, "active");
-
-            utility.addClass(src, "active");
-
-            if (!sidebar) {
-                utility.addClass(src.parentElement, "active");
-            }
-
-            this.activeCategorySidebar(categoriesEl, key);
 
             this.setGames(this.response.games[key]);
             ComponentManager.broadcast("category.change");
         });
     }
 
-    private activeCategorySidebar(categoriesEl, key) {
-        const sideCategory = categoriesEl.querySelector(".game-category-more .provider-menu .game-category");
-        const activeLink = sideCategory.querySelector(".game-category-list.active a");
+    private clearCategoriesActive(categoriesEl) {
         const categories = categoriesEl.querySelectorAll(".category-provider-menu");
         for (const id in categories) {
             if (categories.hasOwnProperty(id)) {
                 const category = categories[id];
-                if (category.getAttribute("href") === "#" + key) {
-                    const src = category;
-
-                    utility.removeClass(activeLink, "active");
-                    utility.removeClass(activeLink.parentElement, "active");
-
-                    utility.addClass(src, "active");
-                    utility.addClass(src.parentElement, "active");
+                if (utility.hasClass(category, "active")) {
+                    const prevActiveCategory = category.getAttribute("data-category-filter-id");
+                    // Remove active to categories
+                    const prevActives = categoriesEl.querySelectorAll(".category-" + prevActiveCategory);
+                    for (const previd in prevActives) {
+                        if (prevActives.hasOwnProperty(previd)) {
+                            const prevActive = prevActives[previd];
+                            utility.removeClass(prevActive, "active");
+                            utility.removeClass(prevActive.parentElement, "active");
+                       }
+                    }
                     break;
                 }
            }
-       }
+        }
+
+        utility.removeClass(categoriesEl.querySelector(".game-category-more"), "active");
     }
 
-    private onLodeActiveMore() {
+    private onLoadActiveMore() {
         const categoriesEl = document.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
         if (!utility.hasClass(activeLink, "category-tab")) {
@@ -577,14 +571,14 @@ export class GamesLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("games.filter.success", (event: Event, src, data) => {
             if (data.filteredGames) {
                 this.element.querySelector("#blurb-lobby").innerHTML = "";
-                this.activateSearchTab();
+                this.activateSearchTab(data.active);
                 this.searchResults = data.filteredGames;
                 this.setGames(data.filteredGames);
             } else {
                 const gamesEl = this.element.querySelector("#game-container");
                 let recommended: boolean = false;
                 gamesEl.innerHTML = "";
-                this.activateSearchTab();
+                this.activateSearchTab(data.active);
                 if (this.response.games["recommended-games"]) {
                     this.searchResults = this.response.games["recommended-games"];
                     this.setGames(this.response.games["recommended-games"], 0, true);
@@ -650,14 +644,23 @@ export class GamesLobbyComponent implements ComponentInterface {
          });
      }
 
-    private activateSearchTab() {
+    private activateSearchTab(active?: string) {
         const categoriesEl = document.querySelector("#game-categories");
-        const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        const activeCategory = activeLink.getAttribute("data-category-filter-id");
+
+        this.clearCategoriesActive(categoriesEl);
+
         // set search tab as active tab
-        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
-        utility.addClass(this.element.querySelector(".search-tab"), "active");
+        this.deactivateSearchTab();
+
+        utility.addClass(this.element.querySelector(active), "active");
         utility.addClass(this.element.querySelector(".search-blurb"), "active");
+    }
+
+    private deactivateSearchTab() {
+        const categoriesEl = document.querySelector("#game-categories");
+        utility.removeClass(categoriesEl.querySelector(".game-category-more"), "active");
+        utility.removeClass(this.element.querySelector(".search-tab"), "active");
+        utility.removeClass(this.element.querySelector(".games-filter"), "active");
     }
 
     private isSeen(el) {

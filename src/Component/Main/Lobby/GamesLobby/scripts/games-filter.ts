@@ -165,8 +165,17 @@ export class GamesFilter {
             filteredGames = this.groupGamesList(filteredGames);
             Modal.close("#games-search-filter-lightbox");
             Modal.close("#games-search-lightbox");
+
+            const filterLB = this.element.querySelector("#games-search-filter-lightbox");
+            const backBtn = filterLB.querySelector(".games-search-filter-back");
+
+            let activeFilter = ".search-tab";
+            if (utility.hasClass(backBtn, "hidden")) {
+                activeFilter = ".games-filter";
+            }
             ComponentManager.broadcast("games.filter.success", {
                 filteredGames,
+                active: activeFilter,
             });
         }
     }
