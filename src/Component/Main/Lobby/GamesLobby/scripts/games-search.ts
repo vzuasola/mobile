@@ -241,11 +241,22 @@ export class GamesSearch {
     private activateSearchTab() {
         const categoriesEl = document.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        const activeCategory = activeLink.getAttribute("data-category-filter-id");
+        let activeCategory = activeLink.getAttribute("data-category-filter-id");
+
+        if (utility.hasClass(categoriesEl.querySelector(".game-category-more"), "active")) {
+            activeCategory = utility.getHash(window.location.href);
+        }
 
         // set search tab as active tab
         this.deactivateSearchTab();
-        utility.removeClass(document.querySelector(".category-" + activeCategory), "active");
+        const actives = document.querySelectorAll(".category-" + activeCategory);
+        for (const id in actives) {
+            if (actives.hasOwnProperty(id)) {
+                const active = actives[id];
+                utility.removeClass(active, "active");
+           }
+        }
+
         utility.addClass(this.element.querySelector(".search-tab"), "active");
     }
 
@@ -253,6 +264,8 @@ export class GamesSearch {
      * Function that disables search tab and sets category in URL to active
      */
     private deactivateSearchTab() {
+        const categoriesEl = document.querySelector("#game-categories");
+        utility.removeClass(categoriesEl.querySelector(".game-category-more"), "active");
         utility.removeClass(this.element.querySelector(".search-tab"), "active");
         utility.removeClass(this.element.querySelector(".games-filter"), "active");
     }
@@ -449,7 +462,11 @@ export class GamesSearch {
      */
     private listenCategoryChange() {
         ComponentManager.subscribe("category.change", (event, src, data) => {
-            this.deactivateSearchTab();
+            if (utility.hasClass(this.element.querySelector(".search-tab"), "active") ||
+                utility.hasClass(this.element.querySelector(".games-filter"), "active")
+            ) {
+                this.deactivateSearchTab();
+            }
             this.clearSearchBlurbLobby();
         });
     }
