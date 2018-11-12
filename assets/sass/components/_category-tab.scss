@@ -129,7 +129,7 @@
 
         a {
             position: relative;
-            display: block;
+            height: 100%;
             background: $cat-tab-bg;
             color: $cat-tab-color;
             font-size: 1.6rem;
@@ -138,6 +138,9 @@
             padding: 0.6rem 1rem;
             border-right: 0.1rem solid $darker-red;
             border-left: 0.1rem solid $fire-red;
+            display: flex;
+            justify-content: center; /* align horizontal */
+            align-items: center; /* align vertical */
         }
 
         a.active {
