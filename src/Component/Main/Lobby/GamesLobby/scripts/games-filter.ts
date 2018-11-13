@@ -194,17 +194,19 @@ export class GamesFilter {
                 return true;
             });
 
-            filteredGames = filteredGames.sort((a, b) => {
-                // if weights are equal sort by name asc
-                if (a.title.toLowerCase() < b.title.toLowerCase()) {
-                    return -1;
-                }
-                if (a.title.toLowerCase() > b.title.toLowerCase()) {
-                    return 1;
-                }
+            if (!special || actives.length === 2) {
+                filteredGames = filteredGames.sort((a, b) => {
+                    // if weights are equal sort by name asc
+                    if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                        return -1;
+                    }
+                    if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                        return 1;
+                    }
 
-                return 0;
-            });
+                    return 0;
+                });
+            }
 
             filteredGames = this.groupGamesList(filteredGames);
             Modal.close("#games-search-filter-lightbox");
@@ -247,14 +249,14 @@ export class GamesFilter {
         for (const gameKey in this.favGamesList) {
             if (this.favGamesList.hasOwnProperty(gameKey)) {
                 const favgame = this.favGamesList[gameKey];
-                for (const key in this.recentGamesList) {
-                    if (this.favGamesList.hasOwnProperty(key)) {
-                        const recentgame = this.recentGamesList[key];
-                        if (favgame.game_code === recentgame.game_code) {
-                            gamesList.push(favgame);
-                        }
-                    }
-                }
+                gamesList[favgame.game_code] = favgame;
+            }
+        }
+
+        for (const key in this.recentGamesList) {
+            if (this.favGamesList.hasOwnProperty(key)) {
+                const recentgame = this.recentGamesList[key];
+                gamesList[recentgame.game_code] = recentgame;
             }
         }
         return gamesList;
