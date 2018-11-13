@@ -2,22 +2,28 @@
 <div id="search-filter-transfer-container" class="sft-list clearfix">
     <ul class="sft-list-menu">
         <li class="{{ liClass }} sft-list-menu-item">
-            <a href="#" class="search-tab">
-                {{ title }}
-                {% include '@app/web/images/svg/lobby/search.svg' %}
+            <a href="#" class="sft-item-links search-tab">
+                <p class="col-8 m-0">{{ title }}</p>
+                <span class="col-4 sft-item-links-svg">
+                    {% include '@app/web/images/svg/lobby/search.svg' %}
+                </span>
             </a>
         </li>
         <li class="{{ liClass }} sft-list-menu-item">
-            <a href="#" class="games-filter main">
-                {{ filter_title }}
+            <a href="#" class="sft-item-links games-filter main">
+                <p class="col-8 m-0">{{ filter_title }}</p>
+                <span class="col-4 sft-item-links-svg">
                 {% include '@app/web/images/svg/lobby/filter.svg' %}
+                </span>
             </a>
         </li>
         {% if authenticated %}
             <li class="{{ liClass }} sft-list-menu-item sft-list-menu-transfer">
-                <a href="{{ url(transfer_url) }}" class="games-transfer">
-                    {{ transfer_title }}
+                <a href="{{ url(transfer_url) }}" class="sft-item-links games-transfer">
+                    <p class="col-8 m-0">{{ transfer_title }}</p>
+                    <span class="col-4 sft-item-links-svg">
                     {% include '@app/web/images/svg/lobby/transfer.svg' %}
+                    </span>
                 </a>
             </li>
         {% endif %}

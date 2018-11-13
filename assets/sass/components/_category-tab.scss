@@ -119,28 +119,34 @@
     }
 
     .sft-item {
+        padding: 0.6rem 0;
         float: left;
         text-align: center;
         width: 33.33333333333333%;
+        border-right: 0.1rem solid $darker-red;
+        border-left: 0.1rem solid $fire-red;
 
         &.half {
             width: 50%;
         }
 
-        a {
+        &-links {
             position: relative;
+            display: block;
+            width: 100%;
             height: 100%;
             background: $cat-tab-bg;
             color: $cat-tab-color;
-            font-size: 1.6rem;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.6rem 1rem;
-            border-right: 0.1rem solid $darker-red;
-            border-left: 0.1rem solid $fire-red;
-            display: flex;
-            justify-content: center; /* align horizontal */
-            align-items: center; /* align vertical */
+            padding: 0 1rem;
+
+            p,
+            span {
+                padding: 0;
+                height: 100%;
+                font-size: 1.6rem;
+                text-decoration: none;
+                font-weight: 600;
+            }
         }
 
         a.active {
@@ -152,21 +158,19 @@
             }
         }
 
-        &:first-child a {
-            border-left: none;
-        }
-
-        &:last-child a {
-            border-right: none;
-        }
-
         svg {
             outline: none;
             fill: $white;
-            margin: 0 0 0 1rem;
             width: 2rem;
-            vertical-align: text-top;
         }
+    }
+
+    &:first-child {
+        border-left: none;
+    }
+
+    &:last-child {
+        border-right: none;
     }
 
     .sft-list-menu-transfer {
