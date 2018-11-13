@@ -69,7 +69,7 @@ class GamesLobbyComponentController
         $this->asset = $asset;
         $this->recentGames = $recentGames;
         $this->favorite = $favorite;
-        $this->configAsync = $configAsync;
+        $this->configAsync = $configAsync->withProduct('mobile-games');
         $this->viewsAsync = $viewsAsync->withProduct('mobile-games');
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
@@ -125,6 +125,8 @@ class GamesLobbyComponentController
 
         $categories = $this->views->getViewById('games_category');
         $definitions = $this->getDefinitionsByCategory($categories);
+        $definitions['configs'] = $this->configAsync->getConfig('gts.gts_configuration');
+
         $asyncData = Async::resolve($definitions);
 
         $specialCategories = [];
@@ -137,6 +139,8 @@ class GamesLobbyComponentController
             $categories,
             $asyncData
         );
+
+        $data['configs'] = $asyncData['configs'];
 
         return $data;
     }
