@@ -427,7 +427,8 @@ export class GamesLobbyComponent implements ComponentInterface {
                     if (result.success) {
                         this.response = null;
                         this.generateLobby(() => {
-                            // Do nothing
+                            this.gamesSearch.setGamesList(this.response);
+                            this.gamesFilter.setGamesList(this.response);
                         });
                     }
                 }).fail((error, message) => {
@@ -456,7 +457,8 @@ export class GamesLobbyComponent implements ComponentInterface {
                     if (result.success) {
                         this.response = null;
                         this.generateLobby(() => {
-                            // Do nothing
+                            this.gamesSearch.setGamesList(this.response);
+                            this.gamesFilter.setGamesList(this.response);
                         });
                         ComponentManager.broadcast("games.favorite", { srcElement: el });
                     }
@@ -614,7 +616,9 @@ export class GamesLobbyComponent implements ComponentInterface {
                     }
                     let pager = this.getPagedContent(this.response.games[hash]);
 
-                    if (utility.hasClass(this.element.querySelector(".search-tab"), "active")) {
+                    if (utility.hasClass(this.element.querySelector(".search-tab"), "active")
+                        || utility.hasClass(this.element.querySelector(".games-filter"), "active")
+                    ) {
                         pager = this.getPagedContent(this.searchResults);
                     }
 
