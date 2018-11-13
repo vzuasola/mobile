@@ -15,6 +15,8 @@ export class GamesFilter {
     private element;
     private gameMasterList: any;
     private gamesList: any;
+    private favGamesList: any;
+    private recentGamesList: any;
     handleOnLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.listenOnOpen();
@@ -32,16 +34,25 @@ export class GamesFilter {
     setGamesList(gamesList) {
         if (gamesList) {
             const allGames = [];
+            const favGames = [];
+            const recentGames = [];
             this.gameMasterList = gamesList.games;
-            if (gamesList.games["all-games"]) {
-                for (const games of gamesList.games["all-games"]) {
-                    for (const game of games) {
-                        allGames.push(game);
-                    }
+            this.gamesList = this.generateGamesList("all-games");
+            this.favGamesList = this.generateGamesList("favorites");
+            this.recentGamesList = this.generateGamesList("recently-played");
+        }
+    }
+
+    private generateGamesList(key) {
+        const allGames = [];
+        if (this.gameMasterList[key]) {
+            for (const games of this.gameMasterList[key]) {
+                for (const game of games) {
+                    allGames.push(game);
                 }
             }
-            this.gamesList = allGames;
         }
+        return allGames;
     }
 
     private listenOnOpen() {
