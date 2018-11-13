@@ -1,4 +1,4 @@
-{% set liClass = (authenticated) ? 'sft-item' : 'sft-item half' %}
+{% set liClass = (authenticated and transfer_url) ? 'sft-item' : 'sft-item half' %}
 <div id="search-filter-transfer-container" class="sft-list clearfix">
     <ul class="sft-list-menu">
         <li class="{{ liClass }} sft-list-menu-item">
@@ -13,7 +13,7 @@
                 {% include '@app/web/images/svg/lobby/filter.svg' %}
             </a>
         </li>
-        {% if authenticated %}
+        {% if authenticated and transfer_url %}
             <li class="{{ liClass }} sft-list-menu-item sft-list-menu-transfer">
                 <a href="{{ url(transfer_url) }}" class="games-transfer">
                     {{ transfer_title }}
