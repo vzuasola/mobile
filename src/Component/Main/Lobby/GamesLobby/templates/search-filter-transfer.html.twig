@@ -3,27 +3,21 @@
     <ul class="sft-list-menu">
         <li class="{{ liClass }} sft-list-menu-item">
             <a href="#" class="sft-item-links search-tab">
-                <p class="col-8 m-0">{{ title }}</p>
-                <span class="col-4 sft-item-links-svg">
-                    {% include '@app/web/images/svg/lobby/search.svg' %}
-                </span>
+                {{ title }}
+                {% include '@app/web/images/svg/lobby/search.svg' %}
             </a>
         </li>
         <li class="{{ liClass }} sft-list-menu-item">
             <a href="#" class="sft-item-links games-filter main">
-                <p class="col-8 m-0">{{ filter_title }}</p>
-                <span class="col-4 sft-item-links-svg">
+                {{ filter_title }}
                 {% include '@app/web/images/svg/lobby/filter.svg' %}
-                </span>
             </a>
         </li>
         {% if authenticated and transfer_url %}
             <li class="{{ liClass }} sft-list-menu-item sft-list-menu-transfer">
                 <a href="{{ url(transfer_url) }}" class="sft-item-links games-transfer">
-                    <p class="col-8 m-0">{{ transfer_title }}</p>
-                    <span class="col-4 sft-item-links-svg">
+                    {{ transfer_title }}
                     {% include '@app/web/images/svg/lobby/transfer.svg' %}
-                    </span>
                 </a>
             </li>
         {% endif %}
