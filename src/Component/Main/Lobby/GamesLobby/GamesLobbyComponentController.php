@@ -96,12 +96,16 @@ class GamesLobbyComponentController
         }
 
         // Put post process here to get favorites and recents tab
-        $specialGamesList = $this->getSpecialCategoriesGameList($data['special_categories']);
+        $specialCategories = [
+                $this::RECENTLY_PLAYED_GAMES,
+                $this::FAVORITE_GAMES
+        ];
+        $specialGamesList = $this->getSpecialCategoriesGameList($specialCategories);
 
         $gamesData = $data['games'] + $specialGamesList;
 
         $specialCategoryGames = $this->getSpecialGamesbyCategory(
-            $data['special_categories'],
+            $specialCategories,
             $gamesData
         );
 
@@ -163,21 +167,21 @@ class GamesLobbyComponentController
     {
         $definitions = [];
         try {
-            foreach ($categories as $category) {
-                $categoryId = $category['field_games_alias'];
-                switch ($category['field_games_alias']) {
-                    case $this::RECENTLY_PLAYED_GAMES:
-                        $definitions[$categoryId] = $this->recentGames->getRecents();
-                        break;
-                    case $this::FAVORITE_GAMES:
-                        $definitions[$categoryId] = $this->favorite->getFavorites();
-                        break;
+            if ($this->playerSession->isLogin()) {
+                foreach ($categories as $category) {
+                    switch ($category) {
+                        case $this::RECENTLY_PLAYED_GAMES:
+                            $definitions[$category] = $this->recentGames->getRecents();
+                            break;
+                        case $this::FAVORITE_GAMES:
+                            $definitions[$category] = $this->favorite->getFavorites();
+                            break;
+                    }
                 }
             }
         } catch (\Exception $e) {
             $definitions = [];
         }
-
         return $definitions;
     }
 
@@ -276,13 +280,13 @@ class GamesLobbyComponentController
         $allGames = $this->getAllGames($data['all-games']);
         $gamesList = [];
         foreach ($specialCategories as $category) {
-            switch ($category['field_games_alias']) {
+            switch ($category) {
                 case $this::RECENTLY_PLAYED_GAMES:
                     if (isset($data['recently-played'])) {
                         $games = $this->getRecentlyPlayedGames($allGames, $data['recently-played']);
 
                         if ($games) {
-                            $gamesList[$category['field_games_alias']] = $games;
+                            $gamesList[$category] = $games;
                         }
                     }
 
@@ -292,7 +296,7 @@ class GamesLobbyComponentController
                         $games = $this->getFavoriteGames($allGames, $data['favorites']);
 
                         if ($games) {
-                            $gamesList[$category['field_games_alias']] = $games;
+                            $gamesList[$category] = $games;
                         }
                     }
 
