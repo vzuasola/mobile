@@ -166,6 +166,7 @@
                 fill: $white;
                 width: 2rem;
                 vertical-align: -0.5rem;
+                margin-left: 0.5rem;
             }
         }
 
@@ -189,7 +190,7 @@
 
     .sft-list-menu-transfer {
         svg {
-            margin-top: 0.2rem;
+            vertical-align: -0.3rem;
         }
     }
 }
