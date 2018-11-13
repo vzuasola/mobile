@@ -141,14 +141,15 @@ export class GamesFilter {
             this.fav = false;
             this.recent = false;
             this.checkActiveSpecial(actives);
-
+            let flag = "general";
             let special = false;
             let filteredGames = [];
-            let gamesList = [];
+            let gamesList = this.gamesList;
 
             if (this.fav && !this.recent) {
                 gamesList = this.favGamesList;
                 if (actives.length === 1) {
+                    flag = "favorites";
                     special = true;
                 }
             }
@@ -156,6 +157,7 @@ export class GamesFilter {
             if (this.recent && !this.fav) {
                 gamesList = this.recentGamesList;
                 if (actives.length === 1) {
+                    flag = "recently-played";
                     special = true;
                 }
             }
@@ -176,11 +178,14 @@ export class GamesFilter {
                     for (const gameKey in gamesList) {
                         if (gamesList.hasOwnProperty(gameKey)) {
                             const game = gamesList[gameKey];
+                            if (special) {
+                                filteredGames[gameKey] = game;
+                            }
+
                             if (typeof game.filters !== "undefined") {
                                 const gameFilter = JSON.parse(game.filters);
-                                if (typeof gameFilter[activeParent] !== "undefined"
-                                    && gameFilter[activeParent].indexOf(checkValue) !== -1
-                                    || special
+                                if ((typeof gameFilter[activeParent] !== "undefined"
+                                    && gameFilter[activeParent].indexOf(checkValue) !== -1)
                                 ) {
                                     filteredGames[gameKey] = game;
                                 }
@@ -223,6 +228,7 @@ export class GamesFilter {
             ComponentManager.broadcast("games.filter.success", {
                 filteredGames,
                 active: activeFilter,
+                flag,
             });
         }
     }

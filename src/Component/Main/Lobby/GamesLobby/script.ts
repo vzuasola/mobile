@@ -37,6 +37,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private load: boolean;
     private product: any[];
     private searchResults;
+    private filterFlag: string;
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -310,6 +311,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 !utility.hasClass(src, "game-category-more", true) ||
                 utility.hasClass(src, "category-provider-menu", true)
             ) {
+                this.filterFlag = "general";
                 window.location.hash = "";
                 ComponentManager.broadcast("category.change");
             }
@@ -427,9 +429,13 @@ export class GamesLobbyComponent implements ComponentInterface {
                 }).then((result) => {
                     if (result.success) {
                         this.response = null;
-                        this.generateLobby(() => {
+                        this.doRequest(() => {
                             this.gamesSearch.setGamesList(this.response);
                             this.gamesFilter.setGamesList(this.response);
+
+                            if (this.filterFlag === "recently-played") {
+                                this.setGames(this.response.games[this.filterFlag]);
+                            }
                         });
                     }
                 }).fail((error, message) => {
@@ -457,10 +463,23 @@ export class GamesLobbyComponent implements ComponentInterface {
                 }).then((result) => {
                     if (result.success) {
                         this.response = null;
-                        this.generateLobby(() => {
+                        this.doRequest(() => {
                             this.gamesSearch.setGamesList(this.response);
                             this.gamesFilter.setGamesList(this.response);
+
+                            if (this.filterFlag === "favorites") {
+                                if (typeof this.response.games[this.filterFlag] === "undefined") {
+                                    this.deactivateSearchTab();
+                                    this.setLobby();
+                                }
+
+                                if (typeof this.response.games[this.filterFlag] !== "undefined") {
+                                    this.setGames(this.response.games[this.filterFlag]);
+                                }
+
+                            }
                         });
+
                         ComponentManager.broadcast("games.favorite", { srcElement: el });
                     }
                 }).fail((error, message) => {
@@ -577,6 +596,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 this.activateSearchTab(data.active);
                 this.searchResults = data.filteredGames;
                 this.setGames(data.filteredGames);
+                this.filterFlag = data.flag;
             } else {
                 const gamesEl = this.element.querySelector("#game-container");
                 let recommended: boolean = false;
