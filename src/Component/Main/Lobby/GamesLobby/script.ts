@@ -427,7 +427,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     if (result.success) {
                         this.response = null;
                         this.generateLobby(() => {
-                            this.updateCategorySpecial();
+                            // Do nothing
                         });
                     }
                 }).fail((error, message) => {
@@ -456,7 +456,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     if (result.success) {
                         this.response = null;
                         this.generateLobby(() => {
-                            this.updateCategorySpecial();
+                            // Do nothing
                         });
                         ComponentManager.broadcast("games.favorite", { srcElement: el });
                     }
