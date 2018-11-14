@@ -137,10 +137,10 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     private moveCategory() {
-        const sliders = document.querySelector("#main-slider");
+        const container = document.querySelector("#categories-container");
         const categoriesEl = document.querySelector("#game-categories");
 
-        sliders.parentNode.insertBefore(categoriesEl, sliders);
+        container.appendChild(categoriesEl);
     }
 
     private initMarker() {
