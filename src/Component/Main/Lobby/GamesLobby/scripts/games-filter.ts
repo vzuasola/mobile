@@ -69,7 +69,6 @@ export class GamesFilter {
             if (utility.hasClass(data.element, "main")) {
                 utility.addClass(backBtn, "hidden");
             }
-            this.clearFilters();
         });
     }
 
@@ -182,7 +181,7 @@ export class GamesFilter {
                                 filteredGames[gameKey] = game;
                             }
 
-                            if (typeof game.filters !== "undefined") {
+                            if (typeof game.filters !== "undefined" && !special) {
                                 const gameFilter = JSON.parse(game.filters);
                                 if ((typeof gameFilter[activeParent] !== "undefined"
                                     && gameFilter[activeParent].indexOf(checkValue) !== -1)
@@ -252,19 +251,27 @@ export class GamesFilter {
 
     private getRecentFavGames() {
         const gamesList = [];
+        const gameListKeys = [];
         for (const gameKey in this.favGamesList) {
             if (this.favGamesList.hasOwnProperty(gameKey)) {
                 const favgame = this.favGamesList[gameKey];
-                gamesList[favgame.game_code] = favgame;
+                if (gameListKeys.indexOf(favgame.game_code) === -1) {
+                    gameListKeys.push(favgame.game_code);
+                    gamesList.push(favgame);
+                }
             }
         }
 
         for (const key in this.recentGamesList) {
-            if (this.favGamesList.hasOwnProperty(key)) {
+            if (this.recentGamesList.hasOwnProperty(key)) {
                 const recentgame = this.recentGamesList[key];
-                gamesList[recentgame.game_code] = recentgame;
+                if (gameListKeys.indexOf(recentgame.game_code) === -1) {
+                    gameListKeys.push(recentgame.game_code);
+                    gamesList.push(recentgame);
+                }
             }
         }
+
         return gamesList;
     }
 
