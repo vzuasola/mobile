@@ -17,6 +17,7 @@ export class ProviderDrawer {
             if (target === icon || target.parentNode === icon) {
                 this.openProvider();
             } else if (utility.hasClass(target, "close-svg") ||
+                utility.hasClass(target, "close-drawer") ||
                 utility.hasClass(target, "provider-menu-overlay")
             ) {
                 this.closeProvider();
