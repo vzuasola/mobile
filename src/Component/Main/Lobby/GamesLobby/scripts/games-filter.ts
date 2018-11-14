@@ -69,7 +69,6 @@ export class GamesFilter {
             if (utility.hasClass(data.element, "main")) {
                 utility.addClass(backBtn, "hidden");
             }
-            this.clearFilters();
         });
     }
 
