@@ -24,6 +24,7 @@ export class GamesSearch {
     private searchKeyword;
     private searchBlurb;
     private recommendedGames;
+    private response;
 
     constructor() {
         this.searchObj = new Search({
@@ -91,6 +92,7 @@ export class GamesSearch {
     }
 
     setGamesList(gamesList) {
+        this.response = gamesList;
         if (gamesList && gamesList.games["all-games"]) {
             const allGames = [];
             for (const games of gamesList.games["all-games"]) {
@@ -241,9 +243,12 @@ export class GamesSearch {
     private activateSearchTab() {
         const categoriesEl = document.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        let activeCategory = activeLink.getAttribute("data-category-filter-id");
+        let activeCategory = this.response.categories[0].field_games_alias;
+        if (activeLink) {
+            activeCategory = activeLink.getAttribute("data-category-filter-id");
+        }
 
-        if (utility.hasClass(categoriesEl.querySelector(".game-category-more"), "active")) {
+        if (utility.hasClass(categoriesEl.querySelector(".game-category-more"), "active") || !activeCategory) {
             activeCategory = utility.getHash(window.location.href);
         }
 
