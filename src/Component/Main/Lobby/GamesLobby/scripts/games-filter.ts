@@ -1,13 +1,12 @@
-
 import Search from "@app/assets/script/components/search";
 import * as Handlebars from "handlebars/runtime";
 import * as gamesSearchTemplate from "../handlebars/games-search-result.handlebars";
 import * as gameTemplate from "../handlebars/games.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 
-import { ComponentManager } from "@plugins/ComponentWidget/asset/component";
-import { Loader } from "@app/assets/script/components/loader";
-import { Modal } from "@app/assets/script/components/modal";
+import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
+import {Loader} from "@app/assets/script/components/loader";
+import {Modal} from "@app/assets/script/components/modal";
 
 /**
  *
@@ -20,11 +19,11 @@ export class GamesFilter {
     private recentGamesList: any;
     private fav: boolean;
     private recent: boolean;
-    private submit: boolean;
+    private enabledFilters: any;
     handleOnLoad(element: HTMLElement, attachments: {}) {
         this.fav = false;
         this.recent = false;
-        this.submit = false;
+        this.enabledFilters = [];
         this.element = element;
         this.listenOnOpen();
         this.listenOnClick();
@@ -37,7 +36,7 @@ export class GamesFilter {
         }
         this.fav = false;
         this.recent = false;
-        this.submit = false;
+        this.enabledFilters = [];
         this.element = element;
     }
 
@@ -74,10 +73,23 @@ export class GamesFilter {
                 utility.addClass(backBtn, "hidden");
             }
 
-            if (!this.submit) {
-                this.clearFilters();
+            this.clearFilters();
+            if (this.enabledFilters.length > 0) {
+                this.populateFilters(this.enabledFilters);
             }
+
         });
+    }
+
+    private populateFilters(actives) {
+        for (const activeKey in actives) {
+            if (actives.hasOwnProperty(activeKey)) {
+                const active = actives[activeKey];
+                const checkbox = active.querySelector(".filter-checkbox");
+                this.onToggleFilters(checkbox);
+                checkbox.checked = true;
+            }
+        }
     }
 
     private listenOnClick() {
@@ -112,6 +124,7 @@ export class GamesFilter {
     private onClickClearFilters(src) {
         if (src.getAttribute("name") === "filter-reset") {
             this.clearFilters();
+            this.enabledFilters = [];
         }
 
         if (src.getAttribute("name") === "filter-submit") {
@@ -147,6 +160,7 @@ export class GamesFilter {
             const actives = filterLightbox.querySelectorAll(".active");
             this.fav = false;
             this.recent = false;
+            this.enabledFilters = [];
             this.checkActiveSpecial(actives);
             let flag = "general";
             let special = false;
@@ -181,7 +195,7 @@ export class GamesFilter {
                     const active = actives[activeKey];
                     const activeParent = active.querySelector(".filter-checkbox").getAttribute("data-parent");
                     const checkValue = active.querySelector(".filter-checkbox").value;
-
+                    this.enabledFilters.push(active);
                     for (const gameKey in gamesList) {
                         if (gamesList.hasOwnProperty(gameKey)) {
                             const game = gamesList[gameKey];
@@ -232,7 +246,6 @@ export class GamesFilter {
                 activeFilter = ".games-filter";
             }
 
-            this.submit = true;
             ComponentManager.broadcast("games.filter.success", {
                 filteredGames,
                 active: activeFilter,
