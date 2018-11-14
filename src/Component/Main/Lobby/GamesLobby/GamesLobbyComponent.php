@@ -78,6 +78,8 @@ class GamesLobbyComponent implements ComponentWidgetInterface
             'authenticated' => $this->playerSession->isLogin(),
             'title' => $searchConfig['search_title'] ?? "",
             'filter_title' => $searchConfig['games_filter_title'] ?? "",
+            'title_search_lightbox' => $searchConfig['title_search_lightbox'] ?? "",
+            'filter_title_lightbox' => $searchConfig['filter_title_lightbox'] ?? "",
             'transfer_title' => $searchConfig['games_transfer_title'] ?? "",
             'transfer_url' => $searchConfig['games_transfer_link'] ?? "",
             'games_filter_submit' => $searchConfig['games_filter_submit'] ?? "Submit",
