@@ -1,16 +1,17 @@
+
 import Search from "@app/assets/script/components/search";
 import * as Handlebars from "handlebars/runtime";
 import * as gamesSearchTemplate from "../handlebars/games-search-result.handlebars";
 import * as gameTemplate from "../handlebars/games.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 
-import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Loader} from "@app/assets/script/components/loader";
-import {Modal} from "@app/assets/script/components/modal";
+import { ComponentManager } from "@plugins/ComponentWidget/asset/component";
+import { Loader } from "@app/assets/script/components/loader";
+import { Modal } from "@app/assets/script/components/modal";
 
 /**
- *
- */
+*
+*/
 export class GamesFilter {
     private element;
     private gameMasterList: any;
@@ -19,9 +20,11 @@ export class GamesFilter {
     private recentGamesList: any;
     private fav: boolean;
     private recent: boolean;
+    private submit: boolean;
     handleOnLoad(element: HTMLElement, attachments: {}) {
         this.fav = false;
         this.recent = false;
+        this.submit = false;
         this.element = element;
         this.listenOnOpen();
         this.listenOnClick();
@@ -34,6 +37,7 @@ export class GamesFilter {
         }
         this.fav = false;
         this.recent = false;
+        this.submit = false;
         this.element = element;
     }
 
@@ -68,6 +72,10 @@ export class GamesFilter {
             utility.removeClass(backBtn, "hidden");
             if (utility.hasClass(data.element, "main")) {
                 utility.addClass(backBtn, "hidden");
+            }
+
+            if (!this.submit) {
+                this.clearFilters();
             }
         });
     }
@@ -224,6 +232,7 @@ export class GamesFilter {
                 activeFilter = ".games-filter";
             }
 
+            this.submit = true;
             ComponentManager.broadcast("games.filter.success", {
                 filteredGames,
                 active: activeFilter,
