@@ -43,11 +43,11 @@
             <ul class="game-category col-12 mb-10">
                 {{#each categories}}
                 {{#if this.published }}
-                    <li class="game-category-list col-6 pt-10 {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
-                        <a href="#{{this.field_games_alias}}" class="category-provider-menu category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
+                    <li class="game-category-list col-6 pt-10 {{#condition ../active "===" this.field_games_alias}}active{{/condition}} close-drawer">
+                        <a href="#{{this.field_games_alias}}" class="category-provider-menu category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}} close-drawer"
                             data-category-filter-id="{{this.field_games_alias}}" data-category-filter-name="{{{this.name}}}">
                             {{#if this.field_games_category_logo }}
-                                <img src="{{this.field_games_category_logo}}" alt="{{{this.name}}}">
+                                <img src="{{this.field_games_category_logo}}" alt="{{{this.name}}}" class="close-drawer">
                             {{/if}}
                             <p>{{{this.name}}}</p>
                         </a>
