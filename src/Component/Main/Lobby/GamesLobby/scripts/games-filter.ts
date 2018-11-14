@@ -10,8 +10,8 @@ import { Loader } from "@app/assets/script/components/loader";
 import { Modal } from "@app/assets/script/components/modal";
 
 /**
-*
-*/
+ *
+ */
 export class GamesFilter {
     private element;
     private gameMasterList: any;
