@@ -23,6 +23,8 @@ export class AnnouncementComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getAnnouncements();
+        this.listenModalClose();
+        this.listenAnnouncementLightbox();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -50,8 +52,6 @@ export class AnnouncementComponent implements ComponentInterface {
         this.bindDismissButton(this.element);
 
         // lightbox
-        this.listenAnnouncementLightbox();
-        this.listenModalClose();
         this.listenAutoRefresh(this.element);
 
         this.getUnread(this.element);
