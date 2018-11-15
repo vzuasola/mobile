@@ -94,11 +94,8 @@ export class AnnouncementComponent implements ComponentInterface {
      * Refresh announcements on background
      */
     private listenAutoRefresh(element) {
-<<<<<<< HEAD
+
         if (this.timer !== null) {
-=======
-        if (this.timer) {
->>>>>>> 9eabae6cc4f8010a981c5136cd918b74abbfc5ea
             clearInterval(this.timer);
         }
 
