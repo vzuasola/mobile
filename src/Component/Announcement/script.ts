@@ -15,7 +15,7 @@ export class AnnouncementComponent implements ComponentInterface {
     private refreshInterval: number = 300000;
     private element: HTMLElement;
     private announcements: any;
-
+    private timer: any;
     constructor() {
         this.storage = new Storage();
     }
@@ -94,7 +94,11 @@ export class AnnouncementComponent implements ComponentInterface {
      * Refresh announcements on background
      */
     private listenAutoRefresh(element) {
-        setInterval(() => {
+        if (this.timer !== null) {
+            clearInterval(this.timer);
+        }
+
+        this.timer = setInterval(() => {
             if (!utility.hasClass(element.querySelector("#announcement-lightbox"), "modal-active")) {
                 ComponentManager.refreshComponent("announcement");
             }
