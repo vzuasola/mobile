@@ -11,7 +11,7 @@ export class ProviderDrawer {
     }
 
     private bindEvents() {
-        ComponentManager.subscribe("touchstart", (src, target) => {
+        ComponentManager.subscribe(utility.eventType(), (src, target) => {
             const icon = this.element.querySelector(".provider-drawer");
 
             if (target === icon || target.parentNode === icon) {

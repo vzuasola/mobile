@@ -11,7 +11,7 @@ export class Menu {
     }
 
     private bindEvents() {
-        ComponentManager.subscribe("click", (src, target) => {
+        ComponentManager.subscribe(utility.eventType(), (src, target) => {
             const icon = this.element.querySelector(".mobile-menu-icon");
 
             if (target === icon || target.parentNode === icon) {
