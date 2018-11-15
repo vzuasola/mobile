@@ -16,6 +16,7 @@ export class AnnouncementComponent implements ComponentInterface {
     private element: HTMLElement;
     private announcements: any;
     private timer: any;
+
     constructor() {
         this.storage = new Storage();
     }
