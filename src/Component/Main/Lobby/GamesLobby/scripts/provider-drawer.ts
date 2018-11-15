@@ -8,6 +8,7 @@ export class ProviderDrawer {
 
     activate() {
         this.bindEvents();
+        this.closeEvents();
     }
 
     private bindEvents() {
@@ -16,9 +17,21 @@ export class ProviderDrawer {
 
             if (target === icon || target.parentNode === icon) {
                 this.openProvider();
+            } else if (utility.hasClass(target, "provider-menu-overlay")
+            ) {
+                this.closeProvider();
+            }
+        });
+    }
+
+    private closeEvents() {
+        ComponentManager.subscribe("click", (src, target) => {
+            const icon = this.element.querySelector(".provider-drawer");
+
+            if (target === icon || target.parentNode === icon) {
+                this.openProvider();
             } else if (utility.hasClass(target, "close-svg") ||
-                utility.hasClass(target, "close-drawer") ||
-                utility.hasClass(target, "provider-menu-overlay")
+                utility.hasClass(target, "close-drawer")
             ) {
                 this.closeProvider();
             }
