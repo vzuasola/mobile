@@ -156,6 +156,9 @@ modules:
   pas_integration:
     class: App\MobileEntry\Module\GameIntegration\PAS\PASModule
 
+  microgaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\MicroGaming\MicroGamingModule
+
   voidbridge_integration:
     class: App\MobileEntry\Module\GameIntegration\Voidbridge\VoidbridgeModule
 
