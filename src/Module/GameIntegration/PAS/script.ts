@@ -69,7 +69,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             const uri = Router.generateModuleRoute("pas_integration", "subaccounts");
 
             xhr({
-                url: `${uri}?username=${user}`,
+                url: utility.addQueryParam(uri, "username", user),
             }).then((response) => {
                 let ctr = 0;
                 for (const key in this.iapiConfs) {
