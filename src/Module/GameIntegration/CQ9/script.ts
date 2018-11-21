@@ -10,8 +10,8 @@ import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
 import {GameInterface} from "./../scripts/game.interface";
 
-export class MicroGamingModule implements ModuleInterface, GameInterface {
-    private key: string = "micro_gaming";
+export class CQ9Module implements ModuleInterface, GameInterface {
+    private key: string = "cq9";
     private currencies: any;
     private languages: any;
     private windowObject: any;
@@ -47,7 +47,7 @@ export class MicroGamingModule implements ModuleInterface, GameInterface {
             }
 
             xhr({
-                url: Router.generateModuleRoute("microgaming_integration", "launch"),
+                url: Router.generateModuleRoute("cq9_integration", "launch"),
                 type: "json",
                 method: "post",
                 data: {
@@ -127,7 +127,7 @@ export class MicroGamingModule implements ModuleInterface, GameInterface {
 
     private unsupportedCurrency(data) {
         xhr({
-            url: Router.generateModuleRoute("microgaming_integration", "unsupported"),
+            url: Router.generateModuleRoute("cq9", "unsupported"),
             type: "json",
             method: "get",
         }).then((response) => {

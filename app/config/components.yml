@@ -162,6 +162,12 @@ modules:
   voidbridge_integration:
     class: App\MobileEntry\Module\GameIntegration\Voidbridge\VoidbridgeModule
 
+  cq9_integration:
+    class: App\MobileEntry\Module\GameIntegration\CQ9\CQ9Module
+
+  solidgaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\SolidGaming\SolidGamingModule
+
   skywind_integration:
     class: App\MobileEntry\Module\GameIntegration\Skywind\SkywindModule
 
