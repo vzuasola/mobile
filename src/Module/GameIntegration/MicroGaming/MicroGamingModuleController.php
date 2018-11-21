@@ -68,11 +68,12 @@ class MicroGamingModuleController
         if ($this->checkCurrency()) {
             $data['currency'] = true;
             $requestData = $request->getParsedBody();
+
             try {
                 $responseData = $this->microGaming->getGameUrlById('icore_mg', $requestData['gameCode'], [
                     'options' => [
                         'languageCode' => $requestData['langCode'],
-                        'playMode' => true
+                        'playMode' => 'true'
                     ]
                 ]);
                 if ($responseData['url']) {
