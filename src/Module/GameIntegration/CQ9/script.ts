@@ -127,7 +127,7 @@ export class CQ9Module implements ModuleInterface, GameInterface {
 
     private unsupportedCurrency(data) {
         xhr({
-            url: Router.generateModuleRoute("cq9", "unsupported"),
+            url: Router.generateModuleRoute("cq9_integration", "unsupported"),
             type: "json",
             method: "get",
         }).then((response) => {
