@@ -219,7 +219,6 @@ class GamesLobbyComponentController
         $gamesList['all-games'] = $this->arrangeGames($allGames, 'all-games');
 
         foreach ($gamesList['all-games'] as $game) {
-
             foreach ($game['categories'] as $category) {
                 $notAllGames = ($category['field_games_alias'][0]['value'] !== 'all-games');
                 if (!isset($categoryList[$category['field_games_alias'][0]['value']])
@@ -235,7 +234,6 @@ class GamesLobbyComponentController
                     $gamesList[$category['field_games_alias'][0]['value']][$game['game_code']] = $game;
                 }
             }
-
         }
 
         return $gamesList;
