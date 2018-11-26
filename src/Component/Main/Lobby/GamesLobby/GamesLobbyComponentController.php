@@ -111,7 +111,7 @@ class GamesLobbyComponentController
 
         $data['games'] += $specialCategoryGames;
         $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $data['games']);
-        $data['games'] = $this->groupGamesByContainer($data['games'], 3);
+        // $data['games'] = $this->groupGamesByContainer($data['games'], 3);
 
         if (isset($specialGamesList['favorites'])) {
             $data['favorite_list'] = $this->getFavoriteGamesList($specialGamesList['favorites']);
@@ -218,23 +218,23 @@ class GamesLobbyComponentController
 
         $gamesList['all-games'] = $this->arrangeGames($allGames, 'all-games');
 
-        foreach ($gamesList['all-games'] as $game) {
-            foreach ($game['categories'] as $category) {
-                $notAllGames = ($category['field_games_alias'][0]['value'] !== 'all-games');
-                if (!isset($categoryList[$category['field_games_alias'][0]['value']])
-                    && $notAllGames
-                ) {
-                    $categoryList[$category['field_games_alias'][0]['value']] = $category;
-                    $gamesList[$category['field_games_alias'][0]['value']] = [];
-                }
+        // foreach ($gamesList['all-games'] as $game) {
+        //     foreach ($game['categories'] as $category) {
+        //         $notAllGames = ($category['field_games_alias'][0]['value'] !== 'all-games');
+        //         if (!isset($categoryList[$category['field_games_alias'][0]['value']])
+        //             && $notAllGames
+        //         ) {
+        //             $categoryList[$category['field_games_alias'][0]['value']] = $category;
+        //             $gamesList[$category['field_games_alias'][0]['value']] = [];
+        //         }
 
-                if (!isset($gamesList[$category['field_games_alias'][0]['value']][$game['game_code']])
-                    && $notAllGames
-                ) {
-                    $gamesList[$category['field_games_alias'][0]['value']][$game['game_code']] = $game;
-                }
-            }
-        }
+        //         if (!isset($gamesList[$category['field_games_alias'][0]['value']][$game['game_code']])
+        //             && $notAllGames
+        //         ) {
+        //             $gamesList[$category['field_games_alias'][0]['value']][$game['game_code']] = $game;
+        //         }
+        //     }
+        // }
 
         return $gamesList;
     }
@@ -374,7 +374,14 @@ class GamesLobbyComponentController
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
-            $processGame['categories'] = $game['field_games_list_category'];
+
+            $categoryList = [];
+
+            foreach ($game['field_games_list_category'] as $category) {
+                $categoryList[$category['field_games_alias'][0]['value']] = $category;
+            }
+
+            $processGame['categories'] = $categoryList;
 
             return $processGame;
         } catch (\Exception $e) {
@@ -394,27 +401,26 @@ class GamesLobbyComponentController
                 continue;
             }
 
-            if (isset($gamesList[$category['field_games_alias']])) {
-                $isPublished = $this->checkIfPublished(
-                    $category['field_publish_date'],
-                    $category['field_unpublish_date']
-                );
-                if ($isPublished) {
-                    $category['published'] = $isPublished;
-                    if ($category['field_games_category_logo']) {
-                        $categoryLogo = str_replace(
-                            '/' . $this->currentLanguage . '/',
-                            '/',
-                            $category['field_games_category_logo']
-                        );
-                        $category['field_games_category_logo'] = $this->asset->generateAssetUri(
-                            $categoryLogo,
-                            ['product' => 'mobile-games']
-                        );
-                    }
-                    $categoryList[] = $category;
+            $isPublished = $this->checkIfPublished(
+                $category['field_publish_date'],
+                $category['field_unpublish_date']
+            );
+            if ($isPublished) {
+                $category['published'] = $isPublished;
+                if ($category['field_games_category_logo']) {
+                    $categoryLogo = str_replace(
+                        '/' . $this->currentLanguage . '/',
+                        '/',
+                        $category['field_games_category_logo']
+                    );
+                    $category['field_games_category_logo'] = $this->asset->generateAssetUri(
+                        $categoryLogo,
+                        ['product' => 'mobile-games']
+                    );
                 }
+                $categoryList[] = $category;
             }
+
         }
         return $categoryList;
     }
