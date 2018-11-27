@@ -190,6 +190,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             response.games = this.getCategoryGames(response.games);
             response.games = this.groupGamesByContainer(response.games);
             this.response = response;
+
             if (callback) {
                 callback();
             }
@@ -734,7 +735,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                             && !(game.game_code in gamesList[category.field_games_alias[0].value])
                             && notAllGames
                         ) {
-                            gamesList[category.field_games_alias[0].value][game.game_code] = game;
+                            gamesList[category.field_games_alias[0].value].push(game);
                         }
                     }
                 }
@@ -745,18 +746,10 @@ export class GamesLobbyComponent implements ComponentInterface {
         for (const category in gamesList) {
             if (gamesList.hasOwnProperty(category)) {
                 let categoryGames = gamesList[category];
-
                 categoryGames = categoryGames.sort((a, b) => {
-                    if (a.categories[category].weight[0].value < b.categories[category].weight[0].value) {
-                        return 1;
-                    }
-                    if (a.categories[category].weight[0].value > b.categories[category].weight[0].value) {
-                        return -1;
-                    }
-
-                    return 0;
+                    return a.categories[category].field_draggable_views.category.weight -
+                    b.categories[category].field_draggable_views.category.weight;
                 });
-
                 gamesList[category] = categoryGames;
             }
         }
