@@ -187,6 +187,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             url: Router.generateRoute("games_lobby", "lobby"),
             type: "json",
         }).then((response) => {
+            response.games = this.getCategoryGames(response.games);
+            response.games = this.groupGamesByContainer(response.games);
             this.response = response;
 
             if (callback) {
@@ -709,6 +711,85 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.pager = batch.length;
 
         return batch;
+    }
+
+    private getCategoryGames(games) {
+        const gamesList: any = [];
+        const allGames = games["all-games"];
+        for (const gameId in allGames) {
+            if (allGames.hasOwnProperty(gameId)) {
+                const game = allGames[gameId];
+
+                for (const key in game.categories) {
+                    if (game.categories.hasOwnProperty(key)) {
+                        const category = game.categories[key];
+                        const notAllGames = (category.field_games_alias[0].value !== "all-games");
+
+                        if (!gamesList.hasOwnProperty(category.field_games_alias[0].value)
+                            && notAllGames
+                        ) {
+                            gamesList[category.field_games_alias[0].value] = [];
+                        }
+
+                        if (typeof gamesList[category.field_games_alias[0].value] !== "undefined"
+                            && !(game.game_code in gamesList[category.field_games_alias[0].value])
+                            && notAllGames
+                        ) {
+                            gamesList[category.field_games_alias[0].value].push(game);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        for (const category in gamesList) {
+            if (gamesList.hasOwnProperty(category)) {
+                let categoryGames = gamesList[category];
+                categoryGames = categoryGames.sort((a, b) => {
+                    return a.categories[category].field_draggable_views.category.weight -
+                    b.categories[category].field_draggable_views.category.weight;
+                });
+                gamesList[category] = categoryGames;
+            }
+        }
+
+        /* tslint:disable:no-string-literal */
+        gamesList["all-games"] = games["all-games"];
+        gamesList["favorites"] = games["favorites"];
+        gamesList["recently-played"] = games["recently-played"];
+        /* tslint:enable:no-string-literal */
+
+        return gamesList;
+    }
+
+    private groupGamesByContainer(gamesList) {
+        const groupList: any = [];
+        for (const category in gamesList) {
+            if (gamesList.hasOwnProperty(category)) {
+                const categoryGame = gamesList[category];
+
+                const arrayGameList = [];
+                for (const gameKey in categoryGame) {
+                    if (categoryGame.hasOwnProperty(gameKey)) {
+                        const game = categoryGame[gameKey];
+                        arrayGameList.push(game);
+                    }
+                }
+
+                const temp = arrayGameList.slice(0);
+
+                const batch: any = [];
+                while (temp.length > 0) {
+                    batch.push(temp.splice(0, 3));
+                }
+
+                groupList[category] = batch;
+
+            }
+        }
+
+        return groupList;
     }
 
     /**
