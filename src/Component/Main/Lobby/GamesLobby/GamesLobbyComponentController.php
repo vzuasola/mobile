@@ -131,7 +131,6 @@ class GamesLobbyComponentController
         $definitions = $this->getDefinitions();
 
         $asyncData = Async::resolve($definitions);
-
         $specialCategories = [];
         $specialCategories = $this->getSpecialCategories($categories);
 
@@ -296,7 +295,7 @@ class GamesLobbyComponentController
         foreach ($games as $game) {
             $special = ($categoryId === $this::RECOMMENDED_GAMES);
 
-            $gamesList[$game['field_game_code'][0]['value']] = $this->processGame($game, $special);
+            $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($game, $special);
         }
         return $gamesList;
     }
@@ -360,7 +359,7 @@ class GamesLobbyComponentController
             $categoryList = [];
 
             foreach ($game['field_games_list_category'] as $category) {
-                $categoryList[$category['field_games_alias'][0]['value']] = $category;
+                $categoryList[$category['field_games_alias'][0]['value']] = $category['field_draggable_views']['category']['weight'];
             }
 
             $processGame['categories'] = $categoryList;

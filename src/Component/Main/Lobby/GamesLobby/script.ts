@@ -723,19 +723,19 @@ export class GamesLobbyComponent implements ComponentInterface {
                 for (const key in game.categories) {
                     if (game.categories.hasOwnProperty(key)) {
                         const category = game.categories[key];
-                        const notAllGames = (category.field_games_alias[0].value !== "all-games");
+                        const notAllGames = (key !== "all-games");
 
-                        if (!gamesList.hasOwnProperty(category.field_games_alias[0].value)
+                        if (!gamesList.hasOwnProperty(key)
                             && notAllGames
                         ) {
-                            gamesList[category.field_games_alias[0].value] = [];
+                            gamesList[key] = [];
                         }
 
-                        if (typeof gamesList[category.field_games_alias[0].value] !== "undefined"
-                            && !(game.game_code in gamesList[category.field_games_alias[0].value])
+                        if (typeof gamesList[key] !== "undefined"
+                            && !(game.game_code in gamesList[key])
                             && notAllGames
                         ) {
-                            gamesList[category.field_games_alias[0].value].push(game);
+                            gamesList[key].push(game);
                         }
                     }
                 }
@@ -747,8 +747,10 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (gamesList.hasOwnProperty(category)) {
                 let categoryGames = gamesList[category];
                 categoryGames = categoryGames.sort((a, b) => {
-                    return a.categories[category].field_draggable_views.category.weight -
-                    b.categories[category].field_draggable_views.category.weight;
+                    if (category === "winner") {
+                        console.log(a.categories[category]);
+                    }
+                    return a.categories[category] - b.categories[category];
                 });
                 gamesList[category] = categoryGames;
             }
