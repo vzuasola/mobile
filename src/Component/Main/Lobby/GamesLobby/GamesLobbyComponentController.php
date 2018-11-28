@@ -449,7 +449,7 @@ class GamesLobbyComponentController
         $gameList = [];
         if ($this->playerSession->isLogin()) {
             $favGames = $this->proccessSpecialGames($favGames);
-            if (is_array($favGames)) {
+            if (is_array($favGames) && count($favGames) > 0) {
                 foreach ($favGames as $gameCode) {
                     $gameList[$gameCode['id']] = 'active';
                 }
@@ -470,7 +470,7 @@ class GamesLobbyComponentController
                 if ($favGames) {
                     usort($favGames, [$this, 'sortRecentGames']);
                 }
-                if (is_array($favGames)) {
+                if (is_array($favGames) && count($favGames) > 0) {
                     foreach ($favGames as $gameCode) {
                         if (array_key_exists($gameCode['id'], $games)) {
                             $gameList[] = $games[$gameCode['id']];
@@ -490,13 +490,14 @@ class GamesLobbyComponentController
     {
         try {
             $gameList = [];
+            if (is_array($games) && count($games) > 1) {
+                foreach ($games as $key => $timestamp) {
+                    $gameList[$key]['id'] = $key;
+                    $gameList[$key]['timestamp'] = $timestamp;
+                }
 
-            foreach ($games as $key => $timestamp) {
-                $gameList[$key]['id'] = $key;
-                $gameList[$key]['timestamp'] = $timestamp;
+                return $gameList;
             }
-
-            return $gameList;
         } catch (\Exception $e) {
             return [];
         }
@@ -550,7 +551,7 @@ class GamesLobbyComponentController
             if ($this->playerSession->isLogin()) {
                 $recentlyPlayed = $this->proccessSpecialGames($recentlyPlayed);
                 usort($recentlyPlayed, [$this, 'sortRecentGames']);
-                if (is_array($recentlyPlayed)) {
+                if (is_array($recentlyPlayed) && count($recentlyPlayed) > 0) {
                     foreach ($recentlyPlayed as $gameCode) {
                         if (array_key_exists($gameCode['id'], $games)) {
                             $gameList[] = $games[$gameCode['id']];

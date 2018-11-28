@@ -35,7 +35,7 @@ class PushNotificationComponentAsync implements AsyncComponentInterface
     public function getDefinitions()
     {
         return [
-            $this->configs->getConfig('webcomposer_config.pushnx_configuration'),
+            $this->configs->getConfig('webcomposer_config.pushnx_configuration_v2'),
         ];
     }
 }

@@ -15,6 +15,7 @@ export class AnnouncementComponent implements ComponentInterface {
     private refreshInterval: number = 300000;
     private element: HTMLElement;
     private announcements: any;
+    private timer: any;
 
     constructor() {
         this.storage = new Storage();
@@ -23,6 +24,8 @@ export class AnnouncementComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getAnnouncements();
+        this.listenModalClose();
+        this.listenAnnouncementLightbox();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -50,8 +53,6 @@ export class AnnouncementComponent implements ComponentInterface {
         this.bindDismissButton(this.element);
 
         // lightbox
-        this.listenAnnouncementLightbox();
-        this.listenModalClose();
         this.listenAutoRefresh(this.element);
 
         this.getUnread(this.element);
@@ -94,7 +95,12 @@ export class AnnouncementComponent implements ComponentInterface {
      * Refresh announcements on background
      */
     private listenAutoRefresh(element) {
-        setInterval(() => {
+
+        if (this.timer !== null) {
+            clearInterval(this.timer);
+        }
+
+        this.timer = setInterval(() => {
             if (!utility.hasClass(element.querySelector("#announcement-lightbox"), "modal-active")) {
                 ComponentManager.refreshComponent("announcement");
             }
