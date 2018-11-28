@@ -747,9 +747,6 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (gamesList.hasOwnProperty(category)) {
                 let categoryGames = gamesList[category];
                 categoryGames = categoryGames.sort((a, b) => {
-                    if (category === "winner") {
-                        console.log(a.categories[category]);
-                    }
                     return a.categories[category] - b.categories[category];
                 });
                 gamesList[category] = categoryGames;
