@@ -63,7 +63,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.pager = 0;
-        this.currentPage = 0;
         this.load = true;
         this.listenChangeCategory();
         this.listenHashChange();
@@ -118,7 +117,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.pager = 0;
-        this.currentPage = 0;
         this.load = true;
         this.generateLobby(() => {
             this.lobby();
@@ -304,7 +302,6 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private listenChangeCategory() {
         ComponentManager.subscribe("click", (event: Event, src) => {
-            this.currentPage = 0;
             const first = this.response.categories[0].field_games_alias;
             const key = this.getActiveCategory(this.response.games, first);
             const categoriesEl = document.querySelector("#game-categories");
@@ -313,6 +310,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 !utility.hasClass(src, "game-category-more", true) ||
                 utility.hasClass(src, "category-provider-menu", true)
             ) {
+                this.currentPage = 0;
                 this.filterFlag = "general";
                 window.location.hash = "";
                 ComponentManager.broadcast("category.change");
