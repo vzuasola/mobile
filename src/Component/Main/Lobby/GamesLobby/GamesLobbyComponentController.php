@@ -110,7 +110,9 @@ class GamesLobbyComponentController
         );
 
         $data['games'] += $specialCategoryGames;
-        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $data['games']);
+        $enableRecommended = false;
+        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
+        $data['enableRecommended'] = $enableRecommended;
         // $data['games'] = $this->groupGamesByContainer($data['games'], 3);
 
         if (isset($specialGamesList['favorites'])) {
@@ -374,12 +376,13 @@ class GamesLobbyComponentController
     /**
      * Arrange and removed unused categories
      */
-    private function getArrangedCategoriesByGame($categories, $gamesList)
+    private function getArrangedCategoriesByGame($categories, &$enableRecommended)
     {
         $categoryList = [];
         foreach ($categories as $category) {
             // remove recommended games from category as it will not have its own tab.
             if ($category['field_games_alias'] === $this::RECOMMENDED_GAMES) {
+                $enableRecommended = true;
                 continue;
             }
 
