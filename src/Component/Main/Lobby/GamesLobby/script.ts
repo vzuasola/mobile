@@ -602,7 +602,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 let recommended: boolean = false;
                 gamesEl.innerHTML = "";
                 this.activateSearchTab(data.active);
-                if (this.response.games["recommended-games"]) {
+                if (this.response.games["recommended-games"] && this.response.enableRecommended) {
                     this.searchResults = this.response.games["recommended-games"];
                     this.setGames(this.response.games["recommended-games"], 0, true);
                     recommended = true;
