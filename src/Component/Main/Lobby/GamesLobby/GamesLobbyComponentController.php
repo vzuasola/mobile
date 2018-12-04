@@ -107,7 +107,7 @@ class GamesLobbyComponentController
         );
         $data['games'] += $specialCategoryGames;
         if (!isset($previewMode['pvw'])) {
-            $data['games'] = $this->removeGamesPreviewMode($data['games']);
+            $data['games']['all-games'] = $this->removeGamesPreviewMode($data['games']['all-games']);
         }
 
         $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $data['games']);
@@ -162,11 +162,9 @@ class GamesLobbyComponentController
     private function removeGamesPreviewMode($gamesCollection)
     {
         try {
-            foreach ($gamesCollection as $categoryName => $category) {
-                foreach ($category as $index => $game) {
-                    if ($game['preview_mode']) {
-                        unset($gamesCollection[$categoryName][$index]);
-                    }
+            foreach ($gamesCollection as $index => $game) {
+                if ($game['preview_mode']) {
+                    unset($gamesCollection[$index]);
                 }
             }
         } catch (\Exception $e) {

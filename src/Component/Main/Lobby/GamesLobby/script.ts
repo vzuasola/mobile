@@ -238,7 +238,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private getActiveCategory(gamesList, key) {
         const hash = utility.getHash(window.location.href);
 
-        if (gamesList[hash].length > 0) {
+        if (gamesList.hasOwnProperty(hash) && gamesList[hash].length > 0) {
             return hash;
         }
 
