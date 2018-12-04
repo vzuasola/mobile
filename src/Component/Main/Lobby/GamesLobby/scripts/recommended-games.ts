@@ -5,10 +5,12 @@ import * as gameTemplate from "../handlebars/games.handlebars";
 export class RecommendedGames {
     private recommendedGames: any[];
     private config;
+    private enableRecommended: boolean;
 
-    constructor(gamesList, config) {
+    constructor(gamesList, config, enableRecommended) {
         this.recommendedGames = [];
-        if (gamesList && gamesList.games["recommended-games"]) {
+        this.enableRecommended = enableRecommended;
+        if (gamesList && gamesList.games["recommended-games"] && this.enableRecommended) {
             this.recommendedGames = [];
             for (const games of gamesList.games["recommended-games"]) {
                 for (const game of games) {
@@ -32,7 +34,7 @@ export class RecommendedGames {
      * Function that returns blurb for recommended games.
      */
     getBlurb() {
-        if (this.recommendedGames.length) {
+        if (this.recommendedGames.length && this.enableRecommended) {
             return this.config.msg_recommended_available;
         }
 
