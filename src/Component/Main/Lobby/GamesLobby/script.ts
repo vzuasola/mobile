@@ -170,6 +170,10 @@ export class GamesLobbyComponent implements ComponentInterface {
             url: Router.generateRoute("games_lobby", "lobby"),
             type: "json",
         }).then((response) => {
+            response.games = this.getCategoryGames(response.games);
+            response.games = this.groupGamesByContainer(response.games);
+            response.categories = this.filterCategories(response.categories, response.games);
+
             this.response = response;
 
             if (callback) {
@@ -234,7 +238,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private getActiveCategory(gamesList, key) {
         const hash = utility.getHash(window.location.href);
 
-        if (gamesList[hash]) {
+        if (gamesList.hasOwnProperty(hash) && gamesList[hash].length > 0) {
             return hash;
         }
 
@@ -617,6 +621,96 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.pager = batch.length;
 
         return batch;
+    }
+
+    private getCategoryGames(games) {
+        const gamesList: any = [];
+        const allGames = games["all-games"];
+        for (const gameId in allGames) {
+            if (allGames.hasOwnProperty(gameId)) {
+                const game = allGames[gameId];
+
+                for (const key in game.categories) {
+                    if (game.categories.hasOwnProperty(key)) {
+                        const category = game.categories[key];
+                        const notAllGames = (key !== "all-games");
+
+                        if (!gamesList.hasOwnProperty(key)
+                            && notAllGames
+                        ) {
+                            gamesList[key] = [];
+                        }
+
+                        if (typeof gamesList[key] !== "undefined"
+                            && !(game.game_code in gamesList[key])
+                            && notAllGames
+                        ) {
+                            gamesList[key].push(game);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        for (const category in gamesList) {
+            if (gamesList.hasOwnProperty(category)) {
+                let categoryGames = gamesList[category];
+                categoryGames = categoryGames.sort((a, b) => {
+                    return a.categories[category] - b.categories[category];
+                });
+                gamesList[category] = categoryGames;
+            }
+        }
+
+        /* tslint:disable:no-string-literal */
+        gamesList["all-games"] = games["all-games"];
+        gamesList["favorites"] = games["favorites"];
+        gamesList["recently-played"] = games["recently-played"];
+        /* tslint:enable:no-string-literal */
+
+        return gamesList;
+    }
+
+    private groupGamesByContainer(gamesList) {
+        const groupList: any = [];
+        for (const category in gamesList) {
+            if (gamesList.hasOwnProperty(category)) {
+                const categoryGame = gamesList[category];
+
+                const arrayGameList = [];
+                for (const gameKey in categoryGame) {
+                    if (categoryGame.hasOwnProperty(gameKey)) {
+                        const game = categoryGame[gameKey];
+                        arrayGameList.push(game);
+                    }
+                }
+
+                const temp = arrayGameList.slice(0);
+
+                const batch: any = [];
+                while (temp.length > 0) {
+                    batch.push(temp.splice(0, 3));
+                }
+
+                groupList[category] = batch;
+
+            }
+        }
+
+        return groupList;
+    }
+
+    private filterCategories(categories, gamesList) {
+        const filteredCategory: any = [];
+        for (const category of categories) {
+            if (gamesList.hasOwnProperty(category.field_games_alias)
+                && gamesList[category.field_games_alias].length) {
+                filteredCategory.push(category);
+            }
+        }
+
+        return filteredCategory;
     }
 
 }
