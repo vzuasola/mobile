@@ -19,9 +19,15 @@ export class GameIntegrationModule implements ModuleInterface {
 
     onLoad(attachments: {}) {
         const pas: any = ComponentManager.getModuleInstance("pas_integration");
+        const microGaming: any = ComponentManager.getModuleInstance("microgaming_integration");
         const voidbridge: any = ComponentManager.getModuleInstance("voidbridge_integration");
         const skywind: any = ComponentManager.getModuleInstance("skywind_integration");
+        const solidgaming: any = ComponentManager.getModuleInstance("solidgaming_integration");
+        const cq9: any = ComponentManager.getModuleInstance("cq9_integration");
         this.gameLauncher.setProvider("pas", pas);
+        this.gameLauncher.setProvider("micro_gaming", microGaming);
+        this.gameLauncher.setProvider("solid_gaming", solidgaming);
+        this.gameLauncher.setProvider("cq9", cq9);
         this.gameLauncher.setProvider("voidbridge", voidbridge);
         this.gameLauncher.setProvider("skywind", skywind);
 
