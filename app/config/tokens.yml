@@ -16,7 +16,6 @@ tokens:
   auth.token: App\Token\AuthToken
   auth.credentials: App\Token\AuthCredentials
   username: App\Token\Username
-  cashier: App\Token\CashierToken
 
   # Language
   lang: App\Token\Language
