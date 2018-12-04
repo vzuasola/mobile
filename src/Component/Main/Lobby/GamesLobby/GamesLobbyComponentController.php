@@ -177,7 +177,7 @@ class GamesLobbyComponentController
                 }
             }
         } catch (\Exception $e) {
-            $gamesList = [];
+            // placeholder
         }
 
         return $gamesList;
