@@ -391,7 +391,7 @@ class GamesLobbyComponentController
     /**
      * Arrange and removed unused categories
      */
-    private function getArrangedCategoriesByGame($categories,  &$enableRecommended)
+    private function getArrangedCategoriesByGame($categories, &$enableRecommended)
     {
         $categoryList = [];
         foreach ($categories as $category) {
