@@ -77,6 +77,7 @@ class GamesLobbyComponentController
 
     public function lobby($request, $response)
     {
+        $previewMode = $request->getQueryParams();
         $item = $this->cacher->getItem('views.games-lobby-data.' . $this->currentLanguage);
 
         if (!$item->isHit()) {
@@ -105,9 +106,13 @@ class GamesLobbyComponentController
             $gamesData
         );
 
-        $data['games'] += $specialCategoryGames;
-        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $data['games']);
-        $data['games'] = $this->groupGamesByContainer($data['games'], 3);
+        $games = $data['games'] + $specialCategoryGames;
+        if (!isset($previewMode['pvw'])) {
+            $games = $this->removeGamesPreviewMode($games);
+        }
+
+        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $games);
+        $data['games'] = $this->groupGamesByContainer($games, 3);
 
         if (isset($specialGamesList['favorites'])) {
             $data['favorite_list'] = $this->getFavoriteGamesList($specialGamesList['favorites']);
@@ -157,6 +162,25 @@ class GamesLobbyComponentController
             $result = $this->toggleFavoriteGames($gameCode['gameCode']);
             return $this->rest->output($response, $result);
         }
+    }
+
+    private function removeGamesPreviewMode($gamesCollection)
+    {
+        $gamesList = [];
+        try {
+            foreach ($gamesCollection as $categoryName => $category) {
+                foreach ($category as $game) {
+                    if ($game['preview_mode']) {
+                        continue;
+                    }
+                    $gamesList[$categoryName][] = $game;
+                }
+            }
+        } catch (\Exception $e) {
+            $gamesList = [];
+        }
+
+        return $gamesList;
     }
 
     private function getSpecialCategoriesGameList($categories)
@@ -370,6 +394,7 @@ class GamesLobbyComponentController
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
+            $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
 
             return $processGame;
         } catch (\Exception $e) {
