@@ -24,7 +24,6 @@ class GamesLobbyComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
-            $container->get('player_session'),
             $container->get('views_fetcher'),
             $container->get('config_fetcher'),
             $container->get('product_resolver')
@@ -34,9 +33,8 @@ class GamesLobbyComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $configs, $product)
+    public function __construct($views, $configs, $product)
     {
-        $this->playerSession = $playerSession;
         $this->views = $views;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
@@ -75,13 +73,8 @@ class GamesLobbyComponent implements ComponentWidgetInterface
         }
 
         return [
-            'authenticated' => $this->playerSession->isLogin(),
             'title' => $searchConfig['search_title'] ?? "",
             'filter_title' => $searchConfig['games_filter_title'] ?? "",
-            'title_search_lightbox' => $searchConfig['title_search_lightbox'] ?? "",
-            'filter_title_lightbox' => $searchConfig['filter_title_lightbox'] ?? "",
-            'transfer_title' => $searchConfig['games_transfer_title'] ?? "",
-            'transfer_url' => $searchConfig['games_transfer_link'] ?? "",
             'games_filter_submit' => $searchConfig['games_filter_submit'] ?? "Submit",
             'games_filter_cancel' => $searchConfig['games_filter_cancel'] ?? "Cancel",
             'filters' => $dataFilters ?? [],

@@ -6,7 +6,7 @@
                     <use xlink:href="#arrow" />
                 </svg>
             </a>
-            <h2>{{ filter_title_lightbox }}</h2>
+            <h2>{{ filter_title }}</h2>
             <a href="#" class="games-search-back">
                 {% include '@app/web/images/svg/closed.svg' %}
             </a>
@@ -17,7 +17,7 @@
                     <ul class="col-12">
                         {% if filters %}
                             {% for dataFilter in filters %}
-                                {% if (dataFilter.parent == parent.value and dataFilter.value != 'favorites' and dataFilter.value != 'recently-played') or ((dataFilter.value == 'favorites' or dataFilter.value == 'recently-played') and authenticated and dataFilter.parent == parent.value) %}
+                                {% if dataFilter.parent == parent.value %}
                                     <li>
                                         <label for="{{ dataFilter.value }}">{{ dataFilter.name }}</label>
                                         <input class="filter-checkbox" type="checkbox" id="{{ dataFilter.value }}" data-parent="{{ parent.value }}" value="{{ dataFilter.value }}">
