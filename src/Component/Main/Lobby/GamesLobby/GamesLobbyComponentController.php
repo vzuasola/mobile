@@ -110,7 +110,9 @@ class GamesLobbyComponentController
             $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
 
-        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $data['games']);
+        $enableRecommended = false;
+        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
+        $data['enableRecommended'] = $enableRecommended;
 
         if (isset($specialGamesList['favorites'])) {
             $data['favorite_list'] = $this->getFavoriteGamesList($specialGamesList['favorites']);
@@ -389,12 +391,13 @@ class GamesLobbyComponentController
     /**
      * Arrange and removed unused categories
      */
-    private function getArrangedCategoriesByGame($categories, $gamesList)
+    private function getArrangedCategoriesByGame($categories, &$enableRecommended)
     {
         $categoryList = [];
         foreach ($categories as $category) {
             // remove recommended games from category as it will not have its own tab.
             if ($category['field_games_alias'] === $this::RECOMMENDED_GAMES) {
+                $enableRecommended = true;
                 continue;
             }
 
@@ -404,17 +407,6 @@ class GamesLobbyComponentController
             );
             if ($isPublished) {
                 $category['published'] = $isPublished;
-                if ($category['field_games_category_logo']) {
-                    $categoryLogo = str_replace(
-                        '/' . $this->currentLanguage . '/',
-                        '/',
-                        $category['field_games_category_logo']
-                    );
-                    $category['field_games_category_logo'] = $this->asset->generateAssetUri(
-                        $categoryLogo,
-                        ['product' => 'mobile-games']
-                    );
-                }
                 $categoryList[] = $category;
             }
         }
