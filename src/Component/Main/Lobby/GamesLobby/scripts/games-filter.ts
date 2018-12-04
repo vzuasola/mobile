@@ -13,17 +13,8 @@ import {Modal} from "@app/assets/script/components/modal";
  */
 export class GamesFilter {
     private element;
-    private gameMasterList: any;
     private gamesList: any;
-    private favGamesList: any;
-    private recentGamesList: any;
-    private fav: boolean;
-    private recent: boolean;
-    private enabledFilters: any;
     handleOnLoad(element: HTMLElement, attachments: {}) {
-        this.fav = false;
-        this.recent = false;
-        this.enabledFilters = [];
         this.element = element;
         this.listenOnOpen();
         this.listenOnClick();
@@ -34,62 +25,27 @@ export class GamesFilter {
             this.listenOnOpen();
             this.listenOnClick();
         }
-        this.fav = false;
-        this.recent = false;
-        this.enabledFilters = [];
         this.element = element;
     }
 
     setGamesList(gamesList) {
         if (gamesList) {
             const allGames = [];
-            const favGames = [];
-            const recentGames = [];
-            this.gameMasterList = gamesList.games;
-            this.gamesList = this.generateGamesList("all-games");
-            this.favGamesList = this.generateGamesList("favorites");
-            this.recentGamesList = this.generateGamesList("recently-played");
-        }
-    }
-
-    private generateGamesList(key) {
-        const allGames = [];
-        if (this.gameMasterList[key]) {
-            for (const games of this.gameMasterList[key]) {
-                for (const game of games) {
-                    allGames.push(game);
+            if (gamesList.games["all-games"]) {
+                for (const games of gamesList.games["all-games"]) {
+                    for (const game of games) {
+                        allGames.push(game);
+                    }
                 }
             }
+            this.gamesList = allGames;
         }
-        return allGames;
     }
 
     private listenOnOpen() {
-        ComponentManager.subscribe("games.search.filter", (event, src, data) => {
-            const filterLB = this.element.querySelector("#games-search-filter-lightbox");
-            const backBtn = filterLB.querySelector(".games-search-filter-back");
-            utility.removeClass(backBtn, "hidden");
-            if (utility.hasClass(data.element, "main")) {
-                utility.addClass(backBtn, "hidden");
-            }
-
+        ComponentManager.subscribe("games.search.filter", (event, src) => {
             this.clearFilters();
-            if (this.enabledFilters.length > 0) {
-                this.populateFilters(this.enabledFilters);
-            }
-
         });
-    }
-
-    private populateFilters(actives) {
-        for (const activeKey in actives) {
-            if (actives.hasOwnProperty(activeKey)) {
-                const active = actives[activeKey];
-                const checkbox = active.querySelector(".filter-checkbox");
-                this.onToggleFilters(checkbox);
-                checkbox.checked = true;
-            }
-        }
     }
 
     private listenOnClick() {
@@ -124,7 +80,6 @@ export class GamesFilter {
     private onClickClearFilters(src) {
         if (src.getAttribute("name") === "filter-reset") {
             this.clearFilters();
-            this.enabledFilters = [];
         }
 
         if (src.getAttribute("name") === "filter-submit") {
@@ -158,61 +113,22 @@ export class GamesFilter {
         const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
         if (filterLightbox) {
             const actives = filterLightbox.querySelectorAll(".active");
-            this.fav = false;
-            this.recent = false;
-            this.enabledFilters = [];
-            this.checkActiveSpecial(actives);
-            let flag = "general";
-            let special = false;
             let filteredGames = [];
-            let gamesList = this.gamesList;
-
-            if (this.fav && !this.recent) {
-                gamesList = this.favGamesList;
-                if (actives.length === 1) {
-                    flag = "favorites";
-                    special = true;
-                }
-            }
-
-            if (this.recent && !this.fav) {
-                gamesList = this.recentGamesList;
-                if (actives.length === 1) {
-                    flag = "recently-played";
-                    special = true;
-                }
-            }
-
-            if (this.fav && this.recent) {
-                gamesList = this.getRecentFavGames();
-                if (actives.length === 2) {
-                    special = true;
-                }
-            }
-
             for (const activeKey in actives) {
                 if (actives.hasOwnProperty(activeKey)) {
                     const active = actives[activeKey];
-                    const activeParent = active.querySelector(".filter-checkbox").getAttribute("data-parent");
                     const checkValue = active.querySelector(".filter-checkbox").value;
-                    this.enabledFilters.push(active);
-                    for (const gameKey in gamesList) {
-                        if (gamesList.hasOwnProperty(gameKey)) {
-                            const game = gamesList[gameKey];
-                            if (special) {
-                                filteredGames[gameKey] = game;
-                            }
 
-                            if (typeof game.filters !== "undefined" && !special) {
-                                const gameFilter = JSON.parse(game.filters);
-                                if ((typeof gameFilter[activeParent] !== "undefined"
-                                    && gameFilter[activeParent].indexOf(checkValue) !== -1)
-                                ) {
-                                    filteredGames[gameKey] = game;
-                                }
+                    for (const gameKey in this.gamesList) {
+                        if (this.gamesList.hasOwnProperty(gameKey)) {
+                            const game = this.gamesList[gameKey];
+
+                            if (typeof game.filters !== "undefined" && game.filters.indexOf(checkValue) !== -1) {
+                                filteredGames[gameKey] = game;
                             }
                         }
                     }
+
                 }
             }
 
@@ -220,81 +136,25 @@ export class GamesFilter {
                 return true;
             });
 
-            if (!special || actives.length === 2) {
-                filteredGames = filteredGames.sort((a, b) => {
-                    // if weights are equal sort by name asc
-                    if (a.title.toLowerCase() < b.title.toLowerCase()) {
-                        return -1;
-                    }
-                    if (a.title.toLowerCase() > b.title.toLowerCase()) {
-                        return 1;
-                    }
+            filteredGames = filteredGames.sort((a, b) => {
+                // if weights are equal sort by name asc
+                if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                    return -1;
+                }
+                if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                    return 1;
+                }
 
-                    return 0;
-                });
-            }
+                return 0;
+            });
 
             filteredGames = this.groupGamesList(filteredGames);
             Modal.close("#games-search-filter-lightbox");
             Modal.close("#games-search-lightbox");
-
-            const filterLB = this.element.querySelector("#games-search-filter-lightbox");
-            const backBtn = filterLB.querySelector(".games-search-filter-back");
-
-            let activeFilter = ".search-tab";
-            if (utility.hasClass(backBtn, "hidden")) {
-                activeFilter = ".games-filter";
-            }
-
             ComponentManager.broadcast("games.filter.success", {
                 filteredGames,
-                active: activeFilter,
-                flag,
             });
         }
-    }
-
-    private checkActiveSpecial(actives) {
-        for (const activeKey in actives) {
-            if (actives.hasOwnProperty(activeKey)) {
-                const active = actives[activeKey];
-                const activeParent = active.querySelector(".filter-checkbox").getAttribute("data-parent");
-                const checkValue = active.querySelector(".filter-checkbox").value;
-                if (checkValue === "recently-played") {
-                    this.recent = true;
-                }
-
-                if (checkValue === "favorites") {
-                    this.fav = true;
-                }
-            }
-        }
-    }
-
-    private getRecentFavGames() {
-        const gamesList = [];
-        const gameListKeys = [];
-        for (const gameKey in this.favGamesList) {
-            if (this.favGamesList.hasOwnProperty(gameKey)) {
-                const favgame = this.favGamesList[gameKey];
-                if (gameListKeys.indexOf(favgame.game_code) === -1) {
-                    gameListKeys.push(favgame.game_code);
-                    gamesList.push(favgame);
-                }
-            }
-        }
-
-        for (const key in this.recentGamesList) {
-            if (this.recentGamesList.hasOwnProperty(key)) {
-                const recentgame = this.recentGamesList[key];
-                if (gameListKeys.indexOf(recentgame.game_code) === -1) {
-                    gameListKeys.push(recentgame.game_code);
-                    gamesList.push(recentgame);
-                }
-            }
-        }
-
-        return gamesList;
     }
 
     private groupGamesList(data) {

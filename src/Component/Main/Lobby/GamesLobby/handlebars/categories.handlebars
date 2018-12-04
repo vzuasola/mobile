@@ -1,13 +1,14 @@
+<div class="game-search">
+    <a href="#" class="search-tab {{#condition active "===" "search"}}active{{/condition}}">
+     <svg viewBox="0 0 86 86">
+        <path d="M54.67 11.87a30.26 30.26 0 1 0-4.14 46.24l23.33 23.33a5.36 5.36 0 1 0 7.58-7.58L58.11 50.53a30.25 30.25 0 0 0-3.44-38.66zm-6 36.79a21.76 21.76 0 1 1 0-30.78 21.76 21.76 0 0 1-.01 30.78z"/>
+    </svg>
+    </a>
+</div>
 <div class="category-tab-list" id="category-tab">
-    {{#condition categories.length ">" 6}}
-    <ul class="main-game-category game-category provider-7">
-    {{/condition}}
-    {{#condition categories.length "<=" 6}}
-    <ul class="main-game-category game-category provider-{{categories.length}}">
-    {{/condition}}
+    <ul class="game-category">
     {{#each categories}}
         {{#if this.published }}
-            {{#condition @index "<=" 5}}
             <li class="game-category-item {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
                 <a
                     href="#{{this.field_games_alias}}"
@@ -15,47 +16,10 @@
                     data-category-filter-id="{{this.field_games_alias}}"
                     data-category-filter-name="{{{this.name}}}"
                 >
-                    {{#if this.field_games_category_logo }}
-                        <img src="{{this.field_games_category_logo}}" alt="{{{this.name}}}">
-                    {{/if}}
+                    {{{this.name}}}
                 </a>
             </li>
-            {{/condition}}
         {{/if}}
     {{/each}}
-    <li class="game-category-item game-category-more">
-        <span class="provider-drawer category-more"></span>
-        <p class="category-more-text m-0">
-            {{{this.configs.more_provider_drawer}}}
-            <svg viewBox="0 30 24 44.999">
-                <use xlink:href="#arrow" />
-            </svg>
-        </p>
-        <div class="provider-menu">
-            <h2 class="provider-menu-title m-0">
-                {{{this.configs.title_provider_drawer}}}
-                <span class="provider-content-button close-svg">
-                    <svg viewBox="0 0 70.24 70.24" class="provider-content-button-svg close-svg">
-                        <path class="close-svg" d="M39.53 35.12L53 21.17a3.18 3.18 0 0 0-.09-4.49 3.18 3.18 0 0 0-4.49.09l-13.3 13.78-13.26-13.78a3.18 3.18 0 0 0-4.49-.09 3.18 3.18 0 0 0-.08 4.49l13.43 13.95-13.43 14a3.17 3.17 0 1 0 4.57 4.4L35.12 39.7l13.26 13.77a3.18 3.18 0 0 0 4.49.09 3.18 3.18 0 0 0 .13-4.49z" />
-                    </svg>
-                </span>
-            </h2>
-            <ul class="game-category col-12 mb-10">
-                {{#each categories}}
-                {{#if this.published }}
-                    <li class="game-category-list col-6 pt-10 {{#condition ../active "===" this.field_games_alias}}active{{/condition}} close-drawer">
-                        <a href="#{{this.field_games_alias}}" class="category-provider-menu category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}} close-drawer"
-                            data-category-filter-id="{{this.field_games_alias}}" data-category-filter-name="{{{this.name}}}">
-                            {{#if this.field_games_category_logo }}
-                                <img src="{{this.field_games_category_logo}}" alt="{{{this.name}}}" class="close-drawer">
-                            {{/if}}
-                            <p class="close-drawer">{{{this.name}}}</p>
-                        </a>
-                    </li>
-                {{/if}}
-                {{/each}}
-            </ul>
-        </div>
-    </li>
     </ul>
 </div>
