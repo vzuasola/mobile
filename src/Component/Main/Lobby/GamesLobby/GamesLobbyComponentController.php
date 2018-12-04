@@ -164,7 +164,8 @@ class GamesLobbyComponentController
         }
     }
 
-    private function removeGamesPreviewMode($gamesCollection) {
+    private function removeGamesPreviewMode($gamesCollection)
+    {
         $gamesList = [];
         try {
             foreach ($gamesCollection as $categoryName => $category) {
