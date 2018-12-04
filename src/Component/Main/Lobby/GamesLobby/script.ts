@@ -165,7 +165,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     /**
      * Request games lobby to games lobby component controller lobby method
      */
-     private doRequest(callback) {
+    private doRequest(callback) {
         xhr({
             url: Router.generateRoute("games_lobby", "lobby"),
             type: "json",
