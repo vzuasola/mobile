@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\Main\Lobby;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
+use App\MobileEntry\Services\Product\Products;
 
 /**
  *
@@ -39,6 +40,7 @@ class LobbyComponentScripts implements ComponentAttachmentInterface
     {
         return [
             'authenticated' => $this->playerSession->isLogin(),
+            'product_alias' => Products::PRODUCT_ALIAS,
         ];
     }
 }
