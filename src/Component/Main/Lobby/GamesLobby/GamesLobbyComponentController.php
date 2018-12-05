@@ -105,19 +105,18 @@ class GamesLobbyComponentController
             $data['special_categories'],
             $gamesData
         );
-
-        $games = $data['games'] + $specialCategoryGames;
+        $data['games'] += $specialCategoryGames;
         if (!isset($previewMode['pvw'])) {
-            $games = $this->removeGamesPreviewMode($games);
+            $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
 
-        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $games);
-        $data['games'] = $this->groupGamesByContainer($games, 3);
+        $enableRecommended = false;
+        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
+        $data['enableRecommended'] = $enableRecommended;
 
         if (isset($specialGamesList['favorites'])) {
             $data['favorite_list'] = $this->getFavoriteGamesList($specialGamesList['favorites']);
         }
-
         unset($data['categories_list']);
         unset($data['special_categories']);
 
@@ -129,18 +128,16 @@ class GamesLobbyComponentController
         $data = [];
 
         $categories = $this->views->getViewById('games_category');
-        $definitions = $this->getDefinitionsByCategory($categories);
-        $asyncData = Async::resolve($definitions);
+        $definitions = $this->getDefinitions();
 
+        $asyncData = Async::resolve($definitions);
         $specialCategories = [];
         $specialCategories = $this->getSpecialCategories($categories);
 
         $data['special_categories'] = $specialCategories;
         $data['categories_list'] = $categories;
-
-        $data['games'] = $this->getGamesbyCategory(
-            $categories,
-            $asyncData
+        $data['games'] = $this->getGamesAndCategory(
+            $asyncData['all-games']
         );
 
         return $data;
@@ -166,21 +163,19 @@ class GamesLobbyComponentController
 
     private function removeGamesPreviewMode($gamesCollection)
     {
-        $gamesList = [];
         try {
             foreach ($gamesCollection as $categoryName => $category) {
-                foreach ($category as $game) {
+                foreach ($category as $index => $game) {
                     if ($game['preview_mode']) {
-                        continue;
+                        unset($gamesCollection[$categoryName][$index]);
                     }
-                    $gamesList[$categoryName][] = $game;
                 }
             }
         } catch (\Exception $e) {
             // placeholder
         }
 
-        return $gamesList;
+        return $gamesCollection;
     }
 
     private function getSpecialCategoriesGameList($categories)
@@ -205,25 +200,13 @@ class GamesLobbyComponentController
         return $definitions;
     }
 
-    private function getDefinitionsByCategory($categories)
+    private function getDefinitions()
     {
         $definitions = [];
-        try {
-            foreach ($categories as $category) {
-                $categoryId = $category['field_games_alias'];
-                switch ($category['field_games_alias']) {
-                    case $this::ALL_GAMES:
-                        $definitions[$categoryId] = $this->viewsAsync->getViewById('games_list');
-                        break;
-                }
 
-                if (strtolower($category['field_isordinarycategory']) === "true") {
-                    $definitions[$categoryId] = $this->viewsAsync->getViewById('games_list', [
-                        'category' => $category['tid']
-                    ]);
-                    continue;
-                }
-            }
+        try {
+            $definitions['configs'] = $this->configAsync->getConfig('gts.gts_configuration');
+            $definitions['all-games'] = $this->viewsAsync->getViewById('games_list');
         } catch (\Exception $e) {
             $definitions = [];
         }
@@ -243,21 +226,12 @@ class GamesLobbyComponentController
     /**
      * Get games by category with sort
      */
-    private function getGamesbyCategory($categories, $data)
+    private function getGamesAndCategory($allGames)
     {
         $gamesList = [];
-        foreach ($categories as $category) {
-            if ((strtolower($category['field_isordinarycategory']) === "true" &&
-                $data[$category['field_games_alias']]) ||
-                $category['field_games_alias'] === $this::ALL_GAMES
-            ) {
-                $categoryId = $category['field_games_alias'];
-                $games = $data[$category['field_games_alias']];
-                if ($games) {
-                    $gamesList[$categoryId] = $this->arrangeGames($games, $categoryId);
-                }
-            }
-        }
+
+        $gamesList['all-games'] = $this->arrangeGames($allGames, 'all-games');
+
         return $gamesList;
     }
 
@@ -333,10 +307,10 @@ class GamesLobbyComponentController
     private function arrangeGames($games, $categoryId)
     {
         $gamesList = [];
-
         foreach ($games as $game) {
             $special = ($categoryId === $this::RECOMMENDED_GAMES);
-            $gamesList[] = $this->processGame($game, $special);
+
+            $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($game, $special);
         }
 
         return $gamesList;
@@ -388,6 +362,7 @@ class GamesLobbyComponentController
                 $processGame['filters'] = rtrim($filterString, ',');
             }
 
+
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";
@@ -395,6 +370,15 @@ class GamesLobbyComponentController
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
             $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
+
+            $categoryList = [];
+
+            foreach ($game['field_games_list_category'] as $category) {
+                $categoryList[$category['field_games_alias'][0]['value']] =
+                    $category['field_draggable_views']['category']['weight'];
+            }
+
+            $processGame['categories'] = $categoryList;
 
             return $processGame;
         } catch (\Exception $e) {
@@ -405,24 +389,23 @@ class GamesLobbyComponentController
     /**
      * Arrange and removed unused categories
      */
-    private function getArrangedCategoriesByGame($categories, $gamesList)
+    private function getArrangedCategoriesByGame($categories, &$enableRecommended)
     {
         $categoryList = [];
         foreach ($categories as $category) {
             // remove recommended games from category as it will not have its own tab.
             if ($category['field_games_alias'] === $this::RECOMMENDED_GAMES) {
+                $enableRecommended = true;
                 continue;
             }
 
-            if (isset($gamesList[$category['field_games_alias']])) {
-                $isPublished = $this->checkIfPublished(
-                    $category['field_publish_date'],
-                    $category['field_unpublish_date']
-                );
-                if ($isPublished) {
-                    $category['published'] = $isPublished;
-                    $categoryList[] = $category;
-                }
+            $isPublished = $this->checkIfPublished(
+                $category['field_publish_date'],
+                $category['field_unpublish_date']
+            );
+            if ($isPublished) {
+                $category['published'] = $isPublished;
+                $categoryList[] = $category;
             }
         }
         return $categoryList;
@@ -512,7 +495,7 @@ class GamesLobbyComponentController
     {
         try {
             $gameList = [];
-            if (is_array($games) && count($games) > 1) {
+            if (is_array($games) && count($games) >= 1) {
                 foreach ($games as $key => $timestamp) {
                     $gameList[$key]['id'] = $key;
                     $gameList[$key]['timestamp'] = $timestamp;
