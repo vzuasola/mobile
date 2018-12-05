@@ -416,7 +416,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private updateCategorySpecial() {
         const categoriesEl = this.element.querySelector("#game-categories");
         const activeSearch = this.element.querySelector(".search-tab");
-        const activeLink = categoriesEl.querySelector(".category-tab .active a");
 
         if (utility.hasClass(activeSearch, "active")) {
             this.setCategories(this.response.categories, "search");
@@ -429,7 +428,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private listenToCategory() {
         ComponentManager.subscribe("category.set", (event, src, data) => {
             const categoriesEl = this.element.querySelector("#game-categories");
-            const activeLink = categoriesEl.querySelector(".category-tab .active a");
             const categories = categoriesEl.querySelectorAll(".category-tab");
             const categoryScroll = categoriesEl.querySelector("#category-tab");
             let scroll = 0;
@@ -460,14 +458,12 @@ export class CasinoLobbyComponent implements ComponentInterface {
 
     private listenToSwipe() {
         const games: any = this.element.querySelector("#game-container");
-        const swipe: Swipe = new Swipe(games);
         if (games) {
             // Left Swipe
             utility.addEventListener(games, "swipeleft", (event, src) => {
                 // Active category go right
                 const categoriesEl = this.element.querySelector("#game-categories");
                 const activeLi = categoriesEl.querySelector(".category-tab .active");
-                const activeLink = activeLi.querySelector("a");
 
                 if (utility.hasClass(activeLi, "search-tab")) {
                     window.location.hash = "";
@@ -494,7 +490,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 // Active category go left
                 const categoriesEl = this.element.querySelector("#game-categories");
                 const activeLi = categoriesEl.querySelector(".category-tab .active");
-                const activeLink = activeLi.querySelector("a");
                 const sibling = utility.previousElementSibling(activeLi);
                 if (sibling) {
                     const siblingUrl = sibling.querySelector("a").getAttribute("href");
@@ -632,7 +627,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
 
                 for (const key in game.categories) {
                     if (game.categories.hasOwnProperty(key)) {
-                        const category = game.categories[key];
                         const notAllGames = (key !== "all-games");
 
                         if (!gamesList.hasOwnProperty(key)

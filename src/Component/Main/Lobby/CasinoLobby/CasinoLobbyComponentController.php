@@ -192,6 +192,8 @@ class CasinoLobbyComponentController
                     case $this::FAVORITE_GAMES:
                         $definitions[$categoryId] = $this->favorite->getFavorites();
                         break;
+                    default:
+                        break;
                 }
             }
         } catch (\Exception $e) {
@@ -214,15 +216,6 @@ class CasinoLobbyComponentController
         }
 
         return $definitions;
-    }
-
-    private function groupGamesByContainer($games, $group = 1)
-    {
-        $gamesList = [];
-        foreach ($games as $category => $game) {
-            $gamesList[$category] = array_chunk($game, $group);
-        }
-        return $gamesList;
     }
 
     /**

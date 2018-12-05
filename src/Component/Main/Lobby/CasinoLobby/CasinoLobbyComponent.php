@@ -104,7 +104,7 @@ class CasinoLobbyComponent implements ComponentWidgetInterface
             $filter['value'] = $data['field_games_filter_value'][0]['value'];
             $filter['parent'] = $data['parent']['field_games_filter_value'][0]['value'];
         } catch (\Exception $e) {
-            $result = [];
+            $filter = [];
         }
 
         return $filter;

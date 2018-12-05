@@ -136,7 +136,7 @@ export class GamesFilter {
                 return true;
             });
 
-            filteredGames = filteredGames.sort((a, b) => {
+            filteredGames.sort((a, b) => {
                 // if weights are equal sort by name asc
                 if (a.title.toLowerCase() < b.title.toLowerCase()) {
                     return -1;
