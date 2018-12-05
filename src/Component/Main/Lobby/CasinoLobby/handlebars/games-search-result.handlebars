@@ -1,0 +1,35 @@
+<ul>
+    {{#each games}}
+    <li>
+        <a class="game-list game-listing-item size-small"
+        {{#if ../isLogin}}
+        data-game-launch="true"
+        {{/if}}
+        data-game-provider="{{this.game_provider}}"
+        data-game-code="{{this.game_code}}"
+        data-game-keywords ="{{this.keywords}}"
+        data-game-title="{{this.title}}"
+        data-sort-weight="{{this.weight}}"
+        data-recommended-game="{{../isRecommended}}"
+        >
+        <div class="games-search-result-left" data-game-code="{{this.game_code}}">
+            {{#if this.ribbon}}
+                <div class="game-ribbon"
+                    style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
+                >
+                    {{this.ribbon.name}}
+                </div>
+            {{/if}}
+            <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
+        </div>
+
+        <div class="games-search-result-right">
+            <p>{{this.title}}</p>
+        </div>
+        <svg viewBox="0 30 24 44.999">
+            <use xlink:href="#arrow" />
+        </svg>
+        </a>
+    </li>
+    {{/each}}
+</ul>

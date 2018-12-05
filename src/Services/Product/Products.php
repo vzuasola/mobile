@@ -8,7 +8,8 @@ namespace App\MobileEntry\Services\Product;
 class Products
 {
     const PRODUCT_MAPPING = [
-        'games' => 'mobile-games'
+        'games' => 'mobile-games',
+        'casino' => 'mobile-casino'
     ];
 
     const PRODUCT_ALIAS = [
