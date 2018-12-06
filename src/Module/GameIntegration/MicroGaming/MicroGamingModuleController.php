@@ -1,16 +1,16 @@
 <?php
 
-namespace App\MobileEntry\Module\GameIntegration\Voidbridge;
+namespace App\MobileEntry\Module\GameIntegration\MicroGaming;
 
 use App\Drupal\Config;
 
-class VoidbridgeModuleController
+class MicroGamingModuleController
 {
-    const KEY = 'voidbridge';
+    const KEY = 'micro_gaming';
 
     private $rest;
 
-    private $voidbridge;
+    private $microGaming;
 
     private $config;
 
@@ -32,14 +32,13 @@ class VoidbridgeModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $voidbridge, $config, $player)
+    public function __construct($rest, $microGaming, $config, $player)
     {
         $this->rest = $rest;
-        $this->voidbridge = $voidbridge;
+        $this->microGaming = $microGaming;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
     }
-
 
     public function unsupported($request, $response)
     {
@@ -69,10 +68,12 @@ class VoidbridgeModuleController
         if ($this->checkCurrency()) {
             $data['currency'] = true;
             $requestData = $request->getParsedBody();
+
             try {
-                $responseData = $this->voidbridge->getGameUrlById('icore_vb', $requestData['gameCode'], [
+                $responseData = $this->microGaming->getGameUrlById('icore_mg', $requestData['gameCode'], [
                     'options' => [
                         'languageCode' => $requestData['langCode'],
+                        'playMode' => 'true'
                     ]
                 ]);
                 if ($responseData['url']) {
@@ -83,10 +84,8 @@ class VoidbridgeModuleController
             }
         }
 
-
         return $this->rest->output($response, $data);
     }
-
 
     private function checkCurrency()
     {
