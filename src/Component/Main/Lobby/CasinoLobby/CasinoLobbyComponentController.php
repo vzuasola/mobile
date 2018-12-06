@@ -441,5 +441,4 @@ class CasinoLobbyComponentController
 
         return $response;
     }
-
 }
