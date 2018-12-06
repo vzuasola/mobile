@@ -414,7 +414,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
     }
 
     private updateCategorySpecial() {
-        const categoriesEl = this.element.querySelector("#game-categories");
         const activeSearch = this.element.querySelector(".search-tab");
 
         if (utility.hasClass(activeSearch, "active")) {
