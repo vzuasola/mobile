@@ -156,6 +156,11 @@ trait GameTrait
             }
         }
 
+        return $this->checkExpiration($dateStart, $dateEnd);
+    }
+
+    private function checkExpiration($dateStart, $dateEnd)
+    {
         if ($dateStart && !$dateEnd) {
             $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
             $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
