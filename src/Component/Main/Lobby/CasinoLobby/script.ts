@@ -35,6 +35,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private product: any[];
     private searchResults;
     private loader: Loader;
+    private fromGameLaunch: boolean = false;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -83,7 +84,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.gamesFilter.handleOnLoad(this.element, attachments);
         if (ComponentManager.getAttribute("product") === "mobile-casino") {
-            this.hasCasinoPreference();
+            this.showCasinoPreference();
         }
     }
 
@@ -125,9 +126,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
         this.gamesFilter.handleOnReLoad(this.element, attachments);
-        if (ComponentManager.getAttribute("product") === "mobile-casino") {
-            this.hasCasinoPreference();
-        }
 
         this.pager = 0;
         this.currentPage = 0;
@@ -362,21 +360,38 @@ export class CasinoLobbyComponent implements ComponentInterface {
         });
     }
 
-    private hasCasinoPreference() {
-        if (this.isLogin) {
-            xhr({
-                url: Router.generateRoute("casino_option", "preference"),
-                type: "json",
-            }).then((response) => {
-                if (response.success && !response.redirect) {
-                    ComponentManager.broadcast("casino.preference");
-                    return;
-                }
-                this.loader.hide();
-            }).fail((error, message) => {
-                this.loader.hide();
-            });
+    private showCasinoPreference() {
+        // subsc gawa flag
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            let gameCode = false;
+            const el = utility.hasClass(data.src, "game-list", true);
+            if (el) {
+                gameCode = el.getAttribute("data-game-code");
+            }
+
+            if (!gameCode) {
+                this.getCasinoPreference();
+            }
+        });
+
+        if (this.isLogin && !this.fromGameLaunch) {
+            this.getCasinoPreference();
         }
+    }
+
+    private getCasinoPreference() {
+        xhr({
+            url: Router.generateRoute("casino_option", "preference"),
+            type: "json",
+        }).then((response) => {
+            if (response.success && !response.redirect) {
+                ComponentManager.broadcast("casino.preference");
+                return;
+            }
+            this.loader.hide();
+        }).fail((error, message) => {
+            this.loader.hide();
+        });
     }
 
     /**
@@ -400,6 +415,8 @@ export class CasinoLobbyComponent implements ComponentInterface {
                         this.generateLobby(() => {
                             this.updateCategorySpecial();
                         });
+                        this.fromGameLaunch = true;
+                        ComponentManager.broadcast("success.game.launch", {launchedGame: gameCode});
                     }
                 }).fail((error, message) => {
                     console.log(error);
