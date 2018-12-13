@@ -64,6 +64,10 @@ class CasinoOptionComponentController
     public function preference($request, $response)
     {
         $data = [];
+        $product = 'casino';
+        $data['preferredProduct'] = $product;
+        $data['success'] = true;
+        $data['redirect'] = $this->getCasinoUrl($product);
 
         if ($this->playerSession->isLogin()) {
             $success = true;
@@ -76,14 +80,11 @@ class CasinoOptionComponentController
             }
 
             $body = $request->getParsedBody();
-            $product = 'casino';
-            $data['preferredProduct'] = $product;
-            $data['success'] = $success;
-            $data['redirect'] = $this->getCasinoUrl($product);
             if ($isProvisioned) {
                 $product = $this->getPreferenceProvisioned($body);
                 $data['preferredProduct'] = $product;
                 $data['redirect'] = ($product) ? $this->getCasinoUrl($product) : '';
+                $data['success'] = $success;
             }
         }
 

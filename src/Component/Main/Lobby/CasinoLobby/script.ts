@@ -34,8 +34,11 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private load: boolean;
     private product: any[];
     private searchResults;
+    private loader: Loader;
+    private fromGameLaunch: boolean = false;
 
     constructor() {
+        this.loader = new Loader(document.body, true);
         this.gameLauncher = GameLauncher;
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
@@ -80,6 +83,9 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.gamesFilter.handleOnLoad(this.element, attachments);
+        if (ComponentManager.getAttribute("product") === "mobile-casino") {
+            this.showCasinoPreference();
+        }
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -354,6 +360,40 @@ export class CasinoLobbyComponent implements ComponentInterface {
         });
     }
 
+    private showCasinoPreference() {
+        // subsc gawa flag
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            let gameCode = false;
+            const el = utility.hasClass(data.src, "game-list", true);
+            if (el) {
+                gameCode = el.getAttribute("data-game-code");
+            }
+
+            if (!gameCode) {
+                this.getCasinoPreference();
+            }
+        });
+
+        if (this.isLogin && !this.fromGameLaunch) {
+            this.getCasinoPreference();
+        }
+    }
+
+    private getCasinoPreference() {
+        xhr({
+            url: Router.generateRoute("casino_option", "preference"),
+            type: "json",
+        }).then((response) => {
+            if (response.success && !response.redirect) {
+                ComponentManager.broadcast("casino.preference");
+                return;
+            }
+            this.loader.hide();
+        }).fail((error, message) => {
+            this.loader.hide();
+        });
+    }
+
     /**
      * Event listener for game item click
      */
@@ -375,9 +415,11 @@ export class CasinoLobbyComponent implements ComponentInterface {
                         this.generateLobby(() => {
                             this.updateCategorySpecial();
                         });
+                        this.fromGameLaunch = true;
+                        ComponentManager.broadcast("success.game.launch", {launchedGame: gameCode});
                     }
                 }).fail((error, message) => {
-                    console.log(error);
+                    // do nothing
                 });
             }
         });
