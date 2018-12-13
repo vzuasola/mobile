@@ -493,7 +493,7 @@ class GamesLobbyComponentController
     {
         try {
             $gameList = [];
-            if (is_array($games) && count($games) > 1) {
+            if (is_array($games) && count($games) >= 1) {
                 foreach ($games as $key => $timestamp) {
                     $gameList[$key]['id'] = $key;
                     $gameList[$key]['timestamp'] = $timestamp;
