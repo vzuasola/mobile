@@ -419,7 +419,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                         ComponentManager.broadcast("success.game.launch", {launchedGame: gameCode});
                     }
                 }).fail((error, message) => {
-                    console.log(error);
+                    // do nothing
                 });
             }
         });
