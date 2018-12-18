@@ -8,6 +8,7 @@ namespace App\MobileEntry\Services\Product;
 class ProductResolver
 {
     private $routeManager;
+    private $request;
 
     /**
      * Container resolver
@@ -15,16 +16,18 @@ class ProductResolver
     public static function create($container)
     {
         return new static(
-            $container->get('route_manager')
+            $container->get('route_manager'),
+            $container->get('router_request')
         );
     }
 
     /**
      *
      */
-    public function __construct($routeManager)
+    public function __construct($routeManager, $request)
     {
         $this->routeManager = $routeManager;
+        $this->request = $request;
     }
 
     /**
@@ -32,6 +35,6 @@ class ProductResolver
      */
     public function getProduct()
     {
-        return $this->routeManager->getAttribute('product') ?? "mobile-entrypage";
+        return $this->routeManager->getAttribute('product', $this->request) ?? "mobile-entrypage";
     }
 }
