@@ -370,25 +370,38 @@ export class CasinoLobbyComponent implements ComponentInterface {
             }
 
             if (!gameCode) {
-                this.getCasinoPreference();
+                this.getCasinoPreference((response) => {
+                    if (response.success) {
+                        // redirect to URL
+                        if (response.redirect && response.preferredProduct === "casino_gold") {
+                            window.location.href = decodeURIComponent(response.redirect).replace(/\\/g, "");
+                            return;
+                        }
+
+                        ComponentManager.broadcast("casino.preference");
+                    }
+                    this.loader.hide();
+                });
             }
         });
 
         if (this.isLogin && !this.fromGameLaunch) {
-            this.getCasinoPreference();
+            this.getCasinoPreference((response) => {
+                if (response.success && !response.redirect) {
+                    ComponentManager.broadcast("casino.preference");
+                    return;
+                }
+                this.loader.hide();
+            });
         }
     }
 
-    private getCasinoPreference() {
+    private getCasinoPreference(callback) {
         xhr({
             url: Router.generateRoute("casino_option", "preference"),
             type: "json",
         }).then((response) => {
-            if (response.success && !response.redirect) {
-                ComponentManager.broadcast("casino.preference");
-                return;
-            }
-            this.loader.hide();
+            callback(response);
         }).fail((error, message) => {
             this.loader.hide();
         });
