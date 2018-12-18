@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0a152150f97f0661146513543fcfe6f",
+    "content-hash": "0a8c7a5a45f7eb80c261dad8f80e4b5f",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -824,7 +824,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "Developer"
+                    "role": "developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -2974,11 +2974,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.106.0",
+            "version": "dev-working",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "f81417ba138ae06688b1eafd53f40098920f5e01"
+                "reference": "d9aeda291ccf47f678a8ff1dddf651853fd4de92"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3029,7 +3029,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2018-11-07T00:10:49+00:00"
+            "time": "2018-12-17T06:49:50+00:00"
         },
         {
             "name": "willdurand/negotiation",
