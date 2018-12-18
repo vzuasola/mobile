@@ -14,7 +14,7 @@ trait GameTrait
     {
         try {
             $processGame = [];
-            $size = $game['field_games_list_thumbnail_size'][0]['value'];
+            $size = 'size-small';
             $processGame['size'] = ($special) ? 'size-small' : $size;
 
             if (isset($game['field_game_ribbon'][0])) {
@@ -32,17 +32,6 @@ trait GameTrait
                         ['product' => 'mobile-casino']
                     )
             ];
-
-            if ($processGame['size'] == "size-large" && !$special) {
-                $processGame['image'] = [
-                    'alt' => $game['field_games_list_thumb_img_big'][0]['alt'],
-                    'url' =>
-                        $this->asset->generateAssetUri(
-                            $game['field_games_list_thumb_img_big'][0]['url'],
-                            ['product' => 'mobile-casino']
-                        )
-                ];
-            }
 
             if (count($game['field_game_filter']) > 0) {
                 $filterString = '';
