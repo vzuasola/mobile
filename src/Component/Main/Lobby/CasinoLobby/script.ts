@@ -499,6 +499,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
 
     private listenToSwipe() {
         const games: any = this.element.querySelector("#game-container");
+        new Swipe(games);
         if (games) {
             // Left Swipe
             utility.addEventListener(games, "swipeleft", (event, src) => {
