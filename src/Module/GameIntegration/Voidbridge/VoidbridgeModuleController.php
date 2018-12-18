@@ -44,13 +44,13 @@ class VoidbridgeModuleController
     public function unsupported($request, $response)
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
+            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
             $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
             $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $config['unsupported_currencies_title'] ?? $config['fallback_error_title'];
+            $data['title'] = $config['unsupported_currencies_title'] ?? '';
             $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? $config['fallback_error_message']['value'];
-            $data['button'] = $config['unsupported_currencies_button'] ?? $config['fallback_error_button'];
+                $config['unsupported_currencies_message']['value'] ?? '';
+            $data['button'] = $config['unsupported_currencies_button'] ?? '';
             $data['status'] = true;
         } catch (\Exception $e) {
             $data['status'] = false;
