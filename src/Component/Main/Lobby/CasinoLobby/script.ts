@@ -397,6 +397,8 @@ export class CasinoLobbyComponent implements ComponentInterface {
     }
 
     private getCasinoPreference(callback) {
+        this.loader.show();
+
         xhr({
             url: Router.generateRoute("casino_option", "preference"),
             type: "json",
