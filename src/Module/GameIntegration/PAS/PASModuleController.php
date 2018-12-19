@@ -106,7 +106,7 @@ class PASModuleController
         }
 
         $data['currency'] = false;
-        
+
         return $this->rest->output($response, $data);
     }
 }
