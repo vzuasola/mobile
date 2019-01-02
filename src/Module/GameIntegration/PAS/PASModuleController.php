@@ -120,9 +120,6 @@ class PASModuleController
 
                 $data['gameurl'] = $url;
 
-                // if ($responseData['url']) {
-                //     $data['gameurl'] = $responseData['url'];
-                // }
             } catch (\Exception $e) {
                 $data = [];
             }
