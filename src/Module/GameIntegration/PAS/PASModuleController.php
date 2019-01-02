@@ -119,7 +119,6 @@ class PASModuleController
                 $url = str_replace('{langPrefix}', $requestData['lang'], $url);
 
                 $data['gameurl'] = $url;
-
             } catch (\Exception $e) {
                 $data = [];
             }
