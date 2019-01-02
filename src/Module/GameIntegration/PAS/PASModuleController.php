@@ -15,7 +15,7 @@ class PASModuleController
      */
     private $paymentAccount;
 
-    private $pas;
+    private $parser;
 
     private $config;
 
@@ -29,7 +29,7 @@ class PASModuleController
         return new static(
             $container->get('rest'),
             $container->get('accounts_service'),
-            $container->get('game_provider_fetcher'),
+            $container->get('token_parser'),
             $container->get('config_fetcher'),
             $container->get('player')
         );
@@ -41,13 +41,13 @@ class PASModuleController
     public function __construct(
         $rest,
         $paymentAccount,
-        $pas,
+        $parser,
         $config,
         $player
     ) {
         $this->rest = $rest;
         $this->paymentAccount = $paymentAccount;
-        $this->pas = $pas;
+        $this->parser = $parser;
         $this->config = $config->withProduct('mobile-casino');
         $this->player = $player;
     }
@@ -89,24 +89,61 @@ class PASModuleController
         return $this->rest->output($response, $data);
     }
 
-    public function checkCurrency($request, $response)
+    /**
+     * @{inheritdoc}
+     */
+    public function launch($request, $response)
     {
-        $data = [];
+        $data['gameurl'] = false;
+        $data['currency'] = false;
+        if ($this->checkCurrency()) {
+            $data['currency'] = true;
+            $requestData = $request->getParsedBody();
+
+            try {
+                $config = $this->config->withProduct('mobile-entrypage');
+                $ptConfig = $config->getConfig('webcomposer_config.games_playtech_provider');
+
+                $iapiConfigs = $ptConfig['iapiconf_override'] ?? [];
+                if ($iapiConfigs) {
+                    $iapiConfigs = Config::parse($iapiConfigs);
+                    foreach ($iapiConfigs as $key => $config) {
+                        $iapiConfigs[$key] = json_decode($config, true);
+                    }
+                }
+
+                $url = $this->parser->processTokens($iapiConfigs['dafa888'][$requestData['options']['platform']]);
+
+                $url = str_replace('{gameCode}', $requestData['options']['code'], $url);
+                $url = str_replace('{ptLanguage}', $requestData['language'], $url);
+                $url = str_replace('{langPrefix}', $requestData['lang'], $url);
+
+                $data['gameurl'] = $url;
+
+                // if ($responseData['url']) {
+                //     $data['gameurl'] = $responseData['url'];
+                // }
+            } catch (\Exception $e) {
+                $data = [];
+            }
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    private function checkCurrency()
+    {
         try {
             $config =  $this->config->getConfig('webcomposer_config.icore_playtech_provider');
             $currencies = explode("\r\n", $config['dafabetgames_currency']);
             $playerCurrency = $this->player->getCurrency();
 
             if (in_array($playerCurrency, $currencies)) {
-                $data['currency'] = true;
-                return $this->rest->output($response, $data);
+                return true;
             }
         } catch (\Exception $e) {
-            $data['currency'] = false;
+            // Do nothing
         }
-
-        $data['currency'] = false;
-
-        return $this->rest->output($response, $data);
+        return false;
     }
 }

@@ -122,14 +122,24 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     launch(options) {
         if (options.provider === this.key) {
-            // Check UCL
+
+            // remap language
+            const lang = Router.getLanguage();
+            const language = this.getLanguageMap(lang);
+
             xhr({
-                url: Router.generateModuleRoute("pas_integration", "checkCurrency"),
+                url: Router.generateModuleRoute("pas_integration", "launch"),
                 type: "json",
                 method: "post",
+                data: {
+                    lang,
+                    language,
+                    options,
+                },
             }).then((response) => {
-                if (response.currency) {
-                    this.pasLaunch(options);
+                if (response.gameurl) {
+                    this.launchGame(options.target);
+                    this.updatePopupWindow(response.gameurl);
                 }
 
                 if (!response.currency) {
@@ -342,9 +352,28 @@ export class PASModule implements ModuleInterface, GameInterface {
         };
     }
 
-    private pasLaunch(options) {
+    /**
+     * Define user parameters
+     */
+    private setClientParams(parameters) {
+        // remap language
         const lang = Router.getLanguage();
-        const langCode = this.getLanguageMap(lang);
+        const language = this.getLanguageMap(lang);
+        const defaults = {
+            language,
+            advertiser: "ptt",
+            fixedsize: 1,
+        };
+        const params = parameters || {};
+
+        // Set defaults
+        for (const name in defaults) {
+            if (params[name] === undefined) {
+                params[name] = defaults[name];
+            }
+        }
+
+        return params;
     }
 
     private launchGame(target) {
