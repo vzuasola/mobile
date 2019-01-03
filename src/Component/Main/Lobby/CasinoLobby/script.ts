@@ -377,7 +377,9 @@ export class CasinoLobbyComponent implements ComponentInterface {
                             return;
                         }
 
-                        ComponentManager.broadcast("casino.preference");
+                        if (!response.redirect) {
+                            ComponentManager.broadcast("casino.preference");
+                        }
                     }
                     this.loader.hide();
                 });
