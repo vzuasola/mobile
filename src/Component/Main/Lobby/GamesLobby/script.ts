@@ -59,7 +59,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.pager = 0;
-        this.currentPage = 0;
         this.load = true;
         this.listenChangeCategory();
         this.listenHashChange();
@@ -111,7 +110,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.pager = 0;
-        this.currentPage = 0;
         this.load = true;
         this.generateLobby(() => {
             this.lobby();

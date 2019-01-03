@@ -153,7 +153,7 @@ export class GamesSearch {
         this.searchBlurb = blurb;
         this.updateSearchBlurb(blurb, this.element.querySelector("#blurb-preview"), { count: 0, keyword });
 
-        if (recommendedGames.length) {
+        if (recommendedGames.length && this.response.enableRecommended) {
             this.isRecommended = true;
             this.setGamesResultPreview(recommendedGames);
             this.searchResult = recommendedGames;
