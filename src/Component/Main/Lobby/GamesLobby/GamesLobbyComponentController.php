@@ -110,7 +110,7 @@ class GamesLobbyComponentController
             $gamesData
         );
         $data['games'] += $specialCategoryGames;
-        
+
         if (!isset($previewMode['pvw'])) {
             $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }

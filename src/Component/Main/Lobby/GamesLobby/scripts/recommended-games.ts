@@ -7,7 +7,7 @@ export class RecommendedGames {
     private config;
     private response: any;
     private enableRecommended: boolean;
-    
+
     constructor(gamesList, config, enableRecommended) {
         this.response = gamesList;
         this.recommendedGames = [];
