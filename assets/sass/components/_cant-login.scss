@@ -137,3 +137,29 @@ form.reset-password-form {
         border-top: 0.1rem solid #515151;
     }
 }
+
+// Native app specific styles
+.native-app {
+    // Addjust <body> background
+    background: #2a2829;
+
+    // Hide components
+    div[data-component-widget-class="header"],
+    div[data-component-widget-class="footer"],
+    div[data-component-widget-class="menu"] {
+        display: none;
+    }
+
+    // Native app spicific visibility class
+    .show-native-app {
+        display: block;
+    }
+
+    .show-mobile {
+        display: none;
+    }
+}
+
+.show-native-app {
+    display: none;
+}
