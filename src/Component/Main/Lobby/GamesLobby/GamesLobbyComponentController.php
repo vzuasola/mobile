@@ -77,6 +77,7 @@ class GamesLobbyComponentController
 
     public function lobby($request, $response)
     {
+        $previewMode = $request->getQueryParams();
         $item = $this->cacher->getItem('views.games-lobby-data.' . $this->currentLanguage);
 
         if (!$item->isHit()) {
@@ -108,17 +109,19 @@ class GamesLobbyComponentController
             $specialCategories,
             $gamesData
         );
-
         $data['games'] += $specialCategoryGames;
+        
+        if (!isset($previewMode['pvw'])) {
+            $data['games'] = $this->removeGamesPreviewMode($data['games']);
+        }
+
         $enableRecommended = false;
         $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
         $data['enableRecommended'] = $enableRecommended;
-        // $data['games'] = $this->groupGamesByContainer($data['games'], 3);
 
         if (isset($specialGamesList['favorites'])) {
             $data['favorite_list'] = $this->getFavoriteGamesList($specialGamesList['favorites']);
         }
-
         unset($data['categories_list']);
         unset($data['special_categories']);
 
@@ -163,6 +166,23 @@ class GamesLobbyComponentController
             $result = $this->toggleFavoriteGames($gameCode['gameCode']);
             return $this->rest->output($response, $result);
         }
+    }
+
+    private function removeGamesPreviewMode($gamesCollection)
+    {
+        try {
+            foreach ($gamesCollection as $categoryName => $category) {
+                foreach ($category as $index => $game) {
+                    if ($game['preview_mode']) {
+                        unset($gamesCollection[$categoryName][$index]);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            // placeholder
+        }
+
+        return $gamesCollection;
     }
 
     private function getSpecialCategoriesGameList($categories)
@@ -351,12 +371,23 @@ class GamesLobbyComponentController
                 $processGame['filters'] = json_encode($filters);
             }
 
+
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
+            $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
+
+            $categoryList = [];
+
+            foreach ($game['field_games_list_category'] as $category) {
+                $categoryList[$category['field_games_alias'][0]['value']] =
+                    $category['field_draggable_views']['category']['weight'];
+            }
+
+            $processGame['categories'] = $categoryList;
 
             $categoryList = [];
 

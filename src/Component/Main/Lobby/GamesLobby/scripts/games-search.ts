@@ -103,7 +103,7 @@ export class GamesSearch {
             this.gamesList = gamesList;
             this.favoritesList = gamesList.favorite_list;
             this.searchObj.setData(allGames);
-            this.recommendedGames = new RecommendedGames(this.gamesList, this.config);
+            this.recommendedGames = new RecommendedGames(this.gamesList, this.config, gamesList.enableRecommended);
         }
     }
 

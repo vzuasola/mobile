@@ -187,6 +187,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         }).then((response) => {
             response.games = this.getCategoryGames(response.games);
             response.games = this.groupGamesByContainer(response.games);
+            response.categories = this.filterCategories(response.categories, response.games);
+
             this.response = response;
 
             if (callback) {
@@ -254,7 +256,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private getActiveCategory(gamesList, key) {
         const hash = utility.getHash(window.location.href);
 
-        if (gamesList[hash]) {
+        if (gamesList.hasOwnProperty(hash) && gamesList[hash].length > 0) {
             return hash;
         }
 
@@ -805,4 +807,16 @@ export class GamesLobbyComponent implements ComponentInterface {
         }, 1000);
 
     }
+    private filterCategories(categories, gamesList) {
+        const filteredCategory: any = [];
+        for (const category of categories) {
+            if (gamesList.hasOwnProperty(category.field_games_alias)
+                && gamesList[category.field_games_alias].length) {
+                filteredCategory.push(category);
+            }
+        }
+
+        return filteredCategory;
+    }
+
 }

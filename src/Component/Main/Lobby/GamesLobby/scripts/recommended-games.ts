@@ -6,11 +6,13 @@ export class RecommendedGames {
     private recommendedGames: any[];
     private config;
     private response: any;
-
-    constructor(gamesList, config) {
+    private enableRecommended: boolean;
+    
+    constructor(gamesList, config, enableRecommended) {
         this.response = gamesList;
         this.recommendedGames = [];
-        if (gamesList && gamesList.games["recommended-games"]) {
+        this.enableRecommended = enableRecommended;
+        if (gamesList && gamesList.games["recommended-games"] && this.enableRecommended) {
             this.recommendedGames = [];
             for (const games of gamesList.games["recommended-games"]) {
                 for (const game of games) {
