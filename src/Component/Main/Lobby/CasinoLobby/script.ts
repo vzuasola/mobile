@@ -361,7 +361,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
     }
 
     private showCasinoPreference() {
-        // subsc gawa flag
         ComponentManager.subscribe("session.login", (event, src, data) => {
             let gameCode = false;
             const el = utility.hasClass(data.src, "game-list", true);
@@ -369,7 +368,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 gameCode = el.getAttribute("data-game-code");
             }
 
-            if (!gameCode) {
+            if (!gameCode && ComponentManager.getAttribute("product") === "mobile-casino") {
                 this.getCasinoPreference((response) => {
                     if (response.success) {
                         // redirect to URL
@@ -389,6 +388,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             this.getCasinoPreference((response) => {
                 if (response.success && !response.redirect) {
                     ComponentManager.broadcast("casino.preference");
+                    this.loader.hide();
                     return;
                 }
                 this.loader.hide();
