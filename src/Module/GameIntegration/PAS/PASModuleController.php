@@ -114,9 +114,15 @@ class PASModuleController
 
                 $url = $this->parser->processTokens($iapiConfigs['dafa888'][$requestData['options']['platform']]);
 
-                $url = str_replace('{gameCode}', $requestData['options']['code'], $url);
-                $url = str_replace('{ptLanguage}', $requestData['language'], $url);
-                $url = str_replace('{langPrefix}', $requestData['lang'], $url);
+                $search = [
+                    '{gameCode}', '{ptLanguage}', '{langPrefix}',
+                ];
+
+                $replacements = [
+                    $requestData['options']['code'], $requestData['language'], $requestData['lang'],
+                ];
+
+                $url = str_replace($search, $replacements, $url);
 
                 $data['gameurl'] = $url;
             } catch (\Exception $e) {
