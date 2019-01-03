@@ -24,6 +24,7 @@ export class GamesSearch {
     private searchKeyword;
     private searchBlurb;
     private recommendedGames;
+    private response;
 
     constructor() {
         this.searchObj = new Search({
@@ -91,6 +92,7 @@ export class GamesSearch {
     }
 
     setGamesList(gamesList) {
+        this.response = gamesList;
         if (gamesList && gamesList.games["all-games"]) {
             const allGames = [];
             for (const games of gamesList.games["all-games"]) {
@@ -239,12 +241,27 @@ export class GamesSearch {
      * Function that enables search tab and sets category in URL to inactive
      */
     private activateSearchTab() {
-        const categoriesEl = this.element.querySelector("#game-categories");
+        const categoriesEl = document.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        const activeCategory = activeLink.getAttribute("data-category-filter-id");
+        let activeCategory = this.response.categories[0].field_games_alias;
+        if (activeLink) {
+            activeCategory = activeLink.getAttribute("data-category-filter-id");
+        }
+
+        if (utility.hasClass(categoriesEl.querySelector(".game-category-more"), "active") || !activeCategory) {
+            activeCategory = utility.getHash(window.location.href);
+        }
 
         // set search tab as active tab
-        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        this.deactivateSearchTab();
+        const actives = document.querySelectorAll(".category-" + activeCategory);
+        for (const id in actives) {
+            if (actives.hasOwnProperty(id)) {
+                const active = actives[id];
+                utility.removeClass(active, "active");
+           }
+        }
+
         utility.addClass(this.element.querySelector(".search-tab"), "active");
     }
 
@@ -252,7 +269,10 @@ export class GamesSearch {
      * Function that disables search tab and sets category in URL to active
      */
     private deactivateSearchTab() {
+        const categoriesEl = document.querySelector("#game-categories");
+        utility.removeClass(categoriesEl.querySelector(".game-category-more"), "active");
         utility.removeClass(this.element.querySelector(".search-tab"), "active");
+        utility.removeClass(this.element.querySelector(".games-filter"), "active");
     }
 
     /*
@@ -349,11 +369,13 @@ export class GamesSearch {
             const el = utility.hasClass(src, "games-filter", true);
             if (el) {
                 event.preventDefault();
-                ComponentManager.broadcast("games.search.filter");
+                ComponentManager.broadcast("games.search.filter", {
+                    element: el,
+                });
             }
         });
 
-        ComponentManager.subscribe("games.search.filter", (event, src) => {
+        ComponentManager.subscribe("games.search.filter", (event, src, data) => {
             Modal.open("#games-search-filter-lightbox");
         });
     }
@@ -445,7 +467,11 @@ export class GamesSearch {
      */
     private listenCategoryChange() {
         ComponentManager.subscribe("category.change", (event, src, data) => {
-            this.deactivateSearchTab();
+            if (utility.hasClass(this.element.querySelector(".search-tab"), "active") ||
+                utility.hasClass(this.element.querySelector(".games-filter"), "active")
+            ) {
+                this.deactivateSearchTab();
+            }
             this.clearSearchBlurbLobby();
         });
     }

@@ -8,17 +8,31 @@ export class Menu {
 
     activate() {
         this.bindEvents();
+        this.closeEvents();
     }
 
     private bindEvents() {
+        ComponentManager.subscribe(utility.eventType(), (src, target) => {
+            const icon = this.element.querySelector(".mobile-menu-icon");
+
+            if (target === icon || target.parentNode === icon) {
+                this.openMenu();
+            } else if (utility.hasClass(target, "mobile-menu-overlay")
+            ) {
+                this.closeMenu();
+            }
+        });
+    }
+
+    private closeEvents() {
         ComponentManager.subscribe("click", (src, target) => {
             const icon = this.element.querySelector(".mobile-menu-icon");
 
             if (target === icon || target.parentNode === icon) {
                 this.openMenu();
-            } else if (utility.hasClass(target, "close-svg") ||
+            } else if (utility.hasClass(
+                target, "close-svg") ||
                 utility.hasClass(target, "menu-item-internal", true) ||
-                utility.hasClass(target, "mobile-menu-overlay") ||
                 utility.hasClass(target, "logo-img")
             ) {
                 this.closeMenu();
