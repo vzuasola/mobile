@@ -41,7 +41,6 @@ export class MenuComponent implements ComponentInterface {
         this.pushNotification.handleOnLoad(element, attachments);
 
         this.listenAnnouncementCount();
-        this.appDetection();
 
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
@@ -71,18 +70,6 @@ export class MenuComponent implements ComponentInterface {
 
         this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
-        this.appDetection();
-    }
-
-    /**
-     * Add spicific body class for native app base on query parameter
-     */
-    private appDetection() {
-        const nativeApp  = utility.getParameterByName("device");
-
-        if (nativeApp === "native-app") {
-            utility.addClass(document.body, nativeApp);
-        }
     }
 
     private equalizeProductHeight() {
