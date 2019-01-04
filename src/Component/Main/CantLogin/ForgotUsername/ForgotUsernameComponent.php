@@ -58,6 +58,8 @@ class ForgotUsernameComponent implements ComponentWidgetInterface
 
         $data['username_success_message'] = $config['mobile_forgot_username_success_message']['value']
             ?? "Retrieve Username Request Sent";
+        $data['username_success_message_native'] = $config['native_app_mobile_forgot_username_success_message']['value']
+            ?? "Retrieve Username Request Sent";
         $data['formForgotUsername'] = $formForgotUsername->createView();
 
         return $data;
