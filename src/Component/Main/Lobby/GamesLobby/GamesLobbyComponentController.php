@@ -232,11 +232,13 @@ class GamesLobbyComponentController
             if ($pager['total_pages'] > 1) {
                 $definitions['all-games'] = [];
                 for ($ctr = 0; $ctr < $pager['total_pages']; $ctr++) {
-                    $definitions[$ctr] = $this->viewsAsync->getViewById('games_list',
+                    $definitions[$ctr] = $this->viewsAsync->getViewById(
+                        'games_list',
                         [
                             'page' => $ctr,
                             'pager' => 0,
-                        ]);
+                        ]
+                    );
                 }
             }
         } catch (\Exception $e) {
