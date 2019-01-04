@@ -2,10 +2,5 @@
 {{ form_start(formResetPassword, {'attr': {'class': 'pure-form reset-password-form form-vertical'}}) }}
 {{ form_end(formResetPassword) }}
 <div class="api-success-message mt-25 mb-20 hidden">
-    <div class="success-message-mobile">
-        {{ reset_password_success_message|raw }}
-    </div>
-    <div class="success-message-native-app">
-        {{ reset_password_success_message_native_app|raw }}
-    </div>
+    {{ reset_password_success_message|raw }}
 </div>
