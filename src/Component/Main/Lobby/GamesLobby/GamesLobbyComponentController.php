@@ -249,8 +249,9 @@ class GamesLobbyComponentController
                     $items,
                     [],
                     function ($result) {
-                    return $result;
-                });
+                        return $result;
+                    }
+                );
             }
         } catch (\Exception $e) {
             $definitions = [];
