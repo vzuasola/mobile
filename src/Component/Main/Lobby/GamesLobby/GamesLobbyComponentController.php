@@ -4,6 +4,7 @@ namespace App\MobileEntry\Component\Main\Lobby\GamesLobby;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\Async\Async;
+use App\Async\DefinitionCollection;
 
 class GamesLobbyComponentController
 {
@@ -136,6 +137,7 @@ class GamesLobbyComponentController
         $pager = $this->views->getViewById('games_list', ['pager' => 1]);
 
         $definitions = $this->getDefinitions($pager);
+
         $asyncData = Async::resolve($definitions);
         $asyncData = $this->buildAllGames($asyncData);
 
@@ -156,7 +158,7 @@ class GamesLobbyComponentController
     private function buildAllGames($data)
     {
         if (!$data['all-games']) {
-            foreach ($data as $key => $value) {
+            foreach ($data['paged-games'] as $key => $value) {
                 if (is_numeric($key)) {
                     $data['all-games'] = array_merge($data['all-games'], $value);
                 }
@@ -231,15 +233,24 @@ class GamesLobbyComponentController
             $definitions['all-games'] = $this->viewsAsync->getViewById('games_list');
             if ($pager['total_pages'] > 1) {
                 $definitions['all-games'] = [];
+
+                $items = [];
+
                 for ($ctr = 0; $ctr < $pager['total_pages']; $ctr++) {
-                    $definitions[$ctr] = $this->viewsAsync->getViewById(
+                    $items[$ctr] = $this->viewsAsync->getViewById(
                         'games_list',
                         [
-                            'page' => $ctr,
-                            'pager' => 0,
+                            'page' => (string) $ctr,
                         ]
                     );
                 }
+
+                $definitions['paged-games'] = new DefinitionCollection(
+                    $items,
+                    [],
+                    function ($result) {
+                    return $result;
+                });
             }
         } catch (\Exception $e) {
             $definitions = [];
