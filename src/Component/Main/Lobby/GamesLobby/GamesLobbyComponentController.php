@@ -4,6 +4,7 @@ namespace App\MobileEntry\Component\Main\Lobby\GamesLobby;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\Async\Async;
+use App\Async\DefinitionCollection;
 
 class GamesLobbyComponentController
 {
@@ -133,9 +134,13 @@ class GamesLobbyComponentController
         $data = [];
 
         $categories = $this->views->getViewById('games_category');
-        $definitions = $this->getDefinitions();
+        $pager = $this->views->getViewById('games_list', ['pager' => 1]);
+
+        $definitions = $this->getDefinitions($pager);
 
         $asyncData = Async::resolve($definitions);
+        $asyncData = $this->buildAllGames($asyncData);
+
         $specialCategories = [];
         $specialCategories = $this->getSpecialCategories($categories);
 
@@ -147,6 +152,18 @@ class GamesLobbyComponentController
 
         $data['configs'] = $asyncData['configs'];
 
+        return $data;
+    }
+
+    private function buildAllGames($data)
+    {
+        if (!$data['all-games']) {
+            foreach ($data['paged-games'] as $key => $value) {
+                if (is_numeric($key)) {
+                    $data['all-games'] = array_merge($data['all-games'], $value);
+                }
+            }
+        }
         return $data;
     }
 
@@ -207,13 +224,35 @@ class GamesLobbyComponentController
         return $definitions;
     }
 
-    private function getDefinitions()
+    private function getDefinitions($pager)
     {
         $definitions = [];
 
         try {
             $definitions['configs'] = $this->configAsync->getConfig('gts.gts_configuration');
             $definitions['all-games'] = $this->viewsAsync->getViewById('games_list');
+            if ($pager['total_pages'] > 1) {
+                $definitions['all-games'] = [];
+
+                $items = [];
+
+                for ($ctr = 0; $ctr < $pager['total_pages']; $ctr++) {
+                    $items[$ctr] = $this->viewsAsync->getViewById(
+                        'games_list',
+                        [
+                            'page' => (string) $ctr,
+                        ]
+                    );
+                }
+
+                $definitions['paged-games'] = new DefinitionCollection(
+                    $items,
+                    [],
+                    function ($result) {
+                        return $result;
+                    }
+                );
+            }
         } catch (\Exception $e) {
             $definitions = [];
         }
