@@ -133,9 +133,12 @@ class GamesLobbyComponentController
         $data = [];
 
         $categories = $this->views->getViewById('games_category');
-        $definitions = $this->getDefinitions();
+        $pager = $this->views->getViewById('games_list', ['pager' => 1]);
 
+        $definitions = $this->getDefinitions($pager);
         $asyncData = Async::resolve($definitions);
+        $asyncData = $this->buildAllGames($asyncData);
+
         $specialCategories = [];
         $specialCategories = $this->getSpecialCategories($categories);
 
@@ -147,6 +150,18 @@ class GamesLobbyComponentController
 
         $data['configs'] = $asyncData['configs'];
 
+        return $data;
+    }
+
+    private function buildAllGames($data)
+    {
+        if (!$data['all-games']) {
+            foreach ($data as $key => $value) {
+                if (is_numeric($key)) {
+                    $data['all-games'] = array_merge($data['all-games'], $value);
+                }
+            }
+        }
         return $data;
     }
 
@@ -207,13 +222,23 @@ class GamesLobbyComponentController
         return $definitions;
     }
 
-    private function getDefinitions()
+    private function getDefinitions($pager)
     {
         $definitions = [];
 
         try {
             $definitions['configs'] = $this->configAsync->getConfig('gts.gts_configuration');
             $definitions['all-games'] = $this->viewsAsync->getViewById('games_list');
+            if ($pager['total_pages'] > 1) {
+                $definitions['all-games'] = [];
+                for ($ctr = 0; $ctr < $pager['total_pages']; $ctr++) {
+                    $definitions[$ctr] = $this->viewsAsync->getViewById('games_list',
+                        [
+                            'page' => $ctr,
+                            'pager' => 0,
+                        ]);
+                }
+            }
         } catch (\Exception $e) {
             $definitions = [];
         }
