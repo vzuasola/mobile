@@ -140,7 +140,7 @@ form.reset-password-form {
 
 // Native app specific styles
 .native-app {
-    // Addjust <body> background
+    // Adjust <body> background
     background: #2a2829;
 
     // Hide components
@@ -150,16 +150,18 @@ form.reset-password-form {
         display: none;
     }
 
-    // Native app spicific visibility class
-    .show-native-app {
-        display: block;
+    // Hide mobile success message
+    .success-message-mobile {
+        display: none;
     }
 
-    .show-mobile {
-        display: none;
+    // Show native app success message
+    .success-message-native-app {
+        display: block;
     }
 }
 
-.show-native-app {
+// Hide native success message for mobile
+.success-message-native-app {
     display: none;
 }
