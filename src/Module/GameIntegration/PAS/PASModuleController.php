@@ -112,7 +112,9 @@ class PASModuleController
                     }
                 }
 
-                $url = $this->parser->processTokens($iapiConfigs['dafa888'][$requestData['options']['platform'] . '_client_url']);
+                $url = $this->parser->processTokens(
+                    $iapiConfigs['dafa888'][$requestData['options']['platform'] . '_client_url']
+                );
 
                 $search = [
                     '{gameCode}', '{ptLanguage}', '{langPrefix}',
