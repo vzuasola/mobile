@@ -76,7 +76,7 @@ export class CasinoOptionComponent implements ComponentInterface {
             type: "json",
             method: "post",
             data: {
-                product,
+                preferred_product: product,
             },
         }).then((response) => {
             callback(response);

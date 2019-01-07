@@ -102,8 +102,8 @@ class CasinoOptionComponentController
     {
         $preferredCasino = false;
         try {
-            if (!empty($product['product'])) {
-                $preferredCasino = $product['product'];
+            if (!empty($product['preferred_product'])) {
+                $preferredCasino = $product['preferred_product'];
                 $this->preferences->savePreference('casino.preferred', $preferredCasino);
 
                 $this->setLegacyPrefCookie($preferredCasino);
