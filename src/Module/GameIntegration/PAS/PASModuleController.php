@@ -124,12 +124,12 @@ class PASModuleController
                     $requestData['options']['code'], $requestData['language'], $requestData['lang'],
                 ];
 
-                $queryString = "";
+                $queryString = [];
                 foreach ($iapiConfigs['dafa888'][$requestData['options']['platform'] . '_param'] as $key => $value) {
                     $param = str_replace($search, $replacements, $value);
-                    $queryString .= $key . '=' .urlencode($this->parser->processTokens($param)) . '&';
+                    $queryString[$key] = urlencode($this->parser->processTokens($param));
                 }
-                $url = $url . "?$queryString";
+                $url = $url . '?' . http_build_query($queryString, '&');
 
                 $data['gameurl'] = $url;
             } catch (\Exception $e) {
