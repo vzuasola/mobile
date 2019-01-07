@@ -112,7 +112,9 @@ class PASModuleController
                     }
                 }
 
-                $url = $this->parser->processTokens($iapiConfigs['dafa888'][$requestData['options']['platform']]);
+                $url = $this->parser->processTokens(
+                    $iapiConfigs['dafa888'][$requestData['options']['platform'] . '_client_url']
+                );
 
                 $search = [
                     '{gameCode}', '{ptLanguage}', '{langPrefix}',
@@ -122,7 +124,12 @@ class PASModuleController
                     $requestData['options']['code'], $requestData['language'], $requestData['lang'],
                 ];
 
-                $url = str_replace($search, $replacements, $url);
+                $queryString = [];
+                foreach ($iapiConfigs['dafa888'][$requestData['options']['platform'] . '_param'] as $key => $value) {
+                    $param = str_replace($search, $replacements, $value);
+                    $queryString[$key] = urlencode($this->parser->processTokens($param));
+                }
+                $url = $url . '?' . http_build_query($queryString, '&');
 
                 $data['gameurl'] = $url;
             } catch (\Exception $e) {
