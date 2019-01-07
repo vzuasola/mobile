@@ -14,8 +14,10 @@ import {Modal} from "@app/assets/script/components/modal";
 export class GamesFilter {
     private element;
     private gamesList: any;
+    private enabledFilters: any;
     handleOnLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
+        this.enabledFilters = [];
         this.listenOnOpen();
         this.listenOnClick();
     }
@@ -25,6 +27,7 @@ export class GamesFilter {
             this.listenOnOpen();
             this.listenOnClick();
         }
+        this.enabledFilters = [];
         this.element = element;
     }
 
@@ -45,6 +48,10 @@ export class GamesFilter {
     private listenOnOpen() {
         ComponentManager.subscribe("games.search.filter", (event, src) => {
             this.clearFilters();
+            if (this.enabledFilters.length > 0) {
+                this.populateFilters(this.enabledFilters);
+            }
+
         });
     }
 
@@ -73,6 +80,17 @@ export class GamesFilter {
                         reset.setAttribute("disabled", "disabled");
                     }
                 }
+            }
+        }
+    }
+
+    private populateFilters(actives) {
+        for (const activeKey in actives) {
+            if (actives.hasOwnProperty(activeKey)) {
+                const active = actives[activeKey];
+                const checkbox = active.querySelector(".filter-checkbox");
+                this.onToggleFilters(checkbox);
+                checkbox.checked = true;
             }
         }
     }
@@ -113,12 +131,13 @@ export class GamesFilter {
         const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
         if (filterLightbox) {
             const actives = filterLightbox.querySelectorAll(".active");
+            this.enabledFilters = [];
             let filteredGames = [];
             for (const activeKey in actives) {
                 if (actives.hasOwnProperty(activeKey)) {
                     const active = actives[activeKey];
                     const checkValue = active.querySelector(".filter-checkbox").value;
-
+                    this.enabledFilters.push(active);
                     for (const gameKey in this.gamesList) {
                         if (this.gamesList.hasOwnProperty(gameKey)) {
                             const game = this.gamesList[gameKey];
