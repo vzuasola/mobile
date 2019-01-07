@@ -124,6 +124,8 @@ class PASModuleController
                     $requestData['options']['code'], $requestData['language'], $requestData['lang'],
                 ];
 
+                $url = str_replace($search, $replacements, $url);
+
                 $queryString = [];
                 foreach ($iapiConfigs['dafa888'][$requestData['options']['platform'] . '_param'] as $key => $value) {
                     $param = str_replace($search, $replacements, $value);
