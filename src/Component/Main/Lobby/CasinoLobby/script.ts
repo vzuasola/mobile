@@ -83,9 +83,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.gamesFilter.handleOnLoad(this.element, attachments);
-        if (ComponentManager.getAttribute("product") === "mobile-casino") {
-            this.showCasinoPreference();
-        }
+        this.showCasinoPreference();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -110,6 +108,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             this.listenToScroll();
             this.listenOnSearch();
             this.listenOnFilter();
+            this.showCasinoPreference();
         }
         this.response = null;
         this.element = element;
@@ -386,7 +385,8 @@ export class CasinoLobbyComponent implements ComponentInterface {
             }
         });
 
-        if (this.isLogin && !this.fromGameLaunch) {
+        if (ComponentManager.getAttribute("product") === "mobile-casino"
+            && this.isLogin && !this.fromGameLaunch) {
             this.getCasinoPreference((response) => {
                 if (response.success && !response.redirect) {
                     ComponentManager.broadcast("casino.preference");
