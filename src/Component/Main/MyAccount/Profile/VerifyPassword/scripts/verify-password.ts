@@ -25,7 +25,6 @@ export class VerifyPassword extends FormBase {
     private errorNotification: any;
     private successNotification: any;
     private config: any;
-    private isFastReg: boolean;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -35,7 +34,6 @@ export class VerifyPassword extends FormBase {
     init() {
         if (this.password) {
             this.form = utility.findParent(this.password, "form");
-            this.isFastReg = document.getElementById("fast-reg-notification") ? true : false;
             this.passwordContainer = utility.hasClass(this.password, "form-item", true);
             this.loader = new Loader(utility.hasClass(this.password, "form-item", true), false, 0);
             this.updateProfileLoader = document.querySelector("body > .loader");
@@ -85,8 +83,8 @@ export class VerifyPassword extends FormBase {
             city: profileForm.MyProfileForm_city.value,
             postal_code: profileForm.MyProfileForm_postal_code.value,
             receive_news: profileForm.ProfileForm_contact_preference.checked,
-            firstName: (this.isFastReg || initialLoad) ? fnameField.value : this.oldValues.firstName,
-            lastName: (this.isFastReg || initialLoad) ? lnameField.value : this.oldValues.lastName,
+            firstName: (this.attachments.isFastReg || initialLoad) ? fnameField.value : this.oldValues.firstName,
+            lastName: (this.attachments.isFastReg || initialLoad) ? lnameField.value : this.oldValues.lastName,
         };
     }
 
