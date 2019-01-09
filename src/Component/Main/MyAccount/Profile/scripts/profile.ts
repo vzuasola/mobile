@@ -81,12 +81,9 @@ export class Profile extends FormBase {
     }
 
     private getValues() {
-        const fnameField = this.form.MyProfileForm_first_name;
-        const lnameField = this.form.MyProfileForm_last_name;
-
         return {
-            firstname: fnameField.disabled ? "disabled" : fnameField.value,
-            lastname: lnameField.disabled ? "disabled" : lnameField.value,
+            firstname: this.form.MyProfileForm_first_name.value,
+            lastname: this.form.MyProfileForm_last_name.value,
             gender: this.getGenderText(),
             language: this.getLanguageText(),
             mobile: this.form.MyProfileForm_mobile_number_1.value,
@@ -220,7 +217,7 @@ export class Profile extends FormBase {
         const modified = {};
 
         for (const propName of aProps) {
-            if (a[propName] !== "disabled" &&  (a[propName] !== b[propName])) {
+            if (a[propName] !== b[propName]) {
                 old[propName] = a[propName];
                 modified[propName] = b[propName];
             }
