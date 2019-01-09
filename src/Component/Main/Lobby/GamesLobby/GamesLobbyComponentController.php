@@ -240,8 +240,7 @@ class GamesLobbyComponentController
                     $items[$ctr] = $this->viewsAsync->getViewById(
                         'games_list',
                         [
-                            'page' => $ctr,
-                            'pager' => 0,
+                            'page' => (string) $ctr,
                         ]
                     );
                 }
