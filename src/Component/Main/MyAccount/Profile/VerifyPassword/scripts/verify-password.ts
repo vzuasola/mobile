@@ -25,6 +25,7 @@ export class VerifyPassword extends FormBase {
     private errorNotification: any;
     private successNotification: any;
     private config: any;
+    private isFastReg: boolean;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -34,6 +35,7 @@ export class VerifyPassword extends FormBase {
     init() {
         if (this.password) {
             this.form = utility.findParent(this.password, "form");
+            this.isFastReg = document.getElementById("fast-reg-notification") ? true : false;
             this.passwordContainer = utility.hasClass(this.password, "form-item", true);
             this.loader = new Loader(utility.hasClass(this.password, "form-item", true), false, 0);
             this.updateProfileLoader = document.querySelector("body > .loader");
@@ -67,9 +69,9 @@ export class VerifyPassword extends FormBase {
     }
 
     /**
-     * @param Boolean initalLoad flag to indicate for initial load to cache the initial value on Document ready
+     * @param Boolean initialLoad flag to indicate for initial load to cache the initial value on Document ready
      */
-    private getValues(initalLoad?) {
+    private getValues(initialLoad?) {
         const profileForm: HTMLFormElement = document.querySelector(".profile-form");
         const fnameField = profileForm.MyProfileForm_first_name;
         const lnameField = profileForm.MyProfileForm_last_name;
@@ -83,8 +85,8 @@ export class VerifyPassword extends FormBase {
             city: profileForm.MyProfileForm_city.value,
             postal_code: profileForm.MyProfileForm_postal_code.value,
             receive_news: profileForm.ProfileForm_contact_preference.checked,
-            firstName: initalLoad ? fnameField.value : this.oldValues.firstName,
-            lastName: initalLoad ? lnameField.value : this.oldValues.lastName,
+            firstName: (this.isFastReg || initialLoad) ? fnameField.value : this.oldValues.firstName,
+            lastName: (this.isFastReg || initialLoad) ? lnameField.value : this.oldValues.lastName,
         };
     }
 
