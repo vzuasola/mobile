@@ -86,7 +86,7 @@ export class Profile extends FormBase {
 
         return {
             firstname: fnameField.disabled ? "disabled" : fnameField.value,
-            lastname: fnameField.disabled ? "disabled" : lnameField.value,
+            lastname: lnameField.disabled ? "disabled" : lnameField.value,
             gender: this.getGenderText(),
             language: this.getLanguageText(),
             mobile: this.form.MyProfileForm_mobile_number_1.value,
