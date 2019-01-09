@@ -24,7 +24,8 @@ class HeaderComponent implements ComponentWidgetInterface
 
     const HOME = [
         '/',
-        '/games'
+        '/games',
+        '/casino'
     ];
 
     /**
