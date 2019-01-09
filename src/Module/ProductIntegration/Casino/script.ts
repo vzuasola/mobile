@@ -8,7 +8,7 @@ import {Redirectable} from "../scripts/redirectable";
 
 export class CasinoIntegrationModule extends Redirectable implements ModuleInterface {
     protected code = "casino";
-    protected isLoginOnly = true;
+    protected isLoginOnly = false;
 
     doRequest(src) {
         this.getPreferredCasino(src);
@@ -24,7 +24,14 @@ export class CasinoIntegrationModule extends Redirectable implements ModuleInter
             if (response.success) {
                 // redirect to URL
                 if (response.redirect) {
-                    window.location.href = decodeURIComponent(response.redirect).replace(/\\/g, "");
+                    if (utility.isExternal(response.redirect)
+                        || response.preferredProduct === "casino_gold") {
+                        window.location.href = decodeURIComponent(response.redirect).replace(/\\/g, "");
+                        return;
+                    }
+
+                    Router.navigate(response.redirect, ["*"]);
+                    this.loader.hide();
                     return;
                 }
 

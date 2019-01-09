@@ -45,10 +45,7 @@ export class CasinoOptionComponent implements ComponentInterface {
         ComponentManager.subscribe("casino.preference", (event, src) => {
             this.getPreference({}, (response) => {
                 if (response) {
-                    const selectedEl = (response.preferredProduct === "casino_gold")
-                        ? ".casino-gold" : ".casino-classic";
-                    utility.removeClass(this.element.querySelector(selectedEl), "select-option-muted");
-                    utility.addClass(this.element.querySelector(selectedEl), "selected");
+                    this.setSelectedOption(response.preferredProduct);
                     Modal.open("#casino-option-lightbox");
                 }
             });
@@ -62,13 +59,10 @@ export class CasinoOptionComponent implements ComponentInterface {
                 event.preventDefault();
 
                 const product = parentEl.getAttribute("data-preferred-casino");
-                const unselectedProduct = (product === "casino_gold") ? ".casino-classic" : ".casino-gold";
-
-                utility.removeClass(parentEl, "select-option-muted");
-                utility.addClass(this.element.querySelector(unselectedProduct), "select-option-muted");
 
                 this.getPreference(product, (response) => {
-                    if (response.redirect) {
+                    if (response.preferredProduct && response.redirect) {
+                        this.setSelectedOption(response.preferredProduct);
                         window.location.href = response.redirect;
                     }
                 });
@@ -82,7 +76,7 @@ export class CasinoOptionComponent implements ComponentInterface {
             type: "json",
             method: "post",
             data: {
-                product,
+                preferred_product: product,
             },
         }).then((response) => {
             callback(response);
@@ -95,5 +89,16 @@ export class CasinoOptionComponent implements ComponentInterface {
          ComponentManager.subscribe("session.logout", (event, target) => {
              Modal.close("#casino-option-lightbox");
          });
+    }
+
+    private setSelectedOption(selected) {
+        const selectedEl = (selected === "casino_gold")
+            ? ".casino-gold" : ".casino-classic";
+        const unselectedProduct = (selected === "casino_gold")
+            ? ".casino-classic" : ".casino-gold";
+        utility.removeClass(this.element.querySelector(selectedEl), "select-option-muted");
+        utility.addClass(this.element.querySelector(selectedEl), "selected");
+        utility.addClass(this.element.querySelector(unselectedProduct), "select-option-muted");
+        utility.removeClass(this.element.querySelector(unselectedProduct), "selected");
     }
 }
