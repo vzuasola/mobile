@@ -1,3 +1,5 @@
-<div id="categories-container"></div>
-{{ widget('lobby_slider') }}
-{{ widget('lobby_content') }}
+<div class="{{ app.product_resolver.getProduct }}">
+    <div id="categories-container"></div>
+    {{ widget('lobby_slider') }}
+    {{ widget('lobby_content') }}
+</div>
