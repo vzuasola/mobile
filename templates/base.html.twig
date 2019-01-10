@@ -10,7 +10,7 @@
     {% block css %}{% endblock %}
 </head>
 <body
-    class="{{ app.lang }}"
+    class="{{ app.lang }} {{ app.product_resolver.getProduct }}"
 
     data-language="{{ app.lang }}"
     data-route={{ app.router_request.uri.path }}
