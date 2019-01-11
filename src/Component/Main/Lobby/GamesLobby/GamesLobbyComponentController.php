@@ -4,6 +4,7 @@ namespace App\MobileEntry\Component\Main\Lobby\GamesLobby;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\Async\Async;
+use App\Async\DefinitionCollection;
 
 class GamesLobbyComponentController
 {
@@ -69,7 +70,7 @@ class GamesLobbyComponentController
         $this->asset = $asset;
         $this->recentGames = $recentGames;
         $this->favorite = $favorite;
-        $this->configAsync = $configAsync;
+        $this->configAsync = $configAsync->withProduct('mobile-games');
         $this->viewsAsync = $viewsAsync->withProduct('mobile-games');
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
@@ -97,15 +98,20 @@ class GamesLobbyComponentController
         }
 
         // Put post process here to get favorites and recents tab
-        $specialGamesList = $this->getSpecialCategoriesGameList($data['special_categories']);
+        $specialCategories = [
+                $this::RECENTLY_PLAYED_GAMES,
+                $this::FAVORITE_GAMES
+        ];
+        $specialGamesList = $this->getSpecialCategoriesGameList($specialCategories);
 
         $gamesData = $data['games'] + $specialGamesList;
 
         $specialCategoryGames = $this->getSpecialGamesbyCategory(
-            $data['special_categories'],
+            $specialCategories,
             $gamesData
         );
         $data['games'] += $specialCategoryGames;
+
         if (!isset($previewMode['pvw'])) {
             $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
@@ -128,9 +134,13 @@ class GamesLobbyComponentController
         $data = [];
 
         $categories = $this->views->getViewById('games_category');
-        $definitions = $this->getDefinitions();
+        $pager = $this->views->getViewById('games_list', ['pager' => 1]);
+
+        $definitions = $this->getDefinitions($pager);
 
         $asyncData = Async::resolve($definitions);
+        $asyncData = $this->buildAllGames($asyncData);
+
         $specialCategories = [];
         $specialCategories = $this->getSpecialCategories($categories);
 
@@ -140,6 +150,20 @@ class GamesLobbyComponentController
             $asyncData['all-games']
         );
 
+        $data['configs'] = $asyncData['configs'];
+
+        return $data;
+    }
+
+    private function buildAllGames($data)
+    {
+        if (!$data['all-games']) {
+            foreach ($data['paged-games'] as $key => $value) {
+                if (is_numeric($key)) {
+                    $data['all-games'] = array_merge($data['all-games'], $value);
+                }
+            }
+        }
         return $data;
     }
 
@@ -182,31 +206,53 @@ class GamesLobbyComponentController
     {
         $definitions = [];
         try {
-            foreach ($categories as $category) {
-                $categoryId = $category['field_games_alias'];
-                switch ($category['field_games_alias']) {
-                    case $this::RECENTLY_PLAYED_GAMES:
-                        $definitions[$categoryId] = $this->recentGames->getRecents();
-                        break;
-                    case $this::FAVORITE_GAMES:
-                        $definitions[$categoryId] = $this->favorite->getFavorites();
-                        break;
+            if ($this->playerSession->isLogin()) {
+                foreach ($categories as $category) {
+                    switch ($category) {
+                        case $this::RECENTLY_PLAYED_GAMES:
+                            $definitions[$category] = $this->recentGames->getRecents();
+                            break;
+                        case $this::FAVORITE_GAMES:
+                            $definitions[$category] = $this->favorite->getFavorites();
+                            break;
+                    }
                 }
             }
         } catch (\Exception $e) {
             $definitions = [];
         }
-
         return $definitions;
     }
 
-    private function getDefinitions()
+    private function getDefinitions($pager)
     {
         $definitions = [];
 
         try {
             $definitions['configs'] = $this->configAsync->getConfig('gts.gts_configuration');
             $definitions['all-games'] = $this->viewsAsync->getViewById('games_list');
+            if ($pager['total_pages'] > 1) {
+                $definitions['all-games'] = [];
+
+                $items = [];
+
+                for ($ctr = 0; $ctr < $pager['total_pages']; $ctr++) {
+                    $items[$ctr] = $this->viewsAsync->getViewById(
+                        'games_list',
+                        [
+                            'page' => (string) $ctr,
+                        ]
+                    );
+                }
+
+                $definitions['paged-games'] = new DefinitionCollection(
+                    $items,
+                    [],
+                    function ($result) {
+                        return $result;
+                    }
+                );
+            }
         } catch (\Exception $e) {
             $definitions = [];
         }
@@ -274,13 +320,13 @@ class GamesLobbyComponentController
         $allGames = $this->getAllGames($data['all-games']);
         $gamesList = [];
         foreach ($specialCategories as $category) {
-            switch ($category['field_games_alias']) {
+            switch ($category) {
                 case $this::RECENTLY_PLAYED_GAMES:
                     if (isset($data['recently-played'])) {
                         $games = $this->getRecentlyPlayedGames($allGames, $data['recently-played']);
 
                         if ($games) {
-                            $gamesList[$category['field_games_alias']] = $games;
+                            $gamesList[$category] = $games;
                         }
                     }
 
@@ -290,7 +336,7 @@ class GamesLobbyComponentController
                         $games = $this->getFavoriteGames($allGames, $data['favorites']);
 
                         if ($games) {
-                            $gamesList[$category['field_games_alias']] = $games;
+                            $gamesList[$category] = $games;
                         }
                     }
 
@@ -312,7 +358,6 @@ class GamesLobbyComponentController
 
             $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($game, $special);
         }
-
         return $gamesList;
     }
 
@@ -354,12 +399,15 @@ class GamesLobbyComponentController
             }
 
             if (count($game['field_game_filter']) > 0) {
-                $filterString = '';
+                $filters = [];
                 foreach ($game['field_game_filter'] as $filter) {
-                    $filterString .= $filter['field_games_filter_value'][0]['value'] . ',';
+                    if (isset($filter['parent'])) {
+                        $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
+                            = $filter['field_games_filter_value'][0]['value'];
+                    }
                 }
 
-                $processGame['filters'] = rtrim($filterString, ',');
+                $processGame['filters'] = json_encode($filters);
             }
 
 
@@ -370,6 +418,15 @@ class GamesLobbyComponentController
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
             $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
+
+            $categoryList = [];
+
+            foreach ($game['field_games_list_category'] as $category) {
+                $categoryList[$category['field_games_alias'][0]['value']] =
+                    $category['field_draggable_views']['category']['weight'];
+            }
+
+            $processGame['categories'] = $categoryList;
 
             $categoryList = [];
 
@@ -405,6 +462,17 @@ class GamesLobbyComponentController
             );
             if ($isPublished) {
                 $category['published'] = $isPublished;
+                if ($category['field_games_category_logo']) {
+                    $categoryLogo = str_replace(
+                        '/' . $this->currentLanguage . '/',
+                        '/',
+                        $category['field_games_category_logo']
+                    );
+                    $category['field_games_category_logo'] = $this->asset->generateAssetUri(
+                        $categoryLogo,
+                        ['product' => 'mobile-games']
+                    );
+                }
                 $categoryList[] = $category;
             }
         }
