@@ -110,6 +110,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             this.listenOnSearch();
             this.listenOnFilter();
             this.showCasinoPreference();
+            this.listenOnCloseFilter();
         }
         this.response = null;
         this.element = element;
