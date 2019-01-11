@@ -84,6 +84,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.gamesFilter.handleOnLoad(this.element, attachments);
         this.showCasinoPreference();
+        this.listenOnCloseFilter();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -109,6 +110,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             this.listenOnSearch();
             this.listenOnFilter();
             this.showCasinoPreference();
+            this.listenOnCloseFilter();
         }
         this.response = null;
         this.element = element;
@@ -586,6 +588,13 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 }
                 this.updateBlurbForFilter(recommended);
             }
+        });
+    }
+
+    private listenOnCloseFilter() {
+        ComponentManager.subscribe("games.reload", (event: Event, src, data) => {
+            this.setLobby();
+            ComponentManager.broadcast("category.change");
         });
     }
 

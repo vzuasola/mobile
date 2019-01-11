@@ -59,6 +59,7 @@ export class GamesFilter {
         ComponentManager.subscribe("click", (event: Event, src) => {
             this.onToggleFilters(src);
             this.onClickClearFilters(src);
+            this.onCloseLightbox(src);
         });
     }
 
@@ -102,6 +103,16 @@ export class GamesFilter {
 
         if (src.getAttribute("name") === "filter-submit") {
             this.submitFilters();
+        }
+    }
+
+    private onCloseLightbox(src) {
+        const el = utility.hasClass(src, "games-filter-close", true);
+        const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
+        const actives = filterLightbox.querySelectorAll(".active");
+        if (el && !actives.length) {
+            this.enabledFilters.length = 0;
+            ComponentManager.broadcast("games.reload");
         }
     }
 
