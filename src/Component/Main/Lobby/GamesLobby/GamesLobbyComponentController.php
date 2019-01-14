@@ -240,8 +240,7 @@ class GamesLobbyComponentController
                     $items[$ctr] = $this->viewsAsync->getViewById(
                         'games_list',
                         [
-                            'page' => $ctr,
-                            'pager' => 0,
+                            'page' => (string) $ctr,
                         ]
                     );
                 }
@@ -402,8 +401,8 @@ class GamesLobbyComponentController
             if (count($game['field_game_filter']) > 0) {
                 $filters = [];
                 foreach ($game['field_game_filter'] as $filter) {
-                    if (isset($filter['parent'][0])) {
-                        $filters[$filter['parent'][0]['field_games_filter_value'][0]['value']][]
+                    if (isset($filter['parent'])) {
+                        $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
                             = $filter['field_games_filter_value'][0]['value'];
                     }
                 }
