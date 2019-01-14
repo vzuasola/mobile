@@ -20,12 +20,16 @@ export class GamesFilter {
         this.enabledFilters = [];
         this.listenOnOpen();
         this.listenOnClick();
+        this.listenOnChangeCategory();
+        this.listenOnSuccessSearch();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {}) {
         if (!this.element) {
             this.listenOnOpen();
             this.listenOnClick();
+            this.listenOnChangeCategory();
+            this.listenOnSuccessSearch();
         }
         this.enabledFilters = [];
         this.element = element;
@@ -60,6 +64,18 @@ export class GamesFilter {
             this.onToggleFilters(src);
             this.onClickClearFilters(src);
             this.onCloseLightbox(src);
+        });
+    }
+
+    private listenOnChangeCategory() {
+        ComponentManager.subscribe("category.change", (event, src) => {
+            this.clearRememberedFilter();
+        });
+    }
+
+    private listenOnSuccessSearch() {
+        ComponentManager.subscribe("games.search.success", (event, src) => {
+            this.clearRememberedFilter();
         });
     }
 
@@ -111,9 +127,13 @@ export class GamesFilter {
         const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
         const actives = filterLightbox.querySelectorAll(".active");
         if (el && !actives.length) {
-            this.enabledFilters.length = 0;
+            this.clearRememberedFilter();
             ComponentManager.broadcast("games.reload");
         }
+    }
+
+    private clearRememberedFilter() {
+        this.enabledFilters.length = 0;
     }
 
     private clearFilters() {
@@ -122,7 +142,6 @@ export class GamesFilter {
             const actives = filterLightbox.querySelectorAll(".active");
             const submit = filterLightbox.querySelector("#filterSubmit");
             const reset = filterLightbox.querySelector("#filterReset");
-
             for (const activeKey in actives) {
                 if (actives.hasOwnProperty(activeKey)) {
                     const active = actives[activeKey];
