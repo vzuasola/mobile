@@ -107,6 +107,7 @@ class MenuComponent implements ComponentWidgetInterface
         }
 
         $data['config_new_text'] = $headerConfigs['product_menu_new_tag'] ?? 'New';
+        $data['config_links_text'] = $headerConfigs['links_title'] ?? 'Links';
 
         $isLogin = $this->playerSession->isLogin();
 
@@ -122,6 +123,7 @@ class MenuComponent implements ComponentWidgetInterface
             $data['username'] = $this->playerSession->getUsername();
 
             $data['total_balance_label'] = $headerConfigs['total_balance_label'] ?? 'Total';
+            $data['config_logout_text'] = $headerConfigs['profile_logout_text'] ?? 'Logout';
 
             try {
                 $data['top_menu'] = $this->menus->getMultilingualMenu('mobile-post-login');

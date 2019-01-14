@@ -27,12 +27,14 @@ export class GamesFilter {
         this.element = element;
         this.listenOnOpen();
         this.listenOnClick();
+        this.listenOnCategoryChange();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {}) {
         if (!this.element) {
             this.listenOnOpen();
             this.listenOnClick();
+            this.listenOnCategoryChange();
         }
         this.fav = false;
         this.recent = false;
@@ -62,6 +64,12 @@ export class GamesFilter {
             }
         }
         return allGames;
+    }
+
+    private listenOnCategoryChange() {
+        ComponentManager.subscribe("category.change", (event, src, data) => {
+            this.enabledFilters = [];
+        });
     }
 
     private listenOnOpen() {
@@ -96,7 +104,18 @@ export class GamesFilter {
         ComponentManager.subscribe("click", (event: Event, src) => {
             this.onToggleFilters(src);
             this.onClickClearFilters(src);
+            this.onCloseLightbox(src);
         });
+    }
+
+    private onCloseLightbox(src) {
+        const el = utility.hasClass(src, "games-filter-close", true);
+        const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
+        const actives = filterLightbox.querySelectorAll(".active");
+        if (el && !actives.length) {
+            this.enabledFilters.length = 0;
+            ComponentManager.broadcast("games.reload");
+        }
     }
 
     private onToggleFilters(src) {

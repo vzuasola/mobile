@@ -20,12 +20,16 @@ export class GamesFilter {
         this.enabledFilters = [];
         this.listenOnOpen();
         this.listenOnClick();
+        this.listenOnChangeCategory();
+        this.listenOnSuccessSearch();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {}) {
         if (!this.element) {
             this.listenOnOpen();
             this.listenOnClick();
+            this.listenOnChangeCategory();
+            this.listenOnSuccessSearch();
         }
         this.enabledFilters = [];
         this.element = element;
@@ -59,6 +63,19 @@ export class GamesFilter {
         ComponentManager.subscribe("click", (event: Event, src) => {
             this.onToggleFilters(src);
             this.onClickClearFilters(src);
+            this.onCloseLightbox(src);
+        });
+    }
+
+    private listenOnChangeCategory() {
+        ComponentManager.subscribe("category.change", (event, src) => {
+            this.clearRememberedFilter();
+        });
+    }
+
+    private listenOnSuccessSearch() {
+        ComponentManager.subscribe("games.search.success", (event, src) => {
+            this.clearRememberedFilter();
         });
     }
 
@@ -105,13 +122,26 @@ export class GamesFilter {
         }
     }
 
+    private onCloseLightbox(src) {
+        const el = utility.hasClass(src, "games-filter-close", true);
+        const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
+        const actives = filterLightbox.querySelectorAll(".active");
+        if (el && !actives.length) {
+            this.clearRememberedFilter();
+            ComponentManager.broadcast("games.reload");
+        }
+    }
+
+    private clearRememberedFilter() {
+        this.enabledFilters.length = 0;
+    }
+
     private clearFilters() {
         const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
         if (filterLightbox) {
             const actives = filterLightbox.querySelectorAll(".active");
             const submit = filterLightbox.querySelector("#filterSubmit");
             const reset = filterLightbox.querySelector("#filterReset");
-
             for (const activeKey in actives) {
                 if (actives.hasOwnProperty(activeKey)) {
                     const active = actives[activeKey];

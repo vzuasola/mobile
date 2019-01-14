@@ -1,40 +1,10 @@
-{% set links = {
-    en: 'Links',
-    eu: 'Links',
-    sc: '链接',
-    ch: '鏈接',
-    th: 'ลิงก์',
-    vn: 'ĐƯỜNG DẪN',
-    id: 'Links',
-    jp: 'リンク',
-    kr: '링크',
-    in: 'Links',
-    gr: 'ΣΥΝΔΕΣΜΟΙ',
-    pl: 'Links',
-} %}
-
-{% set logout = {
-    en: 'Logout',
-    eu: 'Logout',
-    sc: '退出登录',
-    ch: '退出登錄',
-    th: 'ออกจากระบบ',
-    vn: 'Đăng Xuất',
-    id: 'Logout',
-    jp: 'ログアウト',
-    kr: '로그아웃',
-    in: 'Logout',
-    gr: 'Αποσύνδεση',
-    pl: 'Wyloguj',
-} %}
-
 {% set modal = {
     'quicklinks-notification': '#pushnxLightbox',
 } %}
 
 
 {% if quicklinks %}
-<h3 class="mobile-menu-internal-header"><span>{{ links[app.lang] }}</span></h3>
+<h3 class="mobile-menu-internal-header"><span>{{ config_links_text }}</span></h3>
 <div class="menu-display menu-display-internal">
     <ul class="icon-thumbnail clearfix">
         {% for menu in quicklinks %}
@@ -72,7 +42,7 @@
 
                 </a>
             </li>
-            {% endif %} 
+            {% endif %}
         {% endfor %}
         {% if is_login %}
             <li class="icon-thumbnail-item icon-thumbnail-quicklinks">
@@ -80,7 +50,7 @@
                 <svg viewBox="0 0 32 20">
                     <use xlink:href="#quicklinks-logout" />
                 </svg>
-                    <span class="icon-thumbnail-label">{{ logout[app.lang] }}</span>
+                    <span class="icon-thumbnail-label">{{ config_logout_text }}</span>
                 </a>
             </li>
         {% endif %}

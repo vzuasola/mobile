@@ -146,10 +146,10 @@ trait GameTrait
             }
         }
 
-        return $this->checkExpiration($dateStart, $dateEnd);
+        return $this->checkExpiration($dateStart, $dateEnd, $currentDate);
     }
 
-    private function checkExpiration($dateStart, $dateEnd)
+    private function checkExpiration($dateStart, $dateEnd, $currentDate)
     {
         if ($dateStart && !$dateEnd) {
             $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
