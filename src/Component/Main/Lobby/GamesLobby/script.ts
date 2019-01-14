@@ -84,6 +84,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.gamesFilter.handleOnLoad(this.element, attachments);
+        this.listenOnCloseFilter();
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
     }
@@ -110,6 +111,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.listenToScroll();
             this.listenOnSearch();
             this.listenOnFilter();
+            this.listenOnCloseFilter();
         }
         this.response = null;
         this.element = element;
@@ -817,6 +819,13 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
 
         return filteredCategory;
+    }
+
+    private listenOnCloseFilter() {
+        ComponentManager.subscribe("games.reload", (event: Event, src, data) => {
+            this.setLobby();
+            ComponentManager.broadcast("category.change");
+        });
     }
 
 }
