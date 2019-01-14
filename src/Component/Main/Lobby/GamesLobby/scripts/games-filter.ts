@@ -27,12 +27,14 @@ export class GamesFilter {
         this.element = element;
         this.listenOnOpen();
         this.listenOnClick();
+        this.listenOnCategoryChange();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {}) {
         if (!this.element) {
             this.listenOnOpen();
             this.listenOnClick();
+            this.listenOnCategoryChange();
         }
         this.fav = false;
         this.recent = false;
@@ -62,6 +64,12 @@ export class GamesFilter {
             }
         }
         return allGames;
+    }
+
+    private listenOnCategoryChange() {
+        ComponentManager.subscribe("category.change", (event, src, data) => {
+            this.enabledFilters = [];
+        });
     }
 
     private listenOnOpen() {
