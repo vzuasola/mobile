@@ -22,6 +22,7 @@ class Products
             'duchang',
             'casino-gold',
             'gold',
+            'daebak',
         ],
         'sports' => [
             'sports',
