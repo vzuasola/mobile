@@ -80,7 +80,7 @@ routes:
         attributes:
             product: mobile-games
 
-    /{id:casino|dafa888|888|yulechang|xuanzhuan|duchang}:
+    /{id:casino|dafa888|888|yulechang|xuanzhuan|duchang|daebak}:
         method: GET
         action: App\MobileEntry\Controller\CasinoController:view
         components:
