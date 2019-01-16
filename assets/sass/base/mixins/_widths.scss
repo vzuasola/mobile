@@ -1,6 +1,6 @@
 // Widths
-@mixin widths($class, $property, $unit: %) {
-    @if $unit == % {
+@mixin widths($class, $property, $unit: "%") {
+    @if $unit == "%" {
         @for $i from 0 through 10 {
             $i: $i * 10;
             .#{$class}-#{$i} {
