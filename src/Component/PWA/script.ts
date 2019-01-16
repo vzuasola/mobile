@@ -21,9 +21,7 @@ export class PWAComponent implements ComponentInterface {
     }
 
     private showPWA() {
-        setTimeout(() => {
-            this.togglePWA();
-        }, 1 * 1000);
+        this.togglePWA();
     }
 
     private listenOnPWAClose() {
