@@ -21,7 +21,9 @@ export class PWAComponent implements ComponentInterface {
     }
 
     private showPWA() {
-        this.togglePWA();
+        ComponentManager.subscribe("pwa.show", (event, src) => {
+            this.togglePWA();
+        });
     }
 
     private listenOnPWAClose() {

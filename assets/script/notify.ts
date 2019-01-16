@@ -5,12 +5,18 @@ const VAPID_PUBLIC_KEY = "BBWEbHWHgQe4FZWBwbQHMVjV60K08f53ptySIGH17XR6peLhW1lbV_
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
+import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
+
 let deferredPrompt;
 
 window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
 
     deferredPrompt = event;
+
+    setTimeout(() => {
+        ComponentManager.broadcast("pwa.show");
+    }, 5 * 1000);
 });
 
 // Notification.requestPermission((status) => {
