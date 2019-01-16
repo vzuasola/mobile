@@ -33,6 +33,7 @@ import {MyAccountProfileComponent} from "@app/src/Component/Main/MyAccount/Profi
 import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/MyAccount/Profile/VerifyPassword/script";
 import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
 import {FooterComponent} from "@app/src/Component/Footer/script";
+import {PWAComponent} from "@app/src/Component/PWA/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -68,4 +69,5 @@ ComponentManager.setComponents({
     profile_verify_password: new MyAccountProfileVerifyPasswordComponent(),
     change_password: new MyAccountChangePasswordComponent(),
     footer: new FooterComponent(),
+    pwa: new PWAComponent(),
 });
