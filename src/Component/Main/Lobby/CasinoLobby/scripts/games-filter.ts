@@ -127,8 +127,10 @@ export class GamesFilter {
         const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
         const actives = filterLightbox.querySelectorAll(".active");
         if (el && !actives.length) {
+            if (this.enabledFilters.length) {
+                ComponentManager.broadcast("games.reload");
+            }
             this.clearRememberedFilter();
-            ComponentManager.broadcast("games.reload");
         }
     }
 
