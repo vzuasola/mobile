@@ -57,6 +57,5 @@ class PWAHomeScreenComponent implements ComponentWidgetInterface
         $data['mobile_pwa_add_homescreen'] = $footerConfigs['mobile_pwa_add_homescreen'] ?? 'Add Dafabet to Homescreen';
 
         return $data;
-
     }
 }
