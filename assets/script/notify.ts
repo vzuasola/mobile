@@ -14,9 +14,9 @@ window.addEventListener("beforeinstallprompt", (event) => {
 
     deferredPrompt = event;
 
-    setTimeout(() => {
+    ComponentManager.subscribe("components.finish", (e, src) => {
         ComponentManager.broadcast("pwa.show");
-    }, 5 * 1000);
+    });
 });
 
 // Notification.requestPermission((status) => {
