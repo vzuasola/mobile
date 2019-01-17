@@ -4,7 +4,7 @@ namespace App\MobileEntry\Component\PWA;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
-class PWAComponent implements ComponentWidgetInterface
+class PWAHomeScreenComponent implements ComponentWidgetInterface
 {
     /**
      * Defines the template path

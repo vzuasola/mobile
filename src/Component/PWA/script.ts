@@ -6,7 +6,7 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 /**
  *
  */
-export class PWAComponent implements ComponentInterface {
+export class PWAHomeScreenComponent implements ComponentInterface {
     private element: HTMLElement;
     private originalUrl: string;
 
