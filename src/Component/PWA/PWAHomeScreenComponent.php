@@ -7,6 +7,29 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 class PWAHomeScreenComponent implements ComponentWidgetInterface
 {
     /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $configs;
+
+    /**
+     *
+     */
+    public static function create($container)
+    {
+        return new static(
+            $container->get('config_fetcher')
+        );
+    }
+
+    /**
+     * Public constructor
+     */
+    public function __construct($configs)
+    {
+        $this->configs = $configs;
+    }
+
+    /**
      * Defines the template path
      *
      * @return string
@@ -23,6 +46,17 @@ class PWAHomeScreenComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        return [];
+        $data = [];
+
+        try {
+            $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
+        } catch (\Exception $e) {
+            $footerConfigs = [];
+        }
+
+        $data['mobile_pwa_add_homescreen'] = $footerConfigs['mobile_pwa_add_homescreen'] ?? 'Add Dafabet to Homescreen';
+
+        return $data;
+
     }
 }
