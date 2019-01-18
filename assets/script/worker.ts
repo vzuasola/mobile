@@ -3,6 +3,7 @@ const cacheKey = "dafabet-mobile-v1.0";
 const pages = [
     "/app.css",
     "/app.js",
+    "/en/",
 ];
 
 self.addEventListener("install", (event: any) => {
@@ -39,12 +40,12 @@ self.addEventListener("activate", (event: any) => {
 });
 
 self.addEventListener("fetch", (event: any) => {
-    // event.respondWith(
-    //     caches.match(event.request)
-    //         .then((response) => {
-    //             return response || fetch(event.request);
-    //         }),
-    // );
+    event.respondWith(
+        caches.match(event.request)
+            .then((response) => {
+                return response || fetch(event.request);
+            }),
+    );
 });
 
 self.addEventListener("push", (event: any) => {
