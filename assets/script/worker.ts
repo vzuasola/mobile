@@ -19,7 +19,6 @@ self.addEventListener("install", (event: any) => {
 });
 
 self.addEventListener("activate", (event: any) => {
-    console.log("[ServiceWorker] Activate");
 
     const context: any = self;
 
@@ -64,5 +63,5 @@ self.addEventListener("push", (event: any) => {
 });
 
 self.addEventListener("notificationclick", (event) => {
-    console.log(event);
+    // do nothing
 });
