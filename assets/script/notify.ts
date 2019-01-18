@@ -40,7 +40,6 @@ utility.listen(document.body, "click", (event, src) => {
 
 utility.listen(document.body, "click", (event, src) => {
     if (utility.hasClass(src, "pwa-notify", true)) {
-        console.log("Attempting to display a notification");
 
         navigator.serviceWorker.ready
             .then((serviceWorker) => {
@@ -56,7 +55,7 @@ utility.listen(document.body, "click", (event, src) => {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                // do nothing
             });
     }
 });
@@ -94,7 +93,7 @@ utility.listen(document.body, "click", (event, src) => {
                 });
             })
             .catch((error) => {
-                console.log(error);
+                // do nothing
             });
     }
 });
