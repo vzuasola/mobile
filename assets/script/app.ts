@@ -8,6 +8,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Modal} from "./components/modal";
 
 import "./components";
+import "./notify";
 import "./modules";
 import "./loader";
 
@@ -46,3 +47,10 @@ window.onpageshow = (event) => {
         window.location.reload();
     }
 };
+
+// Service worker registraton
+if ("serviceWorker" in window.navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js");
+    });
+}

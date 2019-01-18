@@ -2,7 +2,13 @@
 <html>
 <head>
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}"/>
+    <link rel="manifest" href="/manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta name="theme-color" content="#af0000">
+    <meta name="icon" hreft="{{ asset('images/icons-64.png') }}" sizes="64x64">
+    <meta name="icon" hreft="{{ asset('images/icons-128.png') }}" size="128x128">
+    <meta name="icon" hreft="{{ asset('images/icons-192.png') }}" size="192x192">
+    <meta name="apple-touch-icon" hreft="{{ asset('images/icons-64.png') }}" size="64x64">
 
     <title>{{ title }}</title>
     {% block seo %}{% endblock %}
@@ -25,6 +31,8 @@
     </main>
 
     {% block footer %}{% endblock footer %}
+
+    {% block pwa_home_screen %}{% endblock pwa_home_screen %}
 
     {% block script %}
         {{ module_scripts() }}

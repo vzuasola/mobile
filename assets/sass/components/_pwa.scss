@@ -1,0 +1,59 @@
+.btn-pwa {
+    width: 100%;
+    height: 6rem;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+    color: $dark-gray;
+    background: $white;
+    display: block;
+
+    &-logo {
+        display: inline-block;
+        margin: 1.5rem 0 0 0.5rem;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        background: $darker-red;
+        width: 3rem;
+        fill: $yellow;
+    }
+
+    p {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 0.5rem 2rem;
+    }
+
+    &-close {
+        width: 5rem;
+        position: absolute;
+        height: 6rem;
+        top: 0;
+        right: 0;
+        outline: none;
+        border: 0;
+
+        .btn-pwa-close {
+            width: 2.5rem;
+            height: 2.5rem;
+            top: 1.5rem;
+            right: 1.5rem;
+            outline: none;
+        }
+    }
+}
+
+@keyframes slideInFromUp {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.btn-pwa {
+  /* This section calls the slideInFromUp animation we defined above */
+  animation: 1s ease-in-out 0s 1 slideInFromUp;
+}

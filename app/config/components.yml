@@ -125,6 +125,9 @@ components:
   backtotop:
     class: App\MobileEntry\Component\Backtotop\BacktotopComponent
 
+  pwa_home_screen:
+    class: App\MobileEntry\Component\PWA\PWAHomeScreenComponent
+
 # Define modules
 modules:
   session:
