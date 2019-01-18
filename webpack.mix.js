@@ -63,7 +63,6 @@ mix
     .setPublicPath('web')
     .copy('assets/images', 'web/images')
     .ts('assets/script/app.ts', 'web/app.js')
-    .ts('assets/script/worker.ts', 'web/sw.js')
     .sass('assets/sass/app.scss', 'web/')
     .version()
 ;
