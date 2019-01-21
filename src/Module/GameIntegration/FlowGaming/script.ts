@@ -53,7 +53,6 @@ export class FlowGamingModule implements ModuleInterface, GameInterface {
                 data: {
                     gameCode: options.code,
                     langCode,
-                    playMode: true,
                 },
             }).then((response) => {
                 if (response.gameurl) {
