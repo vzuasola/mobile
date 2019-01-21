@@ -64,6 +64,7 @@ mix
     .copy('assets/images', 'web/images')
     .ts('assets/script/app.ts', 'web/app.js')
     .ts('assets/script/worker.ts', 'web/sw.js')
+    .copy('node_modules/workbox-sw/build/workbox-sw.js', 'web/wbsw.js')
     .sass('assets/sass/app.scss', 'web/')
     .version()
 ;

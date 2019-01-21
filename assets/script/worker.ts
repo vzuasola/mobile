@@ -1,3 +1,41 @@
+declare function importScripts(name: string): any;
+declare var workbox: any;
+
+importScripts("/wbsw.js");
+
+if (workbox) {
+    workbox.routing.registerRoute(
+        new RegExp(".*\.js"),
+        workbox.strategies.networkFirst(),
+    );
+
+    workbox.routing.registerRoute(
+        // Cache CSS files
+        new RegExp("/.*\.css"),
+        // Use cache but update in the background ASAP
+        workbox.strategies.staleWhileRevalidate({
+            // Use a custom cache name
+            cacheName: "css-cache",
+        }),
+    );
+
+    workbox.routing.registerRoute(
+        // Cache image files
+        new RegExp("/.*\.(?:png|jpg|jpeg|svg|gif)"),
+        // Use the cache if it's available
+        workbox.strategies.cacheFirst({
+            // Use a custom cache name
+            cacheName: "image-cache",
+            plugins: [
+                new workbox.expiration.Plugin({
+                    // Cache for a maximum of a week
+                    maxAgeSeconds: 7 * 24 * 60 * 60,
+                }),
+            ],
+        }),
+    );
+}
+
 const cacheKey = "dafabet-mobile-v1.0";
 
 const pages = [
