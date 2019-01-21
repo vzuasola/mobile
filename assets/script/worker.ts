@@ -3,7 +3,6 @@ const cacheKey = "dafabet-mobile-v1.0";
 const pages = [
     "/app.css",
     "/app.js",
-    "/en/",
 ];
 
 self.addEventListener("install", (event: any) => {
