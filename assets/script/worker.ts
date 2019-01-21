@@ -4,6 +4,7 @@ declare var workbox: any;
 importScripts("/wbsw.js");
 
 if (workbox) {
+    console.log(workbox);
     workbox.routing.registerRoute(
         new RegExp(".*\.js"),
         workbox.strategies.networkFirst(),
@@ -38,23 +39,23 @@ if (workbox) {
 
 const cacheKey = "dafabet-mobile-v1.0";
 
-const pages = [
-    "/app.css",
-    "/app.js",
-];
+// const pages = [
+//     "/app.css",
+//     "/app.js",
+// ];
 
-self.addEventListener("install", (event: any) => {
-    const context: any = self;
+// self.addEventListener("install", (event: any) => {
+//     const context: any = self;
 
-    context.skipWaiting();
+//     context.skipWaiting();
 
-    event.waitUntil(
-        caches.open(cacheKey)
-            .then((cache) => {
-                return cache.addAll(pages);
-            }),
-    );
-});
+//     event.waitUntil(
+//         caches.open(cacheKey)
+//             .then((cache) => {
+//                 return cache.addAll(pages);
+//             }),
+//     );
+// });
 
 self.addEventListener("activate", (event: any) => {
     console.log("[ServiceWorker] Activate");
@@ -77,12 +78,12 @@ self.addEventListener("activate", (event: any) => {
 });
 
 self.addEventListener("fetch", (event: any) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                return response || fetch(event.request);
-            }),
-    );
+    // event.respondWith(
+    //     caches.match(event.request)
+    //         .then((response) => {
+    //             return response || fetch(event.request);
+    //         }),
+    // );
 });
 
 self.addEventListener("push", (event: any) => {
