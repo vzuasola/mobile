@@ -6,10 +6,9 @@ importScripts("/wbsw.js");
 const {strategies} = workbox;
 
 if (workbox) {
-    console.log(workbox);
     workbox.routing.registerRoute(
         new RegExp(".*\.js"),
-        workbox.strategies.cacheFirst({
+        workbox.strategies.networkFirst({
             cacheName: "js-cache",
         }),
     );
@@ -18,7 +17,7 @@ if (workbox) {
         // Cache CSS files
         new RegExp("/.*\.css"),
         // Use cache but update in the background ASAP
-        workbox.strategies.cacheFirst({
+        workbox.strategies.networkFirst({
             // Use a custom cache name
             cacheName: "css-cache",
         }),
@@ -28,7 +27,7 @@ if (workbox) {
         // Cache image files
         new RegExp("/.*\.(?:png|jpg|jpeg|svg|gif)"),
         // Use the cache if it's available
-        workbox.strategies.cacheFirst({
+        workbox.strategies.networkFirst({
             // Use a custom cache name
             cacheName: "image-cache",
             plugins: [
@@ -82,8 +81,8 @@ self.addEventListener("activate", (event: any) => {
 });
 
 self.addEventListener("fetch", (event: any) => {
-    const cacheFirst = strategies.cacheFirst();
-    event.respondWith(cacheFirst.makeRequest({request: event.request}));
+    const networkFirst = strategies.networkFirst();
+    event.respondWith(networkFirst.makeRequest({request: event.request}));
     // event.respondWith(
     //     caches.match(event.request)
     //         .then((response) => {
