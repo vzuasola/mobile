@@ -58,6 +58,8 @@ class ForgotPasswordComponent implements ComponentWidgetInterface
 
         $data['password_success_message'] = $config['mobile_forgot_password_success_message']['value']
             ?? "Retrieve Password Request Sent";
+        $data['password_success_message_native'] = $config['native_app_mobile_forgot_password_success_message']['value']
+            ?? "Retrieve Password Request Sent";
         $data['formForgotPassword'] = $formForgotPassword->createView();
 
         return $data;

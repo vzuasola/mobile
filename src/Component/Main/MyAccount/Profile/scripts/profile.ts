@@ -150,6 +150,7 @@ export class Profile extends FormBase {
             const hasError = this.form.querySelectorAll(".has-error").length;
 
             this.newValues = this.getValues();
+
             if (!hasError) {
                 // check for localized error after no error
                 const validateMobile = this.validateCountryAreaCodeMobileNumberLength();

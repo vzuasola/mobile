@@ -7,7 +7,7 @@ mix.webpackConfig({
     plugins: [
         new CleanWebpackPlugin(['web'], {
             verbose: false,
-            exclude: ['app.php', 'index.php', '.htacess', 'data.json', 'en', 'api'],
+            exclude: ['app.php', 'index.php', '.htacess', 'data.json', 'en', 'api', 'manifest.json'],
         })
     ],
 
