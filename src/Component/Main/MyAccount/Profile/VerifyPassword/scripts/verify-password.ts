@@ -20,6 +20,7 @@ export class VerifyPassword extends FormBase {
     private updateProfileLoader: HTMLElement;
     private validator: any;
     private password: HTMLFormElement;
+    private oldValues: any;
     private formValues: any;
     private errorNotification: any;
     private successNotification: any;
@@ -49,6 +50,7 @@ export class VerifyPassword extends FormBase {
                 true,
                 this.attachments.messageTimeout,
             );
+            this.oldValues = {...this.getValues(true)};
             this.bindEvent();
         }
     }
@@ -64,8 +66,13 @@ export class VerifyPassword extends FormBase {
         });
     }
 
-    private getValues() {
+    /**
+     * @param Boolean initialLoad flag to indicate for initial load to cache the initial value on Document ready
+     */
+    private getValues(initialLoad?) {
         const profileForm: HTMLFormElement = document.querySelector(".profile-form");
+        const fnameField = profileForm.MyProfileForm_first_name;
+        const lnameField = profileForm.MyProfileForm_last_name;
 
         return {
             gender: this.getGenderValue(),
@@ -76,8 +83,8 @@ export class VerifyPassword extends FormBase {
             city: profileForm.MyProfileForm_city.value,
             postal_code: profileForm.MyProfileForm_postal_code.value,
             receive_news: profileForm.ProfileForm_contact_preference.checked,
-            firstName: profileForm.MyProfileForm_first_name.value,
-            lastName: profileForm.MyProfileForm_last_name.value,
+            firstName: (this.attachments.isFastReg || initialLoad) ? fnameField.value : this.oldValues.firstName,
+            lastName: (this.attachments.isFastReg || initialLoad) ? lnameField.value : this.oldValues.lastName,
         };
     }
 

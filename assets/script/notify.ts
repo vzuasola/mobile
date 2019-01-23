@@ -33,9 +33,9 @@ utility.listen(document.body, "click", (event, src) => {
             deferredPrompt.userChoice
                 .then((choiceResult) => {
                     if (choiceResult.outcome === "accepted") {
-                        console.log("User accepted the A2HS prompt");
+                        // do nothing
                     } else {
-                        console.log("User dismissed the A2HS prompt");
+                        // do nothing
                     }
 
                     deferredPrompt = null;
@@ -46,7 +46,6 @@ utility.listen(document.body, "click", (event, src) => {
 
 utility.listen(document.body, "click", (event, src) => {
     if (utility.hasClass(src, "pwa-notify", true)) {
-        console.log("Attempting to display a notification");
 
         navigator.serviceWorker.ready
             .then((serviceWorker) => {
@@ -62,14 +61,13 @@ utility.listen(document.body, "click", (event, src) => {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                // do nothing
             });
     }
 });
 
 utility.listen(document.body, "click", (event, src) => {
     if (utility.hasClass(src, "pwa-subscribe", true)) {
-        console.log("Attempting to do a subscription");
 
         navigator.serviceWorker.ready
             .then((serviceWorker) => {
@@ -81,7 +79,6 @@ utility.listen(document.body, "click", (event, src) => {
                 return serviceWorker.pushManager.subscribe(subscribeOptions);
             })
             .then((subscription) => {
-                console.log(subscription);
 
                 const data: any = {
                     subscription: JSON.stringify(subscription),
@@ -93,17 +90,16 @@ utility.listen(document.body, "click", (event, src) => {
                     method: "post",
                     data,
                 }).then((response) => {
-                    console.log(response);
 
                     if (typeof response.success !== "undefined" &&
                         response.success === true
                     ) {
-                        console.log("Subscription successful");
+                        // do nothing
                     }
                 });
             })
             .catch((error) => {
-                console.log(error);
+                // do nothing
             });
     }
 });
