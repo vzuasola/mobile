@@ -3,18 +3,22 @@ declare var workbox: any;
 
 importScripts("/wbsw.js");
 
+const {strategies} = workbox;
+
 if (workbox) {
     console.log(workbox);
     workbox.routing.registerRoute(
         new RegExp(".*\.js"),
-        workbox.strategies.networkFirst(),
+        workbox.strategies.cacheFirst({
+            cacheName: "js-cache",
+        }),
     );
 
     workbox.routing.registerRoute(
         // Cache CSS files
         new RegExp("/.*\.css"),
         // Use cache but update in the background ASAP
-        workbox.strategies.staleWhileRevalidate({
+        workbox.strategies.cacheFirst({
             // Use a custom cache name
             cacheName: "css-cache",
         }),
@@ -40,8 +44,8 @@ if (workbox) {
 const cacheKey = "dafabet-mobile-v1.0";
 
 // const pages = [
-//     "/app.css",
-//     "/app.js",
+//     "/",
+//     "/en/",
 // ];
 
 // self.addEventListener("install", (event: any) => {
@@ -78,6 +82,8 @@ self.addEventListener("activate", (event: any) => {
 });
 
 self.addEventListener("fetch", (event: any) => {
+    const cacheFirst = strategies.cacheFirst();
+    event.respondWith(cacheFirst.makeRequest({request: event.request}));
     // event.respondWith(
     //     caches.match(event.request)
     //         .then((response) => {
