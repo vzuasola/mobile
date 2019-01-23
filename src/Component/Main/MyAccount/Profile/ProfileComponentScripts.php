@@ -60,16 +60,15 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
         $fastRegUrlToken = $generalConfig['fastreg_mobile_redirect'] ?? '';
         $fastRegRedirect = $this->tokenParser->processTokens($fastRegUrlToken);
 
-        $user = $this->user->getPlayerDetails();
+        $userDetail = $this->user->getPlayerDetails();
         $isFastReg = false;
 
-        $fname = substr($user['firstName'], 0, 5);
-        $lname = substr($user['lastName'], 0, 5);
+        $fname = substr($userDetail['firstName'], 0, 5);
+        $lname = substr($userDetail['lastName'], 0, 5);
 
         if (strtoupper($fname) == "DFRFN" ||
             strtoupper($lname) == "DFRLN"
         ) {
-            $flashMessage = $generalConfig['fast_reg_flash_message']['value'] ?? "";
             $isFastReg = true;
         }
 
