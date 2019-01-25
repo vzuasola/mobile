@@ -1,6 +1,6 @@
 {
     "short_name": "Dafabet",
-    "name": "Dafabet Mobile",
+    "name": "Dafabet",
     "icons": [
         {
             "src": "/images/icons-192.png",
@@ -13,7 +13,7 @@
             "type": "image/png"
         }
     ],
-    "start_url": "/en/?source=pwa",
+    "start_url": "/?source=pwa",
     "theme_color": "#af0000",
     "background_color": "#af0000",
     "display": "standalone",
