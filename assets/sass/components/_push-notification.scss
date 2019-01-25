@@ -225,12 +225,9 @@
     }
 
     #lightboxNotif .tooltip {
-        position: absolute;
-        width: auto;
+        margin-top: -3rem;
         display: block;
         text-align: center;
-        left: 0;
-        right: 0;
     }
 }
 #pushnxDismissLightbox {
