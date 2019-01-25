@@ -26,6 +26,32 @@
         }
     }
 
+    &-footer {
+        #lightboxNotif {
+            position: relative;
+            width: 50%;
+            margin: 0 auto;
+
+            span {
+                border-radius: 0.5rem;
+                background: $light-gray;
+                color: $dark-gray;
+                text-decoration: none;
+                padding: 0.2rem 0;
+                font-size: 1.2rem;
+            }
+        }
+
+        #lightboxNotif .tooltip {
+            position: absolute;
+            width: auto;
+            display: block;
+            text-align: center;
+            left: 0;
+            right: 0;
+        }
+    }
+
     &-dismiss-all {
         position: absolute;
         top: 1.5rem;
@@ -147,16 +173,6 @@
                 text-transform: none;
                 display: inline-block;
             }
-
-            .tooltip {
-                border-radius: 0.5rem;
-                background: $light-gray;
-                color: $dark-gray;
-                text-decoration: none;
-                padding: 0.5rem;
-                display: block;
-                font-size: 1.2rem;
-            }
         }
 
         &-title {
@@ -212,20 +228,8 @@
     &-btn-proceed, {
         right: 14rem;
     }
-
-    #lightboxNotif {
-        position: relative;
-    }
-
-    #lightboxNotif .tooltip {
-        position: absolute;
-        width: auto;
-        display: block;
-        text-align: center;
-        left: 0;
-        right: 0;
-    }
 }
+
 #pushnxDismissLightbox {
     background: rgba(0, 0, 0, .6);
 
