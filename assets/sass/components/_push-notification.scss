@@ -94,6 +94,11 @@
             background: $light-gray;
             padding: 0.6rem 1rem;
             margin-bottom: 2.6rem;
+            color: $dark-gray;
+
+            .content {
+                margin-top: 1rem;
+            }
 
             svg {
                 width: 3.5rem;
