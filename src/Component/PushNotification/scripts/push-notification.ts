@@ -83,6 +83,8 @@ export class PushNotification {
                 ok: "btn btn-small btn-yellow pushnx-lightbox-btn-ok",
                 accept: "btn btn-small btn-medium btn-yellow pushnx-lightbox-btn-accept",
                 decline: "btn btn-small btn-medium btn-red pushnx-lightbox-btn-decline",
+                proceed: "btn btn-small btn-medium btn-yellow pushnx-lightbox-btn-proceed",
+                no: "btn btn-small btn-medium btn-red pushnx-lightbox-btn-no-thanks",
             },
             icons: true,
             iconsvg: {
@@ -115,6 +117,7 @@ export class PushNotification {
                 expiredMessage: expireMessageTemplate, // expired error message
                 dismissAllMessage: dismissTemplate, // dismiss all message
             },
+            lightboxNotif: "#lightboxNotif",
             config: pushnx,
         });
 

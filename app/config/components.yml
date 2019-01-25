@@ -175,6 +175,9 @@ modules:
   skywind_integration:
     class: App\MobileEntry\Module\GameIntegration\Skywind\SkywindModule
 
+  flowgaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\FlowGaming\FlowGamingModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
