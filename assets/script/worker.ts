@@ -77,7 +77,6 @@ const cacheKey = "dafabet-mobile-v1.0";
 // });
 
 self.addEventListener("activate", (event: any) => {
-    console.log("[ServiceWorker] Activate");
 
     const context: any = self;
 
@@ -124,5 +123,5 @@ self.addEventListener("push", (event: any) => {
 });
 
 self.addEventListener("notificationclick", (event) => {
-    console.log(event);
+    // do nothing
 });
