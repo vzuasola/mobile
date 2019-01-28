@@ -95,6 +95,7 @@
             padding: 0.6rem 1rem;
             margin-bottom: 2.6rem;
             color: $dark-gray;
+            text-align: left;
 
             .content {
                 margin-top: 1rem;
@@ -225,11 +226,12 @@
 
     #lightboxNotif .tooltip {
         position: absolute;
+        top: -3rem;
+        left: 0;
+        right: 0;
         width: auto;
         display: block;
         text-align: center;
-        left: 0;
-        right: 0;
     }
 }
 #pushnxDismissLightbox {
