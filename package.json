@@ -23,6 +23,7 @@
     "webpack-mix": "^2.0.2"
   },
   "dependencies": {
-    "promise-polyfill": "^7.1.2"
+    "promise-polyfill": "^7.1.2",
+    "workbox-sw": "^3.6.3"
   }
 }
