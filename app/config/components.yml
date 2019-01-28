@@ -59,6 +59,10 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\GamesLobby\GamesLobbyComponent
     parent: lobby
 
+  casino_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\CasinoLobby\CasinoLobbyComponent
+    parent: lobby
+
   session:
     class: App\MobileEntry\Component\Main\Session\SessionComponent
 

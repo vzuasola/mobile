@@ -12,6 +12,7 @@ node_modules/
 !/web/en/mobile/*
 !/web/index.php
 !/web/data.json
+!/web/manifest.json
 !/web/.htaccess
 
 # files created by the build process

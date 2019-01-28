@@ -17,14 +17,11 @@ import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "./scripts/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
-import EqualHeight from "@app/assets/script/components/equal-height";
-
-import { ProviderDrawer } from "./scripts/provider-drawer";
 
 /**
  *
  */
-export class GamesLobbyComponent implements ComponentInterface {
+export class CasinoLobbyComponent implements ComponentInterface {
     private element: HTMLElement;
     private attachments: any;
     private response: any;
@@ -37,9 +34,11 @@ export class GamesLobbyComponent implements ComponentInterface {
     private load: boolean;
     private product: any[];
     private searchResults;
-    private filterFlag: string;
+    private loader: Loader;
+    private fromGameLaunch: boolean = false;
 
     constructor() {
+        this.loader = new Loader(document.body, true);
         this.gameLauncher = GameLauncher;
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
@@ -63,6 +62,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.pager = 0;
+        this.currentPage = 0;
         this.load = true;
         this.listenChangeCategory();
         this.listenHashChange();
@@ -72,10 +72,9 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.generateLobby(() => {
             this.lobby();
         });
-        this.moveCategory();
-        // this.listenToCategory();
+        this.listenToCategory();
         this.listenToScroll();
-        // this.listenToSwipe();
+        this.listenToSwipe();
         this.initMarker();
         this.listenOnSearch();
         this.listenOnFilter();
@@ -84,9 +83,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.gamesFilter.handleOnLoad(this.element, attachments);
+        this.showCasinoPreference();
         this.listenOnCloseFilter();
-        this.activateProviderDrawer();
-        this.equalizeProviderHeight();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -107,10 +105,11 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.listenClickGameTile();
             this.listenGameLaunch();
             this.listenFavoriteClick();
-            // this.listenToCategory();
+            this.listenToCategory();
             this.listenToScroll();
             this.listenOnSearch();
             this.listenOnFilter();
+            this.showCasinoPreference();
             this.listenOnCloseFilter();
         }
         this.response = null;
@@ -119,12 +118,12 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.pager = 0;
+        this.currentPage = 0;
         this.load = true;
         this.generateLobby(() => {
             this.lobby();
         });
-        this.moveCategory();
-        // this.listenToSwipe();
+        this.listenToSwipe();
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
         this.gamesFilter.handleOnReLoad(this.element, attachments);
@@ -132,15 +131,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        this.activateProviderDrawer();
-        this.equalizeProviderHeight();
-    }
-
-    private moveCategory() {
-        const container = document.querySelector("#categories-container");
-        const categoriesEl = document.querySelector("#game-categories");
-
-        container.appendChild(categoriesEl);
     }
 
     private initMarker() {
@@ -184,7 +174,7 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private doRequest(callback) {
         xhr({
-            url: Router.generateRoute("games_lobby", "lobby"),
+            url: Router.generateRoute("casino_lobby", "lobby"),
             type: "json",
         }).then((response) => {
             response.games = this.getCategoryGames(response.games);
@@ -225,12 +215,11 @@ export class GamesLobbyComponent implements ComponentInterface {
      *
      */
     private setCategories(data, key) {
-        const categoriesEl = document.querySelector("#game-categories");
+        const categoriesEl = this.element.querySelector("#game-categories");
 
         const template = categoriesTemplate({
             categories: data,
             active: key,
-            configs: this.response.configs,
         });
 
         if (categoriesEl) {
@@ -247,8 +236,6 @@ export class GamesLobbyComponent implements ComponentInterface {
             const activeLi = activeLink.parentElement;
             utility.addClass(activeLi, "active");
         }
-
-        this.onLoadActiveMore();
     }
 
     /**
@@ -306,17 +293,13 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private listenChangeCategory() {
         ComponentManager.subscribe("click", (event: Event, src) => {
-            const first = this.response.categories[0].field_games_alias;
-            const key = this.getActiveCategory(this.response.games, first);
-            const categoriesEl = document.querySelector("#game-categories");
+            if (src.getAttribute("data-category-filter-id")) {
+                const categoriesEl = this.element.querySelector("#game-categories");
+                const activeLink = categoriesEl.querySelector(".category-tab .active a");
+                utility.addClass(activeLink, "active");
 
-            if (utility.hasClass(src, "game-category-item", true) &&
-                !utility.hasClass(src, "game-category-more", true) ||
-                utility.hasClass(src, "category-provider-menu", true)
-            ) {
-                this.currentPage = 0;
-                this.filterFlag = "general";
-                window.location.hash = "";
+                const key = src.getAttribute("data-category-filter-id");
+                this.setGames(this.response.games[key]);
                 ComponentManager.broadcast("category.change");
             }
         });
@@ -330,73 +313,36 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.currentPage = 0;
             const first = this.response.categories[0].field_games_alias;
             const key = this.getActiveCategory(this.response.games, first);
-            let sidebar = false;
             if (utility.getHash(window.location.href) !== key &&
                 key !== first
             ) {
                 window.location.hash = key;
             }
 
-            const categoriesEl = document.querySelector("#game-categories");
+            const categoriesEl = this.element.querySelector("#game-categories");
             const activeLink = categoriesEl.querySelector(".category-tab .active a");
 
-            this.clearCategoriesActive(categoriesEl);
+            const categories = categoriesEl.querySelectorAll(".category-tab");
 
-            // Add active to categories
-            const actives = categoriesEl.querySelectorAll(".category-" + key);
-
-            if (actives.length === 1) {
-                src = categoriesEl.querySelector(".game-category-more");
-                utility.addClass(src, "active");
-                sidebar = true;
-            }
-
-            for (const id in actives) {
-                if (actives.hasOwnProperty(id)) {
-                    const active = actives[id];
-                    utility.addClass(active, "active");
-                    if (!sidebar) {
-                        utility.addClass(active.parentElement, "active");
+            for (const id in categories) {
+                if (categories.hasOwnProperty(id)) {
+                    const category = categories[id];
+                    if (category.getAttribute("href") === "#" + key) {
+                        src = category;
+                        break;
                     }
                }
-            }
+           }
+
+            utility.removeClass(activeLink, "active");
+            utility.removeClass(activeLink.parentElement, "active");
+
+            utility.addClass(src, "active");
+            utility.addClass(src.parentElement, "active");
 
             this.setGames(this.response.games[key]);
             ComponentManager.broadcast("category.change");
         });
-    }
-
-    private clearCategoriesActive(categoriesEl) {
-        const categories = categoriesEl.querySelectorAll(".category-provider-menu");
-        for (const id in categories) {
-            if (categories.hasOwnProperty(id)) {
-                const category = categories[id];
-                if (utility.hasClass(category, "active")) {
-                    const prevActiveCategory = category.getAttribute("data-category-filter-id");
-                    // Remove active to categories
-                    const prevActives = categoriesEl.querySelectorAll(".category-" + prevActiveCategory);
-                    for (const previd in prevActives) {
-                        if (prevActives.hasOwnProperty(previd)) {
-                            const prevActive = prevActives[previd];
-                            utility.removeClass(prevActive, "active");
-                            utility.removeClass(prevActive.parentElement, "active");
-                       }
-                    }
-                    break;
-                }
-           }
-        }
-
-        utility.removeClass(categoriesEl.querySelector(".game-category-more"), "active");
-    }
-
-    private onLoadActiveMore() {
-        const categoriesEl = document.querySelector("#game-categories");
-        const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        if (!utility.hasClass(activeLink, "category-tab")) {
-            const src = categoriesEl.querySelector(".game-category-more");
-            utility.addClass(src, "active");
-        }
     }
 
     /**
@@ -415,6 +361,58 @@ export class GamesLobbyComponent implements ComponentInterface {
         });
     }
 
+    private showCasinoPreference() {
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            let gameCode = false;
+            const el = utility.hasClass(data.src, "game-list", true);
+            if (el) {
+                gameCode = el.getAttribute("data-game-code");
+            }
+
+            if (!gameCode && ComponentManager.getAttribute("product") === "mobile-casino") {
+                this.getCasinoPreference((response) => {
+                    if (response.success) {
+                        // redirect to URL
+                        if (response.redirect && response.preferredProduct === "casino_gold") {
+                            window.location.href = decodeURIComponent(response.redirect).replace(/\\/g, "");
+                            return;
+                        }
+
+                        if (!response.redirect) {
+                            ComponentManager.broadcast("casino.preference");
+                        }
+                    }
+                    this.loader.hide();
+                });
+            }
+        });
+
+        if (ComponentManager.getAttribute("product") === "mobile-casino"
+            && this.isLogin && !this.fromGameLaunch) {
+            this.getCasinoPreference((response) => {
+                if (response.success && !response.redirect) {
+                    ComponentManager.broadcast("casino.preference");
+                    this.loader.hide();
+                    return;
+                }
+                this.loader.hide();
+            });
+        }
+    }
+
+    private getCasinoPreference(callback) {
+        this.loader.show();
+
+        xhr({
+            url: Router.generateRoute("casino_option", "preference"),
+            type: "json",
+        }).then((response) => {
+            callback(response);
+        }).fail((error, message) => {
+            this.loader.hide();
+        });
+    }
+
     /**
      * Event listener for game item click
      */
@@ -424,7 +422,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (el) {
                 const gameCode = el.getAttribute("data-game-code");
                 xhr({
-                    url: Router.generateRoute("games_lobby", "recent"),
+                    url: Router.generateRoute("casino_lobby", "recent"),
                     type: "json",
                     method: "post",
                     data: {
@@ -433,17 +431,14 @@ export class GamesLobbyComponent implements ComponentInterface {
                 }).then((result) => {
                     if (result.success) {
                         this.response = null;
-                        this.doRequest(() => {
-                            this.gamesSearch.setGamesList(this.response);
-                            this.gamesFilter.setGamesList(this.response);
-
-                            if (this.filterFlag === "recently-played") {
-                                this.setGames(this.response.games[this.filterFlag]);
-                            }
+                        this.generateLobby(() => {
+                            this.updateCategorySpecial();
                         });
+                        this.fromGameLaunch = true;
+                        ComponentManager.broadcast("success.game.launch", {launchedGame: gameCode});
                     }
                 }).fail((error, message) => {
-                    console.log(error);
+                    // do nothing
                 });
             }
         });
@@ -458,7 +453,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (el && this.isLogin) {
                 const gameCode = el.parentElement.getAttribute("data-game-code");
                 xhr({
-                    url: Router.generateRoute("games_lobby", "favorite"),
+                    url: Router.generateRoute("casino_lobby", "favorite"),
                     type: "json",
                     method: "post",
                     data: {
@@ -467,23 +462,9 @@ export class GamesLobbyComponent implements ComponentInterface {
                 }).then((result) => {
                     if (result.success) {
                         this.response = null;
-                        this.doRequest(() => {
-                            this.gamesSearch.setGamesList(this.response);
-                            this.gamesFilter.setGamesList(this.response);
-
-                            if (this.filterFlag === "favorites") {
-                                if (typeof this.response.games[this.filterFlag] === "undefined") {
-                                    this.deactivateSearchTab();
-                                    this.setLobby();
-                                }
-
-                                if (typeof this.response.games[this.filterFlag] !== "undefined") {
-                                    this.setGames(this.response.games[this.filterFlag]);
-                                }
-
-                            }
+                        this.generateLobby(() => {
+                            this.updateCategorySpecial();
                         });
-
                         ComponentManager.broadcast("games.favorite", { srcElement: el });
                     }
                 }).fail((error, message) => {
@@ -494,9 +475,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     private updateCategorySpecial() {
-        const categoriesEl = document.querySelector("#game-categories");
         const activeSearch = this.element.querySelector(".search-tab");
-        const activeLink = categoriesEl.querySelector(".category-tab .active a");
 
         if (utility.hasClass(activeSearch, "active")) {
             this.setCategories(this.response.categories, "search");
@@ -508,8 +487,7 @@ export class GamesLobbyComponent implements ComponentInterface {
 
     private listenToCategory() {
         ComponentManager.subscribe("category.set", (event, src, data) => {
-            const categoriesEl = document.querySelector("#game-categories");
-            const activeLink = categoriesEl.querySelector(".category-tab .active a");
+            const categoriesEl = this.element.querySelector("#game-categories");
             const categories = categoriesEl.querySelectorAll(".category-tab");
             const categoryScroll = categoriesEl.querySelector("#category-tab");
             let scroll = 0;
@@ -540,14 +518,13 @@ export class GamesLobbyComponent implements ComponentInterface {
 
     private listenToSwipe() {
         const games: any = this.element.querySelector("#game-container");
-        const swipe: Swipe = new Swipe(games);
+        new Swipe(games);
         if (games) {
             // Left Swipe
             utility.addEventListener(games, "swipeleft", (event, src) => {
                 // Active category go right
-                const categoriesEl = document.querySelector("#game-categories");
+                const categoriesEl = this.element.querySelector("#game-categories");
                 const activeLi = categoriesEl.querySelector(".category-tab .active");
-                const activeLink = activeLi.querySelector("a");
 
                 if (utility.hasClass(activeLi, "search-tab")) {
                     window.location.hash = "";
@@ -572,9 +549,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             // Right Swipe
             utility.addEventListener(games, "swiperight", (event, src) => {
                 // Active category go left
-                const categoriesEl = document.querySelector("#game-categories");
+                const categoriesEl = this.element.querySelector("#game-categories");
                 const activeLi = categoriesEl.querySelector(".category-tab .active");
-                const activeLink = activeLi.querySelector("a");
                 const sibling = utility.previousElementSibling(activeLi);
                 if (sibling) {
                     const siblingUrl = sibling.querySelector("a").getAttribute("href");
@@ -597,22 +573,28 @@ export class GamesLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("games.filter.success", (event: Event, src, data) => {
             if (data.filteredGames) {
                 this.element.querySelector("#blurb-lobby").innerHTML = "";
-                this.activateSearchTab(data.active);
+                this.activateSearchTab();
                 this.searchResults = data.filteredGames;
                 this.setGames(data.filteredGames);
-                this.filterFlag = data.flag;
             } else {
                 const gamesEl = this.element.querySelector("#game-container");
                 let recommended: boolean = false;
                 gamesEl.innerHTML = "";
-                this.activateSearchTab(data.active);
-                if (this.response.games["recommended-games"] && this.response.enableRecommended) {
+                this.activateSearchTab();
+                if (this.response.games["recommended-games"]  && this.response.enableRecommended ) {
                     this.searchResults = this.response.games["recommended-games"];
                     this.setGames(this.response.games["recommended-games"], 0, true);
                     recommended = true;
                 }
                 this.updateBlurbForFilter(recommended);
             }
+        });
+    }
+
+    private listenOnCloseFilter() {
+        ComponentManager.subscribe("games.reload", (event: Event, src, data) => {
+            this.setLobby();
+            ComponentManager.broadcast("category.change");
         });
     }
 
@@ -635,15 +617,13 @@ export class GamesLobbyComponent implements ComponentInterface {
                     this.currentPage += 1;
                     let hash = utility.getHash(window.location.href);
                     if (!this.response.games[hash]) {
-                        const categoriesEl = document.querySelector("#game-categories");
+                        const categoriesEl = this.element.querySelector("#game-categories");
                         const activeLink = categoriesEl.querySelector(".category-tab .active a");
                         hash = activeLink.getAttribute("data-category-filter-id");
                     }
                     let pager = this.getPagedContent(this.response.games[hash]);
 
-                    if (utility.hasClass(this.element.querySelector(".search-tab"), "active")
-                        || utility.hasClass(this.element.querySelector(".games-filter"), "active")
-                    ) {
+                    if (utility.hasClass(this.element.querySelector(".search-tab"), "active")) {
                         pager = this.getPagedContent(this.searchResults);
                     }
 
@@ -673,23 +653,14 @@ export class GamesLobbyComponent implements ComponentInterface {
          });
      }
 
-    private activateSearchTab(active?: string) {
-        const categoriesEl = document.querySelector("#game-categories");
-
-        this.clearCategoriesActive(categoriesEl);
-
+    private activateSearchTab() {
+        const categoriesEl = this.element.querySelector("#game-categories");
+        const activeLink = categoriesEl.querySelector(".category-tab .active a");
+        const activeCategory = activeLink.getAttribute("data-category-filter-id");
         // set search tab as active tab
-        this.deactivateSearchTab();
-
-        utility.addClass(this.element.querySelector(active), "active");
+        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        utility.addClass(this.element.querySelector(".search-tab"), "active");
         utility.addClass(this.element.querySelector(".search-blurb"), "active");
-    }
-
-    private deactivateSearchTab() {
-        const categoriesEl = document.querySelector("#game-categories");
-        utility.removeClass(categoriesEl.querySelector(".game-category-more"), "active");
-        utility.removeClass(this.element.querySelector(".search-tab"), "active");
-        utility.removeClass(this.element.querySelector(".games-filter"), "active");
     }
 
     private isSeen(el) {
@@ -724,7 +695,6 @@ export class GamesLobbyComponent implements ComponentInterface {
 
                 for (const key in game.categories) {
                     if (game.categories.hasOwnProperty(key)) {
-                        const category = game.categories[key];
                         const notAllGames = (key !== "all-games");
 
                         if (!gamesList.hasOwnProperty(key)
@@ -793,22 +763,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         return groupList;
     }
 
-    /**
-     * Enable Provider Drawer slide behavior
-     */
-    private activateProviderDrawer() {
-        const categoriesEl: any = document.querySelector("#game-categories");
-        const providerdrawer = new ProviderDrawer(categoriesEl);
-        providerdrawer.activate();
-    }
-
-    private equalizeProviderHeight() {
-        setTimeout(() => {
-            const equalProvider = new EqualHeight("#game-categories .provider-menu .game-category-list a");
-            equalProvider.init();
-        }, 1000);
-
-    }
     private filterCategories(categories, gamesList) {
         const filteredCategory: any = [];
         for (const category of categories) {
@@ -819,13 +773,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
 
         return filteredCategory;
-    }
-
-    private listenOnCloseFilter() {
-        ComponentManager.subscribe("games.reload", (event: Event, src, data) => {
-            this.setLobby();
-            ComponentManager.broadcast("category.change");
-        });
     }
 
 }

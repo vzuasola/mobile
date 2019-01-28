@@ -80,6 +80,20 @@ routes:
         attributes:
             product: mobile-games
 
+    /{id:casino|dafa888|888|yulechang|xuanzhuan|duchang|daebak}:
+        method: GET
+        action: App\MobileEntry\Controller\CasinoController:view
+        components:
+            main: lobby
+            lobby_content: casino_lobby
+        headers:
+            Cache-Control: public, max-age=900
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-casino
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:
