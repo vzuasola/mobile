@@ -32,6 +32,20 @@ export class CantLoginComponent implements ComponentInterface {
             this.activateFormAnnotation(element);
             this.showForm(element);
         }
+
+        this.appDetection(element);
+    }
+
+    /**
+     * Add spicific body class for native app base on query parameter
+     */
+    private appDetection(element) {
+        const device  = utility.getParameterByName("device");
+
+        if (device === "native-app") {
+            const bodyTag = utility.findParent(element, "body");
+            utility.addClass(bodyTag, device);
+        }
     }
 
     private activateFormAnnotation(element) {

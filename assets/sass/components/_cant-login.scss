@@ -137,3 +137,32 @@ form.reset-password-form {
         border-top: 0.1rem solid #515151;
     }
 }
+
+// Native app specific styles
+.native-app {
+    // Adjust <body> background
+    background: #2a2829;
+
+    // Hide components
+    div[data-component-widget-class="header"],
+    div[data-component-widget-class="footer"],
+    div[data-component-widget-class="menu"],
+    div[data-component-widget-class="announcement"] {
+        display: none;
+    }
+
+    // Hide mobile success message
+    .success-message-mobile {
+        display: none;
+    }
+
+    // Show native app success message
+    .success-message-native-app {
+        display: block;
+    }
+}
+
+// Hide native success message for mobile
+.success-message-native-app {
+    display: none;
+}
