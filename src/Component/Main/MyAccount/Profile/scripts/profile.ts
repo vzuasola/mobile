@@ -21,6 +21,7 @@ export class Profile extends FormBase {
     private modalSelector: string = "#profile-verification";
     private notification: any;
     private loader: Loader;
+    private mobiles: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -37,7 +38,15 @@ export class Profile extends FormBase {
             this.attachments.messageTimeout,
         );
         this.contactPreference();
-        this.oldValues = {...this.getValues()};
+
+        const mobileField1: HTMLFormElement = this.form.querySelector("#MyProfileForm_mobile_number_1");
+        const mobileField2: HTMLFormElement = this.form.querySelector("#MyProfileForm_mobile_number_2");
+        this.mobiles = {
+            mobile: mobileField1.value,
+            mobile1: mobileField2.value,
+        };
+
+        this.oldValues = {...this.getValues(true, true)};
         // we check if mobile 1 had a value and add the a required validation
         if (this.oldValues.mobile1) {
             const rules = JSON.parse(this.form.getAttribute("data-validations"));
@@ -52,6 +61,23 @@ export class Profile extends FormBase {
         this.validateForm(this.form);
         this.handleSubmission();
         this.activateTooltip();
+    }
+
+    private getUserData() {
+        const user = this.attachments.user;
+
+        return {
+            firstname: user.first_name,
+            lastname: user.last_name,
+            gender: user.gender,
+            language: user.language,
+            mobile: user.mobile_number_1,
+            mobile1: user.mobile_number_2,
+            address: user.address,
+            city: user.city,
+            postal_code: user.postal_code,
+            receive_news: user.receive_news,
+        };
     }
 
     private willRedirect() {
@@ -80,21 +106,46 @@ export class Profile extends FormBase {
 
     }
 
-    private getValues() {
+    /**
+     * @param Boolean visual get data readable to human or is displayed in the verification popup
+     * @param Boolean initialLoad flag to indicate for initial load to get data from attachement
+     */
+    private getValues(visual?, initialLoad?) {
+        const fnameField = this.form.MyProfileForm_first_name;
+        const lnameField = this.form.MyProfileForm_last_name;
+        const genderField: HTMLFormElement = this.form.querySelector('input[name="MyProfileForm[gender]"]:checked');
+        const languageField: HTMLFormElement = this.form.querySelector("#MyProfileForm_language");
+        const receiveNewsField: HTMLFormElement = this.form.querySelector("#ProfileForm_contact_preference");
+
         return {
-            firstname: this.form.MyProfileForm_first_name.value,
-            lastname: this.form.MyProfileForm_last_name.value,
-            gender: this.getGenderText(),
-            language: this.getLanguageText(),
-            mobile: this.form.MyProfileForm_mobile_number_1.value,
-            mobile1: this.form.MyProfileForm_mobile_number_2.value || "",
+            firstname: (this.attachments.isFastReg || initialLoad)
+                ? fnameField.value
+                : this.attachments.user.first_name,
+            lastname: (this.attachments.isFastReg || initialLoad)
+                ? lnameField.value
+                : this.attachments.user.last_name,
+            gender: visual
+                ? this.getGenderText()
+                : genderField.value,
+            language: visual
+                ? this.getLanguageText()
+                : languageField.value,
+            mobile: (this.mobiles.mobile === this.form.MyProfileForm_mobile_number_1.value)
+                ? this.attachments.user.mobile_number_1
+                : this.form.MyProfileForm_mobile_number_1.value,
+            mobile1: (this.mobiles.mobile1 === this.form.MyProfileForm_mobile_number_2.value)
+                ? this.attachments.user.mobile_number_2
+                : this.form.MyProfileForm_mobile_number_2.value,
             address: this.form.MyProfileForm_address.value,
             city: this.form.MyProfileForm_city.value,
             postal_code: this.form.MyProfileForm_postal_code.value,
-            receive_news: this.form.ProfileForm_contact_preference.checked
-                ? this.attachments.contactPreferenceYes
-                : this.attachments.contactPreferenceNo,
+            receive_news: visual
+                ? this.form.ProfileForm_contact_preference.checked
+                    ? this.attachments.contactPreferenceYes
+                    : this.attachments.contactPreferenceNo
+                : receiveNewsField.checked,
         };
+
     }
 
     private getLabels() {
@@ -140,7 +191,7 @@ export class Profile extends FormBase {
     }
 
     private hasChanges() {
-        return !this.isEquivalent(this.oldValues, this.newValues);
+        return !this.isEquivalent(this.getUserData(), this.newValues);
     }
 
     private handleSubmission() {
@@ -159,7 +210,7 @@ export class Profile extends FormBase {
                 }
                 if (this.hasChanges()) {
                     const profileChangesContainer = this.element.querySelector(this.modalSelector + " .changes");
-                    const data: any = this.getFilteredDifference(this.oldValues, this.newValues);
+                    const data: any = this.getFilteredDifference(this.oldValues, this.getValues(true));
 
                     // Add labels to data
                     data.labels = this.getLabels();

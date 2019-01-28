@@ -24,12 +24,14 @@ export class GameIntegrationModule implements ModuleInterface {
         const skywind: any = ComponentManager.getModuleInstance("skywind_integration");
         const solidgaming: any = ComponentManager.getModuleInstance("solidgaming_integration");
         const cq9: any = ComponentManager.getModuleInstance("cq9_integration");
+        const flowGaming: any = ComponentManager.getModuleInstance("flowgaming_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
         this.gameLauncher.setProvider("cq9", cq9);
         this.gameLauncher.setProvider("voidbridge", voidbridge);
         this.gameLauncher.setProvider("skywind", skywind);
+        this.gameLauncher.setProvider("flow_gaming", flowGaming);
 
         setTimeout(() => {
             this.gameLauncher.init();

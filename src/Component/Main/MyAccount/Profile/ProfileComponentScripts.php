@@ -60,6 +60,18 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
         $fastRegUrlToken = $generalConfig['fastreg_mobile_redirect'] ?? '';
         $fastRegRedirect = $this->tokenParser->processTokens($fastRegUrlToken);
 
+        $userDetail = $this->user->getPlayerDetails();
+        $isFastReg = false;
+
+        $fname = substr($userDetail['firstName'], 0, 5);
+        $lname = substr($userDetail['lastName'], 0, 5);
+
+        if (strtoupper($fname) == "DFRFN" ||
+            strtoupper($lname) == "DFRLN"
+        ) {
+            $isFastReg = true;
+        }
+
         return [
             'user' => $this->getFormValues(),
             'verification_code_min_length_message' => $smsConfig['verification_code_min_length_message'],
@@ -77,7 +89,8 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'contactPreferenceNo' => $labelConfig['contact_preference_no'] ?? 'no',
             'fastRegRedirect' => $fastRegRedirect,
             'fastRegTimeout' => $generalConfig['fastreg_timeout_redirect'] ?? 4,
-            'sessionToken' => $this->playerSession->getToken()
+            'sessionToken' => $this->playerSession->getToken(),
+            'isFastReg' => $isFastReg
         ];
     }
 
