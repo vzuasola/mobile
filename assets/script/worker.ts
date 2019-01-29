@@ -3,7 +3,7 @@ declare var workbox: any;
 
 importScripts("/wbsw.js");
 
-const {strategies} = workbox;
+const { strategies } = workbox;
 
 if (workbox) {
     workbox.routing.registerRoute(
@@ -54,74 +54,77 @@ if (workbox) {
             ],
         }),
     );
-}
 
-const cacheKey = "dafabet-mobile-v1.0";
+    const cacheKey = "dafabet-mobile-v1.1";
 
-// const pages = [
-//     "/",
-//     "/en/",
-// ];
+    // const pages = [
+    //     "/",
+    //     "/en/",
+    // ];
 
-// self.addEventListener("install", (event: any) => {
-//     const context: any = self;
+    // self.addEventListener("install", (event: any) => {
+    //     const context: any = self;
 
-//     context.skipWaiting();
+    //     context.skipWaiting();
 
-//     event.waitUntil(
-//         caches.open(cacheKey)
-//             .then((cache) => {
-//                 return cache.addAll(pages);
-//             }),
-//     );
-// });
-
-self.addEventListener("activate", (event: any) => {
-
-    const context: any = self;
-
-    event.waitUntil(
-        caches.keys().then((keyList) => {
-            return Promise.all(
-                keyList.map((key) => {
-                    if (key !== cacheKey) {
-                        return caches.delete(key);
-                    }
-                }),
-            );
-        }),
-    );
-
-    return context.clients.claim();
-});
-
-self.addEventListener("fetch", (event: any) => {
-    const networkFirst = strategies.networkFirst();
-    event.respondWith(networkFirst.makeRequest({request: event.request}));
-    // event.respondWith(
-    //     caches.match(event.request)
-    //         .then((response) => {
-    //             return response || fetch(event.request);
-    //         }),
-    // );
-});
-
-self.addEventListener("push", (event: any) => {
-    // const context: any = self;
-
-    // const payload = event.data.text();
-    // const time = Date.now();
-
-    // const promiseChain = context.registration.showNotification("Push Notification", {
-    //     body: `Message: ${payload} on time ${time}`,
-    //     data: {
-    //         time,
-    //     },
+    //     event.waitUntil(
+    //         caches.open(cacheKey)
+    //             .then((cache) => {
+    //                 return cache.addAll(pages);
+    //             }),
+    //     );
     // });
 
-    // event.waitUntil(promiseChain);
-});
+    self.addEventListener("activate", (event: any) => {
 
-self.addEventListener("notificationclick", (event) => {
-    // do nothing
-});
+        // const context: any = self;
+
+        // event.waitUntil(
+        //     caches.keys().then((keyList) => {
+        //         return Promise.all(
+        //             keyList.map((key) => {
+        //                 if (key !== cacheKey) {
+        //                     return caches.delete(key);
+        //                 }
+        //             }),
+        //         );
+        //     }),
+        // );
+
+        // return context.clients.claim();
+    });
+
+    self.addEventListener("fetch", (event: any) => {
+
+        // const networkFirst = strategies.networkFirst();
+        // event.respondWith(networkFirst.makeRequest({request: event.request}));
+
+        // event.respondWith(
+        //     caches.match(event.request)
+        //         .then((response) => {
+        //             return response || fetch(event.request);
+        //         }),
+        // );
+    });
+
+    self.addEventListener("push", (event: any) => {
+        // const context: any = self;
+
+        // const payload = event.data.text();
+        // const time = Date.now();
+
+        // const promiseChain = context.registration.showNotification("Push Notification", {
+        //     body: `Message: ${payload} on time ${time}`,
+        //     data: {
+        //         time,
+        //     },
+        // });
+
+        // event.waitUntil(promiseChain);
+    });
+
+    self.addEventListener("notificationclick", (event) => {
+        // do nothing
+    });
+
+}

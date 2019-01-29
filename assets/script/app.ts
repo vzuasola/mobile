@@ -48,8 +48,8 @@ window.onpageshow = (event) => {
 };
 
 // Service worker registraton
-// if ("serviceWorker" in window.navigator) {
-//     window.addEventListener("load", () => {
-//         navigator.serviceWorker.register("/sw.js");
-//     });
-// }
+if ("serviceWorker" in window.navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js");
+    });
+}
