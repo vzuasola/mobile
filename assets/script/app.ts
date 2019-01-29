@@ -1,4 +1,5 @@
 import "promise-polyfill/src/polyfill";
+import "pwacompat";
 
 import * as utility from "@core/assets/js/components/utility";
 
