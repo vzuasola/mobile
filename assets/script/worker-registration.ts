@@ -4,7 +4,6 @@ const browser = Bowser.getParser(window.navigator.userAgent);
 
 const isSupported = browser.satisfies({
     chrome: ">=20",
-    safari: ">=9",
 });
 
 if (isSupported) {
