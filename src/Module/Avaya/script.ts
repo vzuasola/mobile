@@ -97,12 +97,12 @@ export class AvayaModule implements ModuleInterface {
                 this.windowObject.focus();
             } else {
                 this.avayaLink = url;
-                this.windowObject.location.replace(url);
+                this.windowObject.location.href = url;
             }
         } catch (e) {
             if (url !== this.avayaLink) {
                 this.avayaLink = url;
-                this.windowObject.location.replace(url);
+                this.windowObject.location.href = url;
             }
 
             if (this.windowObject) {
