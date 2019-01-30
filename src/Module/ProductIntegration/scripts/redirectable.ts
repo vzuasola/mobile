@@ -1,3 +1,5 @@
+declare var navigator: any;
+
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
@@ -117,6 +119,13 @@ export abstract class Redirectable implements ModuleInterface {
             method: "post",
         }).then((response) => {
             if (typeof response.redirect !== "undefined") {
+                if (navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) {
+                    window.open(response.redirect);
+                    this.loader.hide();
+
+                    return;
+                }
+
                 window.location.href = response.redirect;
                 return;
             }
