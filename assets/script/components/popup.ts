@@ -35,7 +35,6 @@ export default function PopupWindow(url: string, title: string, options) {
     }
 
     if (navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) {
-        window.location.href = url;
         return window;
     }
 
