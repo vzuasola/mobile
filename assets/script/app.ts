@@ -11,6 +11,7 @@ import {Modal} from "./components/modal";
 import "./components";
 import "./modules";
 import "./loader";
+import "./worker-registration";
 
 // whenever the bootstrap AJAX receives a redirect, follow it
 ComponentManager.setOption("module-response-handle-redirect", (request: XMLHttpRequest) => {
@@ -47,10 +48,3 @@ window.onpageshow = (event) => {
         window.location.reload();
     }
 };
-
-// Service worker registraton
-if ("serviceWorker" in window.navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/sw.js");
-    });
-}
