@@ -4,7 +4,7 @@ declare var workbox: any;
 importScripts("/wbsw.js");
 
 const { strategies } = workbox;
-const cacheKey = "dafabet-mobile-v1.5";
+const cacheKey = "dafabet-mobile-v1.5.1";
 
 // const pages = [
 //     "/",
