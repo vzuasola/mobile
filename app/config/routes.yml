@@ -10,7 +10,7 @@ routes:
             enabled: true
             expires: 1800
 
-    /manifest:
+    /manifest.json:
         method: GET
         action: App\MobileEntry\Controller\ManifestController:view
         headers:
