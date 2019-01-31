@@ -94,6 +94,12 @@
             background: $light-gray;
             padding: 0.6rem 1rem;
             margin-bottom: 2.6rem;
+            color: $dark-gray;
+            text-align: left;
+
+            .content {
+                margin-top: 1rem;
+            }
 
             svg {
                 width: 3.5rem;
@@ -180,7 +186,9 @@
 
     &-btn-ok,
     &-btn-accept,
-    &-btn-decline {
+    &-btn-decline,
+    &-btn-proceed,
+    &-btn-no-thanks {
         position: absolute;
         right: 1.5rem;
         bottom: -1.5rem;
@@ -188,12 +196,42 @@
     }
 
     &-btn-ok,
-    &-btn-decline {
+    &-btn-decline,
+    &-btn-no-thanks {
         right: 1.5rem;
     }
 
     &-btn-accept, {
         right: 12.5rem;
+    }
+
+    &-btn-proceed, {
+        right: 14rem;
+    }
+
+    #lightboxNotif {
+        position: relative;
+        width: 50%;
+        margin: 0 auto;
+
+        span {
+            border-radius: 0.5rem;
+            background: $light-gray;
+            color: $dark-gray;
+            text-decoration: none;
+            padding: 0.2rem 0;
+            font-size: 1.2rem;
+        }
+    }
+
+    #lightboxNotif .tooltip {
+        position: absolute;
+        top: -3rem;
+        left: 0;
+        right: 0;
+        width: auto;
+        display: block;
+        text-align: center;
     }
 }
 #pushnxDismissLightbox {

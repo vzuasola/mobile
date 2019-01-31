@@ -146,7 +146,8 @@ form.reset-password-form {
     // Hide components
     div[data-component-widget-class="header"],
     div[data-component-widget-class="footer"],
-    div[data-component-widget-class="menu"] {
+    div[data-component-widget-class="menu"],
+    div[data-component-widget-class="announcement"] {
         display: none;
     }
 
