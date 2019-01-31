@@ -69,6 +69,7 @@ export class CasinoOptionComponent implements ComponentInterface {
                             Redirector.redirect(response.redirect);
                         } else {
                             Router.navigate(response.redirect, ["header", "main", "footer"]);
+                            Modal.close("#casino-option-lightbox");
                         }
                     }
                 });
