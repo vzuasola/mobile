@@ -3,6 +3,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {Modal} from "@app/assets/script/components/modal";
+import {Redirector} from "@app/assets/script/components/redirector";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
@@ -63,7 +64,8 @@ export class CasinoOptionComponent implements ComponentInterface {
                 this.getPreference(product, (response) => {
                     if (response.preferredProduct && response.redirect) {
                         this.setSelectedOption(response.preferredProduct);
-                        window.location.href = response.redirect;
+
+                        Redirector.redirect(response.redirect);
                     }
                 });
             }
