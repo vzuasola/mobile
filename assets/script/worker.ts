@@ -1,27 +1,20 @@
 declare function importScripts(name: string): any;
 declare var workbox: any;
 
+import * as semver from "@app/web/version.json";
+
+const version = semver.version;
+console.log("Service Worker version: " + version);
+
 importScripts("/wbsw.js");
+workbox.setConfig({ debug: false });
 
-const { strategies } = workbox;
-const cacheKey = "dafabet-mobile-v1.5.1";
-
-// const pages = [
-//     "/",
-//     "/en/",
-// ];
+const {strategies} = workbox;
 
 self.addEventListener("install", (event: any) => {
     const context: any = self;
 
     context.skipWaiting();
-
-    // event.waitUntil(
-    //     caches.open(cacheKey)
-    //         .then((cache) => {
-    //             return cache.addAll(pages);
-    //         }),
-    // );
 });
 
 self.addEventListener("activate", (event: any) => {
@@ -38,46 +31,17 @@ self.addEventListener("activate", (event: any) => {
         }),
     );
 
+    console.log("Doing a service worker activate event");
+
     return context.clients.claim();
 });
-
-// self.addEventListener("fetch", (event: any) => {
-//     const networkFirst = strategies.networkFirst();
-//     event.respondWith(networkFirst.makeRequest({request: event.request}));
-
-//     event.respondWith(
-//         caches.match(event.request)
-//             .then((response) => {
-//                 return response || fetch(event.request);
-//             }),
-//     );
-// });
-
-self.addEventListener("push", (event: any) => {
-    // const context: any = self;
-
-    // const payload = event.data.text();
-    // const time = Date.now();
-
-    // const promiseChain = context.registration.showNotification("Push Notification", {
-    //     body: `Message: ${payload} on time ${time}`,
-    //     data: {
-    //         time,
-    //     },
-    // });
-
-    // event.waitUntil(promiseChain);
-});
-
-// self.addEventListener("notificationclick", (event) => {
-// });
 
 if (workbox) {
     // Cache JS files
     workbox.routing.registerRoute(
         new RegExp(".*\.js"),
         workbox.strategies.networkFirst({
-            cacheName: "js-cache",
+            cacheName: `cache.scripts.${version}`,
         }),
     );
 
@@ -85,7 +49,7 @@ if (workbox) {
     workbox.routing.registerRoute(
         new RegExp("/.*\.css"),
         workbox.strategies.networkFirst({
-            cacheName: "css-cache",
+            cacheName: `cache.cache.${version}`,
         }),
     );
 
@@ -93,7 +57,7 @@ if (workbox) {
     workbox.routing.registerRoute(
         new RegExp("/.*\.(?:png|jpg|jpeg|svg|gif|ico)"),
         workbox.strategies.networkFirst({
-            cacheName: "image-cache",
+            cacheName: `cache.images.${version}`,
             plugins: [
                 new workbox.expiration.Plugin({
                     maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
@@ -106,7 +70,7 @@ if (workbox) {
     workbox.routing.registerRoute(
         new RegExp("/.*"),
         workbox.strategies.networkFirst({
-            cacheName: "page-cache",
+            cacheName: `cache.page.${version}`,
             plugins: [
                 new workbox.expiration.Plugin({
                     maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
@@ -115,3 +79,19 @@ if (workbox) {
         }),
     );
 }
+
+// self.addEventListener("push", (event: any) => {
+//     const context: any = self;
+
+//     const payload = event.data.text();
+//     const time = Date.now();
+
+//     const promiseChain = context.registration.showNotification("Push Notification", {
+//         body: `Message: ${payload} on time ${time}`,
+//         data: {
+//             time,
+//         },
+//     });
+
+//     event.waitUntil(promiseChain);
+// });

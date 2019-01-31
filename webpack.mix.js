@@ -1,5 +1,6 @@
 const mix = require('webpack-mix').mix;
 const path = require('path');
+const VersionPlugin = require('./assets/webpack/version-plugin');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
@@ -7,8 +8,9 @@ mix.webpackConfig({
     plugins: [
         new CleanWebpackPlugin(['web'], {
             verbose: false,
-            exclude: ['app.php', 'index.php', '.htacess', 'data.json', 'en', 'api', 'manifest.json'],
-        })
+            exclude: ['app.php', 'index.php', '.htacess', 'data.json', 'en', 'api', 'manifest.json', 'version.json'],
+        }),
+        new VersionPlugin('web/version.json'),
     ],
 
     module: {

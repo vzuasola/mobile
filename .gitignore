@@ -13,6 +13,7 @@ node_modules/
 !/web/index.php
 !/web/data.json
 !/web/manifest.json
+!/web/version.json
 !/web/.htaccess
 
 # files created by the build process
