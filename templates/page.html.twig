@@ -37,10 +37,6 @@
     {% endblock backtotop %}
 {% endblock footer %}
 
-{% block pwa_home_screen %}
-    {{ widget('pwa_home_screen') }}
-{% endblock pwa_home_screen %}
-
 {% block script %}
     {{ parent() }}
     <script src="{{ asset('app.js') }}"></script>
