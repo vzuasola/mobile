@@ -7,8 +7,6 @@ console.log("Application version: " + Semver.show(version));
 import "promise-polyfill/src/polyfill";
 import "pwacompat";
 
-import * as utility from "@core/assets/js/components/utility";
-
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
@@ -19,9 +17,6 @@ import "./modules";
 import "./loader";
 import "./worker-registration";
 import "./notify";
-
-const version = semver.version;
-console.log("Application version: " + version);
 
 // whenever the bootstrap AJAX receives a redirect, follow it
 ComponentManager.setOption("module-response-handle-redirect", (request: XMLHttpRequest) => {
