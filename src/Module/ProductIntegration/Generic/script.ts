@@ -26,7 +26,7 @@ export class GenericIntegrationModule extends Redirectable implements ModuleInte
                 },
             }).then((response) => {
                 if (typeof response.url !== "undefined") {
-                    Redirector.redirect(response.redirect, () => {
+                    Redirector.redirect(response.url, () => {
                         this.loader.hide();
                     });
 
