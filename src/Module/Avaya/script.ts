@@ -116,7 +116,7 @@ export class AvayaModule implements ModuleInterface {
                 }
 
                 this.avayaLink = updatedUrl;
-                this.windowObject.location.replace(updatedUrl);
+                this.windowObject.location.href = updatedUrl;
             }
         } catch (e) {
             if (url !== this.avayaLink) {
