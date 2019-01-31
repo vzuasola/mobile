@@ -3,6 +3,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Redirector} from "@app/assets/script/components/redirector";
 
 import {Redirectable} from "../scripts/redirectable";
 
@@ -26,7 +27,10 @@ export class GamesIntegrationModule extends Redirectable implements ModuleInterf
             }).then((response) => {
                 if (typeof response.url !== "undefined") {
                     if (utility.isExternal(response.url)) {
-                        window.location.href = response.url;
+                        Redirector.redirect(response.url, () => {
+                            this.loader.hide();
+                        });
+
                         return;
                     }
 

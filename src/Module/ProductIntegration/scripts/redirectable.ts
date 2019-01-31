@@ -5,7 +5,9 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
+
 import {Loader} from "@app/assets/script/components/loader";
+import {Redirector} from "@app/assets/script/components/redirector";
 
 export abstract class Redirectable implements ModuleInterface {
     protected code: string;
@@ -119,14 +121,10 @@ export abstract class Redirectable implements ModuleInterface {
             method: "post",
         }).then((response) => {
             if (typeof response.redirect !== "undefined") {
-                if (navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) {
-                    window.open(response.redirect);
+                Redirector.redirect(response.redirect, () => {
                     this.loader.hide();
+                });
 
-                    return;
-                }
-
-                window.location.href = response.redirect;
                 return;
             }
 

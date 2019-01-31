@@ -3,6 +3,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Redirector} from "@app/assets/script/components/redirector";
 
 import {Redirectable} from "../scripts/redirectable";
 
@@ -25,7 +26,10 @@ export class GenericIntegrationModule extends Redirectable implements ModuleInte
                 },
             }).then((response) => {
                 if (typeof response.url !== "undefined") {
-                    window.location.href = response.url;
+                    Redirector.redirect(response.redirect, () => {
+                        this.loader.hide();
+                    });
+
                     return;
                 }
 
