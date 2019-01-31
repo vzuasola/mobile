@@ -1,7 +1,6 @@
 declare var Notification: any;
 
 import * as utility from "@core/assets/js/components/utility";
-import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 let deferredPrompt;
 
@@ -9,10 +8,6 @@ window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
 
     deferredPrompt = event;
-
-    ComponentManager.subscribe("components.finish", (e, src) => {
-        ComponentManager.broadcast("pwa.show");
-    });
 });
 
 utility.listen(document.body, "click", (event, src) => {
