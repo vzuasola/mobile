@@ -1,10 +1,11 @@
+import * as versioning from "@app/web/version.json";
+import {Semver} from "./components/semver";
+
+const version = versioning.version;
+console.log("Service Worker version: " + Semver.show(version));
+
 declare function importScripts(name: string): any;
 declare var workbox: any;
-
-import * as semver from "@app/web/version.json";
-
-const version = semver.version;
-console.log("Service Worker version: " + version);
 
 importScripts("/wbsw.js");
 workbox.setConfig({ debug: false });

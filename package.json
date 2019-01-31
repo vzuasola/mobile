@@ -12,6 +12,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "clean-webpack-plugin": "^1.0.0",
     "eslint": "^5.10.0",
+    "generate-json-webpack-plugin": "^0.3.1",
     "handlebars": "^4.0.12",
     "handlebars-loader": "^1.7.1",
     "stylus": "^0.54.5",

@@ -1,8 +1,8 @@
 const mix = require('webpack-mix').mix;
 const path = require('path');
-const VersionPlugin = require('./assets/webpack/version-plugin');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 
 mix.webpackConfig({
     plugins: [
@@ -10,7 +10,9 @@ mix.webpackConfig({
             verbose: false,
             exclude: ['app.php', 'index.php', '.htacess', 'data.json', 'en', 'api', 'manifest.json', 'version.json'],
         }),
-        new VersionPlugin('web/version.json'),
+        new GenerateJsonPlugin('version.json', {
+            version: Math.floor(Date.now() / 1000),
+        }),
     ],
 
     module: {
