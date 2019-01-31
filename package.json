@@ -8,21 +8,25 @@
     "tslint": "tslint -c tslint.json **/*.ts"
   },
   "devDependencies": {
-    "@types/handlebars": "^4.0.37",
+    "@types/handlebars": "^4.0.39",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "browser-sync": "^2.23.6",
-    "browser-sync-webpack-plugin": "^2.2.2",
-    "clean-webpack-plugin": "^0.1.19",
-    "eslint": "^4.19.1",
-    "handlebars": "^4.0.11",
-    "handlebars-loader": "^1.7.0",
-    "ts-loader": "^3.5.0",
-    "tslint": "^5.9.1",
+    "clean-webpack-plugin": "^1.0.0",
+    "eslint": "^5.10.0",
+    "generate-json-webpack-plugin": "^0.3.1",
+    "handlebars": "^4.0.12",
+    "handlebars-loader": "^1.7.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "ts-loader": "^3.0.0",
+    "tslint": "^5.12.0",
     "tslint-loader": "^3.6.0",
-    "typescript": "^2.8.1",
+    "typescript": "^3.2.2",
     "webpack-mix": "^2.0.2"
   },
   "dependencies": {
-    "promise-polyfill": "^7.1.2"
+    "bowser": "^2.1.0",
+    "promise-polyfill": "^7.1.2",
+    "pwacompat": "^2.0.7",
+    "workbox-sw": "^3.6.3"
   }
 }

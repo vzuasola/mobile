@@ -3,6 +3,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Redirector} from "@app/assets/script/components/redirector";
 
 import {Redirectable} from "../scripts/redirectable";
 
@@ -24,9 +25,15 @@ export class CasinoIntegrationModule extends Redirectable implements ModuleInter
             if (response.success) {
                 // redirect to URL
                 if (response.redirect) {
-                    if (utility.isExternal(response.redirect)
-                        || response.preferredProduct === "casino_gold") {
-                        window.location.href = decodeURIComponent(response.redirect).replace(/\\/g, "");
+                    if (utility.isExternal(response.redirect) ||
+                        response.preferredProduct === "casino_gold"
+                    ) {
+                        const url = decodeURIComponent(response.redirect).replace(/\\/g, "");
+
+                        Redirector.redirect(url, () => {
+                            this.loader.hide();
+                        });
+
                         return;
                     }
 

@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
-import PopupWindow from "@core/assets/js/components/utils/popup";
+import PopupWindow from "@app/assets/script/components/popup";
 
 import {Avaya} from "./scripts/avaya";
 
@@ -116,12 +116,12 @@ export class AvayaModule implements ModuleInterface {
                 }
 
                 this.avayaLink = updatedUrl;
-                this.windowObject.location.replace(updatedUrl);
+                this.windowObject.location.href = updatedUrl;
             }
         } catch (e) {
             if (url !== this.avayaLink) {
                 this.avayaLink = url;
-                this.windowObject.location.replace(url);
+                this.windowObject.location.href = url;
             }
 
             if (this.windowObject) {
