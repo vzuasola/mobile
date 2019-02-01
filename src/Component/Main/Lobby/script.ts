@@ -12,7 +12,7 @@ export class LobbyComponent implements ComponentInterface {
     private loader: Loader;
     private isLogin: boolean = false;
     private productAlias: any;
-    private productDirectIntegration: any;
+    private productDirectIntegration: any = [];
 
     constructor() {
         this.loader = new Loader(document.body, true);
