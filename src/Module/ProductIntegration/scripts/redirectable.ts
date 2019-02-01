@@ -112,15 +112,13 @@ export abstract class Redirectable implements ModuleInterface {
                 const el: HTMLElement = data.srcElement
                     .querySelector(`[data-product-instance-id="${data.productCode}"]`);
                 if (el && el.getAttribute("data-product-integration-id") === this.code) {
-                    if (el) {
-                        setTimeout(() => {
-                            ComponentManager.broadcast("redirectable.set.product", {
-                                product: el.getAttribute("data-product-integration-id"),
-                                src: el,
-                            });
-                        }, 500);
-                        return;
-                    }
+                    setTimeout(() => {
+                        ComponentManager.broadcast("redirectable.set.product", {
+                            product: el.getAttribute("data-product-integration-id"),
+                            src: el,
+                        });
+                    }, 500);
+                    return;
 
                     ComponentManager.broadcast("header.login");
                 }
