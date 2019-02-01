@@ -106,6 +106,26 @@ export abstract class Redirectable implements ModuleInterface {
                 }
             }
         });
+
+        ComponentManager.subscribe("integrate.product", (event, src, data) => {
+            if (data && typeof data.srcElement !== "undefined") {
+                const el: HTMLElement = data.srcElement
+                    .querySelector(`[data-product-instance-id="${data.productCode}"]`);
+                if (el && el.getAttribute("data-product-integration-id") === this.code) {
+                    if (el) {
+                        setTimeout(() => {
+                            ComponentManager.broadcast("redirectable.set.product", {
+                                product: el.getAttribute("data-product-integration-id"),
+                                src: el,
+                            });
+                        }, 500);
+                        return;
+                    }
+
+                    ComponentManager.broadcast("header.login");
+                }
+            }
+        });
     }
 
     protected doRequest(src) {

@@ -35,6 +35,7 @@ export class LobbyComponent implements ComponentInterface {
             this.isLogin = false;
         });
         this.doLoginProcess(element);
+        this.integrateSports(element);
     }
 
     onReload(
@@ -47,6 +48,7 @@ export class LobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.productAlias = attachments.product_alias;
         this.doLoginProcess(element);
+        this.integrateSports(element);
     }
 
     private doLoginProcess(element) {
@@ -63,6 +65,13 @@ export class LobbyComponent implements ComponentInterface {
             }
 
             ComponentManager.broadcast("direct.login", {srcElement: element, productCode});
+        }
+    }
+
+    private integrateSports(element) {
+
+        if (this.productAlias.sports.includes(Router.route().substring(1))) {
+            ComponentManager.broadcast("integrate.product", {srcElement: element, productCode: "sports"});
         }
     }
 }
