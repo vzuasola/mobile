@@ -119,8 +119,6 @@ export abstract class Redirectable implements ModuleInterface {
                         });
                     }, 500);
                     return;
-
-                    ComponentManager.broadcast("header.login");
                 }
             }
         });
