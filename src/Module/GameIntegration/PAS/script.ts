@@ -2,7 +2,7 @@ import * as Promise from "promise-polyfill";
 
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
-import PopupWindow from "@core/assets/js/components/utils/popup";
+import PopupWindow from "@app/assets/script/components/popup";
 
 import Storage from "@core/assets/js/components/utils/storage";
 

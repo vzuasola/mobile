@@ -63,12 +63,6 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\CasinoLobby\CasinoLobbyComponent
     parent: lobby
 
-  session:
-    class: App\MobileEntry\Component\Main\Session\SessionComponent
-
-  session_legacy:
-    class: App\MobileEntry\Component\Main\SessionLegacy\SessionLegacyComponent
-
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
 
@@ -124,6 +118,9 @@ components:
 
   backtotop:
     class: App\MobileEntry\Component\Backtotop\BacktotopComponent
+
+  pwa_home_screen:
+    class: App\MobileEntry\Component\PWA\PWAHomeScreenComponent
 
 # Define modules
 modules:
