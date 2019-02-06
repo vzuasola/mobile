@@ -1,3 +1,5 @@
+import * as Promise from "promise-polyfill";
+
 import * as utility from "@core/assets/js/components/utility";
 import Swipe from "@app/assets/script/components/custom-touch/swipe";
 import * as Handlebars from "handlebars/runtime";
@@ -55,6 +57,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
+            configs: any[],
+            pagerConfig: any[],
             infinite_scroll: boolean,
         }) {
         this.response = null;
@@ -87,6 +91,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenOnCloseFilter();
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
+        console.log(this.attachments);
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -99,6 +104,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
+            configs: any[],
+            pagerConfig: any[],
             infinite_scroll: boolean,
         }) {
         if (!this.element) {
@@ -187,6 +194,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             url: Router.generateRoute("games_lobby", "lobby"),
             type: "json",
         }).then((response) => {
+            console.log(response);
             response.games = this.getCategoryGames(response.games);
             response.games = this.groupGamesByContainer(response.games);
             response.categories = this.filterCategories(response.categories, response.games);
