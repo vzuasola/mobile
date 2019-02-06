@@ -10,17 +10,14 @@ routes:
             enabled: true
             expires: 1800
 
-    /session:
+    /manifest.json:
         method: GET
-        action: App\MobileEntry\Controller\SessionController:view
-        components:
-            main: session
-
-    /session/legacy:
-        method: GET
-        action: App\MobileEntry\Controller\SessionController:view
-        components:
-            main: session_legacy
+        action: App\MobileEntry\Controller\ManifestController:view
+        headers:
+            Cache-Control: public, max-age=1800
+        page_cache:
+            enabled: true
+            expires: 1800
 
     /login:
         method: GET

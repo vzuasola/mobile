@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
-import PopupWindow from "@core/assets/js/components/utils/popup";
+import PopupWindow from "@app/assets/script/components/popup";
 
 import {Avaya} from "./scripts/avaya";
 
@@ -22,6 +22,8 @@ export class AvayaModule implements ModuleInterface {
     private options: any = {};
     private prevUrl: string;
     private baseUrl: string;
+    private urlQryStr: false;
+    private dataSrc: false;
 
     onLoad(attachments: {
         baseUrl: string,
@@ -90,19 +92,36 @@ export class AvayaModule implements ModuleInterface {
     private updatePopupWindow(url) {
         try {
             url = this.attachProduct(url);
+
+            let updatedUrl = url;
+
             if (this.windowObject.location.href !== "about:blank" &&
                 url === this.avayaLink &&
                 !this.windowObject.closed
             ) {
                 this.windowObject.focus();
             } else {
-                this.avayaLink = url;
-                this.windowObject.location.replace(url);
+                if (this.urlQryStr) {
+                    const checkUrl = url.indexOf("?");
+
+                    if (checkUrl !== -1) {
+                        updatedUrl = url + "&" + this.urlQryStr;
+                    } else {
+                        updatedUrl = url + "?" + this.urlQryStr;
+                    }
+                }
+
+                if (this.dataSrc) {
+                    updatedUrl = updatedUrl.replace("mc-desktop", this.dataSrc);
+                }
+
+                this.avayaLink = updatedUrl;
+                this.windowObject.location.href = updatedUrl;
             }
         } catch (e) {
             if (url !== this.avayaLink) {
                 this.avayaLink = url;
-                this.windowObject.location.replace(url);
+                this.windowObject.location.href = url;
             }
 
             if (this.windowObject) {
@@ -131,7 +150,7 @@ export class AvayaModule implements ModuleInterface {
                 const href = el.getAttribute("href");
 
                 if (href) {
-                    return href.indexOf("linkto:avaya") !== -1;
+                    return href.indexOf("linkto:avaya") !== -1 || el.getAttribute("data-avayalink") === "true";
                 }
             }
         });
@@ -139,6 +158,9 @@ export class AvayaModule implements ModuleInterface {
         // Check if the link should be changed to avaya link
         if (target) {
             event.preventDefault();
+
+            this.urlQryStr = target.getAttribute("data-parameters") || false;
+            this.dataSrc = target.getAttribute("data-src") || false;
 
             target = utility.getParameterByName("target", target.href);
             target = target || this.openBehavior;
