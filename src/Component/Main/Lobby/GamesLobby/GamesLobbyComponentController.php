@@ -79,7 +79,7 @@ class GamesLobbyComponentController
     public function lobby($request, $response)
     {
         $query = $request->getQueryParams();
-        $page = '';
+        $page = null;
         if (isset($query['page'])) {
             $page = $query['page'];
         }
