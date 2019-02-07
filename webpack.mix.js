@@ -1,4 +1,4 @@
-const mix = require('webpack-mix').mix;
+const mix = require('laravel-mix');
 const path = require('path');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -71,4 +71,4 @@ mix
     .babel('node_modules/workbox-sw/build/workbox-sw.js', 'web/wbsw.js')
     .sass('assets/sass/app.scss', 'web/')
     .version()
-;
+    ;
