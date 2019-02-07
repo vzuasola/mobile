@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "bowser": "^2.1.0",
+    "es6-shim": "^0.35.4",
     "promise-polyfill": "^7.1.2",
     "pwacompat": "^2.0.7",
     "workbox-sw": "^3.6.3"

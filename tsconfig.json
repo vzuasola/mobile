@@ -2,7 +2,8 @@
     "compilerOptions": {
         "target": "ES5",
         "lib": ["dom", "es5", "scripthost", "es2015"],
-        "module": "commonjs",
+        "module": "es2015",
+        "moduleResolution": "node",
         "noImplicitAny": false,
         "removeComments": true,
         "preserveConstEnums": true,
