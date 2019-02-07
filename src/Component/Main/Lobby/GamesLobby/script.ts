@@ -267,24 +267,6 @@ export class GamesLobbyComponent implements ComponentInterface {
                 console.log(error);
             });
         }
-
-        // xhr({
-        //     url: Router.generateRoute("games_lobby", "lobby"),
-        //     type: "json",
-        // }).then((response) => {
-            // response.games = this.getCategoryGames(response.games);
-            // response.games = this.groupGamesByContainer(response.games);
-            // response.categories = this.filterCategories(response.categories, response.games);
-
-            // this.response = response;
-
-            // if (callback) {
-            //     callback();
-            // }
-
-        // }).fail((error, message) => {
-        //     console.log(error);
-        // });
     }
 
     private lobby() {
