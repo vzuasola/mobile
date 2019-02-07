@@ -63,6 +63,15 @@ if (!mix.inProduction()) {
     }).sourceMaps();
 }
 
+mix.options({
+    terser: {
+        terserOptions: {
+            safari10: true,
+            mangle: false,
+        }
+    },
+});
+
 mix
     .setPublicPath('web')
     .copy('assets/images', 'web/images')
@@ -71,4 +80,5 @@ mix
     .babel('node_modules/workbox-sw/build/workbox-sw.js', 'web/wbsw.js')
     .sass('assets/sass/app.scss', 'web/')
     .version()
-    ;
+;
+
