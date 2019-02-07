@@ -141,9 +141,9 @@ class GamesLobbyComponentController
 
         $allGames = $this->views->getViewById(
             'games_list',
-                [
-                    'page' => (string) $page,
-                ]
+            [
+                'page' => (string) $page,
+            ]
         );
 
         $specialCategories = [];
