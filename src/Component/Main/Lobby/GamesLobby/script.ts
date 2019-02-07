@@ -92,7 +92,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenOnCloseFilter();
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
-        console.log(this.attachments);
     }
 
     onReload(element: HTMLElement, attachments: {
