@@ -1,3 +1,5 @@
+import * as Promise from "promise-polyfill";
+
 import * as utility from "@core/assets/js/components/utility";
 import Swipe from "@app/assets/script/components/custom-touch/swipe";
 import * as Handlebars from "handlebars/runtime";
@@ -38,6 +40,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private product: any[];
     private searchResults;
     private filterFlag: string;
+    private state: boolean;
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -55,6 +58,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
+            configs: any[],
+            pagerConfig: any[],
             infinite_scroll: boolean,
         }) {
         this.response = null;
@@ -99,6 +104,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
+            configs: any[],
+            pagerConfig: any[],
             infinite_scroll: boolean,
         }) {
         if (!this.element) {
@@ -180,26 +187,86 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     /**
+     * Determines if all xhr succesfully loaded
+     */
+    private checkPromiseState(list, current, fn) {
+        const index = list.indexOf(current);
+
+        if (index > -1) {
+            list.splice(index, 1);
+        }
+
+        if (list.length === 0) {
+            fn();
+        }
+    }
+
+    private getPagerPromises() {
+        const promises = [];
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            promises.push("pager" + page);
+        }
+        return promises;
+    }
+
+    private mergeResponsePromises(responses) {
+        const promises: any = {
+            games: {},
+        };
+
+        const gamesList = {};
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            if (responses.hasOwnProperty("pager" + page)) {
+                const response = responses["pager" + page];
+                Object.assign(promises, response);
+                for (const id in response.games["all-games"]) {
+                    if (response.games["all-games"].hasOwnProperty(id)) {
+                        const game = response.games["all-games"][id];
+                        if (!gamesList[id]) {
+                            gamesList[id] = game;
+                        }
+                    }
+                }
+            }
+        }
+
+        promises.games["all-games"] = gamesList;
+
+        return promises;
+    }
+
+    /**
      * Request games lobby to games lobby component controller lobby method
      */
     private doRequest(callback) {
-        xhr({
-            url: Router.generateRoute("games_lobby", "lobby"),
-            type: "json",
-        }).then((response) => {
-            response.games = this.getCategoryGames(response.games);
-            response.games = this.groupGamesByContainer(response.games);
-            response.categories = this.filterCategories(response.categories, response.games);
+        const promises = this.getPagerPromises();
+        const pageResponse: {} = {};
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            let uri = Router.generateRoute("games_lobby", "lobby");
+            uri = utility.addQueryParam(uri, "page", page.toString());
+            xhr({
+                url: uri,
+                type: "json",
+            }).then((response) => {
+                pageResponse["pager" + page] = response;
 
-            this.response = response;
+                this.checkPromiseState(promises, "pager" + page, () => {
+                    const mergeResponse = this.mergeResponsePromises(pageResponse);
 
-            if (callback) {
-                callback();
-            }
+                    mergeResponse.games = this.getCategoryGames(mergeResponse.games);
+                    mergeResponse.games = this.groupGamesByContainer(mergeResponse.games);
+                    mergeResponse.categories = this.filterCategories(mergeResponse.categories, mergeResponse.games);
 
-        }).fail((error, message) => {
-            console.log(error);
-        });
+                    this.response = mergeResponse;
+
+                    if (callback) {
+                        callback();
+                    }
+                });
+            }).fail((error, message) => {
+                console.log(error);
+            });
+        }
     }
 
     private lobby() {
