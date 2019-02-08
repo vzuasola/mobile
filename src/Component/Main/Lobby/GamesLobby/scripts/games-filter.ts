@@ -153,7 +153,6 @@ export class GamesFilter {
     private onClickClearFilters(src) {
         if (src.getAttribute("name") === "filter-reset") {
             this.clearFilters();
-            this.enabledFilters = [];
         }
 
         if (src.getAttribute("name") === "filter-submit") {

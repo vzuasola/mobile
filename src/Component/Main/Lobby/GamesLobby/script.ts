@@ -297,7 +297,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         const template = categoriesTemplate({
             categories: data,
             active: key,
-            configs: this.response.configs,
+            configs: this.attachments.configs,
         });
 
         if (categoriesEl) {
@@ -891,6 +891,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenOnCloseFilter() {
         ComponentManager.subscribe("games.reload", (event: Event, src, data) => {
             this.setLobby();
+            console.log("test");
             ComponentManager.broadcast("category.change");
         });
     }
