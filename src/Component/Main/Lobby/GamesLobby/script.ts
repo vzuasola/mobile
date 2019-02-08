@@ -297,7 +297,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         const template = categoriesTemplate({
             categories: data,
             active: key,
-            configs: this.response.configs,
+            configs: this.attachments.configs,
         });
 
         if (categoriesEl) {
