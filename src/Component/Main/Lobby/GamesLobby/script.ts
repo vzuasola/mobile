@@ -891,7 +891,6 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenOnCloseFilter() {
         ComponentManager.subscribe("games.reload", (event: Event, src, data) => {
             this.setLobby();
-            console.log("test");
             ComponentManager.broadcast("category.change");
         });
     }
