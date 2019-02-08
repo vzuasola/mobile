@@ -215,9 +215,9 @@ export class GamesLobbyComponent implements ComponentInterface {
         };
 
         const gamesList = {};
-        for (const page in responses) {
-            if (responses.hasOwnProperty(page)) {
-                const response = responses[page];
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            if (responses.hasOwnProperty("pager" + page)) {
+                const response = responses["pager" + page];
                 Object.assign(promises, response);
                 for (const id in response.games["all-games"]) {
                     if (response.games["all-games"].hasOwnProperty(id)) {
@@ -229,6 +229,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 }
             }
         }
+
         promises.games["all-games"] = gamesList;
 
         return promises;
