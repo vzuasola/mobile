@@ -81,7 +81,61 @@ class CasinoLobbyComponentController
     public function lobby($request, $response)
     {
         $previewMode = $request->getQueryParams();
+        $data = $this->getLobbyData();
 
+        if (!isset($previewMode['pvw'])) {
+            $data['games'] = $this->removeGamesPreviewMode($data['games']);
+        }
+
+        $enableRecommended = false;
+        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
+        $data['enableRecommended'] = $enableRecommended;
+
+        unset($data['categories_list']);
+        unset($data['special_categories']);
+
+        return $this->rest->output($response, $data);
+    }
+
+    public function recent($request, $response)
+    {
+        $gameCode = $request->getParsedBody();
+        if (isset($gameCode['gameCode'])) {
+            $result = $this->setRecentlyPlayedGames($gameCode['gameCode']);
+            return $this->rest->output($response, $result);
+        }
+    }
+
+    public function favorite($request, $response)
+    {
+        $gameCode = $request->getParsedBody();
+        if (isset($gameCode['gameCode'])) {
+            $result = $this->toggleFavoriteGames($gameCode['gameCode']);
+            return $this->rest->output($response, $result);
+        }
+    }
+
+    public function specialGames($request, $response) {
+        $data = $this->getLobbyData();
+        $specialCategoryGames = [];
+        $result = [];
+        if (isset($data['special_categories'])) {
+            $specialGamesList = $this->getSpecialCategoriesGameList($data['special_categories']);
+            if (isset($specialGamesList['favorites'])) {
+                $result['favorite_list'] = $this->getFavoriteGamesList($specialGamesList['favorites']);
+            }
+            $gamesData = $data['games'] + $specialGamesList;
+
+            $result['special_games'] = $this->getSpecialGamesbyCategory(
+                $data['special_categories'],
+                $gamesData
+            );
+        }
+
+        return $this->rest->output($response, $result);
+    }
+
+    private function getLobbyData() {
         $item = $this->cacher->getItem('views.casino-lobby-data.' . $this->currentLanguage);
 
         if (!$item->isHit()) {
@@ -100,31 +154,7 @@ class CasinoLobbyComponentController
             $data = $body['body'];
         }
 
-        // Put post process here to get favorites and recents tab
-        $specialGamesList = $this->getSpecialCategoriesGameList($data['special_categories']);
-
-        $gamesData = $data['games'] + $specialGamesList;
-
-        $specialCategoryGames = $this->getSpecialGamesbyCategory(
-            $data['special_categories'],
-            $gamesData
-        );
-        $data['games'] += $specialCategoryGames;
-        if (!isset($previewMode['pvw'])) {
-            $data['games'] = $this->removeGamesPreviewMode($data['games']);
-        }
-
-        $enableRecommended = false;
-        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
-        $data['enableRecommended'] = $enableRecommended;
-
-        if (isset($specialGamesList['favorites'])) {
-            $data['favorite_list'] = $this->getFavoriteGamesList($specialGamesList['favorites']);
-        }
-        unset($data['categories_list']);
-        unset($data['special_categories']);
-
-        return $this->rest->output($response, $data);
+        return $data;
     }
 
     private function generateLobbyData()
@@ -145,24 +175,6 @@ class CasinoLobbyComponentController
         );
 
         return $data;
-    }
-
-    public function recent($request, $response)
-    {
-        $gameCode = $request->getParsedBody();
-        if (isset($gameCode['gameCode'])) {
-            $result = $this->setRecentlyPlayedGames($gameCode['gameCode']);
-            return $this->rest->output($response, $result);
-        }
-    }
-
-    public function favorite($request, $response)
-    {
-        $gameCode = $request->getParsedBody();
-        if (isset($gameCode['gameCode'])) {
-            $result = $this->toggleFavoriteGames($gameCode['gameCode']);
-            return $this->rest->output($response, $result);
-        }
     }
 
     private function removeGamesPreviewMode($gamesCollection)
@@ -248,34 +260,16 @@ class CasinoLobbyComponentController
     }
 
     /**
-     * Get list of all games
-     */
-    private function getAllGames($games)
-    {
-        try {
-            foreach ($games as $game) {
-                $allGames[$game['game_code']] = $game;
-            }
-        } catch (\Exception $e) {
-            $allGames = [];
-        }
-
-        return $allGames;
-    }
-
-    /**
      * Get games for special categories
      */
     private function getSpecialGamesbyCategory($specialCategories, $data)
     {
-        $allGames = $this->getAllGames($data['all-games']);
         $gamesList = [];
         foreach ($specialCategories as $category) {
             switch ($category['field_games_alias']) {
                 case $this::RECENTLY_PLAYED_GAMES:
                     if (isset($data['recently-played'])) {
-                        $games = $this->getRecentlyPlayedGames($allGames, $data['recently-played']);
-
+                        $games = $this->getRecentlyPlayedGames($data[$this::ALL_GAMES], $data[$this::RECENTLY_PLAYED_GAMES]);
                         if ($games) {
                             $gamesList[$category['field_games_alias']] = $games;
                         }
@@ -284,7 +278,7 @@ class CasinoLobbyComponentController
                     break;
                 case $this::FAVORITE_GAMES:
                     if (isset($data['favorites'])) {
-                        $games = $this->getFavoriteGames($allGames, $data['favorites']);
+                        $games = $this->getFavoriteGames($data[$this::ALL_GAMES], $data[$this::FAVORITE_GAMES]);
 
                         if ($games) {
                             $gamesList[$category['field_games_alias']] = $games;
@@ -326,8 +320,9 @@ class CasinoLobbyComponentController
                 }
                 if (is_array($favGames) && count($favGames) > 0) {
                     foreach ($favGames as $gameCode) {
-                        if (array_key_exists($gameCode['id'], $games)) {
-                            $gameList[] = $games[$gameCode['id']];
+                        $gameId = 'id:'. $gameCode['id'];
+                        if (array_key_exists($gameId, $games)) {
+                            $gameList[] = $games[$gameId];
                         }
                     }
                 }
@@ -388,8 +383,9 @@ class CasinoLobbyComponentController
                 usort($recentlyPlayed, [$this, 'sortRecentGames']);
                 if (is_array($recentlyPlayed) && count($recentlyPlayed) > 0) {
                     foreach ($recentlyPlayed as $gameCode) {
-                        if (array_key_exists($gameCode['id'], $games)) {
-                            $gameList[] = $games[$gameCode['id']];
+                        $gameId = 'id:'. $gameCode['id'];
+                        if (array_key_exists($gameId, $games)) {
+                            $gameList[] = $games[$gameId];
                         }
                     }
                 }
