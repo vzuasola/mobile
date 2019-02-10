@@ -65,6 +65,7 @@ export class Profile extends FormBase {
 
     private getUserData() {
         const user = this.attachments.user;
+        console.log("user", user);
 
         return {
             firstname: user.first_name,
@@ -134,7 +135,8 @@ export class Profile extends FormBase {
                         || (this.mobiles.mobile === this.form.MyProfileForm_mobile_number_1.value))
                 ? this.attachments.user.mobile_number_1
                 : this.form.MyProfileForm_mobile_number_1.value,
-            mobile1: (this.mobiles.mobile1 === this.form.MyProfileForm_mobile_number_2.value)
+            mobile1: (this.attachments.user.sms_2_verified
+                        || (this.mobiles.mobile1 === this.form.MyProfileForm_mobile_number_2.value))
                 ? this.attachments.user.mobile_number_2
                 : this.form.MyProfileForm_mobile_number_2.value,
             address: this.form.MyProfileForm_address.value,
