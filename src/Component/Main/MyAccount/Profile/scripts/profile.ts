@@ -65,7 +65,6 @@ export class Profile extends FormBase {
 
     private getUserData() {
         const user = this.attachments.user;
-        console.log("user", user);
 
         return {
             firstname: user.first_name,
