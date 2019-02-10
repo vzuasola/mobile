@@ -130,10 +130,12 @@ export class Profile extends FormBase {
             language: visual
                 ? this.getLanguageText()
                 : languageField.value,
-            mobile: (this.mobiles.mobile === this.form.MyProfileForm_mobile_number_1.value)
+            mobile: (this.attachments.user.sms_1_verified
+                        || (this.mobiles.mobile === this.form.MyProfileForm_mobile_number_1.value))
                 ? this.attachments.user.mobile_number_1
                 : this.form.MyProfileForm_mobile_number_1.value,
-            mobile1: (this.mobiles.mobile1 === this.form.MyProfileForm_mobile_number_2.value)
+            mobile1: (this.attachments.user.sms_2_verified
+                        || (this.mobiles.mobile1 === this.form.MyProfileForm_mobile_number_2.value))
                 ? this.attachments.user.mobile_number_2
                 : this.form.MyProfileForm_mobile_number_2.value,
             address: this.form.MyProfileForm_address.value,
@@ -208,6 +210,7 @@ export class Profile extends FormBase {
                 if (!validateMobile) {
                     return false;
                 }
+
                 if (this.hasChanges()) {
                     const profileChangesContainer = this.element.querySelector(this.modalSelector + " .changes");
                     const data: any = this.getFilteredDifference(this.oldValues, this.getValues(true));
