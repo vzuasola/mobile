@@ -36,7 +36,7 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
-        $this->views = $views;
+        $this->views = $views->withProduct($product->getProduct());
     }
 
     /**
@@ -47,6 +47,7 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
         try {
             $config = $this->configs->getConfig('games_search.search_configuration');
             $gtsGeneralConfig = $this->configs->getConfig('gts.gts_configuration');
+            $pager = $this->views->getViewById('games_list', ['pager' => 1]);
         } catch (\Exception $e) {
             $config = [];
         }
@@ -61,6 +62,8 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
             'title_weight' => $config['title_weight'] ?? 0,
             'keywords_weight' => $config['keywords_weight'] ?? 0,
             'product' => $this->getProductIntegration(),
+            'configs' => $gtsGeneralConfig ?? [],
+            'pagerConfig' => $pager ?? [],
             'infinite_scroll' => $gtsGeneralConfig['gts_lobby_infinite_scroll'] ?? true
         ];
     }
