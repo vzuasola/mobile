@@ -214,25 +214,44 @@ export class GamesLobbyComponent implements ComponentInterface {
             games: {},
         };
 
-        const gamesList = {};
+        const keys = ["all-games", "favorites", "recently-played"];
+
+        const gamesList = {
+            "all-games": {},
+            "favorites": {},
+            "recently-played": {},
+        };
+
         for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
             if (responses.hasOwnProperty("pager" + page)) {
                 const response = responses["pager" + page];
                 Object.assign(promises, response);
-                for (const id in response.games["all-games"]) {
-                    if (response.games["all-games"].hasOwnProperty(id)) {
-                        const game = response.games["all-games"][id];
-                        if (!gamesList[id]) {
-                            gamesList[id] = game;
-                        }
+                for (const key of keys) {
+                    if (typeof response.games[key] !== "undefined") {
+                        gamesList[key] = this.getGamesList(key, response.games[key], gamesList[key]);
                     }
                 }
             }
         }
 
-        promises.games["all-games"] = gamesList;
+        promises.games = gamesList;
 
         return promises;
+    }
+
+    private getGamesList(key, list, gamesList) {
+        for (const id in list) {
+            if (list.hasOwnProperty(id)) {
+                const game = list[id];
+                if (key !== "all-games") {
+                    gamesList[Object.keys(gamesList).length] = game;
+                }
+                if (!gamesList[id]) {
+                    gamesList[id] = game;
+                }
+            }
+        }
+        return gamesList;
     }
 
     /**
@@ -253,12 +272,14 @@ export class GamesLobbyComponent implements ComponentInterface {
                 this.checkPromiseState(promises, "pager" + page, () => {
                     const mergeResponse = this.mergeResponsePromises(pageResponse);
 
-                    mergeResponse.games = this.getCategoryGames(mergeResponse.games);
-                    mergeResponse.games = this.groupGamesByContainer(mergeResponse.games);
-                    mergeResponse.categories = this.filterCategories(mergeResponse.categories, mergeResponse.games);
+                    // clone respone object
+                    const newResponse = Object.assign({}, mergeResponse);
 
-                    this.response = mergeResponse;
+                    newResponse.games = this.getCategoryGames(newResponse.games);
+                    newResponse.games = this.groupGamesByContainer(newResponse.games);
+                    newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
 
+                    this.response = newResponse;
                     if (callback) {
                         callback();
                     }
