@@ -38,7 +38,6 @@ class ForgotUsernameComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-
         $config = $this->configFetcher->getConfigById('cant_login');
         $headerConfig = $this->configFetcher->getConfigById('my_account_header');
 
