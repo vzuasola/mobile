@@ -258,12 +258,13 @@ class GamesLobbyComponentController
     {
         try {
             foreach ($games as $game) {
-                $allGames[$game['game_code']] = $game;
+                if (isset($game['game_code'])) {
+                    $allGames[$game['game_code']] = $game;
+                }
             }
         } catch (\Exception $e) {
             $allGames = [];
         }
-
         return $allGames;
     }
 
@@ -289,7 +290,6 @@ class GamesLobbyComponentController
                 case $this::FAVORITE_GAMES:
                     if (isset($data['favorites'])) {
                         $games = $this->getFavoriteGames($allGames, $data['favorites']);
-
                         if ($games) {
                             $gamesList[$category] = $games;
                         }
