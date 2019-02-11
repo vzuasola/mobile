@@ -273,11 +273,13 @@ class CasinoLobbyComponentController
     {
         $gamesList = [];
         foreach ($specialCategories as $category) {
-            switch ($category['field_games_alias']){
+            switch ($category['field_games_alias']) {
                 case $this::RECENTLY_PLAYED_GAMES:
                     if (isset($data['recently-played'])) {
-                        $games = $this->getRecentlyPlayedGames($data[$this::ALL_GAMES],
-                            $data[$this::RECENTLY_PLAYED_GAMES]);
+                        $games = $this->getRecentlyPlayedGames(
+                            $data[$this::ALL_GAMES],
+                            $data[$this::RECENTLY_PLAYED_GAMES]
+                        );
                         if ($games) {
                             $gamesList[$category['field_games_alias']] = $games;
                         }
