@@ -118,6 +118,7 @@ class CasinoLobbyComponentController
     public function specialGames($request, $response) {
         $data = $this->getLobbyData();
         $specialCategoryGames = [];
+        $previewMode = $request->getQueryParams();
         $result = [];
         if (isset($data['special_categories'])) {
             $specialGamesList = $this->getSpecialCategoriesGameList($data['special_categories']);
@@ -130,6 +131,10 @@ class CasinoLobbyComponentController
                 $data['special_categories'],
                 $gamesData
             );
+
+            if (!isset($previewMode['pvw'])) {
+                $result['special_games'] = $this->removeGamesPreviewMode($result['special_games']);
+            }
         }
 
         return $this->rest->output($response, $result);
