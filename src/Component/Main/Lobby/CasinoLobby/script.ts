@@ -170,26 +170,56 @@ export class CasinoLobbyComponent implements ComponentInterface {
     }
 
     /**
-     * Request games lobby to games lobby component controller lobby method
+     * Request list of favorites and recent games
      */
-    private doRequest(callback) {
+    private doGetSpecialGames(callback, lobbyCallback) {
         xhr({
-            url: Router.generateRoute("casino_lobby", "lobby"),
+            url: Router.generateRoute("casino_lobby", "specialGames"),
             type: "json",
         }).then((response) => {
-            response.games = this.getCategoryGames(response.games);
-            response.games = this.groupGamesByContainer(response.games);
-            response.categories = this.filterCategories(response.categories, response.games);
-
-            this.response = response;
-
             if (callback) {
-                callback();
+                callback(response, lobbyCallback);
             }
 
         }).fail((error, message) => {
             console.log(error);
         });
+    }
+
+    /**
+     * Request games lobby to games lobby component controller lobby method
+     */
+    private doRequest(callback) {
+        this.doGetSpecialGames((specialGamesList, lobbyCallback) => {
+            xhr({
+                url: Router.generateRoute("casino_lobby", "lobby"),
+                type: "json",
+            }).then((response) => {
+                const games = [];
+                if (specialGamesList && specialGamesList.hasOwnProperty("special_games")) {
+                    for (const category in specialGamesList.special_games) {
+                        if (specialGamesList.special_games.hasOwnProperty(category)) {
+                            games[category] = specialGamesList.special_games[category];
+                        }
+                    }
+                }
+                if (specialGamesList && specialGamesList.hasOwnProperty("favorite_list")) {
+                    response.favorite_list = specialGamesList.favorite_list;
+                }
+                games["all-games"] = response.games["all-games"];
+                response.games = this.getCategoryGames(games);
+                response.games = this.groupGamesByContainer(response.games);
+                response.categories = this.filterCategories(response.categories, response.games);
+
+                this.response = response;
+                if (lobbyCallback) {
+                    lobbyCallback();
+                }
+
+            }).fail((error, message) => {
+                console.log(error);
+            });
+        }, callback);
     }
 
     private lobby() {

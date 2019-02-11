@@ -114,6 +114,15 @@ routes:
             enabled: true
             expires: 1800
 
+    /api/plugins/component/route/casino_lobby/lobby:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: private, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+
     /api/plugins/component/route/header/logout:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
