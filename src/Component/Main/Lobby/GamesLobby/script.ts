@@ -1,3 +1,5 @@
+import * as Promise from "promise-polyfill";
+
 import * as utility from "@core/assets/js/components/utility";
 import Swipe from "@app/assets/script/components/custom-touch/swipe";
 import * as Handlebars from "handlebars/runtime";
@@ -38,6 +40,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private product: any[];
     private searchResults;
     private filterFlag: string;
+    private state: boolean;
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -55,6 +58,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
+            configs: any[],
+            pagerConfig: any[],
             infinite_scroll: boolean,
         }) {
         this.response = null;
@@ -99,6 +104,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
+            configs: any[],
+            pagerConfig: any[],
             infinite_scroll: boolean,
         }) {
         if (!this.element) {
@@ -180,26 +187,107 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     /**
+     * Determines if all xhr succesfully loaded
+     */
+    private checkPromiseState(list, current, fn) {
+        const index = list.indexOf(current);
+
+        if (index > -1) {
+            list.splice(index, 1);
+        }
+
+        if (list.length === 0) {
+            fn();
+        }
+    }
+
+    private getPagerPromises() {
+        const promises = [];
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            promises.push("pager" + page);
+        }
+        return promises;
+    }
+
+    private mergeResponsePromises(responses) {
+        const promises: any = {
+            games: {},
+        };
+
+        const keys = ["all-games", "favorites", "recently-played"];
+
+        const gamesList = {
+            "all-games": {},
+            "favorites": {},
+            "recently-played": {},
+        };
+
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            if (responses.hasOwnProperty("pager" + page)) {
+                const response = responses["pager" + page];
+                Object.assign(promises, response);
+                for (const key of keys) {
+                    if (typeof response.games[key] !== "undefined") {
+                        gamesList[key] = this.getGamesList(key, response.games[key], gamesList[key]);
+                    }
+                }
+            }
+        }
+
+        promises.games = gamesList;
+
+        return promises;
+    }
+
+    private getGamesList(key, list, gamesList) {
+        for (const id in list) {
+            if (list.hasOwnProperty(id)) {
+                const game = list[id];
+                if (key !== "all-games") {
+                    gamesList[Object.keys(gamesList).length] = game;
+                }
+                if (!gamesList[id]) {
+                    gamesList[id] = game;
+                }
+            }
+        }
+        return gamesList;
+    }
+
+    /**
      * Request games lobby to games lobby component controller lobby method
      */
     private doRequest(callback) {
-        xhr({
-            url: Router.generateRoute("games_lobby", "lobby"),
-            type: "json",
-        }).then((response) => {
-            response.games = this.getCategoryGames(response.games);
-            response.games = this.groupGamesByContainer(response.games);
-            response.categories = this.filterCategories(response.categories, response.games);
+        const promises = this.getPagerPromises();
+        const pageResponse: {} = {};
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            let uri = Router.generateRoute("games_lobby", "lobby");
+            uri = utility.addQueryParam(uri, "page", page.toString());
+            xhr({
+                url: uri,
+                type: "json",
+            }).then((response) => {
+                pageResponse["pager" + page] = response;
 
-            this.response = response;
+                this.checkPromiseState(promises, "pager" + page, () => {
+                    const mergeResponse = this.mergeResponsePromises(pageResponse);
 
-            if (callback) {
-                callback();
-            }
+                    // clone respone object
+                    const newResponse = Object.assign({}, mergeResponse);
 
-        }).fail((error, message) => {
-            console.log(error);
-        });
+                    newResponse.games = this.getCategoryGames(newResponse.games);
+                    newResponse.games = this.groupGamesByContainer(newResponse.games);
+                    newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
+
+                    this.response = newResponse;
+                    if (callback) {
+                        callback();
+                    }
+                });
+            }).fail((error, message) => {
+                console.log(error);
+            });
+        }
     }
 
     private lobby() {
@@ -230,7 +318,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         const template = categoriesTemplate({
             categories: data,
             active: key,
-            configs: this.response.configs,
+            configs: this.attachments.configs,
         });
 
         if (categoriesEl) {

@@ -78,11 +78,15 @@ class GamesLobbyComponentController
 
     public function lobby($request, $response)
     {
-        $previewMode = $request->getQueryParams();
-        $item = $this->cacher->getItem('views.games-lobby-data.' . $this->currentLanguage);
+        $query = $request->getQueryParams();
+        $page = null;
+        if (isset($query['page'])) {
+            $page = $query['page'];
+        }
+        $item = $this->cacher->getItem('views.games-lobby-data.' . $page . $this->currentLanguage);
 
         if (!$item->isHit()) {
-            $data = $this->generateLobbyData();
+            $data = $this->generatePageLobbyData($page);
 
             $item->set([
                 'body' => $data,
@@ -112,7 +116,7 @@ class GamesLobbyComponentController
         );
         $data['games'] += $specialCategoryGames;
 
-        if (!isset($previewMode['pvw'])) {
+        if (!isset($query['pvw'])) {
             $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
 
@@ -129,17 +133,18 @@ class GamesLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
-    private function generateLobbyData()
+    private function generatePageLobbyData($page)
     {
         $data = [];
 
         $categories = $this->views->getViewById('games_category');
-        $pager = $this->views->getViewById('games_list', ['pager' => 1]);
 
-        $definitions = $this->getDefinitions($pager);
-
-        $asyncData = Async::resolve($definitions);
-        $asyncData = $this->buildAllGames($asyncData);
+        $allGames = $this->views->getViewById(
+            'games_list',
+            [
+                'page' => (string) $page,
+            ]
+        );
 
         $specialCategories = [];
         $specialCategories = $this->getSpecialCategories($categories);
@@ -147,23 +152,9 @@ class GamesLobbyComponentController
         $data['special_categories'] = $specialCategories;
         $data['categories_list'] = $categories;
         $data['games'] = $this->getGamesAndCategory(
-            $asyncData['all-games']
+            $allGames
         );
 
-        $data['configs'] = $asyncData['configs'];
-
-        return $data;
-    }
-
-    private function buildAllGames($data)
-    {
-        if (!$data['all-games']) {
-            foreach ($data['paged-games'] as $key => $value) {
-                if (is_numeric($key)) {
-                    $data['all-games'] = array_merge($data['all-games'], $value);
-                }
-            }
-        }
         return $data;
     }
 
@@ -224,42 +215,6 @@ class GamesLobbyComponentController
         return $definitions;
     }
 
-    private function getDefinitions($pager)
-    {
-        $definitions = [];
-
-        try {
-            $definitions['configs'] = $this->configAsync->getConfig('gts.gts_configuration');
-            $definitions['all-games'] = $this->viewsAsync->getViewById('games_list');
-            if ($pager['total_pages'] > 1) {
-                $definitions['all-games'] = [];
-
-                $items = [];
-
-                for ($ctr = 0; $ctr < $pager['total_pages']; $ctr++) {
-                    $items[$ctr] = $this->viewsAsync->getViewById(
-                        'games_list',
-                        [
-                            'page' => (string) $ctr,
-                        ]
-                    );
-                }
-
-                $definitions['paged-games'] = new DefinitionCollection(
-                    $items,
-                    [],
-                    function ($result) {
-                        return $result;
-                    }
-                );
-            }
-        } catch (\Exception $e) {
-            $definitions = [];
-        }
-
-        return $definitions;
-    }
-
     private function groupGamesByContainer($games, $group = 1)
     {
         $gamesList = [];
@@ -303,12 +258,13 @@ class GamesLobbyComponentController
     {
         try {
             foreach ($games as $game) {
-                $allGames[$game['game_code']] = $game;
+                if (isset($game['game_code'])) {
+                    $allGames[$game['game_code']] = $game;
+                }
             }
         } catch (\Exception $e) {
             $allGames = [];
         }
-
         return $allGames;
     }
 
@@ -334,7 +290,6 @@ class GamesLobbyComponentController
                 case $this::FAVORITE_GAMES:
                     if (isset($data['favorites'])) {
                         $games = $this->getFavoriteGames($allGames, $data['favorites']);
-
                         if ($games) {
                             $gamesList[$category] = $games;
                         }
