@@ -38,9 +38,15 @@ class ForgotUsernameComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-
         $config = $this->configFetcher->getConfigById('cant_login');
+        $headerConfig = $this->configFetcher->getConfigById('my_account_header');
+
         $integrationError = Config::parse($config['cant_login_response_mapping']) ?? '';
+        $midError = $headerConfig['error_mid_down'] ?? '';
+
+        $integrationError = array_merge($integrationError, [
+            'ERROR_MID_DOWN' => $midError
+        ]);
 
         return [
             'messages' => $integrationError
