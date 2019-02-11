@@ -101,21 +101,6 @@ class GamesLobbyComponentController
             $data = $body['body'];
         }
 
-        // Put post process here to get favorites and recents tab
-        $specialCategories = [
-                $this::RECENTLY_PLAYED_GAMES,
-                $this::FAVORITE_GAMES
-        ];
-        $specialGamesList = $this->getSpecialCategoriesGameList($specialCategories);
-
-        $gamesData = $data['games'] + $specialGamesList;
-
-        $specialCategoryGames = $this->getSpecialGamesbyCategory(
-            $specialCategories,
-            $gamesData
-        );
-        $data['games'] += $specialCategoryGames;
-
         if (!isset($query['pvw'])) {
             $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
@@ -124,11 +109,48 @@ class GamesLobbyComponentController
         $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
         $data['enableRecommended'] = $enableRecommended;
 
-        if (isset($specialGamesList['favorites'])) {
-            $data['favorite_list'] = $this->getFavoriteGamesList($specialGamesList['favorites']);
-        }
         unset($data['categories_list']);
         unset($data['special_categories']);
+
+        return $this->rest->output($response, $data);
+    }
+
+    public function getFavorites($request, $response)
+    {
+        $data = [];
+         if ($this->playerSession->isLogin()) {
+            try {
+                $favoritesGamesList = $this->getSpecialCategoriesGameList([$this::FAVORITE_GAMES]);
+                $favoritesGamesList = $this->proccessSpecialGames($favoritesGamesList[$this::FAVORITE_GAMES]);
+                usort($favoritesGamesList, [$this, 'sortRecentGames']);
+
+                foreach ($favoritesGamesList as $games) {
+                    $data[] = $games['id'];
+                }
+            } catch (\Exception $e) {
+                $data = [];
+            }
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    public function getRecentlyPlayed($request, $response)
+    {
+        $data = [];
+         if ($this->playerSession->isLogin()) {
+            try {
+                $recentGamesList = $this->getSpecialCategoriesGameList([$this::RECENTLY_PLAYED_GAMES]);
+                $recentGamesList = $this->proccessSpecialGames($recentGamesList[$this::RECENTLY_PLAYED_GAMES]);
+                usort($recentGamesList, [$this, 'sortRecentGames']);
+
+                foreach ($recentGamesList as $games) {
+                    $data[] = $games['id'];
+                }
+            } catch (\Exception $e) {
+                $data = [];
+            }
+        }
 
         return $this->rest->output($response, $data);
     }
@@ -249,57 +271,6 @@ class GamesLobbyComponentController
         }
 
         return $specialCategories;
-    }
-
-    /**
-     * Get list of all games
-     */
-    private function getAllGames($games)
-    {
-        try {
-            foreach ($games as $game) {
-                if (isset($game['game_code'])) {
-                    $allGames[$game['game_code']] = $game;
-                }
-            }
-        } catch (\Exception $e) {
-            $allGames = [];
-        }
-        return $allGames;
-    }
-
-    /**
-     * Get games for special categories
-     */
-    private function getSpecialGamesbyCategory($specialCategories, $data)
-    {
-        $allGames = $this->getAllGames($data['all-games']);
-        $gamesList = [];
-        foreach ($specialCategories as $category) {
-            switch ($category) {
-                case $this::RECENTLY_PLAYED_GAMES:
-                    if (isset($data['recently-played'])) {
-                        $games = $this->getRecentlyPlayedGames($allGames, $data['recently-played']);
-
-                        if ($games) {
-                            $gamesList[$category] = $games;
-                        }
-                    }
-
-                    break;
-                case $this::FAVORITE_GAMES:
-                    if (isset($data['favorites'])) {
-                        $games = $this->getFavoriteGames($allGames, $data['favorites']);
-                        if ($games) {
-                            $gamesList[$category] = $games;
-                        }
-                    }
-
-                    break;
-            }
-        }
-
-        return $gamesList;
     }
 
     /**
@@ -486,41 +457,13 @@ class GamesLobbyComponentController
         return $gameList;
     }
 
-    /**
-     * Get favorite games
-     */
-    private function getFavoriteGames($games, $favGames)
-    {
-        try {
-            $gameList = [];
-            if ($this->playerSession->isLogin()) {
-                $favGames = $this->proccessSpecialGames($favGames);
-                if ($favGames) {
-                    usort($favGames, [$this, 'sortRecentGames']);
-                }
-                if (is_array($favGames) && count($favGames) > 0) {
-                    foreach ($favGames as $gameCode) {
-                        if (array_key_exists($gameCode['id'], $games)) {
-                            $gameList[] = $games[$gameCode['id']];
-                        }
-                    }
-                }
-            }
-            return $gameList;
-        } catch (\Exception $e) {
-            return [];
-        }
-
-        return $gameList;
-    }
-
     private function proccessSpecialGames($games)
     {
         try {
             $gameList = [];
             if (is_array($games) && count($games) >= 1) {
                 foreach ($games as $key => $timestamp) {
-                    $gameList[$key]['id'] = $key;
+                    $gameList[$key]['id'] = 'id:' . $key;
                     $gameList[$key]['timestamp'] = $timestamp;
                 }
 
@@ -566,33 +509,6 @@ class GamesLobbyComponentController
         }
 
         return $response;
-    }
-
-
-    /**
-     * Get recently played games
-     */
-    private function getRecentlyPlayedGames($games, $recentlyPlayed)
-    {
-        try {
-            $gameList = [];
-            if ($this->playerSession->isLogin()) {
-                $recentlyPlayed = $this->proccessSpecialGames($recentlyPlayed);
-                usort($recentlyPlayed, [$this, 'sortRecentGames']);
-                if (is_array($recentlyPlayed) && count($recentlyPlayed) > 0) {
-                    foreach ($recentlyPlayed as $gameCode) {
-                        if (array_key_exists($gameCode['id'], $games)) {
-                            $gameList[] = $games[$gameCode['id']];
-                        }
-                    }
-                }
-            }
-            return $gameList;
-        } catch (\Exception $e) {
-            return [];
-        }
-
-        return $gameList;
     }
 
     /**

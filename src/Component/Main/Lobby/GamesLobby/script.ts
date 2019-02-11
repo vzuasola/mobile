@@ -206,6 +206,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
             promises.push("pager" + page);
         }
+        promises.push("recent");
+        promises.push("fav");
         return promises;
     }
 
@@ -214,7 +216,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             games: {},
         };
 
-        const keys = ["all-games", "favorites", "recently-played"];
+        const key = "all-games";
 
         const gamesList = {
             "all-games": {},
@@ -226,12 +228,23 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (responses.hasOwnProperty("pager" + page)) {
                 const response = responses["pager" + page];
                 Object.assign(promises, response);
-                for (const key of keys) {
-                    if (typeof response.games[key] !== "undefined") {
-                        gamesList[key] = this.getGamesList(key, response.games[key], gamesList[key]);
-                    }
+                if (typeof response.games["all-games"] !== "undefined") {
+                    gamesList[key] = this.getGamesList(
+                        key,
+                        response.games[key],
+                        gamesList[key],
+                    );
                 }
             }
+        }
+        console.log(responses);
+        if (responses.hasOwnProperty("fav")) {
+            const keyfav = "favorites";
+            gamesList[keyfav] = this.getGamesDefinition(responses.fav, gamesList[key]);
+        }
+
+        if (responses.hasOwnProperty("recent")) {
+            gamesList["recently-played"] = this.getGamesDefinition(responses.recent, gamesList[key]);
         }
 
         promises.games = gamesList;
@@ -254,40 +267,89 @@ export class GamesLobbyComponent implements ComponentInterface {
         return gamesList;
     }
 
+    private getGamesDefinition(gamesList, allGames) {
+        const games = [];
+        for (const id of gamesList) {
+            if (allGames.hasOwnProperty(id)) {
+               games.push(allGames[id]);
+            }
+        }
+
+        return games;
+    }
+
+    private getFavoritesList(favorites) {
+        const favoritesList = {};
+        for (const id of favorites) {
+            favoritesList[id] = "active";
+        }
+
+        return favoritesList;
+    }
+
     /**
      * Request games lobby to games lobby component controller lobby method
      */
     private doRequest(callback) {
         const promises = this.getPagerPromises();
+        const lobbyRequests = this.createRequest();
         const pageResponse: {} = {};
-        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
-            let uri = Router.generateRoute("games_lobby", "lobby");
-            uri = utility.addQueryParam(uri, "page", page.toString());
-            xhr({
-                url: uri,
-                type: "json",
-            }).then((response) => {
-                pageResponse["pager" + page] = response;
+        console.log(lobbyRequests);
+        for (const id in lobbyRequests) {
+            if (lobbyRequests.hasOwnProperty(id)) {
+                const currentRequest = lobbyRequests[id];
+                let uri = Router.generateRoute("games_lobby", currentRequest.type);
+                if (currentRequest.hasOwnProperty("page")) {
+                    uri = utility.addQueryParam(uri, "page", currentRequest.page.toString());
+                }
+                xhr({
+                    url: uri,
+                    type: "json",
+                }).then((response) => {
+                    pageResponse[id] = response;
 
-                this.checkPromiseState(promises, "pager" + page, () => {
-                    const mergeResponse = this.mergeResponsePromises(pageResponse);
+                    this.checkPromiseState(promises, id, () => {
+                        const mergeResponse = this.mergeResponsePromises(pageResponse);
 
-                    // clone respone object
-                    const newResponse = Object.assign({}, mergeResponse);
+                        // clone respone object
+                        const newResponse = Object.assign({}, mergeResponse);
 
-                    newResponse.games = this.getCategoryGames(newResponse.games);
-                    newResponse.games = this.groupGamesByContainer(newResponse.games);
-                    newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
-
-                    this.response = newResponse;
-                    if (callback) {
-                        callback();
-                    }
+                        newResponse.games = this.getCategoryGames(newResponse.games);
+                        newResponse.games = this.groupGamesByContainer(newResponse.games);
+                        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
+                        if (pageResponse.hasOwnProperty("fav")) {
+                            newResponse.favorite_list = this.getFavoritesList(pageResponse["fav"]);
+                        }
+                        console.log(newResponse);
+                        this.response = newResponse;
+                        if (callback) {
+                            callback();
+                        }
+                    });
+                }).fail((error, message) => {
+                    console.log(error);
                 });
-            }).fail((error, message) => {
-                console.log(error);
-            });
+            }
         }
+    }
+
+    private createRequest() {
+        const req: any = {};
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            req["pager" + page] = {
+                type: "lobby",
+                page,
+            };
+        }
+
+        req.recent = {
+            type: "getRecentlyPlayed",
+        };
+        req.fav = {
+            type: "getFavorites",
+        };
+
+        return req;
     }
 
     private lobby() {
