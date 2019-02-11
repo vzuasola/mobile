@@ -292,11 +292,6 @@ class MyAccountComponentController
         try {
             $this->userFetcher->setPlayerDetails($playerDetails);
             $this->subscription->setSubscription($receiveNews);
-        } catch (ServerDownException $e) {
-            return $this->rest->output($response, [
-                'success' => false,
-                'status' => 'ERROR_MID_DOWN'
-            ]);
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
