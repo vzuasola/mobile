@@ -115,7 +115,8 @@ class CasinoLobbyComponentController
         }
     }
 
-    public function specialGames($request, $response) {
+    public function specialGames($request, $response)
+    {
         $data = $this->getLobbyData();
         $specialCategoryGames = [];
         $previewMode = $request->getQueryParams();
@@ -140,7 +141,8 @@ class CasinoLobbyComponentController
         return $this->rest->output($response, $result);
     }
 
-    private function getLobbyData() {
+    private function getLobbyData()
+    {
         $item = $this->cacher->getItem('views.casino-lobby-data.' . $this->currentLanguage);
 
         if (!$item->isHit()) {
@@ -271,10 +273,11 @@ class CasinoLobbyComponentController
     {
         $gamesList = [];
         foreach ($specialCategories as $category) {
-            switch ($category['field_games_alias']) {
+            switch ($category['field_games_alias']){
                 case $this::RECENTLY_PLAYED_GAMES:
                     if (isset($data['recently-played'])) {
-                        $games = $this->getRecentlyPlayedGames($data[$this::ALL_GAMES], $data[$this::RECENTLY_PLAYED_GAMES]);
+                        $games = $this->getRecentlyPlayedGames($data[$this::ALL_GAMES],
+                            $data[$this::RECENTLY_PLAYED_GAMES]);
                         if ($games) {
                             $gamesList[$category['field_games_alias']] = $games;
                         }
