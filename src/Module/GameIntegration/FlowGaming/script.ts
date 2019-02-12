@@ -109,13 +109,17 @@ export class FlowGamingModule implements ModuleInterface, GameInterface {
             ) {
                 this.windowObject.focus();
             } else {
-                this.gameLink = url;
-                this.windowObject.location.href = url;
+                setTimeout(() => {
+                    this.gameLink = url;
+                    this.windowObject.location.href = url;
+                }, 500);
             }
         } catch (e) {
             if (url !== this.gameLink) {
-                this.gameLink = url;
-                this.windowObject.location.href = url;
+                setTimeout(() => {
+                    this.gameLink = url;
+                    this.windowObject.location.href = url;
+                }, 500);
             }
 
             if (this.windowObject) {
