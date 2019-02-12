@@ -112,14 +112,14 @@ export class FlowGamingModule implements ModuleInterface, GameInterface {
                 setTimeout(() => {
                     this.gameLink = url;
                     this.windowObject.location.href = url;
-                }, 200);
+                }, 500);
             }
         } catch (e) {
             if (url !== this.gameLink) {
                 setTimeout(() => {
                     this.gameLink = url;
                     this.windowObject.location.href = url;
-                }, 200);
+                }, 500);
             }
 
             if (this.windowObject) {
