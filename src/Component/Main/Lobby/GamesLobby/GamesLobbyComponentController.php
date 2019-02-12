@@ -118,18 +118,16 @@ class GamesLobbyComponentController
     public function getFavorites($request, $response)
     {
         $data = [];
-         if ($this->playerSession->isLogin()) {
-            try {
-                $favoritesGamesList = $this->getSpecialCategoriesGameList([$this::FAVORITE_GAMES]);
-                $favoritesGamesList = $this->proccessSpecialGames($favoritesGamesList[$this::FAVORITE_GAMES]);
-                usort($favoritesGamesList, [$this, 'sortRecentGames']);
+        try {
+            $favoritesGamesList = $this->getSpecialCategoriesGameList([$this::FAVORITE_GAMES]);
+            $favoritesGamesList = $this->proccessSpecialGames($favoritesGamesList[$this::FAVORITE_GAMES]);
+            usort($favoritesGamesList, [$this, 'sortRecentGames']);
 
-                foreach ($favoritesGamesList as $games) {
-                    $data[] = $games['id'];
-                }
-            } catch (\Exception $e) {
-                $data = [];
+            foreach ($favoritesGamesList as $games) {
+                $data[] = 'id:' . $games['id'];
             }
+        } catch (\Exception $e) {
+            $data = [];
         }
 
         return $this->rest->output($response, $data);
@@ -138,18 +136,16 @@ class GamesLobbyComponentController
     public function getRecentlyPlayed($request, $response)
     {
         $data = [];
-         if ($this->playerSession->isLogin()) {
-            try {
-                $recentGamesList = $this->getSpecialCategoriesGameList([$this::RECENTLY_PLAYED_GAMES]);
-                $recentGamesList = $this->proccessSpecialGames($recentGamesList[$this::RECENTLY_PLAYED_GAMES]);
-                usort($recentGamesList, [$this, 'sortRecentGames']);
+        try {
+            $recentGamesList = $this->getSpecialCategoriesGameList([$this::RECENTLY_PLAYED_GAMES]);
+            $recentGamesList = $this->proccessSpecialGames($recentGamesList[$this::RECENTLY_PLAYED_GAMES]);
+            usort($recentGamesList, [$this, 'sortRecentGames']);
 
-                foreach ($recentGamesList as $games) {
-                    $data[] = $games['id'];
-                }
-            } catch (\Exception $e) {
-                $data = [];
+            foreach ($recentGamesList as $games) {
+                $data[] = 'id:' . $games['id'];
             }
+        } catch (\Exception $e) {
+            $data = [];
         }
 
         return $this->rest->output($response, $data);
@@ -463,7 +459,7 @@ class GamesLobbyComponentController
             $gameList = [];
             if (is_array($games) && count($games) >= 1) {
                 foreach ($games as $key => $timestamp) {
-                    $gameList[$key]['id'] = 'id:' . $key;
+                    $gameList[$key]['id'] = $key;
                     $gameList[$key]['timestamp'] = $timestamp;
                 }
 

@@ -195,7 +195,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         if (index > -1) {
             list.splice(index, 1);
         }
-
         if (list.length === 0) {
             fn();
         }
@@ -237,7 +236,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 }
             }
         }
-        console.log(responses);
+
         if (responses.hasOwnProperty("fav")) {
             const keyfav = "favorites";
             gamesList[keyfav] = this.getGamesDefinition(responses.fav, gamesList[key]);
@@ -281,7 +280,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private getFavoritesList(favorites) {
         const favoritesList = {};
         for (const id of favorites) {
-            favoritesList[id] = "active";
+            favoritesList[id.substr(3)] = "active";
         }
 
         return favoritesList;
@@ -294,7 +293,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         const promises = this.getPagerPromises();
         const lobbyRequests = this.createRequest();
         const pageResponse: {} = {};
-        console.log(lobbyRequests);
         for (const id in lobbyRequests) {
             if (lobbyRequests.hasOwnProperty(id)) {
                 const currentRequest = lobbyRequests[id];
@@ -318,9 +316,10 @@ export class GamesLobbyComponent implements ComponentInterface {
                         newResponse.games = this.groupGamesByContainer(newResponse.games);
                         newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
                         if (pageResponse.hasOwnProperty("fav")) {
-                            newResponse.favorite_list = this.getFavoritesList(pageResponse["fav"]);
+                            const key = "fav";
+                            const favoritesList = pageResponse[key];
+                            newResponse.favorite_list = this.getFavoritesList(favoritesList);
                         }
-                        console.log(newResponse);
                         this.response = newResponse;
                         if (callback) {
                             callback();
