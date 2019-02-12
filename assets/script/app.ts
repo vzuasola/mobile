@@ -37,6 +37,16 @@ ComponentManager.setOption("module-response-handle-error", (request: XMLHttpRequ
     // handle additional error scenario here
 });
 
+ComponentManager.subscribe("components.reload", (event, src, data) => {
+    const page = data.response.getResponseHeader("x-page-error-type");
+
+    if (page === "maintenance") {
+        window.location.replace("/maintenance");
+    } else if (page === "restricted") {
+        window.location.replace("/restricted");
+    }
+});
+
 Router.setOption(
     "main-components",
     ["header", "main", "menu", "footer", "language", "push_notification", "marketing", "seo", "announcement"],
