@@ -103,22 +103,28 @@ export class FlowGamingModule implements ModuleInterface, GameInterface {
 
     private updatePopupWindow(url) {
         try {
+            alert(this.windowObject.location.href);
             if (this.windowObject.location.href !== "about:blank" &&
                 url === this.gameLink &&
                 !this.windowObject.closed
             ) {
+                alert("1");
                 this.windowObject.focus();
             } else {
+                alert("2");
                 this.gameLink = url;
                 this.windowObject.location.href = url;
             }
         } catch (e) {
+            alert(e);
             if (url !== this.gameLink) {
+                alert("4");
                 this.gameLink = url;
                 this.windowObject.location.href = url;
             }
 
             if (this.windowObject) {
+                alert("5");
                 this.windowObject.focus();
             }
         }
