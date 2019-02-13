@@ -24,19 +24,30 @@ class ResponseCache extends Base
     protected function getCacheKey($request)
     {
         $uri = $this->request->getUri();
+        $params = [];
 
         $base = $uri->getBaseUrl();
         $path = $uri->getPath();
 
         $url = trim($base . $path, '/');
+        $widget = $this->request->getQueryParam('component-data-widget');
+        $page = $this->request->getQueryParam('page');
+        $pvw = $this->request->getQueryParam('pvw');
+        if ($widget) {
+            $params['component-data-widget'] = $widget;
+        }
 
-        $params = [
-            'component-data-widget' => $this->request->getQueryParam('component-data-widget'),
-            'page' => $this->request->getQueryParam('page'),
-            'pvw' => $this->request->getQueryParam('pvw')
-        ];
+        if ($page) {
+            $params['page'] = $page;
+        }
 
-        $url = "$url?" . http_build_query($params);
+        if ($pvw) {
+            $params['pvw'] = $pvw;
+        }
+
+        if (count($params)) {
+            $url = "$url?" . http_build_query($params);
+        }
 
         return md5($url);
     }
