@@ -30,11 +30,13 @@ class ResponseCache extends Base
 
         $url = trim($base . $path, '/');
 
-        $widget = $this->request->getQueryParam('component-data-widget');
+        $params = [
+            'component-data-widget' => $this->request->getQueryParam('component-data-widget'),
+            'page' => $this->request->getQueryParam('page'),
+            'pvw' => $this->request->getQueryParam('pvw')
+        ];
 
-        if ($widget) {
-            $url = "$url?component-data-widget=$widget";
-        }
+        $url = "$url?" . http_build_query($params);
 
         return md5($url);
     }
