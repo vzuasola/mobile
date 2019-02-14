@@ -48,6 +48,9 @@ class VerifyPasswordComponentScripts implements ComponentAttachmentInterface
     {
         $generalConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
         $messageConfig = $this->configFetcher->getConfigById('my_account_profile_server_side_mapping');
+        $headerConfig = $this->configFetcher->getConfigById('my_account_header');
+        $midError = $headerConfig['error_mid_down'] ?? '';
+
         $user = $this->userFetcher->getPlayerDetails();
         $isFastReg = false;
 
@@ -61,9 +64,15 @@ class VerifyPasswordComponentScripts implements ComponentAttachmentInterface
             $isFastReg = true;
         }
 
+        $integrationError = Config::parse($messageConfig['server_side_mapping']) ?? '';
+
+        $integrationError = array_merge($integrationError, [
+            'ERROR_MID_DOWN' => $midError
+        ]);
+
         return [
             'messageTimeout' => $generalConfig['message_timeout'] ?? 5,
-            'messages' => Config::parse($messageConfig['server_side_mapping']) ?? '',
+            'messages' => $integrationError,
             'isFastReg' => $isFastReg
         ];
     }
