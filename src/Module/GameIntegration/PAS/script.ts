@@ -413,12 +413,12 @@ export class PASModule implements ModuleInterface, GameInterface {
                 this.windowObject.focus();
             } else {
                 this.gameLink = url;
-                this.windowObject.location.replace(url);
+                this.windowObject.location.href = url;
             }
         } catch (e) {
             if (url !== this.gameLink) {
                 this.gameLink = url;
-                this.windowObject.location.replace(url);
+                this.windowObject.location.href = url;
             }
 
             if (this.windowObject) {

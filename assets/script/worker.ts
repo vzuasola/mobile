@@ -50,7 +50,7 @@ if (workbox) {
     workbox.routing.registerRoute(
         new RegExp("/.*\.css"),
         workbox.strategies.networkFirst({
-            cacheName: `cache.cache.${version}`,
+            cacheName: `cache.styles.${version}`,
         }),
     );
 
