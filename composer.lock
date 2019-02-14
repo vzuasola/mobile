@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a8c7a5a45f7eb80c261dad8f80e4b5f",
+    "content-hash": "fca43c91865abe8b849b421a75e05be2",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -2974,7 +2974,7 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-working",
+            "version": "dev-release-v1.126.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
