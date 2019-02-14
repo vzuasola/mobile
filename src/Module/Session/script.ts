@@ -10,6 +10,7 @@ export class SessionModule implements ModuleInterface {
     private isSessionStarted: boolean = false;
     private isLogin: boolean = false;
     private hash: string;
+    private hasLogout: boolean = false;
 
     onLoad(attachments: {authenticated: boolean, timeout: number, hash: string}) {
         const timeout = attachments.timeout ? attachments.timeout : 15;
@@ -36,6 +37,7 @@ export class SessionModule implements ModuleInterface {
 
         ComponentManager.subscribe("session.logout", (event, src) => {
             this.isLogin = false;
+            this.hasLogout = true;
         });
 
         // allow us to transform the Router generated urls with a query
@@ -48,6 +50,10 @@ export class SessionModule implements ModuleInterface {
                 if (this.hash) {
                     url = utility.addQueryParam(url, "hash", this.hash);
                 }
+            }
+
+            if (this.hasLogout) {
+                url = utility.addQueryParam(url, "authenticated", "false");
             }
 
             const affiliates = utility.getCookie("affiliates");
