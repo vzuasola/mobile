@@ -88,6 +88,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                 url: utility.addQueryParam(uri, "username", user),
             }).then((response) => {
                 let ctr = 0;
+                const promises = [];
                 for (const key in this.iapiConfs) {
                     if (this.iapiConfs.hasOwnProperty(key)) {
                         this.isGold = response.provisioned;
@@ -96,23 +97,40 @@ export class PASModule implements ModuleInterface, GameInterface {
                         }
 
                         ++ ctr;
+                        const promise = () => {
+                            return new Promise((resolvePromise, rejectPromise) => {
+                                setTimeout(() => {
+                                    iapiConf = this.iapiConfs[key];
 
-                        setTimeout(() => {
-                            iapiConf = this.iapiConfs[key];
-                            iapiLogin(user, password, real, language);
-
-                            // Set the callback for the PAS login
-                            iapiSetCallout("Login", this.onLogin(user, resolve));
-                        }, 1.5 * 500 * ctr);
+                                    // Set the callback for the PAS login
+                                    console.log("callout");
+                                    iapiSetCallout("Login", this.onLogin(user, resolvePromise));
+                                    console.log("logoin");
+                                    iapiLogin(user, password, real, language);
+                                    // after n seconds, nothing still happen, I'll let the other
+                                    // hooks to proceed
+                                    setTimeout(() => {
+                                        resolvePromise();
+                                    }, 10 * 1000);
+                                }, 1.5 * 500 * ctr);
+                            });
+                        };
+                        promises.push(promise);
                     }
                 }
+
+                const lastPromise = () => {
+                    return new Promise((prom, rej) => {
+                        resolve();
+                        prom();
+                    });
+                };
+
+                promises.push(lastPromise);
+
+                this.sync.executeWithArgs(promises, []);
             });
 
-            // after n seconds, nothing still happen, I'll let the other
-            // hooks to proceed
-            setTimeout(() => {
-                resolve();
-            }, 10 * 1000);
         });
     }
 
@@ -312,6 +330,7 @@ export class PASModule implements ModuleInterface, GameInterface {
      */
     private onLogin(username, resolve) {
         return (response) => {
+            console.log(response);
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
                 this.store.set(this.sessionFlag, "1");
