@@ -103,9 +103,8 @@ export class PASModule implements ModuleInterface, GameInterface {
                                     iapiConf = this.iapiConfs[key];
 
                                     // Set the callback for the PAS login
-                                    console.log("callout");
                                     iapiSetCallout("Login", this.onLogin(user, resolvePromise));
-                                    console.log("logoin");
+
                                     iapiLogin(user, password, real, language);
                                     // after n seconds, nothing still happen, I'll let the other
                                     // hooks to proceed
@@ -330,7 +329,6 @@ export class PASModule implements ModuleInterface, GameInterface {
      */
     private onLogin(username, resolve) {
         return (response) => {
-            console.log(response);
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
                 this.store.set(this.sessionFlag, "1");
