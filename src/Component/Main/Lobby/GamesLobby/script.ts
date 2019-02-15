@@ -207,6 +207,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
         promises.push("recent");
         promises.push("fav");
+        promises.push("games-collection");
         return promises;
     }
 
@@ -214,7 +215,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         const promises: any = {
             games: {},
         };
-
+        let gamesDictionary = [];
         const key = "all-games";
 
         const gamesList = {
@@ -236,6 +237,10 @@ export class GamesLobbyComponent implements ComponentInterface {
                 }
             }
         }
+        if (responses["games-collection"].hasOwnProperty("top")) {
+            gamesDictionary = this.getGamesDictionary(gamesList[key]);
+            gamesList[key] = this.sortAllGames(responses["games-collection"].top, gamesDictionary, gamesList[key]);
+        }
 
         if (responses.hasOwnProperty("fav")) {
             const keyfav = "favorites";
@@ -250,7 +255,16 @@ export class GamesLobbyComponent implements ComponentInterface {
 
         return promises;
     }
+    private getGamesDictionary(gamesList) {
+        const gamesDictionary = [];
+        for (const gamesId in gamesList) {
+            if (gamesList.hasOwnProperty(gamesId)) {
+                gamesDictionary.push(gamesList[gamesId]);
+            }
+        }
 
+        return gamesDictionary;
+    }
     private getGamesList(key, list, gamesList) {
         for (const id in list) {
             if (list.hasOwnProperty(id)) {
@@ -284,6 +298,45 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
 
         return favoritesList;
+    }
+
+    /**
+     * Sorts all games based on top games collection
+     */
+    private sortAllGames(gamesCollection, gamesListArr, gamesListObj) {
+        const sortedCollection = [];
+        const sortedAlpha = [];
+        let sortedAlphaArr = [];
+
+        for (const id of gamesCollection) {
+            if (gamesListObj.hasOwnProperty(id)) {
+               sortedCollection[id] = gamesListObj[id];
+            }
+        }
+
+        sortedAlphaArr = this.sortGameTitleAlphabetical(gamesListArr);
+        for (const game of sortedAlphaArr) {
+            if (!sortedCollection.hasOwnProperty("id:" + game.game_code)) {
+                sortedAlpha["id:" + game.game_code] = game;
+            }
+        }
+
+        return Object.assign(sortedCollection, sortedAlpha);
+    }
+
+    private sortGameTitleAlphabetical(gamesList) {
+        gamesList.sort((a, b) => {
+            if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                return -1;
+            }
+            if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                return 1;
+            }
+
+            return 0;
+        });
+
+        return gamesList;
     }
 
     /**
@@ -346,6 +399,9 @@ export class GamesLobbyComponent implements ComponentInterface {
         };
         req.fav = {
             type: "getFavorites",
+        };
+        req["games-collection"] = {
+            type: "getGamesCollection",
         };
 
         return req;
