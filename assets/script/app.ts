@@ -38,7 +38,10 @@ ComponentManager.setOption("module-response-handle-error", (request: XMLHttpRequ
 });
 
 ComponentManager.subscribe("components.reload", (event, src, data) => {
-    const page = data.response.getResponseHeader("x-page-error-type");
+    let page: string = "";
+    if (data.responseObj.request) {
+        page = data.responseObj.request.getResponseHeader("x-page-error-type");
+    }
 
     if (page === "maintenance") {
         window.location.replace("/maintenance");
