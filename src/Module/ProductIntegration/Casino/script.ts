@@ -29,7 +29,7 @@ export class CasinoIntegrationModule extends Redirectable implements ModuleInter
                         response.preferredProduct === "casino_gold"
                     ) {
                         const url = decodeURIComponent(response.redirect).replace(/\\/g, "");
-
+                        alert(url);
                         Redirector.redirect(url, () => {
                             this.loader.hide();
                         });
