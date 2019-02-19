@@ -17,7 +17,7 @@ class Redirector {
         !(/(CriOS|FxiOS|OPiOS|mercury)/i.test(window.navigator.userAgent));
 
         // handle redirects if we are on a PWA standalone
-        if (!iOSSafari && navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) {
+        if (!iOSSafari && (navigator.standalone || window.matchMedia("(display-mode: standalone)").matches)) {
             window.open(url);
 
             if (closure) {
