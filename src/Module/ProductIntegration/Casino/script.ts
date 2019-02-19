@@ -23,6 +23,10 @@ export class CasinoIntegrationModule extends Redirectable implements ModuleInter
             type: "json",
         }).then((response) => {
             if (response.success) {
+                if (!this.isSupportedLanguage(src)) {
+                    response.redirect = response.redirect.replace(
+                        "\/" + ComponentManager.getAttribute("language") + "\/", "/en/");
+                }
                 // redirect to URL
                 if (response.redirect) {
                     if (utility.isExternal(response.redirect) ||

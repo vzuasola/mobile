@@ -8,6 +8,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {Redirector} from "@app/assets/script/components/redirector";
+import {ProductLanguage} from "../scripts/product-language";
 
 export abstract class Redirectable implements ModuleInterface {
     protected code: string;
@@ -137,6 +138,11 @@ export abstract class Redirectable implements ModuleInterface {
             method: "post",
         }).then((response) => {
             if (typeof response.redirect !== "undefined") {
+                if (!this.isSupportedLanguage(src)) {
+                    response.redirect = response.redirect.replace(
+                        "\/" + ComponentManager.getAttribute("language") + "\/", "/en/");
+                }
+
                 Redirector.redirect(response.redirect, () => {
                     this.loader.hide();
                 });
@@ -164,5 +170,17 @@ export abstract class Redirectable implements ModuleInterface {
         }
 
         ComponentManager.broadcast("header.login");
+    }
+
+    protected isSupportedLanguage(el) {
+        const product = el.getAttribute("data-product-instance-id");
+        const productLanguage = new ProductLanguage();
+        const supportedLanguage = productLanguage.getSupportedLanguage();
+        if (product && supportedLanguage.hasOwnProperty(product)) {
+            if (!supportedLanguage[product].includes(ComponentManager.getAttribute("language"))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
