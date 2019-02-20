@@ -9,6 +9,7 @@ export class  ProductLanguage {
             "kr",
             "in",
             "pt",
+            "es",
         ],
         "sports" : [
             "en",
@@ -38,6 +39,7 @@ export class  ProductLanguage {
             "gr",
             "pl",
             "pt",
+            "es",
         ],
         "lottery" : [
             "en",
@@ -58,12 +60,13 @@ export class  ProductLanguage {
         ],
         "games" : [
             "en",
-            "eu",
+            "sc",
             "th",
             "vn",
             "id",
             "kr",
             "pt",
+            "es",
         ],
         "exchange" : [
             "in",
@@ -76,6 +79,7 @@ export class  ProductLanguage {
             "id",
             "kr",
             "pt",
+            "es",
         ],
         "virtual-sports" : [
             "en",
@@ -86,6 +90,7 @@ export class  ProductLanguage {
             "jp",
             "kr",
             "pt",
+            "es",
         ],
     };
 
