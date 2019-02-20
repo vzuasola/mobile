@@ -127,7 +127,12 @@ export class VerifyPassword extends FormBase {
                 } else {
                     resetForm(this.form);
                     this.closeModal();
-                    this.errorNotification.show(this.attachments.messages.UPDATE_PROFILE_FAILED);
+
+                    if (resp.status === "ERROR_MID_DOWN") {
+                        this.errorNotification.show(this.attachments.messages.ERROR_MID_DOWN);
+                    } else {
+                        this.errorNotification.show(this.attachments.messages.UPDATE_PROFILE_FAILED);
+                    }
                 }
             })
             .fail((err, msg) => {

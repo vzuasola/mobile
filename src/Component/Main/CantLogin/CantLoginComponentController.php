@@ -4,6 +4,7 @@ namespace App\MobileEntry\Component\Main\CantLogin;
 
 use App\Cookies\Cookies;
 use App\Utils\Host;
+use App\Fetcher\Integration\Exception\ServerDownException;
 
 /**
  *
@@ -24,6 +25,11 @@ class CantLoginComponentController
      * Change Password Fetcher Object.
      */
     private $changePassword;
+
+    /**
+     * Config Fetcher Object.
+     */
+    private $configFetcher;
 
     /**
      *
@@ -58,6 +64,8 @@ class CantLoginComponentController
         try {
             $this->userFetcher->setForgotPassword($username, $email);
             $status = 'FORGOT_PASSWORD_SUCCESS';
+        } catch (ServerDownException $e) {
+            $status = 'ERROR_MID_DOWN';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
@@ -83,6 +91,8 @@ class CantLoginComponentController
         try {
             $this->userFetcher->setForgotUsername($email);
             $status = 'FORGOT_USERNAME_SUCCESS';
+        } catch (ServerDownException $e) {
+            $status = 'ERROR_MID_DOWN';
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);
