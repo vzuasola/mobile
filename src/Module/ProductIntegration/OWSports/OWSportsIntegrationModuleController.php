@@ -56,12 +56,14 @@ class OWSportsIntegrationModuleController
             $ismart = $owsportsConfig['smart_wap'] ?? '';
             $iwap = $owsportsConfig['iwap'] ?? '';
             $owParams = $owsportsConfig['owsports_param'] ?? '';
+            $isEncoded = $owsportsConfig['owsports_param_encode'] ?? true;
 
-            $data['redirect'] = $this->getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $owParams);
+            $data['redirect'] = $this->getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $owParams, $isEncoded);
         } else {
             $owParams = $owsportsConfig['owsports_prelogin_param'] ?? '';
             $ismartPrelogin = $owsportsConfig['smart_wap_prelogin'] ?? '';
-            $data['redirect'] = $this->getPreLoginLink($host, $owParams, $ismartPrelogin);
+            $isEncoded = $owsportsConfig['owsports_prelogin_param_encode'] ?? true;
+            $data['redirect'] = $this->getPreLoginLink($host, $owParams, $ismartPrelogin, $isEncoded);
         }
 
         return $this->rest->output($response, $data);
@@ -79,7 +81,7 @@ class OWSportsIntegrationModuleController
      *
      * @return string
      */
-    private function getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $urlParams)
+    private function getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $urlParams, $isEncoded)
     {
         $mobileAgents = $this->createAgentfromList($agentsList);
 
@@ -92,7 +94,7 @@ class OWSportsIntegrationModuleController
             $integrationUrl = $iwap ?? "http://iwap.$tld/Deposit_ProcessLogin.aspx";
         }
 
-        return $integrationUrl . '?' . $this->encodeUrlParams($urlParams);
+        return $integrationUrl . '?' . $this->encodeUrlParams($urlParams, $isEncoded);
     }
 
     /**
@@ -103,14 +105,14 @@ class OWSportsIntegrationModuleController
      *
      * @return string
      */
-    private function getPreLoginLink($host, $urlParams, $ismartPrelogin)
+    private function getPreLoginLink($host, $urlParams, $ismartPrelogin, $isEncoded)
     {
 
         // Retrieve the Top-level domain of a 3 or more level domain (e.g. www.domain.com)
         $tld = substr($host, stripos($host, '.') + 1);
         $integrationUrl = $ismartPrelogin ?? "http://ismart.$tld/DepositLogin/bfindex";
 
-        return $integrationUrl .'?' . $this->encodeUrlParams($urlParams);
+        return $integrationUrl .'?' . $this->encodeUrlParams($urlParams, $isEncoded);
     }
 
     /**
@@ -120,7 +122,7 @@ class OWSportsIntegrationModuleController
      *
      * @return string
      */
-    private function encodeUrlParams($params)
+    private function encodeUrlParams($params, $isEncoded)
     {
         $queryStr = '';
         $encodedUrlParams = [];
@@ -135,6 +137,9 @@ class OWSportsIntegrationModuleController
             }
 
             $queryStr = http_build_query($encodedUrlParams, '&');
+            if (!$isEncoded) {
+                $queryStr = urldecode($queryStr);
+            }
         }
 
         return $queryStr;
