@@ -58,7 +58,15 @@ class OWSportsIntegrationModuleController
             $owParams = $owsportsConfig['owsports_param'] ?? '';
             $isEncoded = $owsportsConfig['owsports_param_encode'] ?? true;
 
-            $data['redirect'] = $this->getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $owParams, $isEncoded);
+            $data['redirect'] = $this->getOwsportsLink(
+                $host,
+                $agentsList,
+                $userAgent,
+                $ismart,
+                $iwap,
+                $owParams,
+                $isEncoded
+            );
         } else {
             $owParams = $owsportsConfig['owsports_prelogin_param'] ?? '';
             $ismartPrelogin = $owsportsConfig['smart_wap_prelogin'] ?? '';
