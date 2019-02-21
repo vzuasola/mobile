@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\Main\MyAccount;
 
 use App\Player\Player;
+use App\Fetcher\Integration\Exception\ServerDownException;
 
 /**
  *
@@ -325,6 +326,11 @@ class MyAccountComponentController
 
         try {
             $this->playerSession->validateSessionPassword($username, $password);
+        } catch (ServerDownException $e) {
+            return $this->rest->output($response, [
+                'success' => false,
+                'status' => 'ERROR_MID_DOWN'
+            ]);
         } catch (\Exception $e) {
             $error = $e->getResponse()->getBody()->getContents();
             $error = json_decode($error, true);

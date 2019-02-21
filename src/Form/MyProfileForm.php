@@ -260,9 +260,18 @@ class MyProfileForm extends FormBase implements FormInterface
         $apiValues = $this->user->getPlayerDetails();
         $dateFormat = $definition['birthdate']['options']['attr']['date-format'];
         $receiveNews = $this->playerSubscription->isSubscribed();
+        $apiValues['email'] = $this->obfuscateEmail($apiValues['email']);
+
+        if (isset($apiValues['Is-Mid']) && $apiValues['Is-Mid'] == "off") {
+            $apiValues['email'] = "********";
+            $apiValues['mobileNumbers']['Home']['number'] = "********";
+        }
 
         $mobile1Value = null;
         if (isset($apiValues['mobileNumbers']['Mobile 1'])) {
+            if (isset($apiValues['Is-Mid']) && $apiValues['Is-Mid'] == "off") {
+                $apiValues['mobileNumbers']['Mobile 1']['number'] = "********";
+            }
             $mobile1Value = $apiValues['mobileNumbers']['Mobile 1']['number'] ?? null;
         }
 
@@ -283,7 +292,7 @@ class MyProfileForm extends FormBase implements FormInterface
             'language' => $apiValues['locale'],
             'country' => $apiValues['countryName'],
             'countryId' => $apiValues['countryId'],
-            'email' => $this->obfuscateEmail($apiValues['email']),
+            'email' => $apiValues['email'],
             'mobile_number_1' => $mobileNumber1,
             'mobile_number_2' => (($mobile1Value === '') || ($mobile1Value === null)) ? '' : $mobile1Value,
             'language_field' => $this->locale,
