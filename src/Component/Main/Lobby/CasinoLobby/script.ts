@@ -170,26 +170,154 @@ export class CasinoLobbyComponent implements ComponentInterface {
     }
 
     /**
+     * Determines if all xhr succesfully loaded
+     */
+    private checkPromiseState(list, current, fn) {
+        const index = list.indexOf(current);
+
+        if (index > -1) {
+            list.splice(index, 1);
+        }
+        if (list.length === 0) {
+            fn();
+        }
+    }
+
+    private getPagerPromises() {
+        const promises = ["allGames", "recent", "fav"];
+        return promises;
+    }
+
+    private mergeResponsePromises(responses) {
+        const promises: any = {
+            games: {},
+        };
+        const requestKey = "allGames";
+        const key = "all-games";
+
+        const gamesList = {
+            "all-games": {},
+            "favorites": {},
+            "recently-played": {},
+        };
+        if (responses.hasOwnProperty(requestKey)) {
+            const response = responses[requestKey];
+            Object.assign(promises, response);
+            if (typeof response.games["all-games"] !== "undefined") {
+                gamesList[key] = this.getGamesList(
+                    key,
+                    response.games[key],
+                    gamesList[key],
+                );
+            }
+        }
+
+        if (responses.hasOwnProperty("fav")) {
+            const keyfav = "favorites";
+            gamesList[keyfav] = this.getGamesDefinition(responses.fav, gamesList[key]);
+        }
+
+        if (responses.hasOwnProperty("recent")) {
+            gamesList["recently-played"] = this.getGamesDefinition(responses.recent, gamesList[key]);
+        }
+
+        promises.games = gamesList;
+
+        return promises;
+    }
+
+    private getGamesList(key, list, gamesList) {
+        for (const id in list) {
+            if (list.hasOwnProperty(id)) {
+                const game = list[id];
+                if (key !== "all-games") {
+                    gamesList[Object.keys(gamesList).length] = game;
+                }
+                if (!gamesList[id]) {
+                    gamesList[id] = game;
+                }
+            }
+        }
+        return gamesList;
+    }
+
+    private getGamesDefinition(gamesList, allGames) {
+        const games = [];
+        for (const id of gamesList) {
+            if (allGames.hasOwnProperty(id)) {
+               games.push(allGames[id]);
+            }
+        }
+
+        return games;
+    }
+
+    private getFavoritesList(favorites) {
+        const favoritesList = {};
+        for (const id of favorites) {
+            favoritesList[id.substr(3)] = "active";
+        }
+
+        return favoritesList;
+    }
+
+    /**
      * Request games lobby to games lobby component controller lobby method
      */
     private doRequest(callback) {
-        xhr({
-            url: Router.generateRoute("casino_lobby", "lobby"),
-            type: "json",
-        }).then((response) => {
-            response.games = this.getCategoryGames(response.games);
-            response.games = this.groupGamesByContainer(response.games);
-            response.categories = this.filterCategories(response.categories, response.games);
+        const promises = this.getPagerPromises();
+        const lobbyRequests = this.createRequest();
+        const pageResponse: {} = {};
+        for (const id in lobbyRequests) {
+            if (lobbyRequests.hasOwnProperty(id)) {
+                const currentRequest = lobbyRequests[id];
+                const uri = Router.generateRoute("casino_lobby", currentRequest.type);
+                xhr({
+                    url: uri,
+                    type: "json",
+                }).then((response) => {
+                    pageResponse[id] = response;
+                    this.checkPromiseState(promises, id, () => {
+                        const mergeResponse = this.mergeResponsePromises(pageResponse);
 
-            this.response = response;
+                        // clone respone object
+                        const newResponse = Object.assign({}, mergeResponse);
 
-            if (callback) {
-                callback();
+                        newResponse.games = this.getCategoryGames(newResponse.games);
+                        newResponse.games = this.groupGamesByContainer(newResponse.games);
+                        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
+                        if (pageResponse.hasOwnProperty("fav")) {
+                            const key = "fav";
+                            const favoritesList = pageResponse[key];
+                            newResponse.favorite_list = this.getFavoritesList(favoritesList);
+                        }
+
+                        this.response = newResponse;
+                        if (callback) {
+                            callback();
+                        }
+                    });
+                }).fail((error, message) => {
+                    console.log(error);
+                });
             }
+        }
+    }
 
-        }).fail((error, message) => {
-            console.log(error);
-        });
+    private createRequest() {
+        const req: any = {};
+        req.allGames = {
+            type: "lobby",
+        };
+
+        req.recent = {
+            type: "getRecentlyPlayed",
+        };
+        req.fav = {
+            type: "getFavorites",
+        };
+
+        return req;
     }
 
     private lobby() {

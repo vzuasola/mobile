@@ -195,7 +195,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         if (index > -1) {
             list.splice(index, 1);
         }
-
         if (list.length === 0) {
             fn();
         }
@@ -206,6 +205,9 @@ export class GamesLobbyComponent implements ComponentInterface {
         for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
             promises.push("pager" + page);
         }
+        promises.push("recent");
+        promises.push("fav");
+        promises.push("games-collection");
         return promises;
     }
 
@@ -213,8 +215,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         const promises: any = {
             games: {},
         };
-
-        const keys = ["all-games", "favorites", "recently-played"];
+        let gamesDictionary = [];
+        const key = "all-games";
 
         const gamesList = {
             "all-games": {},
@@ -226,17 +228,55 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (responses.hasOwnProperty("pager" + page)) {
                 const response = responses["pager" + page];
                 Object.assign(promises, response);
-                for (const key of keys) {
-                    if (typeof response.games[key] !== "undefined") {
-                        gamesList[key] = this.getGamesList(key, response.games[key], gamesList[key]);
-                    }
+                if (typeof response.games["all-games"] !== "undefined") {
+                    gamesList[key] = this.getGamesList(
+                        key,
+                        response.games[key],
+                        gamesList[key],
+                    );
                 }
             }
+        }
+
+        if (responses["games-collection"].hasOwnProperty("top")) {
+            gamesDictionary = this.getGamesDictionary(gamesList[key]);
+            gamesList[key] = this.sortGamesCollection(
+                responses["games-collection"].top,
+                gamesDictionary,
+                gamesList[key],
+            );
+        }
+
+        if (responses.hasOwnProperty("fav")) {
+            const keyfav = "favorites";
+            gamesList[keyfav] = this.getGamesDefinition(responses.fav, gamesList[key]);
+        }
+
+        if (responses.hasOwnProperty("recent")) {
+            gamesList["recently-played"] = this.getGamesDefinition(responses.recent, gamesList[key]);
+        }
+
+        if (responses.hasOwnProperty("games-collection")) {
+            promises.gamesCollection = responses["games-collection"];
         }
 
         promises.games = gamesList;
 
         return promises;
+    }
+
+    /*
+    * Converts all games object to array
+    */
+    private getGamesDictionary(gamesList) {
+        const gamesDictionary = [];
+        for (const gamesId in gamesList) {
+            if (gamesList.hasOwnProperty(gamesId)) {
+                gamesDictionary.push(gamesList[gamesId]);
+            }
+        }
+
+        return gamesDictionary;
     }
 
     private getGamesList(key, list, gamesList) {
@@ -254,40 +294,175 @@ export class GamesLobbyComponent implements ComponentInterface {
         return gamesList;
     }
 
+    private getGamesDefinition(gamesList, allGames) {
+        const games = [];
+        for (const id of gamesList) {
+            if (allGames.hasOwnProperty(id)) {
+               games.push(allGames[id]);
+            }
+        }
+
+        return games;
+    }
+
+    /*
+    * Converts array to object
+    */
+    private getGamesObj(gamesList, allGames) {
+        const games = [];
+        for (const game of gamesList) {
+            if (allGames.hasOwnProperty("id:" + game.game_code)) {
+               games["id:" + game.game_code] = allGames["id:" + game.game_code];
+            }
+        }
+
+        return games;
+    }
+
+    /*
+    * List of favorites games, used for toggle of favorites
+    * list status.
+    */
+    private getFavoritesList(favorites) {
+        const favoritesList = {};
+        for (const id of favorites) {
+            favoritesList[id.substr(3)] = "active";
+        }
+
+        return favoritesList;
+    }
+
+    /**
+     * Sorts all games based on top games collection
+     * Games that are not on the top games collection will be
+     * sorted alphabetically.
+     */
+    private sortGamesCollection(gamesCollection, gamesListArr, gamesListObj) {
+        const sortedCollection = {};
+        const sortedAlpha = {};
+        let sortedAlphaArr = [];
+
+        for (const id of gamesCollection) {
+            if (gamesListObj.hasOwnProperty(id)) {
+               sortedCollection[id] = gamesListObj[id];
+            }
+        }
+
+        sortedAlphaArr = this.sortGameTitleAlphabetical(gamesListArr);
+        for (const game of sortedAlphaArr) {
+            if (!sortedCollection.hasOwnProperty("id:" + game.game_code)) {
+                sortedAlpha["id:" + game.game_code] = game;
+            }
+        }
+
+        if (sortedAlpha) {
+            Object.assign(sortedCollection, sortedAlpha);
+        }
+
+        return sortedCollection;
+    }
+
+    private sortGameTitleAlphabetical(gamesList) {
+        gamesList.sort((a, b) => {
+            if (a.title.toLowerCase() < b.title.toLowerCase()) {
+                return -1;
+            }
+            if (a.title.toLowerCase() > b.title.toLowerCase()) {
+                return 1;
+            }
+
+            return 0;
+        });
+
+        return gamesList;
+    }
+
     /**
      * Request games lobby to games lobby component controller lobby method
      */
     private doRequest(callback) {
         const promises = this.getPagerPromises();
+        const lobbyRequests = this.createRequest();
         const pageResponse: {} = {};
-        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
-            let uri = Router.generateRoute("games_lobby", "lobby");
-            uri = utility.addQueryParam(uri, "page", page.toString());
-            xhr({
-                url: uri,
-                type: "json",
-            }).then((response) => {
-                pageResponse["pager" + page] = response;
+        for (const id in lobbyRequests) {
+            if (lobbyRequests.hasOwnProperty(id)) {
+                const currentRequest = lobbyRequests[id];
+                let uri = Router.generateRoute("games_lobby", currentRequest.type);
+                if (currentRequest.hasOwnProperty("page")) {
+                    uri = utility.addQueryParam(uri, "page", currentRequest.page.toString());
+                }
+                xhr({
+                    url: uri,
+                    type: "json",
+                }).then((response) => {
+                    pageResponse[id] = response;
 
-                this.checkPromiseState(promises, "pager" + page, () => {
-                    const mergeResponse = this.mergeResponsePromises(pageResponse);
+                    this.checkPromiseState(promises, id, () => {
+                        const mergeResponse = this.mergeResponsePromises(pageResponse);
 
-                    // clone respone object
-                    const newResponse = Object.assign({}, mergeResponse);
+                        // clone respone object
+                        const newResponse = Object.assign({}, mergeResponse);
 
-                    newResponse.games = this.getCategoryGames(newResponse.games);
-                    newResponse.games = this.groupGamesByContainer(newResponse.games);
-                    newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
-
-                    this.response = newResponse;
-                    if (callback) {
-                        callback();
-                    }
+                        newResponse.games = this.getCategoryGames(newResponse.games);
+                        if (newResponse.hasOwnProperty("gamesCollection")
+                            && newResponse.gamesCollection.hasOwnProperty("recommended")
+                            && newResponse.games.hasOwnProperty("recommended-games")) {
+                            newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
+                        }
+                        newResponse.games = this.groupGamesByContainer(newResponse.games);
+                        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
+                        if (pageResponse.hasOwnProperty("fav")) {
+                            const key = "fav";
+                            const favoritesList = pageResponse[key];
+                            newResponse.favorite_list = this.getFavoritesList(favoritesList);
+                        }
+                        this.response = newResponse;
+                        if (callback) {
+                            callback();
+                        }
+                    });
+                }).fail((error, message) => {
+                    console.log(error);
                 });
-            }).fail((error, message) => {
-                console.log(error);
-            });
+            }
         }
+    }
+
+    private createRequest() {
+        const req: any = {};
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            req["pager" + page] = {
+                type: "lobby",
+                page,
+            };
+        }
+
+        req.recent = {
+            type: "getRecentlyPlayed",
+        };
+        req.fav = {
+            type: "getFavorites",
+        };
+        req["games-collection"] = {
+            type: "getGamesCollection",
+        };
+
+        return req;
+    }
+
+    private doSortRecommended(newResponse) {
+        const recommended = newResponse.games["recommended-games"];
+        let sortedRecommended: any = [];
+        const gamesListObj = this.getGamesObj(
+            recommended,
+            newResponse.games["all-games"]);
+        sortedRecommended = this.sortGamesCollection(
+            newResponse.gamesCollection.recommended,
+            recommended,
+            gamesListObj,
+        );
+
+        return sortedRecommended;
     }
 
     private lobby() {

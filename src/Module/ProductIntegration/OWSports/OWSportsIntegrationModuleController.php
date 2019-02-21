@@ -7,6 +7,7 @@ class OWSportsIntegrationModuleController
     private $playerSession;
     private $config;
     private $rest;
+    private $parser;
 
     /**
      *
@@ -16,18 +17,20 @@ class OWSportsIntegrationModuleController
         return new static(
             $container->get('player_session'),
             $container->get('config_fetcher'),
-            $container->get('rest')
+            $container->get('rest'),
+            $container->get('token_parser')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $rest)
+    public function __construct($playerSession, $config, $rest, $parser)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
         $this->rest = $rest;
+        $this->parser = $parser;
     }
 
     /**
@@ -36,6 +39,7 @@ class OWSportsIntegrationModuleController
     public function integrate($request, $response)
     {
         $data = [];
+        $host = $request->getHeader('host')[0] ?? '';
 
         try {
             $isLogin = $this->playerSession->isLogin();
@@ -46,7 +50,6 @@ class OWSportsIntegrationModuleController
         }
 
         if ($isLogin) {
-            $host = $request->getHeader('host')[0] ?? '';
             $userAgent = $request->getHeader('user-agent')[0] ?? '';
 
             $agentsList = $owsportsConfig['iwap_agents'] ?? '';
@@ -55,6 +58,10 @@ class OWSportsIntegrationModuleController
             $owParams = $owsportsConfig['owsports_param'] ?? '';
 
             $data['redirect'] = $this->getOwsportsLink($host, $agentsList, $userAgent, $ismart, $iwap, $owParams);
+        } else {
+            $owParams = $owsportsConfig['owsports_prelogin_param'] ?? '';
+            $ismartPrelogin = $owsportsConfig['smart_wap_prelogin'] ?? '';
+            $data['redirect'] = $this->getPreLoginLink($host, $owParams, $ismartPrelogin);
         }
 
         return $this->rest->output($response, $data);
@@ -85,7 +92,52 @@ class OWSportsIntegrationModuleController
             $integrationUrl = $iwap ?? "http://iwap.$tld/Deposit_ProcessLogin.aspx";
         }
 
-        return $integrationUrl . $urlParams;
+        return $integrationUrl . '?' . $this->encodeUrlParams($urlParams);
+    }
+
+    /**
+     * Return ismart pre login url
+     *
+     * @param string $host
+     * @param string $urlParams
+     *
+     * @return string
+     */
+    private function getPreLoginLink($host, $urlParams, $ismartPrelogin)
+    {
+
+        // Retrieve the Top-level domain of a 3 or more level domain (e.g. www.domain.com)
+        $tld = substr($host, stripos($host, '.') + 1);
+        $integrationUrl = $ismartPrelogin ?? "http://ismart.$tld/DepositLogin/bfindex";
+
+        return $integrationUrl .'?' . $this->encodeUrlParams($urlParams);
+    }
+
+    /**
+     * Return urlencoded query parameters
+     *
+     * @param string $params
+     *
+     * @return string
+     */
+    private function encodeUrlParams($params)
+    {
+        $queryStr = '';
+        $encodedUrlParams = [];
+        $urlParams = explode("\r\n", $params);
+        if ($urlParams) {
+            foreach ($urlParams as $urlParam) {
+                $queryStr = explode("|", $urlParam);
+                if (isset($queryStr[0]) && isset($queryStr[1])) {
+                    $encodedUrlParams[$queryStr[0]] =
+                        $this->parser->processTokens($queryStr[1]);
+                }
+            }
+
+            $queryStr = http_build_query($encodedUrlParams, '&');
+        }
+
+        return $queryStr;
     }
 
     /**
