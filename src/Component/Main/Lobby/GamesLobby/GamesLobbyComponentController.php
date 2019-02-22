@@ -350,8 +350,7 @@ class GamesLobbyComponentController
                 $filters = [];
                 foreach ($game['field_game_filter'] as $filter) {
                     if (isset($filter['parent']) &&
-                        isset($filter['parent']['field_games_filter_value']))
-                    {
+                        isset($filter['parent']['field_games_filter_value'])) {
                         $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
                             = $filter['field_games_filter_value'][0]['value'];
                     }
