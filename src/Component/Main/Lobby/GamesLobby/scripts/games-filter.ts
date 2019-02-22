@@ -190,6 +190,7 @@ export class GamesFilter {
             this.recent = false;
             this.enabledFilters = [];
             this.checkActiveSpecial(actives);
+            const gameFilters: any = {};
             let flag = "general";
             let special = false;
             let filteredGames = [];
@@ -197,49 +198,43 @@ export class GamesFilter {
 
             if (this.fav && !this.recent) {
                 gamesList = this.favGamesList;
-                if (actives.length === 1) {
-                    flag = "favorites";
-                    special = true;
-                }
+                flag = "favorites";
+                special = true;
             }
 
             if (this.recent && !this.fav) {
                 gamesList = this.recentGamesList;
-                if (actives.length === 1) {
-                    flag = "recently-played";
-                    special = true;
-                }
+                flag = "recently-played";
+                special = true;
             }
 
             if (this.fav && this.recent) {
                 gamesList = this.getRecentFavGames();
-                if (actives.length === 2) {
-                    special = true;
-                }
+                special = true;
             }
 
             for (const activeKey in actives) {
                 if (actives.hasOwnProperty(activeKey)) {
                     const active = actives[activeKey];
                     const activeParent = active.querySelector(".filter-checkbox").getAttribute("data-parent");
-                    const checkValue = active.querySelector(".filter-checkbox").value;
-                    this.enabledFilters.push(active);
-                    for (const gameKey in gamesList) {
-                        if (gamesList.hasOwnProperty(gameKey)) {
-                            const game = gamesList[gameKey];
-                            if (special) {
-                                filteredGames[gameKey] = game;
-                            }
 
-                            if (typeof game.filters !== "undefined" && !special) {
-                                const gameFilter = JSON.parse(game.filters);
-                                if ((typeof gameFilter[activeParent] !== "undefined"
-                                    && gameFilter[activeParent].indexOf(checkValue) !== -1)
-                                ) {
-                                    filteredGames[gameKey] = game;
-                                }
-                            }
-                        }
+                    if (!gameFilters[activeParent]) {
+                        gameFilters[activeParent] = [];
+                    }
+
+                    const checkValue = active.querySelector(".filter-checkbox").value;
+                    gameFilters[activeParent].push(checkValue);
+                    this.enabledFilters.push(active);
+
+                }
+            }
+
+            for (const gameKey in gamesList) {
+                if (gamesList.hasOwnProperty(gameKey)) {
+                    const game = gamesList[gameKey];
+
+                    if (this.filterGamesList(game, gameFilters, special)) {
+                        filteredGames[gameKey] = game;
                     }
                 }
             }
@@ -263,6 +258,7 @@ export class GamesFilter {
             }
 
             filteredGames = this.groupGamesList(filteredGames);
+
             Modal.close("#games-search-filter-lightbox");
             Modal.close("#games-search-lightbox");
 
@@ -280,6 +276,37 @@ export class GamesFilter {
                 flag,
             });
         }
+    }
+
+    private filterGamesList(game, filters, special) {
+        let trueCtr = 0;
+        let conditionCheck = Object.keys(filters).length;
+        if (typeof game.filters !== "undefined") {
+            const gameFilters = JSON.parse(game.filters);
+            for (const filterKey in filters) {
+                if (filters.hasOwnProperty(filterKey) && gameFilters.hasOwnProperty(filterKey)) {
+                    const filter = filters[filterKey];
+                    const gameFilter = gameFilters[filterKey];
+
+                    for (const checkValue of filter) {
+                        if (gameFilter.indexOf(checkValue) !== -1) {
+                            trueCtr++;
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (special) {
+            conditionCheck--;
+        }
+
+        if (trueCtr === conditionCheck) {
+            return true;
+        }
+
+        return false;
     }
 
     private checkActiveSpecial(actives) {
