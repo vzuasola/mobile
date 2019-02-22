@@ -1,5 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 
+import {CookieNotif} from "@app/assets/script/components/cookie-notif";
+
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
@@ -7,8 +9,13 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
  *
  */
 export class FooterComponent implements ComponentInterface {
+    private cookienotif: CookieNotif;
     private element: HTMLElement;
     private originalUrl: string;
+
+    constructor() {
+        this.cookienotif = new CookieNotif(document.body, true);
+    }
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;

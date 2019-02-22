@@ -86,6 +86,7 @@ class FooterComponent implements ComponentWidgetInterface
         }
 
         $data['cookie_notification'] = $footerConfigs['cookie_notification']['value'] ?? 'cookie notification';
+        $data['country_codes'] = $footerConfigs['country_codes'] ?? '';
 
         $this->cleanFooterMenu($data['footer_menu']);
         $this->orderSponsors($data['sponsors']);

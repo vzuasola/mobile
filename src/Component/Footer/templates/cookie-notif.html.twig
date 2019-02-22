@@ -1,4 +1,8 @@
-<div class="cookie-notif clear">
+{# <div class="cookie-notif clear">
     <p class="container text-center">{{ cookie_notification|raw }}</p>
-</div>
+</div> #}
 
+<div class="cookie-notif hidden" data-country-codes="{{ country_codes }}">
+    {{ cookie_notification|raw }}
+    <span class="cookie-notif-close">x</span>
+</div>
