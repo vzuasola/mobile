@@ -16,6 +16,11 @@ class FooterComponent implements ComponentWidgetInterface
      */
     private $views;
 
+    /**
+     * @var App\Fetcher\Drupal\configs
+     */
+    private $configs;
+
     private $idDomain;
 
     /**
@@ -26,18 +31,20 @@ class FooterComponent implements ComponentWidgetInterface
         return new static(
             $container->get('menu_fetcher'),
             $container->get('views_fetcher'),
-            $container->get('id_domain')
+            $container->get('id_domain'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $views, $idDomain)
+    public function __construct($menus, $views, $idDomain, $configs)
     {
         $this->menus = $menus;
         $this->views = $views;
         $this->idDomain = $idDomain;
+        $this->configs = $configs;
     }
 
 
@@ -71,6 +78,14 @@ class FooterComponent implements ComponentWidgetInterface
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
         }
+
+        try {
+            $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
+        } catch (\Exception $e) {
+            $footerConfigs = [];
+        }
+
+        $data['cookie_notification'] = $footerConfigs['cookie_notification']['value'] ?? 'cookie notification';
 
         $this->cleanFooterMenu($data['footer_menu']);
         $this->orderSponsors($data['sponsors']);
