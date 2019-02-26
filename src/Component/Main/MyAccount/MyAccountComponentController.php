@@ -120,6 +120,14 @@ class MyAccountComponentController
 
         try {
             $smsVerificationStatus = $this->sms->sendSmsVerificationCode($subTypeId);
+        } catch (ServerDownException $e) {
+            $status = 'ERROR_MID_DOWN';
+            $config = $this->configFetcher->getConfigById('my_account_header');
+
+            return $this->rest->output($response, [
+                'response_code' => $status,
+                'message' => $config['error_mid_down'] ?? "",
+            ]);
         } catch (\Exception $e) {
             return $response->withStatus(500);
         }
