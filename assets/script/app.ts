@@ -5,6 +5,7 @@ const version = versioning.version;
 console.log("Application version: " + Semver.show(version));
 
 import "promise-polyfill/src/polyfill";
+import "es6-shim";
 import "pwacompat";
 
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";

@@ -1,4 +1,4 @@
-const mix = require('webpack-mix').mix;
+const mix = require('laravel-mix');
 const path = require('path');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -63,6 +63,15 @@ if (!mix.inProduction()) {
     }).sourceMaps();
 }
 
+mix.options({
+    terser: {
+        terserOptions: {
+            safari10: true,
+            mangle: false,
+        }
+    },
+});
+
 mix
     .setPublicPath('web')
     .copy('assets/images', 'web/images')
@@ -72,3 +81,4 @@ mix
     .sass('assets/sass/app.scss', 'web/')
     .version()
 ;
+
