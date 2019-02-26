@@ -9,18 +9,16 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
  *
  */
 export class FooterComponent implements ComponentInterface {
-    private cookienotif: CookieNotif;
     private element: HTMLElement;
     private originalUrl: string;
-
-    constructor() {
-        this.cookienotif = new CookieNotif(document.body, true);
-    }
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getOriginalUrl();
         this.attachProduct();
+        this.attachProduct();
+        this.cookieNotif();
+        this.listenOnCookieNotifClose();
 
         Router.on(RouterClass.afterNavigate, (event) => {
             this.getOriginalUrl();
@@ -32,6 +30,8 @@ export class FooterComponent implements ComponentInterface {
         this.element = element;
         this.getOriginalUrl();
         this.attachProduct();
+        this.cookieNotif();
+        this.listenOnCookieNotifClose();
     }
 
     private getOriginalUrl() {
@@ -62,6 +62,27 @@ export class FooterComponent implements ComponentInterface {
             }
 
             menu.setAttribute("href", url);
+        }
+    }
+
+    private cookieNotif() {
+        ComponentManager.subscribe("cookienotif.show", (event, src) => {
+            this.toggleCookieNotif();
+        });
+    }
+
+    private listenOnCookieNotifClose() {
+        ComponentManager.subscribe("click", (event, src) => {
+            if (utility.hasClass(src, "cookie-notif-close", 1)) {
+                this.toggleCookieNotif();
+            }
+        });
+    }
+
+    private toggleCookieNotif() {
+        const cookienotif = this.element.querySelector(".cookie-notif");
+        if (cookienotif) {
+            utility.toggleClass(cookienotif, "hidden");
         }
     }
 }
