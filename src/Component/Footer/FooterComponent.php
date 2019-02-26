@@ -81,12 +81,14 @@ class FooterComponent implements ComponentWidgetInterface
 
         try {
             $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
+            $data['cookie_notification'] = $footerConfigs['cookie_notification']['value'] ?? 'cookie notification';
+            $data['country_codes'] = $footerConfigs['country_codes'] ?? '';
+            $data['geo_ip'] = $this->idDomain->getGeoIpCountry();
         } catch (\Exception $e) {
             $footerConfigs = [];
+            $data['cookie_notification'] = '';
+            $data['country_codes'] = '';
         }
-
-        $data['cookie_notification'] = $footerConfigs['cookie_notification']['value'] ?? 'cookie notification';
-        $data['country_codes'] = $footerConfigs['country_codes'] ?? '';
 
         $this->cleanFooterMenu($data['footer_menu']);
         $this->orderSponsors($data['sponsors']);
