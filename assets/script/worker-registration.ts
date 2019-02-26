@@ -4,12 +4,10 @@ const browser = Bowser.getParser(window.navigator.userAgent);
 
 const browserInfo = browser.getBrowser();
 
-alert(browserInfo.name);
-alert(browserInfo.version);
-
 const isSupported = browser.satisfies({
     "chrome": ">=20",
     "android browser": ">=3.10",
+    "samsung internet for android": ">=5",
 });
 
 if (isSupported) {
