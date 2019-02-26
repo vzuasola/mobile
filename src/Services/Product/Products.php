@@ -13,7 +13,8 @@ class Products
     ];
 
     const PRODUCT_DIRECT_INTEGRATION = [
-        'mobile-sports' => 'sports'
+        'mobile-sports' => 'sports',
+        'mobile-sports-df' => 'sports-df'
     ];
 
     const PRODUCT_ALIAS = [
