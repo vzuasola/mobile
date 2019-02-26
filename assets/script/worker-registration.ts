@@ -2,8 +2,12 @@ import * as Bowser from "bowser";
 
 const browser = Bowser.getParser(window.navigator.userAgent);
 
+const browserInfo = browser.getBrowser();
+
 const isSupported = browser.satisfies({
-    chrome: ">=20",
+    "chrome": ">=20",
+    "android browser": ">=3.10",
+    "samsung internet for android": ">=5.2",
 });
 
 if (isSupported) {
