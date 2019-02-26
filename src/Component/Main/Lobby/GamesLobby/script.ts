@@ -699,10 +699,6 @@ export class GamesLobbyComponent implements ComponentInterface {
                         this.doRequest(() => {
                             this.gamesSearch.setGamesList(this.response);
                             this.gamesFilter.setGamesList(this.response);
-
-                            if (this.filterFlag === "recently-played") {
-                                this.setGames(this.response.games[this.filterFlag]);
-                            }
                         });
                     }
                 }).fail((error, message) => {
