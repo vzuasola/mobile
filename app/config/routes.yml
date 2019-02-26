@@ -91,18 +91,6 @@ routes:
         attributes:
             product: mobile-casino
 
-    /{id:sports|football|soccer|goal|cup|match168}:
-        method: GET
-        action: App\MobileEntry\Controller\HomeController:view
-        components:
-            main: lobby
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-sports
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:
