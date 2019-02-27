@@ -20,10 +20,10 @@ export class CookieNotif {
     constructor(options) {
         this.storage = new Storage();
         this.isNotifDisabled = JSON.parse(this.storage.get("cookie-notif-disabled"));
-        this.notif = document.querySelector(".cookie-notif");
-        this.closeButton = document.querySelector(".cookie-notif-close");
-        this.geoip = document.body.getAttribute("data-geoip") || options.geoIp;
-        this.cookieNotif = document.querySelector(".cookie-notif");
+        this.notif = options.element.querySelector(".cookie-notif");
+        this.closeButton = options.element.querySelector(".cookie-notif-close");
+        this.geoip = options.geoIp;
+        this.cookieNotif = options.element.querySelector(".cookie-notif");
         this.countryCode = this.cookieNotif.getAttribute("data-country-codes");
         this.countryArray = this.countryCode.split(",");
 

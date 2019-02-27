@@ -55,7 +55,7 @@ class CookieNotifComponent implements ComponentWidgetInterface
             $data['country_codes'] = $footerConfigs['country_codes'] ?? '';
         } catch (\Exception $e) {
             $footerConfigs = [];
-            $data['cookie_notification'] = '';
+            $data['cookie_notification'] = 'Cookie Notification';
             $data['country_codes'] = '';
         }
 
