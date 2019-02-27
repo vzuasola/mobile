@@ -1,7 +1,5 @@
 import * as utility from "@core/assets/js/components/utility";
 
-import {CookieNotif} from "@app/assets/script/components/cookie-notif";
-
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
@@ -17,7 +15,6 @@ export class FooterComponent implements ComponentInterface {
         this.getOriginalUrl();
         this.attachProduct();
         this.attachProduct();
-        this.cookieNotif();
 
         Router.on(RouterClass.afterNavigate, (event) => {
             this.getOriginalUrl();
@@ -29,7 +26,6 @@ export class FooterComponent implements ComponentInterface {
         this.element = element;
         this.getOriginalUrl();
         this.attachProduct();
-        this.cookieNotif();
     }
 
     private getOriginalUrl() {
@@ -60,15 +56,6 @@ export class FooterComponent implements ComponentInterface {
             }
 
             menu.setAttribute("href", url);
-        }
-    }
-
-    private cookieNotif() {
-        const notif: HTMLElement = this.element.querySelector(".cookie-notif");
-
-        if (notif) {
-            const geoIp = notif.getAttribute("data-geoip");
-            const cookienotif = new CookieNotif({ geoIp });
         }
     }
 }

@@ -1,8 +1,6 @@
 import * as utility from "@core/assets/js/components/utility";
 import Storage from "@core/assets/js/components/utils/storage";
 
-import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
-
 /**
  * Cookie Notification
  *
@@ -42,11 +40,9 @@ export class CookieNotif {
     }
 
     eventListeners() {
-        ComponentManager.subscribe("click", (event, src) => {
-            if (utility.hasClass(src, "cookie-notif-close", 1)) {
-                utility.addClass(this.notif, "hidden");
-                this.storage.set("cookie-notif-disabled", true);
-            }
+        utility.addEventListener(this.closeButton, "click", (e) => {
+            utility.addClass(this.notif, "hidden");
+            this.storage.set("cookie-notif-disabled", true);
         });
     }
 }
