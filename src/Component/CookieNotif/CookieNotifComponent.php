@@ -11,15 +11,12 @@ class CookieNotifComponent implements ComponentWidgetInterface
      */
     private $configs;
 
-    private $idDomain;
-
     /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('id_domain'),
             $container->get('config_fetcher')
         );
     }
@@ -27,9 +24,8 @@ class CookieNotifComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($idDomain, $configs)
+    public function __construct($configs)
     {
-        $this->idDomain = $idDomain;
         $this->configs = $configs;
     }
 
@@ -57,7 +53,6 @@ class CookieNotifComponent implements ComponentWidgetInterface
             $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
             $data['cookie_notification'] = $footerConfigs['cookie_notification']['value'] ?? 'cookie notification';
             $data['country_codes'] = $footerConfigs['country_codes'] ?? '';
-            $data['geo_ip'] = $this->idDomain->getGeoIpCountry();
         } catch (\Exception $e) {
             $footerConfigs = [];
             $data['cookie_notification'] = '';

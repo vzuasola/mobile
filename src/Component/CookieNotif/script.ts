@@ -1,9 +1,9 @@
-import * as utility from "@core/assets/js/components/utility";
+import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {CookieNotif} from "@app/assets/script/components/cookie-notif";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
  *
@@ -15,23 +15,23 @@ export class CookieNotifComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.cookieNotif();
-
-        Router.on(RouterClass.afterNavigate, (event) => {
-            ComponentManager.refreshComponent("cookie_notification");
-        });
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.cookieNotif();
     }
 
     private cookieNotif() {
-        const notif: HTMLElement = this.element.querySelector(".cookie-notif");
+        xhr({
+            url: Router.generateRoute("cookie_notification", "getGeoIp"),
+            type: "json",
+        }).then((response) => {
 
-        if (notif) {
-            const geoIp = notif.getAttribute("data-geoip");
-            const cookienotif = new CookieNotif({ geoIp });
-        }
+            if (response.geo_ip) {
+                const cookienotif = new CookieNotif({ geoIp: response.geo_ip });
+            }
+        }).fail((error, message) => {
+            // do something
+        });
     }
 }
