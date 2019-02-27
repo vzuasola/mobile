@@ -213,6 +213,10 @@ export class GamesFilter {
                 special = true;
             }
 
+            if (actives.length > 1) {
+                flag = "general";
+            }
+
             for (const activeKey in actives) {
                 if (actives.hasOwnProperty(activeKey)) {
                     const active = actives[activeKey];
@@ -255,6 +259,10 @@ export class GamesFilter {
 
                     return 0;
                 });
+            }
+
+            if (filteredGames.length === 0) {
+                flag = "general";
             }
 
             filteredGames = this.groupGamesList(filteredGames);
