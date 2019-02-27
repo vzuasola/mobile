@@ -32,6 +32,9 @@ export class MetaComponent implements ComponentInterface {
 
     private removeMetaElement() {
         const meta = this.element.querySelector(".meta");
-        meta.remove();
+
+        if (meta) {
+            meta.remove();
+        }
     }
 }
