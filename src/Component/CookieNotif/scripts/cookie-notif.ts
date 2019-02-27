@@ -40,7 +40,7 @@ export class CookieNotif {
     }
 
     eventListeners() {
-        utility.addEventListener(this.closeButton, "click", (e) => {
+        utility.listen(this.closeButton, "click", (e) => {
             utility.addClass(this.notif, "hidden");
             this.storage.set("cookie-notif-disabled", true);
         });
