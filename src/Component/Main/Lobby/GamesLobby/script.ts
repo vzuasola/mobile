@@ -739,7 +739,10 @@ export class GamesLobbyComponent implements ComponentInterface {
                                 if (typeof this.response.games[this.filterFlag] !== "undefined") {
                                     this.setGames(this.response.games[this.filterFlag]);
                                 }
+                            }
 
+                            if (this.filterFlag === "favorites-general") {
+                                this.gamesFilter.submitFilters();
                             }
                         });
 
