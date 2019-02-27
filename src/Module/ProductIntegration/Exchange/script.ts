@@ -28,7 +28,8 @@ export class ExchangeIntegrationModule extends Redirectable implements ModuleInt
                 if (typeof response.url !== "undefined") {
                     if (!this.isSupportedLanguage(src)) {
                         response.url = response.url.replace(
-                            "\/" + ComponentManager.getAttribute("language") + "\/", "/en");
+                            "\/" + ComponentManager.getAttribute("language") + "\/",
+                            "/" + this.getRedirectLanguage(src) + "/");
                     }
 
                     Redirector.redirect(response.url, () => {

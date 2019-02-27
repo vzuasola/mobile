@@ -103,6 +103,7 @@ routes:
             expires: 1800
         attributes:
             product: mobile-sports
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:
