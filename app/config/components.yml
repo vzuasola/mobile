@@ -122,6 +122,9 @@ components:
   pwa_home_screen:
     class: App\MobileEntry\Component\PWA\PWAHomeScreenComponent
 
+  cookie_notification:
+    class: App\MobileEntry\Component\CookieNotif\CookieNotifComponent
+
 # Define modules
 modules:
   session:
