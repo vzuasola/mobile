@@ -44,7 +44,7 @@ class CookieNotifComponentController
         } catch (\Exception $e) {
             $data['geo_ip'] = '';
         }
-        $data['geo_ip'] = 'EN';
+
         return $this->rest->output($response, $data);
     }
 }
