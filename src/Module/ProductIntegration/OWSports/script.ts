@@ -9,5 +9,5 @@ import {Redirectable} from "../scripts/redirectable";
 export class OWSportsIntegrationModule extends Redirectable implements ModuleInterface {
     protected code = "sports";
     protected module = "owsports_integration";
-    protected isLoginOnly = true;
+    protected isLoginOnly = false;
 }
