@@ -1,7 +1,7 @@
 import * as utility from "@core/assets/js/components/utility";
 import Storage from "@core/assets/js/components/utils/storage";
-import detectIE from "@core/assets/js/components/browser-detect";
-import crosstab from "@app/assets/script/vendor/crosstab";
+
+import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 /**
  * Cookie Notification
@@ -10,6 +10,7 @@ import crosstab from "@app/assets/script/vendor/crosstab";
  */
 
 export class CookieNotif {
+    private storage;
     private isNotifDisabled;
     private notif;
     private closeButton;
@@ -19,8 +20,8 @@ export class CookieNotif {
     private countryArray;
 
     constructor(options) {
-        const storage = new Storage();
-        this.isNotifDisabled = JSON.parse(storage.get("cookie-notif-disabled"));
+        this.storage = new Storage();
+        this.isNotifDisabled = JSON.parse(this.storage.get("cookie-notif-disabled"));
         this.notif = document.querySelector(".cookie-notif");
         this.closeButton = document.querySelector(".cookie-notif-close");
         this.geoip = document.body.getAttribute("data-geoip") || options.geoIp;
@@ -41,29 +42,11 @@ export class CookieNotif {
     }
 
     eventListeners() {
-        utility.addEventListener(this.closeButton, "click", (e) => {
-            this.broadcast("cookie.notif.disable");
-        });
-
-        crosstab.on("cookie.notif.disable", function(message) {
-            utility.addClass(this.notif, "hidden");
-            this.storage.set("cookie-notif-disabled", true);
-        });
-    }
-
-    /**
-     * Broadcast the event to other tabs
-     */
-    broadcast(event, data = null, destination = null) {
-        try {
-            crosstab.broadcast(event, data, destination);
-            if (detectIE() === 8) {
-                setTimeout(() => {
-                    crosstab.broadcast(event, data, destination);
-                }, 300);
+        ComponentManager.subscribe("click", (event, src) => {
+            if (utility.hasClass(src, "cookie-notif-close", 1)) {
+                utility.addClass(this.notif, "hidden");
+                this.storage.set("cookie-notif-disabled", true);
             }
-        } catch (error) {
-            // do nothing
-        }
+        });
     }
 }
