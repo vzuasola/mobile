@@ -16,11 +16,6 @@ class FooterComponent implements ComponentWidgetInterface
      */
     private $views;
 
-    /**
-     * @var App\Fetcher\Drupal\configs
-     */
-    private $configs;
-
     private $idDomain;
 
     /**
@@ -31,20 +26,18 @@ class FooterComponent implements ComponentWidgetInterface
         return new static(
             $container->get('menu_fetcher'),
             $container->get('views_fetcher'),
-            $container->get('id_domain'),
-            $container->get('config_fetcher')
+            $container->get('id_domain')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $views, $idDomain, $configs)
+    public function __construct($menus, $views, $idDomain)
     {
         $this->menus = $menus;
         $this->views = $views;
         $this->idDomain = $idDomain;
-        $this->configs = $configs;
     }
 
 
@@ -77,17 +70,6 @@ class FooterComponent implements ComponentWidgetInterface
             $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
-        }
-
-        try {
-            $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
-            $data['cookie_notification'] = $footerConfigs['cookie_notification']['value'] ?? 'cookie notification';
-            $data['country_codes'] = $footerConfigs['country_codes'] ?? '';
-            $data['geo_ip'] = $this->idDomain->getGeoIpCountry();
-        } catch (\Exception $e) {
-            $footerConfigs = [];
-            $data['cookie_notification'] = '';
-            $data['country_codes'] = '';
         }
 
         $this->cleanFooterMenu($data['footer_menu']);
