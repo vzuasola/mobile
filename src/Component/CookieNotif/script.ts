@@ -1,10 +1,8 @@
-import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {CookieNotif} from "./scripts/cookie-notif";
-import Storage from "@core/assets/js/components/utils/storage";
 
-import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
+import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
@@ -21,6 +19,7 @@ export class CookieNotifComponent implements ComponentInterface {
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
+        this.cookieNotif();
     }
 
     private cookieNotif() {
