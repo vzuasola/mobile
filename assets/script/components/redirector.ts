@@ -11,8 +11,13 @@ class Redirector {
      * @param closure A optional handler callback
      */
     redirect(url: string, closure?) {
+        // Safari
+        const iOSSafari = /iP(ad|od|hone)/i.test(window.navigator.userAgent) &&
+        /WebKit/i.test(window.navigator.userAgent) &&
+        !(/(CriOS|FxiOS|OPiOS|mercury)/i.test(window.navigator.userAgent));
+
         // handle redirects if we are on a PWA standalone
-        if (navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) {
+        if (!iOSSafari && (navigator.standalone || window.matchMedia("(display-mode: standalone)").matches)) {
             window.open(url);
 
             if (closure) {

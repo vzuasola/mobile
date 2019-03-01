@@ -12,6 +12,10 @@ class Products
         'casino' => 'mobile-casino'
     ];
 
+    const PRODUCT_DIRECT_INTEGRATION = [
+        'mobile-sports' => 'sports'
+    ];
+
     const PRODUCT_ALIAS = [
         'casino' => [
             'casino',

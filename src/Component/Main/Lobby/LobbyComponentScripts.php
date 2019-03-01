@@ -14,7 +14,6 @@ class LobbyComponentScripts implements ComponentAttachmentInterface
      * @var App\Player\PlayerSession
      */
     private $playerSession;
-
     /**
      *
      */
@@ -41,6 +40,7 @@ class LobbyComponentScripts implements ComponentAttachmentInterface
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'product_alias' => Products::PRODUCT_ALIAS,
+            'product_direct_integration' => Products::PRODUCT_DIRECT_INTEGRATION
         ];
     }
 }

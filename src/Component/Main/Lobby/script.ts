@@ -12,6 +12,7 @@ export class LobbyComponent implements ComponentInterface {
     private loader: Loader;
     private isLogin: boolean = false;
     private productAlias: any;
+    private productDirectIntegration: any = [];
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -22,10 +23,12 @@ export class LobbyComponent implements ComponentInterface {
         attachments: {
             authenticated: boolean,
             product_alias: any,
+            product_direct_integration: any,
         },
     ) {
         this.isLogin = attachments.authenticated;
         this.productAlias = attachments.product_alias;
+        this.productDirectIntegration = attachments.product_direct_integration;
 
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
@@ -35,6 +38,7 @@ export class LobbyComponent implements ComponentInterface {
             this.isLogin = false;
         });
         this.doLoginProcess(element);
+        this.integrateProduct(element);
     }
 
     onReload(
@@ -42,11 +46,15 @@ export class LobbyComponent implements ComponentInterface {
         attachments: {
             authenticated: boolean,
             product_alias: any,
+            product_direct_integration: any,
         },
     ) {
         this.isLogin = attachments.authenticated;
         this.productAlias = attachments.product_alias;
+        this.productDirectIntegration = attachments.product_direct_integration;
+
         this.doLoginProcess(element);
+        this.integrateProduct(element);
     }
 
     private doLoginProcess(element) {
@@ -63,6 +71,16 @@ export class LobbyComponent implements ComponentInterface {
             }
 
             ComponentManager.broadcast("direct.login", {srcElement: element, productCode});
+        }
+    }
+
+    private integrateProduct(element) {
+        const product = ComponentManager.getAttribute("product");
+        if (this.productDirectIntegration && this.productDirectIntegration.hasOwnProperty(product)) {
+            const productCode = this.productDirectIntegration[product];
+            if (productCode && this.productAlias[productCode].includes(Router.route().substring(1))) {
+                ComponentManager.broadcast("integrate.product", {srcElement: element, productCode});
+            }
         }
     }
 }

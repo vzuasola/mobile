@@ -5,10 +5,11 @@ const version = versioning.version;
 console.log("Application version: " + Semver.show(version));
 
 import "promise-polyfill/src/polyfill";
+import "es6-shim";
 import "pwacompat";
 
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 import {Modal} from "./components/modal";
 
@@ -35,6 +36,20 @@ ComponentManager.setOption("module-response-handle-error", (request: XMLHttpRequ
     }
 
     // handle additional error scenario here
+});
+
+ComponentManager.subscribe(RouterClass.navigateError, (event, src, data) => {
+    let page: string;
+
+    if (data.response.request) {
+        page = data.response.request.getResponseHeader("x-page-error-type");
+    }
+
+    if (page === "maintenance") {
+        window.location.replace("/maintenance");
+    } else if (page === "restricted") {
+        window.location.replace("/restricted");
+    }
 });
 
 Router.setOption(

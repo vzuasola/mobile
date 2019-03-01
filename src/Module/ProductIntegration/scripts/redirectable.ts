@@ -8,6 +8,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {Redirector} from "@app/assets/script/components/redirector";
+import {ProductLanguage} from "../scripts/product-language";
 
 export abstract class Redirectable implements ModuleInterface {
     protected code: string;
@@ -110,6 +111,22 @@ export abstract class Redirectable implements ModuleInterface {
                 }
             }
         });
+
+        ComponentManager.subscribe("integrate.product", (event, src, data) => {
+            if (data && typeof data.srcElement !== "undefined") {
+                const el: HTMLElement = data.srcElement
+                    .querySelector(`[data-product-instance-id="${data.productCode}"]`);
+                if (el && el.getAttribute("data-product-integration-id") === this.code) {
+                    setTimeout(() => {
+                        ComponentManager.broadcast("redirectable.set.product", {
+                            product: el.getAttribute("data-product-integration-id"),
+                            src: el,
+                        });
+                    }, 500);
+                    return;
+                }
+            }
+        });
     }
 
     protected doRequest(src) {
@@ -121,6 +138,12 @@ export abstract class Redirectable implements ModuleInterface {
             method: "post",
         }).then((response) => {
             if (typeof response.redirect !== "undefined") {
+                if (!this.isSupportedLanguage(src)) {
+                    response.redirect = response.redirect.replace(
+                        "\/" + ComponentManager.getAttribute("language") + "\/",
+                        "/" + this.getRedirectLanguage(src) + "/");
+                }
+
                 Redirector.redirect(response.redirect, () => {
                     this.loader.hide();
                 });
@@ -148,5 +171,31 @@ export abstract class Redirectable implements ModuleInterface {
         }
 
         ComponentManager.broadcast("header.login");
+    }
+
+    protected isSupportedLanguage(el) {
+        const product = el.getAttribute("data-product-instance-id");
+        const productLanguage = new ProductLanguage();
+        const supportedLanguage = productLanguage.getSupportedLanguage();
+        if (product && supportedLanguage.hasOwnProperty(product)) {
+            if (!supportedLanguage[product].includes(ComponentManager.getAttribute("language"))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected getRedirectLanguage(el) {
+        let language: string = "en";
+        const product = el.getAttribute("data-product-instance-id");
+        const productLanguage = new ProductLanguage();
+        const supportedLanguage = productLanguage.getSupportedLanguage();
+        if (ComponentManager.getAttribute("language") === "ch"
+            && supportedLanguage.hasOwnProperty(product)
+            && supportedLanguage[product].includes("sc")) {
+            language = "sc";
+        }
+
+        return language;
     }
 }

@@ -26,6 +26,11 @@ export class GamesIntegrationModule extends Redirectable implements ModuleInterf
                 },
             }).then((response) => {
                 if (typeof response.url !== "undefined") {
+                    if (!this.isSupportedLanguage(src)) {
+                        response.url = response.url.replace(
+                            "\/" + ComponentManager.getAttribute("language") + "\/",
+                            "/" + this.getRedirectLanguage(src) + "/");
+                    }
                     if (utility.isExternal(response.url)) {
                         Redirector.redirect(response.url, () => {
                             this.loader.hide();
