@@ -38,6 +38,9 @@ self.addEventListener("activate", (event: any) => {
 });
 
 if (workbox) {
+
+    workbox.googleAnalytics.initialize();
+
     // Cache JS files
     workbox.routing.registerRoute(
         new RegExp(".*\.js"),

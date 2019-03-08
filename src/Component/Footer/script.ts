@@ -14,6 +14,7 @@ export class FooterComponent implements ComponentInterface {
         this.element = element;
         this.getOriginalUrl();
         this.attachProduct();
+        this.attachProduct();
 
         Router.on(RouterClass.afterNavigate, (event) => {
             this.getOriginalUrl();

@@ -1,5 +1,7 @@
 declare var navigator: any;
 
+import * as utility from "@core/assets/js/components/utility";
+
 /**
  *
  */
@@ -18,6 +20,16 @@ class Redirector {
 
         // handle redirects if we are on a PWA standalone
         if (!iOSSafari && (navigator.standalone || window.matchMedia("(display-mode: standalone)").matches)) {
+            url = utility.addQueryParam(url, "source", "pwa");
+
+            // Check if re is in the parameters and add source=pwa to re param
+            let reUrl = utility.getParameterByName("re", url);
+            if (reUrl) {
+                url = utility.removeQueryParam(url, "re");
+                reUrl = utility.addQueryParam(reUrl, "source", "pwa");
+                url = utility.addQueryParam(url, "re", reUrl);
+            }
+
             window.open(url);
 
             if (closure) {
