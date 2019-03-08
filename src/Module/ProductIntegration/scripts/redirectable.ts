@@ -140,7 +140,8 @@ export abstract class Redirectable implements ModuleInterface {
             if (typeof response.redirect !== "undefined") {
                 if (!this.isSupportedLanguage(src)) {
                     response.redirect = response.redirect.replace(
-                        "\/" + ComponentManager.getAttribute("language") + "\/", "/en/");
+                        "\/" + ComponentManager.getAttribute("language") + "\/",
+                        "/" + this.getRedirectLanguage(src) + "/");
                 }
 
                 Redirector.redirect(response.redirect, () => {
@@ -182,5 +183,19 @@ export abstract class Redirectable implements ModuleInterface {
             }
         }
         return true;
+    }
+
+    protected getRedirectLanguage(el) {
+        let language: string = "en";
+        const product = el.getAttribute("data-product-instance-id");
+        const productLanguage = new ProductLanguage();
+        const supportedLanguage = productLanguage.getSupportedLanguage();
+        if (ComponentManager.getAttribute("language") === "ch"
+            && supportedLanguage.hasOwnProperty(product)
+            && supportedLanguage[product].includes("sc")) {
+            language = "sc";
+        }
+
+        return language;
     }
 }

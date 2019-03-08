@@ -74,6 +74,7 @@ class OWSportsIntegrationModuleController
             $data['redirect'] = $this->getPreLoginLink($host, $owParams, $ismartPrelogin, $isEncoded);
         }
 
+
         return $this->rest->output($response, $data);
     }
 

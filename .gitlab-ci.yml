@@ -271,6 +271,8 @@ uat:
     paths:
       - automation/deployed/*.jsonl
     expire_in: 1 month
+  tags:
+    - stgrunner
   only:
     - /^release-.*$/
     - tags
