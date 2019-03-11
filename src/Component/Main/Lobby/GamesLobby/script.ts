@@ -405,8 +405,7 @@ export class GamesLobbyComponent implements ComponentInterface {
 
                         newResponse.games = this.getCategoryGames(newResponse.games);
                         if (newResponse.hasOwnProperty("gamesCollection")
-                            && newResponse.gamesCollection.hasOwnProperty("recommended")
-                            && newResponse.games.hasOwnProperty("recommended-games")) {
+                            && newResponse.gamesCollection.hasOwnProperty("recommended")) {
                             newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
                         }
                         newResponse.games = this.groupGamesByContainer(newResponse.games);
@@ -451,16 +450,16 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     private doSortRecommended(newResponse) {
-        const recommended = newResponse.games["recommended-games"];
+        const allGames = newResponse.games["all-games"];
         let sortedRecommended: any = [];
-        const gamesListObj = this.getGamesObj(
-            recommended,
-            newResponse.games["all-games"]);
-        sortedRecommended = this.sortGamesCollection(
-            newResponse.gamesCollection.recommended,
-            recommended,
-            gamesListObj,
-        );
+        if (newResponse.gamesCollection.hasOwnProperty("recommended")) {
+            const gamesDictionary = this.getGamesDictionary(newResponse.gamesCollection.recommended);
+            sortedRecommended = this.sortGamesCollection(
+                newResponse.gamesCollection.recommended,
+                gamesDictionary,
+                allGames,
+            );
+        }
 
         return sortedRecommended;
     }
@@ -868,7 +867,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 let recommended: boolean = false;
                 gamesEl.innerHTML = "";
                 this.activateSearchTab(data.active);
-                if (this.response.games["recommended-games"] && this.response.enableRecommended) {
+                if (this.response.games["recommended-games"]) {
                     this.searchResults = this.response.games["recommended-games"];
                     this.setGames(this.response.games["recommended-games"], 0, true);
                     recommended = true;
