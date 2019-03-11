@@ -98,5 +98,9 @@ class Products
             'virtual-sports-coupon',
             'virtuals',
         ],
+        'casino-gold' => [
+            'casino-gold',
+            'gold',
+        ],
     ];
 }
