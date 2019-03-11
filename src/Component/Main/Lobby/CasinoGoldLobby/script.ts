@@ -271,7 +271,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         for (const id in lobbyRequests) {
             if (lobbyRequests.hasOwnProperty(id)) {
                 const currentRequest = lobbyRequests[id];
-                const uri = Router.generateRoute("casino_lobby", currentRequest.type);
+                const uri = Router.generateRoute("casino_gold_lobby", currentRequest.type);
                 xhr({
                     url: uri,
                     type: "json",
@@ -550,7 +550,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             if (el) {
                 const gameCode = el.getAttribute("data-game-code");
                 xhr({
-                    url: Router.generateRoute("casino_lobby", "recent"),
+                    url: Router.generateRoute("casino_gold_lobby", "recent"),
                     type: "json",
                     method: "post",
                     data: {
@@ -581,7 +581,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             if (el && this.isLogin) {
                 const gameCode = el.parentElement.getAttribute("data-game-code");
                 xhr({
-                    url: Router.generateRoute("casino_lobby", "favorite"),
+                    url: Router.generateRoute("casino_gold_lobby", "favorite"),
                     type: "json",
                     method: "post",
                     data: {
