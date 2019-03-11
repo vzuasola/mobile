@@ -244,7 +244,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 responses["games-collection"].top,
                 gamesDictionary,
                 gamesList[key],
-                true
+                true,
             );
         }
 
@@ -361,7 +361,6 @@ export class GamesLobbyComponent implements ComponentInterface {
                 Object.assign(sortedCollection, sortedAlpha);
             }
         }
-        
 
         return sortedCollection;
     }
@@ -462,7 +461,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 newResponse.gamesCollection.recommended,
                 gamesDictionary,
                 allGames,
-                false
+                false,
             );
         }
 
