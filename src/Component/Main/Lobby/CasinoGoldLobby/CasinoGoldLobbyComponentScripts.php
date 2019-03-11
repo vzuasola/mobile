@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Lobby\CasinoLobby;
+namespace App\MobileEntry\Component\Main\Lobby\CasinoGoldLobby;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 use App\MobileEntry\Services\Product\Products;
