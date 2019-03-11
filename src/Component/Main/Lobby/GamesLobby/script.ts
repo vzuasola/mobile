@@ -897,9 +897,13 @@ export class GamesLobbyComponent implements ComponentInterface {
                     this.currentPage += 1;
                     let hash = utility.getHash(window.location.href);
                     if (!this.response.games[hash]) {
+                        const first = this.response.categories[0].field_games_alias;
+                        hash = this.getActiveCategory(this.response.games, first);
                         const categoriesEl = document.querySelector("#game-categories");
                         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-                        hash = activeLink.getAttribute("data-category-filter-id");
+                        if (activeLink) {
+                            hash = activeLink.getAttribute("data-category-filter-id");
+                        }
                     }
                     let pager = this.getPagedContent(this.response.games[hash]);
 
