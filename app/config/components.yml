@@ -63,6 +63,10 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\CasinoLobby\CasinoLobbyComponent
     parent: lobby
 
+  casino_gold_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\CasinoGoldLobby\CasinoGoldLobbyComponent
+    parent: lobby
+
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
 
