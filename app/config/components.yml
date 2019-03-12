@@ -178,6 +178,9 @@ modules:
   flowgaming_integration:
     class: App\MobileEntry\Module\GameIntegration\FlowGaming\FlowGamingModule
 
+  sagaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\SAGaming\SAGamingModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
