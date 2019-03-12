@@ -50,7 +50,6 @@ class PASModuleScripts implements ComponentAttachmentInterface
     {
         try {
             $ptConfig = $this->config->getConfig('webcomposer_config.games_playtech_provider');
-
             $iapiConfigs = $ptConfig['iapiconf_override'] ?? [];
             if ($iapiConfigs) {
                 $iapiConfigs = Config::parse($iapiConfigs);
@@ -62,12 +61,14 @@ class PASModuleScripts implements ComponentAttachmentInterface
             $ptConfig = [];
         }
         return [
+            'futurama' => $ptConfig['futurama_switch'] ?? false,
             'authenticated' => $this->playerSession->isLogin(),
             'iapiconfOverride' => [],
             'lang' => $this->lang ?? 'en',
             'langguageMap' => Config::parse($ptConfig['languages']),
             'iapiConfigs' => $iapiConfigs,
             'isGold' => ($this->playerSession->isLogin()) ? $this->paymentAccount->hasAccount('casino-gold') : false,
+            'errorMap' => Config::parse($ptConfig['error_mapping']),
         ];
     }
 }
