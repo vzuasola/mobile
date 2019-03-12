@@ -294,6 +294,7 @@ export class GamesFilter {
     private filterGamesList(game, filters, special) {
         let trueCtr = 0;
         let conditionCheck = Object.keys(filters).length;
+
         if (typeof game.filters !== "undefined") {
             const gameFilters = JSON.parse(game.filters);
             for (const filterKey in filters) {
@@ -304,7 +305,7 @@ export class GamesFilter {
                     for (const checkValue of filter) {
                         if (gameFilter.indexOf(checkValue) !== -1) {
                             trueCtr++;
-                            continue;
+                            break;
                         }
                     }
                 }
