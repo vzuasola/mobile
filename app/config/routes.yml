@@ -96,7 +96,7 @@ routes:
         action: App\MobileEntry\Controller\CasinoGoldController:view
         components:
             main: lobby
-            lobby_content: casino_gold_lobby
+            lobby_content: casino_lobby
         headers:
             Cache-Control: public, max-age=900
         page_cache:
