@@ -13,6 +13,7 @@ import {SolidGamingModule} from "@app/src/Module/GameIntegration/SolidGaming/scr
 import {CQ9Module} from "@app/src/Module/GameIntegration/CQ9/script";
 import {FlowGamingModule} from "@app/src/Module/GameIntegration/FlowGaming/script";
 import {SAGamingModule} from "@app/src/Module/GameIntegration/SAGaming/script";
+import {PGSoftModule} from "@app/src/Module/GameIntegration/PGSoft/script";
 
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
@@ -36,6 +37,7 @@ ComponentManager.setModules({
     microgaming_integration: new MicroGamingModule(),
     flowgaming_integration: new FlowGamingModule(),
     sagaming_integration: new SAGamingModule(),
+    pgsoft_integration: new PGSoftModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
     generic_integration: new GenericIntegrationModule(),

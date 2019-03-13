@@ -181,6 +181,9 @@ modules:
   sagaming_integration:
     class: App\MobileEntry\Module\GameIntegration\SAGaming\SAGamingModule
 
+  pgsoft_integration:
+    class: App\MobileEntry\Module\GameIntegration\PGSoft\PGSoftModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
