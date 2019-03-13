@@ -68,7 +68,7 @@ class PASModuleScripts implements ComponentAttachmentInterface
             'langguageMap' => Config::parse($ptConfig['languages']),
             'iapiConfigs' => $iapiConfigs,
             'isGold' => ($this->playerSession->isLogin()) ? $this->paymentAccount->hasAccount('casino-gold') : false,
-            'errorMap' => Config::parse($ptConfig['error_mapping']),
+            'errorMap' => isset($ptConfig['error_mapping']) ? Config::parse($ptConfig['error_mapping']) : [],
         ];
     }
 }

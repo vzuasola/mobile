@@ -146,32 +146,51 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     launch(options) {
         if (options.provider === this.key) {
+            if (this.futurama) {
+                // Get Login if not login, login, then launch
+                // Before login, check if there are cookies on PTs end
+                iapiSetCallout("GetLoggedInPlayer", (GetLoggedInPlayeResponse) => {
+                    if (this.verifyCookie(GetLoggedInPlayeResponse)) {
+                        iapiSetCallout("Logout", (response) => {
+                            console.log("Login using token");
+                            // iapiLogin(username, password, real, language);
+                        });
+
+                        this.doLogout();
+                    } else {
+                        console.log("Login using token");
+                        // iapiLogin(username, password, real, language);
+                    }
+                });
+
+                this.doCheckSession();
+            }
 
             // remap language
-            const lang = Router.getLanguage();
-            const language = this.getLanguageMap(lang);
+            // const lang = Router.getLanguage();
+            // const language = this.getLanguageMap(lang);
 
-            xhr({
-                url: Router.generateModuleRoute("pas_integration", "launch"),
-                type: "json",
-                method: "post",
-                data: {
-                    lang,
-                    language,
-                    options,
-                },
-            }).then((response) => {
-                if (response.gameurl) {
-                    this.launchGame(options.target);
-                    this.updatePopupWindow(response.gameurl);
-                }
+            // xhr({
+            //     url: Router.generateModuleRoute("pas_integration", "launch"),
+            //     type: "json",
+            //     method: "post",
+            //     data: {
+            //         lang,
+            //         language,
+            //         options,
+            //     },
+            // }).then((response) => {
+            //     if (response.gameurl) {
+            //         this.launchGame(options.target);
+            //         this.updatePopupWindow(response.gameurl);
+            //     }
 
-                if (!response.currency) {
-                    this.unsupportedCurrency(options);
-                }
-            }).fail((error, message) => {
-                // Do nothing
-            });
+            //     if (!response.currency) {
+            //         this.unsupportedCurrency(options);
+            //     }
+            // }).fail((error, message) => {
+            //     // Do nothing
+            // });
         }
     }
 
