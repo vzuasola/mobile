@@ -49,6 +49,8 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private isGold: boolean;
 
+    private passErrorCode: any;
+
     onLoad(attachments: {
         futurama: boolean,
         authenticated: boolean,
@@ -199,30 +201,36 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     private pasLaunch(options) {
-        // remap language
-        const lang = Router.getLanguage();
-        const language = this.getLanguageMap(lang);
-        xhr({
-            url: Router.generateModuleRoute("pas_integration", "launch"),
-            type: "json",
-            method: "post",
-            data: {
-                lang,
-                language,
-                options,
-            },
-        }).then((response) => {
-            if (response.gameurl) {
-                this.launchGame(options.target);
-                this.updatePopupWindow(response.gameurl);
-            }
 
-            if (!response.currency) {
-                this.unsupportedCurrency(options);
-            }
-        }).fail((error, message) => {
-            // Do nothing
-        });
+        if (this.passErrorCode === 0) {
+            // remap language
+            const lang = Router.getLanguage();
+            const language = this.getLanguageMap(lang);
+            xhr({
+                url: Router.generateModuleRoute("pas_integration", "launch"),
+                type: "json",
+                method: "post",
+                data: {
+                    lang,
+                    language,
+                    options,
+                },
+            }).then((response) => {
+                if (response.gameurl) {
+                    this.launchGame(options.target);
+                    this.updatePopupWindow(response.gameurl);
+                }
+
+                if (!response.currency) {
+                    this.unsupportedCurrency(options);
+                }
+            }).fail((error, message) => {
+                // Do nothing
+            });
+
+            return;
+        }
+        // Do Error mapping modal
     }
 
     /**
@@ -408,7 +416,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
                 this.store.set(this.sessionFlag, "1");
-
+                this.passErrorCode = response.errorCode;
                 if (response.sessionValidationData !== undefined &&
                     response.sessionValidationData.SessionValidationByTCVersionData !== undefined
                 ) {
@@ -426,7 +434,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
                 return;
             }
-
+            this.passErrorCode = response.errorCode;
             resolve();
         };
     }
