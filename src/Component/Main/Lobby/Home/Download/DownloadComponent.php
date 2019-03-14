@@ -51,10 +51,30 @@ class DownloadComponent implements ComponentWidgetInterface
 
         try {
             $data['downloads_menu'] = $this->menus->getMultilingualMenu('mobile-downloads');
+            $data['downloads_menu'] = $this->arrangeBlocks($data['downloads_menu']);
         } catch (\Exception $e) {
             $data['downloads_menu'] = [];
         }
 
         return $data;
+    }
+
+
+    private function arrangeBlocks($data)
+    {
+        $batch = [];
+        if (count($data) === 4) {
+            while (count($data) > 0) {
+                $batch[] = array_splice($data, 0, 2, []);
+            }
+
+            return $batch;
+        }
+
+        while (count($data) > 0) {
+            $batch[] = array_splice($data, 0, 3, []);
+        }
+
+        return $batch;
     }
 }

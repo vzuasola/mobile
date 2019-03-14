@@ -13,7 +13,10 @@
             <div class="modal-body games-search-filter-body clearfix">
                 {% for parent in parent_filters %}
                     <div class="games-search-filter-list clearfix">
+                    {% if not authenticated and parent.value == 'player-preference' %}
+                    {% else %}
                     <p>{{ parent.name }}</p>
+                    {% endif %}
                     <ul class="col-12">
                         {% if filters %}
                             {% for dataFilter in filters %}

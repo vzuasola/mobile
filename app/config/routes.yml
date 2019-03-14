@@ -104,6 +104,19 @@ routes:
         attributes:
             product: mobile-sports
 
+    /{id:sports-df|dffootball|dfsoccer|dfgoal|dfcup|dfmatch168}:
+        method: GET
+        action: App\MobileEntry\Controller\HomeController:view
+        components:
+            main: lobby
+        headers:
+            Cache-Control: public, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-sports-df
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:

@@ -699,10 +699,6 @@ export class GamesLobbyComponent implements ComponentInterface {
                         this.doRequest(() => {
                             this.gamesSearch.setGamesList(this.response);
                             this.gamesFilter.setGamesList(this.response);
-
-                            if (this.filterFlag === "recently-played") {
-                                this.setGames(this.response.games[this.filterFlag]);
-                            }
                         });
                     }
                 }).fail((error, message) => {
@@ -743,7 +739,10 @@ export class GamesLobbyComponent implements ComponentInterface {
                                 if (typeof this.response.games[this.filterFlag] !== "undefined") {
                                     this.setGames(this.response.games[this.filterFlag]);
                                 }
+                            }
 
+                            if (this.filterFlag === "favorites-general") {
+                                this.gamesFilter.submitFilters();
                             }
                         });
 
@@ -898,9 +897,13 @@ export class GamesLobbyComponent implements ComponentInterface {
                     this.currentPage += 1;
                     let hash = utility.getHash(window.location.href);
                     if (!this.response.games[hash]) {
+                        const first = this.response.categories[0].field_games_alias;
+                        hash = this.getActiveCategory(this.response.games, first);
                         const categoriesEl = document.querySelector("#game-categories");
                         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-                        hash = activeLink.getAttribute("data-category-filter-id");
+                        if (activeLink) {
+                            hash = activeLink.getAttribute("data-category-filter-id");
+                        }
                     }
                     let pager = this.getPagedContent(this.response.games[hash]);
 
