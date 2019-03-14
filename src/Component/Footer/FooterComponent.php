@@ -18,6 +18,8 @@ class FooterComponent implements ComponentWidgetInterface
 
     private $idDomain;
 
+    private $product;
+
     /**
      *
      */
@@ -26,18 +28,20 @@ class FooterComponent implements ComponentWidgetInterface
         return new static(
             $container->get('menu_fetcher'),
             $container->get('views_fetcher'),
-            $container->get('id_domain')
+            $container->get('id_domain'),
+            $container->get('product_resolver')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $views, $idDomain)
+    public function __construct($menus, $views, $idDomain, $product)
     {
         $this->menus = $menus;
         $this->views = $views;
         $this->idDomain = $idDomain;
+        $this->product = $product;
     }
 
 
@@ -108,7 +112,7 @@ class FooterComponent implements ComponentWidgetInterface
     {
         if ($footerMenu) {
             foreach ($footerMenu as $key => $link) {
-                if ($this->idDomain->isLangSelectorHidden() &&
+                if ($this->idDomain->isLangSelectorHidden() || $this->product->getProduct() &&
                     strpos($link['attributes']['class'], 'language-trigger') !== false
                 ) {
                     unset($footerMenu[$key]);
