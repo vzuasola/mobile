@@ -4,4 +4,5 @@ declare function iapiKeepAlive(id: number, callback: any): any;
 declare function iapiGetLoggedInPlayer(id: number): any;
 declare function iapiLogout(id: number, pid: number): any;
 declare function iapiLogin(username: string, password: string, real: any, language: string): any;
+declare function iapiLoginUsernameExternalToken(username: string, token: string, real: any, language: string): any;
 declare function iapiValidateTCVersion(response: any, id: number, pid: number): any;

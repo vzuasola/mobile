@@ -26,6 +26,8 @@ export class PASModule implements ModuleInterface, GameInterface {
     private key: string = "pas";
 
     private futurama: boolean;
+    private username: string;
+    private token: string;
     private languages: any;
     private windowObject: any;
     private gameLink: string;
@@ -50,6 +52,8 @@ export class PASModule implements ModuleInterface, GameInterface {
     onLoad(attachments: {
         futurama: boolean,
         authenticated: boolean,
+        username: string,
+        token: string,
         iapiconfOverride: {},
         lang: string,
         langguageMap: {[name: string]: string},
@@ -68,6 +72,10 @@ export class PASModule implements ModuleInterface, GameInterface {
         this.keepAliveTrigger();
         this.listenSessionLogin();
         this.errorMap = attachments.errorMap;
+        if (attachments.username) {
+            this.username = attachments.username.toUpperCase();
+        }
+        this.token = attachments.token;
     }
 
     init() {
@@ -146,19 +154,32 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     launch(options) {
         if (options.provider === this.key) {
+
+            // remap language
+            const lang = Router.getLanguage();
+            const language = this.getLanguageMap(lang);
+
             if (this.futurama) {
+
+                const key = "dafa888";
+                iapiConf = this.iapiConfs[key];
+
                 // Get Login if not login, login, then launch
                 // Before login, check if there are cookies on PTs end
                 iapiSetCallout("GetLoggedInPlayer", (GetLoggedInPlayeResponse) => {
+                    // Set the callback for the PAS login
+                    iapiSetCallout("Login", this.onLogin(this.username, () => {
+                        this.pasLaunch(options);
+                    }));
                     if (this.verifyCookie(GetLoggedInPlayeResponse)) {
                         iapiSetCallout("Logout", (response) => {
-                            console.log("Login using token");
+                            iapiLoginUsernameExternalToken(this.username, this.token, 1, language);
                             // iapiLogin(username, password, real, language);
                         });
 
                         this.doLogout();
                     } else {
-                        console.log("Login using token");
+                        iapiLoginUsernameExternalToken(this.username, this.token, 1, language);
                         // iapiLogin(username, password, real, language);
                     }
                 });
@@ -166,36 +187,42 @@ export class PASModule implements ModuleInterface, GameInterface {
                 this.doCheckSession();
             }
 
-            // remap language
-            // const lang = Router.getLanguage();
-            // const language = this.getLanguageMap(lang);
+            if (!this.futurama) {
+                this.pasLaunch(options);
+            }
 
-            // xhr({
-            //     url: Router.generateModuleRoute("pas_integration", "launch"),
-            //     type: "json",
-            //     method: "post",
-            //     data: {
-            //         lang,
-            //         language,
-            //         options,
-            //     },
-            // }).then((response) => {
-            //     if (response.gameurl) {
-            //         this.launchGame(options.target);
-            //         this.updatePopupWindow(response.gameurl);
-            //     }
-
-            //     if (!response.currency) {
-            //         this.unsupportedCurrency(options);
-            //     }
-            // }).fail((error, message) => {
-            //     // Do nothing
-            // });
         }
     }
 
     logout() {
         this.doLogout();
+    }
+
+    private pasLaunch(options) {
+        // remap language
+        const lang = Router.getLanguage();
+        const language = this.getLanguageMap(lang);
+        xhr({
+            url: Router.generateModuleRoute("pas_integration", "launch"),
+            type: "json",
+            method: "post",
+            data: {
+                lang,
+                language,
+                options,
+            },
+        }).then((response) => {
+            if (response.gameurl) {
+                this.launchGame(options.target);
+                this.updatePopupWindow(response.gameurl);
+            }
+
+            if (!response.currency) {
+                this.unsupportedCurrency(options);
+            }
+        }).fail((error, message) => {
+            // Do nothing
+        });
     }
 
     /**
@@ -377,6 +404,7 @@ export class PASModule implements ModuleInterface, GameInterface {
      */
     private onLogin(username, resolve) {
         return (response) => {
+            console.log(response);
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
                 this.store.set(this.sessionFlag, "1");

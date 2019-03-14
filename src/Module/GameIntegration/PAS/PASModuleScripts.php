@@ -63,6 +63,8 @@ class PASModuleScripts implements ComponentAttachmentInterface
         return [
             'futurama' => $ptConfig['futurama_switch'] ?? false,
             'authenticated' => $this->playerSession->isLogin(),
+            'username' => $this->playerSession->getUsername(),
+            'token' => $this->playerSession->getToken(),
             'iapiconfOverride' => [],
             'lang' => $this->lang ?? 'en',
             'langguageMap' => Config::parse($ptConfig['languages']),
