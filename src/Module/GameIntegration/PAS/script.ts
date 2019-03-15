@@ -91,63 +91,65 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     login(username, password) {
-        if (!this.futurama) {
-            this.isSessionAlive = true;
-            return new Promise((resolve, reject) => {
-                const user = username.toUpperCase();
-                const real = 1;
-                const language = this.getLanguageMap(this.lang);
-                const uri = Router.generateModuleRoute("pas_integration", "subaccounts");
+        this.isSessionAlive = true;
+        return new Promise((resolve, reject) => {
+            const user = username.toUpperCase();
+            const real = 1;
+            const language = this.getLanguageMap(this.lang);
+            const uri = Router.generateModuleRoute("pas_integration", "subaccounts");
 
-                xhr({
-                    url: utility.addQueryParam(uri, "username", user),
-                }).then((response) => {
-                    let ctr = 0;
-                    const promises = [];
-                    for (const key in this.iapiConfs) {
-                        if (this.iapiConfs.hasOwnProperty(key)) {
-                            this.isGold = response.provisioned;
-
-                            if (this.checkIapiConfig(key)) {
-                                continue;
-                            }
-
-                            ++ ctr;
-                            const promise = () => {
-                                return new Promise((resolvePromise, rejectPromise) => {
-                                    setTimeout(() => {
-                                        iapiConf = this.iapiConfs[key];
-
-                                        // Set the callback for the PAS login
-                                        iapiSetCallout("Login", this.onLogin(user, resolvePromise));
-
-                                        iapiLogin(user, password, real, language);
-                                        // after n seconds, nothing still happen, I'll let the other
-                                        // hooks to proceed
-                                        setTimeout(() => {
-                                            resolvePromise();
-                                        }, 10 * 1000);
-                                    }, 1.5 * 500 * ctr);
-                                });
-                            };
-                            promises.push(promise);
+            xhr({
+                url: utility.addQueryParam(uri, "username", user),
+            }).then((response) => {
+                let ctr = 0;
+                const promises = [];
+                for (const key in this.iapiConfs) {
+                    if (this.iapiConfs.hasOwnProperty(key)) {
+                        if (this.futurama && key !== "dafagold") {
+                            continue;
                         }
+
+                        this.isGold = response.provisioned;
+
+                        if (this.checkIapiConfig(key)) {
+                            continue;
+                        }
+
+                        ++ ctr;
+                        const promise = () => {
+                            return new Promise((resolvePromise, rejectPromise) => {
+                                setTimeout(() => {
+                                    iapiConf = this.iapiConfs[key];
+
+                                    // Set the callback for the PAS login
+                                    iapiSetCallout("Login", this.onLogin(user, resolvePromise));
+
+                                    iapiLogin(user, password, real, language);
+                                    // after n seconds, nothing still happen, I'll let the other
+                                    // hooks to proceed
+                                    setTimeout(() => {
+                                        resolvePromise();
+                                    }, 10 * 1000);
+                                }, 1.5 * 500 * ctr);
+                            });
+                        };
+                        promises.push(promise);
                     }
+                }
 
-                    const lastPromise = () => {
-                        return new Promise((prom, rej) => {
-                            resolve();
-                            prom();
-                        });
-                    };
+                const lastPromise = () => {
+                    return new Promise((prom, rej) => {
+                        resolve();
+                        prom();
+                    });
+                };
 
-                    promises.push(lastPromise);
+                promises.push(lastPromise);
 
-                    this.sync.executeWithArgs(promises, []);
-                });
-
+                this.sync.executeWithArgs(promises, []);
             });
-        }
+
+        });
     }
 
     prelaunch() {
@@ -338,41 +340,43 @@ export class PASModule implements ModuleInterface, GameInterface {
      * IMS default session timeout is configured to 30mins
      */
     private doKeepAlive() {
-        if (!this.futurama) {
-            let ctr = 0;
-            const promises = [];
-            for (const key in this.iapiConfs) {
-                if (this.iapiConfs.hasOwnProperty(key)) {
-                    if (this.checkIapiConfig(key)) {
-                        continue;
-                    }
-                    ++ ctr;
-                    const promise = () => {
-                        return new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                iapiConf = this.iapiConfs[key];
-                                // Set the callback for the PAS login
-                                iapiSetCallout("KeepAlive", (response) => {
-                                    if (response.errorCode !== 0) {
-                                        clearTimeout(this.timer);
-                                    }
-                                    resolve();
-                                });
-                                iapiKeepAlive(1, this.keepSessionTime);
-
-                                // after n seconds, nothing still happen, I'll let the other
-                                // hooks to proceed
-                                setTimeout(() => {
-                                    resolve();
-                                }, 10 * 1000);
-                            }, 1.5 * 500 * ctr);
-                        });
-                    };
-                    promises.push(promise);
+        let ctr = 0;
+        const promises = [];
+        for (const key in this.iapiConfs) {
+            if (this.iapiConfs.hasOwnProperty(key)) {
+                if (this.futurama && key !== "dafagold") {
+                    continue;
                 }
+
+                if (this.checkIapiConfig(key)) {
+                    continue;
+                }
+                ++ ctr;
+                const promise = () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            iapiConf = this.iapiConfs[key];
+                            // Set the callback for the PAS login
+                            iapiSetCallout("KeepAlive", (response) => {
+                                if (response.errorCode !== 0) {
+                                    clearTimeout(this.timer);
+                                }
+                                resolve();
+                            });
+                            iapiKeepAlive(1, this.keepSessionTime);
+
+                            // after n seconds, nothing still happen, I'll let the other
+                            // hooks to proceed
+                            setTimeout(() => {
+                                resolve();
+                            }, 10 * 1000);
+                        }, 1.5 * 500 * ctr);
+                    });
+                };
+                promises.push(promise);
             }
-            this.sync.executeWithArgs(promises, []);
         }
+        this.sync.executeWithArgs(promises, []);
     }
 
     /**
@@ -446,7 +450,6 @@ export class PASModule implements ModuleInterface, GameInterface {
      */
     private onLogin(username, resolve) {
         return (response) => {
-            console.log(response);
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
                 this.store.set(this.sessionFlag, "1");
