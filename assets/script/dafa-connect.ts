@@ -1,11 +1,7 @@
 class DafaConnect {
 
     isDafaconnect() {
-        if (navigator.userAgent.match("DafaConnect")) {
-            return true;
-        }
-
-        return false;
+        return navigator.userAgent.match("DafaConnect");
     }
 }
 
