@@ -198,7 +198,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private pasLaunch(options) {
 
-        if (this.pasLoginResponse.pasErrorCode === 0) {
+        if (this.pasLoginResponse.errorCode === 0) {
             // remap language
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
@@ -224,11 +224,12 @@ export class PASModule implements ModuleInterface, GameInterface {
                 // Do nothing
             });
 
-            return;
         }
 
-        // Do Error mapping modal
-        this.pasErrorMessage();
+        if (this.pasLoginResponse.errorCode !== 0) {
+            // Do Error mapping modal
+            this.pasErrorMessage();
+        }
     }
 
     private pasErrorMessage() {
