@@ -12,6 +12,7 @@ import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 import {Modal} from "@app/assets/script/components/modal";
+import {DafaConnect} from "@app/assets/script/dafa-connect";
 
 import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
@@ -23,7 +24,10 @@ import {GameInterface} from "./../scripts/game.interface";
  */
 export class PASModule implements ModuleInterface, GameInterface {
     private key: string = "pas";
-    private currencies: any;
+
+    private futurama: boolean;
+    private username: string;
+    private token: string;
     private languages: any;
     private windowObject: any;
     private gameLink: string;
@@ -40,20 +44,27 @@ export class PASModule implements ModuleInterface, GameInterface {
     private keepSessionTime = (1000 * 60) * 15;
     private sessionFlag = "pas.session.flag";
     private languageMap: any;
+    private errorMap: any;
     private lang: string;
 
     private isGold: boolean;
 
+    private pasLoginResponse: any;
+
     onLoad(attachments: {
+        futurama: boolean,
         authenticated: boolean,
+        username: string,
+        token: string,
         iapiconfOverride: {},
         lang: string,
         langguageMap: {[name: string]: string},
         iapiConfigs: any,
         isGold: boolean,
-        currencies: any,
         languages: any,
+        errorMap: any,
     }) {
+        this.futurama = attachments.futurama;
         this.isSessionAlive = attachments.authenticated;
         this.iapiconfOverride = attachments.iapiconfOverride;
         this.lang = attachments.lang;
@@ -62,8 +73,11 @@ export class PASModule implements ModuleInterface, GameInterface {
         this.isGold = attachments.isGold;
         this.keepAliveTrigger();
         this.listenSessionLogin();
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
+        this.errorMap = attachments.errorMap;
+        if (attachments.username) {
+            this.username = attachments.username.toUpperCase();
+        }
+        this.token = attachments.token;
     }
 
     init() {
@@ -91,8 +105,13 @@ export class PASModule implements ModuleInterface, GameInterface {
                 const promises = [];
                 for (const key in this.iapiConfs) {
                     if (this.iapiConfs.hasOwnProperty(key)) {
+                        if (this.futurama && key !== "dafagold") {
+                            continue;
+                        }
+
                         this.isGold = response.provisioned;
-                        if (key === "dafagold" && !response.provisioned) {
+
+                        if (this.checkIapiConfig(key)) {
                             continue;
                         }
 
@@ -144,6 +163,47 @@ export class PASModule implements ModuleInterface, GameInterface {
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
 
+            if (this.futurama) {
+
+                const key = "dafa888";
+                iapiConf = this.iapiConfs[key];
+
+                // Get Login if not login, login, then launch
+                // Before login, check if there are cookies on PTs end
+                iapiSetCallout("GetLoggedInPlayer", (GetLoggedInPlayeResponse) => {
+                    // Set the callback for the PAS login
+                    iapiSetCallout("Login", this.onLogin(this.username, () => {
+                        this.pasLaunch(options);
+                    }));
+
+                    if (this.verifyGetLoggedIn(GetLoggedInPlayeResponse)) {
+                        this.pasLaunch(options);
+                    } else {
+                        iapiLoginUsernameExternalToken(this.username, this.token, 1, language);
+                        // iapiLogin(username, password, real, language);
+                    }
+                });
+
+                this.doCheckSession();
+            }
+
+            if (!this.futurama) {
+                this.pasLaunch(options);
+            }
+
+        }
+    }
+
+    logout() {
+        this.doLogout();
+    }
+
+    private pasLaunch(options) {
+
+        if (this.pasLoginResponse.errorCode === 0) {
+            // remap language
+            const lang = Router.getLanguage();
+            const language = this.getLanguageMap(lang);
             xhr({
                 url: Router.generateModuleRoute("pas_integration", "launch"),
                 type: "json",
@@ -165,11 +225,54 @@ export class PASModule implements ModuleInterface, GameInterface {
             }).fail((error, message) => {
                 // Do nothing
             });
+
+        }
+
+        if (this.pasLoginResponse.errorCode !== 0) {
+            // Do Error mapping modal
+            this.pasErrorMessage();
         }
     }
 
-    logout() {
-        this.doLogout();
+    private pasErrorMessage() {
+        let body = this.errorMap.all;
+
+        if (this.errorMap[this.pasLoginResponse.errorCode]) {
+            body = this.errorMap[this.pasLoginResponse.errorCode];
+        }
+
+        const template = uclTemplate({
+            title: "response.title",
+            message: body,
+            button: "response.button",
+        });
+
+        const categoriesEl = document.querySelector("#unsupported-lightbox");
+
+        if (categoriesEl) {
+            categoriesEl.innerHTML = template;
+            Modal.open("#unsupported-lightbox");
+        }
+    }
+
+    /**
+     * Check if iapiconfig will be used for loggin in
+     */
+    private checkIapiConfig(key) {
+        let ret = false;
+        if (key === "dafagold" && !this.isGold) {
+            ret = true;
+        }
+
+        if (key === "dafa888" && DafaConnect.isDafaconnect()) {
+            ret = true;
+        }
+
+        if (key === "dafaconnect" && !DafaConnect.isDafaconnect()) {
+            ret = true;
+        }
+
+        return ret;
     }
 
     private keepAliveTrigger() {
@@ -213,7 +316,21 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Listen to session login
      */
     private listenSessionLogin() {
-        ComponentManager.subscribe("session.login", (event) => {
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            if (this.futurama) {
+                xhr({
+                    url: Router.generateModuleRoute("pas_integration", "updateToken"),
+                    type: "json",
+                    method: "post",
+                }).then((response) => {
+                    if (response.status) {
+                        this.username = response.username;
+                        this.token = response.token;
+                    }
+                }).fail((error, message) => {
+                    // Do nothing
+                });
+            }
             this.sessionPersist();
         });
     }
@@ -227,7 +344,11 @@ export class PASModule implements ModuleInterface, GameInterface {
         const promises = [];
         for (const key in this.iapiConfs) {
             if (this.iapiConfs.hasOwnProperty(key)) {
-                if (key === "dafagold" && !this.isGold) {
+                if (this.futurama && key !== "dafagold") {
+                    continue;
+                }
+
+                if (this.checkIapiConfig(key)) {
                     continue;
                 }
                 ++ ctr;
@@ -261,9 +382,9 @@ export class PASModule implements ModuleInterface, GameInterface {
     /**
      * Check the getLoggedInPlayer response
      */
-    private verifyCookie(res) {
+    private verifyGetLoggedIn(res) {
         if (res.errorCode === 0 &&
-            (typeof res.username !== "undefined" && res.username.length > 0)
+            (typeof res.username === this.username && res.username.length > 0)
         ) {
             return true;
         }
@@ -287,7 +408,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         const promises = [];
         for (const key in this.iapiConfs) {
             if (this.iapiConfs.hasOwnProperty(key)) {
-                if (key === "dafagold" && !this.isGold) {
+                if (this.checkIapiConfig(key)) {
                     continue;
                 }
                 ++ ctr;
@@ -332,7 +453,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
                 this.store.set(this.sessionFlag, "1");
-
+                this.pasLoginResponse = response;
                 if (response.sessionValidationData !== undefined &&
                     response.sessionValidationData.SessionValidationByTCVersionData !== undefined
                 ) {
@@ -350,7 +471,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
                 return;
             }
-
+            this.pasLoginResponse = response;
             resolve();
         };
     }

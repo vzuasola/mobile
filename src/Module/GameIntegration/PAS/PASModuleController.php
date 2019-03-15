@@ -21,6 +21,8 @@ class PASModuleController
 
     private $player;
 
+    private $playerSession;
+
     /**
      *
      */
@@ -31,7 +33,8 @@ class PASModuleController
             $container->get('accounts_service'),
             $container->get('token_parser'),
             $container->get('config_fetcher'),
-            $container->get('player')
+            $container->get('player'),
+            $container->get('player_session')
         );
     }
 
@@ -43,13 +46,30 @@ class PASModuleController
         $paymentAccount,
         $parser,
         $config,
-        $player
+        $player,
+        $playerSession
     ) {
         $this->rest = $rest;
         $this->paymentAccount = $paymentAccount;
         $this->parser = $parser;
         $this->config = $config->withProduct('mobile-casino');
         $this->player = $player;
+        $this->playerSession = $playerSession;
+    }
+
+    public function updateToken($request, $response)
+    {
+        try {
+            $data = [
+                'status' => true,
+                'username' => $this->playerSession->getUsername(),
+                'token' => $this->playerSession->getToken(),
+            ];
+        } catch (\Exception $e) {
+            $data['status'] = false;
+        }
+
+        return $this->rest->output($response, $data);
     }
 
     public function unsupported($request, $response)
