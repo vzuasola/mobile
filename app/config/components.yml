@@ -184,6 +184,9 @@ modules:
   pgsoft_integration:
     class: App\MobileEntry\Module\GameIntegration\PGSoft\PGSoftModule
 
+  asiagaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\AsiaGaming\AsiaGamingModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\MobileEntry\Module\GameIntegration\PGSoft;
+namespace App\MobileEntry\Module\GameIntegration\AsiaGaming;
 
 use App\Drupal\Config;
 
-class PGSoftModuleController
+class AsiaGamingModuleController
 {
-    const KEY = 'pg_soft';
+    const KEY = 'asia_gaming';
 
     private $rest;
 
-    private $pgSoft;
+    private $asiaGaming;
 
     private $config;
 
@@ -32,10 +32,10 @@ class PGSoftModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $pgSoft, $config, $player)
+    public function __construct($rest, $asiaGaming, $config, $player)
     {
         $this->rest = $rest;
-        $this->pgSoft = $pgSoft;
+        $this->asiaGaming = $asiaGaming;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
     }
@@ -68,11 +68,13 @@ class PGSoftModuleController
         if ($this->checkCurrency()) {
             $data['currency'] = true;
             $requestData = $request->getParsedBody();
+            $params = explode('|', $requestData['gameCode']);
 
             try {
-                $responseData = $this->pgSoft->getGameUrlById('icore_pgs', $requestData['gameCode'], [
+                $responseData = $this->asiaGaming->getGameUrlById('icore_ag', $params[0], [
                     'options' => [
                         'languageCode' => $requestData['langCode'],
+                        'Product' => $params[1],
                     ]
                 ]);
                 if ($responseData['url']) {
