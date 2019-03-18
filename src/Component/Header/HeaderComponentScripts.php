@@ -72,8 +72,8 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
                 $instanceId = $product['field_product_instance_id'][0]['value'];
                 if (array_key_exists($instanceId, Products::PRODUCT_MAPPING)) {
                     $result[Products::PRODUCT_MAPPING[$instanceId]] = [
-                        'login_via' => $product['field_product_login_via'][0]['value'],
-                        'reg_via' => $product['field_registration_url'][0]['value'],
+                        'login_via' => $product['field_product_login_via'][0]['value'] ?? '',
+                        'reg_via' => $product['field_registration_url'][0]['value'] ?? '',
                     ];
                 }
             }

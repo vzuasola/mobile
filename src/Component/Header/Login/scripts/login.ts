@@ -105,13 +105,10 @@ export class Login {
                         this.doLoginRequest(form, src);
 
                         resolve();
-                        console.log("2");
                     });
                 });
 
-                console.log("start");
                 this.sync.executeWithArgs(events, [username, password]);
-                console.log("stap");
             }
         });
     }
@@ -121,7 +118,6 @@ export class Login {
      */
     private doGetCasinoPreference(username, resolve) {
         if (this.productCheckPreference.includes(ComponentManager.getAttribute("product"))) {
-            console.log("getting preference");
             xhr({
                 url: Router.generateRoute("casino_option", "preferredProduct"),
                 method: "post",
@@ -130,18 +126,15 @@ export class Login {
                 },
                 type: "json",
             }).then((response) => {
-                this.productVia = "mobile-casino";
-                if (response.preferredProduct === "casino_gold") {
-                    this.productVia = "mobile-casino-gold";
+                if (response.preferredProduct) {
+                    this.productVia = "mobile-casino";
+                    if (response.preferredProduct === "casino_gold") {
+                        this.productVia = "mobile-casino-gold";
+                    }
                 }
-                console.log(response);
-                console.log(this.productVia);
 
                 resolve();
             }).fail((error, message) => {
-                console.log(message);
-                console.log(error);
-                this.productVia = "mobile-casino";
                 resolve();
             });
         }

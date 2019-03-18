@@ -36,6 +36,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private searchResults;
     private loader: Loader;
     private fromGameLaunch: boolean = false;
+    private productCheckPreference: any = ["mobile-casino", "mobile-casino-gold"];
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -492,17 +493,19 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private showCasinoPreference() {
         ComponentManager.subscribe("session.login", (event, src, data) => {
             let gameCode = false;
+            const currentProduct = ComponentManager.getAttribute("product");
             const el = utility.hasClass(data.src, "game-list", true);
             if (el) {
                 gameCode = el.getAttribute("data-game-code");
             }
 
-            if (!gameCode && ComponentManager.getAttribute("product") === "mobile-casino") {
+            if (!gameCode && this.productCheckPreference.includes(currentProduct)) {
                 this.getCasinoPreference((response) => {
                     if (response.success) {
                         // redirect to URL
-                        if (response.redirect && response.preferredProduct === "casino_gold") {
-                            window.location.href = decodeURIComponent(response.redirect).replace(/\\/g, "");
+                        // @todo: redirect to preferred casino
+                        if (response.redirect) {
+                            Router.navigate(response.redirect, ["*"]);
                             return;
                         }
 
@@ -515,7 +518,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             }
         });
 
-        if (ComponentManager.getAttribute("product") === "mobile-casino"
+        if (this.productCheckPreference.includes(ComponentManager.getAttribute("product"))
             && this.isLogin && !this.fromGameLaunch) {
             this.getCasinoPreference((response) => {
                 if (response.success && !response.redirect) {

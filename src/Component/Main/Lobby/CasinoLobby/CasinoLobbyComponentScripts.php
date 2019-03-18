@@ -78,6 +78,7 @@ class CasinoLobbyComponentScripts implements ComponentAttachmentInterface
                     $this->product->getProduct() === Products::PRODUCT_MAPPING[$instanceId]
                 ) {
                     $result[] = [
+                        'instanceId' => $instanceId,
                         'login_via' => $product['field_product_login_via'][0]['value'],
                         'reg_via' => $product['field_registration_url'][0]['value'],
                     ];
