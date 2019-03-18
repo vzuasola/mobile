@@ -34,6 +34,8 @@ class CasinoOptionComponentController
 
     private $parser;
 
+    private $session;
+
     /**
      *
      */
@@ -45,14 +47,15 @@ class CasinoOptionComponentController
             $container->get('rest'),
             $container->get('config_fetcher'),
             $container->get('accounts_service'),
-            $container->get('token_parser')
+            $container->get('token_parser'),
+            $container->get('session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $preferences, $rest, $configs, $paymentAccount, $parser)
+    public function __construct($playerSession, $preferences, $rest, $configs, $paymentAccount, $parser, $session)
     {
         $this->playerSession = $playerSession;
         $this->preferences = $preferences;
@@ -60,6 +63,7 @@ class CasinoOptionComponentController
         $this->configs = $configs;
         $this->paymentAccount = $paymentAccount;
         $this->parser = $parser;
+        $this->session = $session;
     }
 
     /**
@@ -85,11 +89,28 @@ class CasinoOptionComponentController
 
             $body = $request->getParsedBody();
             if ($isProvisioned) {
+                // $product = ($this->session->get('preferredProduct')) ?? $this->getPreferenceProvisioned($body);
+                // $this->session->set('preferredProduct', $product);
                 $product = $this->getPreferenceProvisioned($body);
                 $data['preferredProduct'] = $product;
                 $data['redirect'] = ($product) ? $this->getCasinoUrl($product) : '';
                 $data['success'] = $success;
             }
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    public function preferredProduct($request, $response)
+    {
+        try {
+            $param = $request->getParsedBody();
+            if (isset($param['username'])) {
+                $data['preferredProduct'] = $this->preferences->getPreferences($param['username']);
+            }
+
+        } catch (\Exception $e) {
+            throw $e;
         }
 
         return $this->rest->output($response, $data);

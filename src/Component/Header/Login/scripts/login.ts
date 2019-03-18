@@ -17,6 +17,8 @@ import {PasswordMask} from "@app/assets/script/components/password-mask";
 export class Login {
     private loader: Loader;
     private sync: SyncEvents;
+    private productCheckPreference: any = ["mobile-casino", "mobile-casino-gold"];
+    private products: any = [];
 
     private isLogin: boolean;
     private element: HTMLElement;
@@ -94,21 +96,64 @@ export class Login {
 
                 events.push(() => {
                     return new Promise((resolve, reject) => {
-                        this.doLoginRequest(form, src);
-
-                        resolve();
+                        this.doGetCasinoPreference(username, resolve);
                     });
                 });
 
+                events.push(() => {
+                    return new Promise((resolve, reject) => {
+                        this.doLoginRequest(form, src);
+
+                        resolve();
+                        console.log("2");
+                    });
+                });
+
+                console.log("start");
                 this.sync.executeWithArgs(events, [username, password]);
+                console.log("stap");
             }
         });
+    }
+
+    /**
+     * Get preferred casino of user.
+     */
+    private doGetCasinoPreference(username, resolve) {
+        if (this.productCheckPreference.includes(ComponentManager.getAttribute("product"))) {
+            console.log("getting preference");
+            xhr({
+                url: Router.generateRoute("casino_option", "preferredProduct"),
+                method: "post",
+                data: {
+                    username,
+                },
+                type: "json",
+            }).then((response) => {
+                this.productVia = "mobile-casino";
+                if (response.preferredProduct === "casino_gold") {
+                    this.productVia = "mobile-casino-gold";
+                }
+                console.log(response);
+                console.log(this.productVia);
+
+                resolve();
+            }).fail((error, message) => {
+                console.log(message);
+                console.log(error);
+                this.productVia = "mobile-casino";
+                resolve();
+            });
+        }
+
+        return;
     }
 
     /**
      * Do the actual login request
      */
     private doLoginRequest(form, src) {
+        console.log("logging in");
         const username: string = src.querySelector('[name="username"]').value;
         const password: string = src.querySelector('[name="password"]').value;
         const product = false;
