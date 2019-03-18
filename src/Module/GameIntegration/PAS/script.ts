@@ -81,6 +81,9 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     init() {
+        this.pasLoginResponse = {
+            errorCode: false,
+        };
         if (typeof iapiSetCallout !== "undefined") {
             iapiSetCallout("Logout", this.onLogout);
         }
@@ -200,7 +203,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private pasLaunch(options) {
 
-        if (this.pasLoginResponse.errorCode === 0) {
+        if (!this.futurama || this.pasLoginResponse.errorCode === 0) {
             // remap language
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
@@ -228,7 +231,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
         }
 
-        if (this.pasLoginResponse.errorCode !== 0) {
+        if (this.futurama && this.pasLoginResponse.errorCode !== 0) {
             // Do Error mapping modal
             this.pasErrorMessage();
         }
@@ -383,6 +386,7 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Check the getLoggedInPlayer response
      */
     private verifyGetLoggedIn(res) {
+        this.pasLoginResponse = res;
         if (res.errorCode === 0 &&
             (typeof res.username === this.username && res.username.length > 0)
         ) {
