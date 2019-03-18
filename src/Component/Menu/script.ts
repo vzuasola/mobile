@@ -19,6 +19,7 @@ export class MenuComponent implements ComponentInterface {
     private isLogin: boolean;
     private products: any[];
     private joinUrl: string;
+    private product: string;
 
     constructor() {
         this.pushNotification = new PushNotification();
@@ -53,6 +54,7 @@ export class MenuComponent implements ComponentInterface {
         Router.on(RouterClass.afterNavigate, (event) => {
             this.attachProduct();
             this.attachProductToLogin();
+            this.refreshMenu();
         });
 
     }
@@ -217,6 +219,14 @@ export class MenuComponent implements ComponentInterface {
                     this.joinUrl,
                 );
             }
+        }
+    }
+
+    private refreshMenu() {
+        const product = ComponentManager.getAttribute("product");
+        if (this.product !== product) {
+            this.product = product;
+            ComponentManager.refreshComponent("menu");
         }
     }
 }
