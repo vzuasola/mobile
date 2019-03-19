@@ -17,6 +17,8 @@ import {PasswordMask} from "@app/assets/script/components/password-mask";
 export class Login {
     private loader: Loader;
     private sync: SyncEvents;
+    private productCheckPreference: any = ["mobile-casino", "mobile-casino-gold"];
+    private products: any = [];
 
     private isLogin: boolean;
     private element: HTMLElement;
@@ -94,6 +96,12 @@ export class Login {
 
                 events.push(() => {
                     return new Promise((resolve, reject) => {
+                        this.doGetCasinoPreference(username, resolve);
+                    });
+                });
+
+                events.push(() => {
+                    return new Promise((resolve, reject) => {
                         this.doLoginRequest(form, src);
 
                         resolve();
@@ -103,6 +111,34 @@ export class Login {
                 this.sync.executeWithArgs(events, [username, password]);
             }
         });
+    }
+
+    /**
+     * Get preferred casino of user.
+     */
+    private doGetCasinoPreference(username, resolve) {
+        if (this.productCheckPreference.includes(ComponentManager.getAttribute("product"))) {
+            xhr({
+                url: Router.generateRoute("casino_option", "preferredProduct"),
+                method: "post",
+                data: {
+                    username,
+                },
+                type: "json",
+            }).then((response) => {
+                if (response.preferredProduct) {
+                    this.productVia = "mobile-casino";
+                    if (response.preferredProduct === "casino_gold") {
+                        this.productVia = "mobile-casino-gold";
+                    }
+                }
+                resolve();
+            }).fail((error, message) => {
+                resolve();
+            });
+        }
+
+        return;
     }
 
     /**

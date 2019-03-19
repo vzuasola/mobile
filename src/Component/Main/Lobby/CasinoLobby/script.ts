@@ -36,6 +36,8 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private searchResults;
     private loader: Loader;
     private fromGameLaunch: boolean = false;
+    private productCheckPreference: any = ["mobile-casino", "mobile-casino-gold"];
+    private casinoOptionMapping: any = {"mobile-casino-gold": "casino_gold", "mobile-casino": "casino"};
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -489,20 +491,25 @@ export class CasinoLobbyComponent implements ComponentInterface {
         });
     }
 
+    /**
+     * Redirect to preferred casino when lobby is accessed directly.
+     * Otherwise, show casino preference when no preference is set.
+     */
     private showCasinoPreference() {
         ComponentManager.subscribe("session.login", (event, src, data) => {
             let gameCode = false;
+            const currentProduct = ComponentManager.getAttribute("product");
             const el = utility.hasClass(data.src, "game-list", true);
             if (el) {
                 gameCode = el.getAttribute("data-game-code");
             }
-
-            if (!gameCode && ComponentManager.getAttribute("product") === "mobile-casino") {
+            if (!gameCode && this.productCheckPreference.includes(currentProduct)) {
                 this.getCasinoPreference((response) => {
                     if (response.success) {
-                        // redirect to URL
-                        if (response.redirect && response.preferredProduct === "casino_gold") {
-                            window.location.href = decodeURIComponent(response.redirect).replace(/\\/g, "");
+                        if (response.redirect &&
+                            response.preferredProduct !== this.casinoOptionMapping[currentProduct]) {
+                            Router.navigate(response.redirect, ["*"]);
+                            this.loader.hide();
                             return;
                         }
 
@@ -515,7 +522,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             }
         });
 
-        if (ComponentManager.getAttribute("product") === "mobile-casino"
+        if (this.productCheckPreference.includes(ComponentManager.getAttribute("product"))
             && this.isLogin && !this.fromGameLaunch) {
             this.getCasinoPreference((response) => {
                 if (response.success && !response.redirect) {
