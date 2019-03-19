@@ -63,7 +63,7 @@ class CasinoOptionComponentController
     }
 
     /**
-     *
+     * Check provisioned user's preferred casino
      */
     public function preference($request, $response)
     {
@@ -74,27 +74,25 @@ class CasinoOptionComponentController
         $data['redirect'] = $this->getCasinoUrl($product);
 
         if ($this->playerSession->isLogin()) {
-            $success = true;
-
-            try {
-                $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
-            } catch (\Exception $e) {
-                $isProvisioned = false;
-                $success = false;
-            }
 
             $body = $request->getParsedBody();
-            if ($isProvisioned) {
-                $product = $this->getPreferenceProvisioned($body);
-                $data['preferredProduct'] = $product;
-                $data['redirect'] = ($product) ? $this->getCasinoUrl($product) : '';
-                $data['success'] = $success;
+            if ($this->isProvisioned('casino-gold')) {
+                if (!empty($product['preferred_product'])) {
+                    $this->setPreference($product['preferred_product']);
+                }
+
+                $data['preferredProduct'] = $this->getPreferenceProvisioned();
+                $data['redirect'] = $this->getCasinoUrl($data['preferredProduct']);
             }
         }
 
         return $this->rest->output($response, $data);
     }
 
+    /**
+     * Check provisioned user's preferred casino. This is used to get login via
+     * when user logs in in casino or casino-gold
+     */
     public function preferredProduct($request, $response)
     {
         $data['preferredProduct'] = false;
@@ -102,9 +100,8 @@ class CasinoOptionComponentController
             $param = $request->getParsedBody();
             if (isset($param['username'])) {
                 $data['preferredProduct'] = 'casino';
-                if ($this->isProvisioned($param['username'])) {
-                    $preference = $this->preferences->getPreferences(['username' => $param['username']]);
-                    $data['preferredProduct'] = $preference['casino.preferred'] ?? false;
+                if ($this->isProvisioned('casino-gold', $param['username'])) {
+                    $data['preferredProduct'] = $this->getPreferenceProvisioned(['username' => $param['username']]);
                 }
             }
         } catch (\Exception $e) {
@@ -114,36 +111,49 @@ class CasinoOptionComponentController
         return $this->rest->output($response, $data);
     }
 
-    private function isProvisioned($username) {
-        return $this->paymentAccount->hasAccount('casino-gold', $username);
+    /**
+     * Check if user is provisioned
+     * @param product string
+     * @param username string
+     * @return boolean
+     */
+    private function isProvisioned($product, $username = null)
+    {
+        try {
+            $isProvisioned = $this->paymentAccount->hasAccount($product, $username);
+        } catch (\Exception $e) {
+            $isProvisioned = false;
+        }
+
+        return $isProvisioned;
     }
 
     /**
-     *
+     * Set user's preferred casino
+     * @param preferredCasino string
      */
-    private function getPreferenceProvisioned($product)
+    private function setPreference($preferredCasino)
     {
-        $preferredCasino = false;
-        try {
-            if (!empty($product['preferred_product'])) {
-                $preferredCasino = $product['preferred_product'];
-                $this->preferences->savePreference('casino.preferred', $preferredCasino);
-            } else {
-                $preferredCasinoPref = $this->preferences->getPreferences();
+        $this->preferences->savePreference('casino.preferred', $preferredCasino);
+    }
 
-                if (!empty($preferredCasinoPref['casino.preferred'])) {
-                    $preferredCasino = $preferredCasinoPref['casino.preferred'];
-                }
-            }
-        } catch (\Exception $e) {
-            // do nothing
-        }
+    /**
+     * Get user's preferred casino.
+     * @param username array
+     * @return string
+     */
+    private function getPreferenceProvisioned($username = [])
+    {
+        $preferredCasinoPref = $this->preferences->getPreferences($username);
+        $preferredCasino = $preference['casino.preferred'] ?? false;
 
         return $preferredCasino;
     }
 
     /**
-     *
+     * Get casino url from config
+     * @param product string
+     * @return string
      */
     private function getCasinoUrl($product)
     {
@@ -151,7 +161,7 @@ class CasinoOptionComponentController
 
         try {
             $casinoConfigs = $this->configs->getConfig('mobile_casino.casino_configuration');
-            $casinoUrl = $product == 'casino' ? $casinoConfigs['casino_url'] : $casinoConfigs['casino_gold_url'];
+            $casinoUrl = $product == 'casino_gold' ?  $casinoConfigs['casino_gold_url'] : $casinoConfigs['casino_url'];
             $casinoUrl = $this->parser->processTokens($casinoUrl);
         } catch (\Exception $e) {
             // do nothing
