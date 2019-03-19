@@ -104,7 +104,6 @@ class CasinoOptionComponentController
                 $preference = $this->preferences->getPreferences($param['username']);
                 $data['preferredProduct'] = $preference['casino.preferred'] ?? false;
             }
-
         } catch (\Exception $e) {
             $data['preferredProduct'] = false;
         }
