@@ -204,7 +204,6 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     private pasLaunch(options) {
-
         if (!this.futurama || this.pasLoginResponse.errorCode === 0) {
             // remap language
             const lang = Router.getLanguage();
@@ -336,7 +335,9 @@ export class PASModule implements ModuleInterface, GameInterface {
                     // Do nothing
                 });
             }
-            this.sessionPersist();
+            if (!this.futurama) {
+                this.sessionPersist();
+            }
         });
     }
 
