@@ -46,7 +46,7 @@ ts linter:
   script:
     - python -u automation/run.py --stage tslinter
 
-sensiolabs security checker:
+.sensiolabs security checker:
   stage: tests
   script:
     - python -u automation/run.py --stage sensiolab-security-checker
@@ -335,6 +335,8 @@ staging:
     paths:
       - automation/deployed/*.jsonl
     expire_in: 1 month
+  tags:
+    - stgrunner
   only:
     - /^release-.*$/
     - tags
