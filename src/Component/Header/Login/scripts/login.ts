@@ -132,7 +132,6 @@ export class Login {
                         this.productVia = "mobile-casino-gold";
                     }
                 }
-
                 resolve();
             }).fail((error, message) => {
                 resolve();
@@ -146,7 +145,6 @@ export class Login {
      * Do the actual login request
      */
     private doLoginRequest(form, src) {
-        console.log("logging in");
         const username: string = src.querySelector('[name="username"]').value;
         const password: string = src.querySelector('[name="password"]').value;
         const product = false;

@@ -97,16 +97,16 @@ class CasinoOptionComponentController
 
     public function preferredProduct($request, $response)
     {
-        $data['preferredProduct'] = 'casino';
+        $data['preferredProduct'] = false;
         try {
             $param = $request->getParsedBody();
             if (isset($param['username'])) {
                 $preference = $this->preferences->getPreferences($param['username']);
-                $data['preferredProduct'] = $preference['casino.preferred'] ?? 'casino';
+                $data['preferredProduct'] = $preference['casino.preferred'] ?? false;
             }
 
         } catch (\Exception $e) {
-            $data['preferredProduct'] = 'casino';
+            $data['preferredProduct'] = false;
         }
 
         return $this->rest->output($response, $data);
@@ -149,7 +149,7 @@ class CasinoOptionComponentController
 
         try {
             $casinoConfigs = $this->configs->getConfig('mobile_casino.casino_configuration');
-            $casinoUrl = $product == 'casino-gold' ? $casinoConfigs['casino_gold_url'] : $casinoConfigs['casino_url'];
+            $casinoUrl = $product == 'casino' ? $casinoConfigs['casino_url'] : $casinoConfigs['casino_gold_url'];
             $casinoUrl = $this->parser->processTokens($casinoUrl);
         } catch (\Exception $e) {
             // do nothing

@@ -37,6 +37,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private loader: Loader;
     private fromGameLaunch: boolean = false;
     private productCheckPreference: any = ["mobile-casino", "mobile-casino-gold"];
+    private casinoOptionMapping: any = {"mobile-casino-gold": "casino_gold", "mobile-casino": "casino"};
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -490,6 +491,10 @@ export class CasinoLobbyComponent implements ComponentInterface {
         });
     }
 
+    /**
+     * Redirect to preferred casino when lobby is accessed directly.
+     * Otherwise, show casino preference when no preference is set.
+     */
     private showCasinoPreference() {
         ComponentManager.subscribe("session.login", (event, src, data) => {
             let gameCode = false;
@@ -498,14 +503,13 @@ export class CasinoLobbyComponent implements ComponentInterface {
             if (el) {
                 gameCode = el.getAttribute("data-game-code");
             }
-
             if (!gameCode && this.productCheckPreference.includes(currentProduct)) {
                 this.getCasinoPreference((response) => {
                     if (response.success) {
-                        // redirect to URL
-                        // @todo: redirect to preferred casino
-                        if (response.redirect) {
+                        if (response.redirect &&
+                            response.preferredProduct !== this.casinoOptionMapping[currentProduct]) {
                             Router.navigate(response.redirect, ["*"]);
+                            this.loader.hide();
                             return;
                         }
 
