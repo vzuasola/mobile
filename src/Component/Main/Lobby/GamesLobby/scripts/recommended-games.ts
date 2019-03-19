@@ -6,13 +6,11 @@ export class RecommendedGames {
     private recommendedGames: any[];
     private config;
     private response: any;
-    private enableRecommended: boolean;
 
-    constructor(gamesList, config, enableRecommended) {
+    constructor(gamesList, config) {
         this.response = gamesList;
         this.recommendedGames = [];
-        this.enableRecommended = enableRecommended;
-        if (gamesList && gamesList.games["recommended-games"] && this.enableRecommended) {
+        if (gamesList && gamesList.games["recommended-games"]) {
             this.recommendedGames = [];
             for (const games of gamesList.games["recommended-games"]) {
                 for (const game of games) {
@@ -36,7 +34,7 @@ export class RecommendedGames {
      * Function that returns blurb for recommended games.
      */
     getBlurb() {
-        if (this.recommendedGames.length && this.response.enableRecommended) {
+        if (this.recommendedGames.length) {
             return this.config.msg_recommended_available;
         }
 
