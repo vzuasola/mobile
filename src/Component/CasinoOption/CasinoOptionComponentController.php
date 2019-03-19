@@ -101,9 +101,8 @@ class CasinoOptionComponentController
         try {
             $param = $request->getParsedBody();
             if (isset($param['username'])) {
-                $isProvisioned = $this->paymentAccount->hasAccount('casino-gold', $param['username']);
                 $data['preferredProduct'] = 'casino';
-                if ($isProvisioned) {
+                if ($this->isProvisioned($param['username'])) {
                     $preference = $this->preferences->getPreferences(['username' => $param['username']]);
                     $data['preferredProduct'] = $preference['casino.preferred'] ?? false;
                 }
@@ -113,6 +112,10 @@ class CasinoOptionComponentController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    private function isProvisioned($username) {
+        return $this->paymentAccount->hasAccount('casino-gold', $username);
     }
 
     /**
@@ -125,15 +128,11 @@ class CasinoOptionComponentController
             if (!empty($product['preferred_product'])) {
                 $preferredCasino = $product['preferred_product'];
                 $this->preferences->savePreference('casino.preferred', $preferredCasino);
-
-                $this->setLegacyPrefCookie($preferredCasino);
             } else {
                 $preferredCasinoPref = $this->preferences->getPreferences();
 
                 if (!empty($preferredCasinoPref['casino.preferred'])) {
                     $preferredCasino = $preferredCasinoPref['casino.preferred'];
-
-                    $this->setLegacyPrefCookie($preferredCasino);
                 }
             }
         } catch (\Exception $e) {
@@ -161,17 +160,4 @@ class CasinoOptionComponentController
         return $casinoUrl;
     }
 
-    /**
-     *
-     */
-    private function setLegacyPrefCookie($preferredCasino)
-    {
-        $options = [
-            'path' => '/',
-            'domain' => Host::getDomain(),
-            'expire' => 0,
-        ];
-
-        Cookies::set('mobile_revamp_casino_prefer', $preferredCasino, $options);
-    }
 }
