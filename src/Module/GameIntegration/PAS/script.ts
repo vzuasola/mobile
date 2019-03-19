@@ -177,10 +177,12 @@ export class PASModule implements ModuleInterface, GameInterface {
                     // Set the callback for the PAS login
                     iapiSetCallout("Login", this.onLogin(this.username, () => {
                         this.pasLaunch(options);
+                        return;
                     }));
 
                     if (this.verifyGetLoggedIn(GetLoggedInPlayeResponse)) {
                         this.pasLaunch(options);
+                        return;
                     } else {
                         iapiLoginUsernameExternalToken(this.username, this.token, 1, language);
                         // iapiLogin(username, password, real, language);
@@ -388,7 +390,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private verifyGetLoggedIn(res) {
         this.pasLoginResponse = res;
         if (res.errorCode === 0 &&
-            (typeof res.username === this.username && res.username.length > 0)
+            (res.username === this.username.toUpperCase() && res.username.length > 0)
         ) {
             return true;
         }
