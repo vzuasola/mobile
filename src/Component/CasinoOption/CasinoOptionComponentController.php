@@ -101,7 +101,7 @@ class CasinoOptionComponentController
         try {
             $param = $request->getParsedBody();
             if (isset($param['username'])) {
-                $preference = $this->preferences->getPreferences($param['username']);
+                $preference = $this->preferences->getPreferences(['username' => $param['username']]);
                 $data['preferredProduct'] = $preference['casino.preferred'] ?? false;
             }
         } catch (\Exception $e) {
