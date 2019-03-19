@@ -101,8 +101,12 @@ class CasinoOptionComponentController
         try {
             $param = $request->getParsedBody();
             if (isset($param['username'])) {
-                $preference = $this->preferences->getPreferences(['username' => $param['username']]);
-                $data['preferredProduct'] = $preference['casino.preferred'] ?? false;
+                $isProvisioned = $this->paymentAccount->hasAccount('casino-gold', $param['username']);
+                $data['preferredProduct'] = 'casino';
+                if ($isProvisioned) {
+                    $preference = $this->preferences->getPreferences(['username' => $param['username']]);
+                    $data['preferredProduct'] = $preference['casino.preferred'] ?? false;
+                }
             }
         } catch (\Exception $e) {
             $data['preferredProduct'] = false;
