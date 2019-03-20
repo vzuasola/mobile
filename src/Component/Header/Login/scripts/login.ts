@@ -141,8 +141,9 @@ export class Login {
             }).fail((error, message) => {
                 resolve();
             });
+        } else {
+            resolve();
         }
-        resolve();
         return;
     }
 
