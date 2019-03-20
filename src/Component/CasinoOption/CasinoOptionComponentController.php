@@ -144,9 +144,7 @@ class CasinoOptionComponentController
     private function getPreferenceProvisioned($username = [])
     {
         $preferredCasinoPref = $this->preferences->getPreferences($username);
-        $preferredCasino = $preferredCasinoPref['casino.preferred'] ?? false;
-
-        return $preferredCasino;
+        return $preferredCasinoPref['casino.preferred'] ?? false;
     }
 
     /**
