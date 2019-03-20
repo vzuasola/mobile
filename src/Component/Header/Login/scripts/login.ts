@@ -96,7 +96,11 @@ export class Login {
 
                 events.push(() => {
                     return new Promise((resolve, reject) => {
-                        this.doGetCasinoPreference(username, resolve);
+                        let fromGameLaunch = "false";
+                        if (form) {
+                            fromGameLaunch = form.getAttribute("data-from-game-launch");
+                        }
+                        this.doGetCasinoPreference(username, fromGameLaunch, resolve);
                     });
                 });
 
@@ -116,8 +120,9 @@ export class Login {
     /**
      * Get preferred casino of user.
      */
-    private doGetCasinoPreference(username, resolve) {
-        if (this.productCheckPreference.includes(ComponentManager.getAttribute("product"))) {
+    private doGetCasinoPreference(username, fromGameLaunch, resolve) {
+        if (this.productCheckPreference.includes(ComponentManager.getAttribute("product"))
+            && fromGameLaunch !== "true") {
             xhr({
                 url: Router.generateRoute("casino_option", "preferredProduct"),
                 method: "post",
@@ -137,7 +142,7 @@ export class Login {
                 resolve();
             });
         }
-
+        resolve();
         return;
     }
 
@@ -314,6 +319,12 @@ export class Login {
                 // product via to show inspect element
                 if (form) {
                     form.setAttribute("data-login-via", this.productVia);
+                }
+            }
+
+            if (data && typeof data.fromGameLaunch !== "undefined") {
+                if (form) {
+                    form.setAttribute("data-from-game-launch", data.fromGameLaunch);
                 }
             }
 
