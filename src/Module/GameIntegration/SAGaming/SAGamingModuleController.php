@@ -71,14 +71,18 @@ class SAGamingModuleController
             $params = explode('|', $requestData['gameCode']);
 
             try {
-                $responseData = $this->saGaming->getGameUrlById('icore_sa', $params[0], [
-                    'options' => [
-                        'languageCode' => $requestData['langCode'],
-                        'providerProduct' => $params[1],
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
+                if (isset($params[0]) && isset($params[1])) {
+                    $gameCode = $params[0];
+                    $productProvider = $params[1];
+                    $responseData = $this->saGaming->getGameUrlById('icore_sa', $gameCode, [
+                        'options' => [
+                            'languageCode' => $requestData['langCode'],
+                            'providerProduct' => $productProvider,
+                        ]
+                    ]);
+                    if ($responseData['url']) {
+                        $data['gameurl'] = $responseData['url'];
+                    }
                 }
             } catch (\Exception $e) {
                 $data = [];
