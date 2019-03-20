@@ -486,6 +486,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                     src: el,
                     productVia: this.product[0].login_via,
                     regVia: this.product[0].reg_via,
+                    fromGameLaunch: "true",
                 });
             }
         });
