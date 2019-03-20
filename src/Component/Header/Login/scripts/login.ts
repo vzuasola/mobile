@@ -137,7 +137,7 @@ export class Login {
                 resolve();
             });
         }
-
+        resolve();
         return;
     }
 
