@@ -9,6 +9,7 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 export class HeaderComponent implements ComponentInterface {
     private element: HTMLElement;
     private attachments: any;
+    private product: string;
 
     onLoad(element: HTMLElement, attachments: { authenticated: boolean, products: any[]}) {
         this.element = element;
@@ -29,6 +30,7 @@ export class HeaderComponent implements ComponentInterface {
             } else {
                 this.attachProduct();
             }
+            this.refreshHeader();
         });
     }
 
@@ -107,6 +109,14 @@ export class HeaderComponent implements ComponentInterface {
                     "",
                 );
             }
+        }
+    }
+
+    private refreshHeader() {
+        const product = ComponentManager.getAttribute("product");
+        if (this.product !== product) {
+            this.product = product;
+            ComponentManager.refreshComponent("header");
         }
     }
 }
