@@ -161,7 +161,8 @@ class CasinoOptionComponentController
         try {
             if ($product) {
                 $casinoConfigs = $this->configs->getConfig('mobile_casino.casino_configuration');
-                $casinoUrl = $product == 'casino_gold' ?  $casinoConfigs['casino_gold_url'] : $casinoConfigs['casino_url'];
+                $casinoUrl = $product == 'casino_gold' ?  $casinoConfigs['casino_gold_url']
+                    : $casinoConfigs['casino_url'];
                 $casinoUrl = $this->parser->processTokens($casinoUrl);
             }
         } catch (\Exception $e) {
