@@ -11,6 +11,18 @@ class CasinoGoldController extends BaseController
      */
     public function view($request, $response)
     {
+        if (!$this->get('player_session')->isLogin()) {
+            return $response->withRedirect(
+                $this->get('uri')->generateUri('/login?product=casino', [])
+            );
+        }
+
+        if (!$this->get('accounts_service')->hasAccount('casino-gold')) {
+            return $response->withRedirect(
+                $this->get('uri')->generateUri('/casino', [])
+            );
+        }
+
         try {
             $config = $this->get('config_fetcher')
                 ->withProduct($this->get('product_resolver')->getProduct())
@@ -23,4 +35,5 @@ class CasinoGoldController extends BaseController
 
         return $this->widgets->render($response, '@site/page.html.twig', $data);
     }
+
 }
