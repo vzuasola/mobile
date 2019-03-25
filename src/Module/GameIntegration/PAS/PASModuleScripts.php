@@ -60,6 +60,7 @@ class PASModuleScripts implements ComponentAttachmentInterface
         } catch (\Exception $e) {
             $ptConfig = [];
         }
+
         return [
             'futurama' => $ptConfig['futurama_switch'] ?? false,
             'authenticated' => $this->playerSession->isLogin(),
@@ -70,7 +71,11 @@ class PASModuleScripts implements ComponentAttachmentInterface
             'langguageMap' => Config::parse($ptConfig['languages']),
             'iapiConfigs' => $iapiConfigs,
             'isGold' => ($this->playerSession->isLogin()) ? $this->paymentAccount->hasAccount('casino-gold') : false,
-            'errorMap' => isset($ptConfig['error_mapping']) ? Config::parse($ptConfig['error_mapping']) : [],
+            'pasErrorConfig' => [
+                'errorMap' => isset($ptConfig['error_mapping']) ? Config::parse($ptConfig['error_mapping']) : [],
+                'errorTitle' => $ptConfig['error_header_title_text'] ?? '',
+                'errorButton' => $ptConfig['error_button'],
+            ],
         ];
     }
 }

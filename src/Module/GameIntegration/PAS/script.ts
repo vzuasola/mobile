@@ -44,7 +44,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private keepSessionTime = (1000 * 60) * 15;
     private sessionFlag = "pas.session.flag";
     private languageMap: any;
-    private errorMap: any;
+    private pasErrorConfig: any;
     private lang: string;
 
     private isGold: boolean;
@@ -62,7 +62,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         iapiConfigs: any,
         isGold: boolean,
         languages: any,
-        errorMap: any,
+        pasErrorConfig: any,
     }) {
         this.futurama = attachments.futurama;
         this.isSessionAlive = attachments.authenticated;
@@ -73,11 +73,13 @@ export class PASModule implements ModuleInterface, GameInterface {
         this.isGold = attachments.isGold;
         this.keepAliveTrigger();
         this.listenSessionLogin();
-        this.errorMap = attachments.errorMap;
+        this.pasErrorConfig = attachments.pasErrorConfig;
         if (attachments.username) {
             this.username = attachments.username.toUpperCase();
         }
         this.token = attachments.token;
+
+        console.log(attachments.iapiconfOverride);
     }
 
     init() {
@@ -239,16 +241,17 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     private pasErrorMessage() {
-        let body = this.errorMap.all;
+        const errorMap = this.pasErrorConfig.errorMap;
+        let body = errorMap.all;
 
-        if (this.errorMap[this.pasLoginResponse.errorCode]) {
-            body = this.errorMap[this.pasLoginResponse.errorCode];
+        if (errorMap[this.pasLoginResponse.errorCode]) {
+            body = errorMap[this.pasLoginResponse.errorCode];
         }
 
         const template = uclTemplate({
-            title: "response.title",
-            message: body,
-            button: "response.button",
+            title: this.pasErrorConfig.errorTitle,
+            message: "<p>" + body + "</p>",
+            button: this.pasErrorConfig.errorButton,
         });
 
         const categoriesEl = document.querySelector("#unsupported-lightbox");
