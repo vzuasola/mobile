@@ -50,13 +50,15 @@
             cursor: pointer;
 
             svg {
-                width: 30%;
+                margin: 15% 0 0 55%;
+                width: 32%;
                 outline: none;
                 border: 0;
                 cursor: pointer;
-                fill: $white;
-                margin: 15% 0 0 55%;
 
+                path {
+                    fill: $white;
+                }
             }
         }
     }
@@ -72,7 +74,9 @@
 
         .game-favorite.active {
             svg {
-                fill: $yellow;
+                path {
+                    fill: $yellow;
+                }
             }
         }
     }

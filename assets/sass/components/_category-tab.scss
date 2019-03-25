@@ -19,7 +19,7 @@
                 svg {
                     outline: none;
                     fill: $white;
-                    margin: 0.5rem 0 0 0.7rem;
+                    margin: 1.2rem 0 0 0.7rem;
                     width: 1.7rem;
                 }
             }
@@ -70,11 +70,83 @@
             font-size: 1.4rem;
             text-decoration: none;
             font-weight: 600;
-            padding: 0.5rem 1rem;
+            padding: 1.4rem 1rem;
+            height: 4rem;
         }
     }
 
     .category-tab-list::-webkit-scrollbar {
         display: none;
+    }
+}
+
+// Casino Gold
+.mobile-casino-gold {
+    .category-tab-list {
+        .game-category {
+            &-item.active {
+                .active {
+                    background: $gold;
+                    color: #3f2408;
+                }
+                
+                :after {
+                    display: block;
+                    border-left: 1rem solid transparent;
+                    border-right: 1rem solid transparent;
+                    border-bottom: 1rem solid #4b0000;
+                    width: 2rem;
+                    margin: -0.1rem auto;
+                }
+            }
+        }
+    }
+
+    .game-container {
+        background: #4b0000;
+
+        .game-listing-item {
+            img {
+                border: 0.1rem solid $gold;
+                border-radius: 0.8rem;
+            }
+        }
+
+        .game-listing {
+            .size-small,
+            .size-large {
+                .game-favorite {
+                    svg {
+                        path.star-body {
+                            fill: #750201;
+                            opacity: 0.4;
+                        }
+
+                        path.star-border {
+                            fill: #ffe000;
+                        }
+                    }
+                }
+            }
+
+            .size-small {
+                .game-favorite.active {
+                    svg {
+                        path {
+                            fill: $yellow;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+
+            .size-large {
+                .game-favorite.active {
+                    svg {
+                        fill: $yellow;
+                    }
+                }
+            }
+        }
     }
 }
