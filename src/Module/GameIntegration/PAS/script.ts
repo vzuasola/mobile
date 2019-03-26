@@ -170,7 +170,10 @@ export class PASModule implements ModuleInterface, GameInterface {
 
             if (this.futurama) {
 
-                const key = "dafa888";
+                let key = "dafa888";
+                if (DafaConnect.isDafaconnect()) {
+                    key = "dafaconnect";
+                }
                 iapiConf = this.iapiConfs[key];
 
                 // Get Login if not login, login, then launch
