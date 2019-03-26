@@ -68,15 +68,21 @@ class SAGamingModuleController
         if ($this->checkCurrency()) {
             $data['currency'] = true;
             $requestData = $request->getParsedBody();
+            $params = explode('|', $requestData['gameCode']);
 
             try {
-                $responseData = $this->saGaming->getGameUrlById('icore_sa', $requestData['gameCode'], [
-                    'options' => [
-                        'languageCode' => $requestData['langCode'],
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
+                if (isset($params[0]) && isset($params[1])) {
+                    $gameCode = $params[0];
+                    $productProvider = $params[1];
+                    $responseData = $this->saGaming->getGameUrlById('icore_sa', $gameCode, [
+                        'options' => [
+                            'languageCode' => $requestData['langCode'],
+                            'providerProduct' => $productProvider,
+                        ]
+                    ]);
+                    if ($responseData['url']) {
+                        $data['gameurl'] = $responseData['url'];
+                    }
                 }
             } catch (\Exception $e) {
                 $data = [];
