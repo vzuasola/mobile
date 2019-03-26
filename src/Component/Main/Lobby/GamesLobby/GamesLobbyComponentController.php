@@ -105,9 +105,7 @@ class GamesLobbyComponentController
             $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
 
-        $enableRecommended = false;
-        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
-        $data['enableRecommended'] = $enableRecommended;
+        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list']);
 
         unset($data['categories_list']);
         unset($data['special_categories']);
@@ -395,16 +393,10 @@ class GamesLobbyComponentController
     /**
      * Arrange and removed unused categories
      */
-    private function getArrangedCategoriesByGame($categories, &$enableRecommended)
+    private function getArrangedCategoriesByGame($categories)
     {
         $categoryList = [];
         foreach ($categories as $category) {
-            // remove recommended games from category as it will not have its own tab.
-            if ($category['field_games_alias'] === $this::RECOMMENDED_GAMES) {
-                $enableRecommended = true;
-                continue;
-            }
-
             $isPublished = $this->checkIfPublished(
                 $category['field_publish_date'],
                 $category['field_unpublish_date']
