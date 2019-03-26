@@ -206,6 +206,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     private pasLaunch(options) {
+        console.log(this.pasLoginResponse);
         if (!this.futurama || this.pasLoginResponse.errorCode === 0) {
             // remap language
             const lang = Router.getLanguage();
