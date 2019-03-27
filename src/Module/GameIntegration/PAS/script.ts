@@ -27,6 +27,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private futurama: boolean;
     private username: string;
+    private currency: string;
     private token: string;
     private languages: any;
     private windowObject: any;
@@ -55,6 +56,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         futurama: boolean,
         authenticated: boolean,
         username: string,
+        currency: string,
         token: string,
         iapiconfOverride: {},
         lang: string,
@@ -76,6 +78,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         this.pasErrorConfig = attachments.pasErrorConfig;
         if (attachments.username) {
             this.username = attachments.username.toUpperCase();
+            this.currency = attachments.currency;
         }
         this.token = attachments.token;
     }
@@ -219,6 +222,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     lang,
                     language,
                     options,
+                    currency: this.currency,
                 },
             }).then((response) => {
                 if (response.gameurl) {
@@ -334,6 +338,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     if (response.status) {
                         this.username = response.username.toUpperCase();
                         this.token = response.token;
+                        this.currency = response.currency;
                     }
                 }).fail((error, message) => {
                     // Do nothing

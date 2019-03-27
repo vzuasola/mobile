@@ -64,6 +64,7 @@ class PASModuleController
                 'status' => true,
                 'username' => $this->playerSession->getUsername(),
                 'token' => $this->playerSession->getToken(),
+                'currency' => $this->player->getCurrency(),
             ];
         } catch (\Exception $e) {
             $data['status'] = false;
@@ -114,11 +115,11 @@ class PASModuleController
      */
     public function launch($request, $response)
     {
+        $requestData = $request->getParsedBody();
         $data['gameurl'] = false;
         $data['currency'] = false;
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($requestData['currency'])) {
             $data['currency'] = true;
-            $requestData = $request->getParsedBody();
 
             try {
                 $config = $this->config->withProduct('mobile-entrypage');
@@ -162,12 +163,14 @@ class PASModuleController
         return $this->rest->output($response, $data);
     }
 
-    private function checkCurrency()
+    private function checkCurrency($playerCurrency)
     {
         try {
             $config =  $this->config->getConfig('webcomposer_config.icore_playtech_provider');
             $currencies = explode("\r\n", $config['dafabetgames_currency']);
-            $playerCurrency = $this->player->getCurrency();
+            if (!$playerCurrency) {
+                $playerCurrency = $this->player->getCurrency();
+            }
 
             if (in_array($playerCurrency, $currencies)) {
                 return true;
