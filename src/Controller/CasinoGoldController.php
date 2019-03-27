@@ -13,13 +13,7 @@ class CasinoGoldController extends BaseController
     {
         if (!$this->get('player_session')->isLogin()) {
             return $response->withRedirect(
-                $this->get('uri')->generateUri('/login?product=casino', [])
-            );
-        }
-
-        if (!$this->get('accounts_service')->hasAccount('casino-gold')) {
-            return $response->withRedirect(
-                $this->get('uri')->generateUri('/casino', [])
+                $this->get('uri')->generateUri('/sc/login?product=casino-gold', [])
             );
         }
 
