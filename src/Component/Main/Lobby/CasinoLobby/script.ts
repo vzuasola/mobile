@@ -280,6 +280,9 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 xhr({
                     url: uri,
                     type: "json",
+                    data: {
+                        product: ComponentManager.getAttribute("product"),
+                    },
                 }).then((response) => {
                     pageResponse[id] = response;
                     this.checkPromiseState(promises, id, () => {
