@@ -78,8 +78,6 @@ export class PASModule implements ModuleInterface, GameInterface {
             this.username = attachments.username.toUpperCase();
         }
         this.token = attachments.token;
-
-        console.log(attachments.iapiconfOverride);
     }
 
     init() {
@@ -209,7 +207,6 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     private pasLaunch(options) {
-        console.log(this.pasLoginResponse);
         if (!this.futurama || this.pasLoginResponse.errorCode === 0) {
             // remap language
             const lang = Router.getLanguage();
