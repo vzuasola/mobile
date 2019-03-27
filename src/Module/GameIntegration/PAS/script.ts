@@ -78,8 +78,6 @@ export class PASModule implements ModuleInterface, GameInterface {
             this.username = attachments.username.toUpperCase();
         }
         this.token = attachments.token;
-
-        console.log(attachments.iapiconfOverride);
     }
 
     init() {
@@ -170,14 +168,17 @@ export class PASModule implements ModuleInterface, GameInterface {
 
             if (this.futurama) {
 
-                const key = "dafa888";
+                let key = "dafa888";
+                if (DafaConnect.isDafaconnect()) {
+                    key = "dafaconnect";
+                }
                 iapiConf = this.iapiConfs[key];
 
                 // Get Login if not login, login, then launch
                 // Before login, check if there are cookies on PTs end
                 iapiSetCallout("GetLoggedInPlayer", (GetLoggedInPlayeResponse) => {
                     // Set the callback for the PAS login
-                    iapiSetCallout("Login", this.onLogin(this.username, () => {
+                    iapiSetCallout("Login", this.onLogin(this.username.toUpperCase(), () => {
                         this.pasLaunch(options);
                         return;
                     }));
@@ -186,7 +187,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                         this.pasLaunch(options);
                         return;
                     } else {
-                        iapiLoginUsernameExternalToken(this.username, this.token, 1, language);
+                        iapiLoginUsernameExternalToken(this.username.toUpperCase(), this.token, 1, language);
                         // iapiLogin(username, password, real, language);
                     }
                 });
@@ -331,7 +332,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     method: "post",
                 }).then((response) => {
                     if (response.status) {
-                        this.username = response.username;
+                        this.username = response.username.toUpperCase();
                         this.token = response.token;
                     }
                 }).fail((error, message) => {
