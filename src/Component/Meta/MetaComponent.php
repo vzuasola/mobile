@@ -18,7 +18,8 @@ class MetaComponent implements ComponentWidgetInterface
     const HOME = [
         '/',
         '/games',
-        '/casino'
+        '/casino',
+        '/casino-gold'
     ];
 
     /**
