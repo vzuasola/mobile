@@ -757,7 +757,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private listenOnLogout() {
         ComponentManager.subscribe("session.logout", (event, src, data) => {
             if (ComponentManager.getAttribute("product") === "mobile-casino-gold") {
-                Router.navigate("/", ["*"]);
+                Router.navigate("/sc", ["*"]);
             }
         });
     }
