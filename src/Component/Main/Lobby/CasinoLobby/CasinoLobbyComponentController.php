@@ -66,24 +66,25 @@ class CasinoLobbyComponentController
         $currentLanguage
     ) {
         $this->playerSession = $playerSession;
-        $this->views = $views->withProduct('mobile-casino');
+        $this->views = $views;
         $this->rest = $rest;
         $this->configs = $configs;
         $this->asset = $asset;
         $this->recentGames = $recentGames;
         $this->favorite = $favorite;
         $this->configAsync = $configAsync;
-        $this->viewsAsync = $viewsAsync->withProduct('mobile-casino');
+        $this->viewsAsync = $viewsAsync;
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
     }
 
     public function lobby($request, $response)
     {
-        $previewMode = $request->getQueryParams();
-        $data = $this->getLobbyData();
+        $params = $request->getQueryParams();
+        $product = $params['product'] ?? 'mobile-casino';
+        $data = $this->getLobbyData($product);
 
-        if (!isset($previewMode['pvw'])) {
+        if (!isset($params['pvw'])) {
             $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
 
@@ -155,12 +156,13 @@ class CasinoLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
-    private function getLobbyData()
+    private function getLobbyData($product)
     {
-        $item = $this->cacher->getItem('views.casino-lobby-data.' . $this->currentLanguage);
+        $cacheKey = 'views.'. $product .'-lobby-data.';
+        $item = $this->cacher->getItem($cacheKey . $this->currentLanguage);
 
         if (!$item->isHit()) {
-            $data = $this->generateLobbyData();
+            $data = $this->generateLobbyData($product);
 
             $item->set([
                 'body' => $data,
@@ -178,12 +180,11 @@ class CasinoLobbyComponentController
         return $data;
     }
 
-    private function generateLobbyData()
+    private function generateLobbyData($product)
     {
         $data = [];
-
-        $categories = $this->views->getViewById('games_category');
-        $definitions = $this->getDefinitions();
+        $categories = $this->views->withProduct($product)->getViewById('games_category');
+        $definitions = $this->getDefinitions($product);
 
         $asyncData = Async::resolve($definitions);
         $specialCategories = [];
@@ -237,13 +238,13 @@ class CasinoLobbyComponentController
         return $definitions;
     }
 
-    private function getDefinitions()
+    private function getDefinitions($product)
     {
         $definitions = [];
 
         try {
             $definitions['configs'] = $this->configAsync->getConfig('casino.casino_configuration');
-            $definitions['all-games'] = $this->viewsAsync->getViewById('games_list');
+            $definitions['all-games'] = $this->viewsAsync->withProduct($product)->getViewById('games_list');
         } catch (\Exception $e) {
             $definitions = [];
         }

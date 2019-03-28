@@ -11,7 +11,7 @@ import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
 
 import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
@@ -67,6 +67,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
+        this.checkLoginState();
         this.listenChangeCategory();
         this.listenHashChange();
         this.listenClickGameTile();
@@ -104,6 +105,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             infinite_scroll: boolean,
         }) {
         if (!this.element) {
+            this.checkLoginState();
             this.listenChangeCategory();
             this.listenHashChange();
             this.listenClickGameTile();
@@ -161,7 +163,16 @@ export class CasinoLobbyComponent implements ComponentInterface {
 
         return 1;
     }
-
+    private checkLoginState() {
+        if (ComponentManager.getAttribute("product") === "mobile-casino-gold" && !this.isLogin) {
+            this.loader.show();
+            Router.navigate("/" + ComponentManager.getAttribute("language") + "/login?product=casino-gold", ["*"]);
+            Router.on(RouterClass.afterNavigate, (event) => {
+               ComponentManager.broadcast("redirect.postlogin.casino-gold", { loader: this.loader });
+            });
+            return;
+        }
+    }
     /**
      * Initialized games lobby
      */
@@ -280,6 +291,9 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 xhr({
                     url: uri,
                     type: "json",
+                    data: {
+                        product: ComponentManager.getAttribute("product"),
+                    },
                 }).then((response) => {
                     pageResponse[id] = response;
                     this.checkPromiseState(promises, id, () => {
@@ -754,7 +768,8 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private listenOnLogout() {
         ComponentManager.subscribe("session.logout", (event, src, data) => {
             if (ComponentManager.getAttribute("product") === "mobile-casino-gold") {
-                Router.navigate("/", ["*"]);
+                Router.navigate("/" + ComponentManager.getAttribute("language"), ["*"]);
+                return;
             }
         });
     }
