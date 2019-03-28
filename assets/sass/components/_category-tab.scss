@@ -154,4 +154,11 @@
             }
         }
     }
+
+    &-btn {
+        background: transparent;
+        color: $gold;
+        border: 0.2rem solid $gold;
+        border-radius: 0.3rem;
+    }
 }
