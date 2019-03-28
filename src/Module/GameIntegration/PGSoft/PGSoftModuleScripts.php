@@ -17,7 +17,7 @@ class PGSoftModuleScripts implements ComponentAttachmentInterface
 
     private $lang;
 
-    const KEY = 'pg_soft';
+    const KEY = 'pgsoft';
 
     /**
      *
