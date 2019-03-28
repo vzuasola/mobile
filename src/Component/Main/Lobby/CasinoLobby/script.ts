@@ -104,6 +104,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             product: any[],
             infinite_scroll: boolean,
         }) {
+        this.isLogin = attachments.authenticated;
         if (!this.element) {
             this.checkLoginState();
             this.listenChangeCategory();
@@ -122,7 +123,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.response = null;
         this.element = element;
         this.attachments = attachments;
-        this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.pager = 0;
         this.currentPage = 0;
@@ -292,7 +292,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                     url: uri,
                     type: "json",
                     data: {
-                        product: ComponentManager.getAttribute("product"),
+                        currentProduct: ComponentManager.getAttribute("product"),
                     },
                 }).then((response) => {
                     pageResponse[id] = response;
@@ -766,7 +766,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     }
 
     private listenOnLogout() {
-        ComponentManager.subscribe("session.logout", (event, src, data) => {
+        ComponentManager.subscribe("session.logout.finished", (event, src, data) => {
             if (ComponentManager.getAttribute("product") === "mobile-casino-gold") {
                 Router.navigate("/" + ComponentManager.getAttribute("language"), ["*"]);
                 return;

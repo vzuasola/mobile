@@ -81,7 +81,7 @@ class CasinoLobbyComponentController
     public function lobby($request, $response)
     {
         $params = $request->getQueryParams();
-        $product = $params['product'] ?? 'mobile-casino';
+        $product = $params['currentProduct'] ?? 'mobile-casino';
         $data = $this->getLobbyData($product);
 
         if (!isset($params['pvw'])) {
