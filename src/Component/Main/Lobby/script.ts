@@ -37,6 +37,7 @@ export class LobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("session.logout", (event) => {
             this.isLogin = false;
         });
+        this.listenCasinoGoldRedirect();
         this.doLoginProcess(element);
         this.integrateProduct(element);
     }
@@ -52,7 +53,6 @@ export class LobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.productAlias = attachments.product_alias;
         this.productDirectIntegration = attachments.product_direct_integration;
-
         this.doLoginProcess(element);
         this.integrateProduct(element);
     }
@@ -82,5 +82,11 @@ export class LobbyComponent implements ComponentInterface {
                 ComponentManager.broadcast("integrate.product", {srcElement: element, productCode});
             }
         }
+    }
+
+    private listenCasinoGoldRedirect() {
+        ComponentManager.subscribe("redirect.postlogin.casino-gold", (event, src, data) => {
+           data.loader.hide();
+        });
     }
 }

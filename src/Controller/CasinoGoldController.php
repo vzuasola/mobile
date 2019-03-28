@@ -11,18 +11,6 @@ class CasinoGoldController extends BaseController
      */
     public function view($request, $response)
     {
-        if (!$this->get('player_session')->isLogin()) {
-            $requestParams = $request->getQueryParams();
-            $params = ['product' => 'casino-gold'];
-            if (isset($requestParams['btag'])) {
-                $params['btag'] = $requestParams['btag'];
-            }
-            $queryStr = http_build_query($params, '&');
-            return $response->withRedirect(
-                $this->get('uri')->generateUri("/sc/login?$queryStr", [])
-            );
-        }
-
         try {
             $config = $this->get('config_fetcher')
                 ->withProduct($this->get('product_resolver')->getProduct())
