@@ -377,6 +377,7 @@ export class Login {
                     ["header", "menu", "main", "announcement", "push_notification"],
                     () => {
                         this.loader.hide();
+                        ComponentManager.broadcast("session.logout.finished");
                     },
                 );
             });
