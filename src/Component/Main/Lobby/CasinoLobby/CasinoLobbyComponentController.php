@@ -81,7 +81,7 @@ class CasinoLobbyComponentController
     public function lobby($request, $response)
     {
         $params = $request->getQueryParams();
-        $product = $params['currentProduct'] ?? 'mobile-casino';
+        $product = $params['lobbyProduct'] ?? 'mobile-casino';
         $data = $this->getLobbyData($product);
 
         if (!isset($params['pvw'])) {
@@ -193,7 +193,8 @@ class CasinoLobbyComponentController
         $data['special_categories'] = $specialCategories;
         $data['categories_list'] = $categories;
         $data['games'] = $this->getGamesAndCategory(
-            $asyncData['all-games']
+            $asyncData['all-games'],
+            $product
         );
 
         return $data;
@@ -255,11 +256,11 @@ class CasinoLobbyComponentController
     /**
      * Get games by category with sort
      */
-    private function getGamesAndCategory($allGames)
+    private function getGamesAndCategory($allGames, $product)
     {
         $gamesList = [];
 
-        $gamesList['all-games'] = $this->arrangeGames($allGames, 'all-games');
+        $gamesList['all-games'] = $this->arrangeGames($product, $allGames, 'all-games');
 
         return $gamesList;
     }

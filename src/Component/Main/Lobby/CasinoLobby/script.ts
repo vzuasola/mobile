@@ -292,7 +292,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                     url: uri,
                     type: "json",
                     data: {
-                        currentProduct: ComponentManager.getAttribute("product"),
+                        lobbyProduct: ComponentManager.getAttribute("product"),
                     },
                 }).then((response) => {
                     pageResponse[id] = response;
