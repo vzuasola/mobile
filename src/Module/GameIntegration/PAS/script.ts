@@ -12,6 +12,7 @@ import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 import {Modal} from "@app/assets/script/components/modal";
+import {DafaConnect} from "@app/assets/script/dafa-connect";
 
 import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
@@ -23,7 +24,11 @@ import {GameInterface} from "./../scripts/game.interface";
  */
 export class PASModule implements ModuleInterface, GameInterface {
     private key: string = "pas";
-    private currencies: any;
+
+    private futurama: boolean;
+    private username: string;
+    private currency: string;
+    private token: string;
     private languages: any;
     private windowObject: any;
     private gameLink: string;
@@ -40,20 +45,28 @@ export class PASModule implements ModuleInterface, GameInterface {
     private keepSessionTime = (1000 * 60) * 15;
     private sessionFlag = "pas.session.flag";
     private languageMap: any;
+    private pasErrorConfig: any;
     private lang: string;
 
     private isGold: boolean;
 
+    private pasLoginResponse: any;
+
     onLoad(attachments: {
+        futurama: boolean,
         authenticated: boolean,
+        username: string,
+        currency: string,
+        token: string,
         iapiconfOverride: {},
         lang: string,
         langguageMap: {[name: string]: string},
         iapiConfigs: any,
         isGold: boolean,
-        currencies: any,
         languages: any,
+        pasErrorConfig: any,
     }) {
+        this.futurama = attachments.futurama;
         this.isSessionAlive = attachments.authenticated;
         this.iapiconfOverride = attachments.iapiconfOverride;
         this.lang = attachments.lang;
@@ -62,11 +75,18 @@ export class PASModule implements ModuleInterface, GameInterface {
         this.isGold = attachments.isGold;
         this.keepAliveTrigger();
         this.listenSessionLogin();
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
+        this.pasErrorConfig = attachments.pasErrorConfig;
+        if (attachments.username) {
+            this.username = attachments.username.toUpperCase();
+            this.currency = attachments.currency;
+        }
+        this.token = attachments.token;
     }
 
     init() {
+        this.pasLoginResponse = {
+            errorCode: false,
+        };
         if (typeof iapiSetCallout !== "undefined") {
             iapiSetCallout("Logout", this.onLogout);
         }
@@ -91,8 +111,13 @@ export class PASModule implements ModuleInterface, GameInterface {
                 const promises = [];
                 for (const key in this.iapiConfs) {
                     if (this.iapiConfs.hasOwnProperty(key)) {
+                        if (this.futurama && key !== "dafagold") {
+                            continue;
+                        }
+
                         this.isGold = response.provisioned;
-                        if (key === "dafagold" && !response.provisioned) {
+
+                        if (this.checkIapiConfig(key)) {
                             continue;
                         }
 
@@ -144,6 +169,51 @@ export class PASModule implements ModuleInterface, GameInterface {
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
 
+            if (this.futurama) {
+
+                let key = "dafa888";
+                if (DafaConnect.isDafaconnect()) {
+                    key = "dafaconnect";
+                }
+                iapiConf = this.iapiConfs[key];
+
+                // Get Login if not login, login, then launch
+                // Before login, check if there are cookies on PTs end
+                iapiSetCallout("GetLoggedInPlayer", (GetLoggedInPlayeResponse) => {
+                    // Set the callback for the PAS login
+                    iapiSetCallout("Login", this.onLogin(this.username.toUpperCase(), () => {
+                        this.pasLaunch(options);
+                        return;
+                    }));
+
+                    if (this.verifyGetLoggedIn(GetLoggedInPlayeResponse)) {
+                        this.pasLaunch(options);
+                        return;
+                    } else {
+                        iapiLoginUsernameExternalToken(this.username.toUpperCase(), this.token, 1, language);
+                        // iapiLogin(username, password, real, language);
+                    }
+                });
+
+                this.doCheckSession();
+            }
+
+            if (!this.futurama) {
+                this.pasLaunch(options);
+            }
+
+        }
+    }
+
+    logout() {
+        this.doLogout();
+    }
+
+    private pasLaunch(options) {
+        if (!this.futurama || this.pasLoginResponse.errorCode === 0) {
+            // remap language
+            const lang = Router.getLanguage();
+            const language = this.getLanguageMap(lang);
             xhr({
                 url: Router.generateModuleRoute("pas_integration", "launch"),
                 type: "json",
@@ -152,6 +222,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     lang,
                     language,
                     options,
+                    currency: this.currency,
                 },
             }).then((response) => {
                 if (response.gameurl) {
@@ -165,11 +236,55 @@ export class PASModule implements ModuleInterface, GameInterface {
             }).fail((error, message) => {
                 // Do nothing
             });
+
+        }
+
+        if (this.futurama && this.pasLoginResponse.errorCode !== 0) {
+            // Do Error mapping modal
+            this.pasErrorMessage();
         }
     }
 
-    logout() {
-        this.doLogout();
+    private pasErrorMessage() {
+        const errorMap = this.pasErrorConfig.errorMap;
+        let body = errorMap.all;
+
+        if (errorMap[this.pasLoginResponse.errorCode]) {
+            body = errorMap[this.pasLoginResponse.errorCode];
+        }
+
+        const template = uclTemplate({
+            title: this.pasErrorConfig.errorTitle,
+            message: "<p>" + body + "</p>",
+            button: this.pasErrorConfig.errorButton,
+        });
+
+        const categoriesEl = document.querySelector("#unsupported-lightbox");
+
+        if (categoriesEl) {
+            categoriesEl.innerHTML = template;
+            Modal.open("#unsupported-lightbox");
+        }
+    }
+
+    /**
+     * Check if iapiconfig will be used for loggin in
+     */
+    private checkIapiConfig(key) {
+        let ret = false;
+        if (key === "dafagold" && !this.isGold) {
+            ret = true;
+        }
+
+        if (key === "dafa888" && DafaConnect.isDafaconnect()) {
+            ret = true;
+        }
+
+        if (key === "dafaconnect" && !DafaConnect.isDafaconnect()) {
+            ret = true;
+        }
+
+        return ret;
     }
 
     private keepAliveTrigger() {
@@ -213,8 +328,25 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Listen to session login
      */
     private listenSessionLogin() {
-        ComponentManager.subscribe("session.login", (event) => {
-            this.sessionPersist();
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            if (this.futurama) {
+                xhr({
+                    url: Router.generateModuleRoute("pas_integration", "updateToken"),
+                    type: "json",
+                    method: "post",
+                }).then((response) => {
+                    if (response.status) {
+                        this.username = response.username.toUpperCase();
+                        this.token = response.token;
+                        this.currency = response.currency;
+                    }
+                }).fail((error, message) => {
+                    // Do nothing
+                });
+            }
+            if (!this.futurama) {
+                this.sessionPersist();
+            }
         });
     }
 
@@ -227,7 +359,11 @@ export class PASModule implements ModuleInterface, GameInterface {
         const promises = [];
         for (const key in this.iapiConfs) {
             if (this.iapiConfs.hasOwnProperty(key)) {
-                if (key === "dafagold" && !this.isGold) {
+                if (this.futurama && key !== "dafagold") {
+                    continue;
+                }
+
+                if (this.checkIapiConfig(key)) {
                     continue;
                 }
                 ++ ctr;
@@ -261,9 +397,10 @@ export class PASModule implements ModuleInterface, GameInterface {
     /**
      * Check the getLoggedInPlayer response
      */
-    private verifyCookie(res) {
+    private verifyGetLoggedIn(res) {
+        this.pasLoginResponse = res;
         if (res.errorCode === 0 &&
-            (typeof res.username !== "undefined" && res.username.length > 0)
+            (res.username === this.username.toUpperCase() && res.username.length > 0)
         ) {
             return true;
         }
@@ -287,7 +424,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         const promises = [];
         for (const key in this.iapiConfs) {
             if (this.iapiConfs.hasOwnProperty(key)) {
-                if (key === "dafagold" && !this.isGold) {
+                if (this.checkIapiConfig(key)) {
                     continue;
                 }
                 ++ ctr;
@@ -332,7 +469,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             if (0 === response.errorCode) {
                 // Flag for detecting if the player is still logged-in on PAS
                 this.store.set(this.sessionFlag, "1");
-
+                this.pasLoginResponse = response;
                 if (response.sessionValidationData !== undefined &&
                     response.sessionValidationData.SessionValidationByTCVersionData !== undefined
                 ) {
@@ -350,7 +487,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
                 return;
             }
-
+            this.pasLoginResponse = response;
             resolve();
         };
     }

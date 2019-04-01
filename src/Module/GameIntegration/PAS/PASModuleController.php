@@ -21,6 +21,8 @@ class PASModuleController
 
     private $player;
 
+    private $playerSession;
+
     /**
      *
      */
@@ -31,7 +33,8 @@ class PASModuleController
             $container->get('accounts_service'),
             $container->get('token_parser'),
             $container->get('config_fetcher'),
-            $container->get('player')
+            $container->get('player'),
+            $container->get('player_session')
         );
     }
 
@@ -43,13 +46,31 @@ class PASModuleController
         $paymentAccount,
         $parser,
         $config,
-        $player
+        $player,
+        $playerSession
     ) {
         $this->rest = $rest;
         $this->paymentAccount = $paymentAccount;
         $this->parser = $parser;
         $this->config = $config->withProduct('mobile-casino');
         $this->player = $player;
+        $this->playerSession = $playerSession;
+    }
+
+    public function updateToken($request, $response)
+    {
+        try {
+            $data = [
+                'status' => true,
+                'username' => $this->playerSession->getUsername(),
+                'token' => $this->playerSession->getToken(),
+                'currency' => $this->player->getCurrency(),
+            ];
+        } catch (\Exception $e) {
+            $data['status'] = false;
+        }
+
+        return $this->rest->output($response, $data);
     }
 
     public function unsupported($request, $response)
@@ -94,11 +115,11 @@ class PASModuleController
      */
     public function launch($request, $response)
     {
+        $requestData = $request->getParsedBody();
         $data['gameurl'] = false;
         $data['currency'] = false;
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($requestData['currency'])) {
             $data['currency'] = true;
-            $requestData = $request->getParsedBody();
 
             try {
                 $config = $this->config->withProduct('mobile-entrypage');
@@ -142,12 +163,14 @@ class PASModuleController
         return $this->rest->output($response, $data);
     }
 
-    private function checkCurrency()
+    private function checkCurrency($playerCurrency)
     {
         try {
             $config =  $this->config->getConfig('webcomposer_config.icore_playtech_provider');
             $currencies = explode("\r\n", $config['dafabetgames_currency']);
-            $playerCurrency = $this->player->getCurrency();
+            if (!$playerCurrency) {
+                $playerCurrency = $this->player->getCurrency();
+            }
 
             if (in_array($playerCurrency, $currencies)) {
                 return true;
