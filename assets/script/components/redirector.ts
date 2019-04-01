@@ -24,6 +24,14 @@ class Redirector {
                 reUrl = utility.addQueryParam(reUrl, "source", "pwa");
                 url = utility.addQueryParam(url, "re", reUrl);
             }
+
+            window.open(url);
+
+            if (closure) {
+                closure();
+            }
+
+            return;
         }
 
         window.location.href = url;
