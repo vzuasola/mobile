@@ -178,6 +178,15 @@ modules:
   flowgaming_integration:
     class: App\MobileEntry\Module\GameIntegration\FlowGaming\FlowGamingModule
 
+  sagaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\SAGaming\SAGamingModule
+
+  pgsoft_integration:
+    class: App\MobileEntry\Module\GameIntegration\PGSoft\PGSoftModule
+
+  asiagaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\AsiaGaming\AsiaGamingModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
