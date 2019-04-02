@@ -166,7 +166,15 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private checkLoginState() {
         if (ComponentManager.getAttribute("product") === "mobile-casino-gold" && !this.isLogin) {
             this.loader.show();
-            Router.navigate("/" + ComponentManager.getAttribute("language") + "/login?product=casino-gold", ["*"]);
+            const params = utility.getParameters(window.location.search);
+            let url = "/" + ComponentManager.getAttribute("language") + "/login";
+            url = utility.addQueryParam(url, "product", "casino-gold");
+            for (const key in params) {
+                if (key !== "" && params[key] !== "") {
+                    url = utility.addQueryParam(url, key, params[key]);
+                }
+            }
+            Router.navigate(url, ["*"]);
             Router.on(RouterClass.afterNavigate, (event) => {
                ComponentManager.broadcast("redirect.postlogin.casino-gold", { loader: this.loader });
             });
