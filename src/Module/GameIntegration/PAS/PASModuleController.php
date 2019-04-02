@@ -11,6 +11,7 @@ class PASModuleController
     const CASINO_MAP = [
         'mobile-casino' => 'dafa888',
         'mobile-casino-gold' => 'dafagold',
+        'dafaconnect' => 'dafaconnect',
     ];
 
     private $rest;
