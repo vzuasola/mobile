@@ -103,7 +103,7 @@ export class GamesSearch {
             this.gamesList = gamesList;
             this.favoritesList = gamesList.favorite_list;
             this.searchObj.setData(allGames);
-            this.recommendedGames = new RecommendedGames(this.gamesList, this.config, gamesList.enableRecommended);
+            this.recommendedGames = new RecommendedGames(this.gamesList, this.config);
         }
     }
 
@@ -155,7 +155,7 @@ export class GamesSearch {
         this.searchBlurb = blurb;
         this.updateSearchBlurb(blurb, this.element.querySelector("#blurb-preview"), { count: 0, keyword });
 
-        if (recommendedGames.length && this.response.enableRecommended) {
+        if (recommendedGames.length) {
             this.isRecommended = true;
             this.setGamesResultPreview(recommendedGames);
             this.searchResult = recommendedGames;

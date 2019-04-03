@@ -19,6 +19,8 @@ class PASModuleScripts implements ComponentAttachmentInterface
 
     private $paymentAccount;
 
+    private $player;
+
     /**
      *
      */
@@ -28,19 +30,21 @@ class PASModuleScripts implements ComponentAttachmentInterface
             $container->get('player_session'),
             $container->get('config_fetcher'),
             $container->get('lang'),
-            $container->get('accounts_service')
+            $container->get('accounts_service'),
+            $container->get('player')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang, $paymentAccount)
+    public function __construct($playerSession, $config, $lang, $paymentAccount, $player)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
         $this->lang = $lang;
         $this->paymentAccount = $paymentAccount;
+        $this->player = $player;
     }
 
     /**
@@ -50,7 +54,10 @@ class PASModuleScripts implements ComponentAttachmentInterface
     {
         try {
             $ptConfig = $this->config->getConfig('webcomposer_config.games_playtech_provider');
-
+            $currency = null;
+            if ($this->playerSession->isLogin()) {
+                $currency = $this->player->getCurrency();
+            }
             $iapiConfigs = $ptConfig['iapiconf_override'] ?? [];
             if ($iapiConfigs) {
                 $iapiConfigs = Config::parse($iapiConfigs);
@@ -61,13 +68,23 @@ class PASModuleScripts implements ComponentAttachmentInterface
         } catch (\Exception $e) {
             $ptConfig = [];
         }
+
         return [
+            'futurama' => $ptConfig['futurama_switch'] ?? false,
             'authenticated' => $this->playerSession->isLogin(),
+            'username' => $this->playerSession->getUsername(),
+            'currency' => $currency,
+            'token' => $this->playerSession->getToken(),
             'iapiconfOverride' => [],
             'lang' => $this->lang ?? 'en',
             'langguageMap' => Config::parse($ptConfig['languages']),
             'iapiConfigs' => $iapiConfigs,
             'isGold' => ($this->playerSession->isLogin()) ? $this->paymentAccount->hasAccount('casino-gold') : false,
+            'pasErrorConfig' => [
+                'errorMap' => isset($ptConfig['error_mapping']) ? Config::parse($ptConfig['error_mapping']) : [],
+                'errorTitle' => $ptConfig['error_header_title_text'] ?? '',
+                'errorButton' => $ptConfig['error_button'],
+            ],
         ];
     }
 }

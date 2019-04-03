@@ -244,6 +244,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 responses["games-collection"].top,
                 gamesDictionary,
                 gamesList[key],
+                true,
             );
         }
 
@@ -337,7 +338,7 @@ export class GamesLobbyComponent implements ComponentInterface {
      * Games that are not on the top games collection will be
      * sorted alphabetically.
      */
-    private sortGamesCollection(gamesCollection, gamesListArr, gamesListObj) {
+    private sortGamesCollection(gamesCollection, gamesListArr, gamesListObj, sortAlphabetical) {
         const sortedCollection = {};
         const sortedAlpha = {};
         let sortedAlphaArr = [];
@@ -348,15 +349,17 @@ export class GamesLobbyComponent implements ComponentInterface {
             }
         }
 
-        sortedAlphaArr = this.sortGameTitleAlphabetical(gamesListArr);
-        for (const game of sortedAlphaArr) {
-            if (!sortedCollection.hasOwnProperty("id:" + game.game_code)) {
-                sortedAlpha["id:" + game.game_code] = game;
+        if (sortAlphabetical) {
+            sortedAlphaArr = this.sortGameTitleAlphabetical(gamesListArr);
+            for (const game of sortedAlphaArr) {
+                if (!sortedCollection.hasOwnProperty("id:" + game.game_code)) {
+                    sortedAlpha["id:" + game.game_code] = game;
+                }
             }
-        }
 
-        if (sortedAlpha) {
-            Object.assign(sortedCollection, sortedAlpha);
+            if (sortedAlpha) {
+                Object.assign(sortedCollection, sortedAlpha);
+            }
         }
 
         return sortedCollection;
@@ -405,8 +408,7 @@ export class GamesLobbyComponent implements ComponentInterface {
 
                         newResponse.games = this.getCategoryGames(newResponse.games);
                         if (newResponse.hasOwnProperty("gamesCollection")
-                            && newResponse.gamesCollection.hasOwnProperty("recommended")
-                            && newResponse.games.hasOwnProperty("recommended-games")) {
+                            && newResponse.gamesCollection.hasOwnProperty("recommended")) {
                             newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
                         }
                         newResponse.games = this.groupGamesByContainer(newResponse.games);
@@ -451,16 +453,17 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     private doSortRecommended(newResponse) {
-        const recommended = newResponse.games["recommended-games"];
+        const allGames = newResponse.games["all-games"];
         let sortedRecommended: any = [];
-        const gamesListObj = this.getGamesObj(
-            recommended,
-            newResponse.games["all-games"]);
-        sortedRecommended = this.sortGamesCollection(
-            newResponse.gamesCollection.recommended,
-            recommended,
-            gamesListObj,
-        );
+        if (newResponse.gamesCollection.hasOwnProperty("recommended")) {
+            const gamesDictionary = this.getGamesDefinition(newResponse.gamesCollection.recommended, allGames);
+            sortedRecommended = this.sortGamesCollection(
+                newResponse.gamesCollection.recommended,
+                gamesDictionary,
+                allGames,
+                false,
+            );
+        }
 
         return sortedRecommended;
     }
@@ -868,7 +871,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 let recommended: boolean = false;
                 gamesEl.innerHTML = "";
                 this.activateSearchTab(data.active);
-                if (this.response.games["recommended-games"] && this.response.enableRecommended) {
+                if (this.response.games["recommended-games"]) {
                     this.searchResults = this.response.games["recommended-games"];
                     this.setGames(this.response.games["recommended-games"], 0, true);
                     recommended = true;
