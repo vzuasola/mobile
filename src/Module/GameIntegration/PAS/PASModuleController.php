@@ -8,6 +8,12 @@ class PASModuleController
 {
     const KEY = 'pas';
 
+    const CASINO_MAP = [
+        'mobile-casino' => 'dafa888',
+        'mobile-casino-gold' => 'dafagold',
+        'dafaconnect' => 'dafaconnect',
+    ];
+
     private $rest;
 
     /**
@@ -133,22 +139,28 @@ class PASModuleController
                     }
                 }
 
+                $productKey = $requestData['product'];
+                $casino = self::CASINO_MAP[$productKey];
+
                 $url = $this->parser->processTokens(
-                    $iapiConfigs['dafa888'][$requestData['options']['platform'] . '_client_url']
+                    $iapiConfigs[$casino][$requestData['options']['platform'] . '_client_url']
                 );
 
                 $search = [
-                    '{gameCode}', '{ptLanguage}', '{langPrefix}',
+                    '{username}', '{gameCode}', '{ptLanguage}', '{langPrefix}',
                 ];
 
                 $replacements = [
-                    $requestData['options']['code'], $requestData['language'], $requestData['lang'],
+                    $this->playerSession->getUsername(),
+                    $requestData['options']['code'],
+                    $requestData['language'],
+                    $requestData['lang'],
                 ];
 
                 $url = str_replace($search, $replacements, $url);
 
                 $queryString = [];
-                foreach ($iapiConfigs['dafa888'][$requestData['options']['platform'] . '_param'] as $key => $value) {
+                foreach ($iapiConfigs[$casino][$requestData['options']['platform'] . '_param'] as $key => $value) {
                     $param = str_replace($search, $replacements, $value);
                     $queryString[] = $key . "=" . urlencode($this->parser->processTokens($param));
                 }

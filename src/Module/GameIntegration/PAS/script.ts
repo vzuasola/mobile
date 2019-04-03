@@ -211,6 +211,15 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private pasLaunch(options) {
         if (!this.futurama || this.pasLoginResponse.errorCode === 0) {
+            let product = ComponentManager.getAttribute("product");
+            if (options.product) {
+                product = options.product;
+            }
+
+            if (DafaConnect.isDafaconnect()) {
+                product = "dafaconnect";
+            }
+
             // remap language
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
@@ -223,6 +232,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     language,
                     options,
                     currency: this.currency,
+                    product,
                 },
             }).then((response) => {
                 if (response.gameurl) {
