@@ -39,7 +39,7 @@ export class GamesIntegrationModule extends Redirectable implements ModuleInterf
                         return;
                     }
 
-                    Router.navigate(response.url, ["*"]);
+                    Router.navigate(response.url, ["*"], {removeParams: ["product"]});
                     this.loader.hide();
                     return;
                 }
