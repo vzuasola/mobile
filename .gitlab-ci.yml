@@ -203,6 +203,25 @@ tct:
       - automation/deployed/*.jsonl
     expire_in: 1 month
 
+tct_o:
+  stage: deploy-test
+  environment:
+    name: tct
+  script:
+    - DEPLOY_TCT=$DEPLOY_TCT_O
+    - DEPLOY_TCT_TOWER_HOST=$DEPLOY_TCT_O_TOWER_HOST
+    - python -u automation/run.py --stage deploy-tct
+  when: manual
+  dependencies:
+    - dev
+    - create package
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  tags:
+    - stgrunner_ipvg
+
 .selenium tests tct:
   stage: integration-tests-test
   script:
@@ -340,6 +359,27 @@ staging:
   only:
     - /^release-.*$/
     - tags
+
+staging_o:
+  stage: deploy-staging
+  environment:
+    name: staging
+  script:
+    - DEPLOY_STG=$DEPLOY_STG_O
+    - DEPLOY_STG_TOWER_HOST=$DEPLOY_STG_O_TOWER_HOST
+    - python -u automation/run.py --stage deploy-staging
+  when: manual
+  dependencies:
+    - testing signoff
+  artifacts:
+    paths:
+      - automation/deployed/*.jsonl
+    expire_in: 1 month
+  only:
+    - /^release-.*$/
+    - tags
+  tags:
+    - stgrunner_ipvg
 
 .selenium tests staging:
   stage: integration-tests-staging
