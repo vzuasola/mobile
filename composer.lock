@@ -2325,7 +2325,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -2978,7 +2978,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "8c6efa33f53822a087059e5fed54a44ba2e56a04"
+                "reference": "3239fc94b0e723983d7811f7c597c6406195eb5b"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3029,7 +3029,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2019-02-15T05:53:47+00:00"
+            "time": "2019-04-04T03:06:11+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -3999,6 +3999,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2018-08-09T05:50:03+00:00"
         },
         {
