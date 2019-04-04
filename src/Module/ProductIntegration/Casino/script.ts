@@ -42,7 +42,7 @@ export class CasinoIntegrationModule extends Redirectable implements ModuleInter
                         return;
                     }
 
-                    Router.navigate(response.redirect, ["*"]);
+                    Router.navigate(response.redirect, ["*"], {removeParams: ["product"]});
                     this.loader.hide();
                     return;
                 }
