@@ -74,7 +74,7 @@ class AsiaGamingModuleController
                 $responseData = $this->asiaGaming->getGameUrlById('icore_ag', $params[0], [
                     'options' => [
                         'languageCode' => $requestData['langCode'],
-                        'Product' => $params[1],
+                        'providerProduct' => $params[1],
                     ]
                 ]);
                 if ($responseData['url']) {
