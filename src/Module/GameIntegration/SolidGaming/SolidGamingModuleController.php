@@ -76,7 +76,7 @@ class SolidGamingModuleController
                     $productProvider = $params[1];
                     $responseData = $this->solidGaming->getGameUrlById('icore_sg', $gameCode, [
                         'options' => [
-                            'languageCode' => $gameCode,
+                            'languageCode' => $requestData['langCode'],
                             'providerProduct' => $productProvider,
                         ]
                     ]);
