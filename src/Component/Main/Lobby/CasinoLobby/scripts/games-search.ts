@@ -241,10 +241,16 @@ export class GamesSearch {
     private activateSearchTab() {
         const categoriesEl = this.element.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        const activeCategory = activeLink.getAttribute("data-category-filter-id");
+        if (activeLink) {
+            const activeCategory = activeLink.getAttribute("data-category-filter-id");
+            const activeLinkParent = utility.findParent(activeLink, "li");
+            if (activeLinkParent) {
+                utility.removeClass(activeLinkParent, "active");
+            }
+            utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        }
 
         // set search tab as active tab
-        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.addClass(this.element.querySelector(".search-tab"), "active");
     }
 

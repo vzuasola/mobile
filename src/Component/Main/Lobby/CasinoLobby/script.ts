@@ -489,8 +489,10 @@ export class CasinoLobbyComponent implements ComponentInterface {
                }
            }
 
-            utility.removeClass(activeLink, "active");
-            utility.removeClass(activeLink.parentElement, "active");
+            if (activeLink) {
+                utility.removeClass(activeLink, "active");
+                utility.removeClass(activeLink.parentElement, "active");
+            }
 
             utility.addClass(src, "active");
             utility.addClass(src.parentElement, "active");
@@ -760,9 +762,14 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private activateSearchTab() {
         const categoriesEl = this.element.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        const activeCategory = activeLink.getAttribute("data-category-filter-id");
-        // set search tab as active tab
-        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        if (activeLink) {
+            const activeCategory = activeLink.getAttribute("data-category-filter-id");
+            const activeLinkParent = utility.findParent(activeLink, "li");
+            if (activeLinkParent) {
+                utility.removeClass(activeLinkParent, "active");
+            }
+            utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        }
         utility.addClass(this.element.querySelector(".search-tab"), "active");
         utility.addClass(this.element.querySelector(".search-blurb"), "active");
     }
