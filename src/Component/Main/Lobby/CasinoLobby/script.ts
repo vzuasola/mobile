@@ -362,7 +362,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             key = this.getActiveCategory(this.response.games, key);
         }
         this.setCategories(this.response.categories, key);
-        this.setGames(this.response.games[key]);
+        this.setGames(this.response.games[key], key);
     }
 
     /**
@@ -410,7 +410,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, page: number = 0, isRecommend = false) {
+    private setGames(data, activeCategory: string = " ", page: number = 0, isRecommend = false) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
 
@@ -419,6 +419,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
             isRecommended: isRecommend,
+            isAllGames: activeCategory === "all-games",
         });
 
         if (this.currentPage > page) {
@@ -428,6 +429,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                     games: pager[ctr],
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
+                    isAllGames: activeCategory === "all-games",
                 });
             }
         }
@@ -454,7 +456,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 utility.addClass(activeLink, "active");
 
                 const key = src.getAttribute("data-category-filter-id");
-                this.setGames(this.response.games[key]);
+                this.setGames(this.response.games[key], key);
                 ComponentManager.broadcast("category.change");
             }
         });
@@ -497,7 +499,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             utility.addClass(src, "active");
             utility.addClass(src.parentElement, "active");
 
-            this.setGames(this.response.games[key]);
+            this.setGames(this.response.games[key], key);
             ComponentManager.broadcast("category.change");
         });
     }
@@ -689,7 +691,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 this.activateSearchTab();
                 if (this.response.games["recommended-games"]  && this.response.enableRecommended ) {
                     this.searchResults = this.response.games["recommended-games"];
-                    this.setGames(this.response.games["recommended-games"], 0, true);
+                    this.setGames(this.response.games["recommended-games"], "recommended-games", 0, true);
                     recommended = true;
                 }
                 this.updateBlurbForFilter(recommended);
@@ -755,7 +757,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private listenOnSearch() {
          ComponentManager.subscribe("games.search.success", (event, src, data) => {
              this.searchResults = data.games;
-             this.setGames(data.games, 0, data.isRecommended);
+             this.setGames(data.games, " ", 0, data.isRecommended);
          });
      }
 
