@@ -739,6 +739,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                         games: pager[this.currentPage],
                         favorites: this.response.favorite_list,
                         isLogin: this.isLogin,
+                        isAllGames: hash === "all-games",
                     });
                     const loader = gameLoader.querySelector(".mobile-game-loader");
                     utility.removeClass(loader, "hidden");
