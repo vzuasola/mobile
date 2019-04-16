@@ -483,7 +483,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             key = this.getActiveCategory(this.response.games, key);
         }
         this.setCategories(this.response.categories, key);
-        this.setGames(this.response.games[key]);
+        this.setGames(this.response.games[key], key);
     }
 
     /**
@@ -534,7 +534,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, page: number = 0, isRecommend = false) {
+    private setGames(data, activeCategory: string = " ", page: number = 0, isRecommend = false) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
 
@@ -543,6 +543,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
             isRecommended: isRecommend,
+            isAllGames: activeCategory === "all-games",
         });
 
         if (this.currentPage > page) {
@@ -552,6 +553,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     games: pager[ctr],
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
+                    isAllGames: activeCategory === "all-games",
                 });
             }
         }
@@ -627,7 +629,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                }
             }
 
-            this.setGames(this.response.games[key]);
+            this.setGames(this.response.games[key], key);
             ComponentManager.broadcast("category.change");
         });
     }
@@ -873,7 +875,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 this.activateSearchTab(data.active);
                 if (this.response.games["recommended-games"]) {
                     this.searchResults = this.response.games["recommended-games"];
-                    this.setGames(this.response.games["recommended-games"], 0, true);
+                    this.setGames(this.response.games["recommended-games"], "recommended-games", 0, true);
                     recommended = true;
                 }
                 this.updateBlurbForFilter(recommended);
@@ -938,7 +940,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenOnSearch() {
          ComponentManager.subscribe("games.search.success", (event, src, data) => {
              this.searchResults = data.games;
-             this.setGames(data.games, 0, data.isRecommended);
+             this.setGames(data.games, "", 0, data.isRecommended);
          });
      }
 

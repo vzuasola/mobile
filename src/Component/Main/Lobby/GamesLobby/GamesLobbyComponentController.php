@@ -324,6 +324,16 @@ class GamesLobbyComponentController
                 $processGame['ribbon']['name'] = $ribbon['field_games_ribbon_label'][0]['value'];
             }
 
+            if (isset($game['field_all_games_category_ribbon'][0])) {
+                $allGamesribbon = $game['field_all_games_category_ribbon'][0];
+                $processGame['all_games_ribbon']['background'] =
+                    $allGamesribbon['field_games_ribbon_color'][0]['color'];
+                $processGame['all_games_ribbon']['color'] =
+                    $allGamesribbon['field_games_text_color'][0]['color'];
+                $processGame['all_games_ribbon']['name'] =
+                    $allGamesribbon['field_games_ribbon_label'][0]['value'];
+            }
+
             $processGame['image'] = [
                 'alt' => $game['field_games_list_thumb_img_small'][0]['alt'],
                 'url' =>
