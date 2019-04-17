@@ -17,6 +17,8 @@ import {PasswordMask} from "@app/assets/script/components/password-mask";
 export class Login {
     private loader: Loader;
     private sync: SyncEvents;
+    private productCheckPreference: any = ["mobile-casino", "mobile-casino-gold"];
+    private products: any = [];
 
     private isLogin: boolean;
     private element: HTMLElement;
@@ -94,6 +96,16 @@ export class Login {
 
                 events.push(() => {
                     return new Promise((resolve, reject) => {
+                        let fromGameLaunch = "false";
+                        if (form) {
+                            fromGameLaunch = form.getAttribute("data-from-game-launch");
+                        }
+                        this.doGetCasinoPreference(username, fromGameLaunch, resolve);
+                    });
+                });
+
+                events.push(() => {
+                    return new Promise((resolve, reject) => {
                         this.doLoginRequest(form, src);
 
                         resolve();
@@ -103,6 +115,36 @@ export class Login {
                 this.sync.executeWithArgs(events, [username, password]);
             }
         });
+    }
+
+    /**
+     * Get preferred casino of user.
+     */
+    private doGetCasinoPreference(username, fromGameLaunch, resolve) {
+        if (this.productCheckPreference.includes(ComponentManager.getAttribute("product"))
+            && fromGameLaunch !== "true") {
+            xhr({
+                url: Router.generateRoute("casino_option", "preferredProduct"),
+                method: "post",
+                data: {
+                    username,
+                },
+                type: "json",
+            }).then((response) => {
+                if (response.preferredProduct) {
+                    this.productVia = "mobile-casino";
+                    if (response.preferredProduct === "casino_gold") {
+                        this.productVia = "mobile-casino-gold";
+                    }
+                }
+                resolve();
+            }).fail((error, message) => {
+                resolve();
+            });
+        } else {
+            resolve();
+        }
+        return;
     }
 
     /**
@@ -281,6 +323,12 @@ export class Login {
                 }
             }
 
+            if (data && typeof data.fromGameLaunch !== "undefined") {
+                if (form) {
+                    form.setAttribute("data-from-game-launch", data.fromGameLaunch);
+                }
+            }
+
             if (data && typeof data.regVia !== "undefined" && data.regVia) {
                 if (btnJoin) {
                     btnJoin.setAttribute("href", data.regVia);
@@ -329,6 +377,7 @@ export class Login {
                     ["header", "menu", "main", "announcement", "push_notification"],
                     () => {
                         this.loader.hide();
+                        ComponentManager.broadcast("session.logout.finished");
                     },
                 );
             });

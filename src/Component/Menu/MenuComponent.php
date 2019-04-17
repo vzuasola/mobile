@@ -33,6 +33,8 @@ class MenuComponent implements ComponentWidgetInterface
 
     private $idDomain;
 
+    private $product;
+
     /**
      *
      */
@@ -44,14 +46,15 @@ class MenuComponent implements ComponentWidgetInterface
             $container->get('menu_fetcher'),
             $container->get('config_fetcher'),
             $container->get('accounts_service'),
-            $container->get('id_domain')
+            $container->get('id_domain'),
+            $container->get('product_resolver')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $menus, $config, $paymentAccount, $idDomain)
+    public function __construct($playerSession, $views, $menus, $config, $paymentAccount, $idDomain, $product)
     {
         $this->playerSession = $playerSession;
         $this->views = $views;
@@ -59,6 +62,7 @@ class MenuComponent implements ComponentWidgetInterface
         $this->config = $config;
         $this->paymentAccount = $paymentAccount;
         $this->idDomain = $idDomain;
+        $this->product = $product;
     }
 
     /**
@@ -168,7 +172,8 @@ class MenuComponent implements ComponentWidgetInterface
     {
         if ($quicklinks) {
             foreach ($quicklinks as $key => $link) {
-                if ($this->idDomain->isLangSelectorHidden() &&
+                if ($this->idDomain->isLangSelectorHidden() ||
+                    $this->product->getProduct() == 'mobile-casino-gold' &&
                     strpos($link['attributes']['class'], 'language-trigger') !== false
                 ) {
                     unset($quicklinks[$key]);

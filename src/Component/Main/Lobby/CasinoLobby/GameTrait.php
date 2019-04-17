@@ -10,7 +10,7 @@ trait GameTrait
     /**
      * Simplify game array
      */
-    private function processGame($game, $special = false)
+    private function processGame($product, $game, $special = false)
     {
         try {
             $processGame = [];
@@ -24,12 +24,22 @@ trait GameTrait
                 $processGame['ribbon']['name'] = $ribbon['field_games_ribbon_label'][0]['value'];
             }
 
+            if (isset($game['field_all_games_category_ribbon'][0])) {
+                $allGamesribbon = $game['field_all_games_category_ribbon'][0];
+                $processGame['all_games_ribbon']['background'] =
+                    $allGamesribbon['field_games_ribbon_color'][0]['color'];
+                $processGame['all_games_ribbon']['color'] =
+                    $allGamesribbon['field_games_text_color'][0]['color'];
+                $processGame['all_games_ribbon']['name'] =
+                    $allGamesribbon['field_games_ribbon_label'][0]['value'];
+            }
+
             $processGame['image'] = [
                 'alt' => $game['field_games_list_thumb_img_small'][0]['alt'],
                 'url' =>
                     $this->asset->generateAssetUri(
                         $game['field_games_list_thumb_img_small'][0]['url'],
-                        ['product' => 'mobile-casino']
+                        ['product' => $product]
                     )
             ];
 
@@ -89,13 +99,13 @@ trait GameTrait
     /**
      * Arrange games per category
      */
-    private function arrangeGames($games, $categoryId)
+    private function arrangeGames($product, $games, $categoryId)
     {
         $gamesList = [];
         foreach ($games as $game) {
             $special = ($categoryId === $this::RECOMMENDED_GAMES);
 
-            $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($game, $special);
+            $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($product, $game, $special);
         }
 
         return $gamesList;
