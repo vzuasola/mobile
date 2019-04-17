@@ -33,6 +33,7 @@ export class GamesFilter {
 
     handleOnReLoad(element: HTMLElement, attachments: {}) {
         if (!this.element) {
+            this.element = element;
             this.listenOnOpen();
             this.listenOnClick();
             this.listenOnCategoryChange();
@@ -41,7 +42,6 @@ export class GamesFilter {
         this.fav = false;
         this.recent = false;
         this.enabledFilters = [];
-        this.element = element;
     }
 
     setGamesList(gamesList) {
@@ -220,7 +220,7 @@ export class GamesFilter {
     }
 
     private listenOnClick() {
-        ComponentManager.subscribe("click", (event: Event, src) => {
+        utility.listen(this.element, "click", (event, src: any) => {
             this.onToggleFilters(src);
             this.onClickClearFilters(src);
             this.onCloseLightbox(src);
@@ -243,8 +243,8 @@ export class GamesFilter {
         if (utility.hasClass(src, "filter-checkbox")) {
             const filter = utility.findParent(src, "li");
             if (filter) {
-                utility.toggleClass(filter, "active");
                 const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
+                utility.toggleClass(filter, "active");
                 if (filterLightbox) {
                     const actives = filterLightbox.querySelectorAll(".active");
                     const submit = filterLightbox.querySelector("#filterSubmit");
