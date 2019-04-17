@@ -1,7 +1,7 @@
 import Search from "@app/assets/script/components/search";
 import * as Handlebars from "handlebars/runtime";
-import * as gamesSearchTemplate from "../handlebars/games-search-result.handlebars";
-import * as gameTemplate from "../handlebars/games.handlebars";
+import * as gamesSearchTemplate from "@app/assets/script/components/handlebars/games-search-result.handlebars";
+import * as gameTemplate from "@app/assets/script/components/handlebars/games.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
@@ -192,10 +192,12 @@ export class GamesFilter {
     private listenOnOpen() {
         ComponentManager.subscribe("games.search.filter", (event, src, data) => {
             const filterLB = this.element.querySelector("#games-search-filter-lightbox");
-            const backBtn = filterLB.querySelector(".games-search-filter-back");
-            utility.removeClass(backBtn, "hidden");
-            if (utility.hasClass(data.element, "main")) {
-                utility.addClass(backBtn, "hidden");
+            if (typeof data !== "undefined") {
+                const backBtn = filterLB.querySelector(".games-search-filter-back");
+                utility.removeClass(backBtn, "hidden");
+                if (utility.hasClass(data.element, "main")) {
+                    utility.addClass(backBtn, "hidden");
+                }
             }
 
             this.clearFilters();
