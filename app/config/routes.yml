@@ -91,6 +91,20 @@ routes:
         attributes:
             product: mobile-casino
 
+    /{id:casino-gold|gold}:
+        method: GET
+        action: App\MobileEntry\Controller\CasinoGoldController:view
+        components:
+            main: lobby
+            lobby_content: casino_lobby
+        headers:
+            Cache-Control: public, max-age=900
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-casino-gold
+
     /{id:sports|football|soccer|goal|cup|match168}:
         method: GET
         action: App\MobileEntry\Controller\HomeController:view

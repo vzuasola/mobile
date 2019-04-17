@@ -14,12 +14,30 @@
         data-game-filters="[ {{this.filters }} ]"
         data-recommended-game="{{../../isRecommended}}"
         >
-            {{#if this.ribbon}}
-                <div class="game-ribbon"
-                    style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
-                >
-                    {{this.ribbon.name}}
-                </div>
+            {{#if ../../this.isAllGames}}
+                {{#if this.all_games_ribbon}}
+                    <div class="game-ribbon"
+                        style="background: {{this.all_games_ribbon.background}}; color: {{this.all_games_ribbon.color}};"
+                    >
+                        {{this.all_games_ribbon.name}}
+                    </div>
+                {{else}}
+                    {{#if this.ribbon}}
+                        <div class="game-ribbon"
+                            style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
+                        >
+                            {{this.ribbon.name}}
+                        </div>
+                    {{/if}}
+                {{/if}}
+            {{else}}
+                {{#if this.ribbon}}
+                    <div class="game-ribbon"
+                        style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
+                    >
+                        {{this.ribbon.name}}
+                    </div>
+                {{/if}}
             {{/if}}
             {{#if ../../isLogin}}
             <span class="game-favorite {{lookup ../../favorites this.game_code}}">

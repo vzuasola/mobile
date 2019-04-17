@@ -11,11 +11,12 @@ import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
 
 import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "./scripts/games-filter";
+import {CasinoPreference} from "./scripts/casino-preference";
 import {Marker} from "@app/assets/script/components/marker";
 
 /**
@@ -29,6 +30,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private gameLauncher;
     private gamesSearch: GamesSearch;
     private gamesFilter: GamesFilter;
+    private casinoPreference: CasinoPreference;
     private currentPage: number;
     private pager: number;
     private load: boolean;
@@ -42,6 +44,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.gameLauncher = GameLauncher;
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
+        this.casinoPreference = new CasinoPreference();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -64,6 +67,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
+        this.checkLoginState();
         this.listenChangeCategory();
         this.listenHashChange();
         this.listenClickGameTile();
@@ -83,8 +87,9 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.gamesFilter.handleOnLoad(this.element, attachments);
-        this.showCasinoPreference();
+        this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
         this.listenOnCloseFilter();
+        this.listenOnLogout();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -99,7 +104,9 @@ export class CasinoLobbyComponent implements ComponentInterface {
             product: any[],
             infinite_scroll: boolean,
         }) {
+        this.isLogin = attachments.authenticated;
         if (!this.element) {
+            this.checkLoginState();
             this.listenChangeCategory();
             this.listenHashChange();
             this.listenClickGameTile();
@@ -109,13 +116,13 @@ export class CasinoLobbyComponent implements ComponentInterface {
             this.listenToScroll();
             this.listenOnSearch();
             this.listenOnFilter();
-            this.showCasinoPreference();
+            this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
             this.listenOnCloseFilter();
+            this.listenOnLogout();
         }
         this.response = null;
         this.element = element;
         this.attachments = attachments;
-        this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.pager = 0;
         this.currentPage = 0;
@@ -156,7 +163,24 @@ export class CasinoLobbyComponent implements ComponentInterface {
 
         return 1;
     }
-
+    private checkLoginState() {
+        if (ComponentManager.getAttribute("product") === "mobile-casino-gold" && !this.isLogin) {
+            this.loader.show();
+            const params = utility.getParameters(window.location.search);
+            let url = "/" + ComponentManager.getAttribute("language") + "/login";
+            url = utility.addQueryParam(url, "product", "casino-gold");
+            for (const key in params) {
+                if (key !== "" && params[key] !== "") {
+                    url = utility.addQueryParam(url, key, params[key]);
+                }
+            }
+            Router.navigate(url, ["*"]);
+            Router.on(RouterClass.afterNavigate, (event) => {
+               ComponentManager.broadcast("redirect.postlogin.casino-gold", { loader: this.loader });
+            });
+            return;
+        }
+    }
     /**
      * Initialized games lobby
      */
@@ -275,6 +299,9 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 xhr({
                     url: uri,
                     type: "json",
+                    data: {
+                        lobbyProduct: ComponentManager.getAttribute("product"),
+                    },
                 }).then((response) => {
                     pageResponse[id] = response;
                     this.checkPromiseState(promises, id, () => {
@@ -335,7 +362,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             key = this.getActiveCategory(this.response.games, key);
         }
         this.setCategories(this.response.categories, key);
-        this.setGames(this.response.games[key]);
+        this.setGames(this.response.games[key], key);
     }
 
     /**
@@ -383,7 +410,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, page: number = 0, isRecommend = false) {
+    private setGames(data, activeCategory: string = " ", page: number = 0, isRecommend = false) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
 
@@ -392,6 +419,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
             isRecommended: isRecommend,
+            isAllGames: activeCategory === "all-games",
         });
 
         if (this.currentPage > page) {
@@ -401,6 +429,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                     games: pager[ctr],
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
+                    isAllGames: activeCategory === "all-games",
                 });
             }
         }
@@ -427,7 +456,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 utility.addClass(activeLink, "active");
 
                 const key = src.getAttribute("data-category-filter-id");
-                this.setGames(this.response.games[key]);
+                this.setGames(this.response.games[key], key);
                 ComponentManager.broadcast("category.change");
             }
         });
@@ -462,13 +491,15 @@ export class CasinoLobbyComponent implements ComponentInterface {
                }
            }
 
-            utility.removeClass(activeLink, "active");
-            utility.removeClass(activeLink.parentElement, "active");
+            if (activeLink) {
+                utility.removeClass(activeLink, "active");
+                utility.removeClass(activeLink.parentElement, "active");
+            }
 
             utility.addClass(src, "active");
             utility.addClass(src.parentElement, "active");
 
-            this.setGames(this.response.games[key]);
+            this.setGames(this.response.games[key], key);
             ComponentManager.broadcast("category.change");
         });
     }
@@ -484,60 +515,9 @@ export class CasinoLobbyComponent implements ComponentInterface {
                     src: el,
                     productVia: this.product[0].login_via,
                     regVia: this.product[0].reg_via,
+                    fromGameLaunch: "true",
                 });
             }
-        });
-    }
-
-    private showCasinoPreference() {
-        ComponentManager.subscribe("session.login", (event, src, data) => {
-            let gameCode = false;
-            const el = utility.hasClass(data.src, "game-list", true);
-            if (el) {
-                gameCode = el.getAttribute("data-game-code");
-            }
-
-            if (!gameCode && ComponentManager.getAttribute("product") === "mobile-casino") {
-                this.getCasinoPreference((response) => {
-                    if (response.success) {
-                        // redirect to URL
-                        if (response.redirect && response.preferredProduct === "casino_gold") {
-                            window.location.href = decodeURIComponent(response.redirect).replace(/\\/g, "");
-                            return;
-                        }
-
-                        if (!response.redirect) {
-                            ComponentManager.broadcast("casino.preference");
-                        }
-                    }
-                    this.loader.hide();
-                });
-            }
-        });
-
-        if (ComponentManager.getAttribute("product") === "mobile-casino"
-            && this.isLogin && !this.fromGameLaunch) {
-            this.getCasinoPreference((response) => {
-                if (response.success && !response.redirect) {
-                    ComponentManager.broadcast("casino.preference");
-                    this.loader.hide();
-                    return;
-                }
-                this.loader.hide();
-            });
-        }
-    }
-
-    private getCasinoPreference(callback) {
-        this.loader.show();
-
-        xhr({
-            url: Router.generateRoute("casino_option", "preference"),
-            type: "json",
-        }).then((response) => {
-            callback(response);
-        }).fail((error, message) => {
-            this.loader.hide();
         });
     }
 
@@ -711,7 +691,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 this.activateSearchTab();
                 if (this.response.games["recommended-games"]  && this.response.enableRecommended ) {
                     this.searchResults = this.response.games["recommended-games"];
-                    this.setGames(this.response.games["recommended-games"], 0, true);
+                    this.setGames(this.response.games["recommended-games"], "recommended-games", 0, true);
                     recommended = true;
                 }
                 this.updateBlurbForFilter(recommended);
@@ -759,6 +739,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                         games: pager[this.currentPage],
                         favorites: this.response.favorite_list,
                         isLogin: this.isLogin,
+                        isAllGames: hash === "all-games",
                     });
                     const loader = gameLoader.querySelector(".mobile-game-loader");
                     utility.removeClass(loader, "hidden");
@@ -777,16 +758,21 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private listenOnSearch() {
          ComponentManager.subscribe("games.search.success", (event, src, data) => {
              this.searchResults = data.games;
-             this.setGames(data.games, 0, data.isRecommended);
+             this.setGames(data.games, " ", 0, data.isRecommended);
          });
      }
 
     private activateSearchTab() {
         const categoriesEl = this.element.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        const activeCategory = activeLink.getAttribute("data-category-filter-id");
-        // set search tab as active tab
-        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        if (activeLink) {
+            const activeCategory = activeLink.getAttribute("data-category-filter-id");
+            const activeLinkParent = utility.findParent(activeLink, "li");
+            if (activeLinkParent) {
+                utility.removeClass(activeLinkParent, "active");
+            }
+            utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        }
         utility.addClass(this.element.querySelector(".search-tab"), "active");
         utility.addClass(this.element.querySelector(".search-blurb"), "active");
     }
@@ -795,6 +781,15 @@ export class CasinoLobbyComponent implements ComponentInterface {
         if (el) {
             return el.getBoundingClientRect().bottom <= window.innerHeight;
         }
+    }
+
+    private listenOnLogout() {
+        ComponentManager.subscribe("session.logout.finished", (event, src, data) => {
+            if (ComponentManager.getAttribute("product") === "mobile-casino-gold") {
+                Router.navigate("/" + ComponentManager.getAttribute("language"), ["*"]);
+                return;
+            }
+        });
     }
 
     private getPagedContent(data) {
