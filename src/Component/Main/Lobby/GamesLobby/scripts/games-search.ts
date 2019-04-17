@@ -1,6 +1,6 @@
 import Search from "@app/assets/script/components/search";
 import * as Handlebars from "handlebars/runtime";
-import * as gamesSearchTemplate from "../handlebars/games-search-result.handlebars";
+import * as gamesSearchTemplate from "@app/assets/script/components/handlebars/games-search-result.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";

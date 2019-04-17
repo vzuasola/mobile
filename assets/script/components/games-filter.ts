@@ -1,7 +1,7 @@
 import Search from "@app/assets/script/components/search";
 import * as Handlebars from "handlebars/runtime";
-import * as gamesSearchTemplate from "../handlebars/games-search-result.handlebars";
-import * as gameTemplate from "../handlebars/games.handlebars";
+import * as gamesSearchTemplate from "@app/assets/script/components/handlebars/games-search-result.handlebars";
+import * as gameTemplate from "@app/assets/script/components/handlebars/games.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
@@ -33,6 +33,7 @@ export class GamesFilter {
 
     handleOnReLoad(element: HTMLElement, attachments: {}) {
         if (!this.element) {
+            this.element = element;
             this.listenOnOpen();
             this.listenOnClick();
             this.listenOnCategoryChange();
@@ -41,7 +42,6 @@ export class GamesFilter {
         this.fav = false;
         this.recent = false;
         this.enabledFilters = [];
-        this.element = element;
     }
 
     setGamesList(gamesList) {
@@ -192,10 +192,12 @@ export class GamesFilter {
     private listenOnOpen() {
         ComponentManager.subscribe("games.search.filter", (event, src, data) => {
             const filterLB = this.element.querySelector("#games-search-filter-lightbox");
-            const backBtn = filterLB.querySelector(".games-search-filter-back");
-            utility.removeClass(backBtn, "hidden");
-            if (utility.hasClass(data.element, "main")) {
-                utility.addClass(backBtn, "hidden");
+            if (typeof data !== "undefined") {
+                const backBtn = filterLB.querySelector(".games-search-filter-back");
+                utility.removeClass(backBtn, "hidden");
+                if (utility.hasClass(data.element, "main")) {
+                    utility.addClass(backBtn, "hidden");
+                }
             }
 
             this.clearFilters();
@@ -218,7 +220,7 @@ export class GamesFilter {
     }
 
     private listenOnClick() {
-        ComponentManager.subscribe("click", (event: Event, src) => {
+        utility.listen(this.element, "click", (event, src: any) => {
             this.onToggleFilters(src);
             this.onClickClearFilters(src);
             this.onCloseLightbox(src);
@@ -241,8 +243,8 @@ export class GamesFilter {
         if (utility.hasClass(src, "filter-checkbox")) {
             const filter = utility.findParent(src, "li");
             if (filter) {
-                utility.toggleClass(filter, "active");
                 const filterLightbox = this.element.querySelector("#games-search-filter-lightbox");
+                utility.toggleClass(filter, "active");
                 if (filterLightbox) {
                     const actives = filterLightbox.querySelectorAll(".active");
                     const submit = filterLightbox.querySelector("#filterSubmit");
