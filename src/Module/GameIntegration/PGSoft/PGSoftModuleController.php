@@ -6,7 +6,7 @@ use App\Drupal\Config;
 
 class PGSoftModuleController
 {
-    const KEY = 'pg_soft';
+    const KEY = 'pgsoft';
 
     private $rest;
 

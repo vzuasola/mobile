@@ -216,6 +216,10 @@ export class PASModule implements ModuleInterface, GameInterface {
                 product = options.product;
             }
 
+            if (DafaConnect.isDafaconnect()) {
+                product = "dafaconnect";
+            }
+
             // remap language
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
