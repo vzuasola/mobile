@@ -236,6 +236,7 @@ class PromotionsComponentController
             $properties['summary_url'] = $this->url->generateUri($uri, ['skip_parsers' => true]);
             $properties['summary_url_target'] = $promotion['field_summary_url_target'][0]['value'] ?? '';
             $properties['summary_url_title'] = $promotion['field_summary_url'][0]['title'] ?? ['title' => ''];
+            $properties['thumbnail_alt'] = $promotion['field_thumbnail_image'][0]['alt'] ?? '';
             $properties['hide_countdown'] = $promotion['field_hide_countdown'][0]['value'] ?? true;
             $properties['unpublish_on'] = $promotion['unpublish_on'][0]['value'] ?? '';
 

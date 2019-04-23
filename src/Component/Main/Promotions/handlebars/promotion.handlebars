@@ -22,7 +22,7 @@
             </span>
         {{/if}}
     {{/equals}}
-    <img src="{{this.thumbnail}}" class="w-100">
+    <img src="{{this.thumbnail}}" class="w-100" alt="{{this.thumbnail_alt}}">
     {{#equals this.hide_countdown false}}
         {{#if (countdown this.unpublish_on ../countdownText)}}
         <div class="promotions-body-banner-scheduler">
