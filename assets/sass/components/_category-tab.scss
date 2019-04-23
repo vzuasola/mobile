@@ -51,7 +51,9 @@
             display: inline-block;
 
             &-item {
-            display: inline-block;
+                display: inline-block;
+                border-left: .1rem solid #900000;
+                margin-left: -0.3rem;
             }
 
             &-item.active {
@@ -82,6 +84,18 @@
 
 // Casino Gold
 .mobile-casino-gold {
+    .category-tab {
+        .game-search {
+            .search-tab.active {
+                background: $gold;
+
+                svg {
+                    fill: #5f0000;
+                }
+            }
+        }
+    }
+
     .category-tab-list {
         .game-category {
             &-item {
