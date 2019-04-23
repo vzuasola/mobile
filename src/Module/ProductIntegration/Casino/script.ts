@@ -30,19 +30,7 @@ export class CasinoIntegrationModule extends Redirectable implements ModuleInter
                 }
                 // redirect to URL
                 if (response.redirect) {
-                    if (utility.isExternal(response.redirect) ||
-                        response.preferredProduct === "casino_gold"
-                    ) {
-                        const url = decodeURIComponent(response.redirect).replace(/\\/g, "");
-
-                        Redirector.redirect(url, () => {
-                            this.loader.hide();
-                        });
-
-                        return;
-                    }
-
-                    Router.navigate(response.redirect, ["*"], {removeParams: ["product"]});
+                    Router.navigate(response.redirect, ["*"]);
                     this.loader.hide();
                     return;
                 }
