@@ -236,7 +236,6 @@ class PromotionsComponentController
             $properties['summary_url'] = $this->url->generateUri($uri, ['skip_parsers' => true]);
             $properties['summary_url_target'] = $promotion['field_summary_url_target'][0]['value'] ?? '';
             $properties['summary_url_title'] = $promotion['field_summary_url'][0]['title'] ?? ['title' => ''];
-            $properties['thumbnail_alt'] = $promotion['field_thumbnail_image'][0]['alt'] ?? '';
             $properties['hide_countdown'] = $promotion['field_hide_countdown'][0]['value'] ?? true;
             $properties['unpublish_on'] = $promotion['unpublish_on'][0]['value'] ?? '';
 
@@ -256,6 +255,7 @@ class PromotionsComponentController
                 );
                 $properties['summary_blurb'] = $promotion['field_post_summary_blurb'][0]['value'] ?? '';
                 $properties['category'] = $filterId;
+                $properties['thumbnail_alt'] = $promotion['field_post_thumbnail_image'][0]['alt'] ?? '';
 
                 $collection[] = $properties;
             } elseif (!$isLogin && in_array("0", $availability)) {
@@ -264,6 +264,7 @@ class PromotionsComponentController
                 );
                 $properties['summary_blurb'] = $promotion['field_summary_blurb'][0]['value'] ?? '';
                 $properties['category'] = $filterId;
+                $properties['thumbnail_alt'] = $promotion['field_thumbnail_image'][0]['alt'] ?? '';
 
                 $collection[] = $properties;
             }
