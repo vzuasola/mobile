@@ -7,7 +7,7 @@ import * as Handlebars from "handlebars/runtime";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as categoriesTemplate from "./handlebars/categories.handlebars";
-import * as gameTemplate from "./handlebars/games.handlebars";
+import * as gameTemplate from "@app/assets/script/components/handlebars/games.handlebars";
 import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
 import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
 
@@ -17,7 +17,7 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
-import {GamesFilter} from "./scripts/games-filter";
+import {GamesFilter} from "@app/assets/script/components/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
 import EqualHeight from "@app/assets/script/components/equal-height";
 

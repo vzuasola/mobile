@@ -255,6 +255,7 @@ class PromotionsComponentController
                 );
                 $properties['summary_blurb'] = $promotion['field_post_summary_blurb'][0]['value'] ?? '';
                 $properties['category'] = $filterId;
+                $properties['thumbnail_alt'] = $promotion['field_post_thumbnail_image'][0]['alt'] ?? '';
 
                 $collection[] = $properties;
             } elseif (!$isLogin && in_array("0", $availability)) {
@@ -263,6 +264,7 @@ class PromotionsComponentController
                 );
                 $properties['summary_blurb'] = $promotion['field_summary_blurb'][0]['value'] ?? '';
                 $properties['category'] = $filterId;
+                $properties['thumbnail_alt'] = $promotion['field_thumbnail_image'][0]['alt'] ?? '';
 
                 $collection[] = $properties;
             }
