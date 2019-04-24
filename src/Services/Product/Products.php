@@ -10,7 +10,8 @@ class Products
     const PRODUCT_MAPPING = [
         'games' => 'mobile-games',
         'casino' => 'mobile-casino',
-        'casino-gold' => 'mobile-casino-gold'
+        'casino-gold' => 'mobile-casino-gold',
+        'live-dealer' => 'mobile-live-dealer'
     ];
 
     const PRODUCT_DIRECT_INTEGRATION = [
