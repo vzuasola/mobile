@@ -32,13 +32,12 @@ export class GamesFilter {
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {}) {
-        if (!this.element) {
-            this.element = element;
-            this.listenOnOpen();
-            this.listenOnClick();
-            this.listenOnCategoryChange();
-            this.listenOnSuccessSearch();
-        }
+        this.element = element;
+        this.listenOnClick();
+        this.listenOnOpen();
+        this.listenOnCategoryChange();
+        this.listenOnSuccessSearch();
+
         this.fav = false;
         this.recent = false;
         this.enabledFilters = [];

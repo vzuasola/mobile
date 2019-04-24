@@ -15,6 +15,7 @@
                 position: absolute;
                 z-index: 11;
                 background: $cat-tab-bg;
+                border-right: 0.1rem solid $dark-red;
 
                 svg {
                     outline: none;
@@ -52,7 +53,7 @@
 
             &-item {
                 display: inline-block;
-                border-left: .1rem solid #900000;
+                border-left: .1rem solid $dark-red;
                 margin-left: -0.3rem;
             }
 
