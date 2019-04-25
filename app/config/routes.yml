@@ -91,7 +91,7 @@ routes:
         attributes:
             product: mobile-casino
 
-    /{id:casino-gold|gold}:
+    /{id:casino-gold|gold|jin|elite|vip|exclusive}:
         method: GET
         action: App\MobileEntry\Controller\CasinoGoldController:view
         components:

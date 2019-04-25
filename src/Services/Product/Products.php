@@ -102,6 +102,10 @@ class Products
         'casino-gold' => [
             'casino-gold',
             'gold',
+            'jin',
+            'elite',
+            'vip',
+            'exclusive',
         ],
     ];
 }
