@@ -131,6 +131,20 @@ routes:
         attributes:
             product: mobile-sports-df
 
+    /{id:live-dealer|macau|live|live-games|xianchang|zhenren}:
+        method: GET
+        action: App\MobileEntry\Controller\LiveDealerController:view
+        components:
+            main: lobby
+            lobby_content: games_lobby
+        headers:
+            Cache-Control: public, max-age=900
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-live-dealer
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:
