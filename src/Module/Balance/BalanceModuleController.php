@@ -29,6 +29,7 @@ class BalanceModuleController
         'mobile-games' => 5,
         'mobile-casino' => 1,
         'mobile-casino-gold' => 2,
+        'mobile-live-dealer' => 8,
     ];
 
     private $rest;
