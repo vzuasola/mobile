@@ -165,10 +165,12 @@ export class CasinoLobbyComponent implements ComponentInterface {
     }
     private checkLoginState() {
         if (ComponentManager.getAttribute("product") === "mobile-casino-gold" && !this.isLogin) {
+            const lang = ComponentManager.getAttribute("language");
+            const product = window.location.pathname.replace("/" + lang + "/", "");
             this.loader.show();
             const params = utility.getParameters(window.location.search);
-            let url = "/" + ComponentManager.getAttribute("language") + "/login";
-            url = utility.addQueryParam(url, "product", "casino-gold");
+            let url = "/" + lang + "/login";
+            url = utility.addQueryParam(url, "product", product);
             for (const key in params) {
                 if (key !== "" && params[key] !== "") {
                     url = utility.addQueryParam(url, key, params[key]);
