@@ -136,7 +136,7 @@ routes:
         action: App\MobileEntry\Controller\LiveDealerController:view
         components:
             main: lobby
-            lobby_content: games_lobby
+            lobby_content: live_dealer_lobby
         headers:
             Cache-Control: public, max-age=900
         page_cache:
