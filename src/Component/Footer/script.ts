@@ -9,6 +9,7 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 export class FooterComponent implements ComponentInterface {
     private element: HTMLElement;
     private originalUrl: string;
+    private product: string;
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
@@ -19,6 +20,7 @@ export class FooterComponent implements ComponentInterface {
         Router.on(RouterClass.afterNavigate, (event) => {
             this.getOriginalUrl();
             this.attachProduct();
+            this.refreshFooter();
         });
     }
 
@@ -56,6 +58,14 @@ export class FooterComponent implements ComponentInterface {
             }
 
             menu.setAttribute("href", url);
+        }
+    }
+
+    private refreshFooter() {
+        const product = ComponentManager.getAttribute("product");
+        if (this.product !== product) {
+            this.product = product;
+            ComponentManager.refreshComponent("footer");
         }
     }
 }

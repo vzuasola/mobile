@@ -1,4 +1,5 @@
-.mobile-casino {
+.mobile-casino,
+.mobile-casino-gold {
     .category-tab {
         position: -webkit-sticky;
         position: sticky;
@@ -10,15 +11,16 @@
         .game-search {
             .search-tab {
                 width: 3rem;
-                height: 2.8rem;
+                height: 4rem;
                 position: absolute;
                 z-index: 11;
                 background: $cat-tab-bg;
+                border-right: 0.1rem solid $dark-red;
 
                 svg {
                     outline: none;
                     fill: $white;
-                    margin: 0.5rem 0 0 0.7rem;
+                    margin: 1.2rem 0 0 0.7rem;
                     width: 1.7rem;
                 }
             }
@@ -50,7 +52,9 @@
             display: inline-block;
 
             &-item {
-            display: inline-block;
+                display: inline-block;
+                border-left: .1rem solid $dark-red;
+                margin-left: -0.3rem;
             }
 
             &-item.active {
@@ -69,11 +73,107 @@
             font-size: 1.4rem;
             text-decoration: none;
             font-weight: 600;
-            padding: 0.5rem 1rem;
+            padding: 1.2rem 1rem;
+            height: 4rem;
         }
     }
 
     .category-tab-list::-webkit-scrollbar {
         display: none;
+    }
+}
+
+// Casino Gold
+.mobile-casino-gold {
+    .category-tab {
+        .game-search {
+            .search-tab.active {
+                background: $gold;
+
+                svg {
+                    fill: #5f0000;
+                }
+            }
+        }
+    }
+
+    .category-tab-list {
+        .game-category {
+            &-item {
+            position: relative;
+            }
+
+            &-item.active {
+                .active {
+                    background: $gold;
+                    color: #5f0000;
+                }
+
+                :after {
+                    position: absolute;
+                    bottom: 0;
+                    @include translate(-50%, 0);
+                    left: 50%;
+                    border-left: 0.7rem solid transparent;
+                    border-right: 0.7rem solid transparent;
+                    border-bottom: 0.7rem solid #5f0000;
+                }
+            }
+        }
+    }
+
+    .game-container {
+        background: #5f0000;
+
+        .game-listing-item {
+            img {
+                border: 0.1rem solid $gold;
+                border-radius: 0.8rem;
+            }
+        }
+
+        .game-listing {
+            .size-small,
+            .size-large {
+                .game-favorite {
+                    svg {
+                        path.star-body {
+                            fill: #750201;
+                            opacity: 0.4;
+                        }
+
+                        path.star-border {
+                            fill: #ffe000;
+                        }
+                    }
+                }
+            }
+
+            .size-small {
+                .game-favorite.active {
+                    svg {
+                        path {
+                            fill: $yellow;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+
+            .size-large {
+                .game-favorite.active {
+                    svg {
+                        fill: $yellow;
+                    }
+                }
+            }
+        }
+    }
+
+    &-btn {
+        background: transparent;
+        color: $gold;
+        border: 0.2rem solid $gold;
+        border-radius: 0.3rem;
     }
 }

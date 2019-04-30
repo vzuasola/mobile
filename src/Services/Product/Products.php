@@ -9,7 +9,8 @@ class Products
 {
     const PRODUCT_MAPPING = [
         'games' => 'mobile-games',
-        'casino' => 'mobile-casino'
+        'casino' => 'mobile-casino',
+        'casino-gold' => 'mobile-casino-gold'
     ];
 
     const PRODUCT_DIRECT_INTEGRATION = [
@@ -97,6 +98,14 @@ class Products
             'virtual-network',
             'virtual-sports-coupon',
             'virtuals',
+        ],
+        'casino-gold' => [
+            'casino-gold',
+            'gold',
+            'jin',
+            'elite',
+            'vip',
+            'exclusive',
         ],
     ];
 }

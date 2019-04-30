@@ -19,7 +19,7 @@
             >
         {% endif %}
         {% if node.field_post_banner_image.0.url %}
-            <img src="{{ node.field_post_banner_image.0.url }}" alt="" class="w-100">
+            <img src="{{ node.field_post_banner_image.0.url }}" alt="{{ node.field_post_banner_image.0.alt }}" class="w-100">
         {% endif %}
 
         {% if not node.field_hide_countdown.0.value %}
@@ -44,7 +44,7 @@
         {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
             <a
                 href="{{ url(node.field_banner_link.0.uri) }}"
-                target="{{node.field_banner_link_target.0.value }}"
+                target="{{ node.field_banner_link_target.0.value }}"
 
                 data-router="true"
                 data-router-refresh="main"
@@ -52,7 +52,7 @@
         {% endif %}
 
         {% if node.field_banner_image.0.url %}
-            <img src="{{ node.field_banner_image.0.url }}" alt="" class="w-100">
+            <img src="{{ node.field_banner_image.0.url }}" alt="{{ node.field_banner_image.0.alt }}" class="w-100">
         {% endif %}
 
         {% if not node.field_hide_countdown.0.value %}

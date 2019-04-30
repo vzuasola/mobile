@@ -7,7 +7,7 @@ import * as Handlebars from "handlebars/runtime";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as categoriesTemplate from "./handlebars/categories.handlebars";
-import * as gameTemplate from "./handlebars/games.handlebars";
+import * as gameTemplate from "@app/assets/script/components/handlebars/games.handlebars";
 import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
 import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
 
@@ -17,7 +17,7 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
-import {GamesFilter} from "./scripts/games-filter";
+import {GamesFilter} from "@app/assets/script/components/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
 import EqualHeight from "@app/assets/script/components/equal-height";
 
@@ -483,7 +483,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             key = this.getActiveCategory(this.response.games, key);
         }
         this.setCategories(this.response.categories, key);
-        this.setGames(this.response.games[key]);
+        this.setGames(this.response.games[key], key);
     }
 
     /**
@@ -534,7 +534,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, page: number = 0, isRecommend = false) {
+    private setGames(data, activeCategory: string = " ", page: number = 0, isRecommend = false) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
 
@@ -543,6 +543,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
             isRecommended: isRecommend,
+            isAllGames: activeCategory === "all-games",
         });
 
         if (this.currentPage > page) {
@@ -552,6 +553,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     games: pager[ctr],
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
+                    isAllGames: activeCategory === "all-games",
                 });
             }
         }
@@ -627,7 +629,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                }
             }
 
-            this.setGames(this.response.games[key]);
+            this.setGames(this.response.games[key], key);
             ComponentManager.broadcast("category.change");
         });
     }
@@ -873,7 +875,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                 this.activateSearchTab(data.active);
                 if (this.response.games["recommended-games"]) {
                     this.searchResults = this.response.games["recommended-games"];
-                    this.setGames(this.response.games["recommended-games"], 0, true);
+                    this.setGames(this.response.games["recommended-games"], "recommended-games", 0, true);
                     recommended = true;
                 }
                 this.updateBlurbForFilter(recommended);
@@ -920,6 +922,8 @@ export class GamesLobbyComponent implements ComponentInterface {
                         games: pager[this.currentPage],
                         favorites: this.response.favorite_list,
                         isLogin: this.isLogin,
+                        isAllGames: hash === "all-games",
+
                     });
                     const loader = gameLoader.querySelector(".mobile-game-loader");
                     utility.removeClass(loader, "hidden");
@@ -938,7 +942,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenOnSearch() {
          ComponentManager.subscribe("games.search.success", (event, src, data) => {
              this.searchResults = data.games;
-             this.setGames(data.games, 0, data.isRecommended);
+             this.setGames(data.games, "", 0, data.isRecommended);
          });
      }
 

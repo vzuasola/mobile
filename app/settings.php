@@ -4,6 +4,8 @@
 
 require APP_ROOT . '/core/app/settings.php';
 
+$settings['settings']['languages']['supply_languages_list'] = [];
+
 $settings['settings']['configurations']['inheritance'] = false;
 
 // Twig

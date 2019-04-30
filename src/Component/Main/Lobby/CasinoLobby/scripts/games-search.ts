@@ -1,6 +1,6 @@
 import Search from "@app/assets/script/components/search";
 import * as Handlebars from "handlebars/runtime";
-import * as gamesSearchTemplate from "../handlebars/games-search-result.handlebars";
+import * as gamesSearchTemplate from "@app/assets/script/components/handlebars/games-search-result.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
@@ -241,10 +241,16 @@ export class GamesSearch {
     private activateSearchTab() {
         const categoriesEl = this.element.querySelector("#game-categories");
         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        const activeCategory = activeLink.getAttribute("data-category-filter-id");
+        if (activeLink) {
+            const activeCategory = activeLink.getAttribute("data-category-filter-id");
+            const activeLinkParent = utility.findParent(activeLink, "li");
+            if (activeLinkParent) {
+                utility.removeClass(activeLinkParent, "active");
+            }
+            utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
+        }
 
         // set search tab as active tab
-        utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
         utility.addClass(this.element.querySelector(".search-tab"), "active");
     }
 
