@@ -16,11 +16,14 @@
                     data-game-launch="true"
                 {{/if}}
             >
-                <img 
-                    src="{{ this.banner_img }}" 
-                    alt="{{ this.banner_alt }}" 
+            <picture>
+                <source srcset="{{ this.banner_img_landscape }}" media="(min-width: 40em) and (orientation: landscape)">
+                <img
+                    src="{{ this.banner_img }}"
+                    alt="{{ this.banner_alt }}"
                     class="w-100"
                 >
+            </picture>
                 <div class="xlider-blurb {{ this.banner_pos }} {{../sliderData.enable_transition_slider }}">
                 {{#if this.product_ribbon_tag}}
                     <div class="product-tag">

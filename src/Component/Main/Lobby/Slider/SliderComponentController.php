@@ -159,6 +159,10 @@ class SliderComponentController
 
                 $sliderImg = $slide['field_banner_image'][0]['url'] ?? '';
                 $slider['banner_img'] = $this->asset->generateAssetUri($sliderImg, $options);
+
+                $sliderImgLandscape = $slide['field_banner_image_landscape'][0]['url'] ?? '';
+                $slider['banner_img_landscape'] = $this->asset->generateAssetUri($sliderImgLandscape, $options);
+
                 $slider['banner_alt'] = $slide['field_banner_image'][0]['alt'] ?? '';
                 $slider['banner_pos'] = $slide['field_content_position'][0]['value'] ?? '';
                 $slider['banner_blurb'] = $slide['field_banner_blurb'][0]['value'] ?? '';
@@ -171,6 +175,9 @@ class SliderComponentController
 
                     $sliderImg = $slide['field_post_banner_image'][0]['url'] ?? '';
                     $slider['banner_img'] = $this->asset->generateAssetUri($sliderImg, $options);
+
+                    $sliderImgLandscape = $slide['field_post_banner_image_landscap'][0]['url'] ?? '';
+                    $slider['banner_img_landscape'] = $this->asset->generateAssetUri($sliderImgLandscape, $options);
 
                     $slider['banner_alt'] = $slide['field_post_banner_image'][0]['alt'] ?? '';
                     $slider['banner_pos'] = $slide['field_post_content_position'][0]['value'] ?? '';
