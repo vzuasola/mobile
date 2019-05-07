@@ -203,3 +203,7 @@ modules:
 
   games_integration:
     class: App\MobileEntry\Module\ProductIntegration\Games\GamesIntegrationModule
+  
+  live_dealer_integration:
+    class: App\MobileEntry\Module\ProductIntegration\LiveDealer\LiveDealerIntegrationModule
+

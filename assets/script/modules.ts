@@ -24,6 +24,7 @@ import {OWSportsIntegrationModule} from "@app/src/Module/ProductIntegration/OWSp
 import {CasinoIntegrationModule} from "@app/src/Module/ProductIntegration/Casino/script";
 import {ExchangeIntegrationModule} from "@app/src/Module/ProductIntegration/Exchange/script";
 import {GamesIntegrationModule} from "@app/src/Module/ProductIntegration/Games/script";
+import {LiveDealerIntegrationModule} from "@app/src/Module/ProductIntegration/LiveDealer/script";
 
 ComponentManager.setModules({
     avaya: new AvayaModule(),
@@ -48,4 +49,5 @@ ComponentManager.setModules({
     casino_integration: new CasinoIntegrationModule(),
     exchange_integration: new ExchangeIntegrationModule(),
     games_integration: new GamesIntegrationModule(),
+    live_dealer_integration: new LiveDealerIntegrationModule(),
 });
