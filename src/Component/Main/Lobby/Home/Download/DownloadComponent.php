@@ -71,6 +71,14 @@ class DownloadComponent implements ComponentWidgetInterface
             return $batch;
         }
 
+        if (count($data) === 7) {
+            while (count($data) > 0) {
+                $batch[] = array_splice($data, 0, 4, []);
+            }
+
+            return $batch;
+        }
+
         while (count($data) > 0) {
             $batch[] = array_splice($data, 0, 3, []);
         }
