@@ -9,18 +9,23 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
  */
 export class LiveDealerLobbyComponent implements ComponentInterface {
     private groupedGames: any;
-    private lobbyTabs: any = ["providers", "featured"];
+    private lobbyTabs: any[];
     private element;
+    private isLogin;
+    private product: any[];
 
     onLoad(element: HTMLElement, attachments: {
             authenticated: boolean,
             product: any[],
         }) {
         this.element = element;
+        this.isLogin = attachments.authenticated;
+        this.product = attachments.product;
         this.doGetLobbyData(() => {
             this.setLobby();
         });
         this.listenHashChange();
+        this.listenClickGameTile();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -28,6 +33,11 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             product: any[],
         }) {
         this.element = element;
+        this.isLogin = attachments.authenticated;
+        this.product = attachments.product;
+        this.doGetLobbyData(() => {
+            this.setLobby();
+        });
     }
 
     /**
@@ -104,10 +114,17 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      * Populate lobby with the response from cms
      */
     private setLobby() {
+        this.setLobbyTabs();
         this.populateGames(this.getActiveTab());
         this.toggleTabState();
     }
 
+    /**
+     * Set lobby tabs
+     */
+    private setLobbyTabs() {
+        this.lobbyTabs = Object.keys(this.groupedGames);
+    }
     /**
      * Gets current active tab from url, if none is found, use first tab as default.
      */
@@ -159,6 +176,23 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
             this.setLobby();
+        });
+    }
+
+    /**
+     * Event listener for game item click
+     */
+    private listenClickGameTile() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            console.log(src);
+            const el = utility.hasClass(src, "game-listing-item", true);
+            if (el && !this.isLogin) {
+                ComponentManager.broadcast("header.login", {
+                    src: el,
+                    productVia: this.product[0].login_via,
+                    regVia: this.product[0].reg_via,
+                });
+            }
         });
     }
 }
