@@ -35,7 +35,7 @@ class LiveDealerLobbyComponent implements ComponentWidgetInterface
      */
     public function __construct($views, $configs, $product)
     {
-        $this->views = $views;
+        $this->views = $views->withProduct($product->getProduct());
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
     }
@@ -57,6 +57,14 @@ class LiveDealerLobbyComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        return [];
+        try {
+            $tabs = $this->views->getViewById('lobby_tabs');
+        } catch (\Exception $e) {
+            $tabs = [];
+        }
+
+        return [
+            'tabs' => $tabs,
+        ];
     }
 }
