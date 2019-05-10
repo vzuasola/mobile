@@ -73,6 +73,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         return groupedGames;
     }
 
+    /**
+     * Sorts game thumbnails by sort weight
+     */
     private sortGamesByTab(groupedGames) {
         const sortedGames: any = [];
         for (const tab in groupedGames) {
@@ -134,6 +137,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         }
     }
 
+    /**
+     * Toggles lobby tab state to active/inactive
+     */
     private toggleTabState() {
         const tabsEl =  this.element.querySelector("#search-filter-transfer-container");
         const prevActiveTab = tabsEl.querySelector(".sft-list-menu a.active");
