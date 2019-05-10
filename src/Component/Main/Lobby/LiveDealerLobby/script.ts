@@ -40,8 +40,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         }).then((response) => {
             const groupedGames = this.groupGamesByTab(response);
             this.groupedGames = this.sortGamesByTab(groupedGames);
-            console.log(this.groupedGames);
-            console.log(this.groupedGames);
             if (callback) {
                 callback();
             }
@@ -116,7 +114,8 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private getActiveTab() {
         const hash = utility.getHash(window.location.href);
 
-        if (this.groupedGames.hasOwnProperty(hash) && this.groupedGames[hash].length > 0) {
+        if (this.groupedGames.hasOwnProperty(hash)
+            && this.groupedGames[hash].length > 0) {
             return hash;
         }
 
