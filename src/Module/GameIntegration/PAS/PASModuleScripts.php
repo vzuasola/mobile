@@ -84,7 +84,7 @@ class PASModuleScripts implements ComponentAttachmentInterface
             'pasErrorConfig' => [
                 'errorMap' => isset($ptConfig['error_mapping']) ? Config::parse($ptConfig['error_mapping']) : [],
                 'errorTitle' => $ptConfig['error_header_title_text'] ?? '',
-                'errorButton' => $ptConfig['error_button'],
+                'errorButton' => $ptConfig['error_button'] ?? '',
             ],
         ];
     }

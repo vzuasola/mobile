@@ -262,7 +262,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
         }
 
-        if (this.futurama && this.pasLoginResponse.errorCode !== 0) {
+        if ((this.futurama || this.futuramaGold) && this.pasLoginResponse.errorCode !== 0) {
             // Do Error mapping modal
             this.pasErrorMessage();
         }
