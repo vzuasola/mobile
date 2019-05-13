@@ -26,6 +26,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private key: string = "pas";
 
     private futurama: boolean;
+    private futuramaGold: boolean;
     private username: string;
     private currency: string;
     private token: string;
@@ -54,6 +55,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     onLoad(attachments: {
         futurama: boolean,
+        futuramaGold: boolean,
         authenticated: boolean,
         username: string,
         currency: string,
@@ -67,6 +69,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         pasErrorConfig: any,
     }) {
         this.futurama = attachments.futurama;
+        this.futuramaGold = attachments.futuramaGold;
         this.isSessionAlive = attachments.authenticated;
         this.iapiconfOverride = attachments.iapiconfOverride;
         this.lang = attachments.lang;
@@ -116,6 +119,10 @@ export class PASModule implements ModuleInterface, GameInterface {
                         }
 
                         this.isGold = response.provisioned;
+
+                        if (this.futuramaGold && key === "dafagold") {
+                            break;
+                        }
 
                         if (this.checkIapiConfig(key)) {
                             continue;
@@ -376,6 +383,11 @@ export class PASModule implements ModuleInterface, GameInterface {
                 if (this.checkIapiConfig(key)) {
                     continue;
                 }
+
+                if (this.futuramaGold && key === "dafagold") {
+                    break;
+                }
+
                 ++ ctr;
                 const promise = () => {
                     return new Promise((resolve, reject) => {

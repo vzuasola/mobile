@@ -71,6 +71,7 @@ class PASModuleScripts implements ComponentAttachmentInterface
 
         return [
             'futurama' => $ptConfig['futurama_switch'] ?? false,
+            'futuramaGold' => $ptConfig['futurama_gold_switch'] ?? false,
             'authenticated' => $this->playerSession->isLogin(),
             'username' => $this->playerSession->getUsername(),
             'currency' => $currency,
