@@ -176,9 +176,15 @@ export class PASModule implements ModuleInterface, GameInterface {
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
 
-            if (this.futurama) {
+            if (this.futurama || this.futuramaGold) {
 
                 let key = "dafa888";
+
+                const product = ComponentManager.getAttribute("product");
+                if (product === "mobile-casino-gold" && this.futuramaGold) {
+                    key = "casinogold";
+                }
+
                 if (DafaConnect.isDafaconnect()) {
                     key = "dafaconnect";
                 }
@@ -205,7 +211,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                 this.doCheckSession();
             }
 
-            if (!this.futurama) {
+            if (!this.futurama && !this.futuramaGold) {
                 this.pasLaunch(options);
             }
 
