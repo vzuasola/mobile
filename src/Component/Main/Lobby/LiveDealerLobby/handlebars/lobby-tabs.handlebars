@@ -1,7 +1,7 @@
 <ul class="pft-list-menu">
     {{#each tabs}}
     <li class="{{ ../this.liClass }} pft-list-menu-item">
-        <a href="#{{ this.field_alias.0.value }}" class="pft-item-links tab-{{ this.field_alias.0.value }}">
+        <a href="#{{ this.field_alias.0.value }}" class="pft-item-links tab-{{ this.field_alias.0.value }}" data-alias="{{ this.field_alias.0.value }}">
             {{ this.field_label.0.value }}
         </a>
     </li>

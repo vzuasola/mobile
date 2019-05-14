@@ -8,10 +8,10 @@
         background: $cat-tab-bg;
     }
 
-    .category-tab-list {
+    .providers-tab-list {
         background: $cat-tab-bg;
 
-        .game-category {
+        .game-providers {
             @extend %clearfix;
             float: left;
             list-style-type: none;
@@ -44,7 +44,7 @@
                 }
             }
 
-            .category-more.active,
+            .providers-more.active,
             a {
                 position: relative;
                 display: inline-block;
@@ -61,13 +61,13 @@
             }
        }
 
-        .main-game-category {
+        .main-game-providers {
             border-top: 0.1rem solid $dark-red;
             border-bottom: 0.1rem solid $dark-red;
         }
     }
 
-    .category-more {
+    .providers-more {
            position: absolute;
            top: 0;
            right: 0;
@@ -154,62 +154,62 @@
 
     .provider-7,
     .provider-6 {
-        .game-category-item {
+        .game-providers-item {
             width: 13.2857%;
         }
 
-        .game-category-item:last-child {
+        .game-providers-item:last-child {
             width: 20.2857%;
             position: relative;
         }
     }
 
     .provider-5 {
-        .game-category-item {
+        .game-providers-item {
             width: 15.6667%;
         }
 
-        .game-category-item:last-child {
+        .game-providers-item:last-child {
             width: 21.6667%;
             position: relative;
         }
     }
 
     .provider-4 {
-        .game-category-item {
+        .game-providers-item {
             width: 19%;
         }
 
-        .game-category-item:last-child {
+        .game-providers-item:last-child {
             width: 24%;
             position: relative;
         }
     }
 
     .provider-3 {
-        .game-category-item {
+        .game-providers-item {
             width: 24%;
         }
 
-        .game-category-item:last-child {
+        .game-providers-item:last-child {
             width: 28%;
             position: relative;
         }
     }
 
     .provider-2 {
-        .game-category-item {
+        .game-providers-item {
             width: 32.333333333%;
         }
 
-        .game-category-item:last-child {
+        .game-providers-item:last-child {
             width: 35.333333%;
             position: relative;
         }
     }
 
     .provider-1 {
-        .game-category-item {
+        .game-providers-item {
             width: 50%;
         }
     }
@@ -294,7 +294,7 @@
             }
         }
 
-        .game-category {
+        .game-providers {
             &-list {
                 padding: 0;
                 border-left: 0.1rem solid $gray;
@@ -347,10 +347,19 @@
         #game-container {
             padding: 0.75%;
         }
-    }
 
-    .game-listing {
-        width: 50%;
-        padding: 0;
+        &.featured {
+            .game-listing {
+                width: 50%;
+                padding: 0;
+            }
+        }
+
+        &.providers {
+            .game-listing {
+                width: 33.33333333%;
+                padding: 0 0.2%;
+            }
+        }
     }
 }
