@@ -47,7 +47,7 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
         try {
             $liveDealerGeneralConfig = $this->configs->getConfig('live_dealer.live_dealer_configuration');
         } catch (\Exception $e) {
-            $config = [];
+            $liveDealerGeneralConfig = [];
         }
 
         try {
