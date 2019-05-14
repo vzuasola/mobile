@@ -26,6 +26,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private key: string = "pas";
 
     private futurama: boolean;
+    private futuramaGold: boolean;
     private username: string;
     private currency: string;
     private token: string;
@@ -54,6 +55,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     onLoad(attachments: {
         futurama: boolean,
+        futuramaGold: boolean,
         authenticated: boolean,
         username: string,
         currency: string,
@@ -67,6 +69,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         pasErrorConfig: any,
     }) {
         this.futurama = attachments.futurama;
+        this.futuramaGold = attachments.futuramaGold;
         this.isSessionAlive = attachments.authenticated;
         this.iapiconfOverride = attachments.iapiconfOverride;
         this.lang = attachments.lang;
@@ -117,6 +120,10 @@ export class PASModule implements ModuleInterface, GameInterface {
 
                         this.isGold = response.provisioned;
 
+                        if (this.futuramaGold && key === "dafagold") {
+                            break;
+                        }
+
                         if (this.checkIapiConfig(key)) {
                             continue;
                         }
@@ -163,15 +170,21 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     launch(options) {
+        const product = ComponentManager.getAttribute("product");
         if (options.provider === this.key) {
 
             // remap language
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
 
-            if (this.futurama) {
+            if (this.futurama || this.futuramaGold) {
 
                 let key = "dafa888";
+
+                if (product === "mobile-casino-gold" && this.futuramaGold) {
+                    key = "casinogold";
+                }
+
                 if (DafaConnect.isDafaconnect()) {
                     key = "dafaconnect";
                 }
@@ -198,7 +211,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                 this.doCheckSession();
             }
 
-            if (!this.futurama) {
+            if (!this.futurama || (!this.futuramaGold && product === "mobile-casino-gold")) {
                 this.pasLaunch(options);
             }
 
@@ -210,8 +223,10 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     private pasLaunch(options) {
-        if (!this.futurama || this.pasLoginResponse.errorCode === 0) {
-            let product = ComponentManager.getAttribute("product");
+        let product = ComponentManager.getAttribute("product");
+        if (!this.futurama ||
+            (!this.futuramaGold && product === "mobile-casino-gold") ||
+            this.pasLoginResponse.errorCode === 0) {
             if (options.product) {
                 product = options.product;
             }
@@ -249,7 +264,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
         }
 
-        if (this.futurama && this.pasLoginResponse.errorCode !== 0) {
+        if ((this.futurama || this.futuramaGold) && this.pasLoginResponse.errorCode !== 0) {
             // Do Error mapping modal
             this.pasErrorMessage();
         }
@@ -376,6 +391,11 @@ export class PASModule implements ModuleInterface, GameInterface {
                 if (this.checkIapiConfig(key)) {
                     continue;
                 }
+
+                if (this.futuramaGold && key === "dafagold") {
+                    break;
+                }
+
                 ++ ctr;
                 const promise = () => {
                     return new Promise((resolve, reject) => {
