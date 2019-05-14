@@ -3,6 +3,7 @@ import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/route
 import * as Handlebars from "handlebars/runtime";
 import * as gameTemplate from "./handlebars/games.handlebars";
 import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
+import * as quickLaunchTemplate from "./handlebars/quick-launcher-tabs.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import EqualHeight from "@app/assets/script/components/equal-height";
@@ -33,15 +34,12 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.transferUrl = attachments.transfer_url;
         this.transferTitle = attachments.transfer_title;
         this.tabs = attachments.tabs;
-        this.moveCategory();
         this.doGetLobbyData(() => {
             this.setLobby();
         });
         this.listenHashChange();
         this.listenClickTab();
         this.listenClickGameTile();
-        this.activateProviderDrawer();
-        this.equalizeProviderHeight();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -57,12 +55,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.transferUrl = attachments.transfer_url;
         this.transferTitle = attachments.transfer_title;
         this.tabs = attachments.tabs;
-        this.moveCategory();
         this.doGetLobbyData(() => {
             this.setLobby();
         });
-        this.activateProviderDrawer();
-        this.equalizeProviderHeight();
     }
 
     /**
@@ -140,9 +135,10 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private setLobby() {
         this.setLobbyTabs();
+        this.populateQuickLauncherTabs();
         this.populateTabs();
-        this.populateGames(this.getActiveTab());
-        this.toggleTabState();
+        this.populateGames();
+        this.setActiveTab();
     }
 
     /**
@@ -168,10 +164,10 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     /**
      * Populate game thumbnails
      */
-    private populateGames(activeTab) {
+    private populateGames() {
         const gamesEl = this.element.querySelector("#game-container");
         const template = gameTemplate({
-            games: this.groupedGames[activeTab],
+            games: this.groupedGames[this.getActiveTab()],
         });
 
         if (gamesEl) {
@@ -199,6 +195,23 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     }
 
     /**
+     * Populate lobby tabs
+     */
+    private populateQuickLauncherTabs() {
+        const quickTabsEl = this.element.querySelector("#providers-quick-launcher");
+        const template = quickLaunchTemplate({
+            providersTab: this.groupedGames[this.getActiveTab()],
+        });
+
+        if (quickTabsEl) {
+            quickTabsEl.innerHTML = template;
+        }
+        this.moveProviders();
+        this.activateProviderDrawer();
+        this.equalizeProviderHeight();
+    }
+
+    /**
      * Filter lobby tabs
      */
     private filterTabs(tabs) {
@@ -216,9 +229,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     }
 
     /**
-     * Toggles lobby tab state to active/inactive
+     * Sets active tab in lobby
      */
-    private toggleTabState() {
+    private setActiveTab() {
         const contTab = this.element.querySelector(".game-container");
         const activeTab = this.element.querySelector(".tab-" + this.getActiveTab());
 
@@ -271,25 +284,25 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         });
     }
 
-    private moveCategory() {
-        const container = document.querySelector("#categories-container");
-        const categoriesEl = document.querySelector("#game-categories");
+    private moveProviders() {
+        const container = this.element.querySelector("#providers-quick-launcher");
+        const providersEl = this.element.querySelector("#providers-tab");
 
-        container.appendChild(categoriesEl);
+        container.appendChild(providersEl);
     }
 
     /**
      * Enable Provider Drawer slide behavior
      */
     private activateProviderDrawer() {
-        const categoriesEl: any = document.querySelector("#game-categories");
-        const providerdrawer = new ProviderDrawer(categoriesEl);
+        const providersEl: any = this.element.querySelector("#providers-quick-launcher");
+        const providerdrawer = new ProviderDrawer(providersEl);
         providerdrawer.activate();
     }
 
     private equalizeProviderHeight() {
         setTimeout(() => {
-            const equalProvider = new EqualHeight("#game-categories .provider-menu .game-category-list a");
+            const equalProvider = new EqualHeight("#providers-quick-launcher .provider-menu .game-providers-list a");
             equalProvider.init();
         }, 1000);
 
