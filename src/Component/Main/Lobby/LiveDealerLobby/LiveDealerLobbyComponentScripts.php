@@ -44,9 +44,20 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
+        try {
+            $tabs = $this->views->withProduct($this->product->getProduct())->getViewById('lobby_tabs');
+        } catch (\Exception $e) {
+            $tabs = [];
+        }
+
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'product' => $this->getProductIntegration(),
+            'tabs' => $tabs,
+            'instant_transfer' => [
+                'transfer_title' => '',
+                'transfer_url' => '',
+            ],
         ];
     }
 
