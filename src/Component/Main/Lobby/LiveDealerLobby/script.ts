@@ -20,6 +20,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private product: any[];
     private transferUrl: string;
     private transferTitle: string;
+    private attachments: any;
 
     onLoad(element: HTMLElement, attachments: {
             authenticated: boolean,
@@ -27,7 +28,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             transfer_url: string,
             transfer_title: string,
             tabs: any[],
+            configs: any[],
         }) {
+        this.attachments = attachments;
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
@@ -48,7 +51,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             transfer_url: string,
             transfer_title: string,
             tabs: any[],
+            configs: any[],
         }) {
+        this.attachments = attachments;
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
@@ -201,6 +206,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         const quickTabsEl = this.element.querySelector("#providers-quick-launcher");
         const template = quickLaunchTemplate({
             providersTab: this.groupedGames[this.getActiveTab()],
+            configs: this.attachments.configs,
         });
 
         if (quickTabsEl) {
@@ -277,7 +283,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 const tabEl = this.element.querySelector("#providers-filter-transfer-container");
                 const prevActiveTab = tabEl.querySelector(".pft-item a.active");
 
-                if (prevActiveTab) {
+                if (prevActiveTab.getAttribute("data-alias") !== el.querySelector("a").getAttribute("data-alias")) {
                     utility.removeClass(contTab, prevActiveTab.getAttribute("data-alias"));
                 }
             }
@@ -285,8 +291,8 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     }
 
     private moveProviders() {
-        const container = this.element.querySelector("#providers-quick-launcher");
-        const providersEl = this.element.querySelector("#providers-tab");
+        const container = document.querySelector("#categories-container");
+        const providersEl = document.querySelector("#providers-quick-launcher");
 
         container.appendChild(providersEl);
     }
@@ -295,7 +301,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      * Enable Provider Drawer slide behavior
      */
     private activateProviderDrawer() {
-        const providersEl: any = this.element.querySelector("#providers-quick-launcher");
+        const providersEl: any = document.querySelector("#providers-quick-launcher");
         const providerdrawer = new ProviderDrawer(providersEl);
         providerdrawer.activate();
     }
