@@ -45,6 +45,12 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
+            $liveDealerGeneralConfig = $this->configs->getConfig('live_dealer.live_dealer_configuration');
+        } catch (\Exception $e) {
+            $liveDealerGeneralConfig = [];
+        }
+
+        try {
             $tabs = $this->views->withProduct($this->product->getProduct())->getViewById('lobby_tabs');
         } catch (\Exception $e) {
             $tabs = [];
@@ -58,6 +64,7 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
                 'transfer_title' => '',
                 'transfer_url' => '',
             ],
+            'configs' => $liveDealerGeneralConfig ?? [],
         ];
     }
 

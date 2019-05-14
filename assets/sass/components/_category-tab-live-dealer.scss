@@ -1,5 +1,5 @@
 .mobile-live-dealer {
-    #categories-container {
+    #providers-quick-launcher {
         position: -webkit-sticky;
         position: sticky;
         top: 0;
@@ -351,14 +351,27 @@
         &.featured {
             .game-listing {
                 width: 50%;
-                padding: 0;
+                padding: 0 0 1% 0;
             }
         }
 
         &.providers {
             .game-listing {
                 width: 33.33333333%;
-                padding: 0 0.2%;
+                padding: 0 0.2% 1% 0.2%;
+            }
+        }
+    }
+
+    // Landscape
+    @media (orientation: landscape) {
+        .game-container {
+            &.featured,
+            &.providers {
+                .game-listing {
+                    width: 25%;
+                    padding: 0 0.2% 1% 0.2%;
+                }
             }
         }
     }
