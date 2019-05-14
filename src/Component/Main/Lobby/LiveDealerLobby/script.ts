@@ -174,14 +174,14 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      * Populate lobby tabs
      */
     private populateTabs() {
-        const tabsEl = this.element.querySelector("#search-filter-transfer-container");
+        const tabsEl = this.element.querySelector("#providers-filter-transfer-container");
         const template = tabTemplate({
             tabs: this.filterTabs(this.tabs),
             authenticated: this.isLogin,
             transfer_url: this.transferUrl,
             transfer_titel: this.transferTitle,
             liClass: (this.isLogin && typeof this.transferUrl !== "undefined")
-                ? "sft-item" : "sft-item half",
+                ? "pft-item" : "pft-item half",
         });
 
         if (tabsEl) {
@@ -210,8 +210,8 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      * Toggles lobby tab state to active/inactive
      */
     private toggleTabState() {
-        const tabsEl =  this.element.querySelector("#search-filter-transfer-container");
-        const prevActiveTab = tabsEl.querySelector(".sft-list-menu a.active");
+        const tabsEl =  this.element.querySelector("#providers-filter-transfer-container");
+        const prevActiveTab = tabsEl.querySelector(".pft-list-menu a.active");
         const activeTab = this.element.querySelector(".tab-" + this.getActiveTab());
 
         if (prevActiveTab) {
