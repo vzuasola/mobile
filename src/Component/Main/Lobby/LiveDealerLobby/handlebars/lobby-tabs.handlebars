@@ -1,0 +1,18 @@
+<ul class="sft-list-menu">
+    {{#each tabs}}
+    <li class="{{ ../this.liClass }} sft-list-menu-item">
+        <a href="#{{ this.field_alias.0.value }}" class="sft-item-links tab-{{ this.field_alias.0.value }}">
+            {{ this.field_label.0.value }}
+        </a>
+    </li>
+    {{/each}}
+    {{#if ../this.authenticated}}
+        {{#if ../this.transfer_url}}
+            <li class="{{ ../this.liClass }} sft-list-menu-item sft-list-menu-transfer">
+                <a href="{{ ../this.transfer_url }}" class="sft-item-links games-transfer">
+                    {{ ../this.transfer_title }}
+                </a>
+            </li>
+        {{/if}}
+    {{/if}}
+</ul>

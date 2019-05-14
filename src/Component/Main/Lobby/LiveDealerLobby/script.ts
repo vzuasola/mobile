@@ -2,6 +2,7 @@ import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/ass
 import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
 import * as Handlebars from "handlebars/runtime";
 import * as gameTemplate from "./handlebars/games.handlebars";
+import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 /**
@@ -9,25 +10,50 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
  */
 export class LiveDealerLobbyComponent implements ComponentInterface {
     private groupedGames: any;
-    private lobbyTabs: any = ["providers", "featured"];
+    private availableTabs: any[];
+    private tabs: any[];
     private element;
+    private isLogin;
+    private product: any[];
+    private transferUrl: string;
+    private transferTitle: string;
 
     onLoad(element: HTMLElement, attachments: {
             authenticated: boolean,
             product: any[],
+            transfer_url: string,
+            transfer_title: string,
+            tabs: any[],
         }) {
         this.element = element;
+        this.isLogin = attachments.authenticated;
+        this.product = attachments.product;
+        this.transferUrl = attachments.transfer_url;
+        this.transferTitle = attachments.transfer_title;
+        this.tabs = attachments.tabs;
         this.doGetLobbyData(() => {
             this.setLobby();
         });
         this.listenHashChange();
+        this.listenClickGameTile();
     }
 
     onReload(element: HTMLElement, attachments: {
             authenticated: boolean,
             product: any[],
+            transfer_url: string,
+            transfer_title: string,
+            tabs: any[],
         }) {
         this.element = element;
+        this.isLogin = attachments.authenticated;
+        this.product = attachments.product;
+        this.transferUrl = attachments.transfer_url;
+        this.transferTitle = attachments.transfer_title;
+        this.tabs = attachments.tabs;
+        this.doGetLobbyData(() => {
+            this.setLobby();
+        });
     }
 
     /**
@@ -61,7 +87,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                     groupedGames[game.lobby_tab] = [];
                 }
 
-                if (typeof  groupedGames[game.lobby_tab] !== "undefined"
+                if (typeof groupedGames[game.lobby_tab] !== "undefined"
                 ) {
                     groupedGames[game.lobby_tab].push(game);
                 }
@@ -104,10 +130,18 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      * Populate lobby with the response from cms
      */
     private setLobby() {
+        this.setLobbyTabs();
+        this.populateTabs();
         this.populateGames(this.getActiveTab());
         this.toggleTabState();
     }
 
+    /**
+     * Set lobby tabs
+     */
+    private setLobbyTabs() {
+        this.availableTabs = Object.keys(this.groupedGames);
+    }
     /**
      * Gets current active tab from url, if none is found, use first tab as default.
      */
@@ -119,7 +153,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             return hash;
         }
 
-        return this.lobbyTabs[0];
+        return this.availableTabs[0];
     }
 
     /**
@@ -134,6 +168,42 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         if (gamesEl) {
             gamesEl.innerHTML = template;
         }
+    }
+
+    /**
+     * Populate lobby tabs
+     */
+    private populateTabs() {
+        const tabsEl = this.element.querySelector("#search-filter-transfer-container");
+        const template = tabTemplate({
+            tabs: this.filterTabs(this.tabs),
+            authenticated: this.isLogin,
+            transfer_url: this.transferUrl,
+            transfer_titel: this.transferTitle,
+            liClass: (this.isLogin && typeof this.transferUrl !== "undefined")
+                ? "sft-item" : "sft-item half",
+        });
+
+        if (tabsEl) {
+            tabsEl.innerHTML = template;
+        }
+    }
+
+    /**
+     * Filter lobby tabs
+     */
+    private filterTabs(tabs) {
+        const filteredTabs: any[] = [];
+        for (const tab of tabs) {
+            /* tslint:disable:no-string-literal */
+            if (tab.hasOwnProperty("field_alias") &&
+                this.availableTabs.indexOf(tab["field_alias"][0]["value"]) !== -1) {
+                filteredTabs.push(tab);
+            }
+            /* tslint:disable:no-string-literal */
+        }
+
+        return filteredTabs;
     }
 
     /**
@@ -159,6 +229,22 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
             this.setLobby();
+        });
+    }
+
+    /**
+     * Event listener for game item click
+     */
+    private listenClickGameTile() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.hasClass(src, "game-listing-item", true);
+            if (el && !this.isLogin) {
+                ComponentManager.broadcast("header.login", {
+                    src: el,
+                    productVia: this.product[0].login_via,
+                    regVia: this.product[0].reg_via,
+                });
+            }
         });
     }
 }

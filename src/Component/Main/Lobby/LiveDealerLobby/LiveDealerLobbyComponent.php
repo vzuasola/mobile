@@ -57,14 +57,6 @@ class LiveDealerLobbyComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        try {
-            $tabs = $this->views->getViewById('lobby_tabs');
-        } catch (\Exception $e) {
-            $tabs = [];
-        }
-
-        return [
-            'tabs' => $tabs,
-        ];
+        return [];
     }
 }
