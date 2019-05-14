@@ -170,6 +170,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     launch(options) {
+        const product = ComponentManager.getAttribute("product");
         if (options.provider === this.key) {
 
             // remap language
@@ -180,7 +181,6 @@ export class PASModule implements ModuleInterface, GameInterface {
 
                 let key = "dafa888";
 
-                const product = ComponentManager.getAttribute("product");
                 if (product === "mobile-casino-gold" && this.futuramaGold) {
                     key = "casinogold";
                 }
@@ -211,7 +211,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                 this.doCheckSession();
             }
 
-            if (!this.futurama && !this.futuramaGold) {
+            if (!this.futurama || (!this.futuramaGold && product === "mobile-casino-gold")) {
                 this.pasLaunch(options);
             }
 
@@ -223,8 +223,10 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     private pasLaunch(options) {
-        if (!this.futurama || this.pasLoginResponse.errorCode === 0) {
-            let product = ComponentManager.getAttribute("product");
+        let product = ComponentManager.getAttribute("product");
+        if (!this.futurama ||
+            (!this.futuramaGold && product === "mobile-casino-gold") ||
+            this.pasLoginResponse.errorCode === 0) {
             if (options.product) {
                 product = options.product;
             }
