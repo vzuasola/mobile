@@ -261,7 +261,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private listenClickTab() {
         ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.hasClass(src, "pft-item", true);
+            const el = utility.hasClass(src, "lobby-tab", true);
             if (el) {
                 const contTab = this.element.querySelector(".game-container");
                 const tabEl = this.element.querySelector("#providers-filter-transfer-container");
