@@ -187,13 +187,11 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private populateTabs() {
         const tabsEl = this.element.querySelector("#providers-filter-transfer-container");
-        console.log(this.attachments.configs.games_transfer_link);
         const template = tabTemplate({
             tabs: this.filterTabs(this.tabs),
             authenticated: this.isLogin,
             configs: this.attachments.configs,
-            liClass: (this.isLogin && this.attachments.configs.games_transfer_link !== "")
-                ? "pft-item" : "pft-item half",
+            hasTransferTab: (this.isLogin && this.attachments.configs.games_transfer_link !== ""),
         });
 
         if (tabsEl) {
