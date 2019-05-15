@@ -1,7 +1,7 @@
 <div class="providers-tab-list" id="providers-tab">
     <ul class="main-game-providers game-providers provider-7">
         {{#each providersTab}}
-        <li class="game-providers-item">
+        <li class="game-providers-item game-providers-tab">
             <a href="#" class="providers-tab providers-{{this.game_provider}} active">
                 <img src="{{this.provider_image.url}}" alt="{{this.provider_image.alt}}">
             </a>
@@ -27,7 +27,7 @@
                 <ul class="game-providers col-12 mb-10">
                     {{#each providersTab}}
                     <li class="game-providers-list col-6 pt-10 active close-drawer">
-                        <a href="#" class="providers-provider-menu providers-{{this.game_provider}} active close-drawer">
+                        <a href="#" class="providers-provider-menu providers-{{this.game_provider}} close-drawer">
                             <img src="{{this.provider_image.url}}" alt="{{this.provider_image.alt}}" class="close-drawer">
                             <p class="close-drawer">{{this.title}}</p>
                         </a>

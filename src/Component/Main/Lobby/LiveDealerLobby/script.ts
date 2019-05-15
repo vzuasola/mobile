@@ -36,6 +36,8 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.listenHashChange();
         this.listenClickTab();
         this.listenClickGameTile();
+        this.listenClickLauncherTab();
+        this.listenClickLauncherTabDrawer();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -44,6 +46,13 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             tabs: any[],
             configs: any[],
         }) {
+        if (!this.element) {
+            this.listenHashChange();
+            this.listenClickTab();
+            this.listenClickGameTile();
+            this.listenClickLauncherTab();
+            this.listenClickLauncherTabDrawer();
+        }
         this.attachments = attachments;
         this.element = element;
         this.isLogin = attachments.authenticated;
@@ -222,6 +231,16 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         }
     }
 
+    private showLogin(el) {
+        if (el && !this.isLogin) {
+            ComponentManager.broadcast("header.login", {
+                src: el,
+                productVia: this.product[0].login_via,
+                regVia: this.product[0].reg_via,
+            });
+        }
+    }
+
     /**
      * Event listener for url hash change
      */
@@ -237,13 +256,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private listenClickGameTile() {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "game-listing-item", true);
-            if (el && !this.isLogin) {
-                ComponentManager.broadcast("header.login", {
-                    src: el,
-                    productVia: this.product[0].login_via,
-                    regVia: this.product[0].reg_via,
-                });
-            }
+            this.showLogin(el);
         });
     }
 
@@ -262,6 +275,26 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                     utility.removeClass(contTab, prevActiveTab.getAttribute("data-alias"));
                 }
             }
+        });
+    }
+
+    /**
+     * Event listener for quick launcher tab
+     */
+    private listenClickLauncherTab() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.hasClass(src, "game-providers-tab", true);
+            this.showLogin(el);
+        });
+    }
+
+    /**
+     * Event listener for quick launcher tab
+     */
+    private listenClickLauncherTabDrawer() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.hasClass(src, "game-providers-list", true);
+            this.showLogin(el);
         });
     }
 }
