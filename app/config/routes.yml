@@ -19,6 +19,17 @@ routes:
             enabled: true
             expires: 1800
 
+    /loader:
+        method: GET
+        action: App\MobileEntry\Controller\GameLoaderController:view
+        components:
+            main: game_loader
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+        page_cache:
+            enabled: true
+            expires: 1800
+
     /login:
         method: GET
         action: App\MobileEntry\Controller\HomeController:view
