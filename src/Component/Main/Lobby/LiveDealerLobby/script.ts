@@ -37,7 +37,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.listenClickTab();
         this.listenClickGameTile();
         this.listenClickLauncherTab();
-        this.listenClickLauncherTabDrawer();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -51,7 +50,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             this.listenClickTab();
             this.listenClickGameTile();
             this.listenClickLauncherTab();
-            this.listenClickLauncherTabDrawer();
         }
         this.attachments = attachments;
         this.element = element;
@@ -282,16 +280,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private listenClickLauncherTab() {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "game-providers-tab", true);
-            this.showLogin(el);
-        });
-    }
-
-    /**
-     * Event listener for quick launcher tab
-     */
-    private listenClickLauncherTabDrawer() {
-        ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.hasClass(src, "game-providers-list", true);
             this.showLogin(el);
         });
     }
