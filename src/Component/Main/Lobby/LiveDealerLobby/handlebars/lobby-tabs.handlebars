@@ -1,6 +1,6 @@
 <ul class="pft-list-menu">
     {{#each tabs}}
-    <li class="{{#if hasTransferTab}}pft-item{{else}}pft-item half{{/if}} pft-list-menu-item">
+    <li class="{{#if ../this.hasTransferTab}}pft-item{{else}}pft-item half{{/if}} pft-list-menu-item lobby-tab">
         <a href="#{{this.field_alias.0.value}}" class="pft-item-links tab-{{this.field_alias.0.value}}" data-alias="{{this.field_alias.0.value}}">
             {{this.field_label.0.value}}
         </a>
