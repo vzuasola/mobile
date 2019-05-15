@@ -1,13 +1,12 @@
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
+import {QuickLauncher} from "./scripts/quick-launcher";
 import * as Handlebars from "handlebars/runtime";
 import * as gameTemplate from "./handlebars/games.handlebars";
 import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
-import * as quickLaunchTemplate from "./handlebars/quick-launcher-tabs.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
-import EqualHeight from "@app/assets/script/components/equal-height";
-import { ProviderDrawer } from "./scripts/provider-drawer";
+
 /**
  *
  */
@@ -139,8 +138,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      * Populate lobby with the response from cms
      */
     private setLobby() {
+        const quickLauncher = new QuickLauncher(this.attachments.configs);
         this.setLobbyTabs();
-        this.populateQuickLauncherTabs();
+        quickLauncher.activate(this.groupedGames[this.getActiveTab()]);
         this.populateTabs();
         this.populateGames();
         this.setActiveTab();
@@ -152,6 +152,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private setLobbyTabs() {
         this.availableTabs = Object.keys(this.groupedGames);
     }
+
     /**
      * Gets current active tab from url, if none is found, use first tab as default.
      */
@@ -197,24 +198,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         if (tabsEl) {
             tabsEl.innerHTML = template;
         }
-    }
-
-    /**
-     * Populate lobby tabs
-     */
-    private populateQuickLauncherTabs() {
-        const quickTabsEl = this.element.querySelector("#providers-quick-launcher");
-        const template = quickLaunchTemplate({
-            providersTab: this.groupedGames[this.getActiveTab()],
-            configs: this.attachments.configs,
-        });
-
-        if (quickTabsEl) {
-            quickTabsEl.innerHTML = template;
-        }
-        this.moveProviders();
-        this.activateProviderDrawer();
-        this.equalizeProviderHeight();
     }
 
     /**
@@ -288,29 +271,5 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 }
             }
         });
-    }
-
-    private moveProviders() {
-        const container = document.querySelector("#categories-container");
-        const providersEl = document.querySelector("#providers-quick-launcher");
-
-        container.appendChild(providersEl);
-    }
-
-    /**
-     * Enable Provider Drawer slide behavior
-     */
-    private activateProviderDrawer() {
-        const providersEl: any = document.querySelector("#providers-quick-launcher");
-        const providerdrawer = new ProviderDrawer(providersEl);
-        providerdrawer.activate();
-    }
-
-    private equalizeProviderHeight() {
-        setTimeout(() => {
-            const equalProvider = new EqualHeight("#providers-quick-launcher .provider-menu .game-providers-list a");
-            equalProvider.init();
-        }, 1000);
-
     }
 }
