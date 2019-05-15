@@ -60,10 +60,6 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
             'authenticated' => $this->playerSession->isLogin(),
             'product' => $this->getProductIntegration(),
             'tabs' => $tabs,
-            'instant_transfer' => [
-                'transfer_title' => '',
-                'transfer_url' => '',
-            ],
             'configs' => $liveDealerGeneralConfig ?? [],
         ];
     }
