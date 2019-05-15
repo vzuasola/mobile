@@ -1,17 +1,17 @@
 <ul class="pft-list-menu">
     {{#each tabs}}
-    <li class="{{ ../this.liClass }} pft-list-menu-item">
-        <a href="#{{ this.field_alias.0.value }}" class="pft-item-links tab-{{ this.field_alias.0.value }}" data-alias="{{ this.field_alias.0.value }}">
-            {{ this.field_label.0.value }}
+    <li class="{{../this.liClass}} pft-list-menu-item">
+        <a href="#{{this.field_alias.0.value}}" class="pft-item-links tab-{{this.field_alias.0.value}}" data-alias="{{this.field_alias.0.value}}">
+            {{this.field_label.0.value}}
         </a>
     </li>
     {{/each}}
     
     {{#if authenticated}}
         {{#if configs.games_transfer_link}}
-            <li class="{{ liClass }} pft-list-menu-item pft-list-menu-transfer">
-                <a href="{{ configs.games_transfer_link }}" class="pft-item-links games-transfer">
-                    {{ configs.games_transfer_title }}
+            <li class="{{liClass}} pft-list-menu-item pft-list-menu-transfer">
+                <a href="{{configs.games_transfer_link}}" class="pft-item-links games-transfer">
+                    {{configs.games_transfer_title}}
                 </a>
             </li>
         {{/if}}

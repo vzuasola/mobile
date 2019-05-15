@@ -192,7 +192,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             tabs: this.filterTabs(this.tabs),
             authenticated: this.isLogin,
             configs: this.attachments.configs,
-            liClass: (this.isLogin && typeof this.attachments.configs.games_transfer_link !== "undefined")
+            liClass: (this.isLogin && this.attachments.configs.games_transfer_link !== "")
                 ? "pft-item" : "pft-item half",
         });
 
