@@ -1,6 +1,6 @@
 <div class="providers-tab-list" id="providers-tab">
     <ul class="main-game-providers game-providers provider-7">
-        <li class="game-providers-item game-providers-tab">
+        <li class="game-providers-item">
             <a href="#providers" class="providers-tab providers-all">
                 <img src="{{configs.all_quicklaunch_title}}" alt="{{configs.all_quicklaunch_title}}">
             </a>
@@ -30,14 +30,14 @@
                     </span>
                 </h2>
                 <ul class="game-providers col-12 mb-10">
-                    <li class="game-providers-list col-6 pt-10 active close-drawer">
+                    <li class="game-providers-list col-6 pt-10 close-drawer">
                         <a href="#providers" class="providers-provider-menu providers-all close-drawer">
                             <img src="" alt="{{configs.all_quicklaunch_alt}}" class="close-drawer">
                             <p class="close-drawer">{{configs.all_quicklaunch_title}}</p>
                         </a>
                     </li>
                     {{#each providersTab}}
-                    <li class="game-providers-list col-6 pt-10 active close-drawer">
+                    <li class="game-providers-list col-6 pt-10 close-drawer game-providers-tab">
                         <a href="#" class="providers-provider-menu providers-{{this.game_provider}} close-drawer">
                             <img src="{{this.provider_image.url}}" alt="{{this.provider_image.alt}}" class="close-drawer">
                             <p class="close-drawer">{{this.title}}</p>
