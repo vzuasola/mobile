@@ -6,11 +6,12 @@
         </a>
     </li>
     {{/each}}
-    {{#if ../this.authenticated}}
-        {{#if ../this.transfer_url}}
-            <li class="{{ ../this.liClass }} pft-list-menu-item pft-list-menu-transfer">
-                <a href="{{ ../this.transfer_url }}" class="pft-item-links games-transfer">
-                    {{ ../this.transfer_title }}
+    
+    {{#if authenticated}}
+        {{#if configs.games_transfer_link}}
+            <li class="{{ liClass }} pft-list-menu-item pft-list-menu-transfer">
+                <a href="{{ configs.games_transfer_link }}" class="pft-item-links games-transfer">
+                    {{ configs.games_transfer_title }}
                 </a>
             </li>
         {{/if}}

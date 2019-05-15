@@ -17,15 +17,11 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private element;
     private isLogin;
     private product: any[];
-    private transferUrl: string;
-    private transferTitle: string;
     private attachments: any;
 
     onLoad(element: HTMLElement, attachments: {
             authenticated: boolean,
             product: any[],
-            transfer_url: string,
-            transfer_title: string,
             tabs: any[],
             configs: any[],
         }) {
@@ -33,8 +29,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
-        this.transferUrl = attachments.transfer_url;
-        this.transferTitle = attachments.transfer_title;
         this.tabs = attachments.tabs;
         this.doGetLobbyData(() => {
             this.setLobby();
@@ -47,8 +41,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {
             authenticated: boolean,
             product: any[],
-            transfer_url: string,
-            transfer_title: string,
             tabs: any[],
             configs: any[],
         }) {
@@ -56,8 +48,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
-        this.transferUrl = attachments.transfer_url;
-        this.transferTitle = attachments.transfer_title;
         this.tabs = attachments.tabs;
         this.doGetLobbyData(() => {
             this.setLobby();
@@ -186,12 +176,12 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private populateTabs() {
         const tabsEl = this.element.querySelector("#providers-filter-transfer-container");
+        console.log(this.attachments.configs.games_transfer_link);
         const template = tabTemplate({
             tabs: this.filterTabs(this.tabs),
             authenticated: this.isLogin,
-            transfer_url: this.transferUrl,
-            transfer_titel: this.transferTitle,
-            liClass: (this.isLogin && typeof this.transferUrl !== "undefined")
+            configs: this.attachments.configs,
+            liClass: (this.isLogin && typeof this.attachments.configs.games_transfer_link !== "undefined")
                 ? "pft-item" : "pft-item half",
         });
 
