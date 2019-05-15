@@ -128,9 +128,11 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      * Populate lobby with the response from cms
      */
     private setLobby() {
-        const quickLauncher = new QuickLauncher(this.attachments.configs);
         this.setLobbyTabs();
-        quickLauncher.activate(this.groupedGames[this.getActiveTab()]);
+        if (this.groupedGames.hasOwnProperty("providers")) {
+            const quickLauncher = new QuickLauncher(this.attachments.configs);
+            quickLauncher.activate(this.groupedGames.providers);
+        }
         this.populateTabs();
         this.populateGames();
         this.setActiveTab();
