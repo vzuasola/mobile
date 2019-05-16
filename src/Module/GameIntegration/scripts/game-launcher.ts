@@ -117,7 +117,7 @@ class GameLauncher {
 
             if (element.getAttribute("data-game-loader") === "true") {
                 loader = true;
-                return false;
+                return true;
             }
 
             if (element.getAttribute("data-game-provider") &&
@@ -127,7 +127,7 @@ class GameLauncher {
             }
         });
 
-        if (el) {
+        if (el && !loader) {
             e.preventDefault();
 
             const provider = el.getAttribute("data-game-provider");
@@ -158,7 +158,7 @@ class GameLauncher {
         const el = utility.find(src, (element) => {
             if (element.getAttribute("data-game-loader") === "true") {
                 loader = true;
-                return false;
+                return true;
             }
 
             if (element.getAttribute("data-game-provider") &&
@@ -168,7 +168,7 @@ class GameLauncher {
             }
         });
 
-        if (el) {
+        if (el && !loader) {
             e.preventDefault();
 
             const provider = el.getAttribute("data-game-provider");
