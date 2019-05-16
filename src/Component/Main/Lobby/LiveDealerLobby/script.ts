@@ -1,6 +1,7 @@
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
 import {QuickLauncher} from "./scripts/quick-launcher";
+import PopupWindow from "@app/assets/script/components/popup";
 import * as Handlebars from "handlebars/runtime";
 import * as gameTemplate from "./handlebars/games.handlebars";
 import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
@@ -18,7 +19,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private isLogin;
     private product: any[];
     private attachments: any;
-
+    private windowObject: any;
     onLoad(element: HTMLElement, attachments: {
             authenticated: boolean,
             product: any[],
@@ -37,6 +38,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.listenClickTab();
         this.listenClickGameTile();
         this.listenClickLauncherTab();
+        this.listenToLaunchGameLoader();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -59,6 +61,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.doGetLobbyData(() => {
             this.setLobby();
         });
+        this.listenToLaunchGameLoader();
     }
 
     /**
@@ -151,6 +154,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private setLobbyTabs() {
         this.availableTabs = Object.keys(this.groupedGames);
+        this.tabs = this.filterTabs(this.tabs);
     }
 
     /**
@@ -164,7 +168,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             return hash;
         }
 
-        return this.availableTabs[0];
+        return this.tabs[0].field_alias[0].value;
     }
 
     /**
@@ -187,7 +191,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private populateTabs() {
         const tabsEl = this.element.querySelector("#providers-filter-transfer-container");
         const template = tabTemplate({
-            tabs: this.filterTabs(this.tabs),
+            tabs: this.tabs,
             authenticated: this.isLogin,
             configs: this.attachments.configs,
             hasTransferTab: (this.isLogin && this.attachments.configs.games_transfer_link !== ""),
@@ -289,5 +293,37 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         if (this.getActiveTab() === "providers") {
             utility.addClass(document.querySelectorAll(".providers-tab")[0], "active");
         }
+    }
+
+    /**
+     * Event listener for launching pop up loader
+     */
+    private listenToLaunchGameLoader() {
+        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
+            // Pop up loader with all data
+            const prop = {
+                width: 360,
+                height: 720,
+                scrollbars: 1,
+                scrollable: 1,
+                resizable: 1,
+            };
+
+            let url = "/loader";
+
+            const params = utility.getAttributes(data.src);
+
+            for (const key in params) {
+                if (params.hasOwnProperty(key)) {
+                    const param = params[key];
+
+                    if (key.indexOf("data-") === 0) {
+                        url = utility.addQueryParam(url, key.replace("data-game-", ""), param);
+                    }
+                }
+            }
+
+            this.windowObject = PopupWindow(url, "gameWindow", prop);
+        });
     }
 }
