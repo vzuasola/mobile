@@ -310,7 +310,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                     const param = params[key];
 
                     if (key.indexOf("data-") === 0) {
-                        url = utility.addQueryParam(url, key, param);
+                        url = utility.addQueryParam(url, key.replace("data-game-", ""), param);
                     }
                 }
             }
