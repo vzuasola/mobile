@@ -109,9 +109,15 @@ class GameLauncher {
      *
      */
     private onClick(e, src) {
+        let loader = false;
         const el = utility.find(src, (element) => {
             if (utility.hasClass(src, "game-favorite", true)) {
                 return false;
+            }
+
+            if (element.getAttribute("data-game-loader") === "true") {
+                loader = true;
+                return true;
             }
 
             if (element.getAttribute("data-game-provider") &&
@@ -121,7 +127,7 @@ class GameLauncher {
             }
         });
 
-        if (el) {
+        if (el && !loader) {
             e.preventDefault();
 
             const provider = el.getAttribute("data-game-provider");
@@ -136,13 +142,25 @@ class GameLauncher {
                 src: el,
             });
         }
+
+        if (loader) {
+            ComponentManager.broadcast("game.launch.loader", {
+                src: el,
+            });
+        }
     }
 
     /**
      *
      */
     private onLogin(e, src) {
+        let loader = false;
         const el = utility.find(src, (element) => {
+            if (element.getAttribute("data-game-loader") === "true") {
+                loader = true;
+                return true;
+            }
+
             if (element.getAttribute("data-game-provider") &&
                 element.getAttribute("data-game-code")
             ) {
@@ -150,7 +168,7 @@ class GameLauncher {
             }
         });
 
-        if (el) {
+        if (el && !loader) {
             e.preventDefault();
 
             const provider = el.getAttribute("data-game-provider");
@@ -161,6 +179,12 @@ class GameLauncher {
             this.launch(provider, options);
 
             ComponentManager.broadcast("game.launch", {
+                src: el,
+            });
+        }
+
+        if (loader) {
+            ComponentManager.broadcast("game.launch.loader", {
                 src: el,
             });
         }
