@@ -11,12 +11,19 @@ import { ProviderDrawer } from "../Main/Lobby/LiveDealerLobby/scripts/provider-d
  *
  */
 export class GameLoaderComponent implements ComponentInterface {
+
+    private element: HTMLElement;
+
     onLoad(element: HTMLElement, attachments: {}) {
+        this.element = element;
         this.launchGame();
+        this.showMessage();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+        this.element = element;
         this.launchGame();
+        this.showMessage();
     }
 
     /**
@@ -26,5 +33,24 @@ export class GameLoaderComponent implements ComponentInterface {
         const params = utility.getParameters(window.location.href);
 
         GameLauncher.launch(params.provider, params);
+    }
+
+    /**
+     * Show message to the user after 5 secs
+     */
+    private showMessage() {
+        setTimeout(() => {
+            utility.removeClass(this.element.querySelector(".message"), "hidden");
+            this.closeOnTimeout();
+        }, 5 * 1000);
+    }
+
+    /**
+     * Close self after 5 secs
+     */
+    private closeOnTimeout() {
+        setTimeout(() => {
+            window.close();
+        }, 5 * 1000);
     }
 }
