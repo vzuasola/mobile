@@ -1,5 +1,5 @@
 .mobile-live-dealer {
-    #providers-quick-launcher {
+    #categories-container {
         position: -webkit-sticky;
         position: sticky;
         top: 0;
@@ -34,10 +34,18 @@
 
             &-item:first-child {
                 border-left: 0;
+                width: 2rem;
+
+                svg {
+                    width: 0.8rem;
+                    border: 0;
+                    fill: $white;
+                }
             }
 
             &-item.active {
                 background: $dark-red;
+
                 .active {
                     background: $dark-red;
                     color: $yellow;
@@ -58,6 +66,11 @@
                     height: 3rem;
                     width: 3rem;
                 }
+            }
+
+            .providers-all.active {
+                background: $dark-red;
+                height: 100%;
             }
        }
 
@@ -149,68 +162,6 @@
 
         &:last-child {
             border-right: none;
-        }
-    }
-
-    .provider-7,
-    .provider-6 {
-        .game-providers-item {
-            width: 13.2857%;
-        }
-
-        .game-providers-item:last-child {
-            width: 20.2857%;
-            position: relative;
-        }
-    }
-
-    .provider-5 {
-        .game-providers-item {
-            width: 15.6667%;
-        }
-
-        .game-providers-item:last-child {
-            width: 21.6667%;
-            position: relative;
-        }
-    }
-
-    .provider-4 {
-        .game-providers-item {
-            width: 19%;
-        }
-
-        .game-providers-item:last-child {
-            width: 24%;
-            position: relative;
-        }
-    }
-
-    .provider-3 {
-        .game-providers-item {
-            width: 24%;
-        }
-
-        .game-providers-item:last-child {
-            width: 28%;
-            position: relative;
-        }
-    }
-
-    .provider-2 {
-        .game-providers-item {
-            width: 32.333333333%;
-        }
-
-        .game-providers-item:last-child {
-            width: 35.333333%;
-            position: relative;
-        }
-    }
-
-    .provider-1 {
-        .game-providers-item {
-            width: 50%;
         }
     }
 
@@ -364,9 +315,7 @@
                 }
 
                 .label-game-title {
-                    font-size: 1.4rem;
                     font-weight: 400;
-                    line-height: 1.2rem;
                 }
             }
         }
@@ -382,6 +331,10 @@
             .game-listing {
                 width: 33.33333333%;
                 padding: 0 0.2% 1% 0.2%;
+
+            .label-game-title {
+                    font-size: 1.4rem;
+                }
             }
         }
     }
