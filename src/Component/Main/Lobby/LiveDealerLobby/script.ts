@@ -1,13 +1,12 @@
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
+import {QuickLauncher} from "./scripts/quick-launcher";
 import * as Handlebars from "handlebars/runtime";
 import * as gameTemplate from "./handlebars/games.handlebars";
 import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
-import * as quickLaunchTemplate from "./handlebars/quick-launcher-tabs.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
-import EqualHeight from "@app/assets/script/components/equal-height";
-import { ProviderDrawer } from "./scripts/provider-drawer";
+
 /**
  *
  */
@@ -18,21 +17,18 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private element;
     private isLogin;
     private product: any[];
-    private transferUrl: string;
-    private transferTitle: string;
+    private attachments: any;
 
     onLoad(element: HTMLElement, attachments: {
             authenticated: boolean,
             product: any[],
-            transfer_url: string,
-            transfer_title: string,
             tabs: any[],
+            configs: any[],
         }) {
+        this.attachments = attachments;
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
-        this.transferUrl = attachments.transfer_url;
-        this.transferTitle = attachments.transfer_title;
         this.tabs = attachments.tabs;
         this.doGetLobbyData(() => {
             this.setLobby();
@@ -40,20 +36,25 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.listenHashChange();
         this.listenClickTab();
         this.listenClickGameTile();
+        this.listenClickLauncherTab();
     }
 
     onReload(element: HTMLElement, attachments: {
             authenticated: boolean,
             product: any[],
-            transfer_url: string,
-            transfer_title: string,
             tabs: any[],
+            configs: any[],
         }) {
+        if (!this.element) {
+            this.listenHashChange();
+            this.listenClickTab();
+            this.listenClickGameTile();
+            this.listenClickLauncherTab();
+        }
+        this.attachments = attachments;
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
-        this.transferUrl = attachments.transfer_url;
-        this.transferTitle = attachments.transfer_title;
         this.tabs = attachments.tabs;
         this.doGetLobbyData(() => {
             this.setLobby();
@@ -135,7 +136,10 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private setLobby() {
         this.setLobbyTabs();
-        this.populateQuickLauncherTabs();
+        if (this.groupedGames.hasOwnProperty("providers")) {
+            const quickLauncher = new QuickLauncher(this.attachments.configs);
+            quickLauncher.activate(this.groupedGames.providers);
+        }
         this.populateTabs();
         this.populateGames();
         this.setActiveTab();
@@ -147,6 +151,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private setLobbyTabs() {
         this.availableTabs = Object.keys(this.groupedGames);
     }
+
     /**
      * Gets current active tab from url, if none is found, use first tab as default.
      */
@@ -183,32 +188,13 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         const template = tabTemplate({
             tabs: this.filterTabs(this.tabs),
             authenticated: this.isLogin,
-            transfer_url: this.transferUrl,
-            transfer_titel: this.transferTitle,
-            liClass: (this.isLogin && typeof this.transferUrl !== "undefined")
-                ? "pft-item" : "pft-item half",
+            configs: this.attachments.configs,
+            hasTransferTab: (this.isLogin && this.attachments.configs.games_transfer_link !== ""),
         });
 
         if (tabsEl) {
             tabsEl.innerHTML = template;
         }
-    }
-
-    /**
-     * Populate lobby tabs
-     */
-    private populateQuickLauncherTabs() {
-        const quickTabsEl = this.element.querySelector("#providers-quick-launcher");
-        const template = quickLaunchTemplate({
-            providersTab: this.groupedGames[this.getActiveTab()],
-        });
-
-        if (quickTabsEl) {
-            quickTabsEl.innerHTML = template;
-        }
-        this.moveProviders();
-        this.activateProviderDrawer();
-        this.equalizeProviderHeight();
     }
 
     /**
@@ -241,6 +227,16 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         }
     }
 
+    private showLogin(el) {
+        if (el && !this.isLogin) {
+            ComponentManager.broadcast("header.login", {
+                src: el,
+                productVia: this.product[0].login_via,
+                regVia: this.product[0].reg_via,
+            });
+        }
+    }
+
     /**
      * Event listener for url hash change
      */
@@ -256,13 +252,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private listenClickGameTile() {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "game-listing-item", true);
-            if (el && !this.isLogin) {
-                ComponentManager.broadcast("header.login", {
-                    src: el,
-                    productVia: this.product[0].login_via,
-                    regVia: this.product[0].reg_via,
-                });
-            }
+            this.showLogin(el);
         });
     }
 
@@ -271,40 +261,26 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private listenClickTab() {
         ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.hasClass(src, "pft-item", true);
+            const el = utility.hasClass(src, "lobby-tab", true);
             if (el) {
                 const contTab = this.element.querySelector(".game-container");
                 const tabEl = this.element.querySelector("#providers-filter-transfer-container");
                 const prevActiveTab = tabEl.querySelector(".pft-item a.active");
 
-                if (prevActiveTab) {
+                if (prevActiveTab.getAttribute("data-alias") !== el.querySelector("a").getAttribute("data-alias")) {
                     utility.removeClass(contTab, prevActiveTab.getAttribute("data-alias"));
                 }
             }
         });
     }
 
-    private moveProviders() {
-        const container = this.element.querySelector("#providers-quick-launcher");
-        const providersEl = this.element.querySelector("#providers-tab");
-
-        container.appendChild(providersEl);
-    }
-
     /**
-     * Enable Provider Drawer slide behavior
+     * Event listener for quick launcher tab
      */
-    private activateProviderDrawer() {
-        const providersEl: any = this.element.querySelector("#providers-quick-launcher");
-        const providerdrawer = new ProviderDrawer(providersEl);
-        providerdrawer.activate();
-    }
-
-    private equalizeProviderHeight() {
-        setTimeout(() => {
-            const equalProvider = new EqualHeight("#providers-quick-launcher .provider-menu .game-providers-list a");
-            equalProvider.init();
-        }, 1000);
-
+    private listenClickLauncherTab() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.hasClass(src, "game-providers-tab", true);
+            this.showLogin(el);
+        });
     }
 }
