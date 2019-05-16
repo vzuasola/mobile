@@ -150,6 +150,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private setLobbyTabs() {
         this.availableTabs = Object.keys(this.groupedGames);
+        this.tabs = this.filterTabs(this.tabs);
     }
 
     /**
@@ -163,7 +164,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             return hash;
         }
 
-        return this.availableTabs[0];
+        return this.tabs[0].field_alias[0].value;
     }
 
     /**
@@ -186,7 +187,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private populateTabs() {
         const tabsEl = this.element.querySelector("#providers-filter-transfer-container");
         const template = tabTemplate({
-            tabs: this.filterTabs(this.tabs),
+            tabs: this.tabs,
             authenticated: this.isLogin,
             configs: this.attachments.configs,
             hasTransferTab: (this.isLogin && this.attachments.configs.games_transfer_link !== ""),
