@@ -191,6 +191,9 @@ modules:
   asiagaming_integration:
     class: App\MobileEntry\Module\GameIntegration\AsiaGaming\AsiaGamingModule
 
+  rubyplay_integration:
+    class: App\MobileEntry\Module\GameIntegration\RubyPlay\RubyPlayModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
