@@ -146,6 +146,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.populateTabs();
         this.populateGames();
         this.setActiveTab();
+        this.quickLaunchActiveListener();
     }
 
     /**
@@ -286,6 +287,12 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             const el = utility.hasClass(src, "game-providers-tab", true);
             this.showLogin(el);
         });
+    }
+
+    private quickLaunchActiveListener() {
+        if (this.getActiveTab() === "providers") {
+            utility.addClass(document.querySelectorAll(".providers-tab")[0], "active");
+        }
     }
 
     /**
