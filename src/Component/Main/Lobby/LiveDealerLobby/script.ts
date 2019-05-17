@@ -178,6 +178,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         const gamesEl = this.element.querySelector("#game-container");
         const template = gameTemplate({
             games: this.groupedGames[this.getActiveTab()],
+            isLogin: this.isLogin,
         });
 
         if (gamesEl) {
