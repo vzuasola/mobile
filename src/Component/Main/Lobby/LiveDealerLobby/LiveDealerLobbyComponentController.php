@@ -126,7 +126,8 @@ class LiveDealerLobbyComponentController
             $definition['lobby_tab'] = $game['field_lobby_tab'][0]['field_alias'][0]['value'] ?? "";
             $definition['target'] = $game['field_games_target'][0]['value'] ?? "popup";
             $definition['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
-            $definition['use_game_loader'] = $game['field_use_game_loader'][0]['value'] ?? 0;
+            $definition['use_game_loader'] = (isset($game['field_use_game_loader'][0]['value'])
+                && $game['field_use_game_loader'][0]['value']) ? "true" : "false";
             $definition['sort_weight'] = $game['field_lobby_tab'][0]['field_draggable_views']['lobby_tab']['weight']
                 ?? 0;
 
