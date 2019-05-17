@@ -6,7 +6,7 @@ const loader = new Loader(document.body, true);
 
 document.body.setAttribute("style", "");
 
-if (Router.route() !== "/loader") {
+if (Router.route() !== "/game/loader") {
     loader.show();
 }
 
