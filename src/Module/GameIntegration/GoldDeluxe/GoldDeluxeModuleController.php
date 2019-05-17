@@ -68,11 +68,11 @@ class GoldDeluxeModuleController
 
         if ($this->checkCurrency()) {
             $requestData = $request->getParsedBody();
-            if ($requestData['gameCode'] !== 'undefined') {
+            if ($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') {
                 $data = $this->getGameUrl($request, $response);
             }
 
-            if ($requestData['gameCode'] === 'undefined') {
+            if (!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') {
                 $data = $this->getGameLobby($request, $response);
             }
         }
