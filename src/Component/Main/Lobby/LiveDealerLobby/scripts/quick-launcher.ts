@@ -12,11 +12,12 @@ export class QuickLauncher {
     /**
      * Activate quick launcher tabs
      */
-    activate(launcherTabs) {
+    activate(launcherTabs, activeTab) {
         const quickTabsEl = document.querySelector("#providers-quick-launcher");
         const template = quickLaunchTemplate({
             providersTab: launcherTabs,
             configs: this.configs,
+            activeTab,
         });
 
         if (quickTabsEl) {

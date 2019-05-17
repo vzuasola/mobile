@@ -141,7 +141,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.setLobbyTabs();
         if (this.groupedGames.hasOwnProperty("providers")) {
             const quickLauncher = new QuickLauncher(this.attachments.configs);
-            quickLauncher.activate(this.groupedGames.providers);
+            quickLauncher.activate(this.groupedGames.providers, this.getActiveTab());
         }
         this.populateTabs();
         this.populateGames();
@@ -223,12 +223,13 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      * Sets active tab in lobby
      */
     private setActiveTab() {
+        const activeTabClass = this.getActiveTab();
         const contTab = this.element.querySelector(".game-container");
-        const activeTab = this.element.querySelector(".tab-" + this.getActiveTab());
+        const activeTab = this.element.querySelector(".tab-" + activeTabClass);
 
         if (activeTab) {
             utility.addClass(activeTab, "active");
-            utility.addClass(contTab, this.getActiveTab());
+            utility.addClass(contTab, activeTabClass);
         }
     }
 
