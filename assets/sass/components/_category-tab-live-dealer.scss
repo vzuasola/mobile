@@ -258,8 +258,14 @@
 
             &-list:first-child {
                 border-top: 0.1rem solid $gray;
+
+                svg {
+                    width: 0.8rem;
+                    border: 0;
+                    fill: $white;
+                }
             }
-    
+
             &-list:first-child + li {
                 border-top: 0.1rem solid $gray;
             }

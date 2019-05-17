@@ -292,6 +292,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private quickLaunchActiveListener() {
         if (this.getActiveTab() === "providers") {
             utility.addClass(document.querySelectorAll(".providers-tab")[0], "active");
+            utility.addClass(document.querySelectorAll(".game-providers-list a")[0], "active");
         }
     }
 
