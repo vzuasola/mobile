@@ -15,6 +15,7 @@ import {FlowGamingModule} from "@app/src/Module/GameIntegration/FlowGaming/scrip
 import {SAGamingModule} from "@app/src/Module/GameIntegration/SAGaming/script";
 import {PGSoftModule} from "@app/src/Module/GameIntegration/PGSoft/script";
 import {AsiaGamingModule} from "@app/src/Module/GameIntegration/AsiaGaming/script";
+import {GoldDeluxeModule} from "@app/src/Module/GameIntegration/GoldDeluxe/script";
 
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
@@ -48,6 +49,7 @@ ComponentManager.setModules({
     als_integration: new ALSIntegrationModule(),
     casino_integration: new CasinoIntegrationModule(),
     exchange_integration: new ExchangeIntegrationModule(),
+    gold_deluxe_integration: new GoldDeluxeModule(),
     games_integration: new GamesIntegrationModule(),
     live_dealer_integration: new LiveDealerIntegrationModule(),
 });
