@@ -71,11 +71,10 @@ class GoldDeluxeModuleController
             if ($requestData['gameCode'] !== 'undefined') {
                 $data = $this->getGameUrl($request, $response);
             }
-            
+
             if ($requestData['gameCode'] === 'undefined') {
                 $data = $this->getGameLobby($request, $response);
             }
-
         }
 
         return $this->rest->output($response, $data);
