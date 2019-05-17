@@ -310,7 +310,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 resizable: 1,
             };
 
-            let url = "/game/loader";
+            let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
 
             const params = utility.getAttributes(data.src);
 

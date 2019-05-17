@@ -36,7 +36,7 @@ class GoldDeluxeModuleController
     {
         $this->rest = $rest;
         $this->goldDeluxe = $goldDeluxe;
-        $this->config = $config->withProduct('mobile-games');
+        $this->config = $config->withProduct('mobile-live-dealer');
         $this->player = $player;
     }
 
