@@ -34,8 +34,10 @@
                 <ul class="game-providers col-12 mb-10">
                     <li class="game-providers-list col-6 pt-10 close-drawer lobby-tab">
                         <a href="#providers" class="providers-provider-menu providers-all close-drawer {{#condition activeTab "===" "providers"}}active{{/condition}}" data-alias="providers">
-                            <img src="" alt="{{configs.all_quicklaunch_alt}}" class="close-drawer">
-                            <p class="close-drawer">{{configs.all_quicklaunch_title}}</p>
+                            <svg viewBox="0 30 24 44.999">
+                                <use xlink:href="#arrow" />
+                            </svg>
+                            <p class="close-drawer">{{{this.configs.all_quicklaunch_title}}}</p>
                         </a>
                     </li>
                     {{#each providersTab}}
