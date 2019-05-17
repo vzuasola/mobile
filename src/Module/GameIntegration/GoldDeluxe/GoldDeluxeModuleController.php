@@ -67,12 +67,13 @@ class GoldDeluxeModuleController
         $data['currency'] = false;
 
         if ($this->checkCurrency()) {
+
             $requestData = $request->getParsedBody();
-            if ($requestData['gameCode'] !== 'undefined') {
+            if ($requestData['gameCode']) {
                 $data = $this->getGameUrl($request, $response);
             }
 
-            if ($requestData['gameCode'] === 'undefined') {
+            if (!$requestData['gameCode']) {
                 $data = $this->getGameLobby($request, $response);
             }
         }
@@ -128,7 +129,6 @@ class GoldDeluxeModuleController
             $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
             $currencies = explode("\r\n", $config[self::KEY . '_currency']);
             $playerCurrency = $this->player->getCurrency();
-
             if (in_array($playerCurrency, $currencies)) {
                 return true;
             }
