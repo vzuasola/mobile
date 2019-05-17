@@ -1,8 +1,10 @@
 <div class="providers-tab-list" id="providers-tab">
-    <ul class="main-game-providers game-providers provider-7">
+    <ul class="main-game-providers game-providers">
         <li class="game-providers-item lobby-tab {{#condition activeTab "===" "providers"}}active{{/condition}}">
             <a href="#providers" class="providers-tab providers-all {{#condition activeTab "===" "providers"}}active{{/condition}}" data-alias="providers">
-                All
+                <svg viewBox="0 30 24 44.999">
+                    <use xlink:href="#arrow" />
+                </svg>
             </a>
         </li>
         {{#each providersTab}}
