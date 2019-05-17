@@ -115,7 +115,9 @@ class GameLauncher {
                 return false;
             }
 
-            if (element.getAttribute("data-game-loader") === "true") {
+            if (element.getAttribute("data-game-loader") === "true" &&
+                element.getAttribute("data-game-launch") === "true"
+            ) {
                 loader = true;
                 return true;
             }
@@ -143,7 +145,7 @@ class GameLauncher {
             });
         }
 
-        if (loader) {
+        if (el && loader) {
             ComponentManager.broadcast("game.launch.loader", {
                 src: el,
             });
@@ -183,7 +185,7 @@ class GameLauncher {
             });
         }
 
-        if (loader) {
+        if (el && loader) {
             ComponentManager.broadcast("game.launch.loader", {
                 src: el,
             });
