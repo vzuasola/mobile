@@ -34,10 +34,9 @@
 
             &-item:first-child {
                 border-left: 0;
-                width: 2rem;
 
                 svg {
-                    width: 0.8rem;
+                    width: 2.6rem;
                     border: 0;
                     fill: $white;
                 }
@@ -260,7 +259,7 @@
                 border-top: 0.1rem solid $gray;
 
                 svg {
-                    width: 0.8rem;
+                    width: 3.3rem;
                     border: 0;
                     fill: $white;
                 }
@@ -341,19 +340,6 @@
 
             .label-game-title {
                     font-size: 1.4rem;
-                }
-            }
-        }
-    }
-
-    // Landscape
-    @media (orientation: landscape) {
-        .game-container {
-            &.featured,
-            &.providers {
-                .game-listing {
-                    width: 25%;
-                    padding: 0 0.2% 1% 0.2%;
                 }
             }
         }
