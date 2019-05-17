@@ -19,7 +19,7 @@ routes:
             enabled: true
             expires: 1800
 
-    /loader:
+    /game/loader:
         method: GET
         action: App\MobileEntry\Controller\GameLoaderController:view
         components:
