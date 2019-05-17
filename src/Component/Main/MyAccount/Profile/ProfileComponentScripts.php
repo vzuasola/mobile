@@ -65,6 +65,7 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
 
         $fname = substr($userDetail['firstName'], 0, 5);
         $lname = substr($userDetail['lastName'], 0, 5);
+        // $bdate = $userDetail['birthdate'];
 
         if (strtoupper($fname) == "DFRFN" ||
             strtoupper($lname) == "DFRLN"
@@ -101,6 +102,7 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
     {
         // initiate values config
         $apiValues = $this->user->getPlayerDetails();
+        
         $receiveNews = $this->playerSubscription->isSubscribed();
 
         $mobile1Value = null;
@@ -126,6 +128,9 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'city' => ($apiValues['city'] === '___') ? '' : $apiValues['city'],
             'postal_code' => $apiValues['postalCode'],
             'receive_news' => $receiveNews,
+            'birthdate' => $apiValues['dateOfBirth']
+            // 'birthdate' => date('d/m/Y' ,$apiValues['dateOfBirth'])
+            // 'birthdate' =>  date($dateFormat ?? 'Y/m/d', $apiValues['dateOfBirth'])
         ];
     }
 }

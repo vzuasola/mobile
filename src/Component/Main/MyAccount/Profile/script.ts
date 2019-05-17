@@ -11,6 +11,7 @@ export class MyAccountProfileComponent implements ComponentInterface {
     private smsVerification: SmsVerification;
 
     onLoad(element: HTMLElement, attachments: {}) {
+        // console.log(element);
         this.activateProfile(element, attachments);
         this.activeSmsVerification(element, attachments);
     }

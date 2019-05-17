@@ -319,16 +319,30 @@ class MyProfileForm extends FormBase implements FormInterface
         $definition['submit']['options']['attr']['data-redirect'] = 0;
 
         foreach ($this->disabledFields as $field) {
+            // dd(var_dump($definition[$field]['options']['attr']));
             $dummyName = substr($definition[$field]['options']['attr']['value'], 0, 5);
+            // $inputName = $definition[$field]['options']['attr']['name'];
+            $bdate = $definition[$field]['options']['attr']['value'];
 
             if (strtoupper($dummyName) == 'DFRFN' ||
-                strtoupper($dummyName) == 'DFRLN') {
+                strtoupper($dummyName) == 'DFRLN' 
+                // $inputName == 'MyProfileForm[birthdate]' || 
+                ){ 
+                // ||
+                // $bdate === "01/12/1925"){
                 $definition[$field]['options']['attr']['value'] = "";
 
                 if ($this->request->getQueryParam("pmid")) {
                     $definition['submit']['options']['attr']['data-redirect'] = 1;
                 }
-            } else {
+
+
+            
+            } elseif($bdate == '01/12/1925'){
+
+            }
+            
+            else {
                 $definition[$field]['options']['attr']['disabled'] = "disabled";
             }
         }
