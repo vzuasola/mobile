@@ -4,9 +4,11 @@ import * as quickLaunchTemplate from "../handlebars/quick-launcher-tabs.handleba
 
 export class QuickLauncher {
     private configs: any[];
+    private isLogin: boolean;
 
-    constructor(configs) {
+    constructor(configs, isLogin) {
         this.configs = configs;
+        this.isLogin = isLogin;
     }
 
     /**
@@ -18,6 +20,7 @@ export class QuickLauncher {
             providersTab: launcherTabs,
             configs: this.configs,
             activeTab,
+            isLogin: this.isLogin,
         });
 
         if (quickTabsEl) {
