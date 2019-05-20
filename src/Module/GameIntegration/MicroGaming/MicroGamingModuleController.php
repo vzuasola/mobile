@@ -106,8 +106,8 @@ class MicroGamingModuleController
                     'languageCode' => $requestData['langCode'],
                 ]
             ]);
-            if ($responseData['url']) {
-                $data['gameurl'] = $responseData['url'];
+            if ($responseData) {
+                $data['gameurl'] = $responseData;
             }
         } catch (\Exception $e) {
             $data = [];
