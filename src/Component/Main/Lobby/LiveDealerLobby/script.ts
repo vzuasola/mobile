@@ -20,6 +20,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private product: any[];
     private attachments: any;
     private windowObject: any;
+    private gameLink: string;
     onLoad(element: HTMLElement, attachments: {
             authenticated: boolean,
             product: any[],
@@ -325,7 +326,32 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 }
             }
 
-            this.windowObject = PopupWindow(url, "gameWindow", prop);
+            this.windowObject = PopupWindow("", "gameWindow", prop);
+
+            this.updatePopupWindow(url);
         });
+    }
+
+    private updatePopupWindow(url) {
+        try {
+            if (this.windowObject.location.href !== "about:blank" &&
+                url === this.gameLink &&
+                !this.windowObject.closed
+            ) {
+                this.windowObject.focus();
+            } else {
+                this.gameLink = url;
+                this.windowObject.location.href = url;
+            }
+        } catch (e) {
+            if (url !== this.gameLink) {
+                this.gameLink = url;
+                this.windowObject.location.href = url;
+            }
+
+            if (this.windowObject) {
+                this.windowObject.focus();
+            }
+        }
     }
 }
