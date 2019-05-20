@@ -121,10 +121,15 @@ class MicroGamingModuleController
         $requestData = $request->getParsedBody();
 
         try {
-            $responseData = $this->microGaming->getGameUrlById('icore_mg', $requestData['gameCode'], [
+            $params = explode('|', $requestData['gameCode']);
+            $gameCode = $params[0];
+            $productProvider = $params[1] ?? null;
+
+            $responseData = $this->microGaming->getGameUrlById('icore_mg', $gameCode , [
                 'options' => [
                     'languageCode' => $requestData['langCode'],
-                    'playMode' => 'true'
+                    'playMode' => 'true',
+                    'providerProduct' => $productProvider,
                 ]
             ]);
             if ($responseData['url']) {
