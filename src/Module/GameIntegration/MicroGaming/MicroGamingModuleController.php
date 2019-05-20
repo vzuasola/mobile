@@ -125,7 +125,7 @@ class MicroGamingModuleController
             $gameCode = $params[0];
             $productProvider = $params[1] ?? null;
 
-            $responseData = $this->microGaming->getGameUrlById('icore_mg', $gameCode , [
+            $responseData = $this->microGaming->getGameUrlById('icore_mg', $gameCode, [
                 'options' => [
                     'languageCode' => $requestData['langCode'],
                     'playMode' => 'true',
