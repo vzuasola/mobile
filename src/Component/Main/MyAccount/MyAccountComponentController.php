@@ -259,7 +259,6 @@ class MyAccountComponentController
     {
         $defaultValues = $this->userFetcher->getPlayerDetails();
         $profileFormValues = $request->getParsedBody();
-        print_r($profileFormValues);
 
         $receiveNews = false;
         $mobile1 = null;
