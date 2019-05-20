@@ -114,7 +114,7 @@ class MicroGamingModuleController
         }
         return $data;
     }
-    
+
     private function getGameUrl($request, $response) {
         $data['currency'] = true;
         $requestData = $request->getParsedBody();
