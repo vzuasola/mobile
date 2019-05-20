@@ -147,6 +147,7 @@ export class VerifyPassword extends FormBase {
     }
 
     private udpateProfile = () => {
+        console.log(this.formValues);
         this.closeModal();
         utility.removeClass(this.updateProfileLoader, "hidden");
         this.formValues.birthdate = this.standardizeDateFormat(

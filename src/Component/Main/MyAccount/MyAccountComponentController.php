@@ -259,6 +259,7 @@ class MyAccountComponentController
     {
         $defaultValues = $this->userFetcher->getPlayerDetails();
         $profileFormValues = $request->getParsedBody();
+        print_r($profileFormValues);
 
         $receiveNews = false;
         $mobile1 = null;
@@ -283,7 +284,6 @@ class MyAccountComponentController
             $receiveNews = true;
         }
 
-        // todo: will add "DateOfBirth": "/Date(-1391212800000)/",
         $playerDetails = [
             'username' => $defaultValues['username'],
             'firstname' => $profileFormValues['firstName'],

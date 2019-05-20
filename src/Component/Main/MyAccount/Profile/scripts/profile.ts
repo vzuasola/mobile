@@ -124,8 +124,7 @@ export class Profile extends FormBase {
         const languageField: HTMLFormElement = this.form.querySelector("#MyProfileForm_language");
         const receiveNewsField: HTMLFormElement = this.form.querySelector("#ProfileForm_contact_preference");
         const dateFormat = bdateField.getAttribute("date-format");
-        console.log(this.attachments.isFastReg);
-        // console.log(bdateField.getAttribute("date-format"));
+        // console.log(this.attachments.isFastReg);
         return {
             firstname: (this.attachments.isFastReg || initialLoad)
                 ? fnameField.value
@@ -226,7 +225,6 @@ export class Profile extends FormBase {
                 if (this.hasChanges()) {
                     const profileChangesContainer = this.element.querySelector(this.modalSelector + " .changes");
                     const data: any = this.getFilteredDifference(this.oldValues, this.getValues(true));
-                    console.log(data);
 
                     // Add labels to data
                     data.labels = this.getLabels();
