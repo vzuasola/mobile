@@ -331,15 +331,13 @@ class MyProfileForm extends FormBase implements FormInterface
             if (strtoupper($dummyName) == 'DFRFN' ||
                 strtoupper($dummyName) == 'DFRLN' ||
                 ($field === "birthdate" && $isDateMatch)
-            ){
+            ) {
                 $definition[$field]['options']['attr']['value'] = "";
 
                 if ($this->request->getQueryParam("pmid")) {
                     $definition['submit']['options']['attr']['data-redirect'] = 1;
                 }
-            
-            }
-            else {
+            } else {
                 $definition[$field]['options']['attr']['disabled'] = "disabled";
             }
         }
@@ -380,5 +378,4 @@ class MyProfileForm extends FormBase implements FormInterface
 
         return $tempDate->getTimestamp() + abs($currentDate->getTimestamp()) === 0;
     }
-
 }
