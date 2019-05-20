@@ -12,7 +12,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
  */
 export class DatePicker {
     private element: HTMLElement;
-    private dateFormat = "DD/MM/YYYY";
+    private dateFormat = "MM/DD/YYYY";
     private currentDate = new Date();
     private yearMinus18 = this.currentDate.getFullYear() - 18;
     private currentMonth = this.currentDate.getMonth();
@@ -23,8 +23,11 @@ export class DatePicker {
     }
 
     init() {
+        this.dateFormat = this.formatFromPHPtoJS(
+            this.element.querySelector("#MyProfileForm_birthdate").getAttribute("date-format"),
+        );
+
         const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        // console.log(this.element);
         const options = {
             field: this.element.querySelector("#MyProfileForm_birthdate"),
             format: this.dateFormat,
@@ -89,4 +92,30 @@ export class DatePicker {
         return dateString[0] + "/" + dateString[1] + "/" + dateString[2];
     }
 
+    private formatFromPHPtoJS(format) {
+        let result = "";
+        const currentFormat = format.split("/");
+
+        for (let i = 0; i < currentFormat.length; i++) {
+            switch (currentFormat[i].toLowerCase()) {
+                case "m":
+                    result += "MM";
+                    break;
+                case "d":
+                    result += "DD";
+                    break;
+                case "y":
+                    result += "YYYY";
+                    break;
+                default:
+                    break;
+            }
+
+            if (i < currentFormat.length - 1) {
+                result += "/";
+            }
+        }
+
+        return result;
+    }
 }

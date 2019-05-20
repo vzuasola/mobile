@@ -13,24 +13,22 @@ import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/componen
  * @param Object attachments
  */
 export class VerifyPassword extends FormBase {
-    private emailField: HTMLFormElement;
     private passwordContainer: HTMLElement;
     private form: HTMLFormElement;
     private loader: Loader;
     private updateProfileLoader: HTMLElement;
     private validator: any;
-    private bdate: HTMLFormElement;
     private password: HTMLFormElement;
     private oldValues: any;
     private formValues: any;
     private errorNotification: any;
     private successNotification: any;
-    private config: any;
+    private profileForm: HTMLFormElement;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
         this.password = this.element.querySelector("#VerifyPasswordForm_verify_password");
-        this.bdate = this.element.querySelector("#MyProfileForm_birthdate");
+        this.profileForm = document.querySelector(".profile-form");
     }
 
     init() {
@@ -149,13 +147,13 @@ export class VerifyPassword extends FormBase {
     }
 
     private udpateProfile = () => {
-        console.log(document.querySelector("#MyProfileForm_birthdate"));
         this.closeModal();
         utility.removeClass(this.updateProfileLoader, "hidden");
         this.formValues.birthdate = this.standardizeDateFormat(
             this.formValues.birthdate.split("/"),
-            this..getAttribute("date-format").split("/"),
+            this.profileForm.MyProfileForm_birthdate.getAttribute("date-format").split("/"),
         );
+
         // Disable fields
         this.disableFields(this.form);
 
