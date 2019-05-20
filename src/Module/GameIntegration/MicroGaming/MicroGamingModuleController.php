@@ -112,7 +112,6 @@ class MicroGamingModuleController
         } catch (\Exception $e) {
             $data = [];
         }
-
         return $data;
     }
     
@@ -133,7 +132,6 @@ class MicroGamingModuleController
         } catch (\Exception $e) {
             $data = [];
         }
-
         return $data;
     }
 }
