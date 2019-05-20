@@ -191,6 +191,11 @@
 
         .provider-menu {
             margin-right: 0;
+
+            .providers-all.active {
+                background: $red;
+                height: 100%;
+            }
         }
     }
 
@@ -322,6 +327,8 @@
 
                 .label-game-title {
                     font-weight: 400;
+                    width: 98%;
+                    padding: 0 1%;
                 }
             }
         }
