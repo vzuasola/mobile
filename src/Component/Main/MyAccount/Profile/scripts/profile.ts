@@ -8,7 +8,6 @@ import {Loader} from "@app/assets/script/components/loader";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 import Tooltip from "@app/assets/script/components/tooltip";
 import {DatePicker} from "./date-picker";
-import * as moment from "@app/node_modules/moment/moment";
 
 /**
  * Profile
@@ -136,7 +135,7 @@ export class Profile extends FormBase {
                 : this.attachments.user.last_name,
             birthdate: (this.attachments.isFastReg || initialLoad)
                 ? bdateField.value
-                : moment(this.attachments.user.birthdate).format(dateFormat),
+                : this.attachments.user.birthdate,
             gender: visual
                 ? this.getGenderText()
                 : genderField.value,
