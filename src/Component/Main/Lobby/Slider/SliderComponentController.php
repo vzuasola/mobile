@@ -149,6 +149,7 @@ class SliderComponentController
 
                 $slider['game_code'] = $slide['field_slider_game_code'][0]['value'] ?? '';
                 $slider['game_provider'] = $slide['field_slider_game_provider'][0]['value'] ?? '';
+                $slider['game_subprovider'] = $slide['field_games_subprovider'][0]['name'][0]['value'] ?? "";
                 $slider['game_platform'] = $slide['field_game_platform'][0]['value'] ?? '';
                 $slider['field_title'] = $slide['field_title'][0]['value'] ?? '';
 
