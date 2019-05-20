@@ -70,7 +70,7 @@ export class VerifyPassword extends FormBase {
      * @param Boolean initialLoad flag to indicate for initial load to cache the initial value on Document ready
      */
     private getValues(initialLoad?) {
-        const profileForm: HTMLFormElement = document.querySelector(".profile-form");
+        const profileForm = this.profileForm;
         const fnameField = profileForm.MyProfileForm_first_name;
         const lnameField = profileForm.MyProfileForm_last_name;
         const birthdateField = profileForm.MyProfileForm_birthdate;
@@ -147,7 +147,6 @@ export class VerifyPassword extends FormBase {
     }
 
     private udpateProfile = () => {
-        console.log(this.formValues);
         this.closeModal();
         utility.removeClass(this.updateProfileLoader, "hidden");
         this.formValues.birthdate = this.standardizeDateFormat(

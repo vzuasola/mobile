@@ -131,8 +131,6 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'postal_code' => $apiValues['postalCode'],
             'receive_news' => $receiveNews,
             'birthdate' => $apiValues['dateOfBirth']
-            // 'birthdate' => date('d/m/Y' ,$apiValues['dateOfBirth'])
-            // 'birthdate' =>  date($dateFormat ?? 'Y/m/d', $apiValues['dateOfBirth'])
         ];
     }
 }

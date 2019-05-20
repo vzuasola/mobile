@@ -1,4 +1,4 @@
-var i18n = {
+const i18n = {
     en: {
         previousMonth: 'Previous Month',
         nextMonth: 'Next Month',

@@ -46,7 +46,6 @@ mix.webpackConfig({
         alias: {
             // ts bindings
             "@app": path.resolve(__dirname, './'),
-            "@nodeModule": path.resolve(__dirname, './node_modules'),
             "@core": path.resolve(__dirname, './core/core/'),
             "@plugins": path.resolve(__dirname, './core/core/src/Plugins'),
 
