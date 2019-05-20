@@ -105,7 +105,6 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
     {
         // initiate values config
         $apiValues = $this->user->getPlayerDetails();
-        
         $receiveNews = $this->playerSubscription->isSubscribed();
 
         $mobile1Value = null;
