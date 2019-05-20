@@ -65,10 +65,11 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
 
         $fname = substr($userDetail['firstName'], 0, 5);
         $lname = substr($userDetail['lastName'], 0, 5);
-        // $bdate = $userDetail['birthdate'];
+        $bdate = $userDetail['dateOfBirth'];
 
         if (strtoupper($fname) == "DFRFN" ||
-            strtoupper($lname) == "DFRLN"
+            strtoupper($lname) == "DFRLN" ||
+            $bdate  = "1/12/1925"
         ) {
             $isFastReg = true;
         }

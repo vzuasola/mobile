@@ -8,6 +8,7 @@ import {Loader} from "@app/assets/script/components/loader";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 import Tooltip from "@app/assets/script/components/tooltip";
 import {DatePicker} from "./date-picker";
+import * as moment from "@app/node_modules/moment/moment";
 
 /**
  * Profile
@@ -123,7 +124,9 @@ export class Profile extends FormBase {
         const genderField: HTMLFormElement = this.form.querySelector('input[name="MyProfileForm[gender]"]:checked');
         const languageField: HTMLFormElement = this.form.querySelector("#MyProfileForm_language");
         const receiveNewsField: HTMLFormElement = this.form.querySelector("#ProfileForm_contact_preference");
-
+        const dateFormat = bdateField.getAttribute("date-format");
+        console.log(this.attachments.isFastReg);
+        // console.log(bdateField.getAttribute("date-format"));
         return {
             firstname: (this.attachments.isFastReg || initialLoad)
                 ? fnameField.value
@@ -133,7 +136,7 @@ export class Profile extends FormBase {
                 : this.attachments.user.last_name,
             birthdate: (this.attachments.isFastReg || initialLoad)
                 ? bdateField.value
-                : this.attachments.user.birthdate,
+                : moment(this.attachments.user.birthdate).format(dateFormat),
             gender: visual
                 ? this.getGenderText()
                 : genderField.value,
@@ -224,6 +227,7 @@ export class Profile extends FormBase {
                 if (this.hasChanges()) {
                     const profileChangesContainer = this.element.querySelector(this.modalSelector + " .changes");
                     const data: any = this.getFilteredDifference(this.oldValues, this.getValues(true));
+                    console.log(data);
 
                     // Add labels to data
                     data.labels = this.getLabels();

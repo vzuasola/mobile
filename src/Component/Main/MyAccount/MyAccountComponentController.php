@@ -260,7 +260,6 @@ class MyAccountComponentController
         $defaultValues = $this->userFetcher->getPlayerDetails();
         $profileFormValues = $request->getParsedBody();
 
-        // ddd($profileFormValues);
         $receiveNews = false;
         $mobile1 = null;
 
@@ -289,7 +288,7 @@ class MyAccountComponentController
             'username' => $defaultValues['username'],
             'firstname' => $profileFormValues['firstName'],
             'lastname' => $profileFormValues['lastName'],
-            // 'birthdate' => "/Date(" . strtotime($profileFormValues['birthdate']) * 1000 . ")/",
+            'birthdate' => "/Date(" . $profileFormValues['birthdate'] . ")/",
             'email' => $defaultValues['email'],
             'countryid' => $defaultValues['countryId'],
             'gender' => $profileFormValues['gender'],

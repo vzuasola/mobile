@@ -19,6 +19,7 @@ export class VerifyPassword extends FormBase {
     private loader: Loader;
     private updateProfileLoader: HTMLElement;
     private validator: any;
+    private bdate: HTMLFormElement;
     private password: HTMLFormElement;
     private oldValues: any;
     private formValues: any;
@@ -29,6 +30,7 @@ export class VerifyPassword extends FormBase {
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
         this.password = this.element.querySelector("#VerifyPasswordForm_verify_password");
+        this.bdate = this.element.querySelector("#MyProfileForm_birthdate");
     }
 
     init() {
@@ -73,6 +75,7 @@ export class VerifyPassword extends FormBase {
         const profileForm: HTMLFormElement = document.querySelector(".profile-form");
         const fnameField = profileForm.MyProfileForm_first_name;
         const lnameField = profileForm.MyProfileForm_last_name;
+        const birthdateField = profileForm.MyProfileForm_birthdate;
 
         return {
             gender: this.getGenderValue(),
@@ -85,6 +88,7 @@ export class VerifyPassword extends FormBase {
             receive_news: profileForm.ProfileForm_contact_preference.checked,
             firstName: (this.attachments.isFastReg || initialLoad) ? fnameField.value : this.oldValues.firstName,
             lastName: (this.attachments.isFastReg || initialLoad) ? lnameField.value : this.oldValues.lastName,
+            birthdate: (this.attachments.isFastReg || initialLoad) ? birthdateField.value : this.oldValues.birthdate,
         };
     }
 
@@ -145,9 +149,13 @@ export class VerifyPassword extends FormBase {
     }
 
     private udpateProfile = () => {
+        console.log(document.querySelector("#MyProfileForm_birthdate"));
         this.closeModal();
         utility.removeClass(this.updateProfileLoader, "hidden");
-
+        this.formValues.birthdate = this.standardizeDateFormat(
+            this.formValues.birthdate.split("/"),
+            this..getAttribute("date-format").split("/"),
+        );
         // Disable fields
         this.disableFields(this.form);
 
@@ -213,4 +221,29 @@ export class VerifyPassword extends FormBase {
             },
         );
     }
+
+    private standardizeDateFormat(date, format) {
+        const currentFormat = format;
+        const dateSelected = date;
+        const dateToSubmit = [0, 0, 0];
+
+        for (let i = 0; i < currentFormat.length; i++) {
+            switch (currentFormat[i].toLowerCase()) {
+                case "m":
+                    dateToSubmit[0] = dateSelected[i];
+                    break;
+                case "d":
+                    dateToSubmit[1] = dateSelected[i];
+                    break;
+                case "y":
+                    dateToSubmit[2] = dateSelected[i];
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return new Date(dateToSubmit.join("/") + " GMT+0").getTime();
+    }
+
 }

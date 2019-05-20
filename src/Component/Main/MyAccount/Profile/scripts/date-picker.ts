@@ -24,7 +24,7 @@ export class DatePicker {
 
     init() {
         const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        console.log(this.element);
+        // console.log(this.element);
         const options = {
             field: this.element.querySelector("#MyProfileForm_birthdate"),
             format: this.dateFormat,

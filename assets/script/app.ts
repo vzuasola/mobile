@@ -2,7 +2,7 @@ import * as versioning from "@app/web/version.json";
 import {Semver} from "./components/semver";
 
 const version = versioning.version;
-console.log("Application version: " + Semver.show(version));
+// console.log("Application version: " + Semver.show(version));
 
 import "promise-polyfill/src/polyfill";
 import "es6-shim";
