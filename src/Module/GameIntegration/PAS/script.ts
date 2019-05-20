@@ -182,7 +182,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                 let key = "dafa888";
 
                 if (product === "mobile-casino-gold" && this.futuramaGold) {
-                    key = "casinogold";
+                    key = "dafagold";
                 }
 
                 if (DafaConnect.isDafaconnect()) {
