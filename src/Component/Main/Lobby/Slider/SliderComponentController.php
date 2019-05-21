@@ -151,6 +151,8 @@ class SliderComponentController
                 $slider['game_provider'] = $slide['field_slider_game_provider'][0]['value'] ?? '';
                 $slider['game_platform'] = $slide['field_game_platform'][0]['value'] ?? '';
                 $slider['field_title'] = $slide['field_title'][0]['value'] ?? '';
+                $slider['use_game_loader'] = $slide['field_slider_use_game_loader'][0]['value'] ?? 'false';
+
 
                 $sliderUrl = $slide['field_banner_link'][0]['uri'] ?? '';
                 $slider['banner_url'] = $this->url->generateUri($sliderUrl, ['skip_parsers' => true]);
