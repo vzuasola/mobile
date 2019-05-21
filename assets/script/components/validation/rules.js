@@ -221,18 +221,9 @@ validators.regex = {
 validators.valid_date = {
     callback: function (value, param, field) {
         var birthdateEl = document.getElementById(field.id);
-        var birthDateFormat = birthdateEl.getAttribute('date-format');
-
-        if (birthDateFormat === null) {
-            return false;
-        }
-
+        var birthDateFormat = formatFromPHPtoJS(birthdateEl.getAttribute('date-format'));
         birthDateFormat = birthDateFormat.split('/');
         value = value.split('/');
-
-        if (value) {
-            return false;
-        }
 
         if (value[3] !== undefined) {
             return false;
@@ -303,5 +294,29 @@ validators.not_match_username = {
         return value.toUpperCase() !== field.element.getAttribute('data-username');
     },
 };
+
+function formatFromPHPtoJS(format) {
+    var result = "";
+    var currentFormat = format.split("/");
+
+    for (var i = 0; i < currentFormat.length; i++) {
+        switch (currentFormat[i].toLowerCase()) {
+            case "m": result += "MM";
+                break;
+            case "d": result += "DD";
+                break;
+            case "y": result += "YYYY";
+                break;
+            default:
+                break;
+        }
+
+        if (i < currentFormat.length - 1) {
+            result += "/";
+        }
+    }
+
+    return result;
+}
 
 export default validators;
