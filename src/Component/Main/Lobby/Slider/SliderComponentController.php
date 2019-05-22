@@ -152,6 +152,7 @@ class SliderComponentController
                 $slider['game_platform'] = $slide['field_game_platform'][0]['value'] ?? '';
                 $slider['field_title'] = $slide['field_title'][0]['value'] ?? '';
                 $slider['use_game_loader'] = $slide['field_slider_use_game_loader'][0]['value'] ?? 'false';
+                $slider['forced_game_launch'] = $slide['field_slider_enable_game_launch'][0]['value'] ?? false;
 
 
                 $sliderUrl = $slide['field_banner_link'][0]['uri'] ?? '';

@@ -4,9 +4,9 @@
             <a 
                 href="{{ this.banner_url }}" 
                 target="{{ this.banner_target }}"
-                {{#if this.game_code }}
+                {{#condition this.game_code "||" this.forced_game_launch}}
                     class = "game-list"
-                {{/if}}
+                {{/condition}}
                 data-game-provider="{{ this.game_provider }}"
                 data-game-code="{{ this.game_code }}"
                 data-game-target="{{ this.banner_target }}"
