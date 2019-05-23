@@ -26,7 +26,7 @@
         'app-download-three' %}
         <dt data-transition-top="true">{{ all_apps_text }}</dt>
         <dd>
-            <ul class="app-download clearfix">
+            <ul class="app-download-accordion clearfix">
                 {% for menu in downloads_menu[3:] %}
                 <li class="app-download-list {{ menuLength }}">
                     <a href="{{ url(menu.uri) }}" class="{{ menu.attributes.class }} {{ menu.attributes.svg }} download-box"

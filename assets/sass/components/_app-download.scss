@@ -3,8 +3,13 @@
     margin: 0;
     width: 100%;
     height: auto;
-    padding: 0.5rem 0 0;
+    padding: 0.5rem 0;
     list-style: none;
+
+    &-accordion {
+        padding: 0;
+        margin: 0;
+    }
 
     &-list {
         float: left;
@@ -38,26 +43,29 @@
                 display: flex;
             }
         }
-
     }
 
     &-two {
         width: 47%;
-        margin: 0 0 2% 2%;
+        margin: 0 0 0 2%;
     }
 
     &-three {
         width: 31.333333%;
-        margin: 0 0 1.5% 1.5%;
+        margin: 0 0 0 1.5%;
     }
 }
 
 .download {
     background: $darker-red;
 
+    .ckeditor-accordion {
+        margin-top: 0;
+
+    }
+
     .ckeditor-accordion,
     .ckeditor-wrapper {
-        margin: 0;
 
         dt {
             position: relative;
@@ -71,13 +79,15 @@
             border-bottom: 0.1rem solid $darker-red;
 
             .arrow {
+                position: initial;
+                display: inline-block;
                 width: 1.5rem;
                 height: 1.5rem;
                 box-sizing: border-box;
-                position: absolute;
-                left: 67%;
                 transform: rotate(-45deg);
                 border: 0;
+                margin-left: 1rem;
+                margin-bottom: -0.8rem;
 
                 &::before {
                     content: '';
@@ -110,15 +120,11 @@
     }
 
     .ckeditor-wrapper.active {
-        .app-download {
-            padding-top: 0;
-        }
-
         dt {
-            margin-top: -0.5rem;
+            margin-top: 0.5rem;
 
             .arrow {
-                top: 15%;
+                margin-bottom: 0;
                 transform: rotate(135deg);
                 border: 0;
             }
