@@ -16,7 +16,7 @@ import {SAGamingModule} from "@app/src/Module/GameIntegration/SAGaming/script";
 import {PGSoftModule} from "@app/src/Module/GameIntegration/PGSoft/script";
 import {AsiaGamingModule} from "@app/src/Module/GameIntegration/AsiaGaming/script";
 import {GoldDeluxeModule} from "@app/src/Module/GameIntegration/GoldDeluxe/script";
-
+import {RubyPlayModule} from "@app/src/Module/GameIntegration/RubyPlay/script";
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
 import {GenericIntegrationModule} from "@app/src/Module/ProductIntegration/Generic/script";
@@ -42,6 +42,7 @@ ComponentManager.setModules({
     sagaming_integration: new SAGamingModule(),
     pgsoft_integration: new PGSoftModule(),
     asiagaming_integration: new AsiaGamingModule(),
+    rubyplay_integration: new RubyPlayModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
     generic_integration: new GenericIntegrationModule(),

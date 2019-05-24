@@ -112,8 +112,8 @@ class FooterComponent implements ComponentWidgetInterface
     {
         if ($footerMenu) {
             foreach ($footerMenu as $key => $link) {
-                if ($this->idDomain->isLangSelectorHidden() ||
-                    $this->product->getProduct() == 'mobile-casino-gold' &&
+                if (($this->idDomain->isLangSelectorHidden() ||
+                    $this->product->getProduct() == 'mobile-casino-gold') &&
                     strpos($link['attributes']['class'], 'language-trigger') !== false
                 ) {
                     unset($footerMenu[$key]);
