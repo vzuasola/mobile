@@ -123,7 +123,7 @@ class SAGamingModuleController
 
         return $data;
     }
-    
+
     private function checkCurrency()
     {
         try {
