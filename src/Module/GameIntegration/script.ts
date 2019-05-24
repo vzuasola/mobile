@@ -30,6 +30,7 @@ export class GameIntegrationModule implements ModuleInterface {
         const asiaGaming: any = ComponentManager.getModuleInstance("asiagaming_integration");
         const goldDeluxe: any = ComponentManager.getModuleInstance("gold_deluxe_integration");
         const rubyPlay: any = ComponentManager.getModuleInstance("rubyplay_integration");
+        const evoGaming: any = ComponentManager.getModuleInstance("evolution_gaming_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
@@ -42,6 +43,7 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("asia_gaming", asiaGaming);
         this.gameLauncher.setProvider("gold_deluxe", goldDeluxe);
         this.gameLauncher.setProvider("ruby_play", rubyPlay);
+        this.gameLauncher.setProvider("evo_gaming", evoGaming);
 
         setTimeout(() => {
             this.gameLauncher.init();

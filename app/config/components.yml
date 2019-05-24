@@ -204,6 +204,9 @@ modules:
   rubyplay_integration:
     class: App\MobileEntry\Module\GameIntegration\RubyPlay\RubyPlayModule
 
+  evolution_gaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\EvolutionGaming\EvolutionGamingModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
