@@ -71,18 +71,14 @@ class RubyPlayModuleController
             $params = explode('|', $requestData['gameCode']);
 
             try {
-                if (isset($params[0]) && isset($params[1])) {
-                    $gameCode = $params[0];
-                    $productProvider = $params[1];
-                    $responseData = $this->rubyPlay->getGameUrlById('icore_rp', $gameCode, [
-                        'options' => [
-                            'languageCode' => $requestData['langCode'],
-                            'providerProduct' => $productProvider,
-                        ]
-                    ]);
-                    if ($responseData['url']) {
-                        $data['gameurl'] = $responseData['url'];
-                    }
+                $responseData = $this->rubyPlay->getGameUrlById('icore_rp', $params[0], [
+                    'options' => [
+                        'languageCode' => $requestData['langCode'],
+                        'providerProduct' => $params[1] ?? null,
+                    ]
+                ]);
+                if ($responseData['url']) {
+                    $data['gameurl'] = $responseData['url'];
                 }
             } catch (\Exception $e) {
                 $data = [];
