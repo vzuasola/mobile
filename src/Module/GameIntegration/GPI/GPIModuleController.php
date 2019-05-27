@@ -113,7 +113,6 @@ class GPIModuleController
             $data['gameurl'] = $gameUri;
 
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
             $data = [];
         }
 
