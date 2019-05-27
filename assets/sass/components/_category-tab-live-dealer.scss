@@ -235,6 +235,7 @@
             right: 0;
             outline: none;
             border: 0;
+            cursor: pointer;
 
             &-svg {
                 width: 2.5rem;
@@ -242,6 +243,7 @@
                 margin-top: 1rem;
                 outline: none;
                 border: 0;
+                cursor: pointer;
 
                 path {
                     fill: #fff;
