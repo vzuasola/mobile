@@ -976,8 +976,9 @@ export class GamesLobbyComponent implements ComponentInterface {
 
     private doSortCategoryGames(response, gamesList) {
         const sortedGamesList: any = [];
+        sortedGamesList["all-games"] = response.games["all-games"];
         for (const category in gamesList) {
-            if (gamesList.hasOwnProperty(category)) {
+            if (gamesList.hasOwnProperty(category) && category !== "all-games") {
                 sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
                     response,
                     category,
