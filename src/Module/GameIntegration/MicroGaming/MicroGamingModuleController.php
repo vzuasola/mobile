@@ -66,21 +66,13 @@ class MicroGamingModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
         if ($this->checkCurrency()) {
-            $data['currency'] = true;
             $requestData = $request->getParsedBody();
+            if ($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') {
+                $data = $this->getGameUrl($request, $response);
+            }
 
-            try {
-                $responseData = $this->microGaming->getGameUrlById('icore_mg', $requestData['gameCode'], [
-                    'options' => [
-                        'languageCode' => $requestData['langCode'],
-                        'playMode' => 'true'
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
-                }
-            } catch (\Exception $e) {
-                $data = [];
+            if (!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') {
+                $data = $this->getGameLobby($request, $response);
             }
         }
 
@@ -101,5 +93,51 @@ class MicroGamingModuleController
             // Do nothing
         }
         return false;
+    }
+
+    private function getGameLobby($request, $response)
+    {
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
+
+        try {
+            $responseData = $this->microGaming->getLobby('icore_mg', [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                ]
+            ]);
+            if ($responseData) {
+                $data['gameurl'] = $responseData;
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+        return $data;
+    }
+
+    private function getGameUrl($request, $response)
+    {
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
+
+        try {
+            $params = explode('|', $requestData['gameCode']);
+            $gameCode = $params[0];
+            $productProvider = $params[1] ?? null;
+
+            $responseData = $this->microGaming->getGameUrlById('icore_mg', $gameCode, [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                    'playMode' => 'true',
+                    'providerProduct' => $productProvider,
+                ]
+            ]);
+            if ($responseData['url']) {
+                $data['gameurl'] = $responseData['url'];
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+        return $data;
     }
 }
