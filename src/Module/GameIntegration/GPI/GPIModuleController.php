@@ -111,7 +111,6 @@ class GPIModuleController
             $gameUri = "$domain?$query";
 
             $data['gameurl'] = $gameUri;
-
         } catch (\Exception $e) {
             $data = [];
         }
