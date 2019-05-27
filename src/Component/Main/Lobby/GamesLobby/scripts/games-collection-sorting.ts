@@ -15,24 +15,22 @@ export class GamesCollectionSorting {
                    sortedCollection[id] = gamesResponse.games["all-games"][id];
                 }
             }
+        }
 
-            if (sortAlphabetical) {
-                sortedAlphaArr = this.sortGameTitleAlphabetical(gamesListArr);
-                for (const game of sortedAlphaArr) {
-                    if (!sortedCollection.hasOwnProperty("id:" + game.game_code)) {
-                        sortedAlpha["id:" + game.game_code] = game;
-                    }
-                }
-
-                if (sortedAlpha) {
-                    Object.assign(sortedCollection, sortedAlpha);
+        if (sortAlphabetical) {
+            sortedAlphaArr = this.sortGameTitleAlphabetical(gamesListArr);
+            for (const game of sortedAlphaArr) {
+                if (!sortedCollection.hasOwnProperty("id:" + game.game_code)) {
+                    sortedAlpha["id:" + game.game_code] = game;
                 }
             }
 
-            return sortedCollection;
+            if (sortedAlpha) {
+                Object.assign(sortedCollection, sortedAlpha);
+            }
         }
 
-        return gamesResponse.games.hasOwnProperty(category) ? gamesResponse.games[category] : [];
+        return sortedCollection;
     }
 
     private sortGameTitleAlphabetical(gamesList) {
