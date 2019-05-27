@@ -71,14 +71,7 @@ class GPIModuleController
         $data['currency'] = false;
 
         if ($this->checkCurrency()) {
-            $requestData = $request->getParsedBody();
-            if ($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') {
-                $data = $this->getGameUrl($request, $response);
-            }
-
-            if (!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') {
-                $data = $this->getGameLobby($request, $response);
-            }
+            $data = $this->getGameLobby($request, $response);
         }
 
         return $this->rest->output($response, $data);
@@ -111,27 +104,6 @@ class GPIModuleController
             $gameUri = "$domain?$query";
 
             $data['gameurl'] = $gameUri;
-        } catch (\Exception $e) {
-            $data = [];
-        }
-
-        return $data;
-    }
-
-    private function getGameUrl($request, $response)
-    {
-        $data['currency'] = true;
-        $requestData = $request->getParsedBody();
-
-        try {
-            $responseData = $this->gpi->getGameUrlById('icore_ebet', $requestData['gameCode'], [
-                'options' => [
-                    'languageCode' => $requestData['langCode'],
-                ]
-            ]);
-            if ($responseData['url']) {
-                $data['gameurl'] = $responseData['url'];
-            }
         } catch (\Exception $e) {
             $data = [];
         }
