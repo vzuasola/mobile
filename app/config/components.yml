@@ -210,6 +210,9 @@ modules:
   ebet_integration:
     class: App\MobileEntry\Module\GameIntegration\EBet\EBetModule
 
+  gpi_integration:
+    class: App\MobileEntry\Module\GameIntegration\GPI\GPIModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
