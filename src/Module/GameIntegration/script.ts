@@ -32,6 +32,7 @@ export class GameIntegrationModule implements ModuleInterface {
         const rubyPlay: any = ComponentManager.getModuleInstance("rubyplay_integration");
         const evoGaming: any = ComponentManager.getModuleInstance("evolution_gaming_integration");
         const eBet: any = ComponentManager.getModuleInstance("ebet_integration");
+        const gpi: any = ComponentManager.getModuleInstance("gpi_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
@@ -44,7 +45,9 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("asia_gaming", asiaGaming);
         this.gameLauncher.setProvider("gold_deluxe", goldDeluxe);
         this.gameLauncher.setProvider("ruby_play", rubyPlay);
+        this.gameLauncher.setProvider("evo_gaming", evoGaming);
         this.gameLauncher.setProvider("ebet", eBet);
+        this.gameLauncher.setProvider("gpi", gpi);
 
         setTimeout(() => {
             this.gameLauncher.init();
