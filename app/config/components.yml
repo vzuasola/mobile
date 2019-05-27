@@ -207,6 +207,9 @@ modules:
   evolution_gaming_integration:
     class: App\MobileEntry\Module\GameIntegration\EvolutionGaming\EvolutionGamingModule
 
+  ebet_integration:
+    class: App\MobileEntry\Module\GameIntegration\EBet\EBetModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 

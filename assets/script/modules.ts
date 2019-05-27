@@ -18,6 +18,7 @@ import {AsiaGamingModule} from "@app/src/Module/GameIntegration/AsiaGaming/scrip
 import {GoldDeluxeModule} from "@app/src/Module/GameIntegration/GoldDeluxe/script";
 import {RubyPlayModule} from "@app/src/Module/GameIntegration/RubyPlay/script";
 import {EvolutionGamingModule} from "@app/src/Module/GameIntegration/EvolutionGaming/script";
+import {EBetModule} from "@app/src/Module/GameIntegration/EBet/script";
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
 import {GenericIntegrationModule} from "@app/src/Module/ProductIntegration/Generic/script";
@@ -45,6 +46,7 @@ ComponentManager.setModules({
     asiagaming_integration: new AsiaGamingModule(),
     rubyplay_integration: new RubyPlayModule(),
     evolution_gaming_integration: new EvolutionGamingModule(),
+    ebet_integration: new EBetModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
     generic_integration: new GenericIntegrationModule(),
