@@ -287,7 +287,10 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private listenClickLauncherTab() {
         ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.hasClass(src, "providers-tab", true);
+            let el = utility.hasClass(src, "providers-tab", true);
+            if (!el) {
+                el = utility.hasClass(src, "providers-provider-menu", true);
+            }
             this.showLogin(el);
         });
     }
