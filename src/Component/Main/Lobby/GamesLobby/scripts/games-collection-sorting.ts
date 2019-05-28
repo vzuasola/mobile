@@ -4,7 +4,7 @@ export class GamesCollectionSorting {
      * Games that are not on the top games collection will be
      * sorted alphabetically.
      */
-    sortGamesCollection(gamesResponse, gamesCollectionType, category, sortAlphabetical = false, gamesListArr?) {
+    sortGamesCollection(gamesResponse, gamesCollectionType, sortAlphabetical = false, gamesListArr?) {
         const sortedCollection = {};
         const sortedAlpha = {};
         let sortedAlphaArr = [];

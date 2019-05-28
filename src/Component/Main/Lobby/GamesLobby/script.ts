@@ -259,7 +259,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         gamesList[key] = this.gamesCollectionSort.sortGamesCollection(
             promises,
             "top",
-            key,
             true,
             gamesDictionary,
         );
@@ -408,7 +407,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         sortedRecommended = this.gamesCollectionSort.sortGamesCollection(
             newResponse,
             "recommended",
-            "recommended-games",
         );
 
         return sortedRecommended;
@@ -981,7 +979,6 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (gamesList.hasOwnProperty(category) && category !== "all-games") {
                 sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
                     response,
-                    category,
                     category,
                     true,
                     gamesList[category],
