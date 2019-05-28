@@ -9,6 +9,10 @@
     &-accordion {
         padding: 0;
         margin: 0;
+
+        .app-download-list {
+            padding-bottom: 0.5rem;
+        }
     }
 
     &-list {
