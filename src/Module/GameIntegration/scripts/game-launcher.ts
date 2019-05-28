@@ -164,7 +164,7 @@ class GameLauncher {
             }
 
             if (element.getAttribute("data-game-provider") &&
-                element.getAttribute("data-game-code")
+                element.getAttribute("data-game-launch") === "true"
             ) {
                 return true;
             }

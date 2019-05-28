@@ -329,6 +329,11 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 }
             }
 
+            // handle redirects if we are on a PWA standalone
+            if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches)) {
+                window.location.href = url;
+            }
+
             this.windowObject = PopupWindow("", "gameWindow", prop);
 
             this.updatePopupWindow(url);
