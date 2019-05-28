@@ -1,3 +1,5 @@
+declare var navigator: any;
+
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
 import {QuickLauncher} from "./scripts/quick-launcher";
@@ -327,6 +329,11 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                         url = utility.addQueryParam(url, key.replace("data-game-", ""), param);
                     }
                 }
+            }
+
+            // handle redirects if we are on a PWA standalone
+            if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches)) {
+                window.location.href = url;
             }
 
             this.windowObject = PopupWindow("", "gameWindow", prop);
