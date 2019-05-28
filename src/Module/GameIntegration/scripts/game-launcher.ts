@@ -163,9 +163,7 @@ class GameLauncher {
                 return true;
             }
 
-            if (element.getAttribute("data-game-provider") &&
-                element.getAttribute("data-game-launch") === "true"
-            ) {
+            if (element.getAttribute("data-game-provider")) {
                 return true;
             }
         });
