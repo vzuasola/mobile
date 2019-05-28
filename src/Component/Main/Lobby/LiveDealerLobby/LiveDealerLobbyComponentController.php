@@ -96,9 +96,9 @@ class LiveDealerLobbyComponentController
 
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
-                $definition['ribbon']['background'] = $ribbon['field_games_ribbon_color'][0]['color'];
-                $definition['ribbon']['color'] = $ribbon['field_games_text_color'][0]['color'];
-                $definition['ribbon']['name'] = $ribbon['field_games_ribbon_label'][0]['value'];
+                $definition['ribbon']['background'] = $ribbon['field_ribbon_background_color'][0]['color'];
+                $definition['ribbon']['color'] = $ribbon['field_ribbon_text_color'][0]['color'];
+                $definition['ribbon']['name'] = $ribbon['field_label'][0]['value'];
             }
 
             $definition['provider_image'] = [
