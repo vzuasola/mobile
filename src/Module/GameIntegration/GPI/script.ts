@@ -23,8 +23,6 @@ export class GPIModule implements ModuleInterface, GameInterface {
     }) {
         this.currencies = attachments.currencies;
         this.languages = attachments.languages;
-
-        console.log(attachments);
     }
 
     init() {
