@@ -3,9 +3,9 @@ declare var navigator: any;
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
 import {QuickLauncher} from "./scripts/quick-launcher";
+import {LazyLoader} from "./scripts/lazy-loader";
 import PopupWindow from "@app/assets/script/components/popup";
 import * as Handlebars from "handlebars/runtime";
-import * as gameTemplate from "./handlebars/games.handlebars";
 import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
@@ -23,6 +23,13 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private attachments: any;
     private windowObject: any;
     private gameLink: string;
+    private configs: any[];
+    private lazyLoader: LazyLoader;
+
+    constructor() {
+        this.lazyLoader = new LazyLoader();
+    }
+
     onLoad(element: HTMLElement, attachments: {
             authenticated: boolean,
             product: any[],
@@ -34,6 +41,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.tabs = attachments.tabs;
+        this.configs = attachments.configs;
         this.doGetLobbyData(() => {
             this.setLobby();
         });
@@ -42,6 +50,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.listenClickGameTile();
         this.listenClickLauncherTab();
         this.listenToLaunchGameLoader();
+        this.listenToScroll();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -52,6 +61,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         }) {
         if (!this.element) {
             this.listenHashChange();
+            this.listenToScroll();
             this.listenClickTab();
             this.listenClickGameTile();
             this.listenClickLauncherTab();
@@ -61,6 +71,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.tabs = attachments.tabs;
+        this.configs = attachments.configs;
         this.doGetLobbyData(() => {
             this.setLobby();
         });
@@ -142,12 +153,13 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private setLobby() {
         this.setLobbyTabs();
+        const activeTab = this.getActiveTab();
         if (this.groupedGames.hasOwnProperty("providers")) {
             const quickLauncher = new QuickLauncher(this.attachments.configs, this.isLogin);
-            quickLauncher.activate(this.groupedGames.providers, this.getActiveTab());
+            quickLauncher.activate(this.groupedGames.providers, activeTab);
         }
         this.populateTabs();
-        this.populateGames();
+        this.populateGames(activeTab);
         this.setActiveTab();
         this.quickLaunchActiveListener();
     }
@@ -177,16 +189,18 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     /**
      * Populate game thumbnails
      */
-    private populateGames() {
-        const gamesEl = this.element.querySelector("#game-container");
-        const template = gameTemplate({
-            games: this.groupedGames[this.getActiveTab()],
-            isLogin: this.isLogin,
-        });
-
-        if (gamesEl) {
-            gamesEl.innerHTML = template;
-        }
+    private populateGames(activeTab) {
+        /* tslint:disable:no-string-literal */
+        const enableLazyLoad = (this.configs.hasOwnProperty("lobby_infinite_scroll")) ?
+            this.configs["lobby_infinite_scroll"] : false;
+        /* tslint:disable:no-string-literal */
+        this.lazyLoader.init(
+            this.groupedGames[activeTab],
+            this.isLogin,
+            this.element.querySelector("#game-container"),
+            activeTab,
+            enableLazyLoad,
+        );
     }
 
     /**
@@ -237,6 +251,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         }
     }
 
+    /**
+     * Triggers login lightbox
+     */
     private showLogin(el) {
         if (el && !this.isLogin) {
             ComponentManager.broadcast("header.login", {
@@ -253,6 +270,18 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
             this.setLobby();
+        });
+    }
+
+    /**
+     * Event listener for url hash change
+     */
+    private listenToScroll() {
+        utility.listen(window, "scroll", (event, src) => {
+            this.lazyLoader.onScrollDown(
+                this.element.querySelector("#game-loader"),
+                this.element.querySelector("#game-container"),
+            );
         });
     }
 
