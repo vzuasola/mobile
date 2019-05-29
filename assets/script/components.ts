@@ -13,6 +13,7 @@ import {PushNotificationComponent} from "@app/src/Component/PushNotification/scr
 import {SEOComponent} from "@app/src/Component/SEO/script";
 import {GamesLobbyComponent} from "@app/src/Component/Main/Lobby/GamesLobby/script";
 import {CasinoLobbyComponent} from "@app/src/Component/Main/Lobby/CasinoLobby/script";
+import {LotteryLobbyComponent} from "@app/src/Component/Main/Lobby/LotteryLobby/script";
 import {LobbyComponent} from "@app/src/Component/Main/Lobby/script";
 import {MarketingComponent} from "@app/src/Component/Marketing/script";
 import {LobbySliderComponent} from "@app/src/Component/Main/Lobby/Slider/script";
@@ -50,6 +51,7 @@ ComponentManager.setComponents({
     home_products: new ProductsComponent(),
     games_lobby: new GamesLobbyComponent(),
     casino_lobby: new CasinoLobbyComponent(),
+    lottery_lobby: new LotteryLobbyComponent(),
     node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
