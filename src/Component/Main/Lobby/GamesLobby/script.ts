@@ -21,6 +21,7 @@ import {GamesFilter} from "@app/assets/script/components/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
 import EqualHeight from "@app/assets/script/components/equal-height";
 
+import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import { ProviderDrawer } from "./scripts/provider-drawer";
 
 /**
@@ -34,6 +35,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private gameLauncher;
     private gamesSearch: GamesSearch;
     private gamesFilter: GamesFilter;
+    private gamesCollectionSort: GamesCollectionSorting;
     private currentPage: number;
     private pager: number;
     private load: boolean;
@@ -46,6 +48,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.gameLauncher = GameLauncher;
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
+        this.gamesCollectionSort = new GamesCollectionSorting();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -238,16 +241,6 @@ export class GamesLobbyComponent implements ComponentInterface {
             }
         }
 
-        if (responses["games-collection"].hasOwnProperty("top")) {
-            gamesDictionary = this.getGamesDictionary(gamesList[key]);
-            gamesList[key] = this.sortGamesCollection(
-                responses["games-collection"].top,
-                gamesDictionary,
-                gamesList[key],
-                true,
-            );
-        }
-
         if (responses.hasOwnProperty("fav")) {
             const keyfav = "favorites";
             gamesList[keyfav] = this.getGamesDefinition(responses.fav, gamesList[key]);
@@ -262,6 +255,13 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
 
         promises.games = gamesList;
+        gamesDictionary = this.getGamesDictionary(gamesList[key]);
+        gamesList[key] = this.gamesCollectionSort.sortGamesCollection(
+            promises,
+            "top",
+            true,
+            gamesDictionary,
+        );
 
         return promises;
     }
@@ -334,53 +334,6 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     /**
-     * Sorts all games based on top games collection
-     * Games that are not on the top games collection will be
-     * sorted alphabetically.
-     */
-    private sortGamesCollection(gamesCollection, gamesListArr, gamesListObj, sortAlphabetical) {
-        const sortedCollection = {};
-        const sortedAlpha = {};
-        let sortedAlphaArr = [];
-
-        for (const id of gamesCollection) {
-            if (gamesListObj.hasOwnProperty(id)) {
-               sortedCollection[id] = gamesListObj[id];
-            }
-        }
-
-        if (sortAlphabetical) {
-            sortedAlphaArr = this.sortGameTitleAlphabetical(gamesListArr);
-            for (const game of sortedAlphaArr) {
-                if (!sortedCollection.hasOwnProperty("id:" + game.game_code)) {
-                    sortedAlpha["id:" + game.game_code] = game;
-                }
-            }
-
-            if (sortedAlpha) {
-                Object.assign(sortedCollection, sortedAlpha);
-            }
-        }
-
-        return sortedCollection;
-    }
-
-    private sortGameTitleAlphabetical(gamesList) {
-        gamesList.sort((a, b) => {
-            if (a.title.toLowerCase() < b.title.toLowerCase()) {
-                return -1;
-            }
-            if (a.title.toLowerCase() > b.title.toLowerCase()) {
-                return 1;
-            }
-
-            return 0;
-        });
-
-        return gamesList;
-    }
-
-    /**
      * Request games lobby to games lobby component controller lobby method
      */
     private doRequest(callback) {
@@ -406,11 +359,8 @@ export class GamesLobbyComponent implements ComponentInterface {
                         // clone respone object
                         const newResponse = Object.assign({}, mergeResponse);
 
-                        newResponse.games = this.getCategoryGames(newResponse.games);
-                        if (newResponse.hasOwnProperty("gamesCollection")
-                            && newResponse.gamesCollection.hasOwnProperty("recommended")) {
-                            newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
-                        }
+                        newResponse.games = this.getCategoryGames(newResponse);
+                        newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
                         newResponse.games = this.groupGamesByContainer(newResponse.games);
                         newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
                         if (pageResponse.hasOwnProperty("fav")) {
@@ -453,17 +403,11 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     private doSortRecommended(newResponse) {
-        const allGames = newResponse.games["all-games"];
         let sortedRecommended: any = [];
-        if (newResponse.gamesCollection.hasOwnProperty("recommended")) {
-            const gamesDictionary = this.getGamesDefinition(newResponse.gamesCollection.recommended, allGames);
-            sortedRecommended = this.sortGamesCollection(
-                newResponse.gamesCollection.recommended,
-                gamesDictionary,
-                allGames,
-                false,
-            );
-        }
+        sortedRecommended = this.gamesCollectionSort.sortGamesCollection(
+            newResponse,
+            "recommended",
+        );
 
         return sortedRecommended;
     }
@@ -988,9 +932,9 @@ export class GamesLobbyComponent implements ComponentInterface {
         return batch;
     }
 
-    private getCategoryGames(games) {
-        const gamesList: any = [];
-        const allGames = games["all-games"];
+    private getCategoryGames(response) {
+        let gamesList: any = [];
+        const allGames = response.games["all-games"];
         for (const gameId in allGames) {
             if (allGames.hasOwnProperty(gameId)) {
                 const game = allGames[gameId];
@@ -1014,27 +958,35 @@ export class GamesLobbyComponent implements ComponentInterface {
                         }
                     }
                 }
-
-            }
-        }
-
-        for (const category in gamesList) {
-            if (gamesList.hasOwnProperty(category)) {
-                let categoryGames = gamesList[category];
-                categoryGames = categoryGames.sort((a, b) => {
-                    return a.categories[category] - b.categories[category];
-                });
-                gamesList[category] = categoryGames;
             }
         }
 
         /* tslint:disable:no-string-literal */
-        gamesList["all-games"] = games["all-games"];
-        gamesList["favorites"] = games["favorites"];
-        gamesList["recently-played"] = games["recently-played"];
+        gamesList["all-games"] = response.games["all-games"];
+        response.games = gamesList;
+        gamesList = this.doSortCategoryGames(response, gamesList);
+        gamesList["favorites"] = response.games["favorites"];
+        gamesList["recently-played"] = response.games["recently-played"];
         /* tslint:enable:no-string-literal */
 
         return gamesList;
+    }
+
+    private doSortCategoryGames(response, gamesList) {
+        const sortedGamesList: any = [];
+        sortedGamesList["all-games"] = response.games["all-games"];
+        for (const category in gamesList) {
+            if (gamesList.hasOwnProperty(category) && category !== "all-games") {
+                sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
+                    response,
+                    category,
+                    true,
+                    gamesList[category],
+                );
+            }
+        }
+
+        return sortedGamesList;
     }
 
     private groupGamesByContainer(gamesList) {

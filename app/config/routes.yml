@@ -19,6 +19,17 @@ routes:
             enabled: true
             expires: 1800
 
+    /game/loader:
+        method: GET
+        action: App\MobileEntry\Controller\GameLoaderController:view
+        components:
+            main: game_loader
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+        page_cache:
+            enabled: true
+            expires: 1800
+
     /login:
         method: GET
         action: App\MobileEntry\Controller\HomeController:view
@@ -144,6 +155,20 @@ routes:
             expires: 1800
         attributes:
             product: mobile-keno
+
+    /{id:live-dealer|macau|live|live-games|xianchang|zhenren}:
+        method: GET
+        action: App\MobileEntry\Controller\LiveDealerController:view
+        components:
+            main: lobby
+            lobby_content: live_dealer_lobby
+        headers:
+            Cache-Control: public, max-age=900
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-live-dealer
 
     # Definition of component controllers for cache control
 

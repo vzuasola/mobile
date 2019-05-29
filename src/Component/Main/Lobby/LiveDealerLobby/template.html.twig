@@ -1,0 +1,11 @@
+<div class="game-container">
+    <div id="providers-quick-launcher" class="category-tab"></div>
+    <div id="providers-filter-transfer-container" class="pft-list clearfix"></div>
+    <div id="game-container" class="game-tiles clear">
+        {% include '@component/Main/Lobby/LiveDealerLobby/templates/loader.html.twig' %}
+    </div>
+</div>
+{{ include('@app/src/Module/GameIntegration/templates/ucl.html.twig') }}
+<span class="hidden">
+    {% include '@app/web/images/svg/all-providers.svg' ignore missing %}
+</span>

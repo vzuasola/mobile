@@ -12,6 +12,7 @@ class PASModuleController
         'mobile-casino' => 'dafa888',
         'mobile-casino-gold' => 'dafagold',
         'dafaconnect' => 'dafaconnect',
+        'mobile-live-dealer' => 'dafa888',
     ];
 
     private $rest;

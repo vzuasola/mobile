@@ -12,6 +12,7 @@ import {AnnouncementComponent} from "@app/src/Component/Announcement/script";
 import {PushNotificationComponent} from "@app/src/Component/PushNotification/script";
 import {SEOComponent} from "@app/src/Component/SEO/script";
 import {GamesLobbyComponent} from "@app/src/Component/Main/Lobby/GamesLobby/script";
+import {LiveDealerLobbyComponent} from "@app/src/Component/Main/Lobby/LiveDealerLobby/script";
 import {CasinoLobbyComponent} from "@app/src/Component/Main/Lobby/CasinoLobby/script";
 import {LotteryLobbyComponent} from "@app/src/Component/Main/Lobby/LotteryLobby/script";
 import {LobbyComponent} from "@app/src/Component/Main/Lobby/script";
@@ -33,6 +34,7 @@ import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/M
 import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
 import {FooterComponent} from "@app/src/Component/Footer/script";
 import {CookieNotifComponent} from "@app/src/Component/CookieNotif/script";
+import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -50,6 +52,7 @@ ComponentManager.setComponents({
     lobby_slider: new LobbySliderComponent(),
     home_products: new ProductsComponent(),
     games_lobby: new GamesLobbyComponent(),
+    live_dealer_lobby: new LiveDealerLobbyComponent(),
     casino_lobby: new CasinoLobbyComponent(),
     lottery_lobby: new LotteryLobbyComponent(),
     node: new NodeComponent(),
@@ -68,4 +71,5 @@ ComponentManager.setComponents({
     change_password: new MyAccountChangePasswordComponent(),
     footer: new FooterComponent(),
     cookie_notification: new CookieNotifComponent(),
+    game_loader: new GameLoaderComponent(),
 });

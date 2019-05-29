@@ -44,6 +44,11 @@ export class LobbySliderComponent implements ComponentInterface {
             setInterval(() => {
                 sliderObj.next();
             }, 5000);
+            window.addEventListener("orientationchange", () => {
+                setTimeout(() => {
+                    utility.addClass(slider.querySelectorAll(".xlide-item")[1].parentElement, "fade");
+                }, 10);
+            });
         }
     }
 
@@ -98,7 +103,7 @@ export class LobbySliderComponent implements ComponentInterface {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.find(src, (element) => {
                 if (element.getAttribute("data-game-provider") &&
-                    element.getAttribute("data-game-code") &&
+                    element.getAttribute("data-game-code") ||
                     utility.hasClass(element, "game-list")
                 ) {
                     return true;

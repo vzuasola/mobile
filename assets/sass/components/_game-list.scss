@@ -103,6 +103,16 @@
         display: inline-block;
         min-height: 0.1rem;
         padding: 0 1%;
+
+        .label-game-title {
+            position: absolute;
+            color: white;
+            font-size: 1.6rem;
+            font-weight: 600;
+            bottom: 0.3rem;
+            width: 100%;
+            text-align: center;
+        }
     }
 
     .size-large:nth-child(even) + .size-small {

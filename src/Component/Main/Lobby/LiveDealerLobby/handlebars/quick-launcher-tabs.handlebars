@@ -1,0 +1,82 @@
+<div class="providers-tab-list" id="providers-tab">
+    {{#condition providersTab.length ">" 9}}
+    <ul class="main-game-providers game-providers provider-10">
+    {{/condition}}
+    {{#condition providersTab.length "<=" 9}}
+    <ul class="main-game-providers game-providers provider-{{providersTab.length}}">
+    {{/condition}}
+        <li class="game-providers-item lobby-tab {{#condition activeTab "===" "providers"}}active{{/condition}}">
+            <a href="#providers" class="providers-tab providers-all {{#condition activeTab "===" "providers"}}active{{/condition}}" data-alias="providers">
+                <svg viewBox="0 0 20 20">
+                    <use xlink:href="#all-providers" />
+                </svg>
+            </a>
+        </li>
+        {{#each providersTab}}
+                {{#condition @index "<=" 6}}
+                <li class="game-providers-item game-providers-tab">
+                    <a href="#" class="providers-tab providers-{{this.game_provider}}"
+                    {{#if ../isLogin}}
+                    data-game-launch="true"
+                    {{/if}}
+                    data-game-provider="{{this.game_provider}}"
+                    data-game-code="{{this.game_code}}"
+                    data-game-platform="{{this.game_platform}}"
+                    data-game-title="{{this.title}}"
+                    data-game-target="{{this.target}}"
+                    data-game-loader="{{this.use_game_loader}}"
+                    >
+                        <img src="{{this.provider_image.url}}" alt="{{this.provider_image.alt}}">
+                    </a>
+                </li>
+                {{/condition}}
+        {{/each}}
+        <li class="game-providers-item game-providers-more">
+            <span class="provider-drawer providers-more"></span>
+            <p class="providers-more-text m-0">
+                {{{this.configs.more_provider_drawer}}}
+                <svg viewBox="0 30 24 44.999">
+                    <use xlink:href="#arrow" />
+                </svg>
+            </p>
+            <div class="provider-menu">
+                <h2 class="provider-menu-title m-0">
+                    {{{this.configs.title_provider_drawer}}}
+                    <span class="provider-content-button close-svg">
+                        <svg viewBox="0 0 70.24 70.24" class="provider-content-button-svg close-svg close-drawer">
+                            <path class="close-svg close-drawer" d="M39.53 35.12L53 21.17a3.18 3.18 0 0 0-.09-4.49 3.18 3.18 0 0 0-4.49.09l-13.3 13.78-13.26-13.78a3.18 3.18 0 0 0-4.49-.09 3.18 3.18 0 0 0-.08 4.49l13.43 13.95-13.43 14a3.17 3.17 0 1 0 4.57 4.4L35.12 39.7l13.26 13.77a3.18 3.18 0 0 0 4.49.09 3.18 3.18 0 0 0 .13-4.49z" />
+                        </svg>
+                    </span>
+                </h2>
+                <ul class="game-providers col-12 mb-10">
+                    <li class="game-providers-list col-6 pt-10 close-drawer lobby-tab">
+                        <a href="#providers" class="providers-provider-menu providers-all close-drawer {{#condition activeTab "===" "providers"}}active{{/condition}}" data-alias="providers">
+                            <svg viewBox="0 0 20 20" class="close-drawer">
+                                <use xlink:href="#all-providers" class="close-drawer"/>
+                            </svg>
+                            <p class="close-drawer">{{configs.all_quicklaunch_title}}</p>
+                        </a>
+                    </li>
+                    {{#each providersTab}}
+                    <li class="game-providers-list col-6 pt-10 game-providers-tab close-drawer">
+                        <a href="#" class="providers-provider-menu providers-{{this.game_provider}} close-drawer"
+                            {{#if ../isLogin}}
+                            data-game-launch="true"
+                            {{/if}}
+                            data-game-provider="{{this.game_provider}}"
+                            data-game-code="{{this.game_code}}"
+                            data-game-platform="{{this.game_platform}}"
+                            data-game-title="{{this.title}}"
+                            data-game-target="{{this.target}}"
+                            data-game-loader="{{this.use_game_loader}}"
+                        >
+                            <img src="{{this.provider_image.url}}" alt="{{this.provider_image.alt}}">
+                            <p class="close-drawer">{{this.title}}</p>
+                        </a>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </li>
+    </ul>
+</div>
