@@ -36,6 +36,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             tabs: any[],
             configs: any[],
         }) {
+
         this.attachments = attachments;
         this.element = element;
         this.isLogin = attachments.authenticated;
@@ -364,7 +365,8 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
 
             // handle redirects if we are on a PWA standalone
             if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches)) {
-                window.location.href = url;
+                window.location.href = window.location.origin + url;
+                return;
             }
 
             this.windowObject = PopupWindow("", "gameWindow", prop);
