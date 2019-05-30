@@ -67,7 +67,6 @@ class TGPModuleController
         $data['currency'] = false;
 
         if ($this->checkCurrency()) {
-            $requestData = $request->getParsedBody();
             $data = $this->getGameLobby($request, $response);
         }
 
@@ -98,8 +97,8 @@ class TGPModuleController
     private function checkCurrency()
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-            $currencies = explode("\r\n", $config[self::KEY . '_currency']);
+            $tgpConfig =  $this->config->getConfig('webcomposer_config.icore_games_integration');
+            $currencies = explode("\r\n", $tgpConfig[self::KEY . '_currency']);
             $playerCurrency = $this->player->getCurrency();
 
             if (in_array($playerCurrency, $currencies)) {
