@@ -364,7 +364,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             }
 
             // handle redirects if we are on a PWA standalone
-            if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches)) {
+            if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                (window.innerHeight / window.screen.height) > 0.9
+            ) {
                 window.location.href = window.location.origin + url;
                 return;
             }
