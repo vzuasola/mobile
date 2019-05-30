@@ -19,8 +19,23 @@
                 </div>
             {{/if}}
             <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
-            <div class="label-game-title">{{this.title}}</div>
+            {{#if this.publish_end}}
+                <p class="label-game-title hidden">{{this.title}}</p>
+            {{else}}
+                <p class="label-game-title">{{this.title}}</p>
+            {{/if}}
         </a>
+        {{#if this.publish_end}}
+            <div class="game-listing-maintenance">
+                {{{this.under_maintenance}}}
+                <span class="game-listing-maintenance-title">{{this.title}}</span>
+            </div>
+            {{else}}
+            <div class="game-listing-maintenance hidden">
+                {{{this.under_maintenance}}}
+                <span class="game-listing-maintenance-title">{{this.title}}</span>
+            </div>
+        {{/if}}
     </div>
 {{/each}}
 <div id="game-loader" class="game-loader">
