@@ -51,10 +51,12 @@ class LiveDealerLobbyComponentController
     public function lobby($request, $response)
     {
         $params = $request->getQueryParams();
-        $item = $this->cacher->getItem('views.live-dealer-lobby-data.' . $this->currentLanguage);
+        $isPreview = $params['pvw'] ?? false;
+        $previewKey = $isPreview ? "preview" : "no-preview";
+        $item = $this->cacher->getItem('views.live-dealer-lobby-data.' . $this->currentLanguage ."-". $previewKey);
 
         if (!$item->isHit()) {
-            $data = $this->getGamesList();
+            $data = $this->getGamesList($isPreview);
 
             $item->set([
                 'body' => $data,
@@ -68,22 +70,22 @@ class LiveDealerLobbyComponentController
             $data = $body['body'];
         }
 
-        if (!isset($params['pvw'])) {
-            $data = $this->removeGamesPreviewMode($data);
-        }
-
         return $this->rest->output($response, $data);
     }
 
     /**
      * Retrieves list of games from drupal
      */
-    private function getGamesList()
+    private function getGamesList($isPreview)
     {
         try {
             $gamesList = [];
             $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
+                $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
+                if (!$isPreview && $preview_mode) {
+                    continue;
+                }
                 $gamesList[] = $this->getGameDefinition($game);
             }
         } catch (\Exception $e) {
@@ -99,7 +101,6 @@ class LiveDealerLobbyComponentController
     {
         try {
             $definition = [];
-
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
                 $definition['ribbon']['background'] = $ribbon['field_ribbon_background_color'][0]['color'];
@@ -141,25 +142,5 @@ class LiveDealerLobbyComponentController
         } catch (\Exception $e) {
             return [];
         }
-    }
-
-    /**
-     * Remove games from the list if game is in preview mode
-     */
-    private function removeGamesPreviewMode($games)
-    {
-        try {
-            $index = 0;
-            foreach ($games as $game) {
-                if ($game['preview_mode']) {
-                    unset($games[$index]);
-                }
-                $index++;
-            }
-        } catch (\Exception $e) {
-            // placeholder
-        }
-
-        return $games;
     }
 }
