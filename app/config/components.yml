@@ -213,6 +213,9 @@ modules:
   gpi_integration:
     class: App\MobileEntry\Module\GameIntegration\GPI\GPIModule
 
+  tgp_integration:
+    class: App\MobileEntry\Module\GameIntegration\TGP\TGPModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
