@@ -50,6 +50,7 @@ class LiveDealerLobbyComponentController
      */
     public function lobby($request, $response)
     {
+        $params = $request->getQueryParams();
         $item = $this->cacher->getItem('views.live-dealer-lobby-data.' . $this->currentLanguage);
 
         if (!$item->isHit()) {
@@ -66,6 +67,11 @@ class LiveDealerLobbyComponentController
             $body = $item->get();
             $data = $body['body'];
         }
+
+        if (!isset($params['pvw'])) {
+            $data = $this->removeGamesPreviewMode($data);
+        }
+
         return $this->rest->output($response, $data);
     }
 
@@ -135,5 +141,25 @@ class LiveDealerLobbyComponentController
         } catch (\Exception $e) {
             return [];
         }
+    }
+
+    /**
+     * Remove games from the list if game is in preview mode
+     */
+    private function removeGamesPreviewMode($games)
+    {
+        try {
+            $index = 0;
+            foreach ($games as $game) {
+                if ($game['preview_mode']) {
+                    unset($games[$index]);
+                }
+                $index++;
+            }
+        } catch (\Exception $e) {
+            // placeholder
+        }
+
+        return $games;
     }
 }
