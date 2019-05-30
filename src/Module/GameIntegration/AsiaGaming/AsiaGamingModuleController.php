@@ -65,27 +65,63 @@ class AsiaGamingModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
-        if ($this->checkCurrency()) {
-            $data['currency'] = true;
-            $requestData = $request->getParsedBody();
-            $params = explode('|', $requestData['gameCode']);
 
-            try {
-                $responseData = $this->asiaGaming->getGameUrlById('icore_ag', $params[0], [
-                    'options' => [
-                        'languageCode' => $requestData['langCode'],
-                        'providerProduct' => $params[1],
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
-                }
-            } catch (\Exception $e) {
-                $data = [];
+        if ($this->checkCurrency()) {
+            $requestData = $request->getParsedBody();
+            if ($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') {
+                $data = $this->getGameUrl($request, $response);
+            }
+
+            if (!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') {
+                $data = $this->getGameLobby($request, $response);
             }
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    private function getGameLobby($request, $response)
+    {
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
+
+        try {
+            $responseData = $this->asiaGaming->getLobby('icore_ag', [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                ]
+            ]);
+            if ($responseData) {
+                $data['gameurl'] = $responseData;
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
+        return $data;
+    }
+
+    private function getGameUrl($request, $response)
+    {
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
+        $params = explode('|', $requestData['gameCode']);
+
+        try {
+            $responseData = $this->asiaGaming->getGameUrlById('icore_ag', $params[0], [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                    'providerProduct' => $params[1] ?? null,
+                ]
+            ]);
+            if ($responseData['url']) {
+                $data['gameurl'] = $responseData['url'];
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
+        return $data;
     }
 
     private function checkCurrency()

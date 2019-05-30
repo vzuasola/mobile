@@ -134,8 +134,10 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
         }).then((response) => {
             if (response.status) {
                 let body = response.message;
+                const provider = (data.hasOwnProperty("subprovider") && data.subprovider)
+                    ? data.subprovider : response.provider;
                 body = body.replace("{game_name}", data.title);
-                body = body.replace("{game_provider}", response.provider);
+                body = body.replace("{game_provider}", provider);
                 const template = uclTemplate({
                     title: response.title,
                     message: body,

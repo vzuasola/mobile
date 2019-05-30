@@ -71,18 +71,16 @@ class SolidGamingModuleController
             $params = explode('|', $requestData['gameCode']);
 
             try {
-                if (isset($params[0]) && isset($params[1])) {
-                    $gameCode = $params[0];
-                    $productProvider = $params[1];
-                    $responseData = $this->solidGaming->getGameUrlById('icore_sg', $gameCode, [
-                        'options' => [
-                            'languageCode' => $requestData['langCode'],
-                            'providerProduct' => $productProvider,
-                        ]
-                    ]);
-                    if ($responseData['url']) {
-                        $data['gameurl'] = $responseData['url'];
-                    }
+                $gameCode = $params[0];
+                $productProvider = $params[1] ?? null;
+                $responseData = $this->solidGaming->getGameUrlById('icore_sg', $gameCode, [
+                    'options' => [
+                        'languageCode' => $requestData['langCode'],
+                        'providerProduct' => $productProvider,
+                    ]
+                ]);
+                if ($responseData['url']) {
+                    $data['gameurl'] = $responseData['url'];
                 }
             } catch (\Exception $e) {
                 $data = [];
