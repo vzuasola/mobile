@@ -43,13 +43,13 @@ class TGPModuleController
     public function unsupported($request, $response)
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
+            $tgpConfig =  $this->config->getConfig('webcomposer_config.unsupported_currency');
+            $providerMapping = Config::parse($tgpConfig['game_provider_mapping'] ?? '');
             $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $config['unsupported_currencies_title'] ?? '';
+            $data['title'] = $tgpConfig['unsupported_currencies_title'] ?? '';
             $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $config['unsupported_currencies_button'] ?? '';
+            $tgpConfig['unsupported_currencies_message']['value'] ?? '';
+            $data['button'] = $tgpConfig['unsupported_currencies_button'] ?? '';
             $data['status'] = true;
         } catch (\Exception $e) {
             $data['status'] = false;
