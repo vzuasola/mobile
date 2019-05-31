@@ -88,6 +88,7 @@ export class GameLoaderComponent implements ComponentInterface {
     private closeOnTimeout() {
         setTimeout(() => {
             window.close();
+            window.history.back();
         }, 5 * 1000);
     }
 }

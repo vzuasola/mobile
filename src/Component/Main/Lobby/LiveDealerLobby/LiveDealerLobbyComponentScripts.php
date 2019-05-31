@@ -31,13 +31,12 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $configs, $product, $views, $parser)
+    public function __construct($playerSession, $configs, $product, $views)
     {
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
         $this->views = $views;
-        $this->parser = $parser;
     }
 
     /**
