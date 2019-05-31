@@ -32,7 +32,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {
             authenticated: boolean,
-            revampToken: any,
             product: any[],
             tabs: any[],
             configs: any[],
@@ -57,7 +56,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
 
     onReload(element: HTMLElement, attachments: {
             authenticated: boolean,
-            revampToken: any,
             product: any[],
             tabs: any[],
             configs: any[],
@@ -365,7 +363,13 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 }
             }
 
-            url = utility.addQueryParam(url, "token", this.attachments.revampToken);
+            // handle redirects if we are on a PWA standalone
+            if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                (window.innerHeight / window.screen.height) > 0.9
+            ) {
+                window.location.href = url;
+                return;
+            }
 
             this.windowObject = PopupWindow("", "gameWindow", prop);
 
