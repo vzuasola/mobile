@@ -21,6 +21,7 @@ import {EvolutionGamingModule} from "@app/src/Module/GameIntegration/EvolutionGa
 import {EBetModule} from "@app/src/Module/GameIntegration/EBet/script";
 import {GPIModule} from "@app/src/Module/GameIntegration/GPI/script";
 import {TGPModule} from "@app/src/Module/GameIntegration/TGP/script";
+import {AllBetModule} from "@app/src/Module/GameIntegration/AllBet/script";
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
 import {GenericIntegrationModule} from "@app/src/Module/ProductIntegration/Generic/script";
@@ -51,6 +52,7 @@ ComponentManager.setModules({
     ebet_integration: new EBetModule(),
     gpi_integration: new GPIModule(),
     tgp_integration: new TGPModule(),
+    allbet_integration: new AllBetModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
     generic_integration: new GenericIntegrationModule(),
