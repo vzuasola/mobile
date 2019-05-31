@@ -14,7 +14,6 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
     private $playerSession;
     private $product;
     private $views;
-    private $parser;
 
     /**
      *
@@ -25,8 +24,7 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
             $container->get('player_session'),
             $container->get('config_fetcher'),
             $container->get('product_resolver'),
-            $container->get('views_fetcher'),
-            $container->get('token_parser')
+            $container->get('views_fetcher')
         );
     }
 
@@ -61,7 +59,6 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
 
         return [
             'authenticated' => $this->playerSession->isLogin(),
-            'revampToken' => $this->parser-> processTokens('{legacy.revamp.token}'),
             'product' => $this->getProductIntegration(),
             'tabs' => $tabs,
             'configs' => $liveDealerGeneralConfig ?? [],
