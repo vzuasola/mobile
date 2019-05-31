@@ -216,6 +216,9 @@ modules:
   tgp_integration:
     class: App\MobileEntry\Module\GameIntegration\TGP\TGPModule
 
+  allbet_integration:
+    class: App\MobileEntry\Module\GameIntegration\AllBet\AllBetModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
