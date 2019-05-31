@@ -142,7 +142,7 @@ routes:
         attributes:
             product: mobile-sports-df
 
-    /{id:lottery|keno}:
+    /{id:lottery|keno|lotto-numbers|numbers|draw|live-draw}:
         method: GET
         action: App\MobileEntry\Controller\LotteryController:view
         components:
