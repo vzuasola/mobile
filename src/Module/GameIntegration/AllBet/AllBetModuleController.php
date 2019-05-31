@@ -1,16 +1,16 @@
 <?php
 
-namespace App\MobileEntry\Module\GameIntegration\TGP;
+namespace App\MobileEntry\Module\GameIntegration\AllBet;
 
 use App\Drupal\Config;
 
-class TGPModuleController
+class AllBetModuleController
 {
-    const KEY = 'tgp';
+    const KEY = 'allbet';
 
     private $rest;
 
-    private $tgp;
+    private $allbet;
 
     private $config;
 
@@ -32,10 +32,10 @@ class TGPModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $tgp, $config, $player)
+    public function __construct($rest, $allbet, $config, $player)
     {
         $this->rest = $rest;
-        $this->tgp = $tgp;
+        $this->allbet = $allbet;
         $this->config = $config->withProduct('mobile-live-dealer');
         $this->player = $player;
     }
@@ -43,12 +43,12 @@ class TGPModuleController
     public function unsupported($request, $response)
     {
         try {
-            $tgpConfig =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($tgpConfig['game_provider_mapping'] ?? '');
+            $allbetConfig =  $this->config->getConfig('webcomposer_config.unsupported_currency');
+            $providerMapping = Config::parse($allbetConfig['game_provider_mapping'] ?? '');
             $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $tgpConfig['unsupported_currencies_title'] ?? '';
-            $data['message'] = $tgpConfig['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $tgpConfig['unsupported_currencies_button'] ?? '';
+            $data['title'] = $allbetConfig['unsupported_currencies_title'] ?? '';
+            $data['message'] = $allbetConfig['unsupported_currencies_message']['value'] ?? '';
+            $data['button'] = $allbetConfig['unsupported_currencies_button'] ?? '';
             $data['status'] = true;
         } catch (\Exception $e) {
             $data['status'] = false;
@@ -78,7 +78,7 @@ class TGPModuleController
         $requestData = $request->getParsedBody();
 
         try {
-            $responseData = $this->tgp->getLobby('icore_tgp', [
+            $responseData = $this->allbet->getLobby('icore_ab', [
                 'options' => [
                     'languageCode' => $requestData['langCode'],
                 ]
@@ -96,8 +96,8 @@ class TGPModuleController
     private function checkCurrency()
     {
         try {
-            $tgpConfig =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-            $currencies = explode("\r\n", $tgpConfig[self::KEY . '_currency']);
+            $allbetConfig =  $this->config->getConfig('webcomposer_config.icore_games_integration');
+            $currencies = explode("\r\n", $allbetConfig[self::KEY . '_currency']);
             $playerCurrency = $this->player->getCurrency();
 
             if (in_array($playerCurrency, $currencies)) {

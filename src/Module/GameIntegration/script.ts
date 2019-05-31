@@ -34,6 +34,7 @@ export class GameIntegrationModule implements ModuleInterface {
         const eBet: any = ComponentManager.getModuleInstance("ebet_integration");
         const gpi: any = ComponentManager.getModuleInstance("gpi_integration");
         const tgp: any = ComponentManager.getModuleInstance("tgp_integration");
+        const allbet: any = ComponentManager.getModuleInstance("allbet_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
@@ -50,6 +51,7 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("ebet", eBet);
         this.gameLauncher.setProvider("gpi", gpi);
         this.gameLauncher.setProvider("tgp", tgp);
+        this.gameLauncher.setProvider("allbet", allbet);
 
         setTimeout(() => {
             this.gameLauncher.init();
