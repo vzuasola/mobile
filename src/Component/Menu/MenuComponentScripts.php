@@ -73,6 +73,7 @@ class MenuComponentScripts implements ComponentAttachmentInterface
                     $result[Products::PRODUCT_MAPPING[$instanceId]] = [
                         'login_via' => $product['field_product_login_via'][0]['value'],
                         'reg_via' => $product['field_registration_url'][0]['value'],
+                        'keyword' => $instanceId,
                     ];
                 }
             }

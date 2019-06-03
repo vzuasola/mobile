@@ -166,7 +166,7 @@ export class MenuComponent implements ComponentInterface {
                     let url = utility.removeHash(menu.getAttribute("href"));
 
                     if (product !== "mobile-entrypage") {
-                        url = utility.addHash(url, product.replace("mobile-", ""));
+                        url = utility.addHash(url, this.products[product].keyword);
                     }
 
                     menu.setAttribute("href", url);
