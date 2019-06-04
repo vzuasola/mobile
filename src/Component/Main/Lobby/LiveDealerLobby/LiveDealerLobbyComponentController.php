@@ -173,7 +173,6 @@ class LiveDealerLobbyComponentController
                     );
                 }
                 $providersList[$provider['field_game_provider_key'][0]['value']] = $providerData;
-  
             }
         } catch (\Throwable $th) {
             $providersList = [];

@@ -46,7 +46,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.configs = attachments.configs;
         this.liveDealerXhrRequest("maintenance", (response) => {
             this.providers = response.game_providers;
-            this.doGetLobbyData(() => {
+            this.generateLobby(() => {
                 this.setLobby();
             });
         });
@@ -79,7 +79,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.configs = attachments.configs;
         this.liveDealerXhrRequest("maintenance", (response) => {
             this.providers = response.game_providers;
-            this.doGetLobbyData(() => {
+            this.generateLobby(() => {
                 this.setLobby();
             });
         });
@@ -101,17 +101,12 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      * Request games list from cms
      */
     private doGetLobbyData(callback) {
-        xhr({
-            url: Router.generateRoute("live_dealer_lobby", "lobby"),
-            type: "json",
-        }).then((response) => {
+        this.liveDealerXhrRequest("lobby", (response) => {
             const groupedGames = this.groupGamesByTab(response);
             this.groupedGames = this.sortGamesByTab(groupedGames);
             if (callback) {
                 callback();
             }
-        }).fail((error, message) => {
-            console.log(error);
         });
     }
 
