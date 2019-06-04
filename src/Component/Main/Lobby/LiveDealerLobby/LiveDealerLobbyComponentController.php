@@ -138,11 +138,84 @@ class LiveDealerLobbyComponentController
             $definition['sort_weight'] = $game['field_lobby_tab'][0]['field_draggable_views']['lobby_tab']['weight']
                 ?? 0;
             $definition['under_maintenance'] = $game['field_maintenance_blurb'][0]['value'] ?? "";
-            $definition['publish_end'] = $game['field_maintenance_end_date'][0]['value'] ?? "";
 
             return $definition;
         } catch (\Exception $e) {
             return [];
         }
+    }
+
+    public function maintenance($request, $response)
+    {
+        try {
+            $data = [];
+            $providers = $this->views->withProduct('mobile-live-dealer')->getViewById('game_providers');
+            $data['game_providers'] = $this->processProviders($providers);
+        } catch (\Exception $e) {
+            $data = [];
+        }
+        return $this->rest->output($response, $data);
+    }
+
+    private function processProviders($providers)
+    {
+        try {
+            $providersList = [];
+            foreach ($providers as $provider) {
+                $providerData = [];
+                $providerData['game_code'] = $provider['field_game_provider_key'][0]['value'];
+                $providerData['maintenance'] = $provider['field_game_provider_maintenance'][0]['value'] ?? false;
+
+                if (!$providerData['maintenance']) {
+                    $providerData['maintenance'] = $this->checkIfMaintenance(
+                        $provider['field_game_provider_start_date'][0]['value'] ?? [],
+                        $provider['field_game_provider_end_date'][0]['value'] ?? []
+                    );
+                }
+                $providersList[$provider['field_game_provider_key'][0]['value']] = $providerData;
+  
+            }
+        } catch (\Throwable $th) {
+            $providersList = [];
+        }
+        return $providersList;
+    }
+
+    private function checkIfMaintenance($dateStart, $dateEnd)
+    {
+        if (!$dateStart && !$dateEnd) {
+            return false;
+        }
+
+        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
+        $currentDate = $currentDate->getTimestamp();
+        if ($dateStart && $dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateStart && !$dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateEnd && !$dateStart) {
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($endDate->getTimestamp() >= $currentDate) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
