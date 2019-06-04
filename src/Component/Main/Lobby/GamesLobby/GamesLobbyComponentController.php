@@ -371,6 +371,7 @@ class GamesLobbyComponentController
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";
+            $processGame['game_subprovider'] = $game['field_games_subprovider'][0]['name'][0]['value'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
