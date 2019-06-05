@@ -4,14 +4,13 @@ import PopupWindow from "@app/assets/script/components/popup";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
-import {Modal} from "@app/assets/script/components/modal";
-
-import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
 import {GameInterface} from "./../scripts/game.interface";
+import {UnsupportedCurrency} from "./../scripts/unsupported-currency";
 
 export class TGPModule implements ModuleInterface, GameInterface {
     private key: string = "tgp";
+    private moduleName: string = "tgp_integration";
     private currencies: any;
     private languages: any;
     private windowObject: any;
@@ -47,7 +46,7 @@ export class TGPModule implements ModuleInterface, GameInterface {
             }
 
             xhr({
-                url: Router.generateModuleRoute("tgp_integration", "launch"),
+                url: Router.generateModuleRoute(this.moduleName, "launch"),
                 type: "json",
                 method: "post",
                 data: {
@@ -60,7 +59,8 @@ export class TGPModule implements ModuleInterface, GameInterface {
                 }
 
                 if (!response.currency) {
-                    this.unsupportedCurrency(options);
+                    const unsupportedCurrency = new UnsupportedCurrency();
+                    unsupportedCurrency.showUnsupportedCurrency(this.moduleName, options);
                 }
             }).fail((error, message) => {
                 // Do nothing
@@ -121,33 +121,5 @@ export class TGPModule implements ModuleInterface, GameInterface {
                 this.windowObject.focus();
             }
         }
-    }
-
-    private unsupportedCurrency(data) {
-        xhr({
-            url: Router.generateModuleRoute("tgp_integration", "unsupported"),
-            type: "json",
-            method: "get",
-        }).then((response) => {
-            if (response.status) {
-                let body = response.message;
-                body = body.replace("{game_name}", data.title);
-                body = body.replace("{game_provider}", response.provider);
-                const template = uclTemplate({
-                    title: response.title,
-                    message: body,
-                    button: response.button,
-                });
-
-                const categoriesEl = document.querySelector("#unsupported-lightbox");
-
-                if (categoriesEl) {
-                    categoriesEl.innerHTML = template;
-                    Modal.open("#unsupported-lightbox");
-                }
-            }
-        }).fail((error, message) => {
-            // Do nothing
-        });
     }
 }
