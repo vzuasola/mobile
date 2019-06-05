@@ -19,6 +19,9 @@
                     {{#if ../isLogin}}
                     data-game-launch="true"
                     {{/if}}
+                    {{#if this.provider_maintenance}}
+                        data-game-maintenance="true"
+                    {{/if}}
                     data-game-provider="{{this.game_provider}}"
                     data-game-code="{{this.game_code}}"
                     data-game-platform="{{this.game_platform}}"
@@ -62,6 +65,9 @@
                         <a href="#" class="providers-provider-menu providers-{{this.game_provider}} close-drawer"
                             {{#if ../isLogin}}
                             data-game-launch="true"
+                            {{/if}}
+                            {{#if this.provider_maintenance}}
+                                data-game-maintenance="true"
                             {{/if}}
                             data-game-provider="{{this.game_provider}}"
                             data-game-code="{{this.game_code}}"
