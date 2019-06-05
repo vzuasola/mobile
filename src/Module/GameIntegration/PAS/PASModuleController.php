@@ -2,10 +2,12 @@
 
 namespace App\MobileEntry\Module\GameIntegration\PAS;
 
-use App\Drupal\Config;
+use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 
 class PASModuleController
 {
+    use ProviderTrait;
+
     const KEY = 'pas';
 
     const CASINO_MAP = [
@@ -73,24 +75,6 @@ class PASModuleController
                 'token' => $this->playerSession->getToken(),
                 'currency' => $this->player->getCurrency(),
             ];
-        } catch (\Exception $e) {
-            $data['status'] = false;
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
-    public function unsupported($request, $response)
-    {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
-            $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $config['unsupported_currencies_title'] ?? '';
-            $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $config['unsupported_currencies_button'] ?? '';
-            $data['status'] = true;
         } catch (\Exception $e) {
             $data['status'] = false;
         }
@@ -174,23 +158,5 @@ class PASModuleController
         }
 
         return $this->rest->output($response, $data);
-    }
-
-    private function checkCurrency($playerCurrency)
-    {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_playtech_provider');
-            $currencies = explode("\r\n", $config['dafabetgames_currency']);
-            if (!$playerCurrency) {
-                $playerCurrency = $this->player->getCurrency();
-            }
-
-            if (in_array($playerCurrency, $currencies)) {
-                return true;
-            }
-        } catch (\Exception $e) {
-            // Do nothing
-        }
-        return false;
     }
 }

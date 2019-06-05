@@ -2,10 +2,12 @@
 
 namespace App\MobileEntry\Module\GameIntegration\AllBet;
 
-use App\Drupal\Config;
+use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 
 class AllBetModuleController
 {
+    use ProviderTrait;
+
     const KEY = 'allbet';
 
     private $rest;
@@ -38,23 +40,6 @@ class AllBetModuleController
         $this->allbet = $allbet;
         $this->config = $config->withProduct('mobile-live-dealer');
         $this->player = $player;
-    }
-
-    public function unsupported($request, $response)
-    {
-        try {
-            $allbetConfig =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($allbetConfig['game_provider_mapping'] ?? '');
-            $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $allbetConfig['unsupported_currencies_title'] ?? '';
-            $data['message'] = $allbetConfig['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $allbetConfig['unsupported_currencies_button'] ?? '';
-            $data['status'] = true;
-        } catch (\Exception $e) {
-            $data['status'] = false;
-        }
-
-        return $this->rest->output($response, $data);
     }
 
     /**
@@ -91,21 +76,5 @@ class AllBetModuleController
         }
 
         return $data;
-    }
-
-    private function checkCurrency()
-    {
-        try {
-            $allbetConfig =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-            $currencies = explode("\r\n", $allbetConfig[self::KEY . '_currency']);
-            $playerCurrency = $this->player->getCurrency();
-
-            if (in_array($playerCurrency, $currencies)) {
-                return true;
-            }
-        } catch (\Exception $e) {
-            // Do nothing
-        }
-        return false;
     }
 }
