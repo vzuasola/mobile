@@ -45,6 +45,11 @@ export class MicroGamingModule implements ModuleInterface, GameInterface {
                 langCode = this.languages[lang];
             }
 
+            if (options.maintenance === "true") {
+                this.maintenance();
+                return;
+            }
+
             xhr({
                 url: Router.generateModuleRoute(this.moduleName, "launch"),
                 type: "json",
@@ -123,5 +128,9 @@ export class MicroGamingModule implements ModuleInterface, GameInterface {
                 this.windowObject.focus();
             }
         }
+    }
+
+    private maintenance() {
+        // Maintenance
     }
 }
