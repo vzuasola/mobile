@@ -46,6 +46,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.configs = attachments.configs;
         this.liveDealerXhrRequest("maintenance", (response) => {
             this.providers = response.game_providers;
+            ComponentManager.broadcast("provider.maintenance", {
+                providers: this.providers,
+            });
             this.generateLobby(() => {
                 this.setLobby();
             });
@@ -79,6 +82,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.configs = attachments.configs;
         this.liveDealerXhrRequest("maintenance", (response) => {
             this.providers = response.game_providers;
+            ComponentManager.broadcast("provider.maintenance", {
+                providers: this.providers,
+            });
             this.generateLobby(() => {
                 this.setLobby();
             });

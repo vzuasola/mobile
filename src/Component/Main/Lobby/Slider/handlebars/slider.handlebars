@@ -17,6 +17,9 @@
                 {{#if ../sliderData.is_login }}
                     data-game-launch="true"
                 {{/if}}
+                {{#if this.provider_maintenance }}
+                    data-game-maintenance="true"
+                {{/if}}
             >
             <picture>
                 <source srcset="{{ this.banner_img_landscape }}" media="(min-width: 40em) and (orientation: landscape)">
