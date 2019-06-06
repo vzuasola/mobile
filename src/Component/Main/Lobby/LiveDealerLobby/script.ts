@@ -219,6 +219,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.lazyLoader.init(
             this.groupedGames[activeTab],
             this.isLogin,
+            this.configs,
             this.element.querySelector("#game-container"),
             activeTab,
             enableLazyLoad,

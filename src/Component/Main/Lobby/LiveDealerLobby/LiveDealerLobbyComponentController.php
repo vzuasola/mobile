@@ -137,7 +137,6 @@ class LiveDealerLobbyComponentController
                 && $game['field_use_game_loader'][0]['value']) ? "true" : "false";
             $definition['sort_weight'] = $game['field_lobby_tab'][0]['field_draggable_views']['lobby_tab']['weight']
                 ?? 0;
-            $definition['under_maintenance'] = $game['field_maintenance_blurb'][0]['value'] ?? "";
 
             return $definition;
         } catch (\Exception $e) {
