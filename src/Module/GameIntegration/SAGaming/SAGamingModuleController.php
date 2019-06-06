@@ -52,11 +52,15 @@ class SAGamingModuleController
 
         if ($this->checkCurrency()) {
             $requestData = $request->getParsedBody();
-            if ($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') {
+            if (($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') &&
+                !isset($requestData['lobby'])
+            ) {
                 $data = $this->getGameUrl($request, $response);
             }
 
-            if (!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') {
+            if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
+                isset($requestData['lobby'])
+            ) {
                 $data = $this->getGameLobby($request, $response);
             }
         }
@@ -70,11 +74,18 @@ class SAGamingModuleController
         $requestData = $request->getParsedBody();
 
         try {
+            $options = [
+                'languageCode' => $requestData['langCode']
+            ];
+
+            if (isset($requestData['gameCode'])) {
+                $options['gameCode'] = $requestData['gameCode'];
+            }
+
             $responseData = $this->saGaming->getLobby('icore_sa', [
-                'options' => [
-                    'languageCode' => $requestData['langCode'],
-                ]
+                'options' => $options
             ]);
+
             if ($responseData) {
                 $data['gameurl'] = $responseData;
             }

@@ -142,6 +142,7 @@ export class LobbySliderComponent implements ComponentInterface {
 
     private generateSliderMarkup(data) {
         const slider: HTMLElement = this.element.querySelector("#main-slider");
+        console.log(data);
         const template = sliderTemplate({
             sliderData: data,
         });

@@ -62,6 +62,7 @@ export class SAGamingModule implements ModuleInterface, GameInterface {
                 data: {
                     gameCode: options.code,
                     langCode,
+                    lobby: options.lobby,
                 },
             }).then((response) => {
                 if (response.gameurl) {
