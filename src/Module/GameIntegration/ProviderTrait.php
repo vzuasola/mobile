@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Module\GameIntegration;
 
 use App\Drupal\Config;
+
 /**
  * Trait for providers
  */
@@ -15,9 +16,30 @@ trait ProviderTrait
             $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
             $data['provider'] = $providerMapping[self::KEY];
             $data['title'] = $config['unsupported_currencies_title'] ?? '';
-            $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? '';
+            $data['message'] = $config['unsupported_currencies_message']['value'] ?? '';
             $data['button'] = $config['unsupported_currencies_button'] ?? '';
+            $data['status'] = true;
+        } catch (\Exception $e) {
+            $data['status'] = false;
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    public function maintenance($request, $response)
+    {
+        try {
+            $params = $request->getParsedBody();
+            $productConfig = $this->config;
+            if (isset($params['product'])) {
+                $productConfig = $this->config->withProduct($params['product']);
+            }
+            $config =  $productConfig->getConfig('webcomposer_config.provider_maintenance');
+            $providerMapping = Config::parse($config['provider_maitenance_mapping'] ?? '');
+            $data['provider'] = $providerMapping[self::KEY];
+            $data['title'] = $config['provider_maintenance_title'] ?? '';
+            $data['message'] = $config['provider_maintenance_message']['value'] ?? '';
+            $data['button'] = $config['provider_maintenance_button'] ?? '';
             $data['status'] = true;
         } catch (\Exception $e) {
             $data['status'] = false;
