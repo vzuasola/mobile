@@ -73,7 +73,7 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                 if (!response.currency) {
                     this.messageLightbox.showMessage(
                         this.moduleName,
-                        "maintenance",
+                        "unsupported",
                         options,
                     );
                 }

@@ -74,7 +74,7 @@ export class GPIModule implements ModuleInterface, GameInterface {
                 if (!response.currency) {
                     this.messageLightbox.showMessage(
                         this.moduleName,
-                        "maintenance",
+                        "unsupported",
                         options,
                     );
                 }
