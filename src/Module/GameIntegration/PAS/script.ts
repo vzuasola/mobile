@@ -17,7 +17,7 @@ import {DafaConnect} from "@app/assets/script/dafa-connect";
 import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
 import {GameInterface} from "./../scripts/game.interface";
-import {UnsupportedCurrency} from "./../scripts/unsupported-currency";
+import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 
 /**
  * Combined class implementation for the PAS module and the
@@ -54,6 +54,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private isGold: boolean;
 
     private pasLoginResponse: any;
+    private messageLightbox: ProviderMessageLightbox;
 
     onLoad(attachments: {
         futurama: boolean,
@@ -86,6 +87,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             this.currency = attachments.currency;
         }
         this.token = attachments.token;
+        this.messageLightbox = new ProviderMessageLightbox();
     }
 
     init() {
@@ -237,6 +239,15 @@ export class PASModule implements ModuleInterface, GameInterface {
                 product = "dafaconnect";
             }
 
+            if (options.maintenance === "true") {
+                this.messageLightbox.showMessage(
+                    this.moduleName,
+                    "maintenance",
+                    options,
+                );
+                return;
+            }
+
             // remap language
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
@@ -258,8 +269,11 @@ export class PASModule implements ModuleInterface, GameInterface {
                 }
 
                 if (!response.currency) {
-                    const unsupportedCurrency = new UnsupportedCurrency();
-                    unsupportedCurrency.showUnsupportedCurrency(this.moduleName, options);
+                    this.messageLightbox.showMessage(
+                        this.moduleName,
+                        "unsupported",
+                        options,
+                    );
                 }
             }).fail((error, message) => {
                 // Do nothing

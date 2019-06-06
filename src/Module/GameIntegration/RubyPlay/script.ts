@@ -6,7 +6,7 @@ import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
-import {UnsupportedCurrency} from "./../scripts/unsupported-currency";
+import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 
 export class RubyPlayModule implements ModuleInterface, GameInterface {
     private key: string = "ruby_play";
@@ -15,6 +15,7 @@ export class RubyPlayModule implements ModuleInterface, GameInterface {
     private languages: any;
     private windowObject: any;
     private gameLink: string;
+    private messageLightbox: ProviderMessageLightbox;
 
     onLoad(attachments: {
         currencies: any,
@@ -22,6 +23,7 @@ export class RubyPlayModule implements ModuleInterface, GameInterface {
     }) {
         this.currencies = attachments.currencies;
         this.languages = attachments.languages;
+        this.messageLightbox = new ProviderMessageLightbox();
     }
 
     init() {
@@ -44,6 +46,15 @@ export class RubyPlayModule implements ModuleInterface, GameInterface {
                 langCode = this.languages[lang];
             }
 
+            if (options.maintenance === "true") {
+                this.messageLightbox.showMessage(
+                    this.moduleName,
+                    "maintenance",
+                    options,
+                );
+                return;
+            }
+
             xhr({
                 url: Router.generateModuleRoute(this.moduleName, "launch"),
                 type: "json",
@@ -59,8 +70,11 @@ export class RubyPlayModule implements ModuleInterface, GameInterface {
                 }
 
                 if (!response.currency) {
-                    const unsupportedCurrency = new UnsupportedCurrency();
-                    unsupportedCurrency.showUnsupportedCurrency(this.moduleName, options);
+                    this.messageLightbox.showMessage(
+                        this.moduleName,
+                        "unsupported",
+                        options,
+                    );
                 }
             }).fail((error, message) => {
                 // Do nothing

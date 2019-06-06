@@ -2,10 +2,12 @@
 
 namespace App\MobileEntry\Module\GameIntegration\TGP;
 
-use App\Drupal\Config;
+use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 
 class TGPModuleController
 {
+    use ProviderTrait;
+
     const KEY = 'tgp';
 
     private $rest;
@@ -38,23 +40,6 @@ class TGPModuleController
         $this->tgp = $tgp;
         $this->config = $config->withProduct('mobile-live-dealer');
         $this->player = $player;
-    }
-
-    public function unsupported($request, $response)
-    {
-        try {
-            $tgpConfig =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($tgpConfig['game_provider_mapping'] ?? '');
-            $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $tgpConfig['unsupported_currencies_title'] ?? '';
-            $data['message'] = $tgpConfig['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $tgpConfig['unsupported_currencies_button'] ?? '';
-            $data['status'] = true;
-        } catch (\Exception $e) {
-            $data['status'] = false;
-        }
-
-        return $this->rest->output($response, $data);
     }
 
     /**
@@ -91,21 +76,5 @@ class TGPModuleController
         }
 
         return $data;
-    }
-
-    private function checkCurrency()
-    {
-        try {
-            $tgpConfig =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-            $currencies = explode("\r\n", $tgpConfig[self::KEY . '_currency']);
-            $playerCurrency = $this->player->getCurrency();
-
-            if (in_array($playerCurrency, $currencies)) {
-                return true;
-            }
-        } catch (\Exception $e) {
-            // Do nothing
-        }
-        return false;
     }
 }

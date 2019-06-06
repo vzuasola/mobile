@@ -14,11 +14,13 @@ import Xlider from "@app/assets/script/components/xlider";
  */
 export class LobbySliderComponent implements ComponentInterface {
     private element: HTMLElement;
-
+    private sliderData: any;
+    private providers: any;
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getSliders();
         this.listenClickslider();
+        this.listenForProviders();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -129,18 +131,43 @@ export class LobbySliderComponent implements ComponentInterface {
                 product,
             },
         }).then((response) => {
-            this.generateSliderMarkup(response);
+            this.sliderData = response;
+            if (typeof this.providers !== "undefined") {
+                this.updateSliders();
+            }
+            this.generateSliderMarkup(this.sliderData);
             this.activateSlider();
         });
     }
 
     private generateSliderMarkup(data) {
         const slider: HTMLElement = this.element.querySelector("#main-slider");
+        console.log(data);
         const template = sliderTemplate({
             sliderData: data,
         });
 
         slider.innerHTML = template;
 
+    }
+
+    private listenForProviders() {
+        ComponentManager.subscribe("provider.maintenance", (event, src, data) => {
+            this.providers = data.providers;
+
+            if (typeof this.sliderData !== "undefined") {
+                this.updateSliders();
+                this.generateSliderMarkup(this.sliderData);
+                this.activateSlider();
+            }
+        });
+    }
+
+    private updateSliders() {
+        for (const slide of this.sliderData.slides) {
+            if (this.providers.hasOwnProperty(slide.game_provider)) {
+                slide.provider_maintenance = this.providers[slide.game_provider].maintenance;
+            }
+        }
     }
 }

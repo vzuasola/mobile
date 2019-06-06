@@ -24,6 +24,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private windowObject: any;
     private gameLink: string;
     private configs: any[];
+    private providers: any;
     private lazyLoader: LazyLoader;
 
     constructor() {
@@ -43,8 +44,14 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.tabs = attachments.tabs;
         this.configs = attachments.configs;
-        this.doGetLobbyData(() => {
-            this.setLobby();
+        this.liveDealerXhrRequest("maintenance", (response) => {
+            this.providers = response.game_providers;
+            ComponentManager.broadcast("provider.maintenance", {
+                providers: this.providers,
+            });
+            this.generateLobby(() => {
+                this.setLobby();
+            });
         });
         this.listenHashChange();
         this.listenClickTab();
@@ -73,27 +80,39 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.tabs = attachments.tabs;
         this.configs = attachments.configs;
-        this.doGetLobbyData(() => {
-            this.setLobby();
+        this.liveDealerXhrRequest("maintenance", (response) => {
+            this.providers = response.game_providers;
+            ComponentManager.broadcast("provider.maintenance", {
+                providers: this.providers,
+            });
+            this.generateLobby(() => {
+                this.setLobby();
+            });
         });
         this.listenToLaunchGameLoader();
+    }
+
+    private liveDealerXhrRequest(method: string, callback) {
+        xhr({
+            url: Router.generateRoute("live_dealer_lobby", method),
+            type: "json",
+        }).then((response) => {
+                callback(response);
+        }).fail((error, message) => {
+            console.log(error);
+        });
     }
 
     /**
      * Request games list from cms
      */
     private doGetLobbyData(callback) {
-        xhr({
-            url: Router.generateRoute("live_dealer_lobby", "lobby"),
-            type: "json",
-        }).then((response) => {
+        this.liveDealerXhrRequest("lobby", (response) => {
             const groupedGames = this.groupGamesByTab(response);
             this.groupedGames = this.sortGamesByTab(groupedGames);
             if (callback) {
                 callback();
             }
-        }).fail((error, message) => {
-            console.log(error);
         });
     }
 
@@ -105,6 +124,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         for (const gameId in games) {
             if (games.hasOwnProperty(gameId)) {
                 const game = games[gameId];
+                if (this.providers.hasOwnProperty(game.game_provider)) {
+                    game.provider_maintenance = this.providers[game.game_provider].maintenance;
+                }
                 if (!groupedGames.hasOwnProperty(game.lobby_tab)
                 ) {
                     groupedGames[game.lobby_tab] = [];
@@ -116,7 +138,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 }
             }
         }
-
         return groupedGames;
     }
 
@@ -198,6 +219,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.lazyLoader.init(
             this.groupedGames[activeTab],
             this.isLogin,
+            this.configs,
             this.element.querySelector("#game-container"),
             activeTab,
             enableLazyLoad,
