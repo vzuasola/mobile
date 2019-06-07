@@ -13,7 +13,9 @@
                 data-game-title="{{ this.field_title }}"
                 data-game-platform="{{ this.game_platform }}"
                 data-game-loader="{{this.use_game_loader}}"
-                data-game-subprovider="{{this.game_subprovider}}"
+                {{#if this.game_subprovider }}
+                    data-game-subprovider="{{this.game_subprovider}}"
+                {{/if}}
                 {{#if ../sliderData.is_login }}
                     data-game-launch="true"
                 {{/if}}
