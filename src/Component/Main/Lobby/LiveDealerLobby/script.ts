@@ -385,6 +385,8 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 }
             }
 
+            url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+
             // handle redirects if we are on a PWA standalone
             if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
                 (window.innerHeight / window.screen.height) > 0.9
