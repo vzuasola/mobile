@@ -10,7 +10,8 @@ export class ProviderMessageLightbox {
     private message: string;
 
     showMessage(moduleName, method, data, modalName = "#unsupported-lightbox") {
-        const product = ComponentManager.getAttribute("product");
+        const product = data.hasOwnProperty("currentProduct") ? data.currentProduct
+            : ComponentManager.getAttribute("product");
         xhr({
             url: Router.generateModuleRoute(moduleName, method),
             type: "json",

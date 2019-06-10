@@ -33,7 +33,6 @@ export class LazyLoader {
         this.authenticated = authenticated;
         this.activeTab = activeTab;
         this.configs = configs;
-        console.log(this.configs);
         const batch = this.getBatch();
         const template = gameTemplate({
             games: batch[this.startBatch],
