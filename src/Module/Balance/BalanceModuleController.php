@@ -111,12 +111,16 @@ class BalanceModuleController
             }
 
             try {
+                $ids = self::SPECIAL_BALANCE_BEHAVIORS;
+                if (strtolower($currency) !== "inr") {
+                    unset($ids['exchange']);
+                }
                 $balances = $this->balance->getBalanceByProductIds(
-                    ['ids' => self::SPECIAL_BALANCE_BEHAVIORS]
+                    ['ids' => $ids]
                 )['balance'];
 
                 $bonuses = $this->balance->getBonusBalanceByProductIds(
-                    ['ids' => self::SPECIAL_BALANCE_BEHAVIORS]
+                    ['ids' => $ids]
                 )['balance'];
 
                 // We'll remove the OW Sports bonus, since it's already part of the "realmoney" balance
