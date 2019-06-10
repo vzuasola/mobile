@@ -20,7 +20,8 @@
         display: inline-block;
 
         a {
-            background: $red;
+            background: #7e0000;
+            border: 0.1rem solid $red;
             display: block;
             padding: 1rem 0;
             color: $yellow;
