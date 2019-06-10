@@ -88,13 +88,15 @@ class GamesLobbyComponentController
         if (!$item->isHit()) {
             $data = $this->generatePageLobbyData($page);
 
-            $item->set([
-                'body' => $data,
-            ]);
+            if (isset($data['all-games'])) {
+                $item->set([
+                    'body' => $data,
+                ]);
 
-            $this->cacher->save($item, [
-                'expires' => self::TIMEOUT,
-            ]);
+                $this->cacher->save($item, [
+                    'expires' => self::TIMEOUT,
+                ]);
+            }
         } else {
             $body = $item->get();
 
