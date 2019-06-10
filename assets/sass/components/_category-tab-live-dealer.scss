@@ -337,23 +337,25 @@
                 }
 
                 &-maintenance {
-                        position: absolute;
-                        top: 0;
-                        width: 100%;
-                        height: 100%;
-                        padding: 0 1% 2%;
-
                         &-title {
                             position: absolute;
+                            left: 1.5%;
+                            right: 1.5%;
                             bottom: 0.7rem;
+                            width: 97%;
                             text-align: center;
                             width: 100%;
                             color: $white;
+                            z-index: 1;
                         }
 
                         p {
                             position: absolute;
                             top: 30%;
+                            left: 1.5%;
+                            right: 1.5%;
+                            width: 97%;
+                            z-index: 1;
                             margin: 0;
                             color: #ffe000;
                             text-align: center;
@@ -362,11 +364,16 @@
                         }
                 }
 
-                &-maintenance:before {
+                &-maintenance:after {
+                    position: absolute;
+                    top: 0;
+                    left: 1.5%;
+                    right: 1.5%;
+                    z-index: 0;
+                    bottom: 0;
                     content: " ";
-                    display: block;
-                    width: 100%;
-                    height: 100%;
+                    width: 97%;
+                    height: 97%;
                     background: #000;
                     opacity: 0.8;
                 }
