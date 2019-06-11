@@ -95,20 +95,4 @@ class GPIModuleController
 
         return $data;
     }
-
-    private function checkCurrency($request)
-    {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
-            $currencies = explode("\r\n", $config['gpi_live_dealer_currency']);
-            $playerCurrency = $this->player->getCurrency();
-
-            if (in_array($playerCurrency, $currencies)) {
-                return true;
-            }
-        } catch (\Exception $e) {
-            // Do nothing
-        }
-        return false;
-    }
 }
