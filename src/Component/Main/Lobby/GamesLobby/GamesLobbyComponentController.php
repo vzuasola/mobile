@@ -88,7 +88,7 @@ class GamesLobbyComponentController
         if (!$item->isHit()) {
             $data = $this->generatePageLobbyData($page);
 
-            if (isset($data['all-games'])) {
+            if (isset($data['all-games']) && !empty($data['all-games'])) {
                 $item->set([
                     'body' => $data,
                 ]);
@@ -180,19 +180,18 @@ class GamesLobbyComponentController
     private function generatePageLobbyData($page)
     {
         $data = [];
-
         $categories = $this->views->getViewById('games_category');
-
+        
         $allGames = $this->views->getViewById(
-            'games_list',
-            [
-                'page' => (string) $page,
+        'games_list',
+        [
+            'page' => (string) $page,
             ]
         );
-
+            
         $specialCategories = [];
         $specialCategories = $this->getSpecialCategories($categories);
-
+        
         $data['special_categories'] = $specialCategories;
         $data['categories_list'] = $categories;
         $data['games'] = $this->getGamesAndCategory(
@@ -201,7 +200,7 @@ class GamesLobbyComponentController
 
         return $data;
     }
-
+    
     public function recent($request, $response)
     {
         $gameCode = $request->getParsedBody();
@@ -210,7 +209,7 @@ class GamesLobbyComponentController
             return $this->rest->output($response, $result);
         }
     }
-
+    
     public function favorite($request, $response)
     {
         $gameCode = $request->getParsedBody();
