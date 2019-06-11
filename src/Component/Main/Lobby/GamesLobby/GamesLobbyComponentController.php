@@ -88,7 +88,7 @@ class GamesLobbyComponentController
         if (!$item->isHit()) {
             $data = $this->generatePageLobbyData($page);
 
-            if (isset($data['all-games'])) {
+            if (isset($data['all-games']) && !empty($data['all-games'])) {
                 $item->set([
                     'body' => $data,
                 ]);
@@ -180,13 +180,12 @@ class GamesLobbyComponentController
     private function generatePageLobbyData($page)
     {
         $data = [];
-
         $categories = $this->views->getViewById('games_category');
 
         $allGames = $this->views->getViewById(
             'games_list',
             [
-                'page' => (string) $page,
+            'page' => (string) $page,
             ]
         );
 
