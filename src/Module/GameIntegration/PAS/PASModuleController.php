@@ -107,6 +107,7 @@ class PASModuleController
      */
     public function launch($request, $response)
     {
+        $requestData = $request->getParsedBody();
         $data['gameurl'] = false;
         $data['currency'] = false;
 
