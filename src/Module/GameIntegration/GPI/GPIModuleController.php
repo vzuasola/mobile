@@ -55,7 +55,7 @@ class GPIModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($request)) {
             $data = $this->getGameLobby($request, $response);
         }
 
@@ -96,7 +96,7 @@ class GPIModuleController
         return $data;
     }
 
-    private function checkCurrency()
+    private function checkCurrency($request)
     {
         try {
             $config =  $this->config->getConfig('webcomposer_config.games_gpi_provider');

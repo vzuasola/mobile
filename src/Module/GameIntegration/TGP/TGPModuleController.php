@@ -50,7 +50,7 @@ class TGPModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($request)) {
             $data = $this->getGameLobby($request, $response);
         }
 

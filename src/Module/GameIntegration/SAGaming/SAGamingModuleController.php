@@ -50,7 +50,7 @@ class SAGamingModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
             if (($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') &&
                 !isset($requestData['lobby'])
