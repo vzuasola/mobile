@@ -342,7 +342,6 @@
                             left: 1.5%;
                             right: 1.5%;
                             bottom: 0.7rem;
-                            width: 97%;
                             text-align: center;
                             width: 100%;
                             color: $white;
@@ -354,7 +353,6 @@
                             top: 30%;
                             left: 1.5%;
                             right: 1.5%;
-                            width: 97%;
                             z-index: 1;
                             margin: 0;
                             color: #ffe000;
@@ -367,13 +365,11 @@
                 &-maintenance:after {
                     position: absolute;
                     top: 0;
-                    left: 1.5%;
-                    right: 1.5%;
+                    left: 0.2rem;
+                    right: 0.2rem;
+                    bottom: 0.4rem;
                     z-index: 0;
-                    bottom: 0;
                     content: " ";
-                    width: 97%;
-                    height: 97%;
                     background: #000;
                     opacity: 0.8;
                 }
