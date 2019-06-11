@@ -200,7 +200,7 @@ class GamesLobbyComponentController
 
         return $data;
     }
-    
+
     public function recent($request, $response)
     {
         $gameCode = $request->getParsedBody();
