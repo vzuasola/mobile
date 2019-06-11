@@ -181,17 +181,17 @@ class GamesLobbyComponentController
     {
         $data = [];
         $categories = $this->views->getViewById('games_category');
-        
+
         $allGames = $this->views->getViewById(
-        'games_list',
-        [
+            'games_list',
+            [
             'page' => (string) $page,
             ]
         );
-            
+
         $specialCategories = [];
         $specialCategories = $this->getSpecialCategories($categories);
-        
+
         $data['special_categories'] = $specialCategories;
         $data['categories_list'] = $categories;
         $data['games'] = $this->getGamesAndCategory(
@@ -209,7 +209,7 @@ class GamesLobbyComponentController
             return $this->rest->output($response, $result);
         }
     }
-    
+
     public function favorite($request, $response)
     {
         $gameCode = $request->getParsedBody();
