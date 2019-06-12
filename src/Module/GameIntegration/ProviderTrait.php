@@ -12,7 +12,12 @@ trait ProviderTrait
     public function unsupported($request, $response)
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
+            $params = $request->getParsedBody();
+            $productConfig = $this->config;
+            if (isset($params['product'])) {
+                $productConfig = $this->config->withProduct($params['product']);
+            }
+            $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
             $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
             $data['provider'] = $providerMapping[self::KEY];
             $data['title'] = $config['unsupported_currencies_title'] ?? '';
@@ -48,9 +53,14 @@ trait ProviderTrait
         return $this->rest->output($response, $data);
     }
 
-    private function checkCurrency()
+    private function checkCurrency($request)
     {
         try {
+            $params = $request->getParsedBody();
+            $productConfig = $this->config;
+            if (isset($params['product'])) {
+                $productConfig = $this->config->withProduct($params['product']);
+            }
             $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
             $currencies = explode("\r\n", $config[self::KEY . '_currency']);
             $playerCurrency = $this->player->getCurrency();

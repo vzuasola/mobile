@@ -111,7 +111,7 @@ class PASModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
-        if ($this->checkCurrency($requestData['currency'])) {
+        if ($this->checkCurrency($request)) {
             $data['currency'] = true;
 
             try {
@@ -188,10 +188,16 @@ class PASModuleController
      * Override trait
      *
      */
-    private function checkCurrency($playerCurrency)
+    private function checkCurrency($request)
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_playtech_provider');
+            $params = $request->getParsedBody();
+            $playerCurrency = $params['currency'];
+            $productConfig = $this->config;
+            if (isset($params['product'])) {
+                $productConfig = $this->config->withProduct($params['product']);
+            }
+            $config =  $productConfig->getConfig('webcomposer_config.icore_playtech_provider');
             $currencies = explode("\r\n", $config['dafabetgames_currency']);
             if (!$playerCurrency) {
                 $playerCurrency = $this->player->getCurrency();

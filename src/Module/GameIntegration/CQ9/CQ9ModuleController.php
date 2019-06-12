@@ -49,7 +49,7 @@ class CQ9ModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($request)) {
             $data['currency'] = true;
             $requestData = $request->getParsedBody();
             $params = explode('|', $requestData['gameCode']);
