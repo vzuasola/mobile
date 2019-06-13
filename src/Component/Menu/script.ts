@@ -42,6 +42,7 @@ export class MenuComponent implements ComponentInterface {
         this.pushNotification.handleOnLoad(element, attachments);
 
         this.listenAnnouncementCount();
+        this.listenHighlightMenu();
 
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
@@ -54,7 +55,6 @@ export class MenuComponent implements ComponentInterface {
         Router.on(RouterClass.afterNavigate, (event) => {
             this.attachProduct();
             this.attachProductToLogin();
-            this.refreshMenu();
         });
 
     }
@@ -155,6 +155,16 @@ export class MenuComponent implements ComponentInterface {
         });
     }
 
+    private listenHighlightMenu() {
+        ComponentManager.subscribe("menu.highlight", (event, target, data) => {
+            const menu = this.element.querySelector("a." + data.menu);
+            const activeClass = menu.getAttribute("data-router-active-link-class");
+            if (menu && !utility.hasClass(menu, activeClass)) {
+                utility.addClass(menu, activeClass);
+            }
+        });
+    }
+
     private attachProduct() {
         const product = ComponentManager.getAttribute("product");
         const menus: NodeListOf<HTMLElement> = this.element.querySelectorAll(".attach-product");
@@ -219,14 +229,6 @@ export class MenuComponent implements ComponentInterface {
                     this.joinUrl,
                 );
             }
-        }
-    }
-
-    private refreshMenu() {
-        const product = ComponentManager.getAttribute("product");
-        if (this.product !== product) {
-            this.product = product;
-            ComponentManager.refreshComponent("menu");
         }
     }
 }
