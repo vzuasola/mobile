@@ -10,8 +10,8 @@ import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
 import {GameInterface} from "./../scripts/game.interface";
 
-export class AsiaGamingModule implements ModuleInterface, GameInterface {
-    private key: string = "asia_gaming";
+export class RubyPlayModule implements ModuleInterface, GameInterface {
+    private key: string = "ruby_play";
     private currencies: any;
     private languages: any;
     private windowObject: any;
@@ -44,8 +44,9 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
             if (typeof this.languages[lang] !== "undefined") {
                 langCode = this.languages[lang];
             }
+
             xhr({
-                url: Router.generateModuleRoute("asiagaming_integration", "launch"),
+                url: Router.generateModuleRoute("rubyplay_integration", "launch"),
                 type: "json",
                 method: "post",
                 data: {
@@ -128,7 +129,7 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
 
     private unsupportedCurrency(data) {
         xhr({
-            url: Router.generateModuleRoute("asiagaming_integration", "unsupported"),
+            url: Router.generateModuleRoute("rubyplay_integration", "unsupported"),
             type: "json",
             method: "get",
         }).then((response) => {

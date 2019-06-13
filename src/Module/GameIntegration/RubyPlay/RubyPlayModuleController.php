@@ -1,16 +1,16 @@
 <?php
 
-namespace App\MobileEntry\Module\GameIntegration\CQ9;
+namespace App\MobileEntry\Module\GameIntegration\RubyPlay;
 
 use App\Drupal\Config;
 
-class CQ9ModuleController
+class RubyPlayModuleController
 {
-    const KEY = 'cq9';
+    const KEY = 'ruby_play';
 
     private $rest;
 
-    private $cq9;
+    private $rubyPlay;
 
     private $config;
 
@@ -32,10 +32,10 @@ class CQ9ModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $cq9, $config, $player)
+    public function __construct($rest, $rubyPlay, $config, $player)
     {
         $this->rest = $rest;
-        $this->cq9 = $cq9;
+        $this->rubyPlay = $rubyPlay;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
     }
@@ -71,7 +71,7 @@ class CQ9ModuleController
             $params = explode('|', $requestData['gameCode']);
 
             try {
-                $responseData = $this->cq9->getGameUrlById('icore_cq9', $params[0], [
+                $responseData = $this->rubyPlay->getGameUrlById('icore_rp', $params[0], [
                     'options' => [
                         'languageCode' => $requestData['langCode'],
                         'providerProduct' => $params[1] ?? null,
