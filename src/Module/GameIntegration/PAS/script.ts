@@ -251,11 +251,15 @@ export class PASModule implements ModuleInterface, GameInterface {
             // remap language
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
+            const product = options.hasOwnProperty("currentProduct") ? options.currentProduct
+                : ComponentManager.getAttribute("product");
+
             xhr({
                 url: Router.generateModuleRoute(this.moduleName, "launch"),
                 type: "json",
                 method: "post",
                 data: {
+                    product,
                     lang,
                     language,
                     options,
