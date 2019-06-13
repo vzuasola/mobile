@@ -61,7 +61,7 @@ trait ProviderTrait
             if (isset($params['product'])) {
                 $productConfig = $this->config->withProduct($params['product']);
             }
-            $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
+            $config =  $productConfig->getConfig('webcomposer_config.icore_games_integration');
             $currencies = explode("\r\n", $config[self::KEY . '_currency']);
             $playerCurrency = $this->player->getCurrency();
 
