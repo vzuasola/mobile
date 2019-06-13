@@ -126,7 +126,7 @@ class PASModuleController
                     }
                 }
 
-                $productKey = $requestData['product'];
+                $productKey = $requestData['productMap'];
                 $casino = self::CASINO_MAP[$productKey];
 
                 $url = $this->parser->processTokens(

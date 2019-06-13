@@ -55,11 +55,15 @@ export class RubyPlayModule implements ModuleInterface, GameInterface {
                 return;
             }
 
+            const product = options.hasOwnProperty("currentProduct") ? options.currentProduct
+                : ComponentManager.getAttribute("product");
+
             xhr({
                 url: Router.generateModuleRoute(this.moduleName, "launch"),
                 type: "json",
                 method: "post",
                 data: {
+                    product,
                     gameCode: options.code,
                     langCode,
                 },
