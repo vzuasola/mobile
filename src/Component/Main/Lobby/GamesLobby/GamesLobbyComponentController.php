@@ -88,13 +88,15 @@ class GamesLobbyComponentController
         if (!$item->isHit()) {
             $data = $this->generatePageLobbyData($page);
 
-            $item->set([
-                'body' => $data,
-            ]);
+            if (isset($data['all-games']) && !empty($data['all-games'])) {
+                $item->set([
+                    'body' => $data,
+                ]);
 
-            $this->cacher->save($item, [
-                'expires' => self::TIMEOUT,
-            ]);
+                $this->cacher->save($item, [
+                    'expires' => self::TIMEOUT,
+                ]);
+            }
         } else {
             $body = $item->get();
 
@@ -178,13 +180,12 @@ class GamesLobbyComponentController
     private function generatePageLobbyData($page)
     {
         $data = [];
-
         $categories = $this->views->getViewById('games_category');
 
         $allGames = $this->views->getViewById(
             'games_list',
             [
-                'page' => (string) $page,
+            'page' => (string) $page,
             ]
         );
 

@@ -59,6 +59,10 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\GamesLobby\GamesLobbyComponent
     parent: lobby
 
+  live_dealer_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\LiveDealerLobby\LiveDealerLobbyComponent
+    parent: lobby
+
   casino_lobby:
     class: App\MobileEntry\Component\Main\Lobby\CasinoLobby\CasinoLobbyComponent
     parent: lobby
@@ -129,6 +133,9 @@ components:
   cookie_notification:
     class: App\MobileEntry\Component\CookieNotif\CookieNotifComponent
 
+  game_loader:
+    class: App\MobileEntry\Component\GameLoader\GameLoaderComponent
+
 # Define modules
 modules:
   session:
@@ -167,6 +174,9 @@ modules:
   microgaming_integration:
     class: App\MobileEntry\Module\GameIntegration\MicroGaming\MicroGamingModule
 
+  gold_deluxe_integration:
+    class: App\MobileEntry\Module\GameIntegration\GoldDeluxe\GoldDeluxeModule
+
   voidbridge_integration:
     class: App\MobileEntry\Module\GameIntegration\Voidbridge\VoidbridgeModule
 
@@ -194,6 +204,21 @@ modules:
   rubyplay_integration:
     class: App\MobileEntry\Module\GameIntegration\RubyPlay\RubyPlayModule
 
+  evolution_gaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\EvolutionGaming\EvolutionGamingModule
+
+  ebet_integration:
+    class: App\MobileEntry\Module\GameIntegration\EBet\EBetModule
+
+  gpi_integration:
+    class: App\MobileEntry\Module\GameIntegration\GPI\GPIModule
+
+  tgp_integration:
+    class: App\MobileEntry\Module\GameIntegration\TGP\TGPModule
+
+  allbet_integration:
+    class: App\MobileEntry\Module\GameIntegration\AllBet\AllBetModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
@@ -202,3 +227,7 @@ modules:
 
   games_integration:
     class: App\MobileEntry\Module\ProductIntegration\Games\GamesIntegrationModule
+  
+  live_dealer_integration:
+    class: App\MobileEntry\Module\ProductIntegration\LiveDealer\LiveDealerIntegrationModule
+

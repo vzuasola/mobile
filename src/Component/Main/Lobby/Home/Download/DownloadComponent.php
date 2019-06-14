@@ -12,21 +12,28 @@ class DownloadComponent implements ComponentWidgetInterface
     private $menus;
 
     /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $configs;
+
+    /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('menu_fetcher')
+            $container->get('menu_fetcher'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus)
+    public function __construct($menus, $configs)
     {
         $this->menus = $menus;
+        $this->configs = $configs;
     }
 
 
@@ -51,9 +58,15 @@ class DownloadComponent implements ComponentWidgetInterface
 
         try {
             $data['downloads_menu'] = $this->menus->getMultilingualMenu('mobile-downloads');
-            $data['downloads_menu'] = $this->arrangeBlocks($data['downloads_menu']);
         } catch (\Exception $e) {
             $data['downloads_menu'] = [];
+        }
+
+        try {
+            $entrypageConfigs = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
+            $data['all_apps_text'] = $entrypageConfigs['all_apps_text'];
+        } catch (\Exception $e) {
+            $data['all_apps_text'] = 'View All Apps Here';
         }
 
         return $data;

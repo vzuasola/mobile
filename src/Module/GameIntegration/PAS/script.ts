@@ -17,6 +17,7 @@ import {DafaConnect} from "@app/assets/script/dafa-connect";
 import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
 import {GameInterface} from "./../scripts/game.interface";
+import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 
 /**
  * Combined class implementation for the PAS module and the
@@ -24,6 +25,7 @@ import {GameInterface} from "./../scripts/game.interface";
  */
 export class PASModule implements ModuleInterface, GameInterface {
     private key: string = "pas";
+    private moduleName: string = "pas_integration";
 
     private futurama: boolean;
     private futuramaGold: boolean;
@@ -52,6 +54,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private isGold: boolean;
 
     private pasLoginResponse: any;
+    private messageLightbox: ProviderMessageLightbox;
 
     onLoad(attachments: {
         futurama: boolean,
@@ -84,6 +87,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             this.currency = attachments.currency;
         }
         this.token = attachments.token;
+        this.messageLightbox = new ProviderMessageLightbox();
     }
 
     init() {
@@ -105,7 +109,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             const user = username.toUpperCase();
             const real = 1;
             const language = this.getLanguageMap(this.lang);
-            const uri = Router.generateModuleRoute("pas_integration", "subaccounts");
+            const uri = Router.generateModuleRoute(this.moduleName, "subaccounts");
 
             xhr({
                 url: utility.addQueryParam(uri, "username", user),
@@ -235,19 +239,32 @@ export class PASModule implements ModuleInterface, GameInterface {
                 product = "dafaconnect";
             }
 
+            if (options.maintenance === "true") {
+                this.messageLightbox.showMessage(
+                    this.moduleName,
+                    "maintenance",
+                    options,
+                );
+                return;
+            }
+
             // remap language
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
+            const configProduct = options.hasOwnProperty("currentProduct") ? options.currentProduct
+                : ComponentManager.getAttribute("product");
+
             xhr({
-                url: Router.generateModuleRoute("pas_integration", "launch"),
+                url: Router.generateModuleRoute(this.moduleName, "launch"),
                 type: "json",
                 method: "post",
                 data: {
+                    product: configProduct,
                     lang,
                     language,
                     options,
                     currency: this.currency,
-                    product,
+                    productMap: product,
                 },
             }).then((response) => {
                 if (response.gameurl) {
@@ -256,7 +273,11 @@ export class PASModule implements ModuleInterface, GameInterface {
                 }
 
                 if (!response.currency) {
-                    this.unsupportedCurrency(options);
+                    this.messageLightbox.showMessage(
+                        this.moduleName,
+                        "unsupported",
+                        options,
+                    );
                 }
             }).fail((error, message) => {
                 // Do nothing
@@ -358,7 +379,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         ComponentManager.subscribe("session.login", (event, src, data) => {
             if (this.futurama) {
                 xhr({
-                    url: Router.generateModuleRoute("pas_integration", "updateToken"),
+                    url: Router.generateModuleRoute(this.moduleName, "updateToken"),
                     type: "json",
                     method: "post",
                 }).then((response) => {
@@ -611,35 +632,5 @@ export class PASModule implements ModuleInterface, GameInterface {
                 this.windowObject.focus();
             }
         }
-    }
-
-    private unsupportedCurrency(data) {
-        xhr({
-            url: Router.generateModuleRoute("pas_integration", "unsupported"),
-            type: "json",
-            method: "get",
-        }).then((response) => {
-            if (response.status) {
-                let body = response.message;
-                const provider = (data.hasOwnProperty("subprovider") && data.subprovider)
-                    ? data.subprovider : response.provider;
-                body = body.replace("{game_name}", data.title);
-                body = body.replace("{game_provider}", provider);
-                const template = uclTemplate({
-                    title: response.title,
-                    message: body,
-                    button: response.button,
-                });
-
-                const categoriesEl = document.querySelector("#unsupported-lightbox");
-
-                if (categoriesEl) {
-                    categoriesEl.innerHTML = template;
-                    Modal.open("#unsupported-lightbox");
-                }
-            }
-        }).fail((error, message) => {
-            // Do nothing
-        });
     }
 }

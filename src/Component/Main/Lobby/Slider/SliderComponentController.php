@@ -152,6 +152,9 @@ class SliderComponentController
                 $slider['game_subprovider'] = $slide['field_games_subprovider'][0]['name'][0]['value'] ?? "";
                 $slider['game_platform'] = $slide['field_game_platform'][0]['value'] ?? '';
                 $slider['field_title'] = $slide['field_title'][0]['value'] ?? '';
+                $slider['use_game_loader'] = $slide['field_slider_use_game_loader'][0]['value'] ?? 'false';
+                $slider['forced_game_launch'] = $slide['field_slider_enable_game_launch'][0]['value'] ?? false;
+
 
                 $sliderUrl = $slide['field_banner_link'][0]['uri'] ?? '';
                 $slider['banner_url'] = $this->url->generateUri($sliderUrl, ['skip_parsers' => true]);
@@ -160,6 +163,10 @@ class SliderComponentController
 
                 $sliderImg = $slide['field_banner_image'][0]['url'] ?? '';
                 $slider['banner_img'] = $this->asset->generateAssetUri($sliderImg, $options);
+
+                $sliderImgLandscape = $slide['field_banner_image_landscape'][0]['url'] ?? '';
+                $slider['banner_img_landscape'] = $this->asset->generateAssetUri($sliderImgLandscape, $options);
+
                 $slider['banner_alt'] = $slide['field_banner_image'][0]['alt'] ?? '';
                 $slider['banner_pos'] = $slide['field_content_position'][0]['value'] ?? '';
                 $slider['banner_blurb'] = $slide['field_banner_blurb'][0]['value'] ?? '';
@@ -172,6 +179,9 @@ class SliderComponentController
 
                     $sliderImg = $slide['field_post_banner_image'][0]['url'] ?? '';
                     $slider['banner_img'] = $this->asset->generateAssetUri($sliderImg, $options);
+
+                    $sliderImgLandscape = $slide['field_post_banner_image_landscap'][0]['url'] ?? '';
+                    $slider['banner_img_landscape'] = $this->asset->generateAssetUri($sliderImgLandscape, $options);
 
                     $slider['banner_alt'] = $slide['field_post_banner_image'][0]['alt'] ?? '';
                     $slider['banner_pos'] = $slide['field_post_content_position'][0]['value'] ?? '';
