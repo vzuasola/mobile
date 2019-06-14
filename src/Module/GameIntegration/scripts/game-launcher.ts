@@ -4,8 +4,12 @@ import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 import {GameInterface} from "./game.interface";
 
+import SyncEvents from "@core/assets/js/components/utils/sync-events";
+import * as Promise from "promise-polyfill";
+
 class GameLauncher {
     private providers: {[name: string]: GameInterface} = {};
+    private sync: SyncEvents = new SyncEvents();
 
     /**
      *
@@ -17,8 +21,29 @@ class GameLauncher {
     launch(provider: string, options: {[name: string]: string} = {}) {
         options.provider = provider;
 
-        this.invoke(provider, "prelaunch", [options]);
-        this.invoke(provider, "launch", [options]);
+        const launchSequence = [];
+
+        const prelaunch = () => {
+            return new Promise((resolvePrelaunch, rejectPrelaunch) => {
+                options.resolve = resolvePrelaunch;
+                options.reject = rejectPrelaunch;
+                this.invoke(provider, "prelaunch", [options]);
+            }).then((e) => {
+                if (options.loader) {
+                    ComponentManager.broadcast("game.launch.loader", {
+                        options,
+                    });
+                } else {
+                    this.invoke(provider, "launch", [options]);
+                }
+            }).catch((e) => {
+                // Do nothing
+            });
+        };
+
+        launchSequence.push(prelaunch);
+
+        this.sync.executeWithArgs(launchSequence, []);
     }
 
     /**
@@ -137,8 +162,7 @@ class GameLauncher {
 
             options.provider = provider;
 
-            this.invoke(provider, "prelaunch", [options]);
-            this.invoke(provider, "launch", [options]);
+            this.launch(provider, options);
 
             ComponentManager.broadcast("game.launch", {
                 src: el,

@@ -53,7 +53,7 @@ trait ProviderTrait
         return $this->rest->output($response, $data);
     }
 
-    private function checkCurrency($request)
+    public function checkCurrency($request)
     {
         try {
             $params = $request->getParsedBody();

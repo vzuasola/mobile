@@ -65,7 +65,6 @@ export class GameLoaderComponent implements ComponentInterface {
      */
     private launchGame() {
         const params = utility.getParameters(window.location.href);
-
         if (params.provider) {
             GameLauncher.launch(params.provider, params);
         }

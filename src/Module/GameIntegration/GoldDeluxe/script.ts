@@ -34,8 +34,18 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
         // not implemented
     }
 
-    prelaunch() {
-        // not implemented
+    prelaunch(options) {
+        if (options.maintenance === "true") {
+            this.messageLightbox.showMessage(
+                this.moduleName,
+                "maintenance",
+                options,
+            );
+            options.reject();
+            return;
+        }
+
+        options.resolve();
     }
 
     launch(options) {
@@ -45,15 +55,6 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
 
             if (typeof this.languages[lang] !== "undefined") {
                 langCode = this.languages[lang];
-            }
-
-            if (options.maintenance === "true") {
-                this.messageLightbox.showMessage(
-                    this.moduleName,
-                    "maintenance",
-                    options,
-                );
-                return;
             }
 
             const product = options.hasOwnProperty("currentProduct") ? options.currentProduct
