@@ -5,7 +5,7 @@
         {% for menu in downloads_menu[:3] %}
         {% set menuLength = (downloads_menu|length == 2) ? 'app-download-two' :
         'app-download-three' %}
-        <li class="app-download-list {{ menuLength }}">
+        <li class="app-download-list {{ menuLength }} {{ menu.attributes.device }}">
             <a href="{{ url(menu.uri) }}" class="{{ menu.attributes.class }} {{ menu.attributes.svg }} download-box" target="{{ menu.attributes.target }}"
                 data-router="true" data-router-refresh="main">
                 <svg viewBox="0 0 20 20">

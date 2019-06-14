@@ -23,8 +23,14 @@ export class DownloadComponent implements ComponentInterface {
     private downloadsVisibility(element) {
         const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
+        // device.setAttribute("data-useragent", navigator.userAgent);
+        // device.setAttribute("data-platform", navigator.platform);
+        // device.className += ((!!("ontouchstart" in window) || !!("onmsgesturechange" in window)) ? " touch" : "");
+        // const android = /Android/.test(navigator.userAgent);
+
         if (ios) {
-            utility.addClass(element.querySelector(".download"), "hidden");
+            utility.addClass(element.querySelector(".app-download-list.ios"), "hidden");
+            // element.querySelector(".download").ios.remove();
         }
     }
 

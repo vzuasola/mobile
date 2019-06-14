@@ -54,48 +54,33 @@ class DownloadComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = [];
-
-        try {
-            $data['downloads_menu'] = $this->menus->getMultilingualMenu('mobile-downloads');
-        } catch (\Exception $e) {
-            $data['downloads_menu'] = [];
-        }
-
-        try {
-            $entrypageConfigs = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
-            $data['all_apps_text'] = $entrypageConfigs['all_apps_text'];
-        } catch (\Exception $e) {
-            $data['all_apps_text'] = 'View All Apps Here';
-        }
-
-        return $data;
+        return [];
     }
 
 
-    private function arrangeBlocks($data)
-    {
-        $batch = [];
-        if (count($data) === 4) {
-            while (count($data) > 0) {
-                $batch[] = array_splice($data, 0, 2, []);
-            }
+    // private function arrangeBlocks($data)
+    // {
+    //     $batch = [];
+    //     if (count($data) === 4) {
+    //         while (count($data) > 0) {
+    //             $batch[] = array_splice($data, 0, 2, []);
+    //         }
 
-            return $batch;
-        }
+    //         return $batch;
+    //     }
 
-        if (count($data) === 7) {
-            while (count($data) > 0) {
-                $batch[] = array_splice($data, 0, 4, []);
-            }
+    //     if (count($data) === 7) {
+    //         while (count($data) > 0) {
+    //             $batch[] = array_splice($data, 0, 4, []);
+    //         }
 
-            return $batch;
-        }
+    //         return $batch;
+    //     }
 
-        while (count($data) > 0) {
-            $batch[] = array_splice($data, 0, 3, []);
-        }
+    //     while (count($data) > 0) {
+    //         $batch[] = array_splice($data, 0, 3, []);
+    //     }
 
-        return $batch;
-    }
+    //     return $batch;
+    // }
 }
