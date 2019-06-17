@@ -60,7 +60,8 @@ export class DownloadComponent implements ComponentInterface {
         const download: HTMLElement = this.element.querySelector("#downloads");
         const template = downloadTemplate({
             downloadData: data,
-            menuClass: data.downloads_menu.length === 2 ? "app-download-two" : "app-download-three",
+            menuClass: data.downloads_menu.length === 2 ? "app-download-two" : ((data.downloads_menu.length === 1)
+            ? "app-download-full" : "app-download-three"),
         });
 
         download.innerHTML = template;

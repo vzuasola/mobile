@@ -23,7 +23,6 @@
             background: #7e0000;
             border: 0.1rem solid $red;
             display: block;
-            padding: 1rem 0;
             color: $yellow;
             border-radius: 0.3rem;
             overflow: hidden;
@@ -31,33 +30,77 @@
             svg {
                 display: inline-block;
                 height: 100%;
-                width: 26.6%;
                 margin: 0 0 0 10.4%;
                 fill: $yellow;
             }
 
             span {
                 float: right;
-                width: 50%;
-                margin: 0 10.4% 0 2%;
                 height: 100%;
+                // margin: 0 10.4% 0 2%;
                 text-align: center;
                 align-items: center;
-                font-size: 1.1rem;
-                line-height: 1.2rem;
                 display: flex;
             }
+        }
+    }
+
+    &-full {
+        width: 97%;
+        margin: 0 0 0 1.5%;
+
+        a {
+            padding: 0.5rem 0;
+        }
+
+         svg {
+                width: 16.6%;
+            }
+
+        span {
+            width: 58%;
+            font-size: 1.4rem;
+            margin: 6% 10.4% 0 2%;
         }
     }
 
     &-two {
         width: 47%;
         margin: 0 0 0 2%;
+
+        a {
+            padding: 0.5rem 0;
+        }
+
+        svg {
+                width: 18%;
+            }
+
+        span {
+            width: 58%;
+            font-size: 1.2rem;
+            margin: 4% 10.4% 0 2%;
+        }
     }
 
     &-three {
         width: 31.333333%;
         margin: 0 0 0 1.5%;
+
+        a {
+            padding: 0.7rem 0;
+        }
+
+        svg {
+                width: 26.6%;
+            }
+
+        span {
+                width: 50%;
+                margin: 0% 10.4% 0 2%;
+                font-size: 1.1rem;
+                line-height: 1.2rem;
+        }
     }
 }
 
