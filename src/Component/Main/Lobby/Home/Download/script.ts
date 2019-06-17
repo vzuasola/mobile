@@ -26,6 +26,12 @@ export class DownloadComponent implements ComponentInterface {
         this.getDownloads();
     }
 
+    private downloadsVisibility() {
+        const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+        return ios;
+    }
+
     private equalizeDownloadHeight() {
         const equalDownload = new EqualHeight(".download-box");
         equalDownload.init();
@@ -58,6 +64,7 @@ export class DownloadComponent implements ComponentInterface {
      */
     private generateDownloadMarkup(data) {
         const download: HTMLElement = this.element.querySelector("#downloads");
+        data = this.procesMenu(data);
         const template = downloadTemplate({
             downloadData: data,
             menuClass: data.downloads_menu.length === 2 ? "app-download-two" : ((data.downloads_menu.length === 1)
@@ -65,6 +72,30 @@ export class DownloadComponent implements ComponentInterface {
         });
 
         download.innerHTML = template;
+    }
+
+    private procesMenu(data) {
+        const menus = [];
+        console.log(data);
+        for (const menu in data.downloads_menu) {
+            if (data.downloads_menu.hasOwnProperty(menu)) {
+                const element = data.downloads_menu[menu];
+                if (!element.attributes.device) {
+                    menus.push(element);
+                }
+
+                if (this.downloadsVisibility() && element.attributes.device === "ios") {
+                    menus.push(element);
+                }
+
+                if (!this.downloadsVisibility() && element.attributes.device === "android") {
+                    menus.push(element);
+                }
+            }
+        }
+
+        data.downloads_menu = menus;
+        return data;
     }
 
 }

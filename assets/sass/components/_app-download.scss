@@ -30,17 +30,16 @@
             svg {
                 display: inline-block;
                 height: 100%;
-                margin: 0 0 0 10.4%;
                 fill: $yellow;
             }
 
             span {
                 float: right;
                 height: 100%;
-                // margin: 0 10.4% 0 2%;
                 text-align: center;
                 align-items: center;
                 display: flex;
+                line-height: initial;
             }
         }
     }
@@ -55,12 +54,13 @@
 
          svg {
                 width: 16.6%;
+                margin: 0 0 0 10.4%;
             }
 
         span {
             width: 58%;
             font-size: 1.4rem;
-            margin: 6% 10.4% 0 2%;
+            margin: 0 10.4% 0 2%;
         }
     }
 
@@ -74,12 +74,13 @@
 
         svg {
                 width: 18%;
+                margin: 0 0 0 10.4%;
             }
 
         span {
             width: 58%;
             font-size: 1.2rem;
-            margin: 4% 10.4% 0 2%;
+            margin: 0 10.4% 0 2%;
         }
     }
 
@@ -93,13 +94,13 @@
 
         svg {
                 width: 26.6%;
+                margin: 0 0 0 10.4%;
             }
 
         span {
                 width: 50%;
-                margin: 0% 10.4% 0 2%;
+                margin: 0 10.4% 0 2%;
                 font-size: 1.1rem;
-                line-height: 1.2rem;
         }
     }
 }
