@@ -60,7 +60,7 @@ class SliderComponentController
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
         $this->viewsFetcher = $viewsFetcher->withProduct($product->getProduct());
-        $this->playerSession = $playerSession;
+        $this->playerSession = $playerSession;response
         $this->rest = $rest;
         $this->asset = $asset;
         $this->url = $url;

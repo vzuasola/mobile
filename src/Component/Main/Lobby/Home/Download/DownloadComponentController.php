@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Lobby\Download;
+namespace App\MobileEntry\Component\Main\Lobby\Home\Download;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
@@ -16,6 +16,12 @@ class DownloadComponentController
      */
     private $configs;
 
+    private $product;
+
+    private $rest;
+
+    private $url;
+
     /**
      *
      */
@@ -23,7 +29,10 @@ class DownloadComponentController
     {
         return new static(
             $container->get('menu_fetcher'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('product_resolver'),
+            $container->get('rest'),
+            $container->get('uri')
         );
     }
 
@@ -32,10 +41,15 @@ class DownloadComponentController
      */
     public function __construct(
         $menus,
-        $configs
+        $configs,
+        $product,
+        $rest,
+        $url
     ) {
         $this->configs = $configs->withProduct($product->getProduct());
         $this->menus = $menus->withProduct($product->getProduct());
+        $this->rest = $rest;
+        $this->url = $url;
     }
 
     /**
@@ -43,26 +57,42 @@ class DownloadComponentController
      *
      * @return array
      */
-    public function downloadss($request, $response)
+    public function downloads($request, $response)
     {
         try {
-            $data['downloads_menu'] = $this->menus->getMultilingualMenu('mobile-downloads');
+            $data['downloads_menu']  = $this->menus->getMultilingualMenu('mobile-downloads');
         } catch (\Exception $e) {
             $data['downloads_menu'] = [];
         }
 
         try {
-            $entrypageConfigs = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
-            $data['all_apps_text'] = $entrypageConfigs['all_apps_text'];
+            $data['all_apps_text'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
         } catch (\Exception $e) {
-            $data['all_apps_text'] = 'View All Apps Here';
+            $data['all_apps_text'] = [];
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function processSlides($data, $options)
+    private function procesDownloads($data, $options)
     {
+        try {
+            $downloads = [];
+            foreach ($data as $download) {
+                $properties = [];
 
+                // $properties['title'] = $download['title'][0]['value'];
+                $downloadUrl = $download['downloads_menu']['uri'] ?? '';
+                $properties['download_url'] = $this->url->generateUri($downloadUrl, ['skip_parsers' => true]);
+                $properties['all_apps_text'] = $download['all_apps_text'][0]['value'] ?? '';
+
+                $downloads[] = $properties;
+            }
+        } catch (\Exception $e) {
+            d($e);
+            $downloads = [];
+        }
+
+        return $downloads;
     }
 }

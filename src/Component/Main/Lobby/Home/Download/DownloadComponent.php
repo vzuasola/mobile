@@ -56,31 +56,4 @@ class DownloadComponent implements ComponentWidgetInterface
     {
         return [];
     }
-
-
-    // private function arrangeBlocks($data)
-    // {
-    //     $batch = [];
-    //     if (count($data) === 4) {
-    //         while (count($data) > 0) {
-    //             $batch[] = array_splice($data, 0, 2, []);
-    //         }
-
-    //         return $batch;
-    //     }
-
-    //     if (count($data) === 7) {
-    //         while (count($data) > 0) {
-    //             $batch[] = array_splice($data, 0, 4, []);
-    //         }
-
-    //         return $batch;
-    //     }
-
-    //     while (count($data) > 0) {
-    //         $batch[] = array_splice($data, 0, 3, []);
-    //     }
-
-    //     return $batch;
-    // }
 }
