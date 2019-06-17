@@ -111,7 +111,7 @@ export abstract class Redirectable implements ModuleInterface {
                 if (el && el.getAttribute("data-product-integration-id") === this.code) {
                     this.doDirectLogin(el);
                 }
-                console.log(data.productCode);
+
                 if (data.productCode === "mobile-entrypage") {
                     setTimeout(() => {
                         ComponentManager.broadcast("header.login", {
