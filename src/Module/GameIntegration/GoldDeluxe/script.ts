@@ -1,3 +1,4 @@
+import * as Promise from "promise-polyfill";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as utility from "@core/assets/js/components/utility";
 import PopupWindow from "@app/assets/script/components/popup";
@@ -35,17 +36,18 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
     }
 
     prelaunch(options) {
-        if (options.maintenance === "true") {
-            this.messageLightbox.showMessage(
-                this.moduleName,
-                "maintenance",
-                options,
-            );
-            options.reject();
-            return;
-        }
+        return new Promise((resolve, reject) => {
+            if (options.maintenance === "true") {
+                this.messageLightbox.showMessage(
+                    this.moduleName,
+                    "maintenance",
+                    options,
+                );
+                resolve();
+            }
 
-        options.resolve();
+            resolve();
+        });
     }
 
     launch(options) {
