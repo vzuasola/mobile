@@ -133,10 +133,10 @@
                 width: 1.5rem;
                 height: 1.5rem;
                 box-sizing: border-box;
-                transform: rotate(-45deg);
+                transform: rotate(135deg);
                 border: 0;
                 margin-left: 1rem;
-                margin-bottom: -0.8rem;
+                margin-bottom: 0;
 
                 &::before {
                     content: '';
@@ -173,8 +173,8 @@
             margin-top: 0.5rem;
 
             .arrow {
-                margin-bottom: 0;
-                transform: rotate(135deg);
+                margin-bottom: -0.8rem;
+                transform: rotate(-45deg);
                 border: 0;
             }
         }

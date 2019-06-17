@@ -69,6 +69,7 @@ export class DownloadComponent implements ComponentInterface {
             downloadData: data,
             menuClass: data.downloads_menu.length === 2 ? "app-download-two" : ((data.downloads_menu.length === 1)
             ? "app-download-full" : "app-download-three"),
+            allApptext: data.all_apps_text.all_apps_text,
         });
 
         download.innerHTML = template;
