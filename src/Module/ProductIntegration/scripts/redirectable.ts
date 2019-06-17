@@ -104,10 +104,23 @@ export abstract class Redirectable implements ModuleInterface {
 
         ComponentManager.subscribe("direct.login", (event, src, data) => {
             if (data && typeof data.srcElement !== "undefined") {
+
                 const el: HTMLElement = data.srcElement
                     .querySelector(`[data-product-instance-id="${data.productCode}"]`);
+
                 if (el && el.getAttribute("data-product-integration-id") === this.code) {
                     this.doDirectLogin(el);
+                }
+
+                if (data.productCode === "mobile-entrypage") {
+                    setTimeout(() => {
+                        ComponentManager.broadcast("header.login", {
+                            action: (element) => {
+                                this.doRedirectAfterLogin(src);
+                            },
+                        });
+                        return;
+                    }, 500);
                 }
             }
         });
@@ -197,5 +210,28 @@ export abstract class Redirectable implements ModuleInterface {
         }
 
         return language;
+    }
+
+    private doRedirectAfterLogin(src) {
+        let redirect = utility.getParameterByName("re");
+        if (!redirect) {
+            redirect = "/";
+            window.location.href = redirect;
+        } else {
+            xhr({
+                url: Router.generateModuleRoute("product_integration", "process"),
+                type: "json",
+                method: "post",
+                data: {
+                    url: redirect,
+                },
+            }).then((response) => {
+                if (response.url) {
+                    redirect = response.url;
+                    window.location.href = redirect;
+                }
+            });
+        }
+
     }
 }
