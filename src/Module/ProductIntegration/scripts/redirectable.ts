@@ -214,6 +214,7 @@ export abstract class Redirectable implements ModuleInterface {
         let redirect = utility.getParameterByName("re");
         if (!redirect) {
             redirect = "/";
+            window.location.href = redirect;
         } else {
             xhr({
                 url: Router.generateModuleRoute("product_integration", "process"),
@@ -225,11 +226,10 @@ export abstract class Redirectable implements ModuleInterface {
             }).then((response) => {
                 if (response.url) {
                     redirect = response.url;
-                    console.log(redirect);
+                    window.location.href = redirect;
                 }
             });
         }
 
-        window.location.href = redirect;
     }
 }
