@@ -73,26 +73,4 @@ class DownloadComponentController
 
         return $this->rest->output($response, $data);
     }
-
-    private function procesDownloads($data, $options)
-    {
-        try {
-            $downloads = [];
-            foreach ($data as $download) {
-                $properties = [];
-
-                // $properties['title'] = $download['title'][0]['value'];
-                $downloadUrl = $download['downloads_menu']['uri'] ?? '';
-                $properties['download_url'] = $this->url->generateUri($downloadUrl, ['skip_parsers' => true]);
-                $properties['all_apps_text'] = $download['all_apps_text'][0]['value'] ?? '';
-
-                $downloads[] = $properties;
-            }
-        } catch (\Exception $e) {
-            d($e);
-            $downloads = [];
-        }
-
-        return $downloads;
-    }
 }

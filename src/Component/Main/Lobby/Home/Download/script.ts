@@ -18,15 +18,11 @@ export class DownloadComponent implements ComponentInterface {
     private downloadData: any;
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.equalizeDownloadHeight();
-        this.accordion(element);
         this.getDownloads();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.equalizeDownloadHeight();
-        this.accordion(element);
         this.getDownloads();
     }
 
@@ -49,9 +45,10 @@ export class DownloadComponent implements ComponentInterface {
                 download,
             },
         }).then((response) => {
-            console.log(response);
             this.downloadData = response;
             this.generateDownloadMarkup(this.downloadData);
+            this.equalizeDownloadHeight();
+            this.accordion(this.element);
         });
     }
 
@@ -61,9 +58,9 @@ export class DownloadComponent implements ComponentInterface {
      */
     private generateDownloadMarkup(data) {
         const download: HTMLElement = this.element.querySelector("#downloads");
-
         const template = downloadTemplate({
             downloadData: data,
+            menuClass: data.downloads_menu.length === 2 ? "app-download-two" : "app-download-three",
         });
 
         download.innerHTML = template;
