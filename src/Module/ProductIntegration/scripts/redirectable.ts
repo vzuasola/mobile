@@ -225,6 +225,7 @@ export abstract class Redirectable implements ModuleInterface {
             }).then((response) => {
                 if (response.url) {
                     redirect = response.url;
+                    console.log(redirect);
                 }
             });
         }
