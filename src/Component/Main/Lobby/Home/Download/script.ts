@@ -76,7 +76,6 @@ export class DownloadComponent implements ComponentInterface {
 
     private procesMenu(data) {
         const menus = [];
-        console.log(data);
         for (const menu in data.downloads_menu) {
             if (data.downloads_menu.hasOwnProperty(menu)) {
                 const element = data.downloads_menu[menu];
