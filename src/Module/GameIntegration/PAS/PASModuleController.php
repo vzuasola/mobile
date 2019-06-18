@@ -172,7 +172,11 @@ class PASModuleController
 
             if (!$this->checkCurrency($request)) {
                 $data['currency'] = false;
-                $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
+                $productConfig = $this->config;
+                if (isset($params['product'])) {
+                    $productConfig = $this->config->withProduct($params['product']);
+                }
+                $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
                 $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
                 $data['provider'] = $providerMapping[self::KEY];
                 $data['title'] = $config['unsupported_currencies_title'] ?? '';
