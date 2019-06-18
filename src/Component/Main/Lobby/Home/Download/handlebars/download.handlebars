@@ -19,7 +19,7 @@
 </ul>
 {{#condition downloadData.downloads_menu.length ">" 3}}
     <dl class="ckeditor-accordion">
-        <dt data-transition-top="true">{{ allApptext }}</dt>
+        <dt data-transition-top="true" data-text-swap="{{ viewLesstext }}">{{ allApptext }}</dt>
         <dd>
             <ul class="app-download-accordion clearfix">
             {{#each downloadData.downloads_menu}}
