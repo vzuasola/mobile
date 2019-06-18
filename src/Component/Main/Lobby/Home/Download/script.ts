@@ -55,6 +55,7 @@ export class DownloadComponent implements ComponentInterface {
             this.generateDownloadMarkup(this.downloadData);
             this.equalizeDownloadHeight();
             this.accordion(this.element);
+            this.swapText();
         });
     }
 
@@ -70,6 +71,7 @@ export class DownloadComponent implements ComponentInterface {
             menuClass: data.downloads_menu.length === 2 ? "app-download-two" : ((data.downloads_menu.length === 1)
             ? "app-download-full" : "app-download-three"),
             allApptext: data.all_apps_text.all_apps_text,
+            viewLesstext: data.all_apps_text.view_less_text,
         });
 
         download.innerHTML = template;
@@ -96,6 +98,18 @@ export class DownloadComponent implements ComponentInterface {
 
         data.downloads_menu = menus;
         return data;
+    }
+
+    private swapText() {
+        const element = document.querySelectorAll("dt")[0];
+        element.addEventListener("click", () => {
+            if (element.getAttribute("data-text-swap") === element.innerText) {
+                element.innerText = element.getAttribute("data-text-original");
+            } else {
+                element.setAttribute("data-text-original", element.innerText);
+                element.innerText = element.getAttribute("data-text-swap");
+            }
+        }, false);
     }
 
 }
