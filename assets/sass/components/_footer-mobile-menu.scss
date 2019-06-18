@@ -34,20 +34,15 @@
 
             svg {
                 display: block;
+                width: 100%;
                 height: 2rem;
-                margin: 0 auto 0.2rem;
                 fill: $white;
             }
+        }
 
-            &:hover svg {
-                fill: $yellow;
-            }
-
-            .footer-language,
-            .footer-livechat {
-                svg {
-                    padding-left: 1.5rem;
-                }
+        .footer-desktop {
+            svg {
+                padding-right: 1.5rem;
             }
         }
 
