@@ -244,7 +244,7 @@ validators.valid_date = {
 
             var yearMinus18 = new Date().getFullYear() - 18;
             for (var i = 0; i <= birthDateFormat.length - 1; i++) {
-                if (birthDateFormat[i] === 'YYYY' && (value[i] > yearMinus18 || parseInt(value[i]) < 1900)) {
+                if (birthDateFormat[i] === 'YYYY' && (value[i] > yearMinus18 || parseInt(value[i]) < 1901)) {
                     return false;
                 }
 

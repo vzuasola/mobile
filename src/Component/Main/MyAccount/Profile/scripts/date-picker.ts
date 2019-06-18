@@ -42,7 +42,7 @@ export class DatePicker {
             },
             defaultDate: new Date(this.yearMinus18, this.currentMonth, this.currentDay),
             maxDate: new Date(this.yearMinus18, this.currentMonth, this.currentDay),
-            yearRange: [1900, this.yearMinus18],
+            yearRange: [1901, this.yearMinus18],
         };
 
         if (!ios) {
