@@ -1,0 +1,44 @@
+<ul class="app-download clearfix">
+    {{#each downloadData.downloads_menu}}
+        {{#condition @index "<" 3}}
+            <li class="app-download-list {{ ../this.menuClass}}">
+                <a href="{{ this.uri }}"
+                class="{{ this.attributes.class }} {{ this.attributes.svg }} {{this.attributes.device}} download-box"
+                data-router="true"
+                data-router-refresh="main"
+                target="{{ this.attributes.target }}"
+                >
+                    <svg viewBox="0 0 20 20">
+                        <use xlink:href="#{{ this.attributes.svg }}" />
+                    </svg>
+                    <span>{{ this.title }}</span>
+                </a>
+            </li>
+        {{/condition}}
+    {{/each}}
+</ul>
+{{#condition downloadData.downloads_menu.length ">" 3}}
+    <dl class="ckeditor-accordion">
+        <dt data-transition-top="true">{{ allApptext }}</dt>
+        <dd>
+            <ul class="app-download-accordion clearfix">
+            {{#each downloadData.downloads_menu}}
+                {{#condition @index ">" 2}}
+                <li class="app-download-list app-download-three">
+                    <a href="{{ this.uri }}"
+                    class="{{ this.attributes.class }} {{ this.attributes.svg }} {{this.attributes.device}} download-box"
+                    target="{{ this.attributes.target }}"
+                    data-router="true"
+                    data-router-refresh="main">
+                        <svg viewBox="0 0 20 20">
+                            <use xlink:href="#{{ this.attributes.svg }}" />
+                        </svg>
+                        <span>{{ this.title }}</span>
+                    </a>
+                </li>
+                {{/condition}}
+            {{/each}}
+            </ul>
+        </dd>
+    </dl>
+{{/condition}}
