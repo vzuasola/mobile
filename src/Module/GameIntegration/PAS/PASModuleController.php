@@ -113,7 +113,6 @@ class PASModuleController
 
         if ($this->checkCurrency($request)) {
             $data['currency'] = true;
-
             try {
                 $config = $this->config->withProduct('mobile-entrypage');
                 $ptConfig = $config->getConfig('webcomposer_config.games_playtech_provider');
@@ -169,16 +168,22 @@ class PASModuleController
     public function unsupported($request, $response)
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
-            $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $config['unsupported_currencies_title'] ?? '';
-            $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $config['unsupported_currencies_button'] ?? '';
-            $data['status'] = true;
+            $data['currency'] = true;
+
+            if (!$this->checkCurrency($request)) {
+                $data['currency'] = false;
+                $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
+                $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
+                $data['provider'] = $providerMapping[self::KEY];
+                $data['title'] = $config['unsupported_currencies_title'] ?? '';
+                $data['message'] =
+                    $config['unsupported_currencies_message']['value'] ?? '';
+                $data['button'] = $config['unsupported_currencies_button'] ?? '';
+                $data['status'] = true;
+            }
         } catch (\Exception $e) {
             $data['status'] = false;
+            $data['currency'] = false;
         }
 
         return $this->rest->output($response, $data);
@@ -197,6 +202,7 @@ class PASModuleController
             if (isset($params['product'])) {
                 $productConfig = $this->config->withProduct($params['product']);
             }
+
             $config =  $productConfig->getConfig('webcomposer_config.icore_playtech_provider');
             $currencies = explode("\r\n", $config['dafabetgames_currency']);
             if (!$playerCurrency) {
