@@ -123,8 +123,7 @@ export class Profile extends FormBase {
         const genderField: HTMLFormElement = this.form.querySelector('input[name="MyProfileForm[gender]"]:checked');
         const languageField: HTMLFormElement = this.form.querySelector("#MyProfileForm_language");
         const receiveNewsField: HTMLFormElement = this.form.querySelector("#ProfileForm_contact_preference");
-        const dateFormat = bdateField.getAttribute("date-format");
-        // console.log(this.attachments.isFastReg);
+
         return {
             firstname: (this.attachments.isFastReg || initialLoad)
                 ? fnameField.value
