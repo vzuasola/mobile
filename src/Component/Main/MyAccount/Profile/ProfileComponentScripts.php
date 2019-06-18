@@ -71,7 +71,7 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             strtoupper($lname) == "DFRLN" ||
             strtoupper($fname) == "DFRLN" ||
             strtoupper($lname) == "DFRFN" ||
-            $bdate  = "1/12/1900"
+            $bdate === "1/12/1900"
         ) {
             $isFastReg = true;
         }

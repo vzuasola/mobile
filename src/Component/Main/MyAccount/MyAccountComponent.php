@@ -64,7 +64,7 @@ class MyAccountComponent implements ComponentWidgetInterface
             strtoupper($lname) == "DFRLN" ||
             strtoupper($fname) == "DFRLN" ||
             strtoupper($lname) == "DFRFN" ||
-            $bdate  = "1/12/1900"
+            $bdate  === "1/12/1900"
         ) {
             $flashMessage = $myProfileConfig['fast_reg_flash_message']['value'] ?? "";
             $isFastReg = true;
