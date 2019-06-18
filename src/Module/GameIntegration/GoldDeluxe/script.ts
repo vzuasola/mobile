@@ -8,6 +8,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import { resolve, reject } from "q";
 
 export class GoldDeluxeModule implements ModuleInterface, GameInterface {
     private key: string = "gold_deluxe";
@@ -36,18 +37,32 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
     }
 
     prelaunch(options) {
-        return new Promise((resolve, reject) => {
-            if (options.maintenance === "true") {
+        if (options.provider === this.key) {
+            return new Promise((resolvePromise, rejectPromise) => {
+                if (options.maintenance === "true") {
+                    this.messageLightbox.showMessage(
+                        this.moduleName,
+                        "maintenance",
+                        options,
+                    );
+                    rejectPromise();
+                    return;
+                }
                 this.messageLightbox.showMessage(
                     this.moduleName,
-                    "maintenance",
+                    "unsupported",
                     options,
+                    (response) => {
+                        if (!response.currency) {
+                            rejectPromise();
+                            return;
+                        } else {
+                            resolvePromise();
+                        }
+                    },
                 );
-                resolve();
-            }
-
-            resolve();
-        });
+            });
+        }
     }
 
     launch(options) {

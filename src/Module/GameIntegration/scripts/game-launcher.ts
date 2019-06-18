@@ -38,7 +38,7 @@ class GameLauncher {
             });
         });
 
-        this.sync.executeWithArgs(launchSequence, [options]);
+        this.sync.executeWithArgsWithException(launchSequence, [options]);
     }
 
     /**

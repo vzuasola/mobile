@@ -9,7 +9,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 export class ProviderMessageLightbox {
     private message: string;
 
-    showMessage(moduleName, method, data, modalName = "#unsupported-lightbox") {
+    showMessage(moduleName, method, data, callback?, modalName = "#unsupported-lightbox") {
         const product = data.hasOwnProperty("currentProduct") ? data.currentProduct
             : ComponentManager.getAttribute("product");
         xhr({
@@ -28,6 +28,10 @@ export class ProviderMessageLightbox {
                     categoriesEl.innerHTML = this.message;
                     Modal.open(modalName);
                 }
+            }
+
+            if (callback) {
+                callback(response);
             }
         }).fail((error, message) => {
             // Do nothing
