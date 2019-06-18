@@ -7,6 +7,7 @@ import * as questionMarkTemplate from "@app/templates/handlebars/question-mark.h
 import {Loader} from "@app/assets/script/components/loader";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 import Tooltip from "@app/assets/script/components/tooltip";
+import {DatePicker} from "./date-picker";
 
 /**
  * Profile
@@ -22,14 +23,17 @@ export class Profile extends FormBase {
     private notification: any;
     private loader: Loader;
     private mobiles: any;
+    private datepicker: DatePicker;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
         this.loader = new Loader(document.body, true);
+        this.datepicker = new DatePicker(element, attachments);
     }
 
     init() {
         this.willRedirect();
+        this.datepicker.init();
         this.form = this.element.querySelector(".profile-form");
         this.notification = new Notification(
             document.body,
@@ -65,10 +69,12 @@ export class Profile extends FormBase {
 
     private getUserData() {
         const user = this.attachments.user;
+        // console.log(user);
 
         return {
             firstname: user.first_name,
             lastname: user.last_name,
+            birthdate: user.birthdate,
             gender: user.gender,
             language: user.language,
             mobile: user.mobile_number_1,
@@ -113,6 +119,7 @@ export class Profile extends FormBase {
     private getValues(visual?, initialLoad?) {
         const fnameField = this.form.MyProfileForm_first_name;
         const lnameField = this.form.MyProfileForm_last_name;
+        const bdateField = this.form.MyProfileForm_birthdate;
         const genderField: HTMLFormElement = this.form.querySelector('input[name="MyProfileForm[gender]"]:checked');
         const languageField: HTMLFormElement = this.form.querySelector("#MyProfileForm_language");
         const receiveNewsField: HTMLFormElement = this.form.querySelector("#ProfileForm_contact_preference");
@@ -124,6 +131,9 @@ export class Profile extends FormBase {
             lastname: (this.attachments.isFastReg || initialLoad)
                 ? lnameField.value
                 : this.attachments.user.last_name,
+            birthdate: (this.attachments.isFastReg || initialLoad)
+                ? bdateField.value
+                : this.attachments.user.birthdate,
             gender: visual
                 ? this.getGenderText()
                 : genderField.value,
@@ -153,6 +163,7 @@ export class Profile extends FormBase {
         return {
             firstname: this.form.querySelector(".MyProfileForm_first_name .form-label-text").textContent,
             lastname: this.form.querySelector(".MyProfileForm_last_name .form-label-text").textContent,
+            birthdate: this.form.querySelector(".MyProfileForm_birthdate .form-label-text").textContent,
             gender: this.form.querySelector(".MyProfileForm_gender .form-label-text").textContent,
             language: this.form.querySelector(".MyProfileForm_language .form-label-text").textContent,
             mobile: this.form.querySelector(".MyProfileForm_mobile_number_1 .form-label-text").textContent,
@@ -357,4 +368,5 @@ export class Profile extends FormBase {
         utility.addClass(element, "tag-color-apple-red");
         element.appendChild(document.createTextNode(msg));
     }
+
 }
