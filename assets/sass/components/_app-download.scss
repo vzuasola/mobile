@@ -165,16 +165,4 @@
             transition:.2s ease;
         }
     }
-
-    .ckeditor-wrapper.active {
-        dt {
-            margin-top: 0.5rem;
-
-            .arrow {
-                margin-bottom: -0.8rem;
-                transform: rotate(-45deg);
-                border: 0;
-            }
-        }
-    }
 }
