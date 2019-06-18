@@ -172,6 +172,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     prelaunch(options) {
         if (options.provider === this.key) {
             return new Promise((resolvePromise, rejectPromise) => {
+                options.currency = this.currency;
                 if (options.maintenance === "true") {
                     this.messageLightbox.showMessage(
                         this.moduleName,
@@ -287,7 +288,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     this.launchGame(options.target);
                     this.updatePopupWindow(response.gameurl);
                 }
-
+                options.currency = this.currency;
                 if (!response.currency) {
                     this.messageLightbox.showMessage(
                         this.moduleName,

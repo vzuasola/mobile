@@ -12,13 +12,18 @@ export class ProviderMessageLightbox {
     showMessage(moduleName, method, data, callback?, modalName = "#unsupported-lightbox") {
         const product = data.hasOwnProperty("currentProduct") ? data.currentProduct
             : ComponentManager.getAttribute("product");
+        const currency = data.hasOwnProperty("currency") ? data.currency : null;
+        const postData: any = {
+            product,
+        };
+        if (currency) {
+            postData.currency = currency;
+        }
         xhr({
             url: Router.generateModuleRoute(moduleName, method),
             type: "json",
             method: "post",
-            data: {
-                product,
-            },
+            data: postData,
         }).then((response) => {
             if (response.status) {
                 this.setMessage(response, data);
