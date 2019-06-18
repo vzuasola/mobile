@@ -23,9 +23,10 @@ export class DatePicker {
     }
 
     init() {
-        this.dateFormat = this.formatFromPHPtoJS(
-            this.element.querySelector("#MyProfileForm_birthdate").getAttribute("date-format"),
-        );
+        this.dateFormat = this.element.querySelector("#MyProfileForm_birthdate").getAttribute("date-format");
+        this.dateFormat = this.dateFormat.replace(/y/ig, "YYYY");
+        this.dateFormat = this.dateFormat.replace(/m/ig, "MM");
+        this.dateFormat = this.dateFormat.replace(/d/ig, "DD");
 
         const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         const options = {

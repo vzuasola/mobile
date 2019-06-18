@@ -62,7 +62,7 @@ class VerifyPasswordComponentScripts implements ComponentAttachmentInterface
             strtoupper($lname) == "DFRLN" ||
             strtoupper($fname) == "DFRLN" ||
             strtoupper($lname) == "DFRFN" ||
-            $bdate  = "1/12/1925"
+            $bdate  = "1/12/1900"
         ) {
             $flashMessage = $myProfileConfig['fast_reg_flash_message']['value'] ?? "";
             $isFastReg = true;
