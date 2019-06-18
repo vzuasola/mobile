@@ -169,8 +169,33 @@ export class PASModule implements ModuleInterface, GameInterface {
         });
     }
 
-    prelaunch() {
-        // not implemented
+    prelaunch(options) {
+        if (options.provider === this.key) {
+            return new Promise((resolvePromise, rejectPromise) => {
+                if (options.maintenance === "true") {
+                    this.messageLightbox.showMessage(
+                        this.moduleName,
+                        "maintenance",
+                        options,
+                    );
+                    rejectPromise();
+                    return;
+                }
+                this.messageLightbox.showMessage(
+                    this.moduleName,
+                    "unsupported",
+                    options,
+                    (response) => {
+                        if (!response.currency) {
+                            rejectPromise();
+                            return;
+                        } else {
+                            resolvePromise();
+                        }
+                    },
+                );
+            });
+        }
     }
 
     launch(options) {
@@ -237,15 +262,6 @@ export class PASModule implements ModuleInterface, GameInterface {
 
             if (DafaConnect.isDafaconnect()) {
                 product = "dafaconnect";
-            }
-
-            if (options.maintenance === "true") {
-                this.messageLightbox.showMessage(
-                    this.moduleName,
-                    "maintenance",
-                    options,
-                );
-                return;
             }
 
             // remap language

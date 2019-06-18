@@ -373,14 +373,11 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
 
             let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
 
-            const params = utility.getAttributes(data.src);
-
-            for (const key in params) {
-                if (params.hasOwnProperty(key)) {
-                    const param = params[key];
-
-                    if (key.indexOf("data-") === 0) {
-                        url = utility.addQueryParam(url, key.replace("data-game-", ""), param);
+            for (const key in data.options) {
+                if (data.options.hasOwnProperty(key)) {
+                    const param = data.options[key];
+                    if (key !== "loader") {
+                        url = utility.addQueryParam(url, key, param);
                     }
                 }
             }

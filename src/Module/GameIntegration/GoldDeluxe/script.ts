@@ -1,3 +1,4 @@
+import * as Promise from "promise-polyfill";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as utility from "@core/assets/js/components/utility";
 import PopupWindow from "@app/assets/script/components/popup";
@@ -7,6 +8,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import { resolve, reject } from "q";
 
 export class GoldDeluxeModule implements ModuleInterface, GameInterface {
     private key: string = "gold_deluxe";
@@ -34,8 +36,33 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
         // not implemented
     }
 
-    prelaunch() {
-        // not implemented
+    prelaunch(options) {
+        if (options.provider === this.key) {
+            return new Promise((resolvePromise, rejectPromise) => {
+                if (options.maintenance === "true") {
+                    this.messageLightbox.showMessage(
+                        this.moduleName,
+                        "maintenance",
+                        options,
+                    );
+                    rejectPromise();
+                    return;
+                }
+                this.messageLightbox.showMessage(
+                    this.moduleName,
+                    "unsupported",
+                    options,
+                    (response) => {
+                        if (!response.currency) {
+                            rejectPromise();
+                            return;
+                        } else {
+                            resolvePromise();
+                        }
+                    },
+                );
+            });
+        }
     }
 
     launch(options) {
@@ -45,15 +72,6 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
 
             if (typeof this.languages[lang] !== "undefined") {
                 langCode = this.languages[lang];
-            }
-
-            if (options.maintenance === "true") {
-                this.messageLightbox.showMessage(
-                    this.moduleName,
-                    "maintenance",
-                    options,
-                );
-                return;
             }
 
             const product = options.hasOwnProperty("currentProduct") ? options.currentProduct
