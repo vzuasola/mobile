@@ -47,7 +47,7 @@ export class DatePicker {
         };
 
         if (!ios) {
-            const picker = new Pikaday(options);
+            new Pikaday(options);
         } else {
             // Create element for ios that will handle the native date
             const input = document.createElement("input");
