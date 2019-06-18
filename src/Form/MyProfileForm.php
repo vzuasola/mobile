@@ -5,6 +5,7 @@ namespace App\MobileEntry\Form;
 use App\Plugins\Form\FormInterface;
 use App\Extensions\Form\ConfigurableForm\FormBase;
 use App\Account\Mapping\LanguageMapping;
+use DateTime;
 
 class MyProfileForm extends FormBase implements FormInterface
 {
@@ -317,12 +318,20 @@ class MyProfileForm extends FormBase implements FormInterface
     private function setDisabledFields($definition)
     {
         $definition['submit']['options']['attr']['data-redirect'] = 0;
+        $isDateMatch = $this->matchDate(
+            $definition['birthdate']['options']['attr']['value'],
+            [1925, 12, 01],
+            $definition['birthdate']['options']['attr']['date-format']
+        );
+
 
         foreach ($this->disabledFields as $field) {
             $dummyName = substr($definition[$field]['options']['attr']['value'], 0, 5);
 
             if (strtoupper($dummyName) == 'DFRFN' ||
-                strtoupper($dummyName) == 'DFRLN') {
+                strtoupper($dummyName) == 'DFRLN' ||
+                ($field === "birthdate" && $isDateMatch)
+            ) {
                 $definition[$field]['options']['attr']['value'] = "";
 
                 if ($this->request->getQueryParam("pmid")) {
@@ -334,5 +343,39 @@ class MyProfileForm extends FormBase implements FormInterface
         }
 
         return $definition;
+    }
+
+    private function matchDate($date, $matchingDate, $format)
+    {
+        $dateFormatSegments = explode('/', $format);
+        $currentDateSegments = explode('/', $date);
+
+        $properDate = [0000, 00, 00];
+
+        foreach ($dateFormatSegments as $indexKey => $dateFormat) {
+            switch (strtolower($dateFormat)) {
+                case "y":
+                    $properDate[0] = $currentDateSegments[$indexKey];
+                    break;
+                case "m":
+                    $properDate[1] = $currentDateSegments[$indexKey];
+                    break;
+                case "d":
+                    $properDate[2] = $currentDateSegments[$indexKey];
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $tempDate = new DateTime();
+        $tempDate->setDate($matchingDate[0], $matchingDate[1], $matchingDate[2]);
+        $tempDate->setTime(0, 0, 0, 0);
+
+        $currentDate = new DateTime();
+        $currentDate->setDate($properDate[0], $properDate[1], $properDate[2]);
+        $currentDate->setTime(0, 0, 0, 0);
+
+        return $tempDate->getTimestamp() + abs($currentDate->getTimestamp()) === 0;
     }
 }

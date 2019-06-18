@@ -65,9 +65,13 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
 
         $fname = substr($userDetail['firstName'], 0, 5);
         $lname = substr($userDetail['lastName'], 0, 5);
+        $bdate = $userDetail['dateOfBirth'];
 
         if (strtoupper($fname) == "DFRFN" ||
-            strtoupper($lname) == "DFRLN"
+            strtoupper($lname) == "DFRLN" ||
+            strtoupper($fname) == "DFRLN" ||
+            strtoupper($lname) == "DFRFN" ||
+            $bdate  = "1/12/1925"
         ) {
             $isFastReg = true;
         }
@@ -126,6 +130,7 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'city' => ($apiValues['city'] === '___') ? '' : $apiValues['city'],
             'postal_code' => $apiValues['postalCode'],
             'receive_news' => $receiveNews,
+            'birthdate' => $apiValues['dateOfBirth']
         ];
     }
 }
