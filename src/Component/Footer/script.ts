@@ -95,6 +95,7 @@ export class FooterComponent implements ComponentInterface {
     private generateFooterMarkup(data) {
         const footer: HTMLElement = this.element.querySelector("#footer-menu");
         data = this.procesFooterMenu(data);
+        data = this.casinoGoldVisibility(data);
         const template = footerTemplate({
             footerData: data,
             footerMenuClass: data.footer_menu.length === 2 ? "footer-mobile-item half"
@@ -112,6 +113,24 @@ export class FooterComponent implements ComponentInterface {
                 if (!DafaConnect.isDafaconnect() ||
                     (DafaConnect.isDafaconnect() && element.attributes.class !== "footer-desktop")
                 ) {
+                    menus.push(element);
+                }
+            }
+        }
+
+        data.footer_menu = menus;
+        return data;
+    }
+
+    private casinoGoldVisibility(data) {
+        const menus = [];
+        const product = ComponentManager.getAttribute("product");
+        for (const menu in data.footer_menu) {
+            if (data.footer_menu.hasOwnProperty(menu)) {
+                const element = data.footer_menu[menu];
+                if (product !== "mobile-casino-gold" ||
+                    (product === product && product === "mobile-casino-gold")
+                    && element.attributes.class !== "language-trigger") {
                     menus.push(element);
                 }
             }
