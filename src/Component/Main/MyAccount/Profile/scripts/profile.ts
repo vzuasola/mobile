@@ -69,12 +69,13 @@ export class Profile extends FormBase {
 
     private getUserData() {
         const user = this.attachments.user;
-        // console.log(user);
+        const dateFormat = this.datepicker.formatDate("#MyProfileForm_birthdate");
+        const bdate = new Date(user.birthdate * 1000);
 
         return {
             firstname: user.first_name,
             lastname: user.last_name,
-            birthdate: user.birthdate,
+            birthdate: this.datepicker.parseStringDate(bdate, dateFormat),
             gender: user.gender,
             language: user.language,
             mobile: user.mobile_number_1,
@@ -123,6 +124,8 @@ export class Profile extends FormBase {
         const genderField: HTMLFormElement = this.form.querySelector('input[name="MyProfileForm[gender]"]:checked');
         const languageField: HTMLFormElement = this.form.querySelector("#MyProfileForm_language");
         const receiveNewsField: HTMLFormElement = this.form.querySelector("#ProfileForm_contact_preference");
+        const dateFormat = this.datepicker.formatDate("#MyProfileForm_birthdate");
+        const bdate = new Date(this.attachments.user.birthdate * 1000);
 
         return {
             firstname: (this.attachments.isFastReg || initialLoad)
@@ -133,7 +136,7 @@ export class Profile extends FormBase {
                 : this.attachments.user.last_name,
             birthdate: (this.attachments.isFastReg || initialLoad)
                 ? bdateField.value
-                : this.attachments.user.birthdate,
+                : this.datepicker.parseStringDate(bdate, dateFormat),
             gender: visual
                 ? this.getGenderText()
                 : genderField.value,

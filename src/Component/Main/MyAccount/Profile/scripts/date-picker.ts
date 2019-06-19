@@ -23,10 +23,7 @@ export class DatePicker {
     }
 
     init() {
-        this.dateFormat = this.element.querySelector("#MyProfileForm_birthdate").getAttribute("date-format");
-        this.dateFormat = this.dateFormat.replace(/y/ig, "YYYY");
-        this.dateFormat = this.dateFormat.replace(/m/ig, "MM");
-        this.dateFormat = this.dateFormat.replace(/d/ig, "DD");
+        this.dateFormat = this.formatDate("#MyProfileForm_birthdate");
 
         const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         const options = {
@@ -67,7 +64,16 @@ export class DatePicker {
         }
     }
 
-    private parseStringDate(date, format) {
+    formatDate(selector) {
+        let formatedDate = this.element.querySelector(selector).getAttribute("date-format");
+        formatedDate = formatedDate.replace(/y/ig, "YYYY");
+        formatedDate = formatedDate.replace(/m/ig, "MM");
+        formatedDate = formatedDate.replace(/d/ig, "DD");
+
+        return formatedDate;
+    }
+
+    parseStringDate(date, format) {
         const dateString = [];
         let day = String(date.getDate());
         day = day.length === 1 ? "0" + day : day;
