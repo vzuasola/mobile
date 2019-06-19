@@ -171,6 +171,7 @@ class PASModuleController
             $data['currency'] = true;
 
             if (!$this->checkCurrency($request)) {
+                $params = $request->getParsedBody();
                 $data['currency'] = false;
                 $productConfig = $this->config;
                 if (isset($params['product'])) {
