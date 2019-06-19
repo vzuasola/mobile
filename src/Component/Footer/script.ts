@@ -111,7 +111,8 @@ export class FooterComponent implements ComponentInterface {
             if (data.footer_menu.hasOwnProperty(menu)) {
                 const element = data.footer_menu[menu];
                 if (!DafaConnect.isDafaconnect() ||
-                    (DafaConnect.isDafaconnect() && element.attributes.class !== "footer-desktop")
+                    (DafaConnect.isDafaconnect()
+                    && !element.attributes.class.match("footer-desktop"))
                 ) {
                     menus.push(element);
                 }
