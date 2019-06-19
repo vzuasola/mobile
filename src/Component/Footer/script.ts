@@ -97,7 +97,8 @@ export class FooterComponent implements ComponentInterface {
         data = this.procesFooterMenu(data);
         const template = footerTemplate({
             footerData: data,
-            menuClass: data.footer_menu.length === 2 ? "footer-mobile-item half" : "footer-mobile-item",
+            footerMenuClass: data.footer_menu.length === 2 ? "footer-mobile-item half"
+            : ((data.footer_menu.length === 1) ? "footer-mobile full" : "footer-mobile-item"),
         });
 
         footer.innerHTML = template;

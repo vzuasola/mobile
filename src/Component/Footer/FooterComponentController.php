@@ -56,6 +56,7 @@ class FooterComponentController
 
         try {
             $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
+            $data['languageVisibility'] = $this->idDomain->isLangSelectorHidden();
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
         }
