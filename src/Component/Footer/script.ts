@@ -5,6 +5,8 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as footerTemplate from "./handlebars/menu.handlebars";
 
+import {DafaConnect} from "@app/assets/script/dafa-connect";
+
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
@@ -20,7 +22,6 @@ export class FooterComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getOriginalUrl();
-        this.attachProduct();
         this.attachProduct();
         this.getFooter();
 
@@ -83,7 +84,6 @@ export class FooterComponent implements ComponentInterface {
             type: "json",
         }).then((response) => {
             this.footerData = response;
-            console.log(this.footerData);
             this.generateFooterMarkup(this.footerData);
         });
     }
@@ -93,11 +93,30 @@ export class FooterComponent implements ComponentInterface {
      *
      */
     private generateFooterMarkup(data) {
-        const footer: HTMLElement = this.element.querySelector("#footer");
+        const footer: HTMLElement = this.element.querySelector("#footer-menu");
+        data = this.procesFooterMenu(data);
         const template = footerTemplate({
             footerData: data,
+            menuClass: data.footer_menu.length === 2 ? "footer-mobile-item half" : "footer-mobile-item",
         });
 
         footer.innerHTML = template;
+    }
+
+    private procesFooterMenu(data) {
+        const menus = [];
+        for (const menu in data.footer_menu) {
+            if (data.footer_menu.hasOwnProperty(menu)) {
+                const element = data.footer_menu[menu];
+                if (!DafaConnect.isDafaconnect() ||
+                    (DafaConnect.isDafaconnect() && element.attributes.class !== "footer-desktop")
+                ) {
+                    menus.push(element);
+                }
+            }
+        }
+
+        data.footer_menu = menus;
+        return data;
     }
 }

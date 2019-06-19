@@ -1,6 +1,6 @@
 <ul class="menu">
     {{#each footerData.footer_menu}}
-    <li class="">
+    <li class="{{ ../this.menuClass}}">
         <a href="{{ this.uri }}"
         class="{{ this.attributes.class }} {{ this.attributes.svg }}"
         target="{{ this.attributes.target }}">

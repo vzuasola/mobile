@@ -13,6 +13,10 @@ class FooterComponentController
 
     private $rest;
 
+    private $idDomain;
+
+    private $product;
+
     /**
      *
      */
@@ -20,7 +24,9 @@ class FooterComponentController
     {
         return new static(
             $container->get('menu_fetcher'),
-            $container->get('rest')
+            $container->get('rest'),
+            $container->get('id_domain'),
+            $container->get('product_resolver')
         );
     }
 
@@ -29,10 +35,14 @@ class FooterComponentController
      */
     public function __construct(
         $menus,
-        $rest
+        $rest,
+        $idDomain,
+        $product
     ) {
         $this->menus = $menus;
         $this->rest = $rest;
+        $this->idDomain = $idDomain;
+        $this->product = $product;
     }
 
     /**
@@ -48,9 +58,26 @@ class FooterComponentController
             $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
-            ddd($e->getMessage());
         }
 
+        $this->cleanFooterMenu($data['footer_menu']);
+
+        ddd($data);
+
         return $this->rest->output($response, $data);
+    }
+
+    private function cleanFooterMenu(&$footerMenu)
+    {
+        if ($footerMenu) {
+            foreach ($footerMenu as $key => $link) {
+                if (($this->idDomain->isLangSelectorHidden() ||
+                    $this->product->getProduct() == 'mobile-casino-gold') &&
+                    strpos($link['attributes']['class'], 'language-trigger') !== false
+                ) {
+                    unset($footerMenu[$key]);
+                }
+            }
+        }
     }
 }
