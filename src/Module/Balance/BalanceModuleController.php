@@ -304,7 +304,6 @@ class BalanceModuleController
      */
     private function currencyTranslation($currency)
     {
-        $currency = 'mbc';
         if (strtoupper($currency) === 'MBC') {
             $currency = 'mBTC';
         }
