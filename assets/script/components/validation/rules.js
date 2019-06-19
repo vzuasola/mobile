@@ -221,18 +221,14 @@ validators.regex = {
 validators.valid_date = {
     callback: function (value, param, field) {
         var birthdateEl = document.getElementById(field.id);
-        var birthDateFormat = birthdateEl.getAttribute('date-format');
+        var birthDateFormat = birthdateEl.getAttribute('date-format') || "DD/MM/YYYY";
 
-        if (birthDateFormat === null) {
-            return false;
-        }
+        birthDateFormat = birthDateFormat.replace(/y/ig, "YYYY");
+        birthDateFormat = birthDateFormat.replace(/m/ig, "MM");
+        birthDateFormat = birthDateFormat.replace(/d/ig, "DD");
 
         birthDateFormat = birthDateFormat.split('/');
         value = value.split('/');
-
-        if (value) {
-            return false;
-        }
 
         if (value[3] !== undefined) {
             return false;
@@ -253,7 +249,7 @@ validators.valid_date = {
 
             var yearMinus18 = new Date().getFullYear() - 18;
             for (var i = 0; i <= birthDateFormat.length - 1; i++) {
-                if (birthDateFormat[i] === 'YYYY' && (value[i] > yearMinus18 || parseInt(value[i]) < 1900)) {
+                if (birthDateFormat[i] === 'YYYY' && (value[i] > yearMinus18 || parseInt(value[i]) < 1901)) {
                     return false;
                 }
 

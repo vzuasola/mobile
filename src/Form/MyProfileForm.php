@@ -5,6 +5,7 @@ namespace App\MobileEntry\Form;
 use App\Plugins\Form\FormInterface;
 use App\Extensions\Form\ConfigurableForm\FormBase;
 use App\Account\Mapping\LanguageMapping;
+use DateTime;
 
 class MyProfileForm extends FormBase implements FormInterface
 {
@@ -317,12 +318,17 @@ class MyProfileForm extends FormBase implements FormInterface
     private function setDisabledFields($definition)
     {
         $definition['submit']['options']['attr']['data-redirect'] = 0;
+        $dateFormat = $definition['birthdate']['options']['attr']['date-format'];
+        $dob = strtotime(date($dateFormat, strtotime($definition['birthdate']['options']['attr']['value'])));
+        $matchingDate = strtotime("1 December 1900");
 
         foreach ($this->disabledFields as $field) {
             $dummyName = substr($definition[$field]['options']['attr']['value'], 0, 5);
 
             if (strtoupper($dummyName) == 'DFRFN' ||
-                strtoupper($dummyName) == 'DFRLN') {
+                strtoupper($dummyName) == 'DFRLN' ||
+                ($field === "birthdate" && $dob === $matchingDate)
+            ) {
                 $definition[$field]['options']['attr']['value'] = "";
 
                 if ($this->request->getQueryParam("pmid")) {
