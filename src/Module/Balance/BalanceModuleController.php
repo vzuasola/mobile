@@ -304,11 +304,21 @@ class BalanceModuleController
      */
     private function currencyTranslation($currency)
     {
+        if (strtoupper($currency) === 'MBC') {
+            $currency = 'mBTC';
+        }
         switch ($this->lang) {
             case 'sc':
+                if ($currency === 'mBTC') {
+                    $currency = '比特币';
+                }
+                break;
             case 'ch':
                 if ($translated = Currency::getTranslation($currency)) {
                     $currency = $translated;
+                }
+                if ($currency === 'mBTC') {
+                    $currency = '比特幣';
                 }
                 break;
             default:
