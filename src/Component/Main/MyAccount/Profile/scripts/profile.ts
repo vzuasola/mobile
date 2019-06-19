@@ -69,12 +69,13 @@ export class Profile extends FormBase {
 
     private getUserData() {
         const user = this.attachments.user;
-        // console.log(user);
+        const dateFormat = this.datepicker.formatDate("#MyProfileForm_birthdate");
+        const bdate = new Date(user.birthdate * 1000);
 
         return {
             firstname: user.first_name,
             lastname: user.last_name,
-            birthdate: user.birthdate,
+            birthdate: this.datepicker.parseStringDate(bdate, dateFormat),
             gender: user.gender,
             language: user.language,
             mobile: user.mobile_number_1,
