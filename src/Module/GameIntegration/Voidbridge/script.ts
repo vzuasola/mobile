@@ -56,8 +56,12 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
-                    this.launchGame(options.target);
-                    this.updatePopupWindow(response.gameurl);
+                    if (options.loader === "true") {
+                        window.location.href = response.gameurl;
+                    } else {
+                        this.launchGame(options.target);
+                        this.updatePopupWindow(response.gameurl);
+                    }
                 }
 
                 if (!response.currency) {
