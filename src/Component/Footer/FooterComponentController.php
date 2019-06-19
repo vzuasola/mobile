@@ -62,8 +62,6 @@ class FooterComponentController
 
         $this->cleanFooterMenu($data['footer_menu']);
 
-        ddd($data);
-
         return $this->rest->output($response, $data);
     }
 
