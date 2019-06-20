@@ -1,0 +1,19 @@
+/* Game Loader */
+.game-loader-container {
+    position: relative;
+    height: 100vh;
+    display: table;
+    margin: 0 auto;
+    width: auto;
+
+    &-content {
+        text-align: center;
+        vertical-align: middle;
+        display: table-cell;
+    }
+
+    &-loader {
+        position: absolute;
+        left: 9rem;
+    }
+}

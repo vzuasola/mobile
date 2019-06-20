@@ -32,6 +32,7 @@ import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/M
 import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
 import {FooterComponent} from "@app/src/Component/Footer/script";
 import {CookieNotifComponent} from "@app/src/Component/CookieNotif/script";
+import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -66,4 +67,5 @@ ComponentManager.setComponents({
     change_password: new MyAccountChangePasswordComponent(),
     footer: new FooterComponent(),
     cookie_notification: new CookieNotifComponent(),
+    game_loader: new GameLoaderComponent(),
 });
