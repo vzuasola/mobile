@@ -292,7 +292,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
-            this.setLobby();
+            if (ComponentManager.getAttribute("product") === "mobile-live-dealer") {
+                this.setLobby();
+            }
         });
     }
 
