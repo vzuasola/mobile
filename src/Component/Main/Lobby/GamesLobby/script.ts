@@ -1093,10 +1093,14 @@ export class GamesLobbyComponent implements ComponentInterface {
                 this.windowObject = PopupWindow("", "gameWindow", prop);
             }
 
+            if (!this.windowObject) {
+                return;
+            }
+
             // handle redirects if we are on a PWA standalone
             if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
                 source === "pwa" ||
-                params["data-game-target"] !== "popup" || !this.windowObject
+                params["data-game-target"] !== "popup"
             ) {
                 window.location.href = url;
                 return;
