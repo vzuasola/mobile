@@ -131,7 +131,7 @@ export class FooterComponent implements ComponentInterface {
                 const element = data.footer_menu[menu];
                 if (product !== "mobile-casino-gold" ||
                     (product === product && product === "mobile-casino-gold")
-                    && element.attributes.class !== "language-trigger") {
+                    && !element.attributes.class.match("language-trigger")) {
                     menus.push(element);
                 }
             }

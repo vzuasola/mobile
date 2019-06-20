@@ -1,5 +1,6 @@
+<ul class="game-container clearfix">
 {{#each games}}
-    <div class="game-listing">
+    <li class="game-listing">
         <a class="game-list game-listing-item"
         {{#if ../isLogin}}
         data-game-launch="true"
@@ -13,22 +14,23 @@
         data-game-lobby="true"
         >
             {{#if this.ribbon}}
-                <div class="game-ribbon"
+                <span class="game-ribbon"
                     style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
                 >
                     {{this.ribbon.name}}
-                </div>
+                </span>
             {{/if}}
             <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
             <p class="label-game-title {{#if this.provider_maintenance}}hidden{{/if}}">{{this.title}}</p>
             
         </a>
-        <div class="game-listing-maintenance {{#condition this.provider_maintenance "!==" true}}hidden{{/condition}}">
+        <span class="game-listing-maintenance {{#condition this.provider_maintenance "!==" true}}hidden{{/condition}}">
             <p>{{{../this.configs.games_maintenance_text}}}</p>
             <span class="game-listing-maintenance-title">{{this.title}}</span>
-        </div>
-    </div>
+        </span>
+    </li>
 {{/each}}
+</ul>
 <div id="game-loader" class="game-loader">
     <span class="game-loader-load-more">Load More</span>
     <div class="sk-fading-circle mobile-game-loader hidden">
