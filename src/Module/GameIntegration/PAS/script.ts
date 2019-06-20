@@ -227,8 +227,8 @@ export class PASModule implements ModuleInterface, GameInterface {
         if (!this.futurama ||
             (!this.futuramaGold && product === "mobile-casino-gold") ||
             this.pasLoginResponse.errorCode === 0) {
-            if (options.product) {
-                product = options.product;
+            if (options.currentProduct) {
+                product = options.currentProduct;
             }
 
             if (DafaConnect.isDafaconnect()) {
