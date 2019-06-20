@@ -1089,16 +1089,18 @@ export class GamesLobbyComponent implements ComponentInterface {
 
             url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
 
+            if (params["data-game-target"] === "popup") {
+                this.windowObject = PopupWindow("", "gameWindow", prop);
+            }
+
             // handle redirects if we are on a PWA standalone
             if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
                 source === "pwa" ||
-                params["data-game-target"] !== "popup"
+                params["data-game-target"] !== "popup" || !this.windowObject
             ) {
                 window.location.href = url;
                 return;
             }
-
-            this.windowObject = PopupWindow("", "gameWindow", prop);
 
             this.updatePopupWindow(url);
         });

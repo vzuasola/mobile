@@ -66,7 +66,7 @@ trait GameTrait
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
             $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
-                && $game['field_disable_game_loader'][0]['value']) ? "false" : "true";
+                && $game['field_disable_game_loader'][0]['value']) ? "false" : "false";
 
             $categoryList = [];
 
