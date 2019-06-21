@@ -1090,7 +1090,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
 
             if (params["data-game-target"] === "popup") {
-                this.windowObject = PopupWindow("", "gameWindow", prop);
+                this.windowObject = PopupWindow(url, "gameWindow", prop);
             }
 
             if (!this.windowObject) {
