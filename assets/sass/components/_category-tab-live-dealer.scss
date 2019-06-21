@@ -364,15 +364,14 @@
                             text-align: center;
                             font-size: 1.6rem;
                             font-weight: 600;
+                            width: 95%;
+                            line-height: initial;
                         }
                 }
 
                 &-maintenance:after {
                     position: absolute;
                     top: 0;
-                    left: 1%;
-                    right: 1%;
-                    bottom: 3%;
                     z-index: 0;
                     content: " ";
                     background: #000;
@@ -389,6 +388,12 @@
             .game-listing {
                 width: 50%;
                 padding: 0 0 1% 0;
+
+                 &-maintenance:after {
+                    left: 1%;
+                    right: 1%;
+                    bottom: 2.5%;
+                }
             }
         }
 
@@ -399,6 +404,12 @@
 
             .label-game-title {
                     font-size: 1.4rem;
+                }
+
+                &-maintenance:after {
+                    left: 1.7%;
+                    right: 1.7%;
+                    bottom: 3.5%;
                 }
             }
         }

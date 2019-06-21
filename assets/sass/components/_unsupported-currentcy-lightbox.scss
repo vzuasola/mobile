@@ -1,4 +1,6 @@
 .unsupported {
+    z-index: 1031;
+
     &-content {
         @include translate(0, 50%);
         position: absolute;

@@ -257,8 +257,8 @@ export class PASModule implements ModuleInterface, GameInterface {
         if (!this.futurama ||
             (!this.futuramaGold && product === "mobile-casino-gold") ||
             this.pasLoginResponse.errorCode === 0) {
-            if (options.product) {
-                product = options.product;
+            if (options.currentProduct) {
+                product = options.currentProduct;
             }
 
             if (DafaConnect.isDafaconnect()) {
@@ -285,8 +285,12 @@ export class PASModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
-                    this.launchGame(options.target);
-                    this.updatePopupWindow(response.gameurl);
+                    if (options.loader === "true") {
+                        window.location.href = response.gameurl;
+                    } else {
+                        this.launchGame(options.target);
+                        this.updatePopupWindow(response.gameurl);
+                    }
                 }
                 options.currency = this.currency;
                 if (!response.currency) {

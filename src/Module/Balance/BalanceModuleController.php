@@ -164,6 +164,7 @@ class BalanceModuleController
                 $data['balance'] = number_format($totalBalance, 2, '.', ',');
                 $data['format'] = $this->totalBalanceFormat($currency);
                 $data['currency'] = $this->currencyTranslation($currency);
+                $data['err_message'] = $headerConfigs['balance_error_text_product'] ?? 'N/A';
             } catch (\Exception $e) {
                 $data['message'] = $e->getMessage();
                 $data['balance'] = $headerConfigs['balance_error_text_product'] ?? 'N/A';
