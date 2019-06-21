@@ -545,42 +545,44 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
-            this.currentPage = 0;
-            const first = this.response.categories[0].field_games_alias;
-            const key = this.getActiveCategory(this.response.games, first);
-            let sidebar = false;
-            if (utility.getHash(window.location.href) !== key &&
-                key !== first
-            ) {
-                window.location.hash = key;
+            if (ComponentManager.getAttribute("product") === "mobile-games") {
+                this.currentPage = 0;
+                const first = this.response.categories[0].field_games_alias;
+                const key = this.getActiveCategory(this.response.games, first);
+                let sidebar = false;
+                if (utility.getHash(window.location.href) !== key &&
+                    key !== first
+                ) {
+                    window.location.hash = key;
+                }
+
+                const categoriesEl = document.querySelector("#game-categories");
+                const activeLink = categoriesEl.querySelector(".category-tab .active a");
+
+                this.clearCategoriesActive(categoriesEl);
+
+                // Add active to categories
+                const actives = categoriesEl.querySelectorAll(".category-" + key);
+
+                if (actives.length === 1) {
+                    src = categoriesEl.querySelector(".game-category-more");
+                    utility.addClass(src, "active");
+                    sidebar = true;
+                }
+
+                for (const id in actives) {
+                    if (actives.hasOwnProperty(id)) {
+                        const active = actives[id];
+                        utility.addClass(active, "active");
+                        if (!sidebar) {
+                            utility.addClass(active.parentElement, "active");
+                        }
+                }
+                }
+
+                this.setGames(this.response.games[key], key);
+                ComponentManager.broadcast("category.change");
             }
-
-            const categoriesEl = document.querySelector("#game-categories");
-            const activeLink = categoriesEl.querySelector(".category-tab .active a");
-
-            this.clearCategoriesActive(categoriesEl);
-
-            // Add active to categories
-            const actives = categoriesEl.querySelectorAll(".category-" + key);
-
-            if (actives.length === 1) {
-                src = categoriesEl.querySelector(".game-category-more");
-                utility.addClass(src, "active");
-                sidebar = true;
-            }
-
-            for (const id in actives) {
-                if (actives.hasOwnProperty(id)) {
-                    const active = actives[id];
-                    utility.addClass(active, "active");
-                    if (!sidebar) {
-                        utility.addClass(active.parentElement, "active");
-                    }
-               }
-            }
-
-            this.setGames(this.response.games[key], key);
-            ComponentManager.broadcast("category.change");
         });
     }
 
