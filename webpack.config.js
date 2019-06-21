@@ -4,6 +4,7 @@ const GenerateJsonPlugin = require("generate-json-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = function(env, argv) {
     const isProd = env.production;
@@ -128,5 +129,15 @@ module.exports = function(env, argv) {
             }
         },
 
+        optimization: {
+            minimizer: [
+                new TerserPlugin({
+                    terserOptions: {
+                        safari10: true,
+                        mangle: false,
+                    },
+                }),
+            ],
+        },
     }
 };
