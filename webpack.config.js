@@ -6,7 +6,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 
 module.exports = function(env, argv) {
+    const isProd = env.production;
+
     return {
+        mode: isProd ? "production" : "development",
+
         entry: {
             app: path.resolve(__dirname, "./assets/script/app.ts"),
             sw: path.resolve(__dirname, "./assets/script/worker.ts"),

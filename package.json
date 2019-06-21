@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "watch": "webpack --watch --progress --hide-modules",
-    "dev": "webpack --progress --hide-modules",
-    "dist": "webpack --progress --hide-modules",
+    "watch": "webpack --env.development --watch --progress --hide-modules",
+    "dev": "webpack --env.development --progress --hide-modules",
+    "dist": "webpack --env.production --progress --hide-modules",
     "lint": "yarn eslint && yarn tslint",
     "eslint": "eslint **/*.js",
     "tslint": "tslint -c tslint.json **/*.ts"
