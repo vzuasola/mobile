@@ -376,6 +376,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             };
 
             let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
+            const source = utility.getParameterByName("source");
 
             for (const key in data.options) {
                 if (data.options.hasOwnProperty(key)) {
@@ -387,10 +388,19 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             }
 
             url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+            url = utility.addQueryParam(url, "loaderFlag", "true");
+            if (data.options.target === "popup") {
+                this.windowObject = PopupWindow(url, "gameWindow", prop);
+            }
+
+            if (!this.windowObject && data.options.target === "popup") {
+                return;
+            }
 
             // handle redirects if we are on a PWA standalone
             if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                (window.innerHeight / window.screen.height) > 0.9
+                source === "pwa" ||
+                data.options.target !== "popup"
             ) {
                 window.location.href = url;
                 return;
