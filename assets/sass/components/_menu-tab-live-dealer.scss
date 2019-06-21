@@ -184,12 +184,26 @@
 
     // Landscape
     @media (orientation: landscape) {
-        .game-container {
-            &.featured,
-            &.providers {
-                .game-listing {
-                    width: 25%;
-                    padding: 0 0.2% 1% 0.2%;
+        #game-container {
+            .game-lobby-container {
+                &.featured,
+                &.providers {
+                    .game-listing {
+                        width: 25%;
+                        padding: 0 0.2% 1% 0.2%;
+
+                        &-maintenance {
+                                &-title {
+                                    bottom: 1.2rem;
+                                }
+                        }
+
+                        &-maintenance:after {
+                            left: 2%;
+                            right: 2%;
+                            bottom: 5%;
+                        }
+                    }
                 }
             }
         }
