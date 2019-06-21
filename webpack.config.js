@@ -16,8 +16,7 @@ module.exports = function(env, argv) {
 
         entry: {
             app: path.resolve(__dirname, "./assets/script/app.ts"),
-            sw: path.resolve(__dirname, "./assets/script/worker.ts"),
-            wbsw: path.resolve(__dirname, "./node_modules/workbox-sw/build/workbox-sw.js"),
+            sw: path.resolve(__dirname, "./assets/script/worker.ts")
         },
 
         output: {
@@ -26,10 +25,6 @@ module.exports = function(env, argv) {
             path: path.resolve(__dirname, "web"),
             publicPath: path.resolve(__dirname, "web")
         },
-
-        // externals: [
-        //     "workbox-sw"
-        // ],
 
         plugins: [
             new CleanWebpackPlugin(["web"], {
@@ -43,6 +38,11 @@ module.exports = function(env, argv) {
                 {
                     from: path.resolve(__dirname, "./assets/images"),
                     to: path.resolve(__dirname, "./web/images")
+                },
+                // Copy workbox (generated from old mobile with mix)
+                {
+                    from: path.resolve(__dirname, "./assets/script/vendor/wbsw.js"),
+                    to: path.resolve(__dirname, "./web/wbsw.js")
                 }
             ]),
             new MiniCssExtractPlugin({
@@ -59,10 +59,6 @@ module.exports = function(env, argv) {
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,
-                            // options: {
-                            //     // TODO
-                            //     hmr: process.env.NODE_ENV === "development",
-                            // },
                         },
                         "css-loader",
                         "sass-loader",
@@ -96,18 +92,7 @@ module.exports = function(env, argv) {
                     options: {
                         emitErrors: true,
                     },
-                },
-                // {
-                //     test: /\.m?js$/,
-                //     // exclude: /(node_modules|bower_components)/,
-                //     include: /(node_modules\/workbox-sw\/build\/workbox-sw.js)/,
-                //     use: {
-                //         loader: "babel-loader",
-                //         options: {
-                //             presets: ["@babel/preset-env"]
-                //         }
-                //     }
-                // }
+                }
             ]
         },
 
