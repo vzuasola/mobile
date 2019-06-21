@@ -1,3 +1,5 @@
+declare var navigator: any;
+
 import * as Promise from "promise-polyfill";
 
 import * as utility from "@core/assets/js/components/utility";
@@ -23,7 +25,7 @@ import EqualHeight from "@app/assets/script/components/equal-height";
 
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import { ProviderDrawer } from "./scripts/provider-drawer";
-
+import PopupWindow from "@app/assets/script/components/popup";
 /**
  *
  */
@@ -43,6 +45,8 @@ export class GamesLobbyComponent implements ComponentInterface {
     private searchResults;
     private filterFlag: string;
     private state: boolean;
+    private windowObject: any;
+    private gameLink: string;
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -95,6 +99,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenOnCloseFilter();
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
+        this.listenToLaunchGameLoader();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -144,6 +149,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.load = true;
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
+        this.listenToLaunchGameLoader();
     }
 
     private moveCategory() {
@@ -1051,6 +1057,80 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.setLobby();
             ComponentManager.broadcast("category.change");
         });
+    }
+
+    /**
+     * Event listener for launching pop up loader
+     */
+    private listenToLaunchGameLoader() {
+        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
+            // Pop up loader with all data
+            const prop = {
+                width: 360,
+                height: 720,
+                scrollbars: 1,
+                scrollable: 1,
+                resizable: 1,
+            };
+
+            let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
+
+            const params = utility.getAttributes(data.src);
+            const source = utility.getParameterByName("source");
+            for (const key in params) {
+                if (params.hasOwnProperty(key)) {
+                    const param = params[key];
+
+                    if (key.indexOf("data-") === 0 && (param !== "" && typeof param !== "undefined")) {
+                        url = utility.addQueryParam(url, key.replace("data-game-", ""), param);
+                    }
+                }
+            }
+
+            url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+
+            if (params["data-game-target"] === "popup") {
+                this.windowObject = PopupWindow("", "gameWindow", prop);
+            }
+
+            if (!this.windowObject) {
+                return;
+            }
+
+            // handle redirects if we are on a PWA standalone
+            if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                source === "pwa" ||
+                params["data-game-target"] !== "popup"
+            ) {
+                window.location.href = url;
+                return;
+            }
+
+            this.updatePopupWindow(url);
+        });
+    }
+
+    private updatePopupWindow(url) {
+        try {
+            if (this.windowObject.location.href !== "about:blank" &&
+                url === this.gameLink &&
+                !this.windowObject.closed
+            ) {
+                this.windowObject.focus();
+            } else {
+                this.gameLink = url;
+                this.windowObject.location.href = url;
+            }
+        } catch (e) {
+            if (url !== this.gameLink) {
+                this.gameLink = url;
+                this.windowObject.location.href = url;
+            }
+
+            if (this.windowObject) {
+                this.windowObject.focus();
+            }
+        }
     }
 
 }
