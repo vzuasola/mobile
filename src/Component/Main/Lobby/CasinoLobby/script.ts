@@ -925,25 +925,31 @@ export class CasinoLobbyComponent implements ComponentInterface {
             };
 
             let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-
-            const params = utility.getAttributes(data.src);
             const source = utility.getParameterByName("source");
-            for (const key in params) {
-                if (params.hasOwnProperty(key)) {
-                    const param = params[key];
 
-                    if (key.indexOf("data-") === 0 && (param !== "" && typeof param !== "undefined")) {
-                        url = utility.addQueryParam(url, key.replace("data-game-", ""), param);
+            for (const key in data.options) {
+                if (data.options.hasOwnProperty(key)) {
+                    const param = data.options[key];
+                    if (key !== "loader") {
+                        url = utility.addQueryParam(url, key, param);
                     }
                 }
             }
 
             url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+            url = utility.addQueryParam(url, "loaderFlag", "true");
+            if (data.options.target === "popup") {
+                this.windowObject = PopupWindow(url, "gameWindow", prop);
+            }
+
+            if (!this.windowObject && data.options.target === "popup") {
+                return;
+            }
 
             // handle redirects if we are on a PWA standalone
             if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
                 source === "pwa" ||
-                params["data-game-target"] !== "popup"
+                data.options.target !== "popup"
             ) {
                 window.location.href = url;
                 return;

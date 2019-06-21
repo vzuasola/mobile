@@ -26,7 +26,7 @@ class GameLauncher {
 
         launchSequence.push(() => {
             return new Promise((resolve, reject) => {
-                if (options.loader === "true") {
+                if (options.loader === "true" && !options.loaderFlag) {
                     ComponentManager.broadcast("game.launch.loader", {
                         options,
                     });
@@ -137,17 +137,9 @@ class GameLauncher {
      *
      */
     private onClick(e, src) {
-        let loader = false;
         const el = utility.find(src, (element) => {
             if (utility.hasClass(src, "game-favorite", true)) {
                 return false;
-            }
-
-            if (element.getAttribute("data-game-loader") === "true" &&
-                element.getAttribute("data-game-launch") === "true"
-            ) {
-                loader = true;
-                return true;
             }
 
             if (element.getAttribute("data-game-provider") &&
@@ -157,7 +149,7 @@ class GameLauncher {
             }
         });
 
-        if (el && !loader) {
+        if (el) {
             e.preventDefault();
 
             const provider = el.getAttribute("data-game-provider");
@@ -168,12 +160,6 @@ class GameLauncher {
             this.launch(provider, options);
 
             ComponentManager.broadcast("game.launch", {
-                src: el,
-            });
-        }
-
-        if (el && loader) {
-            ComponentManager.broadcast("game.launch.loader", {
                 src: el,
             });
         }
@@ -183,19 +169,13 @@ class GameLauncher {
      *
      */
     private onLogin(e, src) {
-        let loader = false;
         const el = utility.find(src, (element) => {
-            if (element.getAttribute("data-game-loader") === "true") {
-                loader = true;
-                return true;
-            }
-
             if (element.getAttribute("data-game-provider")) {
                 return true;
             }
         });
 
-        if (el && !loader) {
+        if (el) {
             e.preventDefault();
 
             const provider = el.getAttribute("data-game-provider");
@@ -206,12 +186,6 @@ class GameLauncher {
             this.launch(provider, options);
 
             ComponentManager.broadcast("game.launch", {
-                src: el,
-            });
-        }
-
-        if (el && loader) {
-            ComponentManager.broadcast("game.launch.loader", {
                 src: el,
             });
         }
