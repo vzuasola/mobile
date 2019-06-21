@@ -265,11 +265,13 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private setActiveTab() {
         const activeTabClass = this.getActiveTab();
-        const contTab = this.element.querySelector(".game-container");
+        const contTab = this.element.querySelector(".game-lobby-container");
         const activeTab = this.element.querySelector(".tab-" + activeTabClass);
 
         if (activeTab) {
             utility.addClass(activeTab, "active");
+        }
+        if (activeTabClass) {
             utility.addClass(contTab, activeTabClass);
         }
     }
