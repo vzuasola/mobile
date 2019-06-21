@@ -2978,7 +2978,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "9f9fd8cd2f8c704c52be5f5bcc190769d8e5f97d"
+                "reference": "8246070ca2f1c458ea62aceaa9a3e1baefca5e29"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3029,7 +3029,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2019-06-18T01:39:36+00:00"
+            "time": "2019-06-19T03:39:31+00:00"
         },
         {
             "name": "willdurand/negotiation",

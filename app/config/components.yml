@@ -9,7 +9,7 @@ components:
   header_login:
     class: App\MobileEntry\Component\Header\Login\LoginComponent
     parent: header
-  
+
   menu:
     class: App\MobileEntry\Component\Menu\MenuComponent
 
@@ -128,6 +128,9 @@ components:
 
   cookie_notification:
     class: App\MobileEntry\Component\CookieNotif\CookieNotifComponent
+
+  game_loader:
+    class: App\MobileEntry\Component\GameLoader\GameLoaderComponent
 
 # Define modules
 modules:

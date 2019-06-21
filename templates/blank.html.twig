@@ -1,0 +1,28 @@
+{% extends '@site/base.html.twig' %}
+
+{% block seo %}
+{{ widget('seo') }}
+{% endblock %}
+
+{% block marketing %}
+{{ widget('marketing') }}
+{% endblock %}
+
+{% block css %}
+<link href="{{ asset('app.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+{% block main %}
+{{ widget('main') }}
+{% endblock main %}
+
+{{ widget('language') }}
+{{ widget('push_notification') }}
+{{ widget('casino_option') }}
+{% endblock body %}
+
+{% block script %}
+{{ parent() }}
+<script src="{{ asset('app.js') }}"></script>
+{% endblock %}
