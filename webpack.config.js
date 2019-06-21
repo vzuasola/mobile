@@ -11,6 +11,8 @@ module.exports = function(env, argv) {
     return {
         mode: isProd ? "production" : "development",
 
+        devtool: isProd ? "none" : "source-map",
+
         entry: {
             app: path.resolve(__dirname, "./assets/script/app.ts"),
             sw: path.resolve(__dirname, "./assets/script/worker.ts"),
