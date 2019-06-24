@@ -101,15 +101,16 @@ export class DownloadComponent implements ComponentInterface {
     }
 
     private swapText() {
-        const element = document.querySelectorAll("dt")[0];
-        element.addEventListener("click", () => {
-            if (element.getAttribute("data-text-swap") === element.innerText) {
-                element.innerText = element.getAttribute("data-text-original");
-            } else {
-                element.setAttribute("data-text-original", element.innerText);
-                element.innerText = element.getAttribute("data-text-swap");
+        ComponentManager.subscribe("click", (src, target) => {
+            const element = this.element.querySelectorAll("dt")[0];
+            if (utility.hasClass(target, "swap-text", true)) {
+                if (element.getAttribute("data-text-swap") === element.innerText) {
+                    element.innerText = element.getAttribute("data-text-original");
+                } else {
+                    element.setAttribute("data-text-original", element.innerText);
+                    element.innerText = element.getAttribute("data-text-swap");
+                }
             }
-        }, false);
+        });
     }
-
 }
