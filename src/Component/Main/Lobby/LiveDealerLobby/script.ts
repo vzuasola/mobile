@@ -381,9 +381,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             for (const key in data.options) {
                 if (data.options.hasOwnProperty(key)) {
                     const param = data.options[key];
-                    if (key !== "loader") {
-                        url = utility.addQueryParam(url, key, param);
-                    }
+                    url = utility.addQueryParam(url, key, param);
                 }
             }
 
