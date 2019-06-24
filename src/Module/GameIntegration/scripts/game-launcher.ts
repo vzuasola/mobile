@@ -1,16 +1,11 @@
 import * as utility from "@core/assets/js/components/utility";
 
-import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
+import { ComponentManager } from "@plugins/ComponentWidget/asset/component";
 
-import {GameInterface} from "./game.interface";
-
-import SyncEvents from "@core/assets/js/components/utils/sync-events";
-import * as Promise from "promise-polyfill";
+import { GameInterface } from "./game.interface";
 
 class GameLauncher {
-    private providers: {[name: string]: GameInterface} = {};
-    private prelaucnhEvents: any = [];
-    private sync: SyncEvents = new SyncEvents();
+    private providers: { [name: string]: GameInterface } = {};
 
     /**
      *
@@ -19,26 +14,11 @@ class GameLauncher {
         this.providers[id] = provider;
     }
 
-    launch(provider: string, options: {[name: string]: string} = {}) {
+    launch(provider: string, options: { [name: string]: string } = {}) {
         options.provider = provider;
 
-        const launchSequence = this.prelaucnhEvents.slice(0);
-
-        launchSequence.push(() => {
-            return new Promise((resolve, reject) => {
-                if (options.loader === "true" && !options.loaderFlag) {
-                    ComponentManager.broadcast("game.launch.loader", {
-                        options,
-                    });
-                } else {
-                    this.invoke(provider, "launch", [options]);
-                }
-
-                resolve();
-            });
-        });
-
-        this.sync.executeWithArgsWithException(launchSequence, [options]);
+        this.invoke(provider, "prelaunch", [options]);
+        this.invoke(provider, "launch", [options]);
     }
 
     /**
@@ -47,7 +27,6 @@ class GameLauncher {
     init() {
         this.bindEvents();
         this.activateLoginHooks();
-        this.listenPreloginEvents();
     }
 
     /**
@@ -74,23 +53,16 @@ class GameLauncher {
     private activateLoginHooks() {
         setTimeout(() => {
             for (const key in this.providers) {
-                if (this.providers.hasOwnProperty(key)) {
+                if (this.providers.hasOwnProperty(key) &&
+                    typeof this.providers[key].login === "function"
+                ) {
                     const provider = this.providers[key];
-                    if (typeof this.providers[key].login === "function") {
-                        ComponentManager.broadcast("session.events.push", {
-                            event: (username, password) => {
-                                return provider.login(username, password);
-                            },
-                        });
-                    }
 
-                    if (typeof this.providers[key].prelaunch === "function") {
-                        ComponentManager.broadcast("game.prelaunch.push", {
-                            event: (options) => {
-                                return provider.prelaunch(options);
-                            },
-                        });
-                    }
+                    ComponentManager.broadcast("session.events.push", {
+                        event: (username, password) => {
+                            return provider.login(username, password);
+                        },
+                    });
                 }
             }
         }, 100);
@@ -137,9 +109,17 @@ class GameLauncher {
      *
      */
     private onClick(e, src) {
+        let loader = false;
         const el = utility.find(src, (element) => {
             if (utility.hasClass(src, "game-favorite", true)) {
                 return false;
+            }
+
+            if (element.getAttribute("data-game-loader") === "true" &&
+                element.getAttribute("data-game-launch") === "true"
+            ) {
+                loader = true;
+                return true;
             }
 
             if (element.getAttribute("data-game-provider") &&
@@ -150,18 +130,26 @@ class GameLauncher {
         });
 
         if (el) {
-            e.preventDefault();
-
-            const provider = el.getAttribute("data-game-provider");
             const options = this.getOptionsByElement(el);
+            if (!loader) {
+                e.preventDefault();
 
-            options.provider = provider;
+                const provider = el.getAttribute("data-game-provider");
 
-            this.launch(provider, options);
+                options.provider = provider;
+                this.invoke(provider, "prelaunch", [options]);
+                this.invoke(provider, "launch", [options]);
 
-            ComponentManager.broadcast("game.launch", {
-                src: el,
-            });
+                ComponentManager.broadcast("game.launch", {
+                    src: el,
+                });
+            }
+
+            if (loader) {
+                ComponentManager.broadcast("game.launch.loader", {
+                    options,
+                });
+            }
         }
     }
 
@@ -169,45 +157,41 @@ class GameLauncher {
      *
      */
     private onLogin(e, src) {
+        let loader = false;
         const el = utility.find(src, (element) => {
+            if (element.getAttribute("data-game-loader") === "true") {
+                loader = true;
+                return true;
+            }
+
             if (element.getAttribute("data-game-provider")) {
                 return true;
             }
         });
 
         if (el) {
-            e.preventDefault();
-
-            const provider = el.getAttribute("data-game-provider");
             const options = this.getOptionsByElement(el);
+            if (!loader) {
+                e.preventDefault();
 
-            options.provider = provider;
+                const provider = el.getAttribute("data-game-provider");
+                options.provider = provider;
 
-            this.launch(provider, options);
+                this.launch(provider, options);
 
-            ComponentManager.broadcast("game.launch", {
-                src: el,
-            });
-        }
-    }
-
-    /**
-     * Listen for events that the login form must wait before doing the
-     * actual login
-     */
-    private listenPreloginEvents() {
-        // Allows you to push new loginEvents
-        //
-        // Available options
-        //
-        // event: closure => the actual encapsulated promise that will hold the event
-        ComponentManager.subscribe("game.prelaunch.push", (event, src, data) => {
-            if (data && typeof data.event !== "undefined") {
-                this.prelaucnhEvents.push(data.event);
+                ComponentManager.broadcast("game.launch", {
+                    src: el,
+                });
             }
-        });
+
+            if (loader) {
+                ComponentManager.broadcast("game.launch.loader", {
+                    options,
+                });
+            }
+        }
     }
 }
 
 const launcher = new GameLauncher();
-export {launcher as GameLauncher};
+export { launcher as GameLauncher };

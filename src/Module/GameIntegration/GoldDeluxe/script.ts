@@ -37,32 +37,7 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
     }
 
     prelaunch(options) {
-        if (options.provider === this.key) {
-            return new Promise((resolvePromise, rejectPromise) => {
-                if (options.maintenance === "true") {
-                    this.messageLightbox.showMessage(
-                        this.moduleName,
-                        "maintenance",
-                        options,
-                    );
-                    rejectPromise();
-                    return;
-                }
-                this.messageLightbox.showMessage(
-                    this.moduleName,
-                    "unsupported",
-                    options,
-                    (response) => {
-                        if (!response.currency) {
-                            rejectPromise();
-                            return;
-                        } else {
-                            resolvePromise();
-                        }
-                    },
-                );
-            });
-        }
+        // not implemented
     }
 
     launch(options) {
@@ -72,6 +47,15 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
 
             if (typeof this.languages[lang] !== "undefined") {
                 langCode = this.languages[lang];
+            }
+
+            if (options.maintenance === "true") {
+                this.messageLightbox.showMessage(
+                    this.moduleName,
+                    "maintenance",
+                    options,
+                );
+                return;
             }
 
             const product = options.hasOwnProperty("currentProduct") ? options.currentProduct
