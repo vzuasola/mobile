@@ -20,10 +20,9 @@ module.exports = function(env, argv) {
         },
 
         output: {
-            // filename: "[name].[chunkhash].js",
-            filename: "[name].js",
+            filename: "js/[name].[chunkhash].bundle.js",
             path: path.resolve(__dirname, "web"),
-            publicPath: path.resolve(__dirname, "web")
+            // publicPath: path.resolve(__dirname, "web")
         },
 
         plugins: [
@@ -46,7 +45,7 @@ module.exports = function(env, argv) {
                 }
             ]),
             new MiniCssExtractPlugin({
-                filename: "[name].css",
+                filename: "css/[name].[chunkhash].css",
                 chunkFilename: "[id].css",
             }),
             new ManifestPlugin()
@@ -66,7 +65,7 @@ module.exports = function(env, argv) {
                 },
                 {
                     test: /\.(jpe?g|png|gif|svg)$/i,
-                    use: "file-loader?name=/images/[name].[ext]"
+                    use: "file-loader?name=/images/[name].[hash].[ext]"
                 },
                 {
                     test: /\.handlebars?$/,
