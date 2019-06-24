@@ -58,17 +58,17 @@ export class HeaderComponent implements ComponentInterface {
                             let balanceFlag = false;
                             if (response.map.hasOwnProperty(product) && response.map[product] !== 0) {
                                 let totalBalance = 0;
-                                if (response.balances[response.map[product]]) {
+                                if (typeof response.balances[response.map[product]] !== "undefined") {
                                     balanceFlag = true;
                                     totalBalance += response.balances[response.map[product]];
                                 }
 
-                                if (response.bonuses[response.map[product]]) {
+                                if (typeof response.bonuses[response.map[product]] !== "undefined") {
                                     balanceFlag = true;
                                     totalBalance += response.bonuses[response.map[product]];
                                 }
 
-                                if (response.reserveBalances[response.map[product]]) {
+                                if (typeof response.reserveBalances[response.map[product]] !== "undefined") {
                                     balanceFlag = true;
                                     totalBalance += response.reserveBalances[response.map[product]];
                                 }
