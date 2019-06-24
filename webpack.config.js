@@ -28,7 +28,7 @@ module.exports = function(env, argv) {
         plugins: [
             new CleanWebpackPlugin(["web"], {
                 verbose: false,
-                exclude: ["app.php", "index.php", ".htacess", "data.json", "en", "api", "manifest.json", "version.json"],
+                exclude: ["app.php", "index.php", ".htacess", "data.json", "en", "api", "version.json"],
             }),
             new GenerateJsonPlugin("version.json", {
                 version: Math.floor(Date.now() / 1000),
