@@ -12,21 +12,28 @@ class DownloadComponent implements ComponentWidgetInterface
     private $menus;
 
     /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $configs;
+
+    /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('menu_fetcher')
+            $container->get('menu_fetcher'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus)
+    public function __construct($menus, $configs)
     {
         $this->menus = $menus;
+        $this->configs = $configs;
     }
 
 
@@ -47,42 +54,6 @@ class DownloadComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = [];
-
-        try {
-            $data['downloads_menu'] = $this->menus->getMultilingualMenu('mobile-downloads');
-            $data['downloads_menu'] = $this->arrangeBlocks($data['downloads_menu']);
-        } catch (\Exception $e) {
-            $data['downloads_menu'] = [];
-        }
-
-        return $data;
-    }
-
-
-    private function arrangeBlocks($data)
-    {
-        $batch = [];
-        if (count($data) === 4) {
-            while (count($data) > 0) {
-                $batch[] = array_splice($data, 0, 2, []);
-            }
-
-            return $batch;
-        }
-
-        if (count($data) === 7) {
-            while (count($data) > 0) {
-                $batch[] = array_splice($data, 0, 4, []);
-            }
-
-            return $batch;
-        }
-
-        while (count($data) > 0) {
-            $batch[] = array_splice($data, 0, 3, []);
-        }
-
-        return $batch;
+        return [];
     }
 }
