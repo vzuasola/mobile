@@ -25,10 +25,10 @@
             
         </a>
         {{#condition this.provider_maintenance "===" true}}
-            <span class="game-listing-maintenance">
+            <div class="game-listing-maintenance">
                 <p>{{{../this.configs.games_maintenance_text}}}</p>
                 <span class="game-listing-maintenance-title">{{this.title}}</span>
-            </span>
+            </div>
         {{/condition}}
     </li>
 {{/each}}
