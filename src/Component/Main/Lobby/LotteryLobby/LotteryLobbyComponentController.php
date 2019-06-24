@@ -50,7 +50,23 @@ class LotteryLobbyComponentController
      */
     public function lobby($request, $response)
     {
-        $data = $this->getGamesList();
+        $item = $this->cacher->getItem('views.lottery-lobby-data.' . $this->currentLanguage);
+
+        if (!$item->isHit()) {
+            $data = $this->getGamesList();
+
+            $item->set([
+                'body' => $data,
+            ]);
+
+            $this->cacher->save($item, [
+                'expires' => self::TIMEOUT,
+            ]);
+        } else {
+            $body = $item->get();
+            $data = $body['body'];
+        }
+
         return $this->rest->output($response, $data);
     }
 
