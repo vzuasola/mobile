@@ -168,27 +168,23 @@ class PASModuleController
     public function unsupported($request, $response)
     {
         try {
-            $data['currency'] = true;
 
-            if (!$this->checkCurrency($request)) {
-                $params = $request->getParsedBody();
-                $data['currency'] = false;
-                $productConfig = $this->config;
-                if (isset($params['product'])) {
-                    $productConfig = $this->config->withProduct($params['product']);
-                }
-                $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
-                $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
-                $data['provider'] = $providerMapping[self::KEY];
-                $data['title'] = $config['unsupported_currencies_title'] ?? '';
-                $data['message'] =
-                    $config['unsupported_currencies_message']['value'] ?? '';
-                $data['button'] = $config['unsupported_currencies_button'] ?? '';
-                $data['status'] = true;
+            $params = $request->getParsedBody();
+
+            $productConfig = $this->config;
+            if (isset($params['product'])) {
+                $productConfig = $this->config->withProduct($params['product']);
             }
+            $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
+            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
+            $data['provider'] = $providerMapping[self::KEY];
+            $data['title'] = $config['unsupported_currencies_title'] ?? '';
+            $data['message'] =
+                $config['unsupported_currencies_message']['value'] ?? '';
+            $data['button'] = $config['unsupported_currencies_button'] ?? '';
+            $data['status'] = true;
         } catch (\Exception $e) {
             $data['status'] = false;
-            $data['currency'] = false;
         }
 
         return $this->rest->output($response, $data);

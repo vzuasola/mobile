@@ -129,26 +129,27 @@ class GameLauncher {
             }
         });
 
-        const options = this.getOptionsByElement(el);
-        if (el && !loader) {
-            e.preventDefault();
+        if (el) {
+            const options = this.getOptionsByElement(el);
+            if (!loader) {
+                e.preventDefault();
 
-            const provider = el.getAttribute("data-game-provider");
+                const provider = el.getAttribute("data-game-provider");
 
-            options.provider = provider;
+                options.provider = provider;
+                this.invoke(provider, "prelaunch", [options]);
+                this.invoke(provider, "launch", [options]);
 
-            this.invoke(provider, "prelaunch", [options]);
-            this.invoke(provider, "launch", [options]);
+                ComponentManager.broadcast("game.launch", {
+                    src: el,
+                });
+            }
 
-            ComponentManager.broadcast("game.launch", {
-                src: el,
-            });
-        }
-
-        if (el && loader) {
-            ComponentManager.broadcast("game.launch.loader", {
-                options,
-            });
+            if (loader) {
+                ComponentManager.broadcast("game.launch.loader", {
+                    options,
+                });
+            }
         }
     }
 
@@ -168,25 +169,26 @@ class GameLauncher {
             }
         });
 
-        const options = this.getOptionsByElement(el);
-        if (el && !loader) {
-            e.preventDefault();
+        if (el) {
+            const options = this.getOptionsByElement(el);
+            if (!loader) {
+                e.preventDefault();
 
-            const provider = el.getAttribute("data-game-provider");
+                const provider = el.getAttribute("data-game-provider");
+                options.provider = provider;
 
-            options.provider = provider;
+                this.launch(provider, options);
 
-            this.launch(provider, options);
+                ComponentManager.broadcast("game.launch", {
+                    src: el,
+                });
+            }
 
-            ComponentManager.broadcast("game.launch", {
-                src: el,
-            });
-        }
-
-        if (el && loader) {
-            ComponentManager.broadcast("game.launch.loader", {
-                options,
-            });
+            if (loader) {
+                ComponentManager.broadcast("game.launch.loader", {
+                    options,
+                });
+            }
         }
     }
 }

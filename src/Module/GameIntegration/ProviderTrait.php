@@ -18,20 +18,16 @@ trait ProviderTrait
                 $productConfig = $this->config->withProduct($params['product']);
             }
 
-            $data['currency'] = true;
-            if (!$this->checkCurrency($request)) {
-                $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
-                $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
-                $data['provider'] = $providerMapping[self::KEY];
-                $data['title'] = $config['unsupported_currencies_title'] ?? '';
-                $data['message'] = $config['unsupported_currencies_message']['value'] ?? '';
-                $data['button'] = $config['unsupported_currencies_button'] ?? '';
-                $data['status'] = true;
-                $data['currency'] = false;
-            }
+            $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
+            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
+            $data['provider'] = $providerMapping[self::KEY];
+            $data['title'] = $config['unsupported_currencies_title'] ?? '';
+            $data['message'] = $config['unsupported_currencies_message']['value'] ?? '';
+            $data['button'] = $config['unsupported_currencies_button'] ?? '';
+            $data['status'] = true;
+
         } catch (\Exception $e) {
             $data['status'] = false;
-            $data['currency'] = false;
         }
 
         return $this->rest->output($response, $data);
