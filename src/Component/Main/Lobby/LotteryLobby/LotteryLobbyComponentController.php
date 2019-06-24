@@ -55,13 +55,15 @@ class LotteryLobbyComponentController
         if (!$item->isHit()) {
             $data = $this->getGamesList();
 
-            $item->set([
-                'body' => $data,
-            ]);
+            if (!empty($data)) {
+                $item->set([
+                    'body' => $data,
+                ]);
 
-            $this->cacher->save($item, [
-                'expires' => self::TIMEOUT,
-            ]);
+                $this->cacher->save($item, [
+                    'expires' => self::TIMEOUT,
+                ]);
+            }
         } else {
             $body = $item->get();
             $data = $body['body'];
