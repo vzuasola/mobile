@@ -168,7 +168,6 @@ class PASModuleController
     public function unsupported($request, $response)
     {
         try {
-
             $params = $request->getParsedBody();
 
             $productConfig = $this->config;

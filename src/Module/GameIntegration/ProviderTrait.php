@@ -25,7 +25,6 @@ trait ProviderTrait
             $data['message'] = $config['unsupported_currencies_message']['value'] ?? '';
             $data['button'] = $config['unsupported_currencies_button'] ?? '';
             $data['status'] = true;
-
         } catch (\Exception $e) {
             $data['status'] = false;
         }
