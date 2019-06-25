@@ -23,7 +23,7 @@ module.exports = function(env, argv) {
         output: {
             filename: "js/[name].[chunkhash].bundle.js",
             path: path.resolve(__dirname, "web"),
-            // publicPath: path.resolve(__dirname, "web")
+            publicPath: path.resolve(__dirname, "web")
         },
 
         plugins: [
