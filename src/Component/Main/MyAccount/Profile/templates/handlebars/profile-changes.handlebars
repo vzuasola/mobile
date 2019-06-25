@@ -36,6 +36,17 @@
             </tr>
         {{/condition}}
 
+        {{#condition this.old.birthdate "||" this.modified.birthdate }}
+            <tr>
+                <th>{{this.labels.birthdate}}</th>
+                <th>{{this.labels.birthdate}}</th>
+            </tr>
+            <tr>
+                <td>{{this.old.birthdate}}</td>
+                <td>{{this.modified.birthdate}}</td>
+            </tr>
+        {{/condition}}
+
         {{#condition this.old.gender "||" this.modified.gender }}
             <tr>
                 <th>{{this.labels.gender}}</th>

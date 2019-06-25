@@ -24,6 +24,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private windowObject: any;
     private gameLink: string;
     private configs: any[];
+    private providers: any;
     private lazyLoader: LazyLoader;
 
     constructor() {
@@ -43,8 +44,14 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.tabs = attachments.tabs;
         this.configs = attachments.configs;
-        this.doGetLobbyData(() => {
-            this.setLobby();
+        this.liveDealerXhrRequest("maintenance", (response) => {
+            this.providers = response.game_providers;
+            ComponentManager.broadcast("provider.maintenance", {
+                providers: this.providers,
+            });
+            this.generateLobby(() => {
+                this.setLobby();
+            });
         });
         this.listenHashChange();
         this.listenClickTab();
@@ -73,27 +80,39 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.tabs = attachments.tabs;
         this.configs = attachments.configs;
-        this.doGetLobbyData(() => {
-            this.setLobby();
+        this.liveDealerXhrRequest("maintenance", (response) => {
+            this.providers = response.game_providers;
+            ComponentManager.broadcast("provider.maintenance", {
+                providers: this.providers,
+            });
+            this.generateLobby(() => {
+                this.setLobby();
+            });
         });
         this.listenToLaunchGameLoader();
+    }
+
+    private liveDealerXhrRequest(method: string, callback) {
+        xhr({
+            url: Router.generateRoute("live_dealer_lobby", method),
+            type: "json",
+        }).then((response) => {
+                callback(response);
+        }).fail((error, message) => {
+            console.log(error);
+        });
     }
 
     /**
      * Request games list from cms
      */
     private doGetLobbyData(callback) {
-        xhr({
-            url: Router.generateRoute("live_dealer_lobby", "lobby"),
-            type: "json",
-        }).then((response) => {
+        this.liveDealerXhrRequest("lobby", (response) => {
             const groupedGames = this.groupGamesByTab(response);
             this.groupedGames = this.sortGamesByTab(groupedGames);
             if (callback) {
                 callback();
             }
-        }).fail((error, message) => {
-            console.log(error);
         });
     }
 
@@ -105,6 +124,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         for (const gameId in games) {
             if (games.hasOwnProperty(gameId)) {
                 const game = games[gameId];
+                if (this.providers.hasOwnProperty(game.game_provider)) {
+                    game.provider_maintenance = this.providers[game.game_provider].maintenance;
+                }
                 if (!groupedGames.hasOwnProperty(game.lobby_tab)
                 ) {
                     groupedGames[game.lobby_tab] = [];
@@ -116,7 +138,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 }
             }
         }
-
         return groupedGames;
     }
 
@@ -198,6 +219,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.lazyLoader.init(
             this.groupedGames[activeTab],
             this.isLogin,
+            this.configs,
             this.element.querySelector("#game-container"),
             activeTab,
             enableLazyLoad,
@@ -243,11 +265,13 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private setActiveTab() {
         const activeTabClass = this.getActiveTab();
-        const contTab = this.element.querySelector(".game-container");
+        const contTab = this.element.querySelector(".game-lobby-container");
         const activeTab = this.element.querySelector(".tab-" + activeTabClass);
 
         if (activeTab) {
             utility.addClass(activeTab, "active");
+        }
+        if (activeTabClass) {
             utility.addClass(contTab, activeTabClass);
         }
     }
@@ -270,7 +294,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
-            this.setLobby();
+            if (ComponentManager.getAttribute("product") === "mobile-live-dealer") {
+                this.setLobby();
+            }
         });
     }
 
@@ -350,22 +376,29 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             };
 
             let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
+            const source = utility.getParameterByName("source");
 
-            const params = utility.getAttributes(data.src);
-
-            for (const key in params) {
-                if (params.hasOwnProperty(key)) {
-                    const param = params[key];
-
-                    if (key.indexOf("data-") === 0) {
-                        url = utility.addQueryParam(url, key.replace("data-game-", ""), param);
-                    }
+            for (const key in data.options) {
+                if (data.options.hasOwnProperty(key)) {
+                    const param = data.options[key];
+                    url = utility.addQueryParam(url, key, param);
                 }
+            }
+
+            url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+            url = utility.addQueryParam(url, "loaderFlag", "true");
+            if (data.options.target === "popup") {
+                this.windowObject = PopupWindow(url, "gameWindow", prop);
+            }
+
+            if (!this.windowObject && data.options.target === "popup") {
+                return;
             }
 
             // handle redirects if we are on a PWA standalone
             if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                (window.innerHeight / window.screen.height) > 0.9
+                source === "pwa" ||
+                data.options.target !== "popup"
             ) {
                 window.location.href = url;
                 return;

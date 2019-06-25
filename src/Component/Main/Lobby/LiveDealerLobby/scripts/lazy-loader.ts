@@ -3,6 +3,7 @@ import * as gameTemplate from "../handlebars/games.handlebars";
 
 export class LazyLoader {
     private currentBatch: number = 0;
+    private configs: any[];
     private batchLength: number = 0;
     private loaded: boolean = true;
     private config = {
@@ -24,18 +25,19 @@ export class LazyLoader {
      * @param activeTab String
      * @param lazyLoad Boolean
      */
-    init(data, authenticated, gameContainer, activeTab, lazyLoad) {
+    init(data, authenticated, configs, gameContainer, activeTab, lazyLoad) {
         this.loaded = true;
         this.currentBatch = 0;
         this.data = data;
         this.lazyLoad = lazyLoad;
         this.authenticated = authenticated;
         this.activeTab = activeTab;
-
+        this.configs = configs;
         const batch = this.getBatch();
         const template = gameTemplate({
             games: batch[this.startBatch],
             isLogin: this.authenticated,
+            configs: this.configs,
         });
 
         if (gameContainer) {
@@ -63,6 +65,7 @@ export class LazyLoader {
                 const template = gameTemplate({
                     games: batch[this.currentBatch],
                     isLogin: this.authenticated,
+                    configs: this.configs,
                 });
                 this.showItems(template, gameLoader, gameContainer);
             }

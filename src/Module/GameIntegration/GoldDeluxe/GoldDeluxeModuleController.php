@@ -2,10 +2,12 @@
 
 namespace App\MobileEntry\Module\GameIntegration\GoldDeluxe;
 
-use App\Drupal\Config;
+use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 
 class GoldDeluxeModuleController
 {
+    use ProviderTrait;
+
     const KEY = 'gold_deluxe';
 
     private $rest;
@@ -40,24 +42,6 @@ class GoldDeluxeModuleController
         $this->player = $player;
     }
 
-    public function unsupported($request, $response)
-    {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
-            $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $config['unsupported_currencies_title'] ?? '';
-            $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $config['unsupported_currencies_button'] ?? '';
-            $data['status'] = true;
-        } catch (\Exception $e) {
-            $data['status'] = false;
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
     /**
      * @{inheritdoc}
      */
@@ -66,7 +50,7 @@ class GoldDeluxeModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
             if ($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') {
                 $data = $this->getGameUrl($request, $response);
@@ -120,21 +104,5 @@ class GoldDeluxeModuleController
         }
 
         return $data;
-    }
-
-    private function checkCurrency()
-    {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-            $currencies = explode("\r\n", $config[self::KEY . '_currency']);
-            $playerCurrency = $this->player->getCurrency();
-
-            if (in_array($playerCurrency, $currencies)) {
-                return true;
-            }
-        } catch (\Exception $e) {
-            // Do nothing
-        }
-        return false;
     }
 }

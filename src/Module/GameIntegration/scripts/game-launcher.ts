@@ -1,11 +1,11 @@
 import * as utility from "@core/assets/js/components/utility";
 
-import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
+import { ComponentManager } from "@plugins/ComponentWidget/asset/component";
 
-import {GameInterface} from "./game.interface";
+import { GameInterface } from "./game.interface";
 
 class GameLauncher {
-    private providers: {[name: string]: GameInterface} = {};
+    private providers: { [name: string]: GameInterface } = {};
 
     /**
      *
@@ -14,7 +14,7 @@ class GameLauncher {
         this.providers[id] = provider;
     }
 
-    launch(provider: string, options: {[name: string]: string} = {}) {
+    launch(provider: string, options: { [name: string]: string } = {}) {
         options.provider = provider;
 
         this.invoke(provider, "prelaunch", [options]);
@@ -129,26 +129,27 @@ class GameLauncher {
             }
         });
 
-        if (el && !loader) {
-            e.preventDefault();
-
-            const provider = el.getAttribute("data-game-provider");
+        if (el) {
             const options = this.getOptionsByElement(el);
+            if (!loader) {
+                e.preventDefault();
 
-            options.provider = provider;
+                const provider = el.getAttribute("data-game-provider");
 
-            this.invoke(provider, "prelaunch", [options]);
-            this.invoke(provider, "launch", [options]);
+                options.provider = provider;
+                this.invoke(provider, "prelaunch", [options]);
+                this.invoke(provider, "launch", [options]);
 
-            ComponentManager.broadcast("game.launch", {
-                src: el,
-            });
-        }
+                ComponentManager.broadcast("game.launch", {
+                    src: el,
+                });
+            }
 
-        if (el && loader) {
-            ComponentManager.broadcast("game.launch.loader", {
-                src: el,
-            });
+            if (loader) {
+                ComponentManager.broadcast("game.launch.loader", {
+                    options,
+                });
+            }
         }
     }
 
@@ -168,28 +169,29 @@ class GameLauncher {
             }
         });
 
-        if (el && !loader) {
-            e.preventDefault();
-
-            const provider = el.getAttribute("data-game-provider");
+        if (el) {
             const options = this.getOptionsByElement(el);
+            if (!loader) {
+                e.preventDefault();
 
-            options.provider = provider;
+                const provider = el.getAttribute("data-game-provider");
+                options.provider = provider;
 
-            this.launch(provider, options);
+                this.launch(provider, options);
 
-            ComponentManager.broadcast("game.launch", {
-                src: el,
-            });
-        }
+                ComponentManager.broadcast("game.launch", {
+                    src: el,
+                });
+            }
 
-        if (el && loader) {
-            ComponentManager.broadcast("game.launch.loader", {
-                src: el,
-            });
+            if (loader) {
+                ComponentManager.broadcast("game.launch.loader", {
+                    options,
+                });
+            }
         }
     }
 }
 
 const launcher = new GameLauncher();
-export {launcher as GameLauncher};
+export { launcher as GameLauncher };

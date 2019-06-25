@@ -2,10 +2,13 @@
 
 namespace App\MobileEntry\Module\GameIntegration\PAS;
 
+use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Drupal\Config;
 
 class PASModuleController
 {
+    use ProviderTrait;
+
     const KEY = 'pas';
 
     const CASINO_MAP = [
@@ -80,24 +83,6 @@ class PASModuleController
         return $this->rest->output($response, $data);
     }
 
-    public function unsupported($request, $response)
-    {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
-            $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $config['unsupported_currencies_title'] ?? '';
-            $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $config['unsupported_currencies_button'] ?? '';
-            $data['status'] = true;
-        } catch (\Exception $e) {
-            $data['status'] = false;
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
     /**
      * @{inheritdoc}
      */
@@ -125,9 +110,9 @@ class PASModuleController
         $requestData = $request->getParsedBody();
         $data['gameurl'] = false;
         $data['currency'] = false;
-        if ($this->checkCurrency($requestData['currency'])) {
-            $data['currency'] = true;
 
+        if ($this->checkCurrency($request)) {
+            $data['currency'] = true;
             try {
                 $config = $this->config->withProduct('mobile-entrypage');
                 $ptConfig = $config->getConfig('webcomposer_config.games_playtech_provider');
@@ -140,7 +125,7 @@ class PASModuleController
                     }
                 }
 
-                $productKey = $requestData['product'];
+                $productKey = $requestData['productMap'];
                 $casino = self::CASINO_MAP[$productKey];
 
                 $url = $this->parser->processTokens(
@@ -176,10 +161,49 @@ class PASModuleController
         return $this->rest->output($response, $data);
     }
 
-    private function checkCurrency($playerCurrency)
+    /**
+     * Override trait
+     *
+     */
+    public function unsupported($request, $response)
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_playtech_provider');
+            $params = $request->getParsedBody();
+
+            $productConfig = $this->config;
+            if (isset($params['product'])) {
+                $productConfig = $this->config->withProduct($params['product']);
+            }
+            $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
+            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
+            $data['provider'] = $providerMapping[self::KEY];
+            $data['title'] = $config['unsupported_currencies_title'] ?? '';
+            $data['message'] =
+                $config['unsupported_currencies_message']['value'] ?? '';
+            $data['button'] = $config['unsupported_currencies_button'] ?? '';
+            $data['status'] = true;
+        } catch (\Exception $e) {
+            $data['status'] = false;
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    /**
+     * Override trait
+     *
+     */
+    private function checkCurrency($request)
+    {
+        try {
+            $params = $request->getParsedBody();
+            $playerCurrency = $params['currency'];
+            $productConfig = $this->config;
+            if (isset($params['product'])) {
+                $productConfig = $this->config->withProduct($params['product']);
+            }
+
+            $config =  $productConfig->getConfig('webcomposer_config.icore_playtech_provider');
             $currencies = explode("\r\n", $config['dafabetgames_currency']);
             if (!$playerCurrency) {
                 $playerCurrency = $this->player->getCurrency();

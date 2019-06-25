@@ -2,10 +2,13 @@
 
 namespace App\MobileEntry\Module\GameIntegration\GPI;
 
+use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Drupal\Config;
 
 class GPIModuleController
 {
+    use ProviderTrait;
+
     const KEY = 'gpi';
 
     private $rest;
@@ -44,24 +47,6 @@ class GPIModuleController
         $this->playerSession = $playerSession;
     }
 
-    public function unsupported($request, $response)
-    {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
-            $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $config['unsupported_currencies_title'] ?? '';
-            $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $config['unsupported_currencies_button'] ?? '';
-            $data['status'] = true;
-        } catch (\Exception $e) {
-            $data['status'] = false;
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
     /**
      * @{inheritdoc}
      */
@@ -70,7 +55,7 @@ class GPIModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($request)) {
             $data = $this->getGameLobby($request, $response);
         }
 
@@ -111,7 +96,7 @@ class GPIModuleController
         return $data;
     }
 
-    private function checkCurrency()
+    private function checkCurrency($request)
     {
         try {
             $config =  $this->config->getConfig('webcomposer_config.games_gpi_provider');

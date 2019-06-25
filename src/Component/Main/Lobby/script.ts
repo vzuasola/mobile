@@ -59,7 +59,8 @@ export class LobbyComponent implements ComponentInterface {
 
     private doLoginProcess(element) {
         if (Router.route() === "/login") {
-            const product = utility.getParameterByName("product");
+            const product = utility.getParameterByName("product") ? utility.getParameterByName("product")
+                : "mobile-entrypage";
             let productCode = product;
             for (const originalProduct in this.productAlias) {
                 if (this.productAlias.hasOwnProperty(originalProduct)) {

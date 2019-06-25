@@ -18,7 +18,7 @@ export class ProviderDrawer {
                 this.openProvider();
             } else if (utility.hasClass(target, "provider-menu-overlay")
             ) {
-                this.closeProvider();
+                this.closeProvider(src);
             }
         });
     }
@@ -32,7 +32,7 @@ export class ProviderDrawer {
             } else if (utility.hasClass(target, "close-svg") ||
                 utility.hasClass(target, "close-drawer")
             ) {
-                this.closeProvider();
+                this.closeProvider(src);
             }
         });
     }
@@ -42,7 +42,8 @@ export class ProviderDrawer {
         this.createOverlay();
     }
 
-    private closeProvider() {
+    private closeProvider(src) {
+        src.preventDefault();
         utility.removeClass(this.element, "provider-open");
     }
 

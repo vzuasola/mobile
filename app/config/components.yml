@@ -9,7 +9,7 @@ components:
   header_login:
     class: App\MobileEntry\Component\Header\Login\LoginComponent
     parent: header
-  
+
   menu:
     class: App\MobileEntry\Component\Menu\MenuComponent
 

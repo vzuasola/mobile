@@ -14,7 +14,10 @@ class Redirector {
      */
     redirect(url: string, closure?) {
         // handle redirects if we are on a PWA standalone
-        if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches)) {
+        const source = utility.getParameterByName("source");
+        if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+            source === "pwa"
+        ) {
             url = utility.addQueryParam(url, "source", "pwa");
 
             // Check if re is in the parameters and add source=pwa to re param
