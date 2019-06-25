@@ -1,5 +1,6 @@
+<ul class="game-lobby-container clearfix">
 {{#each games}}
-    <div class="game-listing">
+    <li class="game-listing">
         <a class="game-list game-listing-item"
         {{#if ../isLogin}}
         data-game-launch="true"
@@ -10,34 +11,28 @@
         data-game-title="{{this.title}}"
         data-game-target="{{this.target}}"
         data-game-loader="{{this.use_game_loader}}"
+        data-game-lobby="true"
         >
             {{#if this.ribbon}}
-                <div class="game-ribbon"
+                <span class="game-ribbon"
                     style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
                 >
                     {{this.ribbon.name}}
-                </div>
+                </span>
             {{/if}}
             <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
-            {{#if this.publish_end}}
-                <p class="label-game-title hidden">{{this.title}}</p>
-            {{else}}
-                <p class="label-game-title">{{this.title}}</p>
-            {{/if}}
+            <p class="label-game-title {{#if this.provider_maintenance}}hidden{{/if}}">{{this.title}}</p>
+            
         </a>
-        {{#if this.publish_end}}
+        {{#condition this.provider_maintenance "===" true}}
             <div class="game-listing-maintenance">
-                {{{this.under_maintenance}}}
+                <p>{{{../this.configs.games_maintenance_text}}}</p>
                 <span class="game-listing-maintenance-title">{{this.title}}</span>
             </div>
-            {{else}}
-            <div class="game-listing-maintenance hidden">
-                {{{this.under_maintenance}}}
-                <span class="game-listing-maintenance-title">{{this.title}}</span>
-            </div>
-        {{/if}}
-    </div>
+        {{/condition}}
+    </li>
 {{/each}}
+</ul>
 <div id="game-loader" class="game-loader">
     <span class="game-loader-load-more">Load More</span>
     <div class="sk-fading-circle mobile-game-loader hidden">

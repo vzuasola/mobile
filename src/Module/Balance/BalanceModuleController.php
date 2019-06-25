@@ -165,6 +165,7 @@ class BalanceModuleController
                 $data['balance'] = number_format($totalBalance, 2, '.', ',');
                 $data['format'] = $this->totalBalanceFormat($currency);
                 $data['currency'] = $this->currencyTranslation($currency);
+                $data['err_message'] = $headerConfigs['balance_error_text_product'] ?? 'N/A';
             } catch (\Exception $e) {
                 $data['message'] = $e->getMessage();
                 $data['balance'] = $headerConfigs['balance_error_text_product'] ?? 'N/A';
@@ -305,11 +306,21 @@ class BalanceModuleController
      */
     private function currencyTranslation($currency)
     {
+        if (strtoupper($currency) === 'MBC') {
+            $currency = 'mBTC';
+        }
         switch ($this->lang) {
             case 'sc':
+                if ($currency === 'mBTC') {
+                    $currency = '比特币';
+                }
+                break;
             case 'ch':
                 if ($translated = Currency::getTranslation($currency)) {
                     $currency = $translated;
+                }
+                if ($currency === 'mBTC') {
+                    $currency = '比特幣';
                 }
                 break;
             default:

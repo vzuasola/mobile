@@ -19,7 +19,7 @@ export class ProviderDrawer {
                 this.openProvider();
             } else if (utility.hasClass(target, "provider-menu-overlay")
             ) {
-                this.closeProvider();
+                this.closeProvider(src, target);
             }
         });
     }
@@ -33,7 +33,7 @@ export class ProviderDrawer {
             } else if (utility.hasClass(target, "close-svg") ||
                 utility.hasClass(target, "close-drawer")
             ) {
-                this.closeProvider();
+                this.closeProvider(src, target);
             }
         });
     }
@@ -43,7 +43,10 @@ export class ProviderDrawer {
         this.createOverlay();
     }
 
-    private closeProvider() {
+    private closeProvider(src, target) {
+        if (!utility.hasClass(target, "close-drawer")) {
+            src.preventDefault();
+        }
         utility.removeClass(this.element, "provider-open");
     }
 

@@ -1,21 +1,23 @@
+import * as Promise from "promise-polyfill";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as utility from "@core/assets/js/components/utility";
 import PopupWindow from "@app/assets/script/components/popup";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
-import {Modal} from "@app/assets/script/components/modal";
-
-import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
 import {GameInterface} from "./../scripts/game.interface";
+import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import { resolve, reject } from "q";
 
 export class GoldDeluxeModule implements ModuleInterface, GameInterface {
     private key: string = "gold_deluxe";
+    private moduleName: string = "gold_deluxe_integration";
     private currencies: any;
     private languages: any;
     private windowObject: any;
     private gameLink: string;
+    private messageLightbox: ProviderMessageLightbox;
 
     onLoad(attachments: {
         currencies: any,
@@ -23,6 +25,7 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
     }) {
         this.currencies = attachments.currencies;
         this.languages = attachments.languages;
+        this.messageLightbox = new ProviderMessageLightbox();
     }
 
     init() {
@@ -33,7 +36,7 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
         // not implemented
     }
 
-    prelaunch() {
+    prelaunch(options) {
         // not implemented
     }
 
@@ -46,23 +49,44 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
                 langCode = this.languages[lang];
             }
 
+            if (options.maintenance === "true") {
+                this.messageLightbox.showMessage(
+                    this.moduleName,
+                    "maintenance",
+                    options,
+                );
+                return;
+            }
+
+            const product = options.hasOwnProperty("currentProduct") ? options.currentProduct
+                : ComponentManager.getAttribute("product");
+
             xhr({
-                url: Router.generateModuleRoute("gold_deluxe_integration", "launch"),
+                url: Router.generateModuleRoute(this.moduleName, "launch"),
                 type: "json",
                 method: "post",
                 data: {
+                    product,
                     gameCode: options.code,
                     langCode,
                     playMode: true,
                 },
             }).then((response) => {
                 if (response.gameurl) {
-                    this.launchGame(options.target);
-                    this.updatePopupWindow(response.gameurl);
+                    if (options.loader === "true") {
+                        window.location.href = response.gameurl;
+                    } else {
+                        this.launchGame(options.target);
+                        this.updatePopupWindow(response.gameurl);
+                    }
                 }
 
                 if (!response.currency) {
-                    this.unsupportedCurrency(options);
+                    this.messageLightbox.showMessage(
+                        this.moduleName,
+                        "unsupported",
+                        options,
+                    );
                 }
             }).fail((error, message) => {
                 // Do nothing
@@ -123,33 +147,5 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
                 this.windowObject.focus();
             }
         }
-    }
-
-    private unsupportedCurrency(data) {
-        xhr({
-            url: Router.generateModuleRoute("gold_deluxe_integration", "unsupported"),
-            type: "json",
-            method: "get",
-        }).then((response) => {
-            if (response.status) {
-                let body = response.message;
-                body = body.replace("{game_name}", data.title);
-                body = body.replace("{game_provider}", response.provider);
-                const template = uclTemplate({
-                    title: response.title,
-                    message: body,
-                    button: response.button,
-                });
-
-                const categoriesEl = document.querySelector("#unsupported-lightbox");
-
-                if (categoriesEl) {
-                    categoriesEl.innerHTML = template;
-                    Modal.open("#unsupported-lightbox");
-                }
-            }
-        }).fail((error, message) => {
-            // Do nothing
-        });
     }
 }
