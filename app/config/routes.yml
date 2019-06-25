@@ -154,7 +154,7 @@ routes:
             enabled: true
             expires: 1800
         attributes:
-            product: mobile-keno
+            product: mobile-lottery
 
     /{id:live-dealer|macau|live|live-games|xianchang|zhenren}:
         method: GET
