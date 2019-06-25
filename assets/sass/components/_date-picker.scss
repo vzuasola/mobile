@@ -1,0 +1,66 @@
+@import "./../../../core/core/assets/sass/vendor/pikaday";
+
+.pika-single,
+.pika-label,
+.pika-title {
+    border-radius: 3px;
+}
+
+.pika-single {
+    .pika-label {
+        margin: 0 2px;
+        padding: 5px 20px 5px 8px;
+        line-height: normal;
+
+        &:before {
+            @include triangle(bottom, 4px, $dark-gray);
+            position: absolute;
+            top: 50%;
+            right: 5px;
+            margin-top: -2px;
+            border-bottom-width: 6px;
+            content: "";
+        }
+    }
+}
+
+.pika-lendar {
+    margin: 5px;
+}
+
+.pika-title {
+    @include gradient($background-color: $light-gray, $background-top: $lightest-gray, $background-bottom: $light-gray);
+    padding: 7px 0 2px;
+}
+
+.pika-prev,
+.pika-next {
+    width: 19px;
+    height: 24px;
+    margin-top: 0;
+}
+
+// Table
+.pika-table {
+    margin-bottom: 0;
+
+    th {
+        background: transparent;
+        color: $gray;
+    }
+}
+
+.ios-dob-field {
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    color: transparent;
+}

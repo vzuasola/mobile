@@ -1,3 +1,5 @@
+declare var navigator: any;
+
 import * as Promise from "promise-polyfill";
 
 import * as utility from "@core/assets/js/components/utility";
@@ -23,7 +25,7 @@ import EqualHeight from "@app/assets/script/components/equal-height";
 
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import { ProviderDrawer } from "./scripts/provider-drawer";
-
+import PopupWindow from "@app/assets/script/components/popup";
 /**
  *
  */
@@ -43,6 +45,8 @@ export class GamesLobbyComponent implements ComponentInterface {
     private searchResults;
     private filterFlag: string;
     private state: boolean;
+    private windowObject: any;
+    private gameLink: string;
     private productMenu: string = "product-games";
 
     constructor() {
@@ -97,6 +101,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenOnCloseFilter();
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
+        this.listenToLaunchGameLoader();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -147,6 +152,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.load = true;
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
+        this.listenToLaunchGameLoader();
     }
 
     private highlightMenu() {
@@ -546,42 +552,44 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
-            this.currentPage = 0;
-            const first = this.response.categories[0].field_games_alias;
-            const key = this.getActiveCategory(this.response.games, first);
-            let sidebar = false;
-            if (utility.getHash(window.location.href) !== key &&
-                key !== first
-            ) {
-                window.location.hash = key;
+            if (ComponentManager.getAttribute("product") === "mobile-games") {
+                this.currentPage = 0;
+                const first = this.response.categories[0].field_games_alias;
+                const key = this.getActiveCategory(this.response.games, first);
+                let sidebar = false;
+                if (utility.getHash(window.location.href) !== key &&
+                    key !== first
+                ) {
+                    window.location.hash = key;
+                }
+
+                const categoriesEl = document.querySelector("#game-categories");
+                const activeLink = categoriesEl.querySelector(".category-tab .active a");
+
+                this.clearCategoriesActive(categoriesEl);
+
+                // Add active to categories
+                const actives = categoriesEl.querySelectorAll(".category-" + key);
+
+                if (actives.length === 1) {
+                    src = categoriesEl.querySelector(".game-category-more");
+                    utility.addClass(src, "active");
+                    sidebar = true;
+                }
+
+                for (const id in actives) {
+                    if (actives.hasOwnProperty(id)) {
+                        const active = actives[id];
+                        utility.addClass(active, "active");
+                        if (!sidebar) {
+                            utility.addClass(active.parentElement, "active");
+                        }
+                }
+                }
+
+                this.setGames(this.response.games[key], key);
+                ComponentManager.broadcast("category.change");
             }
-
-            const categoriesEl = document.querySelector("#game-categories");
-            const activeLink = categoriesEl.querySelector(".category-tab .active a");
-
-            this.clearCategoriesActive(categoriesEl);
-
-            // Add active to categories
-            const actives = categoriesEl.querySelectorAll(".category-" + key);
-
-            if (actives.length === 1) {
-                src = categoriesEl.querySelector(".game-category-more");
-                utility.addClass(src, "active");
-                sidebar = true;
-            }
-
-            for (const id in actives) {
-                if (actives.hasOwnProperty(id)) {
-                    const active = actives[id];
-                    utility.addClass(active, "active");
-                    if (!sidebar) {
-                        utility.addClass(active.parentElement, "active");
-                    }
-               }
-            }
-
-            this.setGames(this.response.games[key], key);
-            ComponentManager.broadcast("category.change");
         });
     }
 
@@ -1058,6 +1066,78 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.setLobby();
             ComponentManager.broadcast("category.change");
         });
+    }
+
+    /**
+     * Event listener for launching pop up loader
+     */
+    private listenToLaunchGameLoader() {
+        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
+            // Pop up loader with all data
+            const prop = {
+                width: 360,
+                height: 720,
+                scrollbars: 1,
+                scrollable: 1,
+                resizable: 1,
+            };
+
+            let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
+            const source = utility.getParameterByName("source");
+
+            for (const key in data.options) {
+                if (data.options.hasOwnProperty(key)) {
+                    const param = data.options[key];
+                    url = utility.addQueryParam(url, key, param);
+                }
+            }
+
+            url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+            url = utility.addQueryParam(url, "loaderFlag", "true");
+            if (data.options.target === "popup") {
+                this.windowObject = PopupWindow(url, "gameWindow", prop);
+            }
+
+            if (!this.windowObject && data.options.target === "popup") {
+                return;
+            }
+
+            // handle redirects if we are on a PWA standalone
+            if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                source === "pwa" ||
+                data.options.target !== "popup"
+            ) {
+                window.location.href = url;
+                return;
+            }
+
+            this.windowObject = PopupWindow("", "gameWindow", prop);
+
+            this.updatePopupWindow(url);
+        });
+    }
+
+    private updatePopupWindow(url) {
+        try {
+            if (this.windowObject.location.href !== "about:blank" &&
+                url === this.gameLink &&
+                !this.windowObject.closed
+            ) {
+                this.windowObject.focus();
+            } else {
+                this.gameLink = url;
+                this.windowObject.location.href = url;
+            }
+        } catch (e) {
+            if (url !== this.gameLink) {
+                this.gameLink = url;
+                this.windowObject.location.href = url;
+            }
+
+            if (this.windowObject) {
+                this.windowObject.focus();
+            }
+        }
     }
 
 }

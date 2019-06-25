@@ -113,7 +113,6 @@ class PASModuleController
 
         if ($this->checkCurrency($request)) {
             $data['currency'] = true;
-
             try {
                 $config = $this->config->withProduct('mobile-entrypage');
                 $ptConfig = $config->getConfig('webcomposer_config.games_playtech_provider');
@@ -169,7 +168,13 @@ class PASModuleController
     public function unsupported($request, $response)
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
+            $params = $request->getParsedBody();
+
+            $productConfig = $this->config;
+            if (isset($params['product'])) {
+                $productConfig = $this->config->withProduct($params['product']);
+            }
+            $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
             $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
             $data['provider'] = $providerMapping[self::KEY];
             $data['title'] = $config['unsupported_currencies_title'] ?? '';
@@ -197,6 +202,7 @@ class PASModuleController
             if (isset($params['product'])) {
                 $productConfig = $this->config->withProduct($params['product']);
             }
+
             $config =  $productConfig->getConfig('webcomposer_config.icore_playtech_provider');
             $currencies = explode("\r\n", $config['dafabetgames_currency']);
             if (!$playerCurrency) {

@@ -9,16 +9,21 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 export class ProviderMessageLightbox {
     private message: string;
 
-    showMessage(moduleName, method, data, modalName = "#unsupported-lightbox") {
+    showMessage(moduleName, method, data, callback?, modalName = "#unsupported-lightbox") {
         const product = data.hasOwnProperty("currentProduct") ? data.currentProduct
             : ComponentManager.getAttribute("product");
+        const currency = data.hasOwnProperty("currency") ? data.currency : null;
+        const postData: any = {
+            product,
+        };
+        if (currency) {
+            postData.currency = currency;
+        }
         xhr({
             url: Router.generateModuleRoute(moduleName, method),
             type: "json",
             method: "post",
-            data: {
-                product,
-            },
+            data: postData,
         }).then((response) => {
             if (response.status) {
                 this.setMessage(response, data);
@@ -28,6 +33,10 @@ export class ProviderMessageLightbox {
                     categoriesEl.innerHTML = this.message;
                     Modal.open(modalName);
                 }
+            }
+
+            if (callback) {
+                callback(response);
             }
         }).fail((error, message) => {
             // Do nothing

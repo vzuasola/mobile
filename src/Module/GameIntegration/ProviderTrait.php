@@ -17,6 +17,7 @@ trait ProviderTrait
             if (isset($params['product'])) {
                 $productConfig = $this->config->withProduct($params['product']);
             }
+
             $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
             $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
             $data['provider'] = $providerMapping[self::KEY];
@@ -53,7 +54,7 @@ trait ProviderTrait
         return $this->rest->output($response, $data);
     }
 
-    private function checkCurrency($request)
+    public function checkCurrency($request)
     {
         try {
             $params = $request->getParsedBody();

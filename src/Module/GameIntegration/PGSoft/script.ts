@@ -34,7 +34,7 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
         // not implemented
     }
 
-    prelaunch() {
+    prelaunch(options) {
         // not implemented
     }
 
@@ -69,8 +69,12 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
-                    this.launchGame(options.target);
-                    this.updatePopupWindow(response.gameurl);
+                    if (options.loader === "true") {
+                        window.location.href = response.gameurl;
+                    } else {
+                        this.launchGame(options.target);
+                        this.updatePopupWindow(response.gameurl);
+                    }
                 }
 
                 if (!response.currency) {

@@ -1,3 +1,4 @@
+import * as Promise from "promise-polyfill";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as utility from "@core/assets/js/components/utility";
 import PopupWindow from "@app/assets/script/components/popup";
@@ -7,6 +8,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import { resolve, reject } from "q";
 
 export class GoldDeluxeModule implements ModuleInterface, GameInterface {
     private key: string = "gold_deluxe";
@@ -34,7 +36,7 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
         // not implemented
     }
 
-    prelaunch() {
+    prelaunch(options) {
         // not implemented
     }
 
@@ -71,8 +73,12 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
-                    this.launchGame(options.target);
-                    this.updatePopupWindow(response.gameurl);
+                    if (options.loader === "true") {
+                        window.location.href = response.gameurl;
+                    } else {
+                        this.launchGame(options.target);
+                        this.updatePopupWindow(response.gameurl);
+                    }
                 }
 
                 if (!response.currency) {

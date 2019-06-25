@@ -13,7 +13,6 @@ import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/componen
  * @param Object attachments
  */
 export class VerifyPassword extends FormBase {
-    private emailField: HTMLFormElement;
     private passwordContainer: HTMLElement;
     private form: HTMLFormElement;
     private loader: Loader;
@@ -24,11 +23,12 @@ export class VerifyPassword extends FormBase {
     private formValues: any;
     private errorNotification: any;
     private successNotification: any;
-    private config: any;
+    private profileForm: HTMLFormElement;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
         this.password = this.element.querySelector("#VerifyPasswordForm_verify_password");
+        this.profileForm = document.querySelector(".profile-form");
     }
 
     init() {
@@ -70,9 +70,10 @@ export class VerifyPassword extends FormBase {
      * @param Boolean initialLoad flag to indicate for initial load to cache the initial value on Document ready
      */
     private getValues(initialLoad?) {
-        const profileForm: HTMLFormElement = document.querySelector(".profile-form");
+        const profileForm = this.profileForm;
         const fnameField = profileForm.MyProfileForm_first_name;
         const lnameField = profileForm.MyProfileForm_last_name;
+        const birthdateField = profileForm.MyProfileForm_birthdate;
 
         return {
             gender: this.getGenderValue(),
@@ -85,6 +86,7 @@ export class VerifyPassword extends FormBase {
             receive_news: profileForm.ProfileForm_contact_preference.checked,
             firstName: (this.attachments.isFastReg || initialLoad) ? fnameField.value : this.oldValues.firstName,
             lastName: (this.attachments.isFastReg || initialLoad) ? lnameField.value : this.oldValues.lastName,
+            birthdate: (this.attachments.isFastReg || initialLoad) ? birthdateField.value : this.oldValues.birthdate,
         };
     }
 
@@ -147,6 +149,10 @@ export class VerifyPassword extends FormBase {
     private udpateProfile = () => {
         this.closeModal();
         utility.removeClass(this.updateProfileLoader, "hidden");
+        this.formValues.birthdate = this.standardizeDateFormat(
+            this.formValues.birthdate.split("/"),
+            this.profileForm.MyProfileForm_birthdate.getAttribute("date-format").split("/"),
+        );
 
         // Disable fields
         this.disableFields(this.form);
@@ -213,4 +219,29 @@ export class VerifyPassword extends FormBase {
             },
         );
     }
+
+    private standardizeDateFormat(date, format) {
+        const currentFormat = format;
+        const dateSelected = date;
+        const dateToSubmit = [0, 0, 0];
+
+        for (let i = 0; i < currentFormat.length; i++) {
+            switch (currentFormat[i].toLowerCase()) {
+                case "m":
+                    dateToSubmit[0] = dateSelected[i];
+                    break;
+                case "d":
+                    dateToSubmit[1] = dateSelected[i];
+                    break;
+                case "y":
+                    dateToSubmit[2] = dateSelected[i];
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return new Date(dateToSubmit.join("/") + " GMT+0").getTime();
+    }
+
 }
