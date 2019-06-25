@@ -3,6 +3,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const GenerateJsonPlugin = require("generate-json-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ManifestPlugin = require("webpack-manifest-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -121,6 +122,7 @@ module.exports = function(env, argv) {
                         mangle: false,
                     },
                 }),
+                new OptimizeCssAssetsPlugin()
             ],
         },
     }
