@@ -6,7 +6,7 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class LotteryLobbyComponentController
 {
-    const PRODUCT = 'mobile-keno';
+    const PRODUCT = 'mobile-lottery';
     const TIMEOUT = 1800;
     /**
      *
