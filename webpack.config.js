@@ -21,9 +21,9 @@ module.exports = function(env, argv) {
         },
 
         output: {
-            filename: "js/[name].[chunkhash].bundle.js",
+            filename: "[name].[chunkhash].bundle.js",
             path: path.resolve(__dirname, "web"),
-            publicPath: path.resolve(__dirname, "web")
+            publicPath: ""
         },
 
         plugins: [
@@ -46,7 +46,7 @@ module.exports = function(env, argv) {
                 }
             ]),
             new MiniCssExtractPlugin({
-                filename: "css/[name].[chunkhash].css",
+                filename: "[name].[chunkhash].css",
                 chunkFilename: "[id].css",
             }),
             new ManifestPlugin()
