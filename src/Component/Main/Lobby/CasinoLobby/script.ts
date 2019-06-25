@@ -44,6 +44,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private lobbyProducts: any[] = ["mobile-casino", "mobile-casino-gold"];
     private windowObject: any;
     private gameLink: string;
+    private productMenu = "product-casino";
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -80,6 +81,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.listenFavoriteClick();
         this.generateLobby(() => {
+            this.highlightMenu();
             this.lobby();
         });
         this.listenToCategory();
@@ -135,6 +137,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.currentPage = 0;
         this.load = true;
         this.generateLobby(() => {
+            this.highlightMenu();
             this.lobby();
         });
         this.listenToSwipe();
@@ -155,6 +158,10 @@ export class CasinoLobbyComponent implements ComponentInterface {
             iconDefault: iconUnCheckedTemplate(),
             iconActive: iconCheckedTemplate(),
         });
+    }
+
+    private highlightMenu() {
+        ComponentManager.broadcast("menu.highlight", {menu: this.productMenu});
     }
 
     private getActiveIndex(list: HTMLElement) {
