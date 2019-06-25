@@ -55,7 +55,6 @@ export class MenuComponent implements ComponentInterface {
         Router.on(RouterClass.afterNavigate, (event) => {
             this.attachProduct();
             this.attachProductToLogin();
-            this.refreshMenu();
             this.reloadBalance();
         });
 
