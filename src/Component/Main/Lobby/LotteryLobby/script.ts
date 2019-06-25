@@ -36,18 +36,28 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.doGetLobbyData(() => {
             this.setLobby();
         });
-        console.log(this.configs);
     }
 
-    onReload(element: HTMLElement, attachments: {}) {
-        // something hgh
+    onReload(element: HTMLElement, attachments: {
+            authenticated: boolean,
+            product: any[],
+            configs: any[],
+        }) {
+
+        this.attachments = attachments;
+        this.element = element;
+        this.isLogin = attachments.authenticated;
+        this.product = attachments.product;
+        this.configs = attachments.configs;
+        this.doGetLobbyData(() => {
+            this.setLobby();
+        });
     }
 
     /**
      * Request games list from cms
      */
     private doGetLobbyData(callback) {
-        console.log("asdasd");
         xhr({
             url: Router.generateRoute("lottery_lobby", "lobby"),
             type: "json",
