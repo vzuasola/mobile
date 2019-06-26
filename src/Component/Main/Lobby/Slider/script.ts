@@ -14,11 +14,13 @@ import Xlider from "@app/assets/script/components/xlider";
  */
 export class LobbySliderComponent implements ComponentInterface {
     private element: HTMLElement;
-
+    private sliderData: any;
+    private providers: any;
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getSliders();
         this.listenClickslider();
+        this.listenForProviders();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -44,6 +46,11 @@ export class LobbySliderComponent implements ComponentInterface {
             setInterval(() => {
                 sliderObj.next();
             }, 5000);
+            window.addEventListener("orientationchange", () => {
+                setTimeout(() => {
+                    utility.addClass(slider.querySelectorAll(".xlide-item")[1].parentElement, "fade");
+                }, 10);
+            });
         }
     }
 
@@ -98,7 +105,7 @@ export class LobbySliderComponent implements ComponentInterface {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.find(src, (element) => {
                 if (element.getAttribute("data-game-provider") &&
-                    element.getAttribute("data-game-code") &&
+                    element.getAttribute("data-game-code") ||
                     utility.hasClass(element, "game-list")
                 ) {
                     return true;
@@ -124,7 +131,11 @@ export class LobbySliderComponent implements ComponentInterface {
                 product,
             },
         }).then((response) => {
-            this.generateSliderMarkup(response);
+            this.sliderData = response;
+            if (typeof this.providers !== "undefined") {
+                this.updateSliders();
+            }
+            this.generateSliderMarkup(this.sliderData);
             this.activateSlider();
         });
     }
@@ -137,5 +148,25 @@ export class LobbySliderComponent implements ComponentInterface {
 
         slider.innerHTML = template;
 
+    }
+
+    private listenForProviders() {
+        ComponentManager.subscribe("provider.maintenance", (event, src, data) => {
+            this.providers = data.providers;
+
+            if (typeof this.sliderData !== "undefined") {
+                this.updateSliders();
+                this.generateSliderMarkup(this.sliderData);
+                this.activateSlider();
+            }
+        });
+    }
+
+    private updateSliders() {
+        for (const slide of this.sliderData.slides) {
+            if (this.providers.hasOwnProperty(slide.game_provider)) {
+                slide.provider_maintenance = this.providers[slide.game_provider].maintenance;
+            }
+        }
     }
 }

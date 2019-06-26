@@ -28,7 +28,13 @@ export class GameIntegrationModule implements ModuleInterface {
         const saGaming: any = ComponentManager.getModuleInstance("sagaming_integration");
         const pgSoft: any = ComponentManager.getModuleInstance("pgsoft_integration");
         const asiaGaming: any = ComponentManager.getModuleInstance("asiagaming_integration");
+        const goldDeluxe: any = ComponentManager.getModuleInstance("gold_deluxe_integration");
         const rubyPlay: any = ComponentManager.getModuleInstance("rubyplay_integration");
+        const evoGaming: any = ComponentManager.getModuleInstance("evolution_gaming_integration");
+        const eBet: any = ComponentManager.getModuleInstance("ebet_integration");
+        const gpi: any = ComponentManager.getModuleInstance("gpi_integration");
+        const tgp: any = ComponentManager.getModuleInstance("tgp_integration");
+        const allbet: any = ComponentManager.getModuleInstance("allbet_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
@@ -39,7 +45,13 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("sa_gaming", saGaming);
         this.gameLauncher.setProvider("pg_soft", pgSoft);
         this.gameLauncher.setProvider("asia_gaming", asiaGaming);
+        this.gameLauncher.setProvider("gold_deluxe", goldDeluxe);
         this.gameLauncher.setProvider("ruby_play", rubyPlay);
+        this.gameLauncher.setProvider("evo_gaming", evoGaming);
+        this.gameLauncher.setProvider("ebet", eBet);
+        this.gameLauncher.setProvider("gpi", gpi);
+        this.gameLauncher.setProvider("tgp", tgp);
+        this.gameLauncher.setProvider("allbet", allbet);
 
         setTimeout(() => {
             this.gameLauncher.init();

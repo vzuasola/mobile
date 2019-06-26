@@ -545,42 +545,44 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
-            this.currentPage = 0;
-            const first = this.response.categories[0].field_games_alias;
-            const key = this.getActiveCategory(this.response.games, first);
-            let sidebar = false;
-            if (utility.getHash(window.location.href) !== key &&
-                key !== first
-            ) {
-                window.location.hash = key;
+            if (ComponentManager.getAttribute("product") === "mobile-games") {
+                this.currentPage = 0;
+                const first = this.response.categories[0].field_games_alias;
+                const key = this.getActiveCategory(this.response.games, first);
+                let sidebar = false;
+                if (utility.getHash(window.location.href) !== key &&
+                    key !== first
+                ) {
+                    window.location.hash = key;
+                }
+
+                const categoriesEl = document.querySelector("#game-categories");
+                const activeLink = categoriesEl.querySelector(".category-tab .active a");
+
+                this.clearCategoriesActive(categoriesEl);
+
+                // Add active to categories
+                const actives = categoriesEl.querySelectorAll(".category-" + key);
+
+                if (actives.length === 1) {
+                    src = categoriesEl.querySelector(".game-category-more");
+                    utility.addClass(src, "active");
+                    sidebar = true;
+                }
+
+                for (const id in actives) {
+                    if (actives.hasOwnProperty(id)) {
+                        const active = actives[id];
+                        utility.addClass(active, "active");
+                        if (!sidebar) {
+                            utility.addClass(active.parentElement, "active");
+                        }
+                }
+                }
+
+                this.setGames(this.response.games[key], key);
+                ComponentManager.broadcast("category.change");
             }
-
-            const categoriesEl = document.querySelector("#game-categories");
-            const activeLink = categoriesEl.querySelector(".category-tab .active a");
-
-            this.clearCategoriesActive(categoriesEl);
-
-            // Add active to categories
-            const actives = categoriesEl.querySelectorAll(".category-" + key);
-
-            if (actives.length === 1) {
-                src = categoriesEl.querySelector(".game-category-more");
-                utility.addClass(src, "active");
-                sidebar = true;
-            }
-
-            for (const id in actives) {
-                if (actives.hasOwnProperty(id)) {
-                    const active = actives[id];
-                    utility.addClass(active, "active");
-                    if (!sidebar) {
-                        utility.addClass(active.parentElement, "active");
-                    }
-               }
-            }
-
-            this.setGames(this.response.games[key], key);
-            ComponentManager.broadcast("category.change");
         });
     }
 
@@ -1074,37 +1076,35 @@ export class GamesLobbyComponent implements ComponentInterface {
             };
 
             let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-
-            const params = utility.getAttributes(data.src);
             const source = utility.getParameterByName("source");
-            for (const key in params) {
-                if (params.hasOwnProperty(key)) {
-                    const param = params[key];
 
-                    if (key.indexOf("data-") === 0 && (param !== "" && typeof param !== "undefined")) {
-                        url = utility.addQueryParam(url, key.replace("data-game-", ""), param);
-                    }
+            for (const key in data.options) {
+                if (data.options.hasOwnProperty(key)) {
+                    const param = data.options[key];
+                    url = utility.addQueryParam(url, key, param);
                 }
             }
 
             url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
-
-            if (params["data-game-target"] === "popup") {
+            url = utility.addQueryParam(url, "loaderFlag", "true");
+            if (data.options.target === "popup") {
                 this.windowObject = PopupWindow(url, "gameWindow", prop);
             }
 
-            if (!this.windowObject) {
+            if (!this.windowObject && data.options.target === "popup") {
                 return;
             }
 
             // handle redirects if we are on a PWA standalone
             if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
                 source === "pwa" ||
-                params["data-game-target"] !== "popup"
+                data.options.target !== "popup"
             ) {
                 window.location.href = url;
                 return;
             }
+
+            this.windowObject = PopupWindow("", "gameWindow", prop);
 
             this.updatePopupWindow(url);
         });

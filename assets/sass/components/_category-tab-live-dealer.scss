@@ -1,0 +1,411 @@
+.mobile-live-dealer {
+    #categories-container {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        z-index: 11;
+        @extend %clearfix;
+        background: $cat-tab-bg;
+    }
+
+    .providers-tab-list {
+        background: $cat-tab-bg;
+
+        .game-providers {
+            @extend %clearfix;
+            float: left;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+
+            &-item {
+                float: left;
+                text-align: center;
+                border-left: 0.1rem solid $dark-red;
+                height: 4rem;
+            }
+
+            &-more {
+                padding-top: 1.2rem;
+            }
+
+            &-item:first-child {
+                border-left: 0;
+
+                svg {
+                    width: 2.6rem;
+                    border: 0;
+                    fill: $white;
+                }
+            }
+
+            &-item.active {
+                background: $dark-red;
+
+                .active {
+                    background: $dark-red;
+                    color: $yellow;
+                }
+            }
+
+            .providers-more.active,
+            a {
+                position: relative;
+                display: inline-block;
+                background: $cat-tab-bg;
+                padding: 0.6rem 0;
+                color: $white;
+                width: 100%;
+                text-align: center;
+
+                img {
+                    height: 3rem;
+                    width: 3rem;
+                }
+            }
+
+            .providers-all.active {
+                background: $dark-red;
+                height: 100%;
+            }
+       }
+
+        .main-game-providers {
+            border-top: 0.1rem solid $dark-red;
+            border-bottom: 0.1rem solid $dark-red;
+        }
+    }
+
+    .providers-more {
+           position: absolute;
+           top: 0;
+           right: 0;
+           width: 100%;
+           height: 100%;
+           outline: none;
+           border: 0;
+           z-index: 1;
+
+           &-text {
+               text-align: left;
+               text-indent: 1rem;
+
+               svg {
+                   position: absolute;
+                   top: 1.2rem;
+                   right: 1.2rem;
+                   width: 0.8rem;
+                   @include rotate(-180);
+                   outline: none;
+                   border: 0;
+                   z-index: 0;
+                   fill: $white;
+               }
+           }
+    }
+
+    .pft-list {
+        margin-left: 0;
+        @extend .clearfix;
+        list-style-type: none;
+        margin: 0 auto;
+        padding: 0;
+        display: flex;
+
+        &-menu {
+            @extend .clearfix;
+            background: $cat-tab-bg;
+            width: 100%;
+            list-style-type: none;
+            margin: 0 auto;
+            padding: 0;
+            display: flex;
+        }
+
+        .pft-item {
+            float: left;
+            text-align: center;
+            width: 33.33333333333333%;
+            border-right: 0.1rem solid $darker-red;
+            border-left: 0.1rem solid $fire-red;
+
+            &.half {
+                width: 50%;
+            }
+
+            &-links {
+                position: relative;
+                align-items: center;
+                display: grid;
+                width: 100%;
+                height: 100%;
+                background: $cat-tab-bg;
+                color: $cat-tab-color;
+                padding: 0.6rem 1rem;
+                font-size: 1.6rem;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+            a.active {
+                background: $dark-red;
+                color: $yellow;
+            }
+        }
+
+        &:first-child {
+            border-left: none;
+        }
+
+        &:last-child {
+            border-right: none;
+        }
+    }
+
+    // Provider Drawer
+    .provider-menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        background: $black;
+        background: rgba(0,0,0,0.5);
+    }
+
+    .provider-open {
+        overflow-y: auto;
+
+        body {
+            height: 100%;
+            overflow-y: hidden;
+        }
+    
+        .provider-menu-overlay {
+            display: block;
+        }
+
+        .provider-menu {
+            margin-right: 0;
+
+            .providers-all.active {
+                background: $red;
+                height: 100%;
+            }
+        }
+    }
+
+    .provider-menu {
+        margin-right: -27rem;
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 1010;
+        width: 27rem;
+        height: 100%;
+        overflow-y: auto;
+        transition: margin-right .3s ease-in-out;
+        background: $dark-gray;
+
+        &-title {
+            @extend %clearfix;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            z-index: 13;
+            display: block;
+            color: $cat-tab-color;
+            font-size: 1.8rem;
+            text-decoration: none;
+            font-weight: 600;
+            background: $red;
+            padding: 2rem 3.5rem;
+        }
+
+        // close button
+        .provider-content-button {
+            position: absolute;
+            width: 4rem;
+            height: 6rem;
+            top: 0;
+            right: 0;
+            outline: none;
+            border: 0;
+            cursor: pointer;
+
+            &-svg {
+                width: 2.5rem;
+                height: 3.5rem;
+                margin-top: 1rem;
+                outline: none;
+                border: 0;
+                cursor: pointer;
+
+                path {
+                    fill: #fff;
+                }
+            }
+        }
+
+        .game-providers {
+            &-list {
+                padding: 0;
+                border-left: 0.1rem solid $gray;
+                border-bottom: 0.1rem solid $gray;
+            }
+
+            &-list a.active {
+                background: $red;
+            }
+
+            &-list:first-child {
+                border-top: 0.1rem solid $gray;
+
+                svg {
+                    width: 3.3rem;
+                    border: 0;
+                    fill: $white;
+                }
+            }
+
+            &-list:first-child + li {
+                border-top: 0.1rem solid $gray;
+            }
+
+            &-list:nth-last-child(1) {
+                border-right: 0.1rem solid $gray;
+                margin-left: 0.1rem;
+            }
+
+            &-list:nth-child(even) {
+                border-right: 0;
+                margin-left: 0;
+            }
+
+            &-list:nth-child(odd) {
+                border-left: 0;
+            }
+
+            a {
+                background: $dark-gray;
+
+                p {
+                    margin: 0;
+                    padding-top: 0.5rem;
+                }
+
+                img {
+                    height: 4rem;
+                    width: 4rem;
+                }
+            }
+        }
+    }
+
+    // Live Games List
+    #game-container {
+        background: $dark-red;
+        width: 100vw;
+        float: left;
+        padding: 1% 1% 1.75%;
+
+        .game-lobby-container {
+            margin: 0;
+            padding: 0;
+
+            &.featured,
+            &.providers {
+                .game-listing {
+                    position: relative;
+                    float: left;
+                    display: inline-block;
+                    min-height: 0.1rem;
+    
+                    a {
+                        float: none;
+                        display: block;
+                    }
+    
+                    .label-game-title {
+                        font-weight: 400;
+                        width: 98%;
+                        padding: 0 1%;
+                        margin: 0;
+                    }
+
+                    &-maintenance {
+                            &-title {
+                                position: absolute;
+                                left: 1.5%;
+                                right: 1.5%;
+                                bottom: 0.7rem;
+                                text-align: center;
+                                width: 95%;
+                                color: $white;
+                                z-index: 1;
+                            }
+
+                            p {
+                                position: absolute;
+                                top: 30%;
+                                left: 1.5%;
+                                right: 1.5%;
+                                z-index: 1;
+                                margin: 0;
+                                color: #ffe000;
+                                text-align: center;
+                                font-size: 1.6rem;
+                                font-weight: 600;
+                                width: 95%;
+                                line-height: initial;
+                            }
+                    }
+
+                    &-maintenance:after {
+                        position: absolute;
+                        top: 0;
+                        z-index: 0;
+                        content: " ";
+                        background: #000;
+                        opacity: 0.8;
+                    }
+                }
+            }
+
+            &.featured {
+                .game-listing {
+                    width: 50%;
+                    padding: 0 0 1% 0;
+
+                    &-maintenance:after {
+                        left: 1%;
+                        right: 1%;
+                        bottom: 2.5%;
+                    }
+                }
+            }
+
+            &.providers {
+                .game-listing {
+                    width: 33.33333333%;
+                    padding: 0 0.2% 1% 0.2%;
+    
+                .label-game-title {
+                        font-size: 1.4rem;
+                    }
+    
+                    &-maintenance:after {
+                        left: 1.5%;
+                        right: 1.5%;
+                        bottom: 3.5%;
+                    }
+                }
+            }
+        }
+    }
+}

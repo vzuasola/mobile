@@ -3,17 +3,26 @@
     margin: 0;
     width: 100%;
     height: auto;
-    padding: 0;
+    padding: 0.5rem 0;
     list-style: none;
+
+    &-accordion {
+        padding: 0;
+        margin: 0;
+
+        .app-download-list {
+            padding-bottom: 0.5rem;
+        }
+    }
 
     &-list {
         float: left;
         display: inline-block;
 
         a {
-            background: $darker-red;
+            background: #7e0000;
+            border: 0.1rem solid $red;
             display: block;
-            padding: 1rem 0;
             color: $yellow;
             border-radius: 0.3rem;
             overflow: hidden;
@@ -21,34 +30,139 @@
             svg {
                 display: inline-block;
                 height: 100%;
-                width: 26.6%;
-                margin: 0 0 0 10.4%;
                 fill: $yellow;
             }
 
             span {
                 float: right;
-                width: 50%;
-                margin: 0 10.4% 0 2%;
                 height: 100%;
                 text-align: center;
                 align-items: center;
-                font-size: 1.1rem;
-                line-height: 1.2rem;
                 display: flex;
+                line-height: initial;
             }
         }
+    }
 
+    &-full {
+        width: 97%;
+        margin: 0 0 0 1.5%;
+
+        a {
+            padding: 0.5rem 0;
+        }
+
+         svg {
+                width: 16.6%;
+                margin: 0 0 0 10.4%;
+            }
+
+        span {
+            width: 58%;
+            font-size: 1.4rem;
+            margin: 0 10.4% 0 2%;
+        }
     }
 
     &-two {
         width: 47%;
-        margin: 0 0 2% 2%;
+        margin: 0 0 0 2%;
+
+        a {
+            padding: 0.5rem 0;
+        }
+
+        svg {
+                width: 18%;
+                margin: 0 0 0 10.4%;
+            }
+
+        span {
+            width: 58%;
+            font-size: 1.2rem;
+            margin: 0 10.4% 0 2%;
+        }
     }
 
     &-three {
         width: 31.333333%;
-        margin: 0 0 1.5% 1.5%;
+        margin: 0 0 0 1.5%;
+
+        a {
+            padding: 0.7rem 0;
+        }
+
+        svg {
+                width: 26.6%;
+                margin: 0 0 0 10.4%;
+            }
+
+        span {
+                width: 50%;
+                margin: 0 10.4% 0 2%;
+                font-size: 1.1rem;
+        }
+    }
+}
+
+.download {
+    background: $darker-red;
+
+    .ckeditor-accordion {
+        margin-top: 0;
+
     }
 
+    .ckeditor-accordion,
+    .ckeditor-wrapper {
+
+        dt {
+            position: relative;
+            padding: 1rem 0;
+            display: block;
+            text-align: center;
+            color: $white;
+            font-size: 1.4rem;
+            font-weight: normal;
+            background: $red;
+            border-bottom: 0.1rem solid $darker-red;
+
+            .arrow {
+                border-color: $red;
+            }
+        }
+
+        dt:after {
+            position: absolute;
+            bottom: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            box-sizing: border-box;
+            transform: rotate(135deg);
+            border: 0;
+            content: '';
+            border-width: 0.2rem 0.2rem 0 0;
+            border-style: solid;
+            border-color: #fafafa;
+            transform-origin: 100% 0;
+            transition:.2s ease;
+        }
+
+        .active dt:after {
+            position: absolute;
+            bottom: 1.2rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            box-sizing: border-box;
+            transform: rotate(-45deg);
+            border: 0;
+
+            content: '';
+            border-width: 0.2rem 0.2rem 0 0;
+            border-style: solid;
+            border-color: #fafafa;
+            transform-origin: 100% 0;
+            transition:.2s ease;
+        }
+    }
 }
