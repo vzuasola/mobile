@@ -37,7 +37,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             tabs: any[],
             configs: any[],
         }) {
-
+        this.groupedGames = undefined;
         this.attachments = attachments;
         this.element = element;
         this.isLogin = attachments.authenticated;
@@ -74,6 +74,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             this.listenClickGameTile();
             this.listenClickLauncherTab();
         }
+        this.groupedGames = undefined;
         this.attachments = attachments;
         this.element = element;
         this.isLogin = attachments.authenticated;
@@ -305,10 +306,12 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
      */
     private listenToScroll() {
         utility.listen(window, "scroll", (event, src) => {
-            this.lazyLoader.onScrollDown(
-                this.element.querySelector("#game-loader"),
-                this.element.querySelector("#game-container"),
-            );
+            if (ComponentManager.getAttribute("product") === "mobile-live-dealer") {
+                this.lazyLoader.onScrollDown(
+                    this.element.querySelector("#game-loader"),
+                    this.element.querySelector("#game-container"),
+                );
+            }
         });
     }
 
