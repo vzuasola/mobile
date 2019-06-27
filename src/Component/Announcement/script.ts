@@ -26,6 +26,11 @@ export class AnnouncementComponent implements ComponentInterface {
         this.getAnnouncements();
         this.listenModalClose();
         this.listenAnnouncementLightbox();
+
+        Router.on(RouterClass.afterNavigate, (event) => {
+            this.getAnnouncements();
+        });
+
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -51,7 +56,6 @@ export class AnnouncementComponent implements ComponentInterface {
         announcement.innerHTML = template;
         this.activateAnnouncementBar(this.element);
         this.bindDismissButton(this.element);
-        console.log("generating markup");
 
         // lightbox
         this.listenAutoRefresh(this.element);
@@ -64,7 +68,6 @@ export class AnnouncementComponent implements ComponentInterface {
     private activateAnnouncementBar(element) {
         let readItems = [];
         let activeItem: any = element.querySelector(".announcement-list");
-        console.log(activeItem);
         if (activeItem) {
             readItems = this.getReadItems();
             activeItem = activeItem.getAttribute("data");
@@ -74,8 +77,9 @@ export class AnnouncementComponent implements ComponentInterface {
             } else {
                 utility.removeClass(element.querySelector(".mount-announcement"), "hidden");
             }
+            this.readAnnounceBarItem();
         }
-        this.readItem();
+        
     }
 
     /**
@@ -83,16 +87,16 @@ export class AnnouncementComponent implements ComponentInterface {
      */
     private bindDismissButton(element) {
         utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
-            this.readItem();
+            this.readAnnounceBarItem();
+            utility.addClass(this.element.querySelector(".mount-announcement"), "hidden");
         }, true);
     }
 
-    private readItem() {
+    private readAnnounceBarItem() {
         const activeItem = this.element.querySelector(".announcement-list");
         if (activeItem) {
             const activeItemID = activeItem.getAttribute("data");
             this.setReadItems(activeItemID);
-            console.log("read announcement");
         }
     }
 
