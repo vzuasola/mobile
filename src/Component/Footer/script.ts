@@ -21,21 +21,15 @@ export class FooterComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getOriginalUrl();
-        this.attachProduct();
         this.getFooter();
 
         Router.on(RouterClass.afterNavigate, (event) => {
-            this.getOriginalUrl();
-            this.attachProduct();
             this.refreshFooter();
         });
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getOriginalUrl();
-        this.attachProduct();
         this.getFooter();
     }
 
@@ -85,6 +79,8 @@ export class FooterComponent implements ComponentInterface {
         }).then((response) => {
             this.footerData = response;
             this.generateFooterMarkup(this.footerData);
+            this.getOriginalUrl();
+            this.attachProduct();
         });
     }
 

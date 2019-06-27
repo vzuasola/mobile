@@ -1,21 +1,29 @@
 {
   "scripts": {
-    "watch": "NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "dev": "NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "dist": "NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "webpack --env.development --watch --progress --hide-modules",
+    "dev": "webpack --env.development --progress --hide-modules",
+    "dist": "webpack --env.production --progress --hide-modules",
     "lint": "yarn eslint && yarn tslint",
     "eslint": "eslint **/*.js",
     "tslint": "tslint -c tslint.json **/*.ts"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
     "@types/handlebars": "^4.0.39",
+    "babel-loader": "^8.0.6",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "clean-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^5.0.3",
+    "css-loader": "^3.0.0",
     "eslint": "^5.10.0",
+    "file-loader": "^4.0.0",
     "generate-json-webpack-plugin": "^0.3.1",
     "handlebars": "^4.0.12",
     "handlebars-loader": "^1.7.1",
-    "laravel-mix": "^4.0.14",
+    "mini-css-extract-plugin": "^0.7.0",
+    "node-sass": "^4.12.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
     "resolve-url-loader": "2.3.1",
     "sass": "^1.17.0",
     "sass-loader": "7.*",
@@ -24,7 +32,10 @@
     "ts-loader": "^5.3.3",
     "tslint": "^5.12.0",
     "tslint-loader": "^3.6.0",
-    "typescript": "^3.2.2"
+    "typescript": "^3.2.2",
+    "webpack": "4.29.2",
+    "webpack-cli": "3.2.3",
+    "webpack-manifest-plugin": "^2.0.4"
   },
   "dependencies": {
     "bowser": "^2.1.0",
