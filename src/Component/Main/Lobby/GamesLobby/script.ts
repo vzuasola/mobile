@@ -970,11 +970,11 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
 
         /* tslint:disable:no-string-literal */
+        gamesList["favorites"] = response.games["favorites"];
+        gamesList["recently-played"] = response.games["recently-played"];
         gamesList["all-games"] = response.games["all-games"];
         response.games = gamesList;
         gamesList = this.doSortCategoryGames(response, gamesList);
-        gamesList["favorites"] = response.games["favorites"];
-        gamesList["recently-played"] = response.games["recently-played"];
         /* tslint:enable:no-string-literal */
 
         return gamesList;
