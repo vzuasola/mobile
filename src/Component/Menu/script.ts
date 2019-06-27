@@ -90,6 +90,16 @@ export class MenuComponent implements ComponentInterface {
     private activateMenu(element) {
         const menu = new Menu(element);
         menu.activate();
+        this.menuListenOnClick();
+    }
+
+    private menuListenOnClick() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.hasClass(src, "lgc", true);
+            if (el) {
+                console.log(el);
+            }
+        });
     }
 
     private toggleLogoutLink() {
