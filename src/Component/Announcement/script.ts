@@ -8,7 +8,7 @@ import * as announcementTemplate from "./handlebars/announcement.handlebars";
 import {Modal} from "@app/assets/script/components/modal";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 export class AnnouncementComponent implements ComponentInterface {
     private storage: Storage;
@@ -51,10 +51,10 @@ export class AnnouncementComponent implements ComponentInterface {
         announcement.innerHTML = template;
         this.activateAnnouncementBar(this.element);
         this.bindDismissButton(this.element);
+        console.log("generating markup");
 
         // lightbox
         this.listenAutoRefresh(this.element);
-
         this.getUnread(this.element);
     }
 
@@ -64,6 +64,7 @@ export class AnnouncementComponent implements ComponentInterface {
     private activateAnnouncementBar(element) {
         let readItems = [];
         let activeItem: any = element.querySelector(".announcement-list");
+        console.log(activeItem);
         if (activeItem) {
             readItems = this.getReadItems();
             activeItem = activeItem.getAttribute("data");
@@ -74,20 +75,24 @@ export class AnnouncementComponent implements ComponentInterface {
                 utility.removeClass(element.querySelector(".mount-announcement"), "hidden");
             }
         }
+        this.readItem();
     }
 
     /**
      * Mark announcement as read
      */
     private bindDismissButton(element) {
-        let activeItem = element.querySelector(".announcement-list");
+        utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
+            this.readItem();
+        }, true);
+    }
 
+    private readItem() {
+        const activeItem = this.element.querySelector(".announcement-list");
         if (activeItem) {
-            utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
-                activeItem = activeItem.getAttribute("data");
-                this.setReadItems(activeItem);
-                ComponentManager.refreshComponent("announcement");
-            }, true);
+            const activeItemID = activeItem.getAttribute("data");
+            this.setReadItems(activeItemID);
+            console.log("read announcement");
         }
     }
 
