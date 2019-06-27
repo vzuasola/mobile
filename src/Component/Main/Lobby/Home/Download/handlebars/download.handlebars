@@ -1,3 +1,4 @@
+{{#condition downloadData.downloads_menu.length ">" 0}}
 <ul class="app-download clearfix">
     {{#each downloadData.downloads_menu}}
         {{#condition @index "<" 3}}
@@ -17,6 +18,7 @@
         {{/condition}}
     {{/each}}
 </ul>
+{{/condition}}
 {{#condition downloadData.downloads_menu.length ">" 3}}
     <dl class="ckeditor-accordion">
         <dt data-transition-top="true" class="swap-text" data-text-swap="{{ viewLesstext }}">{{ allApptext }}</dt>

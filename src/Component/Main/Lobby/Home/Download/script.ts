@@ -4,7 +4,7 @@ import * as Handlebars from "handlebars/runtime";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as downloadTemplate from "./handlebars/download.handlebars";
-import { Router } from "@core/src/Plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import EqualHeight from "@app/assets/script/components/equal-height";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
@@ -19,6 +19,10 @@ export class DownloadComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getDownloads();
+
+        Router.on(RouterClass.afterNavigate, (event) => {
+            this.swapText();
+        });
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -79,19 +83,23 @@ export class DownloadComponent implements ComponentInterface {
 
     private procesMenu(data) {
         const menus = [];
+        const download: HTMLElement = this.element.querySelector("#downloads");
         for (const menu in data.downloads_menu) {
             if (data.downloads_menu.hasOwnProperty(menu)) {
-                const element = data.downloads_menu[menu];
-                if (!element.attributes.device) {
-                    menus.push(element);
+                const downloadData = data.downloads_menu[menu];
+                if (!downloadData.attributes.device) {
+                    utility.addClass(download, "download-background");
+                    menus.push(downloadData);
                 }
 
-                if (this.downloadsVisibility() && element.attributes.device === "ios") {
-                    menus.push(element);
+                if (this.downloadsVisibility() && downloadData.attributes.device === "ios") {
+                    utility.addClass(download, "download-background");
+                    menus.push(downloadData);
                 }
 
-                if (!this.downloadsVisibility() && element.attributes.device === "android") {
-                    menus.push(element);
+                if (!this.downloadsVisibility() && downloadData.attributes.device === "android") {
+                    utility.addClass(download, "download-background");
+                    menus.push(downloadData);
                 }
             }
         }
