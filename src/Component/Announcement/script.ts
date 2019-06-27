@@ -79,7 +79,6 @@ export class AnnouncementComponent implements ComponentInterface {
             }
             this.readAnnounceBarItem();
         }
-        
     }
 
     /**
