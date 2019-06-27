@@ -2,10 +2,12 @@
 
 namespace App\MobileEntry\Module\GameIntegration\Skywind;
 
-use App\Drupal\Config;
+use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 
 class SkywindModuleController
 {
+    use ProviderTrait;
+
     const KEY = 'skywind';
 
     private $rest;
@@ -40,24 +42,6 @@ class SkywindModuleController
         $this->player = $player;
     }
 
-    public function unsupported($request, $response)
-    {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
-            $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $config['unsupported_currencies_title'] ?? '';
-            $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $config['unsupported_currencies_button'] ?? '';
-            $data['status'] = true;
-        } catch (\Exception $e) {
-            $data['status'] = false;
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
     /**
      * @{inheritdoc}
      */
@@ -65,7 +49,7 @@ class SkywindModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($request)) {
             $data['currency'] = true;
             $requestData = $request->getParsedBody();
             try {
@@ -84,21 +68,5 @@ class SkywindModuleController
         }
 
         return $this->rest->output($response, $data);
-    }
-
-    private function checkCurrency()
-    {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-            $currencies = explode("\r\n", $config[self::KEY . '_currency']);
-            $playerCurrency = $this->player->getCurrency();
-
-            if (in_array($playerCurrency, $currencies)) {
-                return true;
-            }
-        } catch (\Exception $e) {
-            // Do nothing
-        }
-        return false;
     }
 }

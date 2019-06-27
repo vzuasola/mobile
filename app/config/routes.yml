@@ -30,7 +30,6 @@ routes:
             enabled: true
             expires: 1800
 
-
     /login:
         method: GET
         action: App\MobileEntry\Controller\HomeController:view
@@ -143,6 +142,20 @@ routes:
         attributes:
             product: mobile-sports-df
 
+    /{id:live-dealer|macau|live|live-games|xianchang|zhenren}:
+        method: GET
+        action: App\MobileEntry\Controller\LiveDealerController:view
+        components:
+            main: lobby
+            lobby_content: live_dealer_lobby
+        headers:
+            Cache-Control: public, max-age=900
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-live-dealer
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:
@@ -173,6 +186,15 @@ routes:
             expires: 1800
 
     /api/plugins/component/route/games_lobby/getGamesCollection:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: private, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+
+    /api/plugins/component/route/live_dealer_lobby/lobby:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
         headers:

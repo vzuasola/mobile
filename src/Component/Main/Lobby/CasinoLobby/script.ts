@@ -41,6 +41,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private searchResults;
     private loader: Loader;
     private fromGameLaunch: boolean = false;
+    private lobbyProducts: any[] = ["mobile-casino", "mobile-casino-gold"];
     private windowObject: any;
     private gameLink: string;
 
@@ -476,40 +477,42 @@ export class CasinoLobbyComponent implements ComponentInterface {
      */
     private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
-            this.currentPage = 0;
-            const first = this.response.categories[0].field_games_alias;
-            const key = this.getActiveCategory(this.response.games, first);
-            if (utility.getHash(window.location.href) !== key &&
-                key !== first
-            ) {
-                window.location.hash = key;
+            if (this.lobbyProducts.indexOf(ComponentManager.getAttribute("product")) !== -1) {
+                this.currentPage = 0;
+                const first = this.response.categories[0].field_games_alias;
+                const key = this.getActiveCategory(this.response.games, first);
+                if (utility.getHash(window.location.href) !== key &&
+                    key !== first
+                ) {
+                    window.location.hash = key;
+                }
+
+                const categoriesEl = this.element.querySelector("#game-categories");
+                const activeLink = categoriesEl.querySelector(".category-tab .active a");
+
+                const categories = categoriesEl.querySelectorAll(".category-tab");
+
+                for (const id in categories) {
+                    if (categories.hasOwnProperty(id)) {
+                        const category = categories[id];
+                        if (category.getAttribute("href") === "#" + key) {
+                            src = category;
+                            break;
+                        }
+                }
             }
 
-            const categoriesEl = this.element.querySelector("#game-categories");
-            const activeLink = categoriesEl.querySelector(".category-tab .active a");
+                if (activeLink) {
+                    utility.removeClass(activeLink, "active");
+                    utility.removeClass(activeLink.parentElement, "active");
+                }
 
-            const categories = categoriesEl.querySelectorAll(".category-tab");
+                utility.addClass(src, "active");
+                utility.addClass(src.parentElement, "active");
 
-            for (const id in categories) {
-                if (categories.hasOwnProperty(id)) {
-                    const category = categories[id];
-                    if (category.getAttribute("href") === "#" + key) {
-                        src = category;
-                        break;
-                    }
-               }
-           }
-
-            if (activeLink) {
-                utility.removeClass(activeLink, "active");
-                utility.removeClass(activeLink.parentElement, "active");
+                this.setGames(this.response.games[key], key);
+                ComponentManager.broadcast("category.change");
             }
-
-            utility.addClass(src, "active");
-            utility.addClass(src.parentElement, "active");
-
-            this.setGames(this.response.games[key], key);
-            ComponentManager.broadcast("category.change");
         });
     }
 
@@ -922,25 +925,29 @@ export class CasinoLobbyComponent implements ComponentInterface {
             };
 
             let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-
-            const params = utility.getAttributes(data.src);
             const source = utility.getParameterByName("source");
-            for (const key in params) {
-                if (params.hasOwnProperty(key)) {
-                    const param = params[key];
 
-                    if (key.indexOf("data-") === 0 && (param !== "" && typeof param !== "undefined")) {
-                        url = utility.addQueryParam(url, key.replace("data-game-", ""), param);
-                    }
+            for (const key in data.options) {
+                if (data.options.hasOwnProperty(key)) {
+                    const param = data.options[key];
+                    url = utility.addQueryParam(url, key, param);
                 }
             }
 
             url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+            url = utility.addQueryParam(url, "loaderFlag", "true");
+            if (data.options.target === "popup") {
+                this.windowObject = PopupWindow(url, "gameWindow", prop);
+            }
+
+            if (!this.windowObject && data.options.target === "popup") {
+                return;
+            }
 
             // handle redirects if we are on a PWA standalone
             if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
                 source === "pwa" ||
-                params["data-game-target"] !== "popup"
+                data.options.target !== "popup"
             ) {
                 window.location.href = url;
                 return;

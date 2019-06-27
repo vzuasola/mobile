@@ -1,0 +1,14 @@
+<ul class="menu">
+    {{#each footerData.footer_menu}}
+    <li class="{{ ../this.footerMenuClass}}">
+        <a href="{{ this.uri }}"
+        class="{{ this.attributes.class }} {{ this.attributes.svg }}"
+        target="{{ this.attributes.target }}">
+            <svg viewBox="0 0 20 20">
+                <use xlink:href="#{{ this.attributes.svg }}" />
+            </svg>
+            {{ this.title }}
+        </a>
+    </li>
+    {{/each}}
+</ul>

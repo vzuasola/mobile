@@ -2,10 +2,12 @@
 
 namespace App\MobileEntry\Module\GameIntegration\AsiaGaming;
 
-use App\Drupal\Config;
+use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 
 class AsiaGamingModuleController
 {
+    use ProviderTrait;
+
     const KEY = 'asia_gaming';
 
     private $rest;
@@ -40,24 +42,6 @@ class AsiaGamingModuleController
         $this->player = $player;
     }
 
-    public function unsupported($request, $response)
-    {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
-            $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $config['unsupported_currencies_title'] ?? '';
-            $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $config['unsupported_currencies_button'] ?? '';
-            $data['status'] = true;
-        } catch (\Exception $e) {
-            $data['status'] = false;
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
     /**
      * @{inheritdoc}
      */
@@ -65,42 +49,62 @@ class AsiaGamingModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
-        if ($this->checkCurrency()) {
-            $data['currency'] = true;
-            $requestData = $request->getParsedBody();
-            $params = explode('|', $requestData['gameCode']);
 
-            try {
-                $responseData = $this->asiaGaming->getGameUrlById('icore_ag', $params[0], [
-                    'options' => [
-                        'languageCode' => $requestData['langCode'],
-                        'providerProduct' => $params[1] ?? null,
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
-                }
-            } catch (\Exception $e) {
-                $data = [];
+        if ($this->checkCurrency($request)) {
+            $requestData = $request->getParsedBody();
+            if ($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') {
+                $data = $this->getGameUrl($request, $response);
+            }
+
+            if (!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') {
+                $data = $this->getGameLobby($request, $response);
             }
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function checkCurrency()
+    private function getGameLobby($request, $response)
     {
-        try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-            $currencies = explode("\r\n", $config[self::KEY . '_currency']);
-            $playerCurrency = $this->player->getCurrency();
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
 
-            if (in_array($playerCurrency, $currencies)) {
-                return true;
+        try {
+            $responseData = $this->asiaGaming->getLobby('icore_ag', [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                ]
+            ]);
+            if ($responseData) {
+                $data['gameurl'] = $responseData;
             }
         } catch (\Exception $e) {
-            // Do nothing
+            $data = [];
         }
-        return false;
+
+        return $data;
+    }
+
+    private function getGameUrl($request, $response)
+    {
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
+        $params = explode('|', $requestData['gameCode']);
+
+        try {
+            $responseData = $this->asiaGaming->getGameUrlById('icore_ag', $params[0], [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                    'providerProduct' => $params[1] ?? null,
+                ]
+            ]);
+            if ($responseData['url']) {
+                $data['gameurl'] = $responseData['url'];
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
+        return $data;
     }
 }

@@ -50,6 +50,10 @@ export default function accordion(element, options) {
                 utility.forEach(divs, function (item) {
                     wrap.appendChild(item);
                 });
+
+                if (item.getAttribute("data-transition-top") === "true") {
+                    wrap.appendChild(item);
+                }
                 accordion.appendChild(wrap);
             });
 

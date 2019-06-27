@@ -5,6 +5,7 @@ import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launche
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
+import { ProviderDrawer } from "../Main/Lobby/LiveDealerLobby/scripts/provider-drawer";
 
 /**
  *
