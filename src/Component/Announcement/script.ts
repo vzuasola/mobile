@@ -16,6 +16,7 @@ export class AnnouncementComponent implements ComponentInterface {
     private element: HTMLElement;
     private announcements: any;
     private timer: any;
+    private showAnnouncementBar: boolean;
 
     constructor() {
         this.storage = new Storage();
@@ -23,14 +24,15 @@ export class AnnouncementComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
+        this.showAnnouncementBar = true;
         this.getAnnouncements();
         this.listenModalClose();
         this.listenAnnouncementLightbox();
 
         Router.on(RouterClass.afterNavigate, (event) => {
+            this.showAnnouncementBar = false;
             this.getAnnouncements();
         });
-
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -69,9 +71,9 @@ export class AnnouncementComponent implements ComponentInterface {
         let readItems = [];
         let activeItem: any = element.querySelector(".announcement-list");
         if (activeItem) {
+            this.showAnnouncementBar = false;
             readItems = this.getReadItems();
             activeItem = activeItem.getAttribute("data");
-
             if (readItems.length > 0 && readItems.indexOf(activeItem) > -1) {
                 utility.addClass(element.querySelector(".mount-announcement"), "hidden");
             } else {
@@ -86,14 +88,16 @@ export class AnnouncementComponent implements ComponentInterface {
      */
     private bindDismissButton(element) {
         utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
+            this.showAnnouncementBar = false;
             this.readAnnounceBarItem();
             utility.addClass(this.element.querySelector(".mount-announcement"), "hidden");
+            this.getUnread(this.element);
         }, true);
     }
 
     private readAnnounceBarItem() {
         const activeItem = this.element.querySelector(".announcement-list");
-        if (activeItem) {
+        if (activeItem && !this.showAnnouncementBar) {
             const activeItemID = activeItem.getAttribute("data");
             this.setReadItems(activeItemID);
         }
