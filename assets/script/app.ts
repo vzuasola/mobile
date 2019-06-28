@@ -1,3 +1,5 @@
+import "../sass/app.scss";
+
 import * as versioning from "@app/web/version.json";
 import {Semver} from "./components/semver";
 

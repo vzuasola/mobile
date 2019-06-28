@@ -10,7 +10,7 @@ class Manifest
 
         try {
             $cwd = getcwd();
-            $raw = @file_get_contents("$cwd/mix-manifest.json");
+            $raw = @file_get_contents("$cwd/manifest.json");
             $raw = json_decode($raw, true);
         } catch (\Exception $e) {
             $raw = [];
