@@ -47,6 +47,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private state: boolean;
     private windowObject: any;
     private gameLink: string;
+    private productMenu: string = "product-games";
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -82,6 +83,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.listenFavoriteClick();
         this.generateLobby(() => {
+            this.highlightMenu();
             this.lobby();
         });
         this.moveCategory();
@@ -136,6 +138,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.load = true;
         this.generateLobby(() => {
+            this.highlightMenu();
             this.lobby();
         });
         this.moveCategory();
@@ -150,6 +153,10 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
         this.listenToLaunchGameLoader();
+    }
+
+    private highlightMenu() {
+        ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
     }
 
     private moveCategory() {
