@@ -142,6 +142,20 @@ routes:
         attributes:
             product: mobile-sports-df
 
+    /{id:lottery|keno|lotto-numbers|numbers|draw|live-draw}:
+        method: GET
+        action: App\MobileEntry\Controller\LotteryController:view
+        components:
+            main: lobby
+            lobby_content: lottery_lobby
+        headers:
+            Cache-Control: public, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-lottery
+
     /{id:live-dealer|macau|live|live-games|xianchang|zhenren}:
         method: GET
         action: App\MobileEntry\Controller\LiveDealerController:view
@@ -195,6 +209,15 @@ routes:
             expires: 1800
 
     /api/plugins/component/route/live_dealer_lobby/lobby:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: private, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+
+    /api/plugins/component/route/lottery_lobby/lobby:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
         headers:
