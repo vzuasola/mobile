@@ -106,7 +106,9 @@
 }
 
 .download {
-    background: $darker-red;
+    &-background {
+        background: $darker-red;
+    }
 
     .ckeditor-accordion {
         margin-top: 0;

@@ -8,6 +8,7 @@ import {Menu} from "./scripts/menu";
 import {PushNotification} from "./scripts/push-notification";
 
 import EqualHeight from "@app/assets/script/components/equal-height";
+import {Redirector} from "@app/assets/script/components/redirector";
 
 /**
  *
@@ -91,6 +92,19 @@ export class MenuComponent implements ComponentInterface {
     private activateMenu(element) {
         const menu = new Menu(element);
         menu.activate();
+        this.menuListenOnClick();
+    }
+
+    private menuListenOnClick() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.hasClass(src, "lgc", true);
+            if (el) {
+                event.preventDefault();
+                Redirector.redirect(el.getAttribute("href"), false, {
+                    target: el.getAttribute("target"),
+                });
+            }
+        });
     }
 
     private toggleLogoutLink() {
