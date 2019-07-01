@@ -32,7 +32,7 @@ class Redirector {
             return;
         }
 
-        if (options.target !== "_self") {
+        if (typeof options !== "undefined" && options.target !== "_self") {
             window.open(url);
             return;
         }
