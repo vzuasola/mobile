@@ -12,7 +12,7 @@ class Redirector {
      * @param url The URL to redirect to
      * @param closure A optional handler callback
      */
-    redirect(url: string, closure?) {
+    redirect(url: string, closure?, options?) {
         // handle redirects if we are on a PWA standalone
         const source = utility.getParameterByName("source");
         if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
@@ -27,8 +27,15 @@ class Redirector {
                 reUrl = utility.addQueryParam(reUrl, "source", "pwa");
                 url = utility.addQueryParam(url, "re", reUrl);
             }
+
+            window.location.href = url;
+            return;
         }
 
+        if (options.target !== "_self") {
+            window.open(url);
+            return;
+        }
         window.location.href = url;
     }
 }
