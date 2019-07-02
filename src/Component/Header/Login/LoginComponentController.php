@@ -77,7 +77,6 @@ class LoginComponentController
                 if (!empty($reasonArray)) {
                     $data['reasonJson'] = json_decode($reasonArray[1]);
                 }
-
             }
         }
 
