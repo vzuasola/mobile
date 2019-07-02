@@ -112,6 +112,10 @@ class LotteryLobbyComponentController
                         ['product' => self::PRODUCT]
                     )
             ];
+            $definition['title'] = $game['title'][0]['value'] ?? '';
+            $definition['game_provider'] = $game['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
+            $definition['target'] = $game['field_target'][0]['value'] ?? '';
+            $definition['use_game_loader'] = isset($game['field_use_game_loader'][0]['value']) ? $game['field_use_game_loader'][0]['value'] : "false";
             return $definition;
         } catch (\Exception $e) {
             return [];

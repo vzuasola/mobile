@@ -7,7 +7,7 @@ import {Redirector} from "@app/assets/script/components/redirector";
 
 import {Redirectable} from "../scripts/redirectable";
 
-export class LiveDealerIntegrationModule extends Redirectable implements ModuleInterface {
+export class LotteryIntegrationModule extends Redirectable implements ModuleInterface {
     protected code = "lottery";
     protected isLoginOnly = false;
 
