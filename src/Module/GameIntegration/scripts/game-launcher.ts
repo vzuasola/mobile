@@ -130,6 +130,9 @@ class GameLauncher {
         });
 
         if (el) {
+            ComponentManager.broadcast("game.launch", {
+                src: el,
+            });
             const options = this.getOptionsByElement(el);
             if (!loader) {
                 e.preventDefault();
@@ -139,10 +142,6 @@ class GameLauncher {
                 options.provider = provider;
                 this.invoke(provider, "prelaunch", [options]);
                 this.invoke(provider, "launch", [options]);
-
-                ComponentManager.broadcast("game.launch", {
-                    src: el,
-                });
             }
 
             if (loader) {
@@ -171,6 +170,9 @@ class GameLauncher {
 
         if (el) {
             const options = this.getOptionsByElement(el);
+            ComponentManager.broadcast("game.launch", {
+                src: el,
+            });
             if (!loader) {
                 e.preventDefault();
 
@@ -178,10 +180,6 @@ class GameLauncher {
                 options.provider = provider;
 
                 this.launch(provider, options);
-
-                ComponentManager.broadcast("game.launch", {
-                    src: el,
-                });
             }
 
             if (loader) {
