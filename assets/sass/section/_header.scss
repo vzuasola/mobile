@@ -7,17 +7,16 @@ header {
     color: $white;
 
     .container {
-            padding-top: 0.1rem;
-            padding-left: 5%;
-            padding-right: 5%;
-        }
+        padding-top: 0.1rem;
+        padding-left: 5%;
+        padding-right: 5%;
     }
-    
-    .login-button-wrapper {
-        position: absolute;
-        right: 1rem;
-        top: 1.8rem;
-    }
+}
+
+.login-button-wrapper {
+    position: absolute;
+    right: 1rem;
+    top: 1.8rem;
 }
 
 @import "../components/mobile-action-button";
