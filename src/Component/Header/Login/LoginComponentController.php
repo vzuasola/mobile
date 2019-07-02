@@ -75,7 +75,11 @@ class LoginComponentController
 
                 $reasonArray = explode('response:', $reason);
                 if (!empty($reasonArray)) {
-                    $data['reasonJson'] = json_decode($reasonArray[1]);
+                    if (isset($reasonArray[1])) {
+                        $data['reasonJson'] = json_decode($reasonArray[1]);
+                    } else {
+                        $data['reasonJson'] = $reason;
+                    }
                 }
             }
         }
