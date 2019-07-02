@@ -384,16 +384,7 @@ class GamesLobbyComponentController
 
             foreach ($game['field_games_list_category'] as $category) {
                 $categoryList[$category['field_games_alias'][0]['value']] =
-                    $category['field_draggable_views']['category']['weight'];
-            }
-
-            $processGame['categories'] = $categoryList;
-
-            $categoryList = [];
-
-            foreach ($game['field_games_list_category'] as $category) {
-                $categoryList[$category['field_games_alias'][0]['value']] =
-                    $category['field_draggable_views']['category']['weight'];
+                    $category['field_games_alias'][0]['value'];
             }
 
             $processGame['categories'] = $categoryList;
