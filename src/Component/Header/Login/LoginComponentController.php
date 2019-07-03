@@ -69,8 +69,18 @@ class LoginComponentController
                     $response = $response->withStatus(500);
                 }
 
+                $reason = $e->getMessage();
                 $data['code'] = $e->getCode();
-                $data['reason'] = $e->getMessage();
+                $data['reason'] = $reason;
+
+                $reasonArray = explode('response:', $reason);
+                if (!empty($reasonArray)) {
+                    if (isset($reasonArray[1])) {
+                        $data['reasonJson'] = json_decode($reasonArray[1]);
+                    } else {
+                        $data['reasonJson'] = $reason;
+                    }
+                }
             }
         }
 

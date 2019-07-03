@@ -1,11 +1,12 @@
-<div class="header-dafabet container clearfix">
-    {{ include('@component/Header/templates/logo.html.twig') }}
-    {% if is_login %}
+<header class="header">
+    <div class="container clearfix">
+        {{ include('@component/Header/templates/logo.html.twig') }}
+        {% if is_login %}
         <div class="account-balance">
             <a href="{{ url(cashier_link.uri) }}" target="{{ cashier_link.attributes.target }}" class="hidden">
-            <svg viewBox="0 0 24 20">
-                <use xlink:href="#amount-balance" />
-            </svg>
+                <svg viewBox="0 0 24 20">
+                    <use xlink:href="#amount-balance" />
+                </svg>
                 <span class="account-balance-amount"></span>
             </a>
             <div class="sk-fading-circle mobile-balance-loader">
@@ -23,19 +24,17 @@
                 <div class="sk-circle12 sk-circle"></div>
             </div>
         </div>
-    {% else %}
+        {% else %}
         <span class="mobile-action-button">
-            <a
-                href="#"
-                class="login-trigger btn btn-yellow btn-small btn-mobile-login"
-            >
+            <a href="#" class="login-trigger btn btn-yellow btn-small btn-mobile-login">
                 {{ mobile_login_reg }}
             </a>
         </span>
-    {% endif %}
+        {% endif %}
 
-    {{ widget('header_login') }}
-</div>
+        {{ widget('header_login') }}
+    </div>
+</header>
 <span class="hidden">
     {% include '@app/web/images/svg/header/dafabet-header.svg' ignore missing %}
 </span>
