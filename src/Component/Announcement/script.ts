@@ -8,7 +8,7 @@ import * as announcementTemplate from "./handlebars/announcement.handlebars";
 import {Modal} from "@app/assets/script/components/modal";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 export class AnnouncementComponent implements ComponentInterface {
     private storage: Storage;
@@ -16,6 +16,8 @@ export class AnnouncementComponent implements ComponentInterface {
     private element: HTMLElement;
     private announcements: any;
     private timer: any;
+    private showAnnouncementBar: boolean;
+    private language: string;
 
     constructor() {
         this.storage = new Storage();
@@ -23,9 +25,21 @@ export class AnnouncementComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
+        this.showAnnouncementBar = true;
+        this.language = ComponentManager.getAttribute("language");
         this.getAnnouncements();
         this.listenModalClose();
         this.listenAnnouncementLightbox();
+
+        Router.on(RouterClass.afterNavigate, (event) => {
+            if (this.language !== ComponentManager.getAttribute("language")) {
+                this.showAnnouncementBar = true;
+                this.language = ComponentManager.getAttribute("language");
+            } else {
+                this.showAnnouncementBar = false;
+                this.getAnnouncements();
+            }
+        });
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -54,7 +68,6 @@ export class AnnouncementComponent implements ComponentInterface {
 
         // lightbox
         this.listenAutoRefresh(this.element);
-
         this.getUnread(this.element);
     }
 
@@ -65,14 +78,15 @@ export class AnnouncementComponent implements ComponentInterface {
         let readItems = [];
         let activeItem: any = element.querySelector(".announcement-list");
         if (activeItem) {
+            this.showAnnouncementBar = false;
             readItems = this.getReadItems();
             activeItem = activeItem.getAttribute("data");
-
             if (readItems.length > 0 && readItems.indexOf(activeItem) > -1) {
                 utility.addClass(element.querySelector(".mount-announcement"), "hidden");
             } else {
                 utility.removeClass(element.querySelector(".mount-announcement"), "hidden");
             }
+            this.readAnnounceBarItem();
         }
     }
 
@@ -80,14 +94,19 @@ export class AnnouncementComponent implements ComponentInterface {
      * Mark announcement as read
      */
     private bindDismissButton(element) {
-        let activeItem = element.querySelector(".announcement-list");
+        utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
+            this.showAnnouncementBar = false;
+            this.readAnnounceBarItem();
+            utility.addClass(this.element.querySelector(".mount-announcement"), "hidden");
+            this.getUnread(this.element);
+        }, true);
+    }
 
-        if (activeItem) {
-            utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
-                activeItem = activeItem.getAttribute("data");
-                this.setReadItems(activeItem);
-                ComponentManager.refreshComponent("announcement");
-            }, true);
+    private readAnnounceBarItem() {
+        const activeItem = this.element.querySelector(".announcement-list");
+        if (activeItem && !this.showAnnouncementBar) {
+            const activeItemID = activeItem.getAttribute("data");
+            this.setReadItems(activeItemID);
         }
     }
 

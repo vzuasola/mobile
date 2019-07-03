@@ -4,7 +4,7 @@ import * as Handlebars from "handlebars/runtime";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as downloadTemplate from "./handlebars/download.handlebars";
-import { Router } from "@core/src/Plugins/ComponentWidget/asset/router";
+import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import EqualHeight from "@app/assets/script/components/equal-height";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
@@ -42,14 +42,9 @@ export class DownloadComponent implements ComponentInterface {
     }
 
     private getDownloads() {
-        const download = ComponentManager.getAttribute("downloads");
-
         xhr({
             url: Router.generateRoute("home_download", "downloads"),
             type: "json",
-            data: {
-                download,
-            },
         }).then((response) => {
             this.downloadData = response;
             this.generateDownloadMarkup(this.downloadData);
@@ -79,19 +74,23 @@ export class DownloadComponent implements ComponentInterface {
 
     private procesMenu(data) {
         const menus = [];
+        const download: HTMLElement = this.element.querySelector("#downloads");
         for (const menu in data.downloads_menu) {
             if (data.downloads_menu.hasOwnProperty(menu)) {
-                const element = data.downloads_menu[menu];
-                if (!element.attributes.device) {
-                    menus.push(element);
+                const downloadData = data.downloads_menu[menu];
+                if (!downloadData.attributes.device) {
+                    utility.addClass(download, "download-background");
+                    menus.push(downloadData);
                 }
 
-                if (this.downloadsVisibility() && element.attributes.device === "ios") {
-                    menus.push(element);
+                if (this.downloadsVisibility() && downloadData.attributes.device === "ios") {
+                    utility.addClass(download, "download-background");
+                    menus.push(downloadData);
                 }
 
-                if (!this.downloadsVisibility() && element.attributes.device === "android") {
-                    menus.push(element);
+                if (!this.downloadsVisibility() && downloadData.attributes.device === "android") {
+                    utility.addClass(download, "download-background");
+                    menus.push(downloadData);
                 }
             }
         }
@@ -104,11 +103,11 @@ export class DownloadComponent implements ComponentInterface {
         ComponentManager.subscribe("click", (src, target) => {
             const element = this.element.querySelectorAll("dt")[0];
             if (utility.hasClass(target, "swap-text", true)) {
-                if (element.getAttribute("data-text-swap") === element.innerText) {
-                    element.innerText = element.getAttribute("data-text-original");
-                } else {
-                    element.setAttribute("data-text-original", element.innerText);
+                const accordion = this.element.querySelector(".download .ckeditor-wrapper");
+                if (utility.hasClass(accordion, "active", true)) {
                     element.innerText = element.getAttribute("data-text-swap");
+                } else {
+                    element.innerText = element.getAttribute("data-text-original");
                 }
             }
         });
