@@ -223,6 +223,9 @@ modules:
   allbet_integration:
     class: App\MobileEntry\Module\GameIntegration\AllBet\AllBetModule
 
+  videoracing_integration:
+    class: App\MobileEntry\Module\GameIntegration\VideoRacing\VideoRacingModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
