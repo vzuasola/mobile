@@ -25,14 +25,16 @@ export class ProviderDrawer {
 
     private closeEvents() {
         ComponentManager.subscribe("click", (src, target) => {
-            const icon = this.element.querySelector(".provider-drawer");
+            if (ComponentManager.getAttribute("product") === "mobile-live-dealer") {
+                const icon = this.element.querySelector(".provider-drawer");
 
-            if (target === icon || target.parentNode === icon) {
-                this.openProvider();
-            } else if (utility.hasClass(target, "close-svg") ||
-                utility.hasClass(target, "close-drawer")
-            ) {
-                this.closeProvider(src);
+                if (target === icon || target.parentNode === icon) {
+                    this.openProvider();
+                } else if (utility.hasClass(target, "close-svg") ||
+                    utility.hasClass(target, "close-drawer")
+                ) {
+                    this.closeProvider(src);
+                }
             }
         });
     }
