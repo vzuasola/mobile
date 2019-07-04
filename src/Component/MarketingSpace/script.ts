@@ -1,5 +1,4 @@
 import * as utility from "@core/assets/js/components/utility";
-import * as Handlebars from "handlebars/runtime";
 
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
@@ -26,14 +25,9 @@ export class MarketingSpaceComponent implements ComponentInterface {
     }
 
     private getTopLeaderboard() {
-        const topleaderboard = ComponentManager.getAttribute("marketing-space");
-
         xhr({
-            url: Router.generateRoute("marketing_space", "marketing-space"),
+            url: Router.generateRoute("marketing_space", "marketingSpace"),
             type: "json",
-            data: {
-                topleaderboard,
-            },
         }).then((response) => {
             this.topLeadeboardData = response;
             this.generateTopleaderboardMarkup(this.topLeadeboardData);
@@ -41,7 +35,7 @@ export class MarketingSpaceComponent implements ComponentInterface {
     }
 
     /**
-     * Set the download in the template
+     * Set the Marketing Space in the template
      *
      */
     private generateTopleaderboardMarkup(data) {
