@@ -69,7 +69,7 @@ class MarketingSpaceComponentController
      */
     public function marketingSpace($request, $response)
     {
-         try {
+        try {
             $marketingSpace = $this->views->getViewById('marketing_space');
             $data['marketing_space'] = $this->processMarketingSpace($marketingSpace);
         } catch (\Exception $e) {
