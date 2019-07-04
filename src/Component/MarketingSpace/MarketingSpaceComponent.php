@@ -13,7 +13,7 @@ class MarketingSpaceComponent implements ComponentWidgetInterface
      */
     private $configs;
 
-    private $product;
+    private $views;
 
     /**
      *
@@ -23,18 +23,18 @@ class MarketingSpaceComponent implements ComponentWidgetInterface
         return new static(
             $container->get('router_request'),
             $container->get('config_fetcher'),
-            $container->get('product_resolver')
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($request, $configs, $product)
+    public function __construct($request, $configs, $views)
     {
         $this->request = $request;
         $this->configs = $configs;
-        $this->product = $product;
+        $this->views = $views;
     }
 
     /**
