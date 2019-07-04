@@ -117,6 +117,7 @@ class MarketingSpaceComponentController
 
                 $marketSpaceUrl = $market_space['field_banner_link'][0]['uri'] ?? '';
                 $marketSpace['banner_url'] = $this->url->generateUri($marketSpaceUrl, ['skip_parsers' => true]);
+                $marketSpace['id'] = $market_space['id'][0]['value'] ?? '';
 
                 $marketSpace['banner_alt'] = $market_space['field_banner_image_portrait'][0]['alt'] ?? '';
 
