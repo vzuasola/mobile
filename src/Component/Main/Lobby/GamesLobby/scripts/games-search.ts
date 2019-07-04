@@ -25,6 +25,7 @@ export class GamesSearch {
     private searchBlurb;
     private recommendedGames;
     private response;
+    private timer;
 
     constructor() {
         this.searchObj = new Search({
@@ -386,12 +387,18 @@ export class GamesSearch {
     private listenChangeGameSearch() {
         ComponentManager.subscribe("keyup", (event, src) => {
             const keyword =  this.element.querySelector(".games-search-input");
-            if (keyword && keyword.value) {
-                this.searchObj.search(keyword.value);
-            } else {
-                this.clearSearchResult();
-                this.clearSearchBlurbPreview();
+            if (this.timer !== null) {
+                clearTimeout(this.timer);
             }
+
+            this.timer = setTimeout(() => {
+                if (keyword && keyword.value) {
+                    this.searchObj.search(keyword.value);
+                } else {
+                    this.clearSearchResult();
+                    this.clearSearchBlurbPreview();
+                }
+            }, 1000);
         });
     }
 
