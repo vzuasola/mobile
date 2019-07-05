@@ -25,7 +25,6 @@ class GPIModuleScripts implements ComponentAttachmentInterface
     public static function create($container)
     {
         return new static(
-            $container->get('product_resolver'),
             $container->get('player_session'),
             $container->get('config_fetcher'),
             $container->get('lang')
@@ -35,7 +34,7 @@ class GPIModuleScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($product, $playerSession, $config, $lang)
+    public function __construct($playerSession, $config, $lang)
     {
         $this->playerSession = $playerSession;
         $this->config = $config->withProduct('mobile-live-dealer');
