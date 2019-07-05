@@ -9,7 +9,7 @@ use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 /**
  *
  */
-class GPIKenoModuleScripts implements ComponentAttachmentInterface
+class GPIThaiModuleScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
@@ -50,8 +50,7 @@ class GPIKenoModuleScripts implements ComponentAttachmentInterface
             $gpiConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
 
             $data = [
-                //'currencies' => explode(PHP_EOL, $gpiConfig['gpi_thai_lottey_currency']),
-                'currencies' => $gpiConfig,
+                'currencies' => explode(PHP_EOL, $gpiConfig['gpi_thai_lottey_currency']),
                 'languages' => Config::parse($gpiConfig['gpi_thai_lottey_language_mapping'] ?? ''),
             ];
         } catch (\Exception $e) {

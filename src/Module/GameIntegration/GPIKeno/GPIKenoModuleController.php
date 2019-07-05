@@ -9,7 +9,7 @@ class GPIKenoModuleController
 {
     use ProviderTrait;
 
-    const KEY = 'gpi';
+    const KEY = 'gpi_keno';
 
     private $rest;
 

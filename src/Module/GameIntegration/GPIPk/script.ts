@@ -24,6 +24,8 @@ export class GPIPkModule implements ModuleInterface, GameInterface {
         this.currencies = attachments.currencies;
         this.languages = attachments.languages;
         this.messageLightbox = new ProviderMessageLightbox();
+        console.log(this.currencies);
+        console.log("ron");
     }
 
     init() {

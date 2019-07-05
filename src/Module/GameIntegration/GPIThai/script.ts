@@ -24,7 +24,6 @@ export class GPIThaiModule implements ModuleInterface, GameInterface {
         this.currencies = attachments.currencies;
         this.languages = attachments.languages;
         this.messageLightbox = new ProviderMessageLightbox();
-        console.log(this.currencies);
     }
 
     init() {

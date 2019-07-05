@@ -9,7 +9,7 @@ class GPIThaiModuleController
 {
     use ProviderTrait;
 
-    const KEY = 'gpi';
+    const KEY = 'gpi_thai';
 
     private $rest;
 
@@ -69,7 +69,7 @@ class GPIThaiModuleController
         try {
             $gpiConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
             $providerMapping = Config::parse($gpiConfig['gpi_thai_lottey_language_mapping'] ?? '');
-            $extraParams = Config::parse($gpiConfig['gpi_thai_lottey_extra_params']);
+            $extraParams = Config::parse($gpiConfig['gpi_keno_extra_params']);
             $sessiontokenizer = $this->playerSession->getToken();
 
             $domain = $gpiConfig['gpi_game_url'];

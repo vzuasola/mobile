@@ -5,11 +5,11 @@ namespace App\MobileEntry\Module\GameIntegration\GPIPk;
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Drupal\Config;
 
-class GPIKenoModuleController
+class GPIPkModuleController
 {
     use ProviderTrait;
 
-    const KEY = 'gpi';
+    const KEY = 'gpi_pk';
 
     private $rest;
 
