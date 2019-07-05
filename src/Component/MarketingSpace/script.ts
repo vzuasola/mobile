@@ -74,16 +74,13 @@ export class MarketingSpaceComponent implements ComponentInterface {
      * Mark active Top Leaderboard Item as read
      */
     private bindDismissButton(element) {
-        const activeItem = element.querySelector(".marketing-space-top-leaderboard");
-
-        if (activeItem) {
-            utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
-                const topLeaderboardId = activeItem.getAttribute("data-top-leaderboard-id");
-                this.setReadTopLeaderboard(topLeaderboardId);
+        ComponentManager.subscribe("click", (event, src) => {
+            const dismissBtn = utility.hasClass(src, "marketing-space-close-btn", true);
+            if (dismissBtn) {
                 const topLeadeboardEl: HTMLElement = this.element.querySelector("#marketing-space");
                 topLeadeboardEl.innerHTML = "";
-            }, true);
-        }
+            }
+        });
     }
 
     /**
