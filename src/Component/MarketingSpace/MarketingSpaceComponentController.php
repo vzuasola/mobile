@@ -67,80 +67,81 @@ class MarketingSpaceComponentController
      *
      * @return array
      */
-    public function marketingSpace($request, $response)
+    public function topLeaderboard($request, $response)
     {
         try {
-            $marketingSpace = $this->views->getViewById('marketing_space');
-            $data['marketing_space'] = $this->processMarketingSpace($marketingSpace);
-        } catch (\Exception $e) {
-            $data['marketing_space'] = [];
-        }
+            $params = $request->getParsedBody();
+            $views = $this->views;
+            if (isset($params['currentProduct'])) {
+                $views = $this->views->withProduct($params['currentProduct']);
+            }
 
-        try {
-            $data['is_login'] = $this->playerSession->isLogin();
+            $top_leaderboard = $views->getViewById('top_leaderboard');
+            $data['top_leaderboard'] = $this->processTopLeaderBoard($top_leaderboard);
         } catch (\Exception $e) {
-            $data['is_login'] = false;
+            $data['top_leaderboard'] = [];
         }
+        $data['is_login'] = $this->playerSession->isLogin();
 
         return $this->rest->output($response, $data);
     }
 
-    private function processMarketingSpace($data)
+    private function processTopLeaderBoard($data)
     {
         try {
-            $marketingSpace = [];
-            foreach ($data as $market_space) {
-                $marketSpace = [];
+            $topLeaderboardList = [];
+            foreach ($data as $topLeaderboardItem) {
+                $topLeaderboard = [];
 
-                $dateStart = $market_space['field_publish_date'][0]['value'] ?? '';
-                $dateEnd = $market_space['field_unpublish_date'][0]['value'] ?? '';
-                $marketSpace['published'] = $this->checkIfPublished(
+                $dateStart = $topLeaderboardItem['field_publish_date'][0]['value'] ?? '';
+                $dateEnd = $topLeaderboardItem['field_unpublish_date'][0]['value'] ?? '';
+                $topLeaderboard['published'] = $this->checkIfPublished(
                     $dateStart,
                     $dateEnd
                 );
 
-                $showBoth = count($market_space['field_log_in_state']) > 1;
+                $showBoth = count($topLeaderboardItem['field_log_in_state']) > 1;
 
-                $loginState = $market_space['field_log_in_state'][0]['value'] ?? 0;
+                $loginState = $topLeaderboardItem['field_log_in_state'][0]['value'] ?? 0;
 
                 if (!$showBoth && $loginState != $this->playerSession->isLogin()) {
-                    $marketSpace['published'] = false;
+                    $topLeaderboard['published'] = false;
                 }
 
-                $marketSpace['field_title'] = $market_space['field_title'][0]['value'] ?? '';
+                $topLeaderboard['field_title'] = $topLeaderboardItem['field_title'][0]['value'] ?? '';
 
-                $marketSpacePortraitImg = $market_space['field_banner_image_portrait'][0]['url'] ?? '';
-                $marketSpace['banner_img_portrait'] = $this->asset->generateAssetUri($marketSpacePortraitImg);
+                $topLeaderboardPortraitImg = $topLeaderboardItem['field_banner_image_portrait'][0]['url'] ?? '';
+                $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($topLeaderboardPortraitImg);
 
-                $marketSpaceLandscapeImg = $market_space['field_banner_image_landscape'][0]['url'] ?? '';
-                $marketSpace['banner_img_landscape'] = $this->asset->generateAssetUri($marketSpaceLandscapeImg);
+                $topLeaderboardLandscapeImg = $topLeaderboardItem['field_banner_image_landscape'][0]['url'] ?? '';
+                $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($topLeaderboardLandscapeImg);
 
-                $marketSpaceUrl = $market_space['field_banner_link'][0]['uri'] ?? '';
-                $marketSpace['banner_url'] = $this->url->generateUri($marketSpaceUrl, ['skip_parsers' => true]);
-                $marketSpace['id'] = $market_space['id'][0]['value'] ?? '';
+                $topLeaderboardUrl = $topLeaderboardItem['field_banner_link'][0]['uri'] ?? '';
+                $topLeaderboard['banner_url'] = $this->url->generateUri($topLeaderboardUrl, ['skip_parsers' => true]);
+                $topLeaderboard['id'] = $topLeaderboardItem['id'][0]['value'] ?? '';
 
-                $marketSpace['banner_alt'] = $market_space['field_banner_image_portrait'][0]['alt'] ?? '';
+                $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_banner_image_portrait'][0]['alt'] ?? '';
 
                 if ($this->playerSession->isLogin()) {
-                    $marketSpacePortraitImg = $market_space['field_post_banner_image_portrait'][0]['url'] ?? '';
-                    $marketSpace['banner_img_portrait'] = $this->asset->generateAssetUri($marketSpacePortraitImg);
+                    $topLeaderboardPortraitImg = $topLeaderboardItem['field_post_banner_image_portrait'][0]['url'] ?? '';
+                    $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($topLeaderboardPortraitImg);
 
-                    $marketSpaceLandscapeImg = $market_space['field_post_banner_image_landscap'][0]['url'] ?? '';
-                    $marketSpace['banner_img_landscape'] = $this->asset->generateAssetUri($marketSpaceLandscapeImg);
+                    $topLeaderboardLandscapeImg = $topLeaderboardItem['field_post_banner_image_landscap'][0]['url'] ?? '';
+                    $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($topLeaderboardLandscapeImg);
 
-                    $marketSpaceUrl = $market_space['field_post_banner_link'][0]['uri'] ?? '';
-                    $marketSpace['banner_url'] = $this->url->generateUri($marketSpaceUrl, ['skip_parsers' => true]);
+                    $topLeaderboardUrl = $topLeaderboardItem['field_post_banner_link'][0]['uri'] ?? '';
+                    $topLeaderboard['banner_url'] = $this->url->generateUri($topLeaderboardUrl, ['skip_parsers' => true]);
 
-                    $marketSpace['banner_alt'] = $market_space['field_post_banner_image_portrait'][0]['alt'] ?? '';
+                    $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_post_banner_image_portrait'][0]['alt'] ?? '';
                 }
 
-                $marketingSpace[] = $marketSpace;
+                $topLeaderboardList[] = $topLeaderboard;
             }
         } catch (\Exception $e) {
-            $marketingSpace = [];
+            $topLeaderboardList = [];
         }
 
-        return $marketingSpace;
+        return $topLeaderboardList;
     }
 
     private function checkIfPublished($dateStart, $dateEnd)
