@@ -21,6 +21,7 @@ import {EvolutionGamingModule} from "@app/src/Module/GameIntegration/EvolutionGa
 import {EBetModule} from "@app/src/Module/GameIntegration/EBet/script";
 import {GPIModule} from "@app/src/Module/GameIntegration/GPI/script";
 import {GPIKenoModule} from "@app/src/Module/GameIntegration/GPIKeno/script";
+import {GPIThaiModule} from "@app/src/Module/GameIntegration/GPIThai/script";
 import {TGPModule} from "@app/src/Module/GameIntegration/TGP/script";
 import {AllBetModule} from "@app/src/Module/GameIntegration/AllBet/script";
 import {VideoRacingModule} from "@app/src/Module/GameIntegration/VideoRacing/script";
@@ -55,6 +56,7 @@ ComponentManager.setModules({
     ebet_integration: new EBetModule(),
     gpi_integration: new GPIModule(),
     gpi_keno_integration: new GPIKenoModule(),
+    gpi_thai_integration: new GPIThaiModule(),
     tgp_integration: new TGPModule(),
     allbet_integration: new AllBetModule(),
     videoracing_integration: new VideoRacingModule(),
