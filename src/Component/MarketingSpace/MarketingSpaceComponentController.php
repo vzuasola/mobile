@@ -110,29 +110,31 @@ class MarketingSpaceComponentController
 
                 $topLeaderboard['field_title'] = $topLeaderboardItem['field_title'][0]['value'] ?? '';
 
-                $topLeaderboardPortraitImg = $topLeaderboardItem['field_banner_image_portrait'][0]['url'] ?? '';
-                $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($topLeaderboardPortraitImg);
+                $portraitImg = $topLeaderboardItem['field_banner_image_portrait'][0]['url'] ?? '';
+                $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($portraitImg);
 
-                $topLeaderboardLandscapeImg = $topLeaderboardItem['field_banner_image_landscape'][0]['url'] ?? '';
-                $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($topLeaderboardLandscapeImg);
+                $landscapeImg = $topLeaderboardItem['field_banner_image_landscape'][0]['url'] ?? '';
+                $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($landscapeImg);
 
-                $topLeaderboardUrl = $topLeaderboardItem['field_banner_link'][0]['uri'] ?? '';
-                $topLeaderboard['banner_url'] = $this->url->generateUri($topLeaderboardUrl, ['skip_parsers' => true]);
+                $tlUrl = $topLeaderboardItem['field_banner_link'][0]['uri'] ?? '';
+                $topLeaderboard['banner_url'] = $this->url->generateUri($tlUrl, ['skip_parsers' => true]);
                 $topLeaderboard['id'] = $topLeaderboardItem['id'][0]['value'] ?? '';
 
-                $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_banner_image_portrait'][0]['alt'] ?? '';
+                $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_banner_image_portrait'][0]['alt']
+                    ?? '';
 
                 if ($this->playerSession->isLogin()) {
-                    $topLeaderboardPortraitImg = $topLeaderboardItem['field_post_banner_image_portrait'][0]['url'] ?? '';
-                    $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($topLeaderboardPortraitImg);
+                    $portraitImg = $topLeaderboardItem['field_post_banner_image_portrait'][0]['url'] ?? '';
+                    $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($portraitImg);
 
-                    $topLeaderboardLandscapeImg = $topLeaderboardItem['field_post_banner_image_landscap'][0]['url'] ?? '';
-                    $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($topLeaderboardLandscapeImg);
+                    $landscapeImg = $topLeaderboardItem['field_post_banner_image_landscap'][0]['url'] ?? '';
+                    $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($landscapeImg);
 
-                    $topLeaderboardUrl = $topLeaderboardItem['field_post_banner_link'][0]['uri'] ?? '';
-                    $topLeaderboard['banner_url'] = $this->url->generateUri($topLeaderboardUrl, ['skip_parsers' => true]);
+                    $tlUrl = $topLeaderboardItem['field_post_banner_link'][0]['uri'] ?? '';
+                    $topLeaderboard['banner_url'] = $this->url->generateUri($tlUrl, ['skip_parsers' => true]);
 
-                    $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_post_banner_image_portrait'][0]['alt'] ?? '';
+                    $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_post_banner_image_portrait'][0]['alt']
+                        ?? '';
                 }
 
                 $topLeaderboardList[] = $topLeaderboard;
