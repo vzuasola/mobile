@@ -17,6 +17,7 @@ export class AnnouncementComponent implements ComponentInterface {
     private announcements: any;
     private timer: any;
     private showAnnouncementBar: boolean;
+    private language: string;
 
     constructor() {
         this.storage = new Storage();
@@ -25,13 +26,19 @@ export class AnnouncementComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.showAnnouncementBar = true;
+        this.language = ComponentManager.getAttribute("language");
         this.getAnnouncements();
         this.listenModalClose();
         this.listenAnnouncementLightbox();
 
         Router.on(RouterClass.afterNavigate, (event) => {
-            this.showAnnouncementBar = false;
-            this.getAnnouncements();
+            if (this.language !== ComponentManager.getAttribute("language")) {
+                this.showAnnouncementBar = true;
+                this.language = ComponentManager.getAttribute("language");
+            } else {
+                this.showAnnouncementBar = false;
+                this.getAnnouncements();
+            }
         });
     }
 

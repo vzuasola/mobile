@@ -1,0 +1,9 @@
+<div class="marketing-space-top-leaderboard" data-top-leaderboard-id="tl-{{ topLeadeboardData.id }}">
+    <a href="{{ topLeadeboardData.banner_url }}">
+        <picture>
+            <source srcset="{{ topLeadeboardData.banner_img_landscape }}" media="(min-width: 40em) and (orientation: landscape)">
+            <img src="{{ topLeadeboardData.banner_img_portrait }}" alt="{{ topLeadeboardData.banner_alt }}" class="w-100">
+        </picture>
+    </a>
+    <button class="marketing-space-close-btn btn-dismiss">×</button>
+</div>

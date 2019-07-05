@@ -989,9 +989,17 @@ export class GamesLobbyComponent implements ComponentInterface {
 
     private doSortCategoryGames(response, gamesList) {
         const sortedGamesList: any = [];
+        const favoritesKey = "favorites";
+        const exempFromSort: any = ["all-games", "favorites", "recently-played"];
+
+        /* tslint:enable:no-string-literal */
         sortedGamesList["all-games"] = response.games["all-games"];
+        sortedGamesList[favoritesKey] = response.games[favoritesKey];
+        sortedGamesList["recently-played"] = response.games["recently-played"];
+        /* tslint:enable:no-string-literal */
+
         for (const category in gamesList) {
-            if (gamesList.hasOwnProperty(category) && category !== "all-games") {
+            if (gamesList.hasOwnProperty(category) && exempFromSort.indexOf(category) === -1) {
                 sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
                     response,
                     category,
