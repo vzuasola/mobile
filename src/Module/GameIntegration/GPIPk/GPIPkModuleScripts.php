@@ -50,8 +50,8 @@ class GPIPkModuleScripts implements ComponentAttachmentInterface
             $gpiConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
 
             $data = [
-                'currencies' => explode(PHP_EOL, $gpiConfig['gpi_keno_currency']),
-                'languages' => Config::parse($gpiConfig['gpi_keno_language_mapping'] ?? ''),
+                'currencies' => explode(PHP_EOL, $gpiConfig['gpi_pk10_currency']),
+                'languages' => Config::parse($gpiConfig['gpi_pk10_language_mapping'] ?? ''),
             ];
         } catch (\Exception $e) {
             $data = [];
