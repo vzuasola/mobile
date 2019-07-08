@@ -90,54 +90,45 @@ class MarketingSpaceComponentController
     {
         try {
             $topLeaderboardList = [];
+            $isLogin = $this->playerSession->isLogin();
             foreach ($data as $topLeaderboardItem) {
-                $topLeaderboard = [];
-
                 $dateStart = $topLeaderboardItem['field_publish_date'][0]['value'] ?? '';
                 $dateEnd = $topLeaderboardItem['field_unpublish_date'][0]['value'] ?? '';
-                $topLeaderboard['published'] = $this->checkIfPublished(
+                $isPublished = $this->checkIfPublished(
                     $dateStart,
                     $dateEnd
                 );
 
-                $showBoth = count($topLeaderboardItem['field_log_in_state']) > 1;
+                if ($isPublished) {
+                    $topLeaderboard = [];
+                    $availability = array_column($topLeaderboardItem['field_log_in_state'], 'value');
+                    $topLeaderboard['field_title'] = $topLeaderboardItem['field_title'][0]['value'] ?? '';
+                    $topLeaderboard['id'] = $topLeaderboardItem['id'][0]['value'] ?? '';
+                    if ($isLogin && in_array("1", $availability)) {
+                        $portraitImg = $topLeaderboardItem['field_post_banner_image_portrait'][0]['url'] ?? '';
+                        $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($portraitImg);
+                        $landscapeImg = $topLeaderboardItem['field_post_banner_image_landscap'][0]['url'] ?? '';
+                        $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($landscapeImg);
 
-                $loginState = $topLeaderboardItem['field_log_in_state'][0]['value'] ?? 0;
+                        $tlUrl = $topLeaderboardItem['field_post_banner_link'][0]['uri'] ?? '';
+                        $topLeaderboard['banner_url'] = $this->url->generateUri($tlUrl, ['skip_parsers' => true]);
+                        $topLeaderboard['banner_alt'] =
+                            $topLeaderboardItem['field_post_banner_image_portrait'][0]['alt']
+                            ?? '';
+                        $topLeaderboardList[] = $topLeaderboard;
+                    } elseif (!$isLogin && in_array("0", $availability)) {
+                        $portraitImg = $topLeaderboardItem['field_banner_image_portrait'][0]['url'] ?? '';
+                        $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($portraitImg);
+                        $landscapeImg = $topLeaderboardItem['field_banner_image_landscape'][0]['url'] ?? '';
+                        $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($landscapeImg);
 
-                if (!$showBoth && $loginState != $this->playerSession->isLogin()) {
-                    $topLeaderboard['published'] = false;
+                        $tlUrl = $topLeaderboardItem['field_banner_link'][0]['uri'] ?? '';
+                        $topLeaderboard['banner_url'] = $this->url->generateUri($tlUrl, ['skip_parsers' => true]);
+                        $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_banner_image_portrait'][0]['alt']
+                            ?? '';
+                        $topLeaderboardList[] = $topLeaderboard;
+                    }
                 }
-
-                $topLeaderboard['field_title'] = $topLeaderboardItem['field_title'][0]['value'] ?? '';
-
-                $portraitImg = $topLeaderboardItem['field_banner_image_portrait'][0]['url'] ?? '';
-                $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($portraitImg);
-
-                $landscapeImg = $topLeaderboardItem['field_banner_image_landscape'][0]['url'] ?? '';
-                $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($landscapeImg);
-
-                $tlUrl = $topLeaderboardItem['field_banner_link'][0]['uri'] ?? '';
-                $topLeaderboard['banner_url'] = $this->url->generateUri($tlUrl, ['skip_parsers' => true]);
-                $topLeaderboard['id'] = $topLeaderboardItem['id'][0]['value'] ?? '';
-
-                $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_banner_image_portrait'][0]['alt']
-                    ?? '';
-
-                if ($this->playerSession->isLogin()) {
-                    $portraitImg = $topLeaderboardItem['field_post_banner_image_portrait'][0]['url'] ?? '';
-                    $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($portraitImg);
-
-                    $landscapeImg = $topLeaderboardItem['field_post_banner_image_landscap'][0]['url'] ?? '';
-                    $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($landscapeImg);
-
-                    $tlUrl = $topLeaderboardItem['field_post_banner_link'][0]['uri'] ?? '';
-                    $topLeaderboard['banner_url'] = $this->url->generateUri($tlUrl, ['skip_parsers' => true]);
-
-                    $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_post_banner_image_portrait'][0]['alt']
-                        ?? '';
-                }
-
-                $topLeaderboardList[] = $topLeaderboard;
             }
         } catch (\Exception $e) {
             $topLeaderboardList = [];
