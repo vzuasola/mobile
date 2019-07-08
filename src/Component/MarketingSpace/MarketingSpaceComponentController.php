@@ -101,7 +101,6 @@ class MarketingSpaceComponentController
 
                 if ($isPublished) {
                     $topLeaderboard = [];
-                    
                     $availability = array_column($topLeaderboardItem['field_log_in_state'], 'value');
                     $topLeaderboard['field_title'] = $topLeaderboardItem['field_title'][0]['value'] ?? '';
                     $topLeaderboard['id'] = $topLeaderboardItem['id'][0]['value'] ?? '';
