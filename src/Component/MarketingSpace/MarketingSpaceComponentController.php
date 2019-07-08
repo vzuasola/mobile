@@ -107,16 +107,16 @@ class MarketingSpaceComponentController
                     if ($isLogin && in_array("1", $availability)) {
                         $portraitImg = $topLeaderboardItem['field_post_banner_image_portrait'][0]['url'] ?? '';
                         $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($portraitImg);
-    
                         $landscapeImg = $topLeaderboardItem['field_post_banner_image_landscap'][0]['url'] ?? '';
                         $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($landscapeImg);
 
                         $tlUrl = $topLeaderboardItem['field_post_banner_link'][0]['uri'] ?? '';
                         $topLeaderboard['banner_url'] = $this->url->generateUri($tlUrl, ['skip_parsers' => true]);
-                        $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_post_banner_image_portrait'][0]['alt']
+                        $topLeaderboard['banner_alt'] =
+                            $topLeaderboardItem['field_post_banner_image_portrait'][0]['alt']
                             ?? '';
                         $topLeaderboardList[] = $topLeaderboard;
-                    } else if (!$isLogin && in_array("0", $availability)) {
+                    } elseif (!$isLogin && in_array("0", $availability)) {
                         $portraitImg = $topLeaderboardItem['field_banner_image_portrait'][0]['url'] ?? '';
                         $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($portraitImg);
                         $landscapeImg = $topLeaderboardItem['field_banner_image_landscape'][0]['url'] ?? '';
