@@ -40,10 +40,17 @@ export class MarketingSpaceComponent implements ComponentInterface {
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getTopLeaderboard();
+        this.getTopLeaderboard(() => {
+            if (!this.readTopLeaderboard) {
+                const activeLb = this.element.querySelector(".marketing-space-top-leaderboard");
+                if (activeLb) {
+                    this.setReadTopLeaderboard(activeLb.getAttribute("data-top-leaderboard-id"));
+                }
+            }
+        });
     }
 
-    private getTopLeaderboard() {
+    private getTopLeaderboard(callback?) {
         xhr({
             url: Router.generateRoute("marketing_space", "topLeaderboard"),
             method: "post",
@@ -54,6 +61,9 @@ export class MarketingSpaceComponent implements ComponentInterface {
         }).then((response) => {
             this.topLeadeboardData = response.top_leaderboard;
             this.generateTopleaderboardMarkup();
+            if (callback) {
+                callback();
+            }
         });
     }
 
