@@ -220,6 +220,15 @@ modules:
   gpi_integration:
     class: App\MobileEntry\Module\GameIntegration\GPI\GPIModule
 
+  gpi_keno_integration:
+    class: App\MobileEntry\Module\GameIntegration\GPIKeno\GPIKenoModule
+
+  gpi_pk_integration:
+    class: App\MobileEntry\Module\GameIntegration\GPIPk\GPIPkModule
+
+  gpi_thai_integration:
+    class: App\MobileEntry\Module\GameIntegration\GPIThai\GPIThaiModule
+
   tgp_integration:
     class: App\MobileEntry\Module\GameIntegration\TGP\TGPModule
 
