@@ -84,7 +84,8 @@ export class MarketingSpaceComponent implements ComponentInterface {
             if (this.readTopLeaderboard) {
                 this.setReadTopLeaderboard("tl-" + topLeaderboard.id);
             }
-            this.bindDismissButton(this.element);
+            this.bindDismissButton();
+            this.bindClickTopLeaderboard();
         }
 
         topLeadeboardEl.innerHTML = template;
@@ -93,10 +94,20 @@ export class MarketingSpaceComponent implements ComponentInterface {
     /**
      * Mark active Top Leaderboard Item as read
      */
-    private bindDismissButton(element) {
+    private bindDismissButton() {
         ComponentManager.subscribe("click", (event, src) => {
             const dismissBtn = utility.hasClass(src, "marketing-space-close-btn", true);
             if (dismissBtn) {
+                const topLeadeboardEl: HTMLElement = this.element.querySelector("#marketing-space");
+                topLeadeboardEl.innerHTML = "";
+            }
+        });
+    }
+
+    private bindClickTopLeaderboard() {
+        ComponentManager.subscribe("click", (event, src) => {
+            const tlItem = utility.hasClass(src, "marketing-space-top-leaderboard", true);
+            if (tlItem) {
                 const topLeadeboardEl: HTMLElement = this.element.querySelector("#marketing-space");
                 topLeadeboardEl.innerHTML = "";
             }
