@@ -115,6 +115,7 @@ class MarketingSpaceComponentController
                         $topLeaderboard['banner_alt'] =
                             $topLeaderboardItem['field_post_banner_image_portrait'][0]['alt']
                             ?? '';
+                        $topLeaderboard['target'] = $topLeaderboardItem['field_banner_link_target'][0]['value'] ?? '';
                         $topLeaderboardList[] = $topLeaderboard;
                     } elseif (!$isLogin && in_array("0", $availability)) {
                         $portraitImg = $topLeaderboardItem['field_banner_image_portrait'][0]['url'] ?? '';
@@ -126,6 +127,7 @@ class MarketingSpaceComponentController
                         $topLeaderboard['banner_url'] = $this->url->generateUri($tlUrl, ['skip_parsers' => true]);
                         $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_banner_image_portrait'][0]['alt']
                             ?? '';
+                        $topLeaderboard['target'] = $topLeaderboardItem['field_banner_link_target'][0]['value'] ?? '';
                         $topLeaderboardList[] = $topLeaderboard;
                     }
                 }
