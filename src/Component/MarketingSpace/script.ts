@@ -16,6 +16,8 @@ export class MarketingSpaceComponent implements ComponentInterface {
     private element: HTMLElement;
     private topLeadeboardData: any;
     private topLeaderboardLSKey = "TopLeaderboardReadItems";
+    private language: string;
+    private readTopLeaderboard: boolean;
 
     constructor() {
         this.storage = new Storage();
@@ -23,9 +25,15 @@ export class MarketingSpaceComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
+        this.readTopLeaderboard = true;
+        this.language = ComponentManager.getAttribute("language");
         this.getTopLeaderboard();
-
         Router.on(RouterClass.afterNavigate, (event) => {
+            this.readTopLeaderboard = true;
+            if (this.language !== ComponentManager.getAttribute("language")) {
+                this.readTopLeaderboard = false;
+                this.language = ComponentManager.getAttribute("language");
+            }
             this.getTopLeaderboard();
         });
     }
@@ -63,7 +71,9 @@ export class MarketingSpaceComponent implements ComponentInterface {
                 topLeadeboardData: topLeaderboard,
             });
 
-            this.setReadTopLeaderboard("tl-" + topLeaderboard.id);
+            if (this.readTopLeaderboard) {
+                this.setReadTopLeaderboard("tl-" + topLeaderboard.id);
+            }
             this.bindDismissButton(this.element);
         }
 
