@@ -81,7 +81,7 @@ class GPIThaiModuleController
                 'lang' => $requestData['langCode'],
                 'vendor' => $vendor,
                 'ticket' => $ticket,
-                'version' => '4',
+                'version' => $versionno,
             ], $extraParams);
 
             $query = http_build_query($args);
