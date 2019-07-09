@@ -68,34 +68,8 @@ class FooterComponent implements ComponentWidgetInterface
             $data['footer_menu'] = [];
         }
 
-        $this->orderSponsors($data['sponsors']);
-
         $data['copyright'] = 'Copyright';
 
         return $data;
-    }
-
-
-    private function orderSponsors(&$sponsors)
-    {
-        $count = 1;
-
-        foreach ($sponsors as $key => $sponsor) {
-            if (!$sponsor['field_mobile_full_row'][0]['value']) {
-                if ($count == 1) {
-                    $sponsors[$key]['leaf_class'] = 'left';
-                }
-
-                if ($count == 2) {
-                    $sponsors[$key]['leaf_class'] = 'right';
-                }
-
-                $count++;
-            }
-
-            if ($count > 2) {
-                $count = 1;
-            }
-        }
     }
 }
