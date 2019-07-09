@@ -69,7 +69,7 @@ class GPIPkModuleController
         try {
             $gpiConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
             $providerMapping = Config::parse($gpiConfig['gpi_pk10_language_mapping'] ?? '');
-            $extraParams = Config::parse($gpiConfig['gpi_keno_extra_params']);
+            $extraParams = Config::parse($gpiConfig['gpi_pk10_extra_params']);
             $sessiontokenizer = $this->playerSession->getToken();
 
             $domain = $gpiConfig['gpi_game_url'];
@@ -81,7 +81,7 @@ class GPIPkModuleController
                 'lang' => $requestData['langCode'],
                 'vendor' => $vendor,
                 'ticket' => $ticket,
-                'version' => '4',
+                'version' => $versionno,
             ], $extraParams);
 
             $query = http_build_query($args);
