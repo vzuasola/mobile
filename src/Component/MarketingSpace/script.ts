@@ -16,8 +16,8 @@ export class MarketingSpaceComponent implements ComponentInterface {
     private element: HTMLElement;
     private topLeadeboardData: any;
     private topLeaderboardLSKey = "TopLeaderboardReadItems";
-    private activeTopLeaderboardLSKey = "ActiveTopLeaderboardID";
-    private defaultActive: number = 0;
+    private language: string;
+    private readTopLeaderboard: boolean;
 
     constructor() {
         this.storage = new Storage();
@@ -25,19 +25,32 @@ export class MarketingSpaceComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
+        this.readTopLeaderboard = true;
+        this.language = ComponentManager.getAttribute("language");
         this.getTopLeaderboard();
-
         Router.on(RouterClass.afterNavigate, (event) => {
+            this.readTopLeaderboard = true;
+            if (this.language !== ComponentManager.getAttribute("language")) {
+                this.readTopLeaderboard = false;
+                this.language = ComponentManager.getAttribute("language");
+            }
             this.getTopLeaderboard();
         });
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getTopLeaderboard();
+        this.getTopLeaderboard(() => {
+            if (!this.readTopLeaderboard) {
+                const activeLb = this.element.querySelector(".marketing-space-top-leaderboard");
+                if (activeLb) {
+                    this.setReadTopLeaderboard(activeLb.getAttribute("data-top-leaderboard-id"));
+                }
+            }
+        });
     }
 
-    private getTopLeaderboard() {
+    private getTopLeaderboard(callback?) {
         xhr({
             url: Router.generateRoute("marketing_space", "topLeaderboard"),
             method: "post",
@@ -48,6 +61,9 @@ export class MarketingSpaceComponent implements ComponentInterface {
         }).then((response) => {
             this.topLeadeboardData = response.top_leaderboard;
             this.generateTopleaderboardMarkup();
+            if (callback) {
+                callback();
+            }
         });
     }
 
@@ -56,54 +72,46 @@ export class MarketingSpaceComponent implements ComponentInterface {
      *
      */
     private generateTopleaderboardMarkup() {
+        let template = "";
         const topLeadeboardEl: HTMLElement = this.element.querySelector("#marketing-space");
-        const topLeaderboard: any = this.filterTopLeaderboard();
+        const unreadTopLeaderboards: any = this.getUnreadTopLeaderboard();
+        const topLeaderboard = (unreadTopLeaderboards[0]) ? unreadTopLeaderboards[0] : [];
         if (topLeaderboard.hasOwnProperty("id")) {
-            const template = topLeaderboardTemplate({
+            template = topLeaderboardTemplate({
                 topLeadeboardData: topLeaderboard,
             });
 
-            topLeadeboardEl.innerHTML = template;
-            this.bindDismissButton(this.element);
-        }
-    }
-
-    private filterTopLeaderboard() {
-        const unreadTopLeaderboards: any = this.getUnreadTopLeaderboard();
-        // check if multiple top leaderboard
-        if (unreadTopLeaderboards.length > 1) {
-            const activeIndex = this.getActiveTopLeaderboardIndex();
-            if (unreadTopLeaderboards.hasOwnProperty(activeIndex)) {
-                let nextActiveIndex: number = activeIndex + 1;
-                // check if the active top leaderboard id is the last item and reset to first index
-                if (activeIndex === unreadTopLeaderboards.length - 1) {
-                    nextActiveIndex = this.defaultActive;
-                }
-
-                this.setActiveTopLeaderboardIndex(nextActiveIndex);
-                return unreadTopLeaderboards[activeIndex];
+            if (this.readTopLeaderboard) {
+                this.setReadTopLeaderboard("tl-" + topLeaderboard.id);
             }
+            this.bindDismissButton();
+            this.bindClickTopLeaderboard();
         }
 
-        return unreadTopLeaderboards.hasOwnProperty(this.defaultActive)
-        ? unreadTopLeaderboards[this.defaultActive] : [];
+        topLeadeboardEl.innerHTML = template;
     }
 
     /**
      * Mark active Top Leaderboard Item as read
      */
-    private bindDismissButton(element) {
-        const activeItem = element.querySelector(".marketing-space-top-leaderboard");
-
-        if (activeItem) {
-            utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
-                const topLeaderboardId = activeItem.getAttribute("data-top-leaderboard-id");
-                this.setReadTopLeaderboard(topLeaderboardId);
-                this.setActiveTopLeaderboardIndex(this.defaultActive);
+    private bindDismissButton() {
+        ComponentManager.subscribe("click", (event, src) => {
+            const dismissBtn = utility.hasClass(src, "marketing-space-close-btn", true);
+            if (dismissBtn) {
                 const topLeadeboardEl: HTMLElement = this.element.querySelector("#marketing-space");
                 topLeadeboardEl.innerHTML = "";
-            }, true);
-        }
+            }
+        });
+    }
+
+    private bindClickTopLeaderboard() {
+        ComponentManager.subscribe("click", (event, src) => {
+            const tlItem = utility.hasClass(src, "marketing-space-top-leaderboard", true);
+            if (tlItem) {
+                const topLeadeboardEl: HTMLElement = this.element.querySelector("#marketing-space");
+                topLeadeboardEl.innerHTML = "";
+            }
+        });
     }
 
     /**
@@ -147,26 +155,5 @@ export class MarketingSpaceComponent implements ComponentInterface {
             readTopLeaderboards.push(topLeaderboardId);
             this.storage.set(this.topLeaderboardLSKey, JSON.stringify(readTopLeaderboards));
         }
-    }
-
-    /**
-     * Get all marked as Read Top Leaderboard Item
-     */
-    private getActiveTopLeaderboardIndex() {
-        let activeLeaderboardIndex: number = this.defaultActive;
-
-        if (this.storage.get(this.activeTopLeaderboardLSKey)) {
-            const activeIndex = this.storage.get(this.activeTopLeaderboardLSKey);
-            activeLeaderboardIndex = parseInt(activeIndex, 10);
-        }
-
-        return activeLeaderboardIndex;
-    }
-
-    /**
-     * Mark Top Leaderboard Item as Read
-     */
-    private setActiveTopLeaderboardIndex(topLeaderboardIndex) {
-        this.storage.set(this.activeTopLeaderboardLSKey, topLeaderboardIndex);
     }
 }
