@@ -366,13 +366,14 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Persist session on post-login
      */
     private sessionPersist() {
-        this.doKeepAlive();
-
-        if (this.timer === null) {
-            this.timer = setTimeout(function() {
-                this.timer = null;
-                this.sessionPersist();
-            }, this.keepSessionTime);
+        if (Router.route() !== "/game/loader") {
+            this.doKeepAlive();
+            if (this.timer === null) {
+                this.timer = setTimeout(function() {
+                    this.timer = null;
+                    this.sessionPersist();
+                }, this.keepSessionTime);
+            }
         }
     }
 
