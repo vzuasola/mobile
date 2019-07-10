@@ -1,26 +1,39 @@
+<ul class="game-lottery-lobby-container providers clearfix">
 {{#each games}}
-    <div class="lottery-game-tile {{this.size}}">
-        <a class="lottery-game-tile-item"
+    <li class="game-listing">
+        <a class="game-list game-listing-item"
         {{#if ../isLogin}}
-        data-game-launch="true"
+            data-game-launch="true"
         {{/if}}
         data-game-provider="{{this.game_provider}}"
         data-game-title="{{this.title}}"
         data-game-target="{{this.target}}"
         data-game-loader="{{this.use_game_loader}}"
         data-game-lobby="true"
+        data-game-maintenance="{{this.game_maintenance}}"
+
         >
             {{#if this.ribbon}}
-                <div class="game-ribbon lottery-ribbon"
+                <span class="game-ribbon"
                     style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
                 >
                     {{this.ribbon.name}}
-                </div>
+                </span>
             {{/if}}
             <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
+            <p class="label-game-title 
+            {{#if this.game_maintenance}}hidden{{/if}}">{{this.title}}</p>
+            
         </a>
-    </div>
+        {{#if this.game_maintenance}}
+            <div class="game-listing-maintenance">
+                <p>{{this.game_maintenance_text}}</p>
+                <span class="game-listing-maintenance-title">{{this.title}}</span>
+            </div>
+        {{/if}}    
+    </li>
 {{/each}}
+</ul>
 <div id="game-loader" class="game-loader">
     <span class="game-loader-load-more">Load More</span>
     <div class="sk-fading-circle mobile-game-loader hidden">
