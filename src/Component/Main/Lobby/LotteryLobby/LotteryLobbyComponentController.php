@@ -79,7 +79,7 @@ class LotteryLobbyComponentController
             $gamesList = [];
             $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
-               $gamesList[] = $this->getGameDefinition($game);
+                $gamesList[] = $this->getGameDefinition($game);
             }
         } catch (\Exception $e) {
             $gamesList = [];
