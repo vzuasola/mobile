@@ -58,12 +58,7 @@ export class MenuComponent implements ComponentInterface {
         Router.on(RouterClass.afterNavigate, (event) => {
             this.attachProduct();
             this.attachProductToLogin();
-            if (this.language !== ComponentManager.getAttribute("language")) {
-                this.refreshBalance();
-                this.language = ComponentManager.getAttribute("language");
-            } else {
-                this.reloadBalance();
-            }
+            this.reloadBalance();
         });
 
     }
@@ -135,34 +130,22 @@ export class MenuComponent implements ComponentInterface {
     private reloadBalance() {
         ComponentManager.broadcast("balance.return", {
             success: (response) => {
-                this.populateBalance(response);
+                if (this.isLogin && typeof response.balance !== "undefined") {
+                    const headerBalance = this.element.querySelector(".mobile-menu-amount");
+                    let formatedBalance: string;
+
+                    formatedBalance = response.format;
+                    if (formatedBalance) {
+                        formatedBalance = formatedBalance.replace("{currency}", response.currency);
+                        formatedBalance = formatedBalance.replace("{total}", response.balance);
+
+                        headerBalance.innerHTML = formatedBalance;
+                    }
+                }
             },
         });
     }
 
-    // Retrieves balance
-    private refreshBalance() {
-        ComponentManager.broadcast("balance.refresh");
-        ComponentManager.subscribe("balance.fetch", (event, src, data) => {
-            this.populateBalance(data.response);
-        });
-    }
-
-    private populateBalance(response) {
-        if (this.isLogin && typeof response.balance !== "undefined") {
-            const headerBalance = this.element.querySelector(".mobile-menu-amount");
-            let formatedBalance: string;
-
-            formatedBalance = response.format;
-
-            if (formatedBalance) {
-                formatedBalance = formatedBalance.replace("{currency}", response.currency);
-                formatedBalance = formatedBalance.replace("{total}", response.balance);
-
-                headerBalance.innerHTML = formatedBalance;
-            }
-        }
-    }
     /**
      * Listen to announcement pushes
      */
