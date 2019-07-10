@@ -42,7 +42,7 @@ export class LanguageComponent implements ComponentInterface {
                         .replace(regexp, hostname + "/" + selectedLang + "$1");
 
                     Modal.close("#language-lightbox");
-
+                    ComponentManager.broadcast("language.change");
                     Router.navigate(
                         redirectionUrl,
                         ["*"],
