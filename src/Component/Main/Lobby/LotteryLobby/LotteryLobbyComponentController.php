@@ -77,7 +77,7 @@ class LotteryLobbyComponentController
     {
         try {
             $gamesList = [];
-            $games = $this->views->getViewById('games_list');            
+            $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
                $gamesList[] = $this->getGameDefinition($game);
             }
@@ -128,7 +128,7 @@ class LotteryLobbyComponentController
         }
     }
 
-    private function checkIfMaintenance( $game )
+    private function checkIfMaintenance($game)
     {
         $dateStart = $game['field_maintenance_start_date'][0]['value'] ?? null;
         $dateEnd = $game['field_maintenance_end_date'][0]['value'] ?? null;
