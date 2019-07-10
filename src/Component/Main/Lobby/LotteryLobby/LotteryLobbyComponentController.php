@@ -50,6 +50,7 @@ class LotteryLobbyComponentController
      */
     public function lobby($request, $response)
     {
+        
         $item = $this->cacher->getItem('views.lottery-lobby-data.' . $this->currentLanguage);
 
         if (!$item->isHit()) {
@@ -68,7 +69,6 @@ class LotteryLobbyComponentController
             $body = $item->get();
             $data = $body['body'];
         }
-
         return $this->rest->output($response, $data);
     }
 
@@ -80,6 +80,7 @@ class LotteryLobbyComponentController
         try {
             $gamesList = [];
             $games = $this->views->getViewById('games_list');
+            //return $games; //remove this...
             foreach ($games as $game) {
                 $gamesList[] = $this->getGameDefinition($game);
             }
@@ -117,9 +118,60 @@ class LotteryLobbyComponentController
             $definition['target'] = $game['field_target'][0]['value'] ?? '';
             $definition['use_game_loader'] = isset($game['field_use_game_loader'][0]['value'])
                 ? $game['field_use_game_loader'][0]['value'] : "false";
+            $definition['target'] = $game['field_target'][0]['value'] ?? '';    
+            $definition['game_maintenance_text'] = null;
+            $definition['game_maintenance'] = false;
+            
+            if( $this->checkIfMaintenance( $game ))
+            {
+                $definition['game_maintenance'] = true;
+                $definition['game_maintenance_text'] = $game['field_maintenance_blurb'][0]['value'];
+            }
+
             return $definition;
         } catch (\Exception $e) {
             return [];
         }
+    }
+
+    private function checkIfMaintenance( $game )
+    {
+        $dateStart = $game['field_maintenance_start_date'][0]['value'] ?? null;
+        $dateEnd = $game['field_maintenance_end_date'][0]['value'] ?? null;
+
+        if (!$dateStart && !$dateEnd) {
+            return false;
+        }
+
+        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
+        $currentDate = $currentDate->getTimestamp();
+        if ($dateStart && $dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateStart && !$dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateEnd && !$dateStart) {
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($endDate->getTimestamp() >= $currentDate) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

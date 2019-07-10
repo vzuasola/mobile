@@ -9,6 +9,7 @@
         data-game-target="{{this.target}}"
         data-game-loader="{{this.use_game_loader}}"
         data-game-lobby="true"
+        data-game-maintenance="{{this.game_maintenance}}"
         >
             {{#if this.ribbon}}
                 <div class="game-ribbon lottery-ribbon"
@@ -18,7 +19,14 @@
                 </div>
             {{/if}}
             <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
+            <p class="label-game-title 
+            {{#if this.game_maintenance}}hidden{{/if}}">{{this.game_maintenance_text}}</p>
         </a>
+            <div class="game-listing-maintenance">
+                <p>{{this.game_maintenance_text}}</p>
+                <span class="game-listing-maintenance-title">{{this.title}}</span>
+            </div>
+        
     </div>
 {{/each}}
 <div id="game-loader" class="game-loader">
