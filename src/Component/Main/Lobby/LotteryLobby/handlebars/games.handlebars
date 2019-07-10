@@ -1,9 +1,9 @@
-<ul class="game-lobby-container clearfix">
+<ul class="game-lottery-lobby-container providers clearfix">
 {{#each games}}
     <li class="game-listing">
         <a class="game-list game-listing-item"
         {{#if ../isLogin}}
-        data-game-launch="true"
+            data-game-launch="true"
         {{/if}}
         data-game-provider="{{this.game_provider}}"
         data-game-title="{{this.title}}"
@@ -27,7 +27,7 @@
         </a>
         {{#if this.game_maintenance}}
             <div class="game-listing-maintenance">
-                {{this.game_maintenance_text}}</p>
+                <p>{{this.game_maintenance_text}}</p>
                 <span class="game-listing-maintenance-title">{{this.title}}</span>
             </div>
         {{/if}}    

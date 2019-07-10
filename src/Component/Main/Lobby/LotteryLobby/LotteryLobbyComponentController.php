@@ -118,7 +118,7 @@ class LotteryLobbyComponentController
             $definition['use_game_loader'] = isset($game['field_use_game_loader'][0]['value'])
                 ? $game['field_use_game_loader'][0]['value'] : "false";  
             $definition['game_maintenance_text'] = null;
-            $definition['game_maintenance'] = false;            
+            $definition['game_maintenance'] = false;
             if( $this->checkIfMaintenance($game)){
                 $definition['game_maintenance'] = true;
                 $definition['game_maintenance_text'] = strip_tags($game['field_maintenance_blurb'][0]['processed']);
