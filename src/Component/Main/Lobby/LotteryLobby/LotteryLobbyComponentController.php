@@ -55,7 +55,6 @@ class LotteryLobbyComponentController
 
         if (!$item->isHit()) {
             $data = $this->getGamesList();
-
             if (!empty($data)) {
                 $item->set([
                     'body' => $data,
@@ -116,10 +115,10 @@ class LotteryLobbyComponentController
             $definition['game_provider'] = $game['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
             $definition['target'] = $game['field_target'][0]['value'] ?? '';
             $definition['use_game_loader'] = isset($game['field_use_game_loader'][0]['value'])
-                ? $game['field_use_game_loader'][0]['value'] : "false";  
+                ? $game['field_use_game_loader'][0]['value'] : "false";
             $definition['game_maintenance_text'] = null;
             $definition['game_maintenance'] = false;
-            if( $this->checkIfMaintenance($game)){
+            if ($this->checkIfMaintenance($game)) {
                 $definition['game_maintenance'] = true;
                 $definition['game_maintenance_text'] = strip_tags($game['field_maintenance_blurb'][0]['processed']);
             }
