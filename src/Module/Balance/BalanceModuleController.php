@@ -313,7 +313,6 @@ class BalanceModuleController
                 if ($translated = Currency::getTranslation($currency)) {
                     $currency = $translated;
                 }
-            
                 if ($currency === 'mBTC') {
                     $currency = '比特币';
                 }
