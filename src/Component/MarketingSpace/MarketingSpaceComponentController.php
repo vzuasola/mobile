@@ -94,24 +94,28 @@ class MarketingSpaceComponentController
             foreach ($data as $topLeaderboardItem) {
                 $dateStart = $topLeaderboardItem['field_publish_date'][0]['value'] ?? '';
                 $dateEnd = $topLeaderboardItem['field_unpublish_date'][0]['value'] ?? '';
-                $isPublished = $this->checkIfPublished(
+                $publishDetails = $this->getPublishDetails(
                     $dateStart,
                     $dateEnd
                 );
-
-                if ($isPublished) {
+                if ($publishDetails['is_published']) {
                     $topLeaderboard = [];
                     $availability = array_column($topLeaderboardItem['field_log_in_state'], 'value');
                     $topLeaderboard['field_title'] = $topLeaderboardItem['field_title'][0]['value'] ?? '';
-                    $topLeaderboard['id'] = $topLeaderboardItem['id'][0]['value'] ?? '';
+                    $topLeaderboard['id'] = $topLeaderboardItem['id'][0]['value']
+                        . '-' . $publishDetails['publish_date'];
                     if ($isLogin && in_array("1", $availability)) {
                         $portraitImg = $topLeaderboardItem['field_post_banner_image_portrait'][0]['url'] ?? '';
                         $topLeaderboard['banner_img_portrait'] = $this->asset->generateAssetUri($portraitImg);
                         $landscapeImg = $topLeaderboardItem['field_post_banner_image_landscap'][0]['url'] ?? '';
                         $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($landscapeImg);
 
-                        $tlUrl = $topLeaderboardItem['field_post_banner_link'][0]['uri'] ?? '';
-                        $topLeaderboard['banner_url'] = $this->url->generateUri($tlUrl, ['skip_parsers' => true]);
+                        $topLeaderboard['banner_url'] = '';
+                        if ($topLeaderboardItem['field_post_banner_link']) {
+                            $topLeaderboard['banner_url'] = $this->url->generateUri(
+                                $topLeaderboardItem['field_post_banner_link'][0]['uri'],
+                                ['skip_parsers' => true]);
+                        }
                         $topLeaderboard['banner_alt'] =
                             $topLeaderboardItem['field_post_banner_image_portrait'][0]['alt']
                             ?? '';
@@ -124,8 +128,12 @@ class MarketingSpaceComponentController
                         $landscapeImg = $topLeaderboardItem['field_banner_image_landscape'][0]['url'] ?? '';
                         $topLeaderboard['banner_img_landscape'] = $this->asset->generateAssetUri($landscapeImg);
 
-                        $tlUrl = $topLeaderboardItem['field_banner_link'][0]['uri'] ?? '';
-                        $topLeaderboard['banner_url'] = $this->url->generateUri($tlUrl, ['skip_parsers' => true]);
+                        $topLeaderboard['banner_url'] = '';
+                        if ($topLeaderboardItem['field_banner_link']) {
+                            $topLeaderboard['banner_url'] = $this->url->generateUri(
+                                $topLeaderboardItem['field_banner_link'][0]['uri'],
+                                ['skip_parsers' => true]);
+                        }
                         $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_banner_image_portrait'][0]['alt']
                             ?? '';
                         $topLeaderboard['target'] = $topLeaderboardItem['field_banner_link_target'][0]['value'] ?? '';
@@ -140,10 +148,13 @@ class MarketingSpaceComponentController
         return $topLeaderboardList;
     }
 
-    private function checkIfPublished($dateStart, $dateEnd)
+    private function getPublishDetails($dateStart, $dateEnd)
     {
         if (!$dateStart && !$dateEnd) {
-            return true;
+            return [
+                'publish_date' => 'now',
+                'is_published' => true
+            ];
         }
 
         $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
@@ -156,7 +167,10 @@ class MarketingSpaceComponentController
             $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 
             if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
-                return true;
+                return [
+                    'publish_date' => $startDate->getTimestamp(),
+                    'is_published' => true
+                ];
             }
         }
 
@@ -164,18 +178,26 @@ class MarketingSpaceComponentController
             $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
             $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             if ($startDate->getTimestamp() <= $currentDate) {
-                return true;
+                return [
+                    'publish_date' => $startDate->getTimestamp(),
+                    'is_published' => true
+                ];
             }
         }
 
         if ($dateEnd && !$dateStart) {
             $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
             $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($endDate->getTimestamp() >=$currentDate) {
-                return true;
+            if ($endDate->getTimestamp() >= $currentDate) {
+                return [
+                    'publish_date' => $endDate->getTimestamp(),
+                    'is_published' => true
+                ];
             }
         }
 
-        return false;
+        return [
+            'is_published' => false
+        ];;
     }
 }
