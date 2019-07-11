@@ -115,7 +115,8 @@ class MarketingSpaceComponentController
                             $uri = $topLeaderboardItem['field_post_banner_link'][0]['uri'];
                             $topLeaderboard['banner_url'] = $this->url->generateUri(
                                 $uri,
-                                ['skip_parsers' => true]);
+                                ['skip_parsers' => true]
+                            );
                         }
                         $topLeaderboard['banner_alt'] =
                             $topLeaderboardItem['field_post_banner_image_portrait'][0]['alt']
@@ -134,7 +135,8 @@ class MarketingSpaceComponentController
                             $uri = $topLeaderboardItem['field_banner_link'][0]['uri'];
                             $topLeaderboard['banner_url'] = $this->url->generateUri(
                                 $uri,
-                                ['skip_parsers' => true]);
+                                ['skip_parsers' => true]
+                            );
                         }
                         $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_banner_image_portrait'][0]['alt']
                             ?? '';
