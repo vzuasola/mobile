@@ -53,13 +53,13 @@ class SAGamingModuleController
         if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
             if (($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') &&
-                !isset($requestData['lobby'])
+                $requestData['lobby'] === "false"
             ) {
                 $data = $this->getGameUrl($request, $response);
             }
 
             if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
-                isset($requestData['lobby'])
+                $requestData['lobby'] === "true"
             ) {
                 $data = $this->getGameLobby($request, $response);
             }
