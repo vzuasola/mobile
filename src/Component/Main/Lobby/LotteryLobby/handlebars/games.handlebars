@@ -1,6 +1,6 @@
 <ul class="game-lottery-lobby-container providers clearfix">
 {{#each games}}
-    <li class="game-listing">
+    <li class="game-listing {{this.size}}">
         <a class="game-list game-listing-item"
         {{#if ../isLogin}}
             data-game-launch="true"
@@ -21,14 +21,12 @@
                 </span>
             {{/if}}
             <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
-            <p class="label-game-title 
-            {{#if this.game_maintenance}}hidden{{/if}}">{{this.title}}</p>
             
         </a>
         {{#if this.game_maintenance}}
             <div class="game-listing-maintenance">
                 <p>{{this.game_maintenance_text}}</p>
-                <span class="game-listing-maintenance-title">{{this.title}}</span>
+                <span class="game-listing-maintenance-title"></span>
             </div>
         {{/if}}    
     </li>
