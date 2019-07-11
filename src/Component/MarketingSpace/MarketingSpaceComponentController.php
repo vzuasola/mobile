@@ -112,8 +112,9 @@ class MarketingSpaceComponentController
 
                         $topLeaderboard['banner_url'] = '';
                         if ($topLeaderboardItem['field_post_banner_link']) {
+                            $uri = $topLeaderboardItem['field_post_banner_link'][0]['uri'];
                             $topLeaderboard['banner_url'] = $this->url->generateUri(
-                                $topLeaderboardItem['field_post_banner_link'][0]['uri'],
+                                $uri,
                                 ['skip_parsers' => true]);
                         }
                         $topLeaderboard['banner_alt'] =
@@ -130,8 +131,9 @@ class MarketingSpaceComponentController
 
                         $topLeaderboard['banner_url'] = '';
                         if ($topLeaderboardItem['field_banner_link']) {
+                            $uri = $topLeaderboardItem['field_banner_link'][0]['uri'];
                             $topLeaderboard['banner_url'] = $this->url->generateUri(
-                                $topLeaderboardItem['field_banner_link'][0]['uri'],
+                                $uri,
                                 ['skip_parsers' => true]);
                         }
                         $topLeaderboard['banner_alt'] = $topLeaderboardItem['field_banner_image_portrait'][0]['alt']
@@ -198,6 +200,6 @@ class MarketingSpaceComponentController
 
         return [
             'is_published' => false
-        ];;
+        ];
     }
 }
