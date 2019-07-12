@@ -16,6 +16,7 @@ import {LiveDealerLobbyComponent} from "@app/src/Component/Main/Lobby/LiveDealer
 import {CasinoLobbyComponent} from "@app/src/Component/Main/Lobby/CasinoLobby/script";
 import {LobbyComponent} from "@app/src/Component/Main/Lobby/script";
 import {MarketingComponent} from "@app/src/Component/Marketing/script";
+import {MarketingSpaceComponent} from "@app/src/Component/MarketingSpace/script";
 import {LobbySliderComponent} from "@app/src/Component/Main/Lobby/Slider/script";
 import {ProductsComponent} from "@app/src/Component/Main/Lobby/Home/Products/script";
 import {NodeComponent} from "@app/src/Component/Node/script";
@@ -57,6 +58,7 @@ ComponentManager.setComponents({
     casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
     marketing: new MarketingComponent(),
+    marketing_space: new MarketingSpaceComponent(),
     profiler: new ProfilerComponent(),
     cant_login: new CantLoginComponent(),
     node_promotions: new PromotionsNodeComponent(),

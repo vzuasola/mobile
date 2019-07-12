@@ -28,6 +28,10 @@ export class BalanceModule implements ModuleInterface {
             this.isLogin = false;
         });
 
+        ComponentManager.subscribe("language.change", (event, src, data) => {
+            this.balanceResponse = undefined;
+        });
+
         // refreshes the balance on demand and execute an event named balance.fetch
         ComponentManager.subscribe("balance.refresh", (event, src) => {
             if (!this.isLogin) {

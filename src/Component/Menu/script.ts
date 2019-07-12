@@ -21,6 +21,7 @@ export class MenuComponent implements ComponentInterface {
     private products: any[];
     private joinUrl: string;
     private product: string;
+    private language: string;
 
     constructor() {
         this.pushNotification = new PushNotification();
@@ -28,6 +29,7 @@ export class MenuComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
         this.element = element;
+        this.language = ComponentManager.getAttribute("language");
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
         this.toggleLogoutLink();
@@ -133,7 +135,6 @@ export class MenuComponent implements ComponentInterface {
                     let formatedBalance: string;
 
                     formatedBalance = response.format;
-
                     if (formatedBalance) {
                         formatedBalance = formatedBalance.replace("{currency}", response.currency);
                         formatedBalance = formatedBalance.replace("{total}", response.balance);
@@ -144,6 +145,7 @@ export class MenuComponent implements ComponentInterface {
             },
         });
     }
+
     /**
      * Listen to announcement pushes
      */
