@@ -8,6 +8,7 @@ import {Menu} from "./scripts/menu";
 import {PushNotification} from "./scripts/push-notification";
 
 import EqualHeight from "@app/assets/script/components/equal-height";
+import {Redirector} from "@app/assets/script/components/redirector";
 
 /**
  *
@@ -20,6 +21,7 @@ export class MenuComponent implements ComponentInterface {
     private products: any[];
     private joinUrl: string;
     private product: string;
+    private language: string;
 
     constructor() {
         this.pushNotification = new PushNotification();
@@ -27,6 +29,7 @@ export class MenuComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
         this.element = element;
+        this.language = ComponentManager.getAttribute("language");
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
         this.toggleLogoutLink();
@@ -42,6 +45,7 @@ export class MenuComponent implements ComponentInterface {
         this.pushNotification.handleOnLoad(element, attachments);
 
         this.listenAnnouncementCount();
+        this.listenHighlightMenu();
 
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
@@ -54,7 +58,6 @@ export class MenuComponent implements ComponentInterface {
         Router.on(RouterClass.afterNavigate, (event) => {
             this.attachProduct();
             this.attachProductToLogin();
-            this.refreshMenu();
             this.reloadBalance();
         });
 
@@ -91,6 +94,19 @@ export class MenuComponent implements ComponentInterface {
     private activateMenu(element) {
         const menu = new Menu(element);
         menu.activate();
+        this.menuListenOnClick();
+    }
+
+    private menuListenOnClick() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.hasClass(src, "lgc", true);
+            if (el) {
+                event.preventDefault();
+                Redirector.redirect(el.getAttribute("href"), false, {
+                    target: el.getAttribute("target"),
+                });
+            }
+        });
     }
 
     private toggleLogoutLink() {
@@ -119,7 +135,6 @@ export class MenuComponent implements ComponentInterface {
                     let formatedBalance: string;
 
                     formatedBalance = response.format;
-
                     if (formatedBalance) {
                         formatedBalance = formatedBalance.replace("{currency}", response.currency);
                         formatedBalance = formatedBalance.replace("{total}", response.balance);
@@ -130,6 +145,7 @@ export class MenuComponent implements ComponentInterface {
             },
         });
     }
+
     /**
      * Listen to announcement pushes
      */
@@ -152,6 +168,16 @@ export class MenuComponent implements ComponentInterface {
                     }
                     utility.addClass(countElement, "hidden");
                 }
+            }
+        });
+    }
+
+    private listenHighlightMenu() {
+        ComponentManager.subscribe("menu.highlight", (event, target, data) => {
+            const menu = this.element.querySelector("a." + data.menu);
+            const activeClass = menu.getAttribute("data-router-active-link-class");
+            if (menu && !utility.hasClass(menu, activeClass)) {
+                utility.addClass(menu, activeClass);
             }
         });
     }
@@ -220,14 +246,6 @@ export class MenuComponent implements ComponentInterface {
                     this.joinUrl,
                 );
             }
-        }
-    }
-
-    private refreshMenu() {
-        const product = ComponentManager.getAttribute("product");
-        if (this.product !== product) {
-            this.product = product;
-            ComponentManager.refreshComponent("menu");
         }
     }
 }

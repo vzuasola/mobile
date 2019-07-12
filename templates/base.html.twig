@@ -20,8 +20,10 @@
 
     style="background: #000; visibility: hidden;"
 >
-    {% block header %}{% endblock header %}
-
+    {% block marketing_space %}{% endblock %}
+    <header>
+        {% block header %}{% endblock header %}
+    </header>
     <main class="main">
         {% block body %}{% endblock body %}
     </main>
