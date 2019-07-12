@@ -250,3 +250,6 @@ modules:
   live_dealer_integration:
     class: App\MobileEntry\Module\ProductIntegration\LiveDealer\LiveDealerIntegrationModule
 
+  lottery_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
+
