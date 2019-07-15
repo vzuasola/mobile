@@ -1,0 +1,22 @@
+// Marketing Space Styles
+
+.marketing-space {
+    position: relative;
+
+    picture{
+        display: block;
+    }
+
+    &-close-btn {
+        position: absolute;
+        top: 5%;
+        right: 0;
+        background-color: transparent;
+        font-size: 2.4rem;
+        color: $white;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        padding: 0 0.2em 0 0;
+    }
+}

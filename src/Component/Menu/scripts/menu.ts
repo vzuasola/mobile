@@ -19,6 +19,9 @@ export class Menu {
                 this.openMenu();
             } else if (utility.hasClass(target, "mobile-menu-overlay")
             ) {
+                if (!utility.hasClass(target, "icon-thumbnail-item")) {
+                    src.preventDefault();
+                }
                 this.closeMenu();
             }
         });

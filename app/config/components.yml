@@ -13,6 +13,9 @@ components:
   menu:
     class: App\MobileEntry\Component\Menu\MenuComponent
 
+  marketing_space:
+    class: App\MobileEntry\Component\MarketingSpace\MarketingSpaceComponent
+
   meta:
     class: App\MobileEntry\Component\Meta\MetaComponent
 
@@ -227,7 +230,7 @@ modules:
 
   games_integration:
     class: App\MobileEntry\Module\ProductIntegration\Games\GamesIntegrationModule
-  
+
   live_dealer_integration:
     class: App\MobileEntry\Module\ProductIntegration\LiveDealer\LiveDealerIntegrationModule
 
