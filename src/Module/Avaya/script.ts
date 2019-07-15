@@ -52,7 +52,8 @@ export class AvayaModule implements ModuleInterface {
         this.avayaClass = new Avaya(this.options);
         // Add listen to everything
         ComponentManager.subscribe("click", (event, src, data) => {
-             this.getAvayaToken(event, src, data);
+            this.setJWT();
+            this.getAvayaToken(event, src, data);
         });
 
         ComponentManager.subscribe("session.login", (event, src) => {
