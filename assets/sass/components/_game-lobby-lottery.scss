@@ -94,10 +94,17 @@
                 &.featured,
                 &.providers {
                     .game-listing {
-                        width: 50%;
                         padding: 0.2% 0.2% 1% 0.2%;
                     }
                 }
+            }
+
+            .small-image {
+                width: 50% !important;
+            }
+
+            .large-image {
+                width: 100% !important;
             }
         }
     }
@@ -109,10 +116,17 @@
                 &.featured,
                 &.providers {
                     .game-listing {
-                        width: 33.3%;
                         padding: 0.2% 0.2% 1% 0.2%;
                     }
                 }
+            }
+
+            .small-image {
+                width: 32% !important;
+            }
+
+            .large-image {
+                width: 65.5% !important;
             }
         }
     }
