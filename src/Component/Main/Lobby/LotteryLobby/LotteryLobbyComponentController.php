@@ -54,6 +54,7 @@ class LotteryLobbyComponentController
 
         if (!$item->isHit()) {
             $data = $this->getGamesList();
+
             if (!empty($data)) {
                 $item->set([
                     'body' => $data,
@@ -117,9 +118,10 @@ class LotteryLobbyComponentController
                 ? $game['field_use_game_loader'][0]['value'] : "false";
             $definition['game_maintenance_text'] = null;
             $definition['game_maintenance'] = false;
+
             if ($this->checkIfMaintenance($game)) {
                 $definition['game_maintenance'] = true;
-                $definition['game_maintenance_text'] = strip_tags($game['field_maintenance_blurb'][0]['processed']);
+                $definition['game_maintenance_text'] = $game['field_maintenance_blurb'][0]['value'];
             }
 
             return $definition;
@@ -132,11 +134,9 @@ class LotteryLobbyComponentController
     {
         $dateStart = $game['field_maintenance_start_date'][0]['value'] ?? null;
         $dateEnd = $game['field_maintenance_end_date'][0]['value'] ?? null;
-
         if (!$dateStart && !$dateEnd) {
             return false;
         }
-
         $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
         $currentDate = $currentDate->getTimestamp();
         if ($dateStart && $dateEnd) {
