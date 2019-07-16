@@ -1,4 +1,92 @@
 .mobile-lottery {
+   
+    .keno-lobby-tile-container{
+        .game-tiles{
+            width:100%;
+            .game-lottery-lobby-container {
+                padding: 0;
+            }
+        }
+    }
+
+    .game-listing {
+        position: relative;
+        float: left;
+
+        &-item {
+            padding: 0;
+        }
+
+        a {
+            float: none;
+            display: block;
+        }
+
+        .label-game-title {
+            font-weight: 400;
+            width: 98%;
+            padding: 0 1%;
+        }
+
+        &-maintenance{
+
+            &-title {
+                position: absolute;
+                left: 1.5%;
+                right: 1.5%;
+                bottom: 0.7rem;
+                text-align: center;
+                width: 95%;
+                color: $white;
+                z-index: 1;
+            }
+
+            p {
+                position: absolute;
+                top: 30%;
+                left: 1.5%;
+                right: 1.5%;
+                z-index: 1;
+                color: #fff;
+                text-align: center;
+                font-size: 1.6rem;
+                font-weight: 600;
+                width: 95%;
+                line-height: initial;
+            }
+        }
+
+        &-maintenance:after {
+            position: absolute;
+            z-index: 0;
+            content: " ";
+            background: #000;
+            opacity: 0.8;
+            left: 1.5%;
+            right: 1.5%;
+            bottom: 5%;
+            top: 1.5%;
+        }    
+    }
+
+// Game Ribbon
+    .game-ribbon {
+        position: absolute;
+        top: 0.5rem;
+        display: block;
+        padding: 0.2rem 0.5rem;
+        background: #ff0000;
+        color: white;
+        font-size: 1.2rem;
+        border-radius: 0.2rem;
+        font-weight: bold;
+
+        &.lottery-ribbon {
+            left: -0.1rem;
+            top: 1.0rem;
+        }
+    } 
+
     // Portrait
     @media (orientation: portrait) {
         #game-container {

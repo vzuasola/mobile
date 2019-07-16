@@ -37,7 +37,9 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.configs = attachments.configs;
-        this.doGetLobbyData(() => {
+        this.games = undefined;
+        this.lotteryXhrRequest("lobby", (response) => {
+            this.games = response;
             this.setLobby();
         });
         this.listenClickGameTile();
@@ -57,24 +59,20 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.configs = attachments.configs;
-        this.doGetLobbyData(() => {
+        this.games = undefined;
+        this.lotteryXhrRequest("lobby", (response) => {
+            this.games = response;
             this.setLobby();
         });
         this.listenToLaunchGameLoader();
     }
 
-    /**
-     * Request games list from cms
-     */
-    private doGetLobbyData(callback) {
+    private lotteryXhrRequest(method: string, callback) {
         xhr({
-            url: Router.generateRoute("lottery_lobby", "lobby"),
+            url: Router.generateRoute("lottery_lobby", method),
             type: "json",
         }).then((response) => {
-            this.games = response;
-            if (callback) {
-                callback();
-            }
+                callback(response);
         }).fail((error, message) => {
             console.log(error);
         });
