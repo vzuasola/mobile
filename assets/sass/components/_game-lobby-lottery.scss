@@ -1,8 +1,9 @@
 .mobile-lottery {
-   
-    .lottery-lobby-tile-container{
-        .game-tiles{
+
+    .lottery-lobby-tile-container {
+        .game-tiles {
             width:100%;
+
             .game-lottery-lobby-container {
                 padding: 0;
             }
@@ -12,7 +13,6 @@
     .game-listing {
         position: relative;
         float: left;
-
 
         &-item {
             padding: 0;
@@ -32,7 +32,7 @@
                 padding: 0 1%;
             }
 
-            &-maintenance{
+            &-maintenance {
 
                 &-title {
                     position: absolute;
@@ -60,7 +60,7 @@
                 }
             }
 
-           &-maintenance:after {
+            &-maintenance:after {
                 position: absolute;
                 z-index: 0;
                 content: " ";
@@ -69,11 +69,11 @@
                 top: 0;
                 height: 100%;
                 width: 100%;
-            }    
-        }    
+            }
+        }
     }
 
-// Game Ribbon
+    // Game Ribbon
     .game-ribbon {
         position: absolute;
         top: 0.5rem;
@@ -89,7 +89,7 @@
             left: -0.1rem;
             top: 1.0rem;
         }
-    } 
+    }
 
     // Portrait
     @media (orientation: portrait) {
