@@ -52,23 +52,7 @@ export class AvayaModule implements ModuleInterface {
         this.avayaClass = new Avaya(this.options);
         // Add listen to everything
         ComponentManager.subscribe("click", (event, src, data) => {
-            const target = utility.find(src, (el) => {
-                if (el.tagName === "A") {
-                    const href = el.getAttribute("href");
-
-                    if (href) {
-                        return href.indexOf("linkto:avaya") !== -1 || el.getAttribute("data-avayalink") === "true";
-                    }
-                }
-            });
-
-            if (target) {
-                event.preventDefault();
-                this.setJWT((response) => {
-                    console.log(response);
-                    this.getAvayaToken(event, src, data);
-                });
-            }
+            this.getAvayaToken(event, src, data);
         });
 
         ComponentManager.subscribe("session.login", (event, src) => {
@@ -214,9 +198,10 @@ export class AvayaModule implements ModuleInterface {
                 }
             }
 
-            this.avayaClass.getAvayaToken(target);
-
-            return false;
+            this.setJWT((response) => {
+                this.avayaClass.getAvayaToken(target);
+                return false;
+            });
         }
     }
 
