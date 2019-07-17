@@ -90,14 +90,16 @@
     // Portrait
     @media (orientation: portrait) {
         #game-container {
-            .game-lottery-lobby-container {
-                &.featured,
-                &.providers {
-                    .game-listing {
-                        width: 50%;
-                        padding: 0.2% 0.2% 1% 0.2%;
-                    }
-                }
+            .game-listing {
+                padding: 0 0.7% 1.75% 1% !important;
+            }
+
+            .small-image {
+                width: 50% !important;
+            }
+
+            .large-image {
+                width: 100% !important;
             }
         }
     }
@@ -105,14 +107,16 @@
     // Landscape
     @media (orientation: landscape) {
         #game-container {
-            .game-lottery-lobby-container {
-                &.featured,
-                &.providers {
-                    .game-listing {
-                        width: 33.3%;
-                        padding: 0.2% 0.2% 1% 0.2%;
-                    }
-                }
+            .game-listing {
+                padding: 0 0.7% 1.75% 1% !important;
+            }
+
+            .small-image {
+                width: 33.3% !important;
+            }
+
+            .large-image {
+                width: 66.7% !important;
             }
         }
     }
