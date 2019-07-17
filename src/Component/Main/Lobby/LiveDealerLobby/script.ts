@@ -388,17 +388,10 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 }
             }
 
-            const template = [];
-            for (const option in prop) {
-                if (prop[option] !== undefined && prop[option] !== "") {
-                    template.push(option + "=" + prop[option]);
-                }
-            }
-
             url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
             url = utility.addQueryParam(url, "loaderFlag", "true");
             if (data.options.target === "popup") {
-                window.open(url, data.options.provider + "gameWindow", template.join(","));
+                window.open(url);
             }
 
             // Nothing happens if window is blocked and is popup
