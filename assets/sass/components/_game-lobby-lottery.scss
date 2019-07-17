@@ -73,7 +73,6 @@
         }
     }
 
-    // Game Ribbon
     .game-ribbon {
         position: absolute;
         top: 0.5rem;
@@ -90,33 +89,41 @@
             top: 1.0rem;
         }
     }
+}
 
-    // Portrait
-    @media (orientation: portrait) {
+// Portrait
+@media (orientation: portrait) {
+    .mobile-lottery {
         #game-container {
-            .game-lottery-lobby-container {
-                &.featured,
-                &.providers {
-                    .game-listing {
-                        width: 50%;
-                        padding: 0.2% 0.2% 1% 0.2%;
-                    }
-                }
+            .game-listing {
+                padding: 0 0.7% 1.75% 1%;
+            }
+
+            .small-image {
+                width: 50%;
+            }
+
+            .large-image {
+                width: 100%;
             }
         }
     }
+}
 
-    // Landscape
-    @media (orientation: landscape) {
+// Landscape
+@media (orientation: landscape) {
+    .mobile-lottery {
         #game-container {
-            .game-lottery-lobby-container {
-                &.featured,
-                &.providers {
-                    .game-listing {
-                        width: 33.3%;
-                        padding: 0.2% 0.2% 1% 0.2%;
-                    }
-                }
+            .game-listing {
+                padding: 0 0.7% 1.75% 1%;
+            }
+
+            .small-image {
+                width: 33.3%;
+            }
+
+            .large-image {
+                width: 66.7%;
             }
         }
     }
