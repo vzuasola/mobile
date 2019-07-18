@@ -1,6 +1,6 @@
 <ul class="game-lottery-lobby-container">
 {{#each games}}
-    <li class="game-listing game-tiles lottery-game-tile {{this.size}}">
+    <li class="game-listing game-tiles lottery-game-tile {{this.size}} {{this.overridesize}}"k>
         <div class="lottery-tile">
             <a class="game-listing-item "
             {{#if ../isLogin}}
@@ -20,7 +20,14 @@
                         {{this.ribbon.name}}
                     </div>
                 {{/if}}
-                <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
+                <picture>
+                    <source srcset="{{ this.img_landscape }}" media="(min-width: 40em) and (orientation: landscape)">
+                    <img
+                        src="{{this.image.url}}"
+                        alt="{{ this.image.alt }}"
+                        class="w-100"
+                    >
+                </picture>
             </a>
             {{#if this.game_maintenance}}
                 <div class="lottery-tile-maintenance">
