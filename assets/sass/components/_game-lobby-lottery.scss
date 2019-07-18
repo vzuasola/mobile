@@ -1,6 +1,8 @@
 .mobile-lottery {
 
     .lottery-lobby-tile-container {
+        padding-top: 1.5rem;
+
         .game-tiles {
             width:100%;
 
@@ -47,7 +49,7 @@
 
                 p {
                     position: absolute;
-                    top: 30%;
+                    top: 45%;
                     left: 1.5%;
                     right: 1.5%;
                     z-index: 1;
