@@ -143,7 +143,7 @@ class LotteryLobbyComponentController
 
     public function maintenance($request, $response)
     {
-        if(!$request){
+        if (!$request) {
             return false;
         }
         try {
