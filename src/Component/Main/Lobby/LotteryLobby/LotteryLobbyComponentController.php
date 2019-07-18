@@ -104,9 +104,9 @@ class LotteryLobbyComponentController
             $size = $game['field_game_thumbnail_size'][0]['value'];
             $definition['size'] = $size == 'small' ? 'small-image' : 'large-image';
             $imgUrl = $this->asset->generateAssetUri(
-                        $game["field_game_thumbnail_$size"][0]['url'],
-                        ['product' => self::PRODUCT]
-                    );
+                $game["field_game_thumbnail_$size"][0]['url'],
+                ['product' => self::PRODUCT]
+            );
             $definition['image'] = [
                 'alt' => $game["field_game_thumbnail_$size"][0]['alt'],
                 'url' => $imgUrl
@@ -117,9 +117,9 @@ class LotteryLobbyComponentController
             if ($size != $landscapesize) {
                 $overrideSize = ($landscapesize == 'small') ? 'small-override' : 'large-override';
                 $definition['img_landscape'] = $this->asset->generateAssetUri(
-                        $game["field_game_thumbnail_$landscapesize"][0]['url'],
-                        ['product' => self::PRODUCT]
-                    );
+                    $game["field_game_thumbnail_$landscapesize"][0]['url'],
+                    ['product' => self::PRODUCT]
+                );
             }
             $definition['overridesize'] = isset($overrideSize) ? $overrideSize : '';
             $definition['title'] = $game['title'][0]['value'] ?? '';
