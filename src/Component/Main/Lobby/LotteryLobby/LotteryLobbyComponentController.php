@@ -102,7 +102,7 @@ class LotteryLobbyComponentController
                 $definition['ribbon']['color'] = $ribbon['field_ribbon_text_color'][0]['color'];
             }
             $size = $game['field_game_thumbnail_size'][0]['value'];
-            $definition['size'] = $size == 'small' ? 'w-50' : 'w-100';
+            $definition['size'] = $size == 'small' ? 'small-image' : 'large-image';
             $definition['image'] = [
                 'alt' => $game["field_game_thumbnail_$size"][0]['alt'],
                 'url' =>
