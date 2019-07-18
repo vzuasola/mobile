@@ -16,11 +16,13 @@ export class LotteryLobbyComponent implements ComponentInterface {
     private element: HTMLElement;
     private games: any;
     private gameLink: string;
+    private maintenance: any[];
     private isLogin: boolean;
     private lazyLoader: LazyLoader;
     private product: any[];
     private response: any;
     private windowObject: any;
+    private mIndex: number = 0;
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -38,9 +40,15 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.configs = attachments.configs;
         this.games = undefined;
-        this.lotteryXhrRequest("lobby", (response) => {
-            this.games = response;
-            this.setLobby();
+        this.lotteryXhrRequest("maintenance", (maintenanceResponse) => {
+            this.maintenance = maintenanceResponse;
+            this.lotteryXhrRequest("lobby", (response) => {
+                this.games = response;
+                this.pushMaintenance();
+                this.generateLobby(() => {
+                    this.setLobby();
+                });
+            });
         });
         this.listenClickGameTile();
         this.listenToLaunchGameLoader();
@@ -60,11 +68,24 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.configs = attachments.configs;
         this.games = undefined;
-        this.lotteryXhrRequest("lobby", (response) => {
-            this.games = response;
-            this.setLobby();
+        this.lotteryXhrRequest("maintenance", (maintenanceResponse) => {
+            this.maintenance = maintenanceResponse;
+            this.lotteryXhrRequest("lobby", (response) => {
+                this.games = response;
+                this.pushMaintenance();
+                this.generateLobby(() => {
+                    this.setLobby();
+                });
+            });
         });
         this.listenToLaunchGameLoader();
+    }
+
+    /**
+     * Initialized games lobby
+     */
+    private generateLobby(callback) {
+       this.setLobby();
     }
 
     private lotteryXhrRequest(method: string, callback) {
@@ -197,6 +218,15 @@ export class LotteryLobbyComponent implements ComponentInterface {
                 productVia: this.product[0].login_via,
                 regVia: this.product[0].reg_via,
             });
+        }
+    }
+
+    private pushMaintenance() {
+        this.mIndex = 0;
+        while (this.mIndex < this.maintenance.length ) {
+            this.games[this.mIndex].game_maintenance = this.maintenance[this.mIndex].game_maintenance;
+            this.games[this.mIndex].game_maintenance_text = this.maintenance[this.mIndex].game_maintenance_text;
+            this.mIndex++;
         }
     }
 }
