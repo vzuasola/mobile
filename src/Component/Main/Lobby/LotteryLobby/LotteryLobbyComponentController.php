@@ -143,6 +143,9 @@ class LotteryLobbyComponentController
 
     public function maintenance($request, $response)
     {
+        if(!$request){
+            return false;
+        }
         try {
             $maintenance = [];
             $games = $this->views->getViewById('games_list');
@@ -158,7 +161,7 @@ class LotteryLobbyComponentController
 
     private function getGameMaintenance($game)
     {
-        try {            
+        try {
             $definition['game_maintenance_text'] = null;
             $definition['game_maintenance'] = false;
 
