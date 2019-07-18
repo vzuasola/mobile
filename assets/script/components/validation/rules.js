@@ -304,7 +304,7 @@ validators.allowed_date = {
         value = value.split('/');
 
         if (value[0] !== undefined && value[1] !== undefined && value[2] !== undefined) {
-   
+
             var yearMinus18 = new Date().getFullYear() - 18;
             for (var i = 0; i <= birthDateFormat.length - 1; i++) {
                 if (birthDateFormat[i] === 'YYYY' && (value[i] > yearMinus18 || parseInt(value[i]) < 1901)) {
