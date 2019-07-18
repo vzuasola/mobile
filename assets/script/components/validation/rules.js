@@ -220,8 +220,8 @@ validators.regex = {
  */
 validators.valid_date = {
     callback: function (value, param, field) {
-        var birthdateEl = document.getElementById(field.id);
-        var birthDateFormat = birthdateEl.getAttribute('date-format') || "DD/MM/YYYY";
+
+        var birthDateFormat = field.element.getAttribute("date-format") || "DD/MM/YYYY";
 
         birthDateFormat = birthDateFormat
             .replace(/y/ig, "YYYY")
@@ -292,8 +292,8 @@ validators.not_match_username = {
  */
 validators.allowed_date = {
     callback: function (value, param, field) {
-        var birthdateEl = document.getElementById(field.id);
-        var birthDateFormat = birthdateEl.getAttribute('date-format') || "DD/MM/YYYY";
+
+        var birthDateFormat = field.element.getAttribute("date-format") || "DD/MM/YYYY";
 
         birthDateFormat = birthDateFormat
             .replace(/y/ig, "YYYY")
