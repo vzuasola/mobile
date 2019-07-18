@@ -45,9 +45,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
             this.lotteryXhrRequest("lobby", (response) => {
                 this.games = response;
                 this.pushMaintenance();
-                this.generateLobby(() => {
-                    this.setLobby();
-                });
+                this.setLobby();
             });
         });
         this.listenClickGameTile();
@@ -73,19 +71,10 @@ export class LotteryLobbyComponent implements ComponentInterface {
             this.lotteryXhrRequest("lobby", (response) => {
                 this.games = response;
                 this.pushMaintenance();
-                this.generateLobby(() => {
-                    this.setLobby();
-                });
+                this.setLobby();
             });
         });
         this.listenToLaunchGameLoader();
-    }
-
-    /**
-     * Initialized games lobby
-     */
-    private generateLobby(callback) {
-       this.setLobby();
     }
 
     private lotteryXhrRequest(method: string, callback) {
