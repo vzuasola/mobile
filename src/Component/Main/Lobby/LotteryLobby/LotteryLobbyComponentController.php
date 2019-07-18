@@ -79,7 +79,6 @@ class LotteryLobbyComponentController
         try {
             $gamesList = [];
             $games = $this->views->getViewById('games_list');
-
             foreach ($games as $game) {
                 $gamesList[] = $this->getGameDefinition($game);
             }
@@ -120,7 +119,7 @@ class LotteryLobbyComponentController
                 $definition['img_landscape'] = $this->asset->generateAssetUri(
                         $game["field_game_thumbnail_$landscapesize"][0]['url'],
                         ['product' => self::PRODUCT]
-                    );;
+                    );
             }
             $definition['overridesize'] = isset($overrideSize) ? $overrideSize : '';
             $definition['title'] = $game['title'][0]['value'] ?? '';
