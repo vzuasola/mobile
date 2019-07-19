@@ -33,7 +33,7 @@
             padding: 0 1%;
         }
 
-        &-maintenance {
+        .lottery-tile-maintenance {
             &-title {
                 position: absolute;
                 left: 1.5%;
@@ -60,7 +60,7 @@
             }
         }
 
-        &-maintenance:after {
+        .lottery-tile-maintenance:after {
             position: absolute;
             z-index: 0;
             content: " ";
