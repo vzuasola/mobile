@@ -16,7 +16,9 @@ class NodeController extends BaseController
         $path = trim($path, '/');
 
         try {
-            $node = $this->get('node_fetcher')->getNodeByAlias($path);
+            $node = $this->get('node_fetcher')
+                    ->withProduct($this->get('product_resolver')->getProduct())
+                    ->getNodeByAlias($path);
         } catch (\Exception $e) {
             throw new NotFoundException($request, $response);
         }

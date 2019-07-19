@@ -306,6 +306,19 @@ routes:
         headers:
             Cache-Control: no-cache, no-store, must-revalidate
 
+    /{id:lottery|keno|lotto-numbers|numbers|draw|live-draw}/*.*:
+        method: GET
+        action: App\MobileEntry\Controller\NodeController:view
+        components:
+            main: node
+        headers:
+            Cache-Control: public, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-lottery
+
     /*.*:
         method: ANY
         action: App\MobileEntry\Controller\NodeController:view
