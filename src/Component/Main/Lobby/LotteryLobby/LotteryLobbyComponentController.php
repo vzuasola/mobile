@@ -141,6 +141,41 @@ class LotteryLobbyComponentController
         }
     }
 
+    public function maintenance($request, $response)
+    {
+        if (!$request) {
+            return false;
+        }
+        try {
+            $maintenance = [];
+            $games = $this->views->getViewById('games_list');
+            foreach ($games as $game) {
+                $maintenance[] = $this->getGameMaintenance($game);
+            }
+        } catch (\Exception $e) {
+            $maintenance = [];
+        }
+
+        return $this->rest->output($response, $maintenance);
+    }
+
+    private function getGameMaintenance($game)
+    {
+        try {
+            $definition['game_maintenance_text'] = null;
+            $definition['game_maintenance'] = false;
+
+            if ($this->checkIfMaintenance($game)) {
+                $definition['game_maintenance'] = true;
+                $definition['game_maintenance_text'] = $game['field_maintenance_blurb'][0]['value'];
+            }
+
+            return $definition;
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
     private function checkIfMaintenance($game)
     {
         $dateStart = $game['field_maintenance_start_date'][0]['value'] ?? null;
