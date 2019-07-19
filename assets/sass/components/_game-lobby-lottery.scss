@@ -88,17 +88,32 @@
             }
         }
 
-        .lottery-tile-maintenance:after {
-            position: absolute;
-            z-index: 0;
-            content: " ";
-            background: #000;
-            opacity: 0.8;
-            top: 0;
-            height: 98%;
-            width: 98%;
+        .small-image{
+            .lottery-tile-maintenance:after {
+                position: absolute;
+                z-index: 0;
+                content: " ";
+                background: #000;
+                opacity: 0.8;
+                top: 0;
+                height: 98%;
+                width: 98%;
+            }
         }
-    }
+
+        .large-image{
+            .lottery-tile-maintenance:after {
+                position: absolute;
+                z-index: 0;
+                content: " ";
+                background: #000;
+                opacity: 0.8;
+                top: 0;
+                height: 98%;
+                width: 99%;
+            }
+        }
+}
 }
 
 // Landscape
@@ -120,18 +135,32 @@
             .large-image.small-override {
                 width: 33.33333333333333%;
             }
-
         }
 
-        .lottery-tile-maintenance:after {
-            position: absolute;
-            z-index: 0;
-            content: " ";
-            background: #000;
-            opacity: 0.8;
-            top: 0;
-            height: 96.66666667%;
-            width: 97%;
+        .small-image{
+            .lottery-tile-maintenance:after {
+                position: absolute;
+                z-index: 0;
+                content: " ";
+                background: #000;
+                opacity: 0.8;
+                top: 0;
+                height: 96.66666667%;
+                width: 97%;
+            }
+        }
+
+        .large-image{
+            .lottery-tile-maintenance:after {
+                position: absolute;
+                z-index: 0;
+                content: " ";
+                background: #000;
+                opacity: 0.8;
+                top: 0;
+                height: 96.66666667%;
+                width: 98.5%;
+            }
         }
     }
 }
