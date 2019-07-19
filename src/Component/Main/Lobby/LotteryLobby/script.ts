@@ -5,7 +5,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import PopupWindow from "@app/assets/script/components/popup";
 import {LazyLoader} from "./scripts/lazy-loader";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
+import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 /**
  *
@@ -21,6 +21,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
     private product: any[];
     private response: any;
     private windowObject: any;
+    private events: {};
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -37,11 +38,13 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
         this.configs = attachments.configs;
+        this.events = {};
         this.doGetLobbyData(() => {
             this.setLobby();
         });
         this.listenClickGameTile();
         this.listenToLaunchGameLoader();
+        this.highlightQuickNavMenu();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -49,6 +52,10 @@ export class LotteryLobbyComponent implements ComponentInterface {
             product: any[],
             configs: any[],
         }) {
+
+        if (typeof this.events === "undefined") {
+            this.events = {};
+        }
         if (!this.element) {
             this.listenClickGameTile();
         }
@@ -61,6 +68,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
             this.setLobby();
         });
         this.listenToLaunchGameLoader();
+        this.highlightQuickNavMenu();
     }
 
     /**
@@ -200,5 +208,30 @@ export class LotteryLobbyComponent implements ComponentInterface {
                 regVia: this.product[0].reg_via,
             });
         }
+    }
+
+    /**
+     *  Helper function used to highlight active links
+     *  Broadcasts which page should be highlighted on Quick Nav Menu
+     */
+    private highlightQuickNavMenu() {
+        if (this.checkEvent("tab_nav.ready")) {
+            ComponentManager.subscribe("tab_nav.ready", (event, target, data) => {
+                ComponentManager.broadcast("tab_nav.highlight", { menu: "home" });
+            });
+        }
+        ComponentManager.broadcast("tab_nav.refresh");
+    }
+
+    /**
+     *  Helper function used to prevent duplication of listeners
+     */
+    private checkEvent(key) {
+        if (this.events.hasOwnProperty(key)) {
+            return false;
+        }
+
+        this.events[key] = key;
+        return true;
     }
 }

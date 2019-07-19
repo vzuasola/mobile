@@ -7,6 +7,7 @@ import {MenuComponent} from "@app/src/Component/Menu/script";
 import {MetaComponent} from "@app/src/Component/Meta/script";
 import {LoginComponent} from "@app/src/Component/Header/Login/script";
 import {PromotionsComponent} from "@app/src/Component/Main/Promotions/script";
+import {TabNavigationComponent} from "@app/src/Component/TabNavigation/script";
 import {DownloadComponent} from "@app/src/Component/Main/Lobby/Home/Download/script";
 import {AnnouncementComponent} from "@app/src/Component/Announcement/script";
 import {PushNotificationComponent} from "@app/src/Component/PushNotification/script";
@@ -25,6 +26,7 @@ import {LanguageComponent} from "@app/src/Component/Language/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
 import {CantLoginComponent} from "@app/src/Component/Main/CantLogin/script";
 import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script";
+import {LotteryPageComponent} from "@app/src/Component/Node/LotteryPage/script";
 import {CantLoginForgotPasswordComponent} from "@app/src/Component/Main/CantLogin/ForgotPassword/script";
 import {CantLoginForgotUsernameComponent} from "@app/src/Component/Main/CantLogin/ForgotUsername/script";
 import {CantLoginResetPasswordComponent} from "@app/src/Component/Main/CantLogin/ResetPassword/script";
@@ -44,6 +46,7 @@ ComponentManager.setComponents({
     meta: new MetaComponent(),
     header_login: new LoginComponent(),
     promotions: new PromotionsComponent(),
+    tab_navigation: new TabNavigationComponent(),
     home_download: new DownloadComponent(),
     announcement: new AnnouncementComponent(),
     push_notification: new PushNotificationComponent(),
@@ -62,6 +65,7 @@ ComponentManager.setComponents({
     profiler: new ProfilerComponent(),
     cant_login: new CantLoginComponent(),
     node_promotions: new PromotionsNodeComponent(),
+    node_lottery_page: new LotteryPageComponent(),
     cant_login_forgot_password: new CantLoginForgotPasswordComponent(),
     cant_login_forgot_username: new CantLoginForgotUsernameComponent(),
     cant_login_reset_password: new CantLoginResetPasswordComponent(),
