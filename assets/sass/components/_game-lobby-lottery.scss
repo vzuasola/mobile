@@ -1,7 +1,6 @@
 .mobile-lottery {
-
     .lottery-lobby-tile-container {
-        padding-top: 1.5%;
+        padding-top: 0.5rem;
 
         .game-tiles {
             width:100%;
@@ -15,9 +14,12 @@
     .game-listing {
         position: relative;
         float: left;
+        padding: 0 0.5% 1% 0.5%;
 
         &-item {
             padding: 0;
+            display: block;
+            float: none;
         }
 
         .lottery-tile {
@@ -35,7 +37,6 @@
             }
 
             &-maintenance {
-
                 &-title {
                     position: absolute;
                     left: 1.5%;
@@ -87,7 +88,6 @@
         font-weight: bold;
 
         &.lottery-ribbon {
-            left: -0.1rem;
             top: 1.0rem;
         }
     }
@@ -97,10 +97,6 @@
 @media (orientation: portrait) {
     .mobile-lottery {
         #game-container {
-            .game-listing {
-                padding: 0 0.7% 1.75% 1%;
-            }
-
             .small-image {
                 width: 50%;
             }
@@ -116,24 +112,20 @@
 @media (orientation: landscape) {
     .mobile-lottery {
         #game-container {
-            .game-listing {
-                padding: 0 0.7% 1.75% 1%;
-            }
-
             .small-image {
-                width: 33.3%;
+                width: 33.33333333333333%;
             }
 
             .small-image.large-override {
-                width: 66.6%;
+                width: 66.66666667%;
             }
 
             .large-image {
-                width: 66.6%;
+                width: 66.66666667%;
             }
 
             .large-image.small-override {
-                width: 33.3%;
+                width: 33.33333333333333%;
             }
 
         }
