@@ -22,57 +22,53 @@
             float: none;
         }
 
-        .lottery-tile {
-            position: relative;
+        a {
+            float: none;
+            display: block;
+        }
 
-            a {
-                float: none;
-                display: block;
-            }
+        .label-game-title {
+            font-weight: 400;
+            width: 98%;
+            padding: 0 1%;
+        }
 
-            .label-game-title {
-                font-weight: 400;
-                width: 98%;
-                padding: 0 1%;
-            }
-
-            &-maintenance {
-                &-title {
-                    position: absolute;
-                    left: 1.5%;
-                    right: 1.5%;
-                    bottom: 0.7rem;
-                    text-align: center;
-                    width: 95%;
-                    color: $white;
-                    z-index: 1;
-                }
-
-                p {
-                    position: absolute;
-                    top: 45%;
-                    left: 1.5%;
-                    right: 1.5%;
-                    z-index: 1;
-                    color: #fff;
-                    text-align: center;
-                    font-size: 1.6rem;
-                    font-weight: 600;
-                    width: 95%;
-                    line-height: initial;
-                }
-            }
-
-            &-maintenance:after {
+        &-maintenance {
+            &-title {
                 position: absolute;
-                z-index: 0;
-                content: " ";
-                background: #000;
-                opacity: 0.8;
-                top: 0;
-                height: 100%;
-                width: 100%;
+                left: 1.5%;
+                right: 1.5%;
+                bottom: 0.7rem;
+                text-align: center;
+                width: 95%;
+                color: $white;
+                z-index: 1;
             }
+
+            p {
+                position: absolute;
+                top: 45%;
+                left: 1.5%;
+                right: 1.5%;
+                z-index: 1;
+                color: #fff;
+                text-align: center;
+                font-size: 1.6rem;
+                font-weight: 600;
+                width: 95%;
+                line-height: initial;
+            }
+        }
+
+        &-maintenance:after {
+            position: absolute;
+            z-index: 0;
+            content: " ";
+            background: #000;
+            opacity: 0.8;
+            top: 0;
+            height: 100%;
+            width: 100%;
         }
     }
 
