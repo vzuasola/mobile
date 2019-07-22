@@ -171,7 +171,16 @@ export default function ErrorHandler(errors, event, formValidations) {
         if (input.type === 'checkbox') {
             input.parentNode.insertBefore(element, null);
         } else {
-            input.parentNode.appendChild(element);
+
+            if (input.hasAttribute("data-parent-annotation")) {
+                var parentElem = document.querySelector(input.getAttribute("data-parent-annotation"));
+                var parentDiv = utility.findParent(parentElem, "div")
+                var errorContainer = parentDiv.querySelector(".error-container");
+                errorContainer.appendChild(element);
+            } else {
+
+                input.parentNode.appendChild(element);
+            }
         }
 
         return element;
@@ -187,7 +196,9 @@ export default function ErrorHandler(errors, event, formValidations) {
                 element.type === 'checkbox' ||
                 element.type === 'radio'
             ) {
+                
                 element = element.parentNode.parentNode;
+                
             }
 
             var field = utility.findParent(element, '.form-item');
@@ -204,11 +215,19 @@ export default function ErrorHandler(errors, event, formValidations) {
      *
      */
     function removeErrorMessage(element) {
-        var message = utility.findSibling(element, '.form-help-block');
+        
+        if (element.hasAttribute("data-parent-annotation")) {
+            var parentElem = document.querySelector(element.getAttribute("data-parent-annotation"));
+            var parentDiv = utility.findParent(parentElem, "div")
+            var message = parentDiv.querySelector(".form-help-block");
+        } else {
+            var message = utility.findSibling(element, '.form-help-block');
+        }
 
         if (message) {
             message.remove();
         }
+        
     }
 
     /**

@@ -20,6 +20,10 @@ import * as checkTemplate from "@app/templates/handlebars/icon-check-only.handle
 export class SmsVerification extends FormBase {
     private loader: Loader;
     private validator: any;
+    private mobile1Parent: HTMLElement;
+    private mobile1Div: HTMLElement;
+    private mobile2Parent: HTMLElement;
+    private mobile2Div: HTMLElement;
     private mobile1Item: HTMLElement;
     private mobile2Item: HTMLElement;
     private verifyContainer: HTMLElement;
@@ -47,6 +51,11 @@ export class SmsVerification extends FormBase {
     // init
     init() {
         this.validator = this.validateForm(this.form);
+        this.mobile1Parent = this.element.querySelector(".mobile1_parent");
+        this.mobile1Div = this.element.querySelector(".MyProfileForm_mobile_number_1 .form-field");
+        this.mobile2Parent = this.element.querySelector(".mobile2_parent");
+        this.mobile2Div = this.element.querySelector(".MyProfileForm_mobile_number_2 .form-field");
+
         this.mobile1Item = this.element.querySelector(".MyProfileForm_mobile_number_1");
         this.mobile2Item = this.element.querySelector(".MyProfileForm_mobile_number_2");
         this.mobile1Input = this.element.querySelector("#MyProfileForm_mobile_number_1");
@@ -79,17 +88,48 @@ export class SmsVerification extends FormBase {
     // prepare necessary elements for sms verification
     private prepareElements() {
         const primary = this.element.querySelector(".MyProfileForm_primary_number");
-        // append verification button
-        this.mobile1Item.appendChild(this.verifyContainer.cloneNode(true));
-        this.mobile2Item.appendChild(this.verifyContainer.cloneNode(true));
-        const verif1Container = this.element.querySelector(".MyProfileForm_mobile_number_1 .verification-container");
-        const verif2Container = this.element.querySelector(".MyProfileForm_mobile_number_2 .verification-container");
-        utility.removeClass(verif1Container, "hidden");
-        utility.removeClass(verif2Container, "hidden");
-        this.mobile1Item.insertBefore(
-            primary,
-            this.mobile1Item.querySelector(".form-field").nextElementSibling,
-        );
+
+        let verif1Container: any;
+        let verif2Container: any;
+        if (this.attachments.enableMobileAnnotation === 0) {
+
+            this.mobile1Item.appendChild(this.verifyContainer.cloneNode(true));
+            this.mobile2Item.appendChild(this.verifyContainer.cloneNode(true));
+            verif1Container = this.element.querySelector(".MyProfileForm_mobile_number_1 .verification-container");
+            verif2Container = this.element.querySelector(".MyProfileForm_mobile_number_2 .verification-container");
+            utility.removeClass(verif1Container, "hidden");
+            utility.removeClass(verif2Container, "hidden");
+            this.mobile1Item.insertBefore(
+                primary,
+                this.mobile1Item.querySelector(".form-field").nextElementSibling,
+            );
+        } else {
+            const errorContainer = document.createElement("div");
+            const errorContainer2 = document.createElement("div");
+            utility.addClass(errorContainer, "error-container");
+            utility.addClass(errorContainer2, "error-container");
+
+            this.mobile1Input.setAttribute("data-parent-annotation", ".mobile1_parent");
+            this.mobile1Parent.appendChild(this.mobile1Div);
+            this.mobile1Parent.appendChild(primary);
+            this.mobile1Parent.appendChild(this.verifyContainer.cloneNode(true));
+
+            this.mobile2Input.setAttribute("data-parent-annotation", ".mobile2_parent");
+            this.mobile2Parent.appendChild(this.mobile2Div);
+            this.mobile2Parent.appendChild(this.verifyContainer.cloneNode(true));
+
+            verif1Container = this.element.querySelector(".mobile1_parent .verification-container");
+            verif2Container = this.element.querySelector(".mobile2_parent .verification-container");
+            utility.removeClass(verif1Container, "hidden");
+            utility.removeClass(verif2Container, "hidden");
+            this.mobile1Item.appendChild(this.mobile1Parent);
+            this.mobile1Item.appendChild(errorContainer);
+
+            this.mobile2Item.appendChild(this.mobile2Parent);
+            this.mobile2Item.appendChild(errorContainer2);
+
+        }
+
         // check if mobile number 2 is empty on icore
         if (this.attachments.user.mobile_number_2 === "") {
             // add new mobile number link
