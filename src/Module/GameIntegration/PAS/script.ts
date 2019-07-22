@@ -105,68 +105,68 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     login(username, password) {
         this.isSessionAlive = true;
-        // return new Promise((resolve, reject) => {
-        //     const user = username.toUpperCase();
-        //     const real = 1;
-        //     const language = this.getLanguageMap(this.lang);
-        //     const uri = Router.generateModuleRoute(this.moduleName, "subaccounts");
+        return new Promise((resolve, reject) => {
+            const user = username.toUpperCase();
+            const real = 1;
+            const language = this.getLanguageMap(this.lang);
+            const uri = Router.generateModuleRoute(this.moduleName, "subaccounts");
 
-        //     xhr({
-        //         url: utility.addQueryParam(uri, "username", user),
-        //     }).then((response) => {
-        //         let ctr = 0;
-        //         const promises = [];
-        //         for (const key in this.iapiConfs) {
-        //             if (this.iapiConfs.hasOwnProperty(key)) {
-        //                 if (this.futurama && key !== "dafagold") {
-        //                     continue;
-        //                 }
+            xhr({
+                url: utility.addQueryParam(uri, "username", user),
+            }).then((response) => {
+                let ctr = 0;
+                const promises = [];
+                for (const key in this.iapiConfs) {
+                    if (this.iapiConfs.hasOwnProperty(key)) {
+                        if (this.futurama && key !== "dafagold") {
+                            continue;
+                        }
 
-        //                 this.isGold = response.provisioned;
+                        this.isGold = response.provisioned;
 
-        //                 if (this.futuramaGold && key === "dafagold") {
-        //                     break;
-        //                 }
+                        if (this.futuramaGold && key === "dafagold") {
+                            break;
+                        }
 
-        //                 if (this.checkIapiConfig(key)) {
-        //                     continue;
-        //                 }
+                        if (this.checkIapiConfig(key)) {
+                            continue;
+                        }
 
-        //                 ++ ctr;
-        //                 const promise = () => {
-        //                     return new Promise((resolvePromise, rejectPromise) => {
-        //                         setTimeout(() => {
-        //                             iapiConf = this.iapiConfs[key];
+                        ++ ctr;
+                        const promise = () => {
+                            return new Promise((resolvePromise, rejectPromise) => {
+                                setTimeout(() => {
+                                    iapiConf = this.iapiConfs[key];
 
-        //                             // Set the callback for the PAS login
-        //                             iapiSetCallout("Login", this.onLogin(user, resolvePromise));
+                                    // Set the callback for the PAS login
+                                    iapiSetCallout("Login", this.onLogin(user, resolvePromise));
 
-        //                             iapiLogin(user, password, real, language);
-        //                             // after n seconds, nothing still happen, I'll let the other
-        //                             // hooks to proceed
-        //                             setTimeout(() => {
-        //                                 resolvePromise();
-        //                             }, 10 * 1000);
-        //                         }, 1.5 * 500 * ctr);
-        //                     });
-        //                 };
-        //                 promises.push(promise);
-        //             }
-        //         }
+                                    iapiLogin(user, password, real, language);
+                                    // after n seconds, nothing still happen, I'll let the other
+                                    // hooks to proceed
+                                    setTimeout(() => {
+                                        resolvePromise();
+                                    }, 10 * 1000);
+                                }, 1.5 * 500 * ctr);
+                            });
+                        };
+                        promises.push(promise);
+                    }
+                }
 
-        //         const lastPromise = () => {
-        //             return new Promise((prom, rej) => {
-        //                 resolve();
-        //                 prom();
-        //             });
-        //         };
+                const lastPromise = () => {
+                    return new Promise((prom, rej) => {
+                        resolve();
+                        prom();
+                    });
+                };
 
-        //         promises.push(lastPromise);
+                promises.push(lastPromise);
 
-        //         this.sync.executeWithArgs(promises, []);
-        //     });
+                this.sync.executeWithArgs(promises, []);
+            });
 
-        // });
+        });
     }
 
     prelaunch(options) {
