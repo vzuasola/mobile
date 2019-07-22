@@ -123,7 +123,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
      */
     private listenClickGameTile() {
         ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.hasClass(src, "lottery-game-tile-item", true);
+            const el = utility.hasClass(src, "game-listing-item", true);
             this.showLogin(el);
         });
     }
