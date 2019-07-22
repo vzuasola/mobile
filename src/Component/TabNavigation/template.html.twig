@@ -1,0 +1,40 @@
+<div class="quick-nav-menu clearfix {{ quick_nav_product }}">
+    {% if quick_nav %}
+    <ul class="quick-nav">
+        {% for menu in quick_nav %}
+            <li class="quick-nav-item">
+                {% if menu.below %}
+                    {% set firstChild = menu.below|first %}
+                    {% set url = firstChild.alias %}
+                {% else %}
+                    {% set url = menu.alias %}
+                {% endif %}
+                <a href="{{ url(url) }}" class="quick-nav-link {{ menu.attributes.class }}"
+                    target="{{ menu.attributes.target }}"
+                    data-router="true"
+                    data-router-refresh="main"
+                    data-router-active-link-class="active"
+                >
+                {{ menu.title }}
+                </a>
+                {% if menu.below %}
+                <ul class="quick-nav-submenu hidden">
+                    {% for submenu in menu.below %}
+                        <li class="quick-nav-submenu-item">
+                            <a href="{{ url(submenu.alias) }}" class="quick-nav-link {{ submenu.attributes.class }}"
+                                target="{{ submenu.attributes.target }}"
+                                data-router="true"
+                                data-router-refresh="main"
+                                data-router-active-link-class="active"
+                            >
+                            {{ submenu.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>

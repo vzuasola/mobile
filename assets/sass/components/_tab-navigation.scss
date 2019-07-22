@@ -1,0 +1,71 @@
+.quick-nav-menu {
+    margin-bottom: -1.5rem;
+    border-top: .1rem solid $dark-red;
+    white-space: nowrap;
+    overflow-x: auto;
+    webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+
+    &.show-submenu {
+        margin-bottom: 0;
+        ul {
+            margin-bottom: 5rem;
+        }
+    }
+
+    ul {
+        display: inline-block;
+        list-style-type: none;
+        padding: 0;
+        background: $red;
+        border-bottom: 0.1rem solid $dark-red;
+
+        li {
+            display: inline-block;
+            margin-left: -0.4rem;
+            border-left: 0.1rem solid $dark-red;
+            
+            a {
+                position: relative;
+                display: inline-block;
+                padding: 0.5rem 1.5rem;
+                color: $white;
+            }
+
+            .home {
+                text-indent: -888px;
+            }
+
+            .active {
+                color: $yellow;
+                background: $dark-red;
+            }
+
+            ul {
+                position: absolute;
+                width: 100%;
+                top: 9rem;
+                left: 0;
+                list-style-type: none;
+                border: 0;
+                background: $dark-gray;
+                overflow-x: auto;
+
+                li {
+                    border: 0;
+                    margin: 0.75rem 0.3rem 1.75rem 0.3rem;
+
+                    a {
+                        background: $gray;
+                        margin: 0;
+                    }
+                }
+
+            }
+        }
+    }
+}
+// Inner Page default styles
+.node-inner-page {
+    background: $dark-gray;
+}
