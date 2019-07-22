@@ -216,12 +216,13 @@ export default function ErrorHandler(errors, event, formValidations) {
      */
     function removeErrorMessage(element) {
         
+        var message = false;
         if (element.hasAttribute("data-parent-annotation")) {
             var parentElem = document.querySelector(element.getAttribute("data-parent-annotation"));
             var parentDiv = utility.findParent(parentElem, "div")
-            var message = parentDiv.querySelector(".form-help-block");
+            message = parentDiv.querySelector(".form-help-block");
         } else {
-            var message = utility.findSibling(element, '.form-help-block');
+            message = utility.findSibling(element, '.form-help-block');
         }
 
         if (message) {
