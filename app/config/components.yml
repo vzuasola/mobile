@@ -259,7 +259,3 @@ modules:
   
   lottery_integration:
     class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
-
-  lottery_integration:
-    class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
-
