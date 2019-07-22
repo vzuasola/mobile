@@ -92,7 +92,7 @@ export class TabNavigationComponent implements ComponentInterface {
                 for (const element in activeElements) {
                     if (activeElements.hasOwnProperty(element)) {
                         const elem = activeElements[element];
-                        utility.removeClass(element, "active");
+                        utility.removeClass(elem, "active");
                         this.showQuickNavSubmenu(false);
                     }
                 }
