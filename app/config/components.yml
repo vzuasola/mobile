@@ -39,6 +39,10 @@ components:
     class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
     parent: node
 
+  node_lottery_page:
+    class: App\MobileEntry\Component\Node\LotteryPage\LotteryPageComponent
+    parent: node
+
   lobby:
     class: App\MobileEntry\Component\Main\Lobby\LobbyComponent
 
@@ -92,6 +96,9 @@ components:
 
   promotions:
     class: App\MobileEntry\Component\Main\Promotions\PromotionsComponent
+  
+  tab_navigation:
+    class: App\MobileEntry\Component\TabNavigation\TabNavigationComponent
 
   cant_login:
     class: App\MobileEntry\Component\Main\CantLogin\CantLoginComponent
@@ -249,6 +256,9 @@ modules:
 
   live_dealer_integration:
     class: App\MobileEntry\Module\ProductIntegration\LiveDealer\LiveDealerIntegrationModule
+  
+  lottery_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
 
   lottery_integration:
     class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
