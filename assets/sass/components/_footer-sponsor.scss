@@ -1,119 +1,53 @@
+// Main Club sponsor
 .sponsors {
-    ul {
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 0;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+
+    &-lists {
         padding: 0;
-        clear: both;
+        margin-top: 1rem;
         overflow: hidden;
         text-align: center;
         list-style-type: none;
+        border-bottom: 0.1rem solid $dark-red;
 
         ul {
-            width: 50%;
-            clear: none;
+            display: inline-block;
+
+            li {
+                display: inline-block;
+
+                a {
+                    color: $white;
+                }
+
+                img {
+                    height: 5.5rem;
+                }
+            }
         }
     }
 
-    li {
-        display: inline-block;
-        margin: 0 .6rem;
-
-        a {
-            color: $white;
-        }
-
-        span {
-            display: block;
-        }
-
-        img {
-            height: 5.5rem;
-        }
-    }
-
-    // Main Club sponsor
-    &-main-desc {
+    &-title,
+    &-desc {
+        font-size: 1.4rem;
         padding-bottom: 1.5rem;
     }
 
-    &-half {
+    .col-4 + &-lists.col-4:nth-last-child(3),
+    .col-6 + &-lists.col-4:nth-last-child(3),
+    .col-12 + &-lists.col-4:nth-last-child(3),
+    &-lists.col-4:nth-last-child(2),
+    &-lists.col-6:nth-last-child(2),
+    &-lists:last-child {
         border-bottom: none;
-        padding: 0.8rem 0;
     }
-    &-full {
+
+    .col-4 + &-lists.col-4:nth-child(3),
+    .col-6 + &-lists.col-6:nth-last-child(2) {
         border-bottom: 0.1rem solid $dark-red;
-        padding: 0.8rem 0;
-
-        &:nth-child {
-            border-bottom: 0.1rem solid $dark-red;
-        }
-
-        &:nth-child(1) {
-            padding: 0;
-            margin-bottom: 1.5rem;
-            border-top: 0;
-        }
-        &:nth-child(2),
-        &:nth-child(3),
-        &:nth-child(4),
-        &:nth-child(2),
-        &:nth-child(5),
-        &:nth-child(6),
-        &:nth-child(7),
-        &:nth-child(8),
-        &:nth-child(9)
-        &:nth-child(10),
-        &:nth-child(11),
-        &:nth-child(12),
-        &:nth-child(13),
-        &:nth-child(14),
-        &:nth-child(15) {
-            border-bottom: 0.1rem solid $dark-red;
-        }
-
-        &:first-child {
-            border-bottom: 0.1rem solid $dark-red;
-        }
-
-        &:last-child {
-            border-bottom: none;
-        }
-
-
     }
-
-    &-half {
-        border-bottom: 0.1rem solid $dark-red;
-        padding: 0.8rem 0;
-
-        &:nth-child {
-            border-top: 0.1rem solid $dark-red;
-        }
-
-        &:nth-child(1) {
-            padding: 0;
-            margin-bottom: 1.5rem;
-            border-top: 0;
-        }
-        &:nth-child(2),
-        &:nth-child(3),
-        &:nth-child(4),
-        &:nth-child(2),
-        &:nth-child(5),
-        &:nth-child(6),
-        &:nth-child(7),
-        &:nth-child(8),
-        &:nth-child(9)
-        &:nth-child(10),
-        &:nth-child(11),
-        &:nth-child(12),
-        &:nth-child(13),
-        &:nth-child(14),
-        &:nth-child(15) {
-            border-bottom: 0.1rem solid $dark-red;
-        }
-
-        &:last-child {
-            border-bottom: none;
-        }
-    }
-
 }

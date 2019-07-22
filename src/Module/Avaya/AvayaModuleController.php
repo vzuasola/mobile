@@ -54,7 +54,7 @@ class AvayaModuleController
             if ($isLogin) {
                 $playerInfo = $this->playerSession->getDetails();
 
-                $validityTime = $avaya['validity_time'] ?? '';
+                $validityTime = $avaya['validity_time'] ?? 1200;
                 $userInfo = [
                     'username' => $playerInfo['username'],
                     'email' => $playerInfo['email'],
