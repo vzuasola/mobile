@@ -138,9 +138,6 @@ form.profile-form {
                 flex: 2 0 5rem;
             }
         }
-        .error-container{
-            width: 100%;
-        }
 
         .MyProfileForm_primary_number {
             flex: 0 0 auto;
@@ -184,9 +181,6 @@ form.profile-form {
             }
         }
 
-        .error-container{
-            width: 100%;
-        }
     }
 
     .MyProfileForm_mobile_number_1,
@@ -194,6 +188,10 @@ form.profile-form {
         // Italize primary label
         .pure-checkbox {
             font-style: italic;
+        }
+
+        .error-container{
+            width: 100%;
         }
     }
 }
