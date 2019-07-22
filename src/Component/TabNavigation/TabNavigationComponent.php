@@ -56,6 +56,7 @@ class TabNavigationComponent implements ComponentWidgetInterface
         } catch (\Exception $e) {
             $data['quick_nav'] = [];
         }
+        $data['quick_nav_product'] = $this->product->getProduct();
 
         return $data;
     }

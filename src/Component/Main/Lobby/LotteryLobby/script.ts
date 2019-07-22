@@ -41,6 +41,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.configs = attachments.configs;
         this.games = undefined;
+        this.events = {};
         this.lotteryXhrRequest("maintenance", (maintenanceResponse) => {
             this.maintenance = maintenanceResponse;
             this.lotteryXhrRequest("lobby", (response) => {
