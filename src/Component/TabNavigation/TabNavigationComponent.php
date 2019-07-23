@@ -6,31 +6,20 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class TabNavigationComponent implements ComponentWidgetInterface
 {
-    /**
-     * @var App\Fetcher\Drupal\ConfigFetcher
-     */
-    private $menus;
-
-    private $product;
 
     /**
      *
      */
     public static function create($container)
     {
-        return new static(
-            $container->get('menu_fetcher'),
-            $container->get('product_resolver')
-        );
+        return new static();
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $product)
+    public function __construct()
     {
-        $this->menus = $menus;
-        $this->product = $product;
     }
 
     /**
@@ -50,14 +39,6 @@ class TabNavigationComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        try {
-            $data['quick_nav'] = $this->menus->withProduct($this->product->getProduct())
-                                ->getMultilingualMenu('quick-nav');
-        } catch (\Exception $e) {
-            $data['quick_nav'] = [];
-        }
-        $data['quick_nav_product'] = str_replace("mobile-", "", $this->product->getProduct());
-
-        return $data;
+        return [];
     }
 }

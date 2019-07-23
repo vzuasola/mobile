@@ -2,6 +2,7 @@ import Accordion from "@app/assets/script/components/accordion";
 
 import EqualHeight from "@app/assets/script/components/equal-height";
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
+import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 /**
  * Lottery Basic Pages
@@ -14,6 +15,7 @@ export class LotteryPageComponent implements ComponentInterface {
         this.element = element;
         this.events = {};
         this.highlightQuickNavMenu();
+        this.afterNavigate();
         this.equalizeStickyHeight();
         this.accordion(element);
     }
@@ -24,6 +26,7 @@ export class LotteryPageComponent implements ComponentInterface {
             this.events = {};
         }
         this.highlightQuickNavMenu();
+        this.afterNavigate();
         this.equalizeStickyHeight();
         this.accordion(element);
     }
@@ -48,7 +51,17 @@ export class LotteryPageComponent implements ComponentInterface {
                 }
             });
         }
-        ComponentManager.broadcast("tab_nav.refresh");
+    }
+
+    /**
+     *  Helper function used to refresh Quick Nav Menu
+     */
+    private afterNavigate() {
+        if (this.checkEvent("afterNavigate")) {
+            Router.on(RouterClass.afterNavigate, (event) => {
+                ComponentManager.refreshComponent("tab_navigation");
+            });
+        }
     }
 
     /**
