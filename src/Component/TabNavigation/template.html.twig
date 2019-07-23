@@ -1,7 +1,20 @@
-<div class="quick-nav-menu clearfix {{ quick_nav_product }}">
+<div class="quick-nav-menu clearfix">
     {% if quick_nav %}
     <ul class="quick-nav">
-        {% for menu in quick_nav %}
+            <li class="quick-nav-item">
+                {% set home = quick_nav|first %}
+                <a href="{{ url(home.alias) }}" class="quick-nav-link {{ home.attributes.class }}"
+                target="{{ home.attributes.target }}"
+                data-router="true"
+                data-router-refresh="main"
+                data-router-active-link-class="active"
+                >
+                    <svg viewBox="0 0 20 20">
+                        <use xlink:href="#product-{{ quick_nav_product }}" />
+                    </svg>
+                </a>
+            </li>
+        {% for menu in quick_nav|slice(1, quick_nav|length) %}
             <li class="quick-nav-item">
                 {% if menu.below %}
                     {% set firstChild = menu.below|first %}
