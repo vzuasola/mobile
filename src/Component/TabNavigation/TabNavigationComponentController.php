@@ -66,7 +66,7 @@ class TabNavigationComponentController
                             $submenus = [];
                             foreach ($menu['below'] as $submenu) {
                                 $submenu['alias'] = '/' . $keyword . '/' . $submenu['alias'];
-                                $submenu['alias'] = 
+                                $submenu['alias'] =
                                     $this->url->generateUri($submenu['alias'], ['skip_parsers' => true]);
                                 $submenus[] = $submenu;
                             }
@@ -79,7 +79,6 @@ class TabNavigationComponentController
             }
         } catch (\Exception $e) {
             $data['quick_nav'] = [];
-
         }
 
         return $this->rest->output($response, $data);

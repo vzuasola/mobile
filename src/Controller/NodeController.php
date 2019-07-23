@@ -15,11 +15,11 @@ class NodeController extends BaseController
     {
         $path = $request->getUri()->getPath();
         $path = trim($path, '/');
-        
+
         if (isset($args['id']) && in_array($args['id'], Products::PRODUCT_ALIAS['lottery'])) {
             $path = $args['params'];
         }
-        
+
         try {
             $node = $this->get('node_fetcher')
                     ->withProduct($this->get('product_resolver')->getProduct())
