@@ -6,6 +6,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as footerTemplate from "./handlebars/menu.handlebars";
 
 import {DafaConnect} from "@app/assets/script/dafa-connect";
+import EqualHeight from "@app/assets/script/components/equal-height";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
@@ -22,6 +23,7 @@ export class FooterComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getFooter();
+        this.equalizeSponsorHeight();
 
         Router.on(RouterClass.afterNavigate, (event) => {
             this.refreshFooter();
@@ -31,6 +33,12 @@ export class FooterComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getFooter();
+        this.equalizeSponsorHeight();
+    }
+
+    private equalizeSponsorHeight() {
+        const equalSponsor = new EqualHeight(".sponsors-lists");
+        equalSponsor.init();
     }
 
     private getOriginalUrl() {
@@ -95,7 +103,7 @@ export class FooterComponent implements ComponentInterface {
         const template = footerTemplate({
             footerData: data,
             footerMenuClass: data.footer_menu.length === 2 ? "footer-mobile-item half"
-            : ((data.footer_menu.length === 1) ? "footer-mobile full" : "footer-mobile-item"),
+                : ((data.footer_menu.length === 1) ? "footer-mobile full" : "footer-mobile-item"),
         });
 
         footer.innerHTML = template;
@@ -108,7 +116,7 @@ export class FooterComponent implements ComponentInterface {
                 const element = data.footer_menu[menu];
                 if (!DafaConnect.isDafaconnect() ||
                     (DafaConnect.isDafaconnect()
-                    && !element.attributes.class.match("footer-desktop"))
+                        && !element.attributes.class.match("footer-desktop"))
                 ) {
                     menus.push(element);
                 }
