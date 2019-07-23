@@ -94,7 +94,8 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'fastRegRedirect' => $fastRegRedirect,
             'fastRegTimeout' => $generalConfig['fastreg_timeout_redirect'] ?? 4,
             'sessionToken' => $this->playerSession->getToken(),
-            'isFastReg' => $isFastReg
+            'isFastReg' => $isFastReg,
+            'enableMobileAnnotation' => $generalConfig['enable_mobile_number_annotation'] ?? 0,
         ];
     }
 
