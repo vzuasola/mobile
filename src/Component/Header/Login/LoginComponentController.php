@@ -56,6 +56,12 @@ class LoginComponentController
             }
 
             try {
+                $responseHeaders = $response->getHeaders();
+                if (isset($responseHeaders['X-Page-Error-Type'][0])
+                    && strtolower($responseHeaders['X-Page-Error-Type'][0]) === 'restricted') {
+                    throw new \Exception("Country Restricted", 421);
+                }
+
                 $data['success'] = $this->playerSession->login($username, $password, $options);
                 $data['hash'] = md5($this->playerSession->getToken());
             } catch (\Exception $e) {
@@ -65,6 +71,8 @@ class LoginComponentController
                     $response = $response->withStatus(402);
                 } elseif ($e->getCode() == 401) {
                     $response = $response->withStatus(401);
+                } elseif ($e->getCode() == 421) {
+                    $response = $response->withStatus(421);
                 } else {
                     $response = $response->withStatus(500);
                 }
