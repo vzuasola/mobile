@@ -56,7 +56,7 @@ class TabNavigationComponent implements ComponentWidgetInterface
         } catch (\Exception $e) {
             $data['quick_nav'] = [];
         }
-        $data['quick_nav_product'] = $this->product->getProduct();
+        $data['quick_nav_product'] = str_replace("mobile-", "", $this->product->getProduct());
 
         return $data;
     }
