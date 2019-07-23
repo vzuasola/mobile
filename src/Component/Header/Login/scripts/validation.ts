@@ -166,11 +166,13 @@ export class Validation {
                 401: this.attachments.error_messages.invalid_passname,
                 402: this.attachments.error_messages.account_suspended,
                 403: this.attachments.error_messages.account_locked,
+                421: this.attachments.error_messages.error_message_restricted_country,
                 500: this.attachments.error_messages.service_not_available,
             };
             utility.addClass(data.form.querySelector('[name="username"]'), "invalid");
             utility.addClass(data.form.querySelector('[name="password"]'), "invalid");
-            data.form.querySelector(".login-error").innerHTML = errorMessage[data.error.status];
+            data.form.querySelector(".login-error").innerHTML = (errorMessage.hasOwnProperty(data.error.status))
+                ? errorMessage[data.error.status] : errorMessage[500];
         });
     }
 }
