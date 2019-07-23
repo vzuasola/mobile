@@ -73,6 +73,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             this.listenClickTab();
             this.listenClickGameTile();
             this.listenClickLauncherTab();
+            this.listenToLaunchGameLoader();
         }
         this.groupedGames = undefined;
         this.attachments = attachments;
@@ -90,7 +91,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 this.setLobby();
             });
         });
-        this.listenToLaunchGameLoader();
     }
 
     private liveDealerXhrRequest(method: string, callback) {
