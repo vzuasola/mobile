@@ -107,22 +107,23 @@ class LotteryLobbyComponentController
                 $game["field_game_thumbnail_$size"][0]['url'],
                 ['product' => self::PRODUCT]
             );
-            $definition['image'] = [
-                'alt' => $game["field_game_thumbnail_$size"][0]['alt'],
-                'url' => $imgUrl
-            ];
             $definition['img_landscape'] = $imgUrl;
             $landscapesize = $game['field_game_landscape_size'][0]['value'];
-
+            $overrideAlt = $size;
             if ($size != $landscapesize) {
                 $overrideSize = ($landscapesize == 'small') ? 'small-override' : 'large-override';
+                $overrideAlt = ($landscapesize == 'small') ? 'small' : 'large';
                 $definition['img_landscape'] = $this->asset->generateAssetUri(
                     $game["field_game_thumbnail_$landscapesize"][0]['url'],
                     ['product' => self::PRODUCT]
                 );
             }
             $definition['overridesize'] = isset($overrideSize) ? $overrideSize : '';
-            $definition['title'] = $game['title'][0]['value'] ?? '';
+            $definition['title'] = $game['title'][0]['value'] ?? '';          
+            $definition['image'] = [
+                'alt' => $game["field_game_thumbnail_$overrideAlt"][0]['alt'],
+                'url' => $imgUrl
+            ];
             $definition['game_provider'] = $game['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
             $definition['target'] = $game['field_target'][0]['value'] ?? '';
             $definition['use_game_loader'] = isset($game['field_use_game_loader'][0]['value'])
