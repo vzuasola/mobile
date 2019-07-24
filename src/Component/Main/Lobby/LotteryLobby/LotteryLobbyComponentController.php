@@ -119,7 +119,7 @@ class LotteryLobbyComponentController
                 );
             }
             $definition['overridesize'] = isset($overrideSize) ? $overrideSize : '';
-            $definition['title'] = $game['title'][0]['value'] ?? '';          
+            $definition['title'] = $game['title'][0]['value'] ?? '';
             $definition['image'] = [
                 'alt' => $game["field_game_thumbnail_$overrideAlt"][0]['alt'],
                 'url' => $imgUrl
