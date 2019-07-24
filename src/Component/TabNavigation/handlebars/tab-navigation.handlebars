@@ -3,7 +3,7 @@
         <a href="{{ home.alias }}" class="quick-nav-link {{ home.attributes.class }}"
             target="{{ home.attributes.target }}"
             data-router="true"
-            data-router-refresh="main"
+            data-router-refresh={{ router_refresh}}
             data-router-active-link-class="active"
             >
             <svg viewBox="0 0 20 20">
@@ -16,7 +16,7 @@
         <a href="{{ menu.alias }}" class="quick-nav-link {{ menu.attributes.class }}"
             target="{{ menu.attributes.target }}"
             data-router="true"
-            data-router-refresh="main"
+            data-router-refresh={{ ../router_refresh}}
             data-router-active-link-class="active"
             >
             {{ menu.title}}
@@ -28,7 +28,7 @@
                         <a href="{{ submenu.alias }}" class="quick-nav-link {{ submenu.attributes.class }}"
                             target="{{ submenu.attributes.target }}"
                             data-router="true"
-                            data-router-refresh="main"
+                            data-router-refresh={{ ../../router_refresh}}
                             data-router-active-link-class="active"
                         >
                         {{ submenu.title }}
