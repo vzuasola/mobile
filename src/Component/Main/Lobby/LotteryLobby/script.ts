@@ -53,7 +53,6 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.listenClickGameTile();
         this.listenToLaunchGameLoader();
         this.highlightQuickNavMenu();
-        this.afterNavigate();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -234,17 +233,6 @@ export class LotteryLobbyComponent implements ComponentInterface {
         if (this.checkEvent("tab_nav.ready")) {
             ComponentManager.subscribe("tab_nav.ready", (event, target, data) => {
                 ComponentManager.broadcast("tab_nav.highlight", { menu: "home" });
-            });
-        }
-    }
-
-    /**
-     *  Helper function used to refresh Quick Nav Menu
-     */
-    private afterNavigate() {
-        if (this.checkEvent("afterNavigate")) {
-            Router.on(RouterClass.afterNavigate, (event) => {
-                ComponentManager.refreshComponent("tab_navigation");
             });
         }
     }

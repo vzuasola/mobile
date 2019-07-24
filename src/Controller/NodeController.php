@@ -16,14 +16,14 @@ class NodeController extends BaseController
         $path = $request->getUri()->getPath();
         $path = trim($path, '/');
 
-        if (isset($args['id']) && in_array($args['id'], Products::PRODUCT_ALIAS['lottery'])) {
+        $product = $this->get('product_resolver')->getProduct();
+        $alias = str_replace("mobile-", "", $product);
+        if (isset($args['id']) && in_array($args['id'], Products::PRODUCT_ALIAS[$alias])) {
             $path = $args['params'];
         }
 
         try {
-            $node = $this->get('node_fetcher')
-                    ->withProduct($this->get('product_resolver')->getProduct())
-                    ->getNodeByAlias($path);
+            $node = $this->get('node_fetcher')->withProduct($product)->getNodeByAlias($path);
         } catch (\Exception $e) {
             throw new NotFoundException($request, $response);
         }

@@ -72,6 +72,7 @@ export class TabNavigationComponent implements ComponentInterface {
             home: this.quickNavMenu["quick_nav"].shift(),
             menus: this.quickNavMenu["quick_nav"],
             product: this.quickNavMenu["quick_nav_product"],
+            router_refresh: JSON.stringify(["main", "tab_navigation"]),
         });
         /* tslint:disable:no-string-literal */
 

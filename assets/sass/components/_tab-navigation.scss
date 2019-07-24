@@ -9,15 +9,15 @@
     &.show-submenu {
         ul {
             margin-bottom: 5rem;
-            width: 100%;
         }
     }
 
     ul {
         display: inline-block;
-        list-style-type: none;
+        width: 100%;
         padding: 0;
         margin: 0;
+        list-style-type: none;
         background: $red;
 
         li {
@@ -47,6 +47,10 @@
 
                 &.active {
                     background: none;
+
+                    svg {
+                        fill: $yellow;
+                    }
                 }
 
                 svg {
@@ -55,7 +59,7 @@
                     height: 2.5rem;
                     top: 0.2rem;
                     left: 1.25rem;
-                    fill: $yellow;
+                    fill: $white;
                 }
             }
 
