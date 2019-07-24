@@ -306,7 +306,7 @@ routes:
         headers:
             Cache-Control: no-cache, no-store, must-revalidate
 
-    /{id:lottery|keno|lotto-numbers|numbers|draw|live-draw}/*.*:
+    /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}/*.*:
         method: GET
         action: App\MobileEntry\Controller\NodeController:view
         components:

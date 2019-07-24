@@ -15,7 +15,6 @@ export class LotteryPageComponent implements ComponentInterface {
         this.element = element;
         this.events = {};
         this.highlightQuickNavMenu();
-        this.afterNavigate();
         this.equalizeStickyHeight();
         this.accordion(element);
     }
@@ -26,7 +25,6 @@ export class LotteryPageComponent implements ComponentInterface {
             this.events = {};
         }
         this.highlightQuickNavMenu();
-        this.afterNavigate();
         this.equalizeStickyHeight();
         this.accordion(element);
     }
@@ -49,17 +47,6 @@ export class LotteryPageComponent implements ComponentInterface {
                 if (data.ready) {
                     this.broadcastQuickNavKey();
                 }
-            });
-        }
-    }
-
-    /**
-     *  Helper function used to refresh Quick Nav Menu
-     */
-    private afterNavigate() {
-        if (this.checkEvent("afterNavigate")) {
-            Router.on(RouterClass.afterNavigate, (event) => {
-                ComponentManager.refreshComponent("tab_navigation");
             });
         }
     }
