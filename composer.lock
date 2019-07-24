@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b96552b8298590c307976fb36840ab5d",
+    "content-hash": "0a8c7a5a45f7eb80c261dad8f80e4b5f",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -2974,11 +2974,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-feature-CREG2-1432-mobile-autologin",
+            "version": "dev-working",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "5632c1bd26fe15705f0c989dcc00b943b75edf22"
+                "reference": "eedb9bacb98920b90287c944a0ed4206e2b43a06"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3029,7 +3029,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2019-07-23T11:59:07+00:00"
+            "time": "2019-07-24T02:45:23+00:00"
         },
         {
             "name": "willdurand/negotiation",
