@@ -10,10 +10,12 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 export class LotteryPageComponent implements ComponentInterface {
     private element: HTMLElement;
     private events: {};
+    private productMenu: string = "product-keno";
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.events = {};
+        this.highlightMenu();
         this.highlightQuickNavMenu();
         this.equalizeStickyHeight();
         this.accordion(element);
@@ -24,6 +26,7 @@ export class LotteryPageComponent implements ComponentInterface {
         if (typeof this.events === "undefined") {
             this.events = {};
         }
+        this.highlightMenu();
         this.highlightQuickNavMenu();
         this.equalizeStickyHeight();
         this.accordion(element);
@@ -70,5 +73,12 @@ export class LotteryPageComponent implements ComponentInterface {
 
         this.events[key] = key;
         return true;
+    }
+
+    /**
+     *  Helper function used to highlight product on Left Nav Menu
+     */
+    private highlightMenu() {
+        ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
     }
 }
