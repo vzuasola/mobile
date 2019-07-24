@@ -24,6 +24,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
     private windowObject: any;
     private mIndex: number = 0;
     private events: {};
+    private productMenu: string = "product-keno";
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -47,6 +48,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
             this.lotteryXhrRequest("lobby", (response) => {
                 this.games = response;
                 this.pushMaintenance();
+                this.highlightMenu();
                 this.setLobby();
             });
         });
@@ -78,6 +80,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
             this.lotteryXhrRequest("lobby", (response) => {
                 this.games = response;
                 this.pushMaintenance();
+                this.highlightMenu();
                 this.setLobby();
             });
         });
@@ -223,6 +226,13 @@ export class LotteryLobbyComponent implements ComponentInterface {
             this.games[this.mIndex].game_maintenance_text = this.maintenance[this.mIndex].game_maintenance_text;
             this.mIndex++;
         }
+    }
+
+    /**
+     *  Helper function used to highlight product on Left Nav Menu
+     */
+    private highlightMenu() {
+        ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
     }
 
     /**
