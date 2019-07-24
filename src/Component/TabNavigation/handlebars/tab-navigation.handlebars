@@ -1,0 +1,42 @@
+<ul class="quick-nav">
+    <li class="quick-nav-item first">
+        <a href="{{ home.alias }}" class="quick-nav-link {{ home.attributes.class }}"
+            target="{{ home.attributes.target }}"
+            data-router="true"
+            data-router-refresh="main"
+            data-router-active-link-class="active"
+            >
+            <svg viewBox="0 0 20 20">
+                <use xlink:href="#product-{{ product }}" />
+            </svg>
+        </a>
+    </li>
+    {{#each menus as |menu key|}}
+    <li class="quick-nav-item">
+        <a href="{{ menu.alias }}" class="quick-nav-link {{ menu.attributes.class }}"
+            target="{{ menu.attributes.target }}"
+            data-router="true"
+            data-router-refresh="main"
+            data-router-active-link-class="active"
+            >
+            {{ menu.title}}
+        </a>
+        {{#if menu.below}}
+            <ul class="quick-nav-submenu hidden">
+                {{#each menu.below as |submenu index|}}
+                    <li class="quick-nav-submenu-item">
+                        <a href="{{ submenu.alias }}" class="quick-nav-link {{ submenu.attributes.class }}"
+                            target="{{ submenu.attributes.target }}"
+                            data-router="true"
+                            data-router-refresh="main"
+                            data-router-active-link-class="active"
+                        >
+                        {{ submenu.title }}
+                        </a>
+                    </li>
+                {{/each}}
+            </ul>
+        {{/if}}
+    </li>
+    {{/each}}
+</ul>

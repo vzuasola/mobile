@@ -5,7 +5,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import PopupWindow from "@app/assets/script/components/popup";
 import {LazyLoader} from "./scripts/lazy-loader";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 /**
  *
@@ -53,6 +53,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.listenClickGameTile();
         this.listenToLaunchGameLoader();
         this.highlightQuickNavMenu();
+        this.afterNavigate();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -235,7 +236,17 @@ export class LotteryLobbyComponent implements ComponentInterface {
                 ComponentManager.broadcast("tab_nav.highlight", { menu: "home" });
             });
         }
-        ComponentManager.broadcast("tab_nav.refresh");
+    }
+
+    /**
+     *  Helper function used to refresh Quick Nav Menu
+     */
+    private afterNavigate() {
+        if (this.checkEvent("afterNavigate")) {
+            Router.on(RouterClass.afterNavigate, (event) => {
+                ComponentManager.refreshComponent("tab_navigation");
+            });
+        }
     }
 
     /**
