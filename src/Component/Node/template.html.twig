@@ -4,3 +4,6 @@
 {% if type == "promotion" %}
     {{ widget('node_promotions', {'node': node}) }}
 {% endif %}
+{% if type == "lottery_page" %}
+    {{ widget('node_lottery_page', {'node': node}) }}
+{% endif %}

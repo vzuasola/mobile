@@ -27,7 +27,6 @@
             display: block;
         }
     }
-
 }
 
 
@@ -135,6 +134,11 @@
     font-size: 1.2rem;
     border-radius: 0.2rem;
     font-weight: bold;
+
+    &.lottery-ribbon {
+        left: -0.1rem;
+        top: 1.0rem;
+    }
 }
 
 .game-list-thumb {

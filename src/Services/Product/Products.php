@@ -11,7 +11,8 @@ class Products
         'games' => 'mobile-games',
         'casino' => 'mobile-casino',
         'casino-gold' => 'mobile-casino-gold',
-        'live-dealer' => 'mobile-live-dealer'
+        'live-dealer' => 'mobile-live-dealer',
+        'lottery' => 'mobile-lottery'
     ];
 
     const PRODUCT_DIRECT_INTEGRATION = [
