@@ -170,6 +170,13 @@ export default function ErrorHandler(errors, event, formValidations) {
 
         if (input.type === 'checkbox') {
             input.parentNode.insertBefore(element, null);
+        } else if (input.hasAttribute("data-parent-annotation") ) {
+
+            var parentElem = document.querySelector(input.getAttribute("data-parent-annotation"));
+            var parentDiv = utility.findParent(parentElem, "div");
+            var errorContainer = parentDiv.querySelector(".error-container");
+            errorContainer.appendChild(element);
+
         } else {
             input.parentNode.appendChild(element);
         }
@@ -204,7 +211,14 @@ export default function ErrorHandler(errors, event, formValidations) {
      *
      */
     function removeErrorMessage(element) {
-        var message = utility.findSibling(element, '.form-help-block');
+        var message = false;
+        if (element.hasAttribute("data-parent-annotation")) {
+            var parentElem = document.querySelector(element.getAttribute("data-parent-annotation"));
+            var parentDiv = utility.findParent(parentElem, "div");
+            message = parentDiv.querySelector(".form-help-block");
+        } else {
+            message = utility.findSibling(element, '.form-help-block');
+        }
 
         if (message) {
             message.remove();
