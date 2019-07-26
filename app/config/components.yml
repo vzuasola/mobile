@@ -222,6 +222,9 @@ modules:
   allbet_integration:
     class: App\MobileEntry\Module\GameIntegration\AllBet\AllBetModule
 
+  wac_integration:
+    class: App\MobileEntry\Module\GameIntegration\WAC\WACModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
