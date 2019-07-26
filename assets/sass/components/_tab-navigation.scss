@@ -8,12 +8,13 @@
 
     &.show-submenu {
         ul {
-            margin-bottom: 5.5rem;
+            margin-bottom: 5rem;
         }
     }
 
     ul {
         display: inline-block;
+        position: relative;
         width: 100%;
         padding: 0;
         margin: 0;
@@ -27,6 +28,7 @@
             width: 35%;
             
             &.first {
+                position: relative;
                 width: 5rem;
                 text-align: left;
             }
@@ -70,8 +72,8 @@
 
             ul {
                 position: absolute;
-                width: 100%;
-                top: 9rem;
+                width: 100vw;
+                top: 100%;
                 left: 0;
                 border-top: 0.1rem solid $dark-red;
                 background: $dark-gray;
