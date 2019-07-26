@@ -245,6 +245,12 @@ modules:
   videoracing_integration:
     class: App\MobileEntry\Module\GameIntegration\VideoRacing\VideoRacingModule
 
+  wac_integration:
+    class: App\MobileEntry\Module\GameIntegration\WAC\WACModule
+
+  ezugi_gaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\EzugiGaming\EzugiGamingModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
