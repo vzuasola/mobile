@@ -36,6 +36,7 @@ export class GameIntegrationModule implements ModuleInterface {
         const tgp: any = ComponentManager.getModuleInstance("tgp_integration");
         const allbet: any = ComponentManager.getModuleInstance("allbet_integration");
         const wac: any = ComponentManager.getModuleInstance("wac_integration");
+        const ezugi_gaming: any = ComponentManager.getModuleInstance("ezugi_gaming_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
@@ -54,6 +55,7 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("tgp", tgp);
         this.gameLauncher.setProvider("allbet", allbet);
         this.gameLauncher.setProvider("wac", wac);
+        this.gameLauncher.setProvider("ezugi_gaming", ezugi_gaming);
 
         setTimeout(() => {
             this.gameLauncher.init();
