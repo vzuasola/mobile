@@ -291,7 +291,8 @@ class BalanceModuleController
     {
         $format = '{currency} {total}';
         // Format the balance display via current language
-        if (strtoupper($currency) == 'RMB' && in_array($this->lang, ['sc','ch'])) {
+        if ((strtoupper($currency) == 'RMB' || strtoupper($currency) === 'MBC')
+            && in_array($this->lang, ['sc','ch'])) {
             $format = '{total} {currency}';
         }
         return $format;
@@ -315,7 +316,7 @@ class BalanceModuleController
                     $currency = $translated;
                 }
                 if ($currency === 'mBTC') {
-                    $currency = '比特币';
+                    $currency = 'm比特币';
                 }
                 break;
             case 'ch':
@@ -323,7 +324,7 @@ class BalanceModuleController
                     $currency = $translated;
                 }
                 if ($currency === 'mBTC') {
-                    $currency = '比特幣';
+                    $currency = 'm比特幣';
                 }
                 break;
             default:
