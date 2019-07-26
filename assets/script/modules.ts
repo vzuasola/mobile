@@ -22,6 +22,7 @@ import {EBetModule} from "@app/src/Module/GameIntegration/EBet/script";
 import {GPIModule} from "@app/src/Module/GameIntegration/GPI/script";
 import {TGPModule} from "@app/src/Module/GameIntegration/TGP/script";
 import {AllBetModule} from "@app/src/Module/GameIntegration/AllBet/script";
+import {WACModule} from "@app/src/Module/GameIntegration/WAC/script";
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
 import {GenericIntegrationModule} from "@app/src/Module/ProductIntegration/Generic/script";
@@ -61,6 +62,7 @@ ComponentManager.setModules({
     casino_integration: new CasinoIntegrationModule(),
     exchange_integration: new ExchangeIntegrationModule(),
     gold_deluxe_integration: new GoldDeluxeModule(),
+    wac_integration: new WACModule(),
     games_integration: new GamesIntegrationModule(),
     live_dealer_integration: new LiveDealerIntegrationModule(),
 });
