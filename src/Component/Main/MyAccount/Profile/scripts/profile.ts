@@ -64,7 +64,10 @@ export class Profile extends FormBase {
         }
         this.validateForm(this.form);
         this.handleSubmission();
-        this.activateTooltip();
+
+        if (this.attachments.enableMobileAnnotation === 0) {
+            this.activateTooltip();
+        }
     }
 
     private getUserData() {

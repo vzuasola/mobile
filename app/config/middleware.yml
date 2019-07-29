@@ -1,5 +1,6 @@
 middlewares:
   request:
+    cookie_authentication: App\Middleware\Request\CookieAuthentication
     slashes: App\Middleware\Request\Slashes
     case_insensitive: App\Middleware\Request\CaseInsensitiveRoute
     page_cache: App\MobileEntry\Middleware\ResponseCache
