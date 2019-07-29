@@ -67,7 +67,6 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                     product,
                     gameCode: options.code,
                     langCode,
-                    userAgent: navigator.userAgent,
                 },
             }).then((response) => {
                 if (response.gameurl) {
