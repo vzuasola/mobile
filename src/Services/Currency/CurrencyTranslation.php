@@ -43,7 +43,7 @@ class CurrencyTranslation
                     $currency = $translated;
                 }
                 if ($currency === 'mBTC') {
-                    $currency = '比特币';
+                    $currency = 'm比特币';
                 }
                 break;
             case 'ch':
@@ -51,7 +51,7 @@ class CurrencyTranslation
                     $currency = $translated;
                 }
                 if ($currency === 'mBTC') {
-                    $currency = '比特幣';
+                    $currency = 'm比特幣';
                 }
                 break;
             default:

@@ -6,7 +6,6 @@ use App\Plugins\Form\FormInterface;
 use App\Extensions\Form\ConfigurableForm\FormBase;
 use App\Account\Mapping\LanguageMapping;
 use DateTime;
-use App\MobileEntry\Services\Currency\CurrencyTranslation;
 
 class MyProfileForm extends FormBase implements FormInterface
 {

@@ -39,6 +39,7 @@ class BalanceModuleController
     private $territories;
     private $balance;
     private $lang;
+    private $currency;
 
     /**
      *
@@ -52,7 +53,8 @@ class BalanceModuleController
             $container->get('user_fetcher'),
             $container->get('territory_blocking_fetcher'),
             $container->get('balance_fetcher'),
-            $container->get('lang')
+            $container->get('lang'),
+            $container->get('currency_translation')
         );
     }
 
@@ -66,7 +68,8 @@ class BalanceModuleController
         $user,
         $territories,
         $balance,
-        $lang
+        $lang,
+        $currency
     ) {
         $this->rest = $rest;
         $this->config = $config;
@@ -75,6 +78,7 @@ class BalanceModuleController
         $this->territories = $territories;
         $this->balance = $balance;
         $this->lang = $lang;
+        $this->currency = $currency;
     }
 
     /**
@@ -163,7 +167,7 @@ class BalanceModuleController
                 $data['bonuses'] = $bonuses;
                 $data['balance'] = number_format($totalBalance, 2, '.', ',');
                 $data['format'] = $this->totalBalanceFormat($currency);
-                $data['currency'] = $this->currencyTranslation($currency);
+                $data['currency'] = $this->currency->getTranslation($currency);
                 $data['err_message'] = $headerConfigs['balance_error_text_product'] ?? 'N/A';
             } catch (\Exception $e) {
                 $data['message'] = $e->getMessage();
@@ -294,41 +298,5 @@ class BalanceModuleController
             $format = '{total} {currency}';
         }
         return $format;
-    }
-
-
-    /**
-     * Translate currency depending on current langauge
-     *
-     * @param string $currency Registered currency of the player
-     * @return string $currency Translated currency of the player
-     */
-    private function currencyTranslation($currency)
-    {
-        if (strtoupper($currency) === 'MBC') {
-            $currency = 'mBTC';
-        }
-        switch ($this->lang) {
-            case 'sc':
-                if ($translated = Currency::getTranslation($currency)) {
-                    $currency = $translated;
-                }
-                if ($currency === 'mBTC') {
-                    $currency = '比特币';
-                }
-                break;
-            case 'ch':
-                if ($translated = Currency::getTranslation($currency)) {
-                    $currency = $translated;
-                }
-                if ($currency === 'mBTC') {
-                    $currency = '比特幣';
-                }
-                break;
-            default:
-                break;
-        }
-
-        return $currency;
     }
 }
