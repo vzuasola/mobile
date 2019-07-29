@@ -166,7 +166,6 @@
     }
 }
 
-/* ----------- iPhone 6, 6S, 7 and 8 ----------- */
 @media only screen 
   and (min-device-width: 375px) 
   and (max-device-width: 667px) 
@@ -179,7 +178,6 @@
     }
 }
 
-/* ----------- iPhone 6+, 7+ and 8+ ----------- */
 @media only screen 
   and (min-device-width: 414px) 
   and (max-device-width: 736px) 
@@ -191,7 +189,6 @@
     }
 }
 
-/* ----------- iPad 3, 4 and Pro 9.7" ----------- */
 @media only screen 
 and (min-device-width: 768px) 
 and (max-device-width: 1024px) {
@@ -202,7 +199,6 @@ and (max-device-width: 1024px) {
     }
 }
 
-/* ----------- iPad Pro 10.5" ----------- */
 @media only screen 
   and (min-device-width: 834px) 
   and (max-device-width: 1112px)
@@ -214,7 +210,6 @@ and (max-device-width: 1024px) {
     }
 }
 
-/* ----------- iPad Pro 12.9" ----------- */
 @media only screen 
   and (min-device-width: 1024px) 
   and (max-device-width: 1366px)
@@ -223,5 +218,5 @@ and (max-device-width: 1024px) {
         .lottery-lobby-tile-container {
             padding-top: 1.3rem;
         }
-    }
+    } 
 }
