@@ -166,13 +166,62 @@
     }
 }
 
+/* ----------- iPhone 6, 6S, 7 and 8 ----------- */
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+    .mobile-lottery {
+        .lottery-lobby-tile-container {
+            padding-top: 0.6rem;
+        }
+    }
+}
+
+/* ----------- iPhone 6+, 7+ and 8+ ----------- */
+@media only screen 
+  and (min-device-width: 414px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 3) {
+    .mobile-lottery {
+        .lottery-lobby-tile-container {
+            padding-top: 0.7rem;
+        }
+    }
+}
+
+/* ----------- iPad 3, 4 and Pro 9.7" ----------- */
 @media only screen 
 and (min-device-width: 768px) 
-and (max-device-width: 1024px)
-{
+and (max-device-width: 1024px) {
     .mobile-lottery {
         .lottery-lobby-tile-container {
             padding-top: 0.8rem;
+        }
+    }
+}
+
+/* ----------- iPad Pro 10.5" ----------- */
+@media only screen 
+  and (min-device-width: 834px) 
+  and (max-device-width: 1112px)
+  and (orientation: landscape) {
+    .mobile-lottery {
+        .lottery-lobby-tile-container {
+            padding-top: 0.8rem;
+        }
+    }
+}
+
+/* ----------- iPad Pro 12.9" ----------- */
+@media only screen 
+  and (min-device-width: 1024px) 
+  and (max-device-width: 1366px)
+  and (orientation: landscape) {
+    .mobile-lottery {
+        .lottery-lobby-tile-container {
+            padding-top: 1.3rem;
         }
     }
 }
