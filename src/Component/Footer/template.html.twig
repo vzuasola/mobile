@@ -1,9 +1,7 @@
 <footer class="footer mt-10">
-    <div class="container">
-        {{ include('@component/Footer/templates/sponsor.html.twig') }}
-    </div>
-<div class="footer-mobile-menu" id="footer-menu"></div>
-{{ include('@component/Footer/templates/copyright.html.twig') }}
+    {{ include('@component/Footer/templates/sponsor.html.twig') }}
+    <div class="footer-mobile-menu" id="footer-menu"></div>
+    {{ include('@component/Footer/templates/copyright.html.twig') }}
 </footer>
 <span class="hidden">
     {% include '@app/web/images/svg/footer/footer-icons.svg' ignore missing %}

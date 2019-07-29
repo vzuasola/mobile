@@ -55,32 +55,13 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
             $avaya = $this->configFetcher->getConfig('webcomposer_config.avaya_configuration');
 
             if ($isLogin) {
-                $playerInfo = $this->playerSession->getDetails();
-
                 $validityTime = $avaya['validity_time'] ?? 1200;
-
-                $userInfo = [
-                    'username' => $playerInfo['username'],
-                    'email' => $playerInfo['email'],
-                    'level' => 'Reg',
-                    'exp' => strtotime("+" . $validityTime . " seconds")
-                ];
-
-                $data['validity_time'] = $userInfo['exp'];
-
-                $jwt = JWT::encode(
-                    $userInfo,
-                    $avaya['jwt_key'] ?? '',
-                    'HS256',
-                    null,
-                    null
-                );
             }
 
             $data['baseUrl'] = $avaya['base_url'] ?? '';
             $data['urlPost'] = $avaya['url_post'] ?? '';
             $data['postTimeout'] = $avaya['url_post_timout'] ?? '';
-            $data['jwtKey'] = $jwt ?? '';
+            $data['jwtKey'] = false;
             $data['validity'] = $validityTime ?? $avaya['validity_time'];
         } catch (\Exception $e) {
             $data = [];
