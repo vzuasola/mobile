@@ -126,10 +126,7 @@
 
             &-links {
                 position: relative;
-                display: grid;
-                align-items: center;
-                grid-template-columns: 72% 27%;
-                grid-gap: 1%;
+                display: block;
                 width: 100%;
                 height: 100%;
                 background: $cat-tab-bg;

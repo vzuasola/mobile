@@ -79,8 +79,6 @@ export class LotteryPageComponent implements ComponentInterface {
      *  Helper function used to highlight product on Left Nav Menu
      */
     private highlightMenu() {
-        setTimeout (() => {
-            ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
-        }, 200);
+        ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
     }
 }
