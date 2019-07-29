@@ -39,6 +39,10 @@ components:
     class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
     parent: node
 
+  node_lottery_page:
+    class: App\MobileEntry\Component\Node\LotteryPage\LotteryPageComponent
+    parent: node
+
   lobby:
     class: App\MobileEntry\Component\Main\Lobby\LobbyComponent
 
@@ -74,6 +78,10 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\CasinoGoldLobby\CasinoGoldLobbyComponent
     parent: lobby
 
+  lottery_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\LotteryLobby\LotteryLobbyComponent
+    parent: lobby
+
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
 
@@ -88,6 +96,9 @@ components:
 
   promotions:
     class: App\MobileEntry\Component\Main\Promotions\PromotionsComponent
+  
+  tab_navigation:
+    class: App\MobileEntry\Component\TabNavigation\TabNavigationComponent
 
   cant_login:
     class: App\MobileEntry\Component\Main\CantLogin\CantLoginComponent
@@ -216,6 +227,15 @@ modules:
   gpi_integration:
     class: App\MobileEntry\Module\GameIntegration\GPI\GPIModule
 
+  gpi_keno_integration:
+    class: App\MobileEntry\Module\GameIntegration\GPIKeno\GPIKenoModule
+
+  gpi_pk_integration:
+    class: App\MobileEntry\Module\GameIntegration\GPIPk\GPIPkModule
+
+  gpi_thai_integration:
+    class: App\MobileEntry\Module\GameIntegration\GPIThai\GPIThaiModule
+
   tgp_integration:
     class: App\MobileEntry\Module\GameIntegration\TGP\TGPModule
 
@@ -228,6 +248,9 @@ modules:
   ezugi_gaming_integration:
     class: App\MobileEntry\Module\GameIntegration\EzugiGaming\EzugiGamingModule
 
+  videoracing_integration:
+    class: App\MobileEntry\Module\GameIntegration\VideoRacing\VideoRacingModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
@@ -239,4 +262,6 @@ modules:
 
   live_dealer_integration:
     class: App\MobileEntry\Module\ProductIntegration\LiveDealer\LiveDealerIntegrationModule
-
+  
+  lottery_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule

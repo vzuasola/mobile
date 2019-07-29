@@ -220,12 +220,13 @@ validators.regex = {
  */
 validators.valid_date = {
     callback: function (value, param, field) {
-        var birthdateEl = document.getElementById(field.id);
-        var birthDateFormat = birthdateEl.getAttribute('date-format') || "DD/MM/YYYY";
 
-        birthDateFormat = birthDateFormat.replace(/y/ig, "YYYY");
-        birthDateFormat = birthDateFormat.replace(/m/ig, "MM");
-        birthDateFormat = birthDateFormat.replace(/d/ig, "DD");
+        var birthDateFormat = field.element.getAttribute("date-format") || "DD/MM/YYYY";
+
+        birthDateFormat = birthDateFormat
+            .replace(/y/ig, "YYYY")
+            .replace(/m/ig, "MM")
+            .replace(/d/ig, "DD");
 
         birthDateFormat = birthDateFormat.split('/');
         value = value.split('/');
@@ -247,20 +248,6 @@ validators.valid_date = {
                 return false;
             }
 
-            var yearMinus18 = new Date().getFullYear() - 18;
-            for (var i = 0; i <= birthDateFormat.length - 1; i++) {
-                if (birthDateFormat[i] === 'YYYY' && (value[i] > yearMinus18 || parseInt(value[i]) < 1901)) {
-                    return false;
-                }
-
-                if (birthDateFormat[i] === 'MM' && value[i] > 12) {
-                    return false;
-                }
-
-                if (birthDateFormat[i] === 'DD' && value[i] > 31) {
-                    return false;
-                }
-            }
         } else {
             return false;
         }
@@ -297,6 +284,37 @@ validators.verify_password = {
 validators.not_match_username = {
     callback: function (value, param, field) {
         return value.toUpperCase() !== field.element.getAttribute('data-username');
+    },
+};
+
+/**
+ * Allowed Date
+ */
+validators.allowed_date = {
+    callback: function (value, param, field) {
+
+        var birthDateFormat = field.element.getAttribute("date-format") || "DD/MM/YYYY";
+
+        birthDateFormat = birthDateFormat
+            .replace(/y/ig, "YYYY")
+            .replace(/m/ig, "MM")
+            .replace(/d/ig, "DD");
+
+        birthDateFormat = birthDateFormat.split('/');
+        value = value.split('/');
+
+        if (value[0] !== undefined && value[1] !== undefined && value[2] !== undefined) {
+
+            var yearMinus18 = new Date().getFullYear() - 18;
+            for (var i = 0; i <= birthDateFormat.length - 1; i++) {
+                if (birthDateFormat[i] === 'YYYY' && (value[i] > yearMinus18 || parseInt(value[i]) < 1901)) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        return true;
     },
 };
 

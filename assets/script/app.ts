@@ -57,7 +57,7 @@ Router.setOption(
     "main-components",
     ["header", "main", "menu", "footer", "language",
         "push_notification", "marketing", "marketing_space", "seo", "announcement",
-        "cookie_notification", "casino_option"],
+        "cookie_notification", "casino_option", "tab_navigation"],
 );
 
 ComponentManager.init();

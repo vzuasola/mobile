@@ -168,8 +168,8 @@ class MyProfileForm extends FormBase implements FormInterface
         // logic to get custom attributes that will be attach to the field
         foreach ($definition as $key => $formField) {
             if (isset($definition[$key]['options']['placeholder']) &&
-                (strpos($formField['type'], 'TextType') !== false ||
-                strpos($formField['type'], 'TextAreaType') !== false)
+            (strpos($formField['type'], 'TextType') !== false ||
+            strpos($formField['type'], 'TextAreaType') !== false)
             ) {
                 $this->moveAttribute($definition, $key, 'annotation', 'data-annotation');
                 $definition[$key]['options']['attr']['placeholder'] = $definition[$key]['options']['placeholder'];

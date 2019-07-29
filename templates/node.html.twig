@@ -1,5 +1,6 @@
 {% extends '@site/page.html.twig' %}
 
 {% block main %}
+    {{ widget('tab_navigation') }}
     {{ widget('main', {'node': node}) }}
 {% endblock main %}

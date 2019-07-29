@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07efe250dfeec2d62661f1500260577c",
+    "content-hash": "0a8c7a5a45f7eb80c261dad8f80e4b5f",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -824,7 +824,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "developer"
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -2974,11 +2974,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.150.0",
+            "version": "dev-working",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "8246070ca2f1c458ea62aceaa9a3e1baefca5e29"
+                "reference": "36699e29efdfccf0c14743fa1724e9ec3c11f05a"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3029,7 +3029,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2019-06-19T03:39:31+00:00"
+            "time": "2019-07-25T05:00:59+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -3929,8 +3929,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "The PHP Unit Testing framework.",
