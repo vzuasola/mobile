@@ -3,7 +3,6 @@
 namespace App\MobileEntry\Module\Balance;
 
 use App\Drupal\Config;
-use App\Translations\Currency;
 
 /**
  *
