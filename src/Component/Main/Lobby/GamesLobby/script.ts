@@ -129,6 +129,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.listenOnSearch();
             this.listenOnFilter();
             this.listenOnCloseFilter();
+            this.listenToLaunchGameLoader();
         }
         this.response = null;
         this.element = element;
@@ -152,7 +153,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.load = true;
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
-        this.listenToLaunchGameLoader();
     }
 
     private highlightMenu() {
