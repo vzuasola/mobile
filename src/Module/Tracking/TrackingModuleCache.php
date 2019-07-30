@@ -24,7 +24,8 @@ class TrackingModuleCache
         $params = $request->getParams();
 
         foreach ($params as $key => $value) {
-            if (isset($affiliates[$key]) && (!isset($cookies[$key]) || strtolower($cookies[$key]) !== strtolower($value))) {
+            if (isset($affiliates[$key]) && (!isset($cookies[$key])
+                || strtolower($cookies[$key]) !== strtolower($value))) {
                 $cookies[$key] = $value;
                 $generateCookies = true;
             }
