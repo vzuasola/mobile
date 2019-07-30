@@ -35,7 +35,6 @@ class TrackingModule implements ComponentModuleInterface
      */
     public function processRequest($request, &$response)
     {
-        $generateCookies = false;
         $cookies = $this->getCookies();
 
         try {
@@ -58,15 +57,14 @@ class TrackingModule implements ComponentModuleInterface
         $params = $this->request->getParams();
 
         foreach ($params as $key => $value) {
-            if (isset($affiliates[$key]) && (!isset($cookies[$key]) || $cookies[$key] !== $value)) {
+            if (isset($affiliates[$key])) {
                 $cookies[$key] = $value;
-                $generateCookies = true;
             }
         }
 
         $time = $config['affiliate_expiration'] ?? 60;
 
-        if (!empty($cookies) && $generateCookies) {
+        if (!empty($cookies)) {
             Cookies::set('affiliates', http_build_query($cookies), [
                 'expire' => time() + ($time * 60),
                 'http' => false,

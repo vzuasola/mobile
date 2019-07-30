@@ -56,7 +56,6 @@ class VoidbridgeModuleController
                 $responseData = $this->voidbridge->getGameUrlById('icore_vb', $requestData['gameCode'], [
                     'options' => [
                         'languageCode' => $requestData['langCode'],
-                        'userAgent' => $requestData['userAgent'],
                     ]
                 ]);
                 if ($responseData['url']) {

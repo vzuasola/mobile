@@ -242,12 +242,6 @@ modules:
   allbet_integration:
     class: App\MobileEntry\Module\GameIntegration\AllBet\AllBetModule
 
-  wac_integration:
-    class: App\MobileEntry\Module\GameIntegration\WAC\WACModule
-
-  ezugi_gaming_integration:
-    class: App\MobileEntry\Module\GameIntegration\EzugiGaming\EzugiGamingModule
-
   videoracing_integration:
     class: App\MobileEntry\Module\GameIntegration\VideoRacing\VideoRacingModule
 

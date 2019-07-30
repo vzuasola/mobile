@@ -52,6 +52,7 @@ class MyProfileForm extends FormBase implements FormInterface
 
         $this->scripts = $container->get('scripts');
         $this->playerSubscription = $container->get('receive_news');
+        $this->currency = $container->get('currency_translation');
     }
     /**
      * @{inheritdoc}
@@ -283,9 +284,12 @@ class MyProfileForm extends FormBase implements FormInterface
             $mobileNumber1 = $countryCode;
         }
 
+        // Translate currency
+        $currency = $this->currency->getTranslation($apiValues['currency']);
+
         $result = [
             'username' => $apiValues['username'],
-            'currency' => $apiValues['currency'],
+            'currency' => $currency,
             'first_name' => $apiValues['firstName'],
             'last_name' => $apiValues['lastName'],
             'birthdate' => date($dateFormat ?? 'Y/m/d', $apiValues['dateOfBirth']),

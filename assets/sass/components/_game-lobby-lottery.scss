@@ -7,7 +7,6 @@
 
             .game-lottery-lobby-container {
                 padding: 0;
-                padding-right: 1%;
             }
         }
     }
@@ -15,7 +14,7 @@
     .game-listing {
         position: relative;
         float: left;
-        padding: 0 0 1% 1%;
+        padding: 0 0.5% 1% 0.5%;
 
         &-item {
             padding: 0;
@@ -114,7 +113,7 @@
                 width: 99%;
             }
         }
-    }
+}
 }
 
 // Landscape
@@ -122,15 +121,15 @@
     .mobile-lottery {
         #game-container {
             .small-image {
-                width: 33.13333333333333%;
+                width: 33.33333333333333%;
             }
 
             .small-image.large-override {
-                width: 66.86666667%;
+                width: 66.66666667%;
             }
 
             .large-image {
-                width: 66.86666667%;
+                width: 66.66666667%;
             }
 
             .large-image.small-override {
@@ -164,59 +163,4 @@
             }
         }
     }
-}
-
-@media only screen 
-  and (min-device-width: 375px) 
-  and (max-device-width: 667px) 
-  and (-webkit-min-device-pixel-ratio: 2)
-  and (orientation: landscape) {
-    .mobile-lottery {
-        .lottery-lobby-tile-container {
-            padding-top: 0.6rem;
-        }
-    }
-}
-
-@media only screen 
-  and (min-device-width: 414px) 
-  and (max-device-width: 736px) 
-  and (-webkit-min-device-pixel-ratio: 3) {
-    .mobile-lottery {
-        .lottery-lobby-tile-container {
-            padding-top: 0.7rem;
-        }
-    }
-}
-
-@media only screen 
-and (min-device-width: 768px) 
-and (max-device-width: 1024px) {
-    .mobile-lottery {
-        .lottery-lobby-tile-container {
-            padding-top: 0.8rem;
-        }
-    }
-}
-
-@media only screen 
-  and (min-device-width: 834px) 
-  and (max-device-width: 1112px)
-  and (orientation: landscape) {
-    .mobile-lottery {
-        .lottery-lobby-tile-container {
-            padding-top: 0.8rem;
-        }
-    }
-}
-
-@media only screen 
-  and (min-device-width: 1024px) 
-  and (max-device-width: 1366px)
-  and (orientation: landscape) {
-    .mobile-lottery {
-        .lottery-lobby-tile-container {
-            padding-top: 1.3rem;
-        }
-    } 
 }

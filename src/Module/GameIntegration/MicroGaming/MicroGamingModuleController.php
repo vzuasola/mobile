@@ -51,7 +51,7 @@ class MicroGamingModuleController
         $data['currency'] = false;
         if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
-            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
+            if ($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') {
                 $data = $this->getGameUrl($request, $response);
             }
 

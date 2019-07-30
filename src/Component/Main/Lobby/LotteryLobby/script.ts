@@ -48,8 +48,8 @@ export class LotteryLobbyComponent implements ComponentInterface {
             this.lotteryXhrRequest("lobby", (response) => {
                 this.games = response;
                 this.pushMaintenance();
-                this.setLobby();
                 this.highlightMenu();
+                this.setLobby();
             });
         });
         this.listenClickGameTile();
@@ -80,8 +80,8 @@ export class LotteryLobbyComponent implements ComponentInterface {
             this.lotteryXhrRequest("lobby", (response) => {
                 this.games = response;
                 this.pushMaintenance();
-                this.setLobby();
                 this.highlightMenu();
+                this.setLobby();
             });
         });
         this.listenToLaunchGameLoader();
