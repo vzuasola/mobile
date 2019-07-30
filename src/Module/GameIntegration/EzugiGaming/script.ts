@@ -8,9 +8,9 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 
-export class VoidbridgeModule implements ModuleInterface, GameInterface {
-    private key: string = "voidbridge";
-    private moduleName: string = "voidbridge_integration";
+export class EzugiGamingModule implements ModuleInterface, GameInterface {
+    private key: string = "ezugi_gaming";
+    private moduleName: string = "ezugi_gaming_integration";
     private currencies: any;
     private languages: any;
     private windowObject: any;
@@ -40,7 +40,7 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
 
     launch(options) {
         if (options.provider === this.key) {
-            const lang = document.body.getAttribute("data-language");
+            const lang = Router.getLanguage();
             let langCode = "en";
 
             if (typeof this.languages[lang] !== "undefined") {
@@ -65,9 +65,8 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                 method: "post",
                 data: {
                     product,
-                    gameCode: options.code,
                     langCode,
-                    userAgent: navigator.userAgent,
+                    gameCode: options.gameCode,
                 },
             }).then((response) => {
                 if (response.gameurl) {

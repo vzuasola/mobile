@@ -12,6 +12,7 @@ class TrackingModuleCache
      */
     public static function processResponseCache($request, $response)
     {
+        $generateCookies = false;
         $cookies = static::getCookies();
 
         $attributes = $response->getAttribute(TrackingModule::class);
@@ -23,12 +24,13 @@ class TrackingModuleCache
         $params = $request->getParams();
 
         foreach ($params as $key => $value) {
-            if (isset($affiliates[$key])) {
+            if (isset($affiliates[$key]) && (!isset($cookies[$key]) || strtolower($cookies[$key]) !== strtolower($value))) {
                 $cookies[$key] = $value;
+                $generateCookies = true;
             }
         }
 
-        if (!empty($cookies)) {
+        if (!empty($cookies) && $generateCookies) {
             Cookies::set('affiliates', http_build_query($cookies), [
                 'expire' => time() + ($time * 60),
                 'http' => false,
