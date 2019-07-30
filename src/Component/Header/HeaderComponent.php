@@ -28,11 +28,7 @@ class HeaderComponent implements ComponentWidgetInterface
         '/casino',
         '/casino-gold',
         '/live-dealer',
-        '/lottery',
-        '/lotto-numbers',
-        '/numbers',
-        '/draw',
-        '/live-draws'
+        '/lottery'
     ];
 
     /**
