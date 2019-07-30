@@ -80,5 +80,8 @@ export class LotteryPageComponent implements ComponentInterface {
      */
     private highlightMenu() {
         ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
+        setTimeout (() => {
+            ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
+        }, 200);
     }
 }
