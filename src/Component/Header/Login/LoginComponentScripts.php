@@ -58,6 +58,7 @@ class LoginComponentScripts implements ComponentAttachmentInterface
                 'blank_password' => $config['error_message_blank_password'] ?? '',
                 'blank_passname' => $config['error_message_blank_passname'] ?? '',
                 'invalid_passname' => $config['error_message_invalid_passname'] ?? '',
+                'error_message_restricted_country' => $config['error_message_restricted_country'] ?? '',
                 'service_not_available' => $config['error_message_service_not_available'] ?? '',
                 'account_suspended' => $config['error_message_account_suspended'] ?? '',
                 'account_locked' => $config['error_message_account_locked'] ?? '',

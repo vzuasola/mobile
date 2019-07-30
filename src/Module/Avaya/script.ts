@@ -52,7 +52,7 @@ export class AvayaModule implements ModuleInterface {
         this.avayaClass = new Avaya(this.options);
         // Add listen to everything
         ComponentManager.subscribe("click", (event, src, data) => {
-             this.getAvayaToken(event, src, data);
+            this.getAvayaToken(event, src, data);
         });
 
         ComponentManager.subscribe("session.login", (event, src) => {
@@ -68,7 +68,7 @@ export class AvayaModule implements ModuleInterface {
         });
     }
 
-    private setJWT() {
+    private setJWT(callback?) {
         xhr({
             url: Router.generateModuleRoute("avaya", "jwt"),
             type: "json",
@@ -84,6 +84,10 @@ export class AvayaModule implements ModuleInterface {
             this.avayaClass.setOnFail((error) => {
                 this.updatePopupWindow(response.baseUrl);
             });
+
+            if (callback) {
+                callback(response);
+            }
         }).fail((err, msg) => {
             // do nothing
         });
@@ -194,9 +198,10 @@ export class AvayaModule implements ModuleInterface {
                 }
             }
 
-            this.avayaClass.getAvayaToken(target);
-
-            return false;
+            this.setJWT((response) => {
+                this.avayaClass.getAvayaToken(target);
+                return false;
+            });
         }
     }
 
