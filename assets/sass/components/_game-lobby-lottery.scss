@@ -1,12 +1,13 @@
 .mobile-lottery {
     .lottery-lobby-tile-container {
-        padding-top: 0.5rem;
+        padding-top: 1%;
 
         .game-tiles {
             width:100%;
 
             .game-lottery-lobby-container {
                 padding: 0;
+                padding-right: 1%;
             }
         }
     }
@@ -14,7 +15,7 @@
     .game-listing {
         position: relative;
         float: left;
-        padding: 0 0.5% 1% 0.5%;
+        padding: 0 0 1% 1%;
 
         &-item {
             padding: 0;
@@ -113,7 +114,7 @@
                 width: 99%;
             }
         }
-}
+    }
 }
 
 // Landscape
@@ -121,15 +122,15 @@
     .mobile-lottery {
         #game-container {
             .small-image {
-                width: 33.33333333333333%;
+                width: 33.13333333333333%;
             }
 
             .small-image.large-override {
-                width: 66.66666667%;
+                width: 66.86666667%;
             }
 
             .large-image {
-                width: 66.66666667%;
+                width: 66.86666667%;
             }
 
             .large-image.small-override {
