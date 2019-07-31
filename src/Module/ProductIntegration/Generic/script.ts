@@ -12,36 +12,59 @@ export class GenericIntegrationModule extends Redirectable implements ModuleInte
     protected isLoginOnly = true;
 
     protected doRequest(src) {
-        const url = src.getAttribute("data-post-login-url");
+        this.doRedirectAfterLogin(src);
 
-        if (url) {
-            this.loader.show();
+    }
 
+    protected doRedirectAfterLogin(src) {
+        let redirect = utility.getParameterByName("re");
+        if (!redirect) {
+            const url = src.getAttribute("data-post-login-url");
+
+            if (url) {
+                this.loader.show();
+
+                xhr({
+                    url: Router.generateModuleRoute("login_redirect", "process"),
+                    type: "json",
+                    method: "post",
+                    data: {
+                        url,
+                    },
+                }).then((response) => {
+                    if (typeof response.url !== "undefined") {
+                        if (!this.isSupportedLanguage(src)) {
+                            response.url = response.url.replace(
+                                "\/" + ComponentManager.getAttribute("language") + "\/",
+                                "/" + this.getRedirectLanguage(src) + "/");
+                        }
+                        Redirector.redirect(response.url, () => {
+                            this.loader.hide();
+                        });
+
+                        return;
+                    }
+
+                    this.loader.hide();
+                }).fail((error, message) => {
+                    this.loader.hide();
+                });
+            }
+        } else {
             xhr({
-                url: Router.generateModuleRoute("login_redirect", "process"),
+                url: Router.generateModuleRoute("product_integration", "process"),
                 type: "json",
                 method: "post",
                 data: {
-                    url,
+                    url: redirect,
                 },
             }).then((response) => {
-                if (typeof response.url !== "undefined") {
-                    if (!this.isSupportedLanguage(src)) {
-                        response.url = response.url.replace(
-                            "\/" + ComponentManager.getAttribute("language") + "\/",
-                            "/" + this.getRedirectLanguage(src) + "/");
-                    }
-                    Redirector.redirect(response.url, () => {
-                        this.loader.hide();
-                    });
-
-                    return;
+                if (response.url) {
+                    redirect = response.url;
+                    Redirector.redirect(redirect);
                 }
-
-                this.loader.hide();
-            }).fail((error, message) => {
-                this.loader.hide();
             });
         }
+
     }
 }
