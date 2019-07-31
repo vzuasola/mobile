@@ -212,7 +212,7 @@ export abstract class Redirectable implements ModuleInterface {
         return language;
     }
 
-    private doRedirectAfterLogin(src) {
+    protected doRedirectAfterLogin(src) {
         let redirect = utility.getParameterByName("re");
         if (!redirect) {
             redirect = "/";
