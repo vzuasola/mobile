@@ -41,6 +41,7 @@ class TabNavigationComponentController
      */
     public function quickNav($request, $response)
     {
+        $productList = ['lottery'];
         try {
             $params = $request->getQueryParams();
             $keyword = 'entrypage';
@@ -53,27 +54,29 @@ class TabNavigationComponentController
             if (isset($params['product'])) {
                 $product = $params['product'];
                 $data['quick_nav_product'] = $alias = str_replace("mobile-", "", $params['product']);
-                $data['quick_nav_menu'] = $this->menus->withProduct($product)
-                                    ->getMultilingualMenu('quick-nav');
-                if (in_array($keyword, Products::PRODUCT_ALIAS[$alias])) {
-                    foreach ($data['quick_nav_menu'] as $menu) {
-                        $menuAlias = '/' . $keyword . '/' . $menu['alias'];
-                        if ($menu['alias'] === '/') {
-                            $menuAlias = $menu['alias'] . $keyword;
-                        }
-                        $menu['alias'] = $this->url->generateUri($menuAlias, ['skip_parsers' => true]);
-                        if (isset($menu['below'])) {
-                            $submenus = [];
-                            foreach ($menu['below'] as $submenu) {
-                                $submenu['alias'] = '/' . $keyword . '/' . $submenu['alias'];
-                                $submenu['alias'] =
-                                    $this->url->generateUri($submenu['alias'], ['skip_parsers' => true]);
-                                $submenus[] = $submenu;
+                if (in_array($alias, $productList)) {
+                    $quickNavMenu = $this->menus->withProduct($product)
+                                        ->getMultilingualMenu('quick-nav');
+                    if (in_array($keyword, Products::PRODUCT_ALIAS[$alias])) {
+                        foreach ($quickNavMenu as $menu) {
+                            $menuAlias = '/' . $keyword . '/' . $menu['alias'];
+                            if ($menu['alias'] === '/') {
+                                $menuAlias = $menu['alias'] . $keyword;
                             }
-                            $menu['alias'] = $submenus[0]['alias'];
-                            $menu['below'] = $submenus;
+                            $menu['alias'] = $this->url->generateUri($menuAlias, ['skip_parsers' => true]);
+                            if (isset($menu['below'])) {
+                                $submenus = [];
+                                foreach ($menu['below'] as $submenu) {
+                                    $submenu['alias'] = '/' . $keyword . '/' . $submenu['alias'];
+                                    $submenu['alias'] =
+                                        $this->url->generateUri($submenu['alias'], ['skip_parsers' => true]);
+                                    $submenus[] = $submenu;
+                                }
+                                $menu['alias'] = $submenus[0]['alias'];
+                                $menu['below'] = $submenus;
+                            }
+                            $data['quick_nav'][] = $menu;
                         }
-                        $data['quick_nav'][] = $menu;
                     }
                 }
             }
