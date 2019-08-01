@@ -165,11 +165,12 @@ class LotteryLobbyComponentController
             $definition['game_maintenance_text'] = null;
             $definition['game_maintenance'] = false;
             $definition['game_provider'] = null;
-                    
+
             if ($this->checkIfMaintenance($game)) {
                 $definition['game_maintenance'] = true;
                 $definition['game_maintenance_text'] = $game['field_maintenance_blurb'][0]['value'];
-                $definition['game_provider'] = $game['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
+                $provider = $game['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? ''
+                $definition['game_provider'] = $provider;
             }
 
             return $definition;
