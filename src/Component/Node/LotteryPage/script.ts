@@ -10,7 +10,7 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 export class LotteryPageComponent implements ComponentInterface {
     private element: HTMLElement;
     private events: {};
-    private productMenu: string = "product-keno";
+    private productMenu: string = "product-lottery";
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
