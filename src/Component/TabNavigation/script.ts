@@ -37,6 +37,7 @@ export class TabNavigationComponent implements ComponentInterface {
             this.quickNavMenu = response;
             if (response.quick_nav.length > 0) {
                 this.populateQuickNavMenu();
+                this.highlightQuickNavMenu();
                 this.broadcastTabNavReady();
             }
         });
@@ -105,22 +106,24 @@ export class TabNavigationComponent implements ComponentInterface {
      *  If page is an inner page, puts active class on parent element as well
      */
     private highlightQuickNavMenu() {
-        ComponentManager.subscribe("tab_nav.highlight", (event, target, data) => {
-            const menu = this.element.querySelector("a." + data.menu);
-            const lang = "/" + ComponentManager.getAttribute("language");
-            if (lang + Router.route() === menu.getAttribute("href")) {
-                const activeClass = menu.getAttribute("data-router-active-link-class");
-                const parentSibling = utility.previousElementSibling(utility.findParent(menu, "ul"));
-                if (menu && !utility.hasClass(menu, activeClass)) {
-                    utility.addClass(menu, activeClass);
+        if (this.checkEvent("tab_nav.highlight")) {
+            ComponentManager.subscribe("tab_nav.highlight", (event, target, data) => {
+                const menu = this.element.querySelector("a." + data.menu);
+                const lang = "/" + ComponentManager.getAttribute("language");
+                if (lang + Router.route() === menu.getAttribute("href")) {
+                    const activeClass = menu.getAttribute("data-router-active-link-class");
+                    const parentSibling = utility.previousElementSibling(utility.findParent(menu, "ul"));
+                    if (menu && !utility.hasClass(menu, activeClass)) {
+                        utility.addClass(menu, activeClass);
+                    }
+                    if (parentSibling && !utility.hasClass(parentSibling, activeClass)) {
+                        utility.addClass(parentSibling, "active");
+                    }
+                    this.showQuickNavSubmenu(true);
+                    return;
                 }
-                if (parentSibling && !utility.hasClass(parentSibling, activeClass)) {
-                    utility.addClass(parentSibling, "active");
-                }
-                this.showQuickNavSubmenu(true);
-                return;
-            }
-        });
+            });
+        }
     }
 
     /**
