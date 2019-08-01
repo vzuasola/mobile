@@ -172,6 +172,9 @@ export class LobbySliderComponent implements ComponentInterface {
 
     private hideSlider(data) {
         const gamesList = data;
+        if (gamesList.length < 1) {
+            return true;
+        }
         for (const slide of this.sliderData.slides) {
             for (const gamesTileMaintenance of gamesList) {
                 if (gamesTileMaintenance.game_provider !== null) {
@@ -180,7 +183,7 @@ export class LobbySliderComponent implements ComponentInterface {
                         slide.published = false;
                     }
                 }
-            }
+           }
         }
     }
 
