@@ -45,6 +45,9 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.events = {};
         this.lotteryXhrRequest("maintenance", (maintenanceResponse) => {
             this.maintenance = maintenanceResponse;
+            ComponentManager.broadcast("game.maintenance", {
+                games: this.maintenance,
+            });
             this.lotteryXhrRequest("lobby", (response) => {
                 this.games = response;
                 this.pushMaintenance();
@@ -77,6 +80,9 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.games = undefined;
         this.lotteryXhrRequest("maintenance", (maintenanceResponse) => {
             this.maintenance = maintenanceResponse;
+            ComponentManager.broadcast("game.maintenance", {
+                games: this.maintenance,
+            });
             this.lotteryXhrRequest("lobby", (response) => {
                 this.games = response;
                 this.pushMaintenance();

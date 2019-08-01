@@ -160,6 +160,28 @@ export class LobbySliderComponent implements ComponentInterface {
                 this.activateSlider();
             }
         });
+
+        ComponentManager.subscribe("game.maintenance", (event, src, data) => {
+            if (typeof this.sliderData !== "undefined") {
+                this.hideSlider(data.games);
+                this.generateSliderMarkup(this.sliderData);
+                this.activateSlider();
+            }
+        });
+    }
+
+    private hideSlider(data) {
+        const gamesList = data;
+        for (const slide of this.sliderData.slides) {
+            for (const gamesTileMaintenance of gamesList) {
+                if (gamesTileMaintenance.game_provider !== null) {
+                    if ((gamesTileMaintenance.game_provider === slide.game_provider) &&
+                        (slide.published)) {
+                        slide.published = false;
+                    }
+                }
+            }
+        }
     }
 
     private updateSliders() {
