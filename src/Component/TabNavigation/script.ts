@@ -135,25 +135,6 @@ export class TabNavigationComponent implements ComponentInterface {
     }
 
     /**
-     *  Helper function to refresh Quick Nav menu, then broadcast that Quick Nav is now ready
-     */
-    private refreshQuickNav() {
-        if (this.checkEvent("tab_nav.refresh")) {
-            ComponentManager.subscribe("tab_nav.refresh", (event, target, data) => {
-                const activeElements = this.element.querySelectorAll(".active");
-                for (const element in activeElements) {
-                    if (activeElements.hasOwnProperty(element)) {
-                        const elem = activeElements[element];
-                        utility.removeClass(elem, "active");
-                        this.showQuickNavSubmenu(false);
-                    }
-                }
-                ComponentManager.broadcast("tab_nav.ready", { ready: true });
-            });
-        }
-    }
-
-    /**
      *  Helper function used to prevent duplication of listeners
      */
     private checkEvent(key) {
