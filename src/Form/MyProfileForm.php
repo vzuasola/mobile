@@ -52,6 +52,7 @@ class MyProfileForm extends FormBase implements FormInterface
 
         $this->scripts = $container->get('scripts');
         $this->playerSubscription = $container->get('receive_news');
+        $this->currency = $container->get('currency_translation');
     }
     /**
      * @{inheritdoc}
@@ -168,8 +169,8 @@ class MyProfileForm extends FormBase implements FormInterface
         // logic to get custom attributes that will be attach to the field
         foreach ($definition as $key => $formField) {
             if (isset($definition[$key]['options']['placeholder']) &&
-                (strpos($formField['type'], 'TextType') !== false ||
-                strpos($formField['type'], 'TextAreaType') !== false)
+            (strpos($formField['type'], 'TextType') !== false ||
+            strpos($formField['type'], 'TextAreaType') !== false)
             ) {
                 $this->moveAttribute($definition, $key, 'annotation', 'data-annotation');
                 $definition[$key]['options']['attr']['placeholder'] = $definition[$key]['options']['placeholder'];
@@ -283,9 +284,12 @@ class MyProfileForm extends FormBase implements FormInterface
             $mobileNumber1 = $countryCode;
         }
 
+        // Translate currency
+        $currency = $this->currency->getTranslation($apiValues['currency']);
+
         $result = [
             'username' => $apiValues['username'],
-            'currency' => $apiValues['currency'],
+            'currency' => $currency,
             'first_name' => $apiValues['firstName'],
             'last_name' => $apiValues['lastName'],
             'birthdate' => date($dateFormat ?? 'Y/m/d', $apiValues['dateOfBirth']),

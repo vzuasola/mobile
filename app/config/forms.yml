@@ -16,6 +16,7 @@ validations:
   alpha_multi: App\Extensions\Form\Validators\Validators:alphaMulti
   regex: App\Extensions\Form\Validators\Validators:regex
   valid_date: App\Extensions\Form\Validators\Validators:validDate
+  allowed_date: App\Extensions\Form\Validators\Validators:allowedDate
   invalid_words: App\MobileEntry\Extensions\Forms\Validators\Validators:invalidWords
   verify_password: App\MobileEntry\Extensions\Forms\Validators\Validators:verifyPassword
   not_match_username: App\MobileEntry\Extensions\Forms\Validators\Validators:notMatchUsername

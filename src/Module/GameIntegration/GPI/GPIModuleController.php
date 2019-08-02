@@ -68,7 +68,7 @@ class GPIModuleController
         $requestData = $request->getParsedBody();
         try {
             $gpiConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
-            $providerMapping = Config::parse($gpiConfig['gpi_keno_language_mapping'] ?? '');
+            $providerMapping = Config::parse($gpiConfig['gpi_live_dealer_language_mapping'] ?? '');
             $extraParams = Config::parse($gpiConfig['gpi_live_dealer_extra_params']);
             $sessiontokenizer = $this->playerSession->getToken();
 

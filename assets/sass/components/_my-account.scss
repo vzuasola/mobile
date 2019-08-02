@@ -130,6 +130,16 @@ form.profile-form {
     .MyProfileForm_mobile_number_1 {
         @extend %mobile-layout;
 
+        .mobile1_parent{
+            display: flex;
+            width: 100%;
+            height: 37px;
+
+            .form-field {
+                flex: 2 0 5rem;
+            }
+        }
+
         .MyProfileForm_primary_number {
             flex: 0 0 auto;
 
@@ -162,6 +172,17 @@ form.profile-form {
     // Mobile Number 2
     .MyProfileForm_mobile_number_2:not(.hidden) {
         @extend %mobile-layout;
+
+        .mobile2_parent{
+            display: flex;
+            width: 100%;
+            height: 37px;
+
+            .form-field {
+                flex: 2 0 5rem;
+            }
+        }
+
     }
 
     .MyProfileForm_mobile_number_1,
@@ -169,6 +190,10 @@ form.profile-form {
         // Italize primary label
         .pure-checkbox {
             font-style: italic;
+        }
+
+        .error-container{
+            width: 100%;
         }
     }
 }
