@@ -26,6 +26,7 @@ export class LobbySliderComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getSliders();
+        this.listenForProviders();
     }
 
     private activateSlider() {
