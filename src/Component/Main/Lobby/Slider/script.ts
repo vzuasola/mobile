@@ -16,6 +16,7 @@ export class LobbySliderComponent implements ComponentInterface {
     private element: HTMLElement;
     private sliderData: any;
     private providers: any;
+    private gamesTile: any;
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getSliders();
@@ -26,7 +27,6 @@ export class LobbySliderComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getSliders();
-        this.listenForProviders();
     }
 
     private activateSlider() {
@@ -133,7 +133,8 @@ export class LobbySliderComponent implements ComponentInterface {
             },
         }).then((response) => {
             this.sliderData = response;
-            if (typeof this.providers !== "undefined") {
+            if ((typeof this.providers !== "undefined") ||
+            typeof this.gamesTile !== "undefined") {
                 this.updateSliders();
             }
             this.generateSliderMarkup(this.sliderData);
@@ -154,7 +155,6 @@ export class LobbySliderComponent implements ComponentInterface {
     private listenForProviders() {
         ComponentManager.subscribe("provider.maintenance", (event, src, data) => {
             this.providers = data.providers;
-
             if (typeof this.sliderData !== "undefined") {
                 this.updateSliders();
                 this.generateSliderMarkup(this.sliderData);
@@ -163,35 +163,28 @@ export class LobbySliderComponent implements ComponentInterface {
         });
 
         ComponentManager.subscribe("game.maintenance", (event, src, data) => {
+            this.gamesTile = data.games;
             if (typeof this.sliderData !== "undefined") {
-                this.hideSlider(data.games);
+                this.updateSliders();
                 this.generateSliderMarkup(this.sliderData);
                 this.activateSlider();
             }
         });
     }
 
-    private hideSlider(data) {
-        const gamesList = data;
-        if (gamesList.length < 1) {
-            return true;
-        }
-        for (const slide of this.sliderData.slides) {
-            for (const gamesTileMaintenance of gamesList) {
-                if (gamesTileMaintenance.game_provider !== null) {
-                    if ((gamesTileMaintenance.game_provider === slide.game_provider) &&
-                        (slide.published)) {
-                        slide.published = false;
-                    }
-                }
-           }
-        }
-    }
-
     private updateSliders() {
         for (const slide of this.sliderData.slides) {
-            if (this.providers.hasOwnProperty(slide.game_provider)) {
-                slide.provider_maintenance = this.providers[slide.game_provider].maintenance;
+            if (typeof this.providers !== "undefined") {
+                if (this.providers.hasOwnProperty(slide.game_provider)) {
+                        slide.provider_maintenance = this.providers[slide.game_provider].maintenance;
+                }
+            }
+            if (typeof this.gamesTile !== "undefined") {
+                if (this.gamesTile.hasOwnProperty(slide.game_provider) &&
+                    slide.published &&
+                    (this.gamesTile[slide.game_provider].maintenance === true)) {
+                        slide.published = false;
+                }
             }
         }
     }
