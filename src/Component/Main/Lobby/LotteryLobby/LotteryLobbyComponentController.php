@@ -173,7 +173,7 @@ class LotteryLobbyComponentController
                 $definition['game_maintenance'] = true;
                 $definition['game_maintenance_text'] = $game['field_maintenance_blurb'][0]['value'];
             }
-            $list['maintenance'] = $definition; 
+            $list['maintenance'] = $definition;
             $list['game_providers'][$definition["game_provider"]] =  [
                 'maintenance' => $definition['game_maintenance'],
                 'game_code' => $definition["game_provider"],
