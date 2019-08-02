@@ -155,8 +155,8 @@ class LotteryLobbyComponentController
                 $list["maintenance"][] = $maintenance["maintenance"];
                 $providers += $maintenance["game_providers"];
             }
-            $list["game_providers"] = json_encode($providers, JSON_FORCE_OBJECT);
-            
+            json_encode($providers, JSON_FORCE_OBJECT);
+            $list["game_providers"] = $providers;
         } catch (\Exception $e) {
             $list = [];
         }
