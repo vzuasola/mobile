@@ -149,15 +149,13 @@ class LotteryLobbyComponentController
         try {
             $list = [];
             $providers = [];
-            $games = $this->views->getViewById('games_list');            
+            $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
                 $maintenance = $this->getGameMaintenance($game);
                 $list["maintenance"][] = $maintenance["maintenance"];
                 $providers += $maintenance["game_providers"];
             }
-            json_encode($providers,JSON_FORCE_OBJECT);
-            $list["game_providers"] = $providers;
-
+            $list["game_providers"] = json_encode($providers, JSON_FORCE_OBJECT);
         } catch (\Exception $e) {
             $list = [];
         }
@@ -171,7 +169,6 @@ class LotteryLobbyComponentController
             $definition['game_maintenance'] = false;            
             $provider = $game['field_game_provider'];
             $definition['game_provider'] = $provider[0]['field_game_provider_key'][0]['value'] ?? '';
-
             if ($this->checkIfMaintenance($game)) {
                 $definition['game_maintenance'] = true;
                 $definition['game_maintenance_text'] = $game['field_maintenance_blurb'][0]['value'];
