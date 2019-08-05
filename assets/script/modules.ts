@@ -23,6 +23,7 @@ import {GPIModule} from "@app/src/Module/GameIntegration/GPI/script";
 import {GPIKenoModule} from "@app/src/Module/GameIntegration/GPIKeno/script";
 import {GPIPkModule} from "@app/src/Module/GameIntegration/GPIPk/script";
 import {GPIThaiModule} from "@app/src/Module/GameIntegration/GPIThai/script";
+import {GPISodeModule} from "@app/src/Module/GameIntegration/GPISode/script";
 import {TGPModule} from "@app/src/Module/GameIntegration/TGP/script";
 import {AllBetModule} from "@app/src/Module/GameIntegration/AllBet/script";
 import {WACModule} from "@app/src/Module/GameIntegration/WAC/script";
@@ -61,6 +62,7 @@ ComponentManager.setModules({
     gpi_keno_integration: new GPIKenoModule(),
     gpi_pk_integration: new GPIPkModule(),
     gpi_thai_integration: new GPIThaiModule(),
+    gpi_sode_integration: new GPISodeModule(),
     tgp_integration: new TGPModule(),
     allbet_integration: new AllBetModule(),
     wac_integration: new WACModule(),
