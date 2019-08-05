@@ -36,6 +36,7 @@ export class GameIntegrationModule implements ModuleInterface {
         const gpiKeno: any = ComponentManager.getModuleInstance("gpi_keno_integration");
         const gpiPk: any = ComponentManager.getModuleInstance("gpi_pk_integration");
         const gpiThai: any = ComponentManager.getModuleInstance("gpi_thai_integration");
+        const gpiSode: any = ComponentManager.getModuleInstance("gpi_sode_integration");
         const tgp: any = ComponentManager.getModuleInstance("tgp_integration");
         const allbet: any = ComponentManager.getModuleInstance("allbet_integration");
         const wac: any = ComponentManager.getModuleInstance("wac_integration");
@@ -59,6 +60,7 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("gpi_keno", gpiKeno);
         this.gameLauncher.setProvider("gpi_pk", gpiPk);
         this.gameLauncher.setProvider("gpi_thai", gpiThai);
+        this.gameLauncher.setProvider("gpi_sode", gpiSode);
         this.gameLauncher.setProvider("tgp", tgp);
         this.gameLauncher.setProvider("allbet", allbet);
         this.gameLauncher.setProvider("wac", wac);
