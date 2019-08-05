@@ -51,7 +51,7 @@ class GPISodeModuleScripts implements ComponentAttachmentInterface
 
             $data = [
                 'currencies' => explode(PHP_EOL, $gpiConfig['gpi_sode_currency']),
-                'languages' => Config::parse($gpiConfig['gpi_keno_language_mapping'] ?? ''),
+                'languages' => Config::parse($gpiConfig['gpi_sode_language_mapping'] ?? ''),
             ];
         } catch (\Exception $e) {
             $data = [];
