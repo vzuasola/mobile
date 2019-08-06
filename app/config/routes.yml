@@ -170,6 +170,20 @@ routes:
         attributes:
             product: mobile-live-dealer
 
+    /{id:arcade}:
+        method: GET
+        action: App\MobileEntry\Controller\ArcadeController:view
+        components:
+            main: lobby
+            lobby_content: arcade_lobby
+        headers:
+            Cache-Control: public, max-age=900
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-arcade
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:

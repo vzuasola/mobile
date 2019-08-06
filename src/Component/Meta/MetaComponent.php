@@ -20,7 +20,8 @@ class MetaComponent implements ComponentWidgetInterface
         '/games',
         '/casino',
         '/casino-gold',
-        '/live-dealer'
+        '/live-dealer',
+        '/arcade'
     ];
 
     /**
