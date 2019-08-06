@@ -68,4 +68,3 @@ class ArcadeLobbyComponentController
         $this->url = $url;
     }
 }
-
