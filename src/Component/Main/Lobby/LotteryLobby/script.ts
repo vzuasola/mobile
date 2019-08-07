@@ -24,7 +24,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
     private windowObject: any;
     private mIndex: number = 0;
     private events: {};
-    private productMenu: string = "product-keno";
+    private productMenu: string = "product-lottery";
     private providers: any;
 
     constructor() {
