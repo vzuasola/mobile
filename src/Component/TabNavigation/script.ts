@@ -110,7 +110,7 @@ export class TabNavigationComponent implements ComponentInterface {
             ComponentManager.subscribe("tab_nav.highlight", (event, target, data) => {
                 const menu = this.element.querySelector("a." + data.menu);
                 const lang = "/" + ComponentManager.getAttribute("language");
-                if (lang + Router.route() === menu.getAttribute("href")) {
+                if (menu && lang + Router.route() === menu.getAttribute("href")) {
                     const activeClass = menu.getAttribute("data-router-active-link-class");
                     const parentSibling = utility.previousElementSibling(utility.findParent(menu, "ul"));
                     if (menu && !utility.hasClass(menu, activeClass)) {
