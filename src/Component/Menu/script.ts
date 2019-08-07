@@ -81,7 +81,6 @@ export class MenuComponent implements ComponentInterface {
 
     private menuReady() {
         ComponentManager.broadcast("menu.ready");
-        console.log("wedy");
     }
 
     private equalizeProductHeight() {
