@@ -170,7 +170,7 @@ routes:
         attributes:
             product: mobile-live-dealer
 
-    /{id:arcade}:
+    /{id:arcade|xiaoyouxi|youxi|fun|amusement|arcade-room|fish-hunter|fish|fishing|buyu|buyuwang|buyudaren}:
         method: GET
         action: App\MobileEntry\Controller\ArcadeController:view
         components:
