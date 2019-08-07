@@ -59,6 +59,7 @@ export class MenuComponent implements ComponentInterface {
             this.attachProduct();
             this.attachProductToLogin();
             this.reloadBalance();
+            this.menuReady();
         });
 
     }
