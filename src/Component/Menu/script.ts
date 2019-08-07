@@ -59,6 +59,7 @@ export class MenuComponent implements ComponentInterface {
             this.attachProduct();
             this.attachProductToLogin();
             this.reloadBalance();
+            this.menuReady();
         });
 
     }
@@ -80,6 +81,7 @@ export class MenuComponent implements ComponentInterface {
 
     private menuReady() {
         ComponentManager.broadcast("menu.ready");
+        console.log("wedy");
     }
 
     private equalizeProductHeight() {
