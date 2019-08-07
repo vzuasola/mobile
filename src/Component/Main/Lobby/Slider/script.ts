@@ -47,7 +47,7 @@ export class LobbySliderComponent implements ComponentInterface {
             setInterval(() => {
                 sliderObj.next();
             }, 5000);
-            window.addEventListener("orientationchange", () => {
+            window.addEventListener("resize", () => {
                 setTimeout(() => {
                     utility.addClass(slider.querySelectorAll(".xlide-item")[1].parentElement, "fade");
                 }, 10);
