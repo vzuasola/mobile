@@ -78,6 +78,10 @@ export class MenuComponent implements ComponentInterface {
         this.pushNotification.handleOnLoad(element, attachments);
     }
 
+    private menuReady() {
+        ComponentManager.broadcast("menu.ready");
+    }
+
     private equalizeProductHeight() {
         const equalProduct = new EqualHeight(".icon-thumbnail-product a");
         equalProduct.init();
@@ -94,6 +98,7 @@ export class MenuComponent implements ComponentInterface {
     private activateMenu(element) {
         const menu = new Menu(element);
         menu.activate();
+        this.menuReady();
         this.menuListenOnClick();
     }
 
