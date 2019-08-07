@@ -45,8 +45,10 @@ export class MyAccountComponent implements ComponentInterface {
     }
 
     private broadcastLogoutLink(element) {
-        ComponentManager.broadcast("menu.logout.hide", {
-            selector: ".quicklinks-logout",
+        ComponentManager.subscribe("menu.ready", () => {
+            ComponentManager.broadcast("menu.logout.hide", {
+                selector: ".quicklinks-logout",
+            });
         });
 
         Router.on(RouterClass.afterNavigate, (event) => {
