@@ -147,16 +147,20 @@ class LotteryLobbyComponentController
             return false;
         }
         try {
-            $maintenance = [];
+            $list = [];
+            $providers = [];
             $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
-                $maintenance[] = $this->getGameMaintenance($game);
+                $maintenance = $this->getGameMaintenance($game);
+                $list["maintenance"][] = $maintenance["maintenance"];
+                $providers += $maintenance["game_providers"];
             }
+            json_encode($providers, JSON_FORCE_OBJECT);
+            $list["game_providers"] = $providers;
         } catch (\Exception $e) {
-            $maintenance = [];
+            $list = [];
         }
-
-        return $this->rest->output($response, $maintenance);
+        return $this->rest->output($response, $list);
     }
 
     private function getGameMaintenance($game)
@@ -164,13 +168,18 @@ class LotteryLobbyComponentController
         try {
             $definition['game_maintenance_text'] = null;
             $definition['game_maintenance'] = false;
-
+            $provider = $game['field_game_provider'];
+            $definition['game_provider'] = $provider[0]['field_game_provider_key'][0]['value'] ?? '';
             if ($this->checkIfMaintenance($game)) {
                 $definition['game_maintenance'] = true;
                 $definition['game_maintenance_text'] = $game['field_maintenance_blurb'][0]['value'];
             }
-
-            return $definition;
+            $list['maintenance'] = $definition;
+            $list['game_providers'][$definition["game_provider"]] =  [
+                'maintenance' => $definition['game_maintenance'],
+                'game_code' => $definition["game_provider"],
+            ];
+            return $list;
         } catch (\Exception $e) {
             return [];
         }
