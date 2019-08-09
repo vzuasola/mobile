@@ -48,8 +48,7 @@ export class MyAccountComponent implements ComponentInterface {
     }
 
     private broadcastLogoutLink(element) {
-        const route = ComponentManager.getAttribute("route");
-
+        let route = ComponentManager.getAttribute("route");
         if (route === "/my-account") {
             ComponentManager.broadcast("menu.logout.hide", {
                 selector: ".quicklinks-logout",
@@ -57,6 +56,7 @@ export class MyAccountComponent implements ComponentInterface {
         }
 
         ComponentManager.subscribe("menu.ready", () => {
+            route = ComponentManager.getAttribute("route");
             if (route === "/my-account") {
                 ComponentManager.broadcast("menu.logout.hide", {
                     selector: ".quicklinks-logout",
