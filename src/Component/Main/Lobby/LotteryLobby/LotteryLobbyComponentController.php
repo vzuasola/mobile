@@ -52,7 +52,7 @@ class LotteryLobbyComponentController
     {
         $item = $this->cacher->getItem('views.lottery-lobby-data.' . $this->currentLanguage);
 
-        
+        if (!$item->isHit()) {
             $data = $this->getGamesList();
 
             if (!empty($data)) {
@@ -64,9 +64,13 @@ class LotteryLobbyComponentController
                     'expires' => self::TIMEOUT,
                 ]);
             }
-      
+        } else {
+            $body = $item->get();
+            $data = $body['body'];
+        }
         return $this->rest->output($response, $data);
     }
+
 
     /**
      * Retrieves list of games from drupal
