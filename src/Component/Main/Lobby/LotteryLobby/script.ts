@@ -24,7 +24,8 @@ export class LotteryLobbyComponent implements ComponentInterface {
     private windowObject: any;
     private mIndex: number = 0;
     private events: {};
-    private productMenu: string = "product-keno";
+    private productMenu: string = "product-lottery";
+    private providers: any;
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -44,7 +45,10 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.games = undefined;
         this.events = {};
         this.lotteryXhrRequest("maintenance", (maintenanceResponse) => {
-            this.maintenance = maintenanceResponse;
+            this.maintenance = maintenanceResponse.maintenance;
+            ComponentManager.broadcast("game.maintenance", {
+                games: maintenanceResponse.game_providers,
+            });
             this.lotteryXhrRequest("lobby", (response) => {
                 this.games = response;
                 this.pushMaintenance();
@@ -76,7 +80,10 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.configs = attachments.configs;
         this.games = undefined;
         this.lotteryXhrRequest("maintenance", (maintenanceResponse) => {
-            this.maintenance = maintenanceResponse;
+            this.maintenance = maintenanceResponse.maintenance;
+            ComponentManager.broadcast("game.maintenance", {
+                games: maintenanceResponse.game_providers,
+            });
             this.lotteryXhrRequest("lobby", (response) => {
                 this.games = response;
                 this.pushMaintenance();

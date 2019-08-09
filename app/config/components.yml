@@ -236,6 +236,9 @@ modules:
   gpi_thai_integration:
     class: App\MobileEntry\Module\GameIntegration\GPIThai\GPIThaiModule
 
+  gpi_sode_integration:
+    class: App\MobileEntry\Module\GameIntegration\GPISode\GPISodeModule
+
   tgp_integration:
     class: App\MobileEntry\Module\GameIntegration\TGP\TGPModule
 

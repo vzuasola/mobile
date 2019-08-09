@@ -1,10 +1,7 @@
 .quick-nav-menu {
+    position: relative;
     border-top: .1rem solid $dark-red;
     white-space: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    webkit-overflow-scrolling: touch;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
 
     &.show-submenu {
         ul {
@@ -13,12 +10,15 @@
     }
 
     ul {
-        display: inline-block;
         width: 100%;
         padding: 0;
         margin: 0;
         list-style-type: none;
         background: $red;
+        overflow-x: auto;
+        overflow-y: hidden;
+        webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
 
         li {
             display: inline-block;
@@ -71,13 +71,17 @@
             ul {
                 position: absolute;
                 width: 100%;
-                top: 9rem;
+                top: 33%;
                 left: 0;
+                padding-top: 0.5rem;
                 border-top: 0.1rem solid $dark-red;
                 background: $dark-gray;
                 text-align: left;
                 list-style-type: none;
                 overflow-x: auto;
+                overflow-y: hidden;
+                webkit-overflow-scrolling: touch;
+                -ms-overflow-style: -ms-autohiding-scrollbar;
 
                 li {
                     border: 0;
