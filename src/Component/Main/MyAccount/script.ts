@@ -12,6 +12,8 @@ import {annotation} from "@app/assets/script/components/form-annotation";
  *
  */
 export class MyAccountComponent implements ComponentInterface {
+    private element: HTMLElement;
+
     onLoad(element: HTMLElement, attachments: {}) {
         this.init(element);
     }
@@ -21,6 +23,7 @@ export class MyAccountComponent implements ComponentInterface {
     }
 
     private init(element) {
+        this.element = element;
         this.broadcastLogoutLink(element);
         this.equalizeActionButtonHeight();
 
@@ -45,13 +48,20 @@ export class MyAccountComponent implements ComponentInterface {
     }
 
     private broadcastLogoutLink(element) {
-        ComponentManager.broadcast("menu.logout.hide", {
-            selector: ".quicklinks-logout",
-        });
-        ComponentManager.subscribe("menu.ready", () => {
+        const route = ComponentManager.getAttribute("route");
+
+        if (route === "/my-account") {
             ComponentManager.broadcast("menu.logout.hide", {
                 selector: ".quicklinks-logout",
             });
+        }
+
+        ComponentManager.subscribe("menu.ready", () => {
+            if (route === "/my-account") {
+                ComponentManager.broadcast("menu.logout.hide", {
+                    selector: ".quicklinks-logout",
+                });
+            }
         });
 
         Router.on(RouterClass.afterNavigate, (event) => {
