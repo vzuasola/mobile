@@ -55,7 +55,6 @@ class PASModuleScripts implements ComponentAttachmentInterface
         $currency = null;
         try {
             $ptConfig = $this->config->getConfig('webcomposer_config.games_playtech_provider');
-            
             if ($this->playerSession->isLogin()) {
                 $currency = $this->player->getCurrency();
             }
