@@ -142,7 +142,7 @@ routes:
         attributes:
             product: mobile-sports-df
 
-    /{id:exchange}:
+    /{id:exchange|cricket|indiabet|cric-exchange|betting-exchange}:
         method: GET
         action: App\MobileEntry\Controller\ExchangeController:view
         components:
