@@ -10,7 +10,7 @@ import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/route
 /**
  *
  */
-export class LotteryLobbyComponent implements ComponentInterface {
+export class ExchangeLobbyComponent implements ComponentInterface {
     private attachments: any;
     private configs: any[];
     private element: HTMLElement;
