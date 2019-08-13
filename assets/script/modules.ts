@@ -25,6 +25,8 @@ import {GPIPkModule} from "@app/src/Module/GameIntegration/GPIPk/script";
 import {GPIThaiModule} from "@app/src/Module/GameIntegration/GPIThai/script";
 import {TGPModule} from "@app/src/Module/GameIntegration/TGP/script";
 import {AllBetModule} from "@app/src/Module/GameIntegration/AllBet/script";
+import {WACModule} from "@app/src/Module/GameIntegration/WAC/script";
+import {EzugiGamingModule} from "@app/src/Module/GameIntegration/EzugiGaming/script";
 import {VideoRacingModule} from "@app/src/Module/GameIntegration/VideoRacing/script";
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
@@ -61,6 +63,8 @@ ComponentManager.setModules({
     gpi_thai_integration: new GPIThaiModule(),
     tgp_integration: new TGPModule(),
     allbet_integration: new AllBetModule(),
+    wac_integration: new WACModule(),
+    ezugi_gaming_integration: new EzugiGamingModule(),
     videoracing_integration: new VideoRacingModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
