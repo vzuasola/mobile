@@ -71,6 +71,7 @@ class LotteryLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
+
     /**
      * Retrieves list of games from drupal
      */
@@ -102,7 +103,7 @@ class LotteryLobbyComponentController
                 $definition['ribbon']['color'] = $ribbon['field_ribbon_text_color'][0]['color'];
             }
             $size = $game['field_game_thumbnail_size'][0]['value'];
-            $definition['size'] = $size == 'small' ? 'small-image' : 'large-image';
+            $definition['size'] = $size == 'small' ? 'col-4' : 'col-8';
             $imgUrl = $this->asset->generateAssetUri(
                 $game["field_game_thumbnail_$size"][0]['url'],
                 ['product' => self::PRODUCT]
@@ -115,7 +116,7 @@ class LotteryLobbyComponentController
             $landscapesize = $game['field_game_landscape_size'][0]['value'];
 
             if ($size != $landscapesize) {
-                $overrideSize = ($landscapesize == 'small') ? 'small-override' : 'large-override';
+                $overrideSize = ($landscapesize == 'small') ? 'col-4 small-override' : 'col-8 large-override';
                 $definition['img_landscape'] = $this->asset->generateAssetUri(
                     $game["field_game_thumbnail_$landscapesize"][0]['url'],
                     ['product' => self::PRODUCT]
