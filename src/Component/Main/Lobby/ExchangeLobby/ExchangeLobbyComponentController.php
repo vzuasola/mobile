@@ -1,12 +1,12 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Lobby\LotteryLobby;
+namespace App\MobileEntry\Component\Main\Lobby\ExchangeLobby;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
-class LotteryLobbyComponentController
+class ExchangeLobbyComponentController
 {
-    const PRODUCT = 'mobile-lottery';
+    const PRODUCT = 'mobile-exchange';
     const TIMEOUT = 1800;
     /**
      *
@@ -71,7 +71,6 @@ class LotteryLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
-
     /**
      * Retrieves list of games from drupal
      */
@@ -103,7 +102,7 @@ class LotteryLobbyComponentController
                 $definition['ribbon']['color'] = $ribbon['field_ribbon_text_color'][0]['color'];
             }
             $size = $game['field_game_thumbnail_size'][0]['value'];
-            $definition['size'] = $size == 'small' ? 'col-4' : 'col-8';
+            $definition['size'] = $size == 'small' ? 'small-image' : 'large-image';
             $imgUrl = $this->asset->generateAssetUri(
                 $game["field_game_thumbnail_$size"][0]['url'],
                 ['product' => self::PRODUCT]
@@ -116,7 +115,7 @@ class LotteryLobbyComponentController
             $landscapesize = $game['field_game_landscape_size'][0]['value'];
 
             if ($size != $landscapesize) {
-                $overrideSize = ($landscapesize == 'small') ? 'col-4 small-override' : 'col-8 large-override';
+                $overrideSize = ($landscapesize == 'small') ? 'small-override' : 'large-override';
                 $definition['img_landscape'] = $this->asset->generateAssetUri(
                     $game["field_game_thumbnail_$landscapesize"][0]['url'],
                     ['product' => self::PRODUCT]
