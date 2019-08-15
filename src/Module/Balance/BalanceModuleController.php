@@ -30,7 +30,11 @@ class BalanceModuleController
         'mobile-casino-gold' => 2,
         'mobile-live-dealer' => 5,
         'mobile-keno' => 5,
+<<<<<<< HEAD
         'mobile-exchange' => 5,
+=======
+        'mobile-arcade' => 5,
+>>>>>>> sprint-34-mobile-arcade
     ];
 
     private $rest;
