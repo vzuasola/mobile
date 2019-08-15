@@ -34,7 +34,8 @@ class HeaderComponent implements ComponentWidgetInterface
         '/lotto-numbers',
         '/numbers',
         '/draw',
-        '/live-draws'
+        '/live-draws',
+        '/arcade'
     ];
 
     /**
