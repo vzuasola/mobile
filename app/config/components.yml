@@ -70,6 +70,10 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\LiveDealerLobby\LiveDealerLobbyComponent
     parent: lobby
 
+  arcade_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\ArcadeLobby\ArcadeLobbyComponent
+    parent: lobby
+
   casino_lobby:
     class: App\MobileEntry\Component\Main\Lobby\CasinoLobby\CasinoLobbyComponent
     parent: lobby
@@ -266,7 +270,10 @@ modules:
 
   live_dealer_integration:
     class: App\MobileEntry\Module\ProductIntegration\LiveDealer\LiveDealerIntegrationModule
-  
+
+  arcade_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Arcade\ArcadeIntegrationModule
+
   lottery_integration:
     class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
 

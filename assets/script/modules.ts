@@ -38,6 +38,7 @@ import {CasinoIntegrationModule} from "@app/src/Module/ProductIntegration/Casino
 import {ExchangeIntegrationModule} from "@app/src/Module/ProductIntegration/Exchange/script";
 import {GamesIntegrationModule} from "@app/src/Module/ProductIntegration/Games/script";
 import {LiveDealerIntegrationModule} from "@app/src/Module/ProductIntegration/LiveDealer/script";
+import {ArcadeIntegrationModule} from "@app/src/Module/ProductIntegration/Arcade/script";
 import {LotteryIntegrationModule} from "@app/src/Module/ProductIntegration/Lottery/script";
 
 ComponentManager.setModules({
@@ -78,5 +79,6 @@ ComponentManager.setModules({
     gold_deluxe_integration: new GoldDeluxeModule(),
     games_integration: new GamesIntegrationModule(),
     live_dealer_integration: new LiveDealerIntegrationModule(),
+    arcade_integration: new ArcadeIntegrationModule(),
     lottery_integration: new LotteryIntegrationModule(),
 });
