@@ -27,7 +27,6 @@ class HeaderComponent implements ComponentWidgetInterface
         '/games',
         '/casino',
         '/casino-gold',
-        '/exchange',
         '/live-dealer',
         '/lottery',
         '/keno',
@@ -35,7 +34,12 @@ class HeaderComponent implements ComponentWidgetInterface
         '/numbers',
         '/draw',
         '/live-draws',
-        '/arcade'
+        '/arcade',
+        '/exchange',
+        '/cricket',
+        '/indiabet',
+        '/cric-exchange',
+        '/betting-exchange'
     ];
 
     /**
