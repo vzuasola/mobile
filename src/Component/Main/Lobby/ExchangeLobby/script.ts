@@ -228,11 +228,13 @@ export class ExchangeLobbyComponent implements ComponentInterface {
 
     private pushMaintenance() {
         this.mIndex = 0;
-        if (this.maintenance.length > 0) {
-            while (this.mIndex < this.maintenance.length ) {
-                this.games[this.mIndex].game_maintenance = this.maintenance[this.mIndex].game_maintenance;
-                this.games[this.mIndex].game_maintenance_text = this.maintenance[this.mIndex].game_maintenance_text;
-                this.mIndex++;
+        if (typeof this.maintenance !== "undefined") {
+            if (this.maintenance.length > 0) {
+                while (this.mIndex < this.maintenance.length ) {
+                    this.games[this.mIndex].game_maintenance = this.maintenance[this.mIndex].game_maintenance;
+                    this.games[this.mIndex].game_maintenance_text = this.maintenance[this.mIndex].game_maintenance_text;
+                    this.mIndex++;
+                }
             }
         }
     }
