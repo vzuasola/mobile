@@ -19,7 +19,12 @@
             data-router-refresh={{ ../router_refresh}}
             data-router-active-link-class="active"
             >
-            {{ menu.title}}
+            {{ menu.title }}
+            {{#if menu.attributes.menuTag}}
+                <span class="icon-thumbnail-new-tag">
+                    <span>{{ ../new_tag }}</span>
+                </span>
+            {{/if}}
         </a>
         {{#if menu.below}}
             <ul class="quick-nav-submenu hidden">
@@ -32,6 +37,11 @@
                             data-router-active-link-class="active"
                         >
                         {{ submenu.title }}
+                        {{#if submenu.attributes.menuTag}}
+                            <span class="icon-thumbnail-new-tag">
+                                <span>{{ ../../new_tag }}</span>
+                            </span>
+                        {{/if}}
                         </a>
                     </li>
                 {{/each}}
