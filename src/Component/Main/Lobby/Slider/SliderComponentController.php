@@ -154,7 +154,11 @@ class SliderComponentController
                 $slider['field_title'] = $slide['field_title'][0]['value'] ?? '';
                 $slider['use_game_loader'] = $slide['field_slider_use_game_loader'][0]['value'] ?? 'false';
                 $slider['forced_game_launch'] = $slide['field_slider_enable_game_launch'][0]['value'] ?? false;
+                $slider['lobby'] = false;
 
+                if (!empty($options) && $options['product'] === 'mobile-live-dealer') {
+                    $slider['lobby'] = true;
+                }
 
                 $sliderUrl = $slide['field_banner_link'][0]['uri'] ?? '';
                 $slider['banner_url'] = $this->url->generateUri($sliderUrl, ['skip_parsers' => true]);

@@ -13,6 +13,7 @@ class TabNavigationComponentController
     private $menus;
     private $url;
     private $rest;
+    private $config;
 
     /**
      *
@@ -22,18 +23,20 @@ class TabNavigationComponentController
         return new static(
             $container->get('menu_fetcher'),
             $container->get('rest'),
-            $container->get('uri')
+            $container->get('uri'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $rest, $url)
+    public function __construct($menus, $rest, $url, $config)
     {
         $this->menus = $menus;
         $this->rest = $rest;
         $this->url = $url;
+        $this->config = $config;
     }
 
     /**
@@ -47,6 +50,9 @@ class TabNavigationComponentController
             $keyword = 'entrypage';
             $data['quick_nav'] = [];
             $data['quick_nav_product'] = 'entrypage';
+            $headerConfigs = $this->config->getConfig('webcomposer_config.header_configuration');
+            $data['config_new_text'] = $headerConfigs['product_menu_new_tag'] ?? 'NEW';
+
             if ($params['keyword']) {
                 $keywords = explode('/', $params['keyword']);
                 $keyword = $keywords[1] ?? '/';
