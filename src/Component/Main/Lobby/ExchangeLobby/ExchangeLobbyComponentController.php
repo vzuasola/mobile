@@ -139,13 +139,11 @@ class ExchangeLobbyComponentController
             $definition['target'] = $tile['field_target'][0]['value'] ?? '';
             $definition['use_game_loader'] = isset($tile['field_use_game_loader'][0]['value'])
                 ? $tile['field_use_game_loader'][0]['value'] : "false";
-            
             $definition['tile_url'] = $tileUrl = $tile['field_lobby_tile_url'][0]['value'] ?? '';
             if ($tileUrl != '') {
                 $tileUrl = '/' . $keyword . '/' .$tileUrl;
                 $definition['tile_url'] = $this->url->generateUri($tileUrl, ['skip_parsers' => true]);
             }
-            
             // In prep for MEXC2-29 Soft Maintenance per tile
             /*$definition['game_maintenance_text'] = null;
             $definition['game_maintenance'] = false;
