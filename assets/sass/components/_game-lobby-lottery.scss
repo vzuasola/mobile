@@ -68,7 +68,7 @@
         background: #000;
         opacity: 0.8;
         top: 0;
-        height: 95.666667%;
+        height: 96.666667%;
         width: 98.5%;
     }
 
@@ -94,8 +94,13 @@
     .mobile-lottery {
         #game-container {
             .game-tiles.large-override,
+            .game-tiles.col-4.large-override,
             .game-tiles.col-4 {
                     width: 50%;
+                }
+
+            .game-tiles.col-4.small-override {
+                    width: 100%;
                 }
         }
 
@@ -126,6 +131,18 @@
         }
     }
 }
+
+// Landspace
+@media (orientation: landscape) {
+    .mobile-lottery {
+        #game-container {
+            .game-tiles.col-4.small-override {
+                width: 33.33333%;
+            }
+        }
+    }
+}
+
 
 // Lottery Inner Page
 .node-inner-page {
