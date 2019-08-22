@@ -26,7 +26,9 @@ export default class Xlider extends Siema {
         // controls
         this.createControls();
 
-        // window.addEventListener('resize', this.createControls.bind(this));
+        window.addEventListener('resize', () => {
+            this.config.onChange.call(this, this.innerElements[this.currentSlide], this);
+        });
     }
 
     /**
