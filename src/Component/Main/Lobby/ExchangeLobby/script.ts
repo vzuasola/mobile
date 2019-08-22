@@ -44,14 +44,15 @@ export class ExchangeLobbyComponent implements ComponentInterface {
         this.configs = attachments.configs;
         this.games = undefined;
         this.events = {};
-        this.lotteryXhrRequest("maintenance", (maintenanceResponse) => {
-            this.maintenance = maintenanceResponse.maintenance;
+        this.exchangeXhrRequest("maintenance", (maintenanceResponse) => {
+            // In prep for MEXC2-29 Soft Maintenance per tile
+            /*this.maintenance = maintenanceResponse.maintenance;
             ComponentManager.broadcast("game.maintenance", {
                 games: maintenanceResponse.game_providers,
-            });
-            this.lotteryXhrRequest("lobby", (response) => {
+            });*/
+            this.exchangeXhrRequest("lobby", (response) => {
                 this.games = response;
-                this.pushMaintenance();
+                // this.pushMaintenance();
                 this.highlightMenu();
                 this.setLobby();
             });
@@ -79,14 +80,15 @@ export class ExchangeLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.configs = attachments.configs;
         this.games = undefined;
-        this.lotteryXhrRequest("maintenance", (maintenanceResponse) => {
-            this.maintenance = maintenanceResponse.maintenance;
+        this.exchangeXhrRequest("maintenance", (maintenanceResponse) => {
+            // In prep for MEXC2-29 Soft Maintenance per tile
+            /*this.maintenance = maintenanceResponse.maintenance;
             ComponentManager.broadcast("game.maintenance", {
                 games: maintenanceResponse.game_providers,
-            });
-            this.lotteryXhrRequest("lobby", (response) => {
+            });*/
+            this.exchangeXhrRequest("lobby", (response) => {
                 this.games = response;
-                this.pushMaintenance();
+                // this.pushMaintenance();
                 this.highlightMenu();
                 this.setLobby();
             });
@@ -95,10 +97,13 @@ export class ExchangeLobbyComponent implements ComponentInterface {
         this.highlightQuickNavMenu();
     }
 
-    private lotteryXhrRequest(method: string, callback) {
+    private exchangeXhrRequest(method: string, callback) {
         xhr({
             url: Router.generateRoute("exchange_lobby", method),
             type: "json",
+            data: {
+                keyword: Router.route(),
+            },
         }).then((response) => {
                 callback(response);
         }).fail((error, message) => {
@@ -110,13 +115,13 @@ export class ExchangeLobbyComponent implements ComponentInterface {
      * Populate lobby with the response from cms
      */
     private setLobby() {
-        this.populateGames();
+        this.populateLobby();
     }
 
     /**
      * Populate game thumbnails
      */
-    private populateGames() {
+    private populateLobby() {
         /* tslint:disable:no-string-literal */
         const enableLazyLoad = false;
         /* tslint:disable:no-string-literal */
