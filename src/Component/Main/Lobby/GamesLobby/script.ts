@@ -1107,23 +1107,18 @@ export class GamesLobbyComponent implements ComponentInterface {
                     this.windowObject = PopupWindow(url, "gameWindow", prop);
                 }
 
-                if (!this.windowObject && data.options.target === "popup" || data.options.target === "_blank") {
+                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
                     return;
                 }
 
                 // handle redirects if we are on a PWA standalone
                 if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                    source === "pwa" ||
-                    data.options.target !== "popup" ||
-                    data.options.target !== "_blank"
+                    source === "pwa" &&
+                    (data.options.target !== "popup" || data.options.target !== "_blank")
                 ) {
                     window.location.href = url;
                     return;
                 }
-
-                this.windowObject = PopupWindow("", "gameWindow", prop);
-
-                this.updatePopupWindow(url);
             }
         });
     }
