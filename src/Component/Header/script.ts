@@ -73,7 +73,7 @@ export class HeaderComponent implements ComponentInterface {
                                     totalBalance += response.reserveBalances[response.map[product]];
                                 }
 
-                                balance.innerHTML = Number(totalBalance).toFixed(2);
+                                balance.innerHTML = this.formatBalance(Number(totalBalance).toFixed(2));
                                 if (!balanceFlag) {
                                     balance.innerHTML = response.err_message;
                                 }
@@ -125,5 +125,9 @@ export class HeaderComponent implements ComponentInterface {
             this.product = product;
             ComponentManager.refreshComponent("header");
         }
+    }
+
+    private formatBalance(balance) {
+        return balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 }
