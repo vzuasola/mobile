@@ -3,13 +3,25 @@
         <div class="modal-body">
             <h3>{{ mobile_language_select }}</h3>
             <ul class="menu">
+                {% set odd = language|length  % 2 ? true : false %}
+                {% set limit = odd ? language|length / 2 + 0.5 : language|length / 2 %}
                 {% for key,lang in language %}
                     {% set isActive = lang.prefix == currentLanguage ? "active" : "" %}
-                    <li class="{{ lang.id }} {{ isActive }}">
+                    {# Opening Container #}
+                    {%if loop.index == 1 or loop.index == limit + 1 %}
+                    <li class="col-6">
+                        <ul>
+                    {% endif %}
+                    <li class=" {{ lang.id }} {{ isActive }}">
                         <a href="#" class="language-link" data-lang="{{ lang.prefix }}">
                         {{ lang.name }}
                         </a>
                     </li>
+                    {# Closing Container #}
+                    {%if loop.index == limit or loop.index == language|length %}
+                        </ul>
+                    </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
