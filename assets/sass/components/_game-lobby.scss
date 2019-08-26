@@ -1,5 +1,7 @@
-.mobile-lottery {
-    .lottery-lobby-tile-container {
+.mobile-lottery,
+.mobile-exchange {
+    .lottery-lobby-tile-container,
+    .exchange-lobby-tile-container {
         padding-top: 1%;
 
         ul {
@@ -11,31 +13,41 @@
             }
         }
 
-    }
+        #game-container {
+            width: 100%;
 
-    .game-listing {
-        &-item {
-            padding: 0;
-            display: block;
-            float: none;
+            .small-image {
+                width: 50%;
+            }
+        
+            .large-image {
+                width: 100%;
+            }
 
-            img {
-                height: 15rem;
+            .game-listing {
+                &-item {
+                    padding: 0;
+                    display: block;
+                    float: none;
+        
+                    img {
+                        height: 15rem;
+                    }
+                }
+        
+                a {
+                    float: none;
+                    display: block;
+                }
+        
+                .label-game-title {
+                    font-weight: 400;
+                    width: 98%;
+                    padding: 0 1%;
+                }
             }
         }
-
-        a {
-            float: none;
-            display: block;
-        }
-
-        .label-game-title {
-            font-weight: 400;
-            width: 98%;
-            padding: 0 1%;
-        }
-
-    }
+    }    
 
     .lottery-tile-maintenance {
         &-title {
