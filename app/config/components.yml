@@ -246,6 +246,9 @@ modules:
 
   gpi_sode_integration:
     class: App\MobileEntry\Module\GameIntegration\GPISode\GPISodeModule
+    
+  exchange_launcher_integration:
+    class: App\MobileEntry\Module\GameIntegration\ExchangeLauncher\ExchangeLauncherModule
 
   tgp_integration:
     class: App\MobileEntry\Module\GameIntegration\TGP\TGPModule
