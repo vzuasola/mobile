@@ -136,6 +136,7 @@ class ExchangeLobbyComponentController
             }
             $definition['overridesize'] = isset($overrideSize) ? $overrideSize : '';*/
             $definition['title'] = $tile['title'][0]['value'] ?? '';
+            $definition['game_provider'] = $tile['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
             $definition['target'] = $tile['field_target'][0]['value'] ?? '';
             $definition['use_game_loader'] = isset($tile['field_use_game_loader'][0]['value'])
                 ? $tile['field_use_game_loader'][0]['value'] : "false";
