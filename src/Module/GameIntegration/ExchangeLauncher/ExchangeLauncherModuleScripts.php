@@ -47,11 +47,11 @@ class ExchangeLauncherModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $gpiConfig =  $this->config->getGeneralConfigById('games_exchange_provider');
+            $exchangeConfig =  $this->config->getGeneralConfigById('games_exchange_provider');
 
             $data = [
-                'currencies' => explode(PHP_EOL, $gpiConfig['currency']),
-                'languages' => Config::parse($gpiConfig['languages'] ?? ''),
+                'currencies' => explode(PHP_EOL, $exchangeConfig['currency']),
+                'languages' => Config::parse($exchangeConfig['languages'] ?? ''),
             ];
         } catch (\Exception $e) {
             $data = [];

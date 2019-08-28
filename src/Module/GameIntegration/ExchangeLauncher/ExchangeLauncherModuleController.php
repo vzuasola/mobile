@@ -14,7 +14,7 @@ class ExchangeLauncherModuleController
 
     private $rest;
 
-    private $gpi;
+    private $exchange;
 
     private $config;
 
@@ -39,10 +39,10 @@ class ExchangeLauncherModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $gpi, $config, $player, $playerSession)
+    public function __construct($rest, $exchange, $config, $player, $playerSession)
     {
         $this->rest = $rest;
-        $this->gpi = $gpi;
+        $this->exchange = $exchange;
         $this->config = $config->withProduct('mobile-exchange');
         $this->player = $player;
         $this->playerSession = $playerSession;
@@ -68,11 +68,11 @@ class ExchangeLauncherModuleController
         $data['currency'] = true;
         $requestData = $request->getParsedBody();
         try {
-            $gpiConfig =  $this->config->getGeneralConfigById('games_exchange_provider');
+            $exchangeConfig =  $this->config->getGeneralConfigById('games_exchange_provider');
 
             $siteDomain = Host::getDomain();
-            $gameDomain = $gpiConfig['exchange_tablet_url'];
-            $query = $gpiConfig['tablet_game_url'];
+            $gameDomain = $exchangeConfig['exchange_tablet_url'];
+            $query = $exchangeConfig['tablet_game_url'];
 
             $gameUri = "$gameDomain.$siteDomain/$query";
 
