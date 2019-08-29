@@ -33,21 +33,17 @@ export class GameLoaderComponent implements ComponentInterface {
      */
     private initMessage() {
         const message = {
-            en: "An unexpected error occurred.<br />This window will" +
-            " close in few seconds.<br /><br />Please try again soon.",
-            sc: "出现意外错误<br />窗口即将关闭<br /><br />请稍后重试。",
-            ch: "出現意外錯誤<br />窗口即將關閉<br /><br />請稍後重試。",
-            th: "เกิดความผิดพลาด<br />หน้าต่างนี้จะถูกปิดลงในอีก 5 – 6 วินาที" +
-            "<br /><br />กรุณาลองใหม่อีกครั้ง",
-            kr: "예상치 못한 오류가 발생했습니다.<br />" +
-            "몇 초 후에 창이 닫힐 예정입니다.<br /><br />" +
-            "잠시 후에 다시 시도해 주세요.",
-            vn: "Rất tiếc đã xảy ra lỗi.<br />" +
-            "Cửa sổ này sẽ bị đóng trong vài giây.<br />" +
-            "<br />Xin vui lòng thử lại sau.",
-            id: "Telah terjadi kesalahan yang tak diduga.<br />" +
-            "Window ini akan segera ditutup.<br /><br /> " +
-            "Silahkan coba lagi nanti.",
+            en: "The connection has timed out.<br />" +
+            "Please try again in a few moments.",
+            sc: "连接超时<br />请稍后重试",
+            ch: "連接超時<br />請稍後重試",
+            th: "หมดเวลาเชื่อมต่อ<br />กรุณาลองใหม่ในอีกสักครู่",
+            kr: "연결 시간이 초과되었습니다.<br />" +
+            "잠시 후에 다시 시도하십시오. ",
+            vn: "Thời gian kết nối đã hết.<br />" +
+            "Vui lòng thử lại sau vài phút.<br />",
+            id: "Waktu koneksi telah habis.<br />" +
+            "Silakan coba lagi beberapa saat lagi.",
             pt: "A conexão expirou. <br />" +
             "Por favor, tente novamente em alguns instantes.",
             es: "La conexión ha expirado. <br />" +
