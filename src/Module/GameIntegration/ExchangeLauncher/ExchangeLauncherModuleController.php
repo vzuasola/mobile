@@ -51,9 +51,8 @@ class ExchangeLauncherModuleController
     /**
      * @{inheritdoc}
      */
-    public function launch($response)
+    public function launch()
     {
-        $data['gameurl'] = false;
         $data['currency'] = false;
 
         if ($this->checkCurrency()) {
