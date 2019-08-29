@@ -78,7 +78,7 @@ export class GameLoaderComponent implements ComponentInterface {
             utility.addClass(this.element.querySelector(".loader"), "hidden");
             utility.removeClass(this.element.querySelector(".message"), "hidden");
             this.closeOnTimeout();
-        }, 5 * 1000);
+        }, 30 * 1000);
     }
 
     /**
