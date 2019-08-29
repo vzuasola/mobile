@@ -56,13 +56,13 @@ class ExchangeLauncherModuleController
         $data['currency'] = false;
 
         if ($this->checkCurrency($request)) {
-            $data = $this->getGameLobby($request, $response);
+            $data = $this->getGameLobby();
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function getGameLobby($request, $response)
+    private function getGameLobby()
     {
         $data['currency'] = true;
         try {
