@@ -34,7 +34,7 @@ export class GameLoaderComponent implements ComponentInterface {
     private initMessage() {
         const message = {
             en: "An unexpected error occurred.<br />This window will" +
-            "close in few seconds.<br /><br />Please try again soon.",
+            " close in few seconds.<br /><br />Please try again soon.",
             sc: "出现意外错误<br />窗口即将关闭<br /><br />请稍后重试。",
             ch: "出現意外錯誤<br />窗口即將關閉<br /><br />請稍後重試。",
             th: "เกิดความผิดพลาด<br />หน้าต่างนี้จะถูกปิดลงในอีก 5 – 6 วินาที" +
