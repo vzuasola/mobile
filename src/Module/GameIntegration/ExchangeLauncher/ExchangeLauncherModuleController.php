@@ -51,21 +51,20 @@ class ExchangeLauncherModuleController
     /**
      * @{inheritdoc}
      */
-    public function launch()
+    public function launch($request, $response)
     {
         $data['currency'] = false;
 
-        if ($this->checkCurrency()) {
-            $data = $this->getGameLobby();
+        if ($this->checkCurrency($request)) {
+            $data = $this->getGameLobby($request, $response);
         }
 
-        return $this->rest->output($data);
+        return $this->rest->output($response, $data);
     }
 
-    private function getGameLobby()
+    private function getGameLobby($request, $response)
     {
         $data['currency'] = true;
-
         try {
             $exchangeConfig =  $this->config->getGeneralConfigById('games_exchange_provider');
 
@@ -83,7 +82,7 @@ class ExchangeLauncherModuleController
         return $data;
     }
 
-    private function checkCurrency()
+    private function checkCurrency($request)
     {
         try {
             $config =  $this->config->getGeneralConfigById('games_exchange_provider');
