@@ -48,6 +48,10 @@ export class GameLoaderComponent implements ComponentInterface {
             id: "Telah terjadi kesalahan yang tak diduga.<br />" +
             "Window ini akan segera ditutup.<br /><br /> " +
             "Silahkan coba lagi nanti.",
+            pt: "A conexão expirou. <br />" +
+            "Por favor, tente novamente em alguns instantes.",
+            es: "La conexión ha expirado. <br />" +
+            "Por favor, inténtalo de nuevo en unos minutos.",
         };
 
         let lang = ComponentManager.getAttribute("language");
