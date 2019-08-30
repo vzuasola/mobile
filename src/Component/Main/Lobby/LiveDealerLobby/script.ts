@@ -397,23 +397,18 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 }
 
                 // Nothing happens if window is blocked and is popup
-                if (!this.windowObject && data.options.target === "popup" || data.options.target === "_blank") {
+                if (data.options.target === "popup" || data.options.target === "_blank") {
                     return;
                 }
 
                 // handle redirects if we are on a PWA standalone
                 if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                    source === "pwa" ||
-                    data.options.target !== "popup" ||
-                    data.options.target !== "_blank"
+                    source === "pwa" &&
+                    (data.options.target !== "popup" || data.options.target !== "_blank")
                 ) {
                     window.location.href = url;
                     return;
                 }
-
-                this.windowObject = PopupWindow("", "gameWindow", prop);
-
-                this.updatePopupWindow(url);
             }
         });
     }
