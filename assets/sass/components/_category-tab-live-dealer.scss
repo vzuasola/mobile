@@ -1,4 +1,4 @@
-.mobile-live-dealer {
+.mobile-live-dealer, .mobile-arcade {
     #categories-container {
         position: -webkit-sticky;
         position: sticky;
@@ -107,7 +107,7 @@
            }
     }
 
-    .pft-list {
+    .pft-list, .spt-list {
         margin-left: 0;
         @extend .clearfix;
         list-style-type: none;
@@ -125,7 +125,7 @@
             display: flex;
         }
 
-        .pft-item {
+        .pft-item, .spt-item {
             float: left;
             text-align: center;
             width: 33.33333333333333%;
