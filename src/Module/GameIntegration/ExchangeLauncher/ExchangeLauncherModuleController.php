@@ -53,20 +53,18 @@ class ExchangeLauncherModuleController
      */
     public function launch($request, $response)
     {
-        $data['gameurl'] = false;
         $data['currency'] = false;
 
         if ($this->checkCurrency($request)) {
-            $data = $this->getGameLobby($request, $response);
+            $data = $this->getGameLobby();
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function getGameLobby($request, $response)
+    private function getGameLobby()
     {
         $data['currency'] = true;
-        $requestData = $request->getParsedBody();
         try {
             $exchangeConfig =  $this->config->getGeneralConfigById('games_exchange_provider');
 
