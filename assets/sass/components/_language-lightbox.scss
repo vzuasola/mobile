@@ -57,7 +57,7 @@
             border-radius: 0.7rem;
             color: $light-gray;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             display: grid;
             align-items: center;
             grid-template-columns: 4.5rem 50%;
@@ -81,10 +81,10 @@
 
         // Arrow icon 
         &.active a:after {
-            @include image-replacement($sprite-mobile, 0, -7.3rem, 3rem, 2.5rem, 2.5rem);
+            @include image-replacement($sprite-mobile, 0.6rem, -7.3rem, 3rem, 2.5rem, 2.5rem);
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: 0.2rem;
             content: "";
         }
     }
