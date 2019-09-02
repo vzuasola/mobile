@@ -94,7 +94,6 @@ class ArcadeLobbyComponentController
         $page = 0;
 
         $item = $this->cacher->getItem('views.arcade-lobby-data.' . $page . $this->currentLanguage);
-        
         if (!$item->isHit()) {
             $data = $this->generatePageLobbyData($page);
             if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
