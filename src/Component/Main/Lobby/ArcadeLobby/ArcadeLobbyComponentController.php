@@ -95,10 +95,10 @@ class ArcadeLobbyComponentController
        
         $item = $this->cacher->getItem('views.arcade-lobby-data.' . $page . $this->currentLanguage);
         
-        if (!$item->isHit() || true) {
+        if (!$item->isHit()) {
             
             $data = $this->generatePageLobbyData($page);
-
+            
             if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
                 $item->set([
                     'body' => $data,
@@ -163,7 +163,7 @@ class ArcadeLobbyComponentController
         $data = [];
         try {
             $categories = $this->viewsFetcher->getViewById('games_category');
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {            
             $categories = [];
         }
         try {
@@ -190,6 +190,7 @@ class ArcadeLobbyComponentController
      */
     private function getPublishedCategories($categories)
     {
+        // die();
         $categoryList = [];
         foreach ($categories as $category) {
             $isPublished = $this->checkIfPublished(

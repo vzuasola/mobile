@@ -12,16 +12,13 @@ export class GamesCategory {
     private filteredCategories: any[];
     private games: any[];
 
-    constructor(categories, games, attachments, element) {
+    constructor(attachments, element) {
         this.configs = attachments.configs;
         this.isLogin = attachments.isLogin;
-        this.categories = categories;
-        this.games = games;
         this.element = element;
-        this.setCategories(categories, games);
     }
 
-    init() {
+    render() {
         const activeCategory = this.getActiveCategory();
         const gameCategoriesEl = document.querySelector("#game-categories");
         const template = categoryTemplate({
@@ -63,6 +60,8 @@ export class GamesCategory {
      * Set lobby categories
      */
     setCategories(categories, games) {
+        this.categories = categories;
+        this.games = games;
         this.availableCategories = Object.keys(games);
         this.filteredCategories = this.filterCategories(categories);
     }

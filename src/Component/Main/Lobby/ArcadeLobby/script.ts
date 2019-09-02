@@ -16,6 +16,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private response: any;
     private groupedGames: any;
     private lazyLoader: LazyLoader;
+    private gameCategories: GamesCategory;
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -30,6 +31,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
+        this.gameCategories = new GamesCategory(
+            this.attachments,
+            this.element,
+        );
         this.generateLobby(() => {
             this.setLobby();
         });
@@ -53,6 +58,14 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
+        this.gameCategories = new GamesCategory(
+            this.attachments,
+            this.element,
+        );
+
+        this.generateLobby(() => {
+            this.setLobby();
+        });
     }
 
     /**
@@ -71,17 +84,13 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private setLobby() {
         // group games by category
-        this.groupedGames = this.groupGamesByCategory();
+        const groupedGames = this.groupGamesByCategory();
+        this.groupedGames = this.sortGamesByCategory(groupedGames);
         // populate categories
-        const gameCategories = new GamesCategory(
-            this.response.categories,
-            this.groupedGames,
-            this.attachments,
-            this.element,
-        );
-        gameCategories.init();
+        this.gameCategories.setCategories(this.response.categories, this.groupedGames);
+        this.gameCategories.render();
         // populate games
-        this.populateGames(gameCategories.getActiveCategory());
+        this.populateGames(this.gameCategories.getActiveCategory());
     }
 
     /**
@@ -256,6 +265,20 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                     }
                 }
                 gamesList["all-games"].push(game);
+            }
+        }
+
+        return gamesList;
+    }
+
+    private sortGamesByCategory(gamesList) {
+        for (const category in gamesList) {
+            if (gamesList.hasOwnProperty(category)) {
+                let categoryGames = gamesList[category];
+                categoryGames = categoryGames.sort((a, b) => {
+                    return a.categories[category] - b.categories[category];
+                });
+                gamesList[category] = categoryGames;
             }
         }
 
