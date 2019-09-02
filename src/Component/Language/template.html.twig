@@ -5,7 +5,7 @@
             <ul class="menu">
                 {% for key,lang in language %}
                     {% set isActive = lang.prefix == currentLanguage ? "active" : "" %}
-                    <li class="{{ lang.id }} {{ isActive }}">
+                    <li class="{% if lang.hide %}hidden{% endif %}  {{ lang.id }} {{ isActive }}">
                         <a href="#" class="language-link" data-lang="{{ lang.prefix }}">
                         {{ lang.name }}
                         </a>
