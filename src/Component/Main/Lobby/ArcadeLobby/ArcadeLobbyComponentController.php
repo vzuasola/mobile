@@ -198,6 +198,7 @@ class ArcadeLobbyComponentController
             );
             if ($isPublished) {
                 $category['published'] = $isPublished;
+                
                 if ($category['field_games_logo']) {
                     $categoryLogo = str_replace(
                         '/' . $this->currentLanguage . '/',
@@ -205,7 +206,7 @@ class ArcadeLobbyComponentController
                         $category['field_games_logo']
                     );
                     $category['field_games_logo'] = $this->asset->generateAssetUri(
-                        $categoryLogo,
+                        $category['field_games_logo'],
                         ['product' => self::PRODUCT]
                     );
                 }

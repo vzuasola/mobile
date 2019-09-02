@@ -33,6 +33,7 @@ export class GamesCategory {
 
         if (gameCategoriesEl) {
             gameCategoriesEl.innerHTML = template;
+            this.setActiveCategory(activeCategory);
             this.moveProviders();
             this.activateProviderDrawer();
             this.equalizeProviderHeight();
@@ -70,8 +71,12 @@ export class GamesCategory {
      * Set active category
      */
     setActiveCategory(activeCategory) {
-        console.log(this.element);
-        const categoryEl = this.element.querySelector(".category-" + activeCategory);
+        const prevActiveEl = document.querySelector(".category-tab .active");
+        if (prevActiveEl) {
+            utility.removeClass(prevActiveEl, "active");
+            utility.removeClass(utility.findParent(prevActiveEl, "li"), "active");
+        }
+        const categoryEl = document.querySelector(".category-" + activeCategory);
         if (categoryEl) {
             utility.addClass(categoryEl, "active");
             utility.addClass(utility.findParent(categoryEl, "li"), "active");
@@ -92,13 +97,11 @@ export class GamesCategory {
             }
             /* tslint:disable:no-string-literal */
         }
-        console.log(this.filteredCategories);
 
         return filteredCategories;
     }
 
     private moveProviders() {
-        console.log(this.element);
         const container = document.querySelector("#categories-container");
         const providersEl = document.querySelector("#game-categories");
 

@@ -79,7 +79,6 @@ export class LazyLoader {
      * @param activeTab String
      */
     private getBatch() {
-        console.log(this.data);
         const temp = this.data.slice(0);
         const batch: any = [];
 
