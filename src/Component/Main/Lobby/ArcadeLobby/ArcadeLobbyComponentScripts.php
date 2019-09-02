@@ -45,9 +45,9 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $configs = $this->configs->getConfig('arcade.arcade_configuration');
+            $arcadeConfigs = $this->configs->getConfig('arcade.arcade_configuration');
         } catch (\Exception $e) {
-            $configs = [];
+            $arcadeConfigs = [];
         }
 
         try {
@@ -60,7 +60,7 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
             'authenticated' => $this->playerSession->isLogin(),
             'product' => $this->getProductIntegration(),
             'pagerConfig' => $pager ?? [],
-            'configs' => $configs,
+            'configs' => $arcadeConfigs,
         ];
     }
 
