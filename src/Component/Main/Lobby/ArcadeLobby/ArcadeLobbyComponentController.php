@@ -120,12 +120,14 @@ class ArcadeLobbyComponentController
     {
         $data = [];
         try {
-            $favoritesGamesList = $this->favorite->getFavorites();
-            $favoritesGamesList = $this->proccessSpecialGames($favoritesGamesList);
-            usort($favoritesGamesList, [$this, 'sortRecentGames']);
+            if ($this->playerSession->isLogin()) {
+                $favoritesGamesList = $this->favorite->getFavorites();
+                $favoritesGamesList = $this->proccessSpecialGames($favoritesGamesList);
+                usort($favoritesGamesList, [$this, 'sortRecentGames']);
 
-            foreach ($favoritesGamesList as $games) {
-                $data[] = 'id:' . $games['id'];
+                foreach ($favoritesGamesList as $games) {
+                    $data[] = 'id:' . $games['id'];
+                }
             }
         } catch (\Exception $e) {
             $data = [];
@@ -138,12 +140,14 @@ class ArcadeLobbyComponentController
     {
         $data = [];
         try {
-            $recentGamesList = $this->recentGames->getRecents();
-            $recentGamesList = $this->proccessSpecialGames($recentGamesList);
-            usort($recentGamesList, [$this, 'sortRecentGames']);
+            if ($this->playerSession->isLogin()) {
+                $recentGamesList = $this->recentGames->getRecents();
+                $recentGamesList = $this->proccessSpecialGames($recentGamesList);
+                usort($recentGamesList, [$this, 'sortRecentGames']);
 
-            foreach ($recentGamesList as $games) {
-                $data[] = 'id:' . $games['id'];
+                foreach ($recentGamesList as $games) {
+                    $data[] = 'id:' . $games['id'];
+                }
             }
         } catch (\Exception $e) {
             $data = [];
