@@ -64,7 +64,7 @@ class ArcadeLobbyComponent implements ComponentWidgetInterface
         } catch (\Exception $e) {
             $configs = [];
         }
-        
+
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'search_tab' => $configs['search_tab_title'] ?? 'Search',

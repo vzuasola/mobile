@@ -38,7 +38,7 @@ class ArcadeLobbyComponentController
     private $url;
 
     private $cacher;
-    
+
     private $currentLanguage;
 
     /**
@@ -92,13 +92,11 @@ class ArcadeLobbyComponentController
             $page = $query['page'];
         }
         $page = 0;
-       
+
         $item = $this->cacher->getItem('views.arcade-lobby-data.' . $page . $this->currentLanguage);
         
         if (!$item->isHit()) {
-            
             $data = $this->generatePageLobbyData($page);
-            
             if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
                 $item->set([
                     'body' => $data,
@@ -163,7 +161,7 @@ class ArcadeLobbyComponentController
         $data = [];
         try {
             $categories = $this->viewsFetcher->getViewById('games_category');
-        } catch (\Exception $e) {            
+        } catch (\Exception $e) {
             $categories = [];
         }
         try {
@@ -179,7 +177,8 @@ class ArcadeLobbyComponentController
 
         $data['categories_list'] = $categories;
         $data['games']['all-games'] = $this->processAllGames(
-            $allGames, 'all-games'
+            $allGames,
+            'all-games'
         );
 
         return $data;
@@ -199,7 +198,6 @@ class ArcadeLobbyComponentController
             );
             if ($isPublished) {
                 $category['published'] = $isPublished;
-                
                 if ($category['field_games_logo']) {
                     $categoryLogo = str_replace(
                         '/' . $this->currentLanguage . '/',
