@@ -60,17 +60,17 @@ class ArcadeLobbyComponent implements ComponentWidgetInterface
     public function getData()
     {
         try {
-            $configs = $this->configs->getConfig('arcade.arcade_configuration');
+            $arCadeconfigs = $this->configs->getConfig('arcade.arcade_configuration');
         } catch (\Exception $e) {
-            $configs = [];
+            $arCadeconfigs = [];
         }
 
         return [
             'authenticated' => $this->playerSession->isLogin(),
-            'search_tab' => $configs['search_tab_title'] ?? 'Search',
-            'provider_tab' => $configs['provider_tab_title'] ?? 'Search',
-            'transfer_title' => $configs['games_transfer_title'] ?? '',
-            'transfer_url' => $configs['games_transfer_link'] ?? '',
+            'search_tab' => $arCadeconfigs['search_tab_title'] ?? 'Search',
+            'provider_tab' => $arCadeconfigs['provider_tab_title'] ?? 'Search',
+            'transfer_title' => $arCadeconfigs['games_transfer_title'] ?? '',
+            'transfer_url' => $arCadeconfigs['games_transfer_link'] ?? '',
         ];
     }
 }
