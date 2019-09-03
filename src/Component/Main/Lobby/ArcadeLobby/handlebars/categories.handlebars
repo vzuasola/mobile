@@ -38,9 +38,9 @@
                         </svg>
                     </span>
                 </h2>
-                <ul class="game-providers col-12 mb-10">
+                <ul class="game-providers arcade-drawer col-12 mb-10">
                     {{#each categories}}
-                    <li class="game-providers-list col-6 pt-10 game-providers-tab close-drawer">
+                    <li class="game-providers-list arcade-drawer pt-10 game-providers-tab close-drawer">
                        <a href="#{{this.field_games_alias}}" class="category-provider-menu category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}} close-drawer"
                             data-category-filter-id="{{this.field_games_alias}}" data-category-filter-name="{{{this.name}}}">
                             {{#if this.field_games_logo }}
