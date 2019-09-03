@@ -1,6 +1,6 @@
 <ul class="game-exchange-lobby-container clearfix">
 {{#each games}}
-    <li class="game-listing game-tiles exchange-game-tile {{ this.size }}">
+    <li class="game-tiles exchange-game-tile col-4">
         <a class="game-listing-item
         {{!-- Add exchange-launcher class if tile will not redirect to inner page --}}
         {{#unless this.tile_url}}
@@ -17,7 +17,7 @@
         {{#if this.tile_url}}
             href="{{ this.tile_url }}"
         {{/if}}
-        {{!-- data-game-maintenance="{{ this.game_maintenance}}" --}}
+        data-game-maintenance="{{ this.game_maintenance}}"
         >
             {{#if this.ribbon}}
                 <span class="game-ribbon lottery-ribbon"
@@ -27,7 +27,7 @@
                 </span>
             {{/if}}
             <picture>
-                {{!-- <source srcset="{{ this.img_landscape }}" media="(min-width: 40em) and (orientation: landscape)"> --}}
+                <source srcset="{{ this.img_landscape }}" media="(min-width: 40em) and (orientation: landscape)">
                 <img
                     src="{{ this.image.url }}"
                     alt="{{ this.image.alt }}"
@@ -36,7 +36,7 @@
             </picture>
         </a>
         {{#if this.game_maintenance}}
-            <div class="lottery-tile-maintenance">
+            <div class="exchange-tile-maintenance">
                 <p>{{ this.game_maintenance_text }}</p>
             </div>
         {{/if}}
