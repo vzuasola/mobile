@@ -1,6 +1,6 @@
 <ul class="game-exchange-lobby-container clearfix">
 {{#each games}}
-    <li class="game-tiles exchange-game-tile col-4">
+    <li class="game-tiles exchange-game-tile {{this.size}} {{this.overridesize}}">
         <a class="game-listing-item"
         {{#if ../isLogin}}
             data-game-launch="true"
