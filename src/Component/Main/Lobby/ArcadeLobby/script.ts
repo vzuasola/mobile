@@ -17,6 +17,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private groupedGames: any;
     private lazyLoader: LazyLoader;
     private gameCategories: GamesCategory;
+    private productMenu: string = "product-arcade";
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -36,6 +37,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.element,
         );
         this.generateLobby(() => {
+            this.highlightMenu();
             this.setLobby();
         });
 
@@ -64,6 +66,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         );
 
         this.generateLobby(() => {
+            this.highlightMenu();
             this.setLobby();
         });
     }
@@ -166,6 +169,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         }
     }
 
+    /**
+     * Return array of xhr request
+     */
     private getPagerPromises() {
         const promises = [];
         for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
@@ -176,6 +182,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         return promises;
     }
 
+    /**
+     * Merges all xhr responses into one array
+     * @param responses
+     */
     private mergeResponsePromises(responses) {
         const promises: any = {
             games: {},
@@ -206,6 +216,12 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         return promises;
     }
 
+    /**
+     * Creates array of games
+     * @param key
+     * @param list
+     * @param gamesList
+     */
     private getGamesList(key, list, gamesList) {
         for (const id in list) {
             if (list.hasOwnProperty(id)) {
@@ -239,6 +255,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         );
     }
 
+    /**
+     * Groups games by category
+     */
     private groupGamesByCategory() {
         const gamesList: any = [];
         gamesList["all-games"] = [];
@@ -271,6 +290,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         return gamesList;
     }
 
+    /**
+     * Sorts games by weight
+     * @param gamesList
+     */
     private sortGamesByCategory(gamesList) {
         for (const category in gamesList) {
             if (gamesList.hasOwnProperty(category)) {
@@ -296,6 +319,14 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 regVia: this.attachments.product[0].reg_via,
             });
         }
+    }
+
+    /**
+     * Helper function that sends event to menu component to
+     * highlight arcade menu tile
+     */
+    private highlightMenu() {
+        ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
     }
 
     /**
@@ -334,18 +365,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "game-listing-item", true);
             this.showLogin(el);
-        });
-    }
-
-    /**
-     * Event listener for game item click
-     */
-    private listenClickTab() {
-        ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.hasClass(src, "lobby-tab", true);
-            if (el) {
-              // placeholder
-            }
         });
     }
 
