@@ -17,7 +17,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private groupedGames: any;
     private lazyLoader: LazyLoader;
     private gameCategories: GamesCategory;
-    private productMenu: string = 'product-arcade';
+    private productMenu: string = "product-arcade";
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -184,7 +184,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
 
     /**
      * Merges all xhr responses into one array
-     * @param responses 
+     * @param responses
      */
     private mergeResponsePromises(responses) {
         const promises: any = {
@@ -219,8 +219,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     /**
      * Creates array of games
      * @param key
-     * @param list 
-     * @param gamesList 
+     * @param list
+     * @param gamesList
      */
     private getGamesList(key, list, gamesList) {
         for (const id in list) {
