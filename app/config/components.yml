@@ -39,8 +39,8 @@ components:
     class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
     parent: node
 
-  node_lottery_page:
-    class: App\MobileEntry\Component\Node\LotteryPage\LotteryPageComponent
+  node_inner_page:
+    class: App\MobileEntry\Component\Node\InnerPage\InnerPageComponent
     parent: node
 
   lobby:

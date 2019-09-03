@@ -1,11 +1,15 @@
 <ul class="game-exchange-lobby-container clearfix">
 {{#each games}}
     <li class="game-listing game-tiles exchange-game-tile {{ this.size }}">
-        <a class="game-listing-item "
+        <a class="game-listing-item
+        {{!-- Add exchange-launcher class if tile will not redirect to inner page --}}
+        {{#unless this.tile_url}}
+            exchange-launcher
+        {{/unless}}"
         {{#if ../isLogin}}
             data-game-launch="true"
         {{/if}}
-        data-game-provider="{{this.game_provider}}"
+        data-game-provider="{{ this.game_provider }}"
         data-game-title="{{ this.title }}"
         data-game-target="{{ this.target }}"
         data-game-loader="{{ this.use_game_loader }}"
