@@ -60,7 +60,7 @@
             font-size: 1.3rem;
             display: grid;
             align-items: center;
-            grid-template-columns: 2.5rem 70%;
+            grid-template-columns: 2.5rem 75%;
         }
         
         // active/hover state
@@ -81,10 +81,10 @@
 
         // Arrow icon 
         &.active a:after {
-            @include image-replacement($sprite-mobile, 0.7rem, -8rem, 3rem, 2.5rem, 2.5rem);
+            @include image-replacement($sprite-mobile, 0.7rem, -8rem, 3rem, 1.5rem, 2.5rem);
             position: absolute;
             top: 0.5rem;
-            right: 0.2rem;
+            right: -0.2rem;
             content: "";
         }
     }
