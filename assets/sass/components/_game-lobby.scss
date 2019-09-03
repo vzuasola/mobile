@@ -49,7 +49,8 @@
         }
     }    
 
-    .lottery-tile-maintenance {
+    .lottery-tile-maintenance,
+    .exchange-tile-maintenance {
         &-title {
             position: absolute;
             text-align: center;
@@ -73,7 +74,8 @@
         }
     }
 
-    .lottery-tile-maintenance:after {
+    .lottery-tile-maintenance:after,
+    .exchange-tile-maintenance:after {
         position: absolute;
         z-index: 0;
         content: " ";
@@ -103,7 +105,8 @@
 
 // Portrait
 @media (orientation: portrait) {
-    .mobile-lottery {
+    .mobile-lottery,
+    .mobile-exchange {
         #game-container {
             .game-tiles.large-override,
             .game-tiles.col-4.large-override,
@@ -117,7 +120,8 @@
         }
 
         .col-4 {
-            .lottery-tile-maintenance:after {
+            .lottery-tile-maintenance:after,
+            .exchange-tile-maintenance:after {
                 position: absolute;
                 z-index: 0;
                 content: " ";
@@ -130,7 +134,8 @@
         }
 
         .col-12 {
-            .lottery-tile-maintenance:after {
+            .lottery-tile-maintenance:after,
+            .exchange-tile-maintenance:after {
                 position: absolute;
                 z-index: 0;
                 content: " ";
@@ -146,7 +151,8 @@
 
 // Landspace
 @media (orientation: landscape) {
-    .mobile-lottery {
+    .mobile-lottery,
+    .mobile-exchange {
         #game-container {
             .game-tiles.col-4.small-override {
                 width: 33.33333%;

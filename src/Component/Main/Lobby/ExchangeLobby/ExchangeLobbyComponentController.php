@@ -9,6 +9,7 @@ class ExchangeLobbyComponentController
 {
     const PRODUCT = 'mobile-exchange';
     const TIMEOUT = 1800;
+    private $productCategory;
     /**
      *
      */
@@ -40,7 +41,7 @@ class ExchangeLobbyComponentController
         $url
     ) {
         $this->playerSession = $playerSession;
-        $this->views = $views->withProduct(self::PRODUCT);
+        $this->views = $views->withProduct(self::PRODUCT)->setLanguage('in');
         $this->rest = $rest;
         $this->configs = $configs;
         $this->asset = $asset;
@@ -61,7 +62,7 @@ class ExchangeLobbyComponentController
             $keyword = 'exchange';
             if ($params['keyword'] && in_array($params['keyword'], Products::PRODUCT_ALIAS['exchange'])) {
                 $keywords = explode('/', $params['keyword']);
-                $keyword = $keywords[1] ?? '/';
+                $this->productCategory = $keyword = $keywords[1] ?? '/';
             }
 
             $data = $this->getLobbyTiles($keyword);
@@ -123,6 +124,8 @@ class ExchangeLobbyComponentController
                 'alt' => $tile["field_lobby_thumbnail_$size"][0]['alt'],
                 'url' => $imgUrl
             ];
+            // @todo size value will depend on drupal
+            $definition['size'] = $size;
             // In prep for MEXC2-24 Game Lobby - Landscape Mode
             /*$definition['img_landscape'] = $imgUrl;
             $landscapesize = $tile['field_game_landscape_size'][0]['value'];
@@ -145,14 +148,13 @@ class ExchangeLobbyComponentController
                 $tileUrl = '/' . $keyword . '/' .$tileUrl;
                 $definition['tile_url'] = $this->url->generateUri($tileUrl, ['skip_parsers' => true]);
             }
-            // In prep for MEXC2-29 Soft Maintenance per tile
-            /*$definition['game_maintenance_text'] = null;
+            $definition['game_maintenance_text'] = null;
             $definition['game_maintenance'] = false;
 
             if ($this->checkIfMaintenance($tile)) {
                 $definition['game_maintenance'] = true;
                 $definition['game_maintenance_text'] = $tile['field_maintenance_blurb'][0]['value'];
-            }*/
+            }
 
             return $definition;
         } catch (\Exception $e) {
@@ -168,7 +170,7 @@ class ExchangeLobbyComponentController
         try {
             $list = [];
             $providers = [];
-            $games = $this->views->getViewById('games_list');
+            $games = $this->views->getViewById('lobby_tiles');
             foreach ($games as $game) {
                 $maintenance = $this->getGameMaintenance($game);
                 $list["maintenance"][] = $maintenance["maintenance"];
