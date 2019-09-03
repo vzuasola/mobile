@@ -5,9 +5,9 @@ import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/ass
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 /**
- * Lottery Basic Pages
+ * Generic Basic Pages
  */
-export class LotteryPageComponent implements ComponentInterface {
+export class InnerPageComponent implements ComponentInterface {
     private element: HTMLElement;
     private events: {};
     private productMenu: string = "product-lottery";
