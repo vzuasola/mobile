@@ -60,7 +60,7 @@ class ArcadeLobbyComponentController
     }
 
     /**
-     *
+     * Public constructor
      */
     public function __construct(
         $product,
@@ -84,6 +84,9 @@ class ArcadeLobbyComponentController
         $this->currentLanguage = $currentLanguage;
     }
 
+    /**
+     * Retrieves list of games and its categories
+     */
     public function lobby($request, $response)
     {
         $query = $request->getQueryParams();
@@ -91,7 +94,6 @@ class ArcadeLobbyComponentController
         if (isset($query['page'])) {
             $page = $query['page'];
         }
-        $page = 0;
 
         $item = $this->cacher->getItem('views.arcade-lobby-data.' . $page . $this->currentLanguage);
         if (!$item->isHit()) {
@@ -116,6 +118,9 @@ class ArcadeLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
+    /**
+     * Retrieves list of player's favorite games
+     */
     public function getFavorites($request, $response)
     {
         $data = [];
@@ -123,7 +128,7 @@ class ArcadeLobbyComponentController
             if ($this->playerSession->isLogin()) {
                 $favoritesGamesList = $this->favorite->getFavorites();
                 $favoritesGamesList = $this->proccessSpecialGames($favoritesGamesList);
-                usort($favoritesGamesList, [$this, 'sortRecentGames']);
+                usort($favoritesGamesList, [$this, 'sortGamesByTimestamp']);
 
                 foreach ($favoritesGamesList as $games) {
                     $data[] = 'id:' . $games['id'];
@@ -136,6 +141,9 @@ class ArcadeLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
+    /**
+     * Retrieves list of player's most recently played games
+     */
     public function getRecentlyPlayed($request, $response)
     {
         $data = [];
@@ -143,7 +151,7 @@ class ArcadeLobbyComponentController
             if ($this->playerSession->isLogin()) {
                 $recentGamesList = $this->recentGames->getRecents();
                 $recentGamesList = $this->proccessSpecialGames($recentGamesList);
-                usort($recentGamesList, [$this, 'sortRecentGames']);
+                usort($recentGamesList, [$this, 'sortGamesByTimestamp']);
 
                 foreach ($recentGamesList as $games) {
                     $data[] = 'id:' . $games['id'];
@@ -192,7 +200,6 @@ class ArcadeLobbyComponentController
      */
     private function getPublishedCategories($categories)
     {
-        // die();
         $categoryList = [];
         foreach ($categories as $category) {
             $isPublished = $this->checkIfPublished(
@@ -346,6 +353,9 @@ class ArcadeLobbyComponentController
         }
     }
 
+    /**
+     * Simplify game array for recently played / favorites
+     */
     private function proccessSpecialGames($games)
     {
         try {
@@ -366,9 +376,9 @@ class ArcadeLobbyComponentController
     }
 
     /**
-     * Sort recently played games based on timestamp
+     * Sort recently played games/favorites based on timestamp
      */
-    public static function sortRecentGames($game1, $game2)
+    public static function sortGamesByTimestamp($game1, $game2)
     {
         return ($game1['timestamp'] > $game2['timestamp']) ? -1 : 1;
     }
