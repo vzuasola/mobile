@@ -29,7 +29,7 @@ import {LanguageComponent} from "@app/src/Component/Language/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
 import {CantLoginComponent} from "@app/src/Component/Main/CantLogin/script";
 import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script";
-import {LotteryPageComponent} from "@app/src/Component/Node/LotteryPage/script";
+import {InnerPageComponent} from "@app/src/Component/Node/InnerPage/script";
 import {CantLoginForgotPasswordComponent} from "@app/src/Component/Main/CantLogin/ForgotPassword/script";
 import {CantLoginForgotUsernameComponent} from "@app/src/Component/Main/CantLogin/ForgotUsername/script";
 import {CantLoginResetPasswordComponent} from "@app/src/Component/Main/CantLogin/ResetPassword/script";
@@ -71,7 +71,7 @@ ComponentManager.setComponents({
     profiler: new ProfilerComponent(),
     cant_login: new CantLoginComponent(),
     node_promotions: new PromotionsNodeComponent(),
-    node_lottery_page: new LotteryPageComponent(),
+    node_inner_page: new InnerPageComponent(),
     cant_login_forgot_password: new CantLoginForgotPasswordComponent(),
     cant_login_forgot_username: new CantLoginForgotUsernameComponent(),
     cant_login_reset_password: new CantLoginResetPasswordComponent(),

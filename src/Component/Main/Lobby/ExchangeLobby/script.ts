@@ -136,7 +136,7 @@ export class ExchangeLobbyComponent implements ComponentInterface {
      */
     private listenClickGameTile() {
         ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.hasClass(src, "game-listing-item", true);
+            const el = utility.hasClass(src, "exchange-launcher", true);
             this.showLogin(el);
         });
     }

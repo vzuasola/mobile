@@ -44,7 +44,7 @@ class TabNavigationComponentController
      */
     public function quickNav($request, $response)
     {
-        $productList = ['lottery'];
+        $productList = ['lottery', 'exchange'];
         try {
             $params = $request->getQueryParams();
             $keyword = 'entrypage';
