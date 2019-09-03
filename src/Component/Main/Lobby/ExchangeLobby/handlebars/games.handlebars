@@ -1,6 +1,6 @@
 <ul class="game-exchange-lobby-container clearfix">
 {{#each games}}
-    <li class="game-tiles exchange-game-tile col-4">
+    <li class="game-tiles exchange-game-tile col-4 {{this.size}} {{this.overridesize}}">
         <a class="game-listing-item
         {{!-- Add exchange-launcher class if tile will not redirect to inner page --}}
         {{#unless this.tile_url}}
