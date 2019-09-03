@@ -1,4 +1,5 @@
-.mobile-live-dealer, .mobile-arcade {
+.mobile-live-dealer,
+.mobile-arcade {
     #categories-container {
         position: -webkit-sticky;
         position: sticky;
@@ -71,7 +72,7 @@
                 background: $dark-red;
                 height: 100%;
             }
-       }
+        }
 
         .main-game-providers {
             border-top: 0.1rem solid $dark-red;
@@ -80,34 +81,35 @@
     }
 
     .providers-more {
-           position: absolute;
-           top: 0;
-           right: 0;
-           width: 100%;
-           height: 100%;
-           outline: none;
-           border: 0;
-           z-index: 1;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        border: 0;
+        z-index: 1;
 
-           &-text {
-               text-align: left;
-               text-indent: 1rem;
+        &-text {
+            text-align: left;
+            text-indent: 1rem;
 
-               svg {
-                   position: absolute;
-                   top: 1.2rem;
-                   right: 1.2rem;
-                   width: 0.8rem;
-                   @include rotate(-180);
-                   outline: none;
-                   border: 0;
-                   z-index: 0;
-                   fill: $white;
-               }
-           }
+            svg {
+                position: absolute;
+                top: 1.2rem;
+                right: 1.2rem;
+                width: 0.8rem;
+                @include rotate(-180);
+                outline: none;
+                border: 0;
+                z-index: 0;
+                fill: $white;
+            }
+        }
     }
 
-    .pft-list, .spt-list {
+    .pft-list,
+    .spt-list {
         margin-left: 0;
         @extend .clearfix;
         list-style-type: none;
@@ -125,7 +127,8 @@
             display: flex;
         }
 
-        .pft-item, .spt-item {
+        .pft-item,
+        .spt-item {
             float: left;
             text-align: center;
             width: 33.33333333333333%;
@@ -175,7 +178,7 @@
         left: 0;
         z-index: 1000;
         background: $black;
-        background: rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.5);
     }
 
     .provider-open {
@@ -185,7 +188,7 @@
             height: 100%;
             overflow-y: hidden;
         }
-    
+
         .provider-menu-overlay {
             display: block;
         }
@@ -273,7 +276,7 @@
                 }
             }
 
-            &-list:first-child + li {
+            &-list:first-child+li {
                 border-top: 0.1rem solid $gray;
             }
 
@@ -325,12 +328,12 @@
                     float: left;
                     display: inline-block;
                     min-height: 0.1rem;
-    
+
                     a {
                         float: none;
                         display: block;
                     }
-    
+
                     .label-game-title {
                         font-weight: 400;
                         width: 98%;
@@ -339,31 +342,31 @@
                     }
 
                     &-maintenance {
-                            &-title {
-                                position: absolute;
-                                left: 1.5%;
-                                right: 1.5%;
-                                bottom: 0.7rem;
-                                text-align: center;
-                                width: 95%;
-                                color: $white;
-                                z-index: 1;
-                            }
+                        &-title {
+                            position: absolute;
+                            left: 1.5%;
+                            right: 1.5%;
+                            bottom: 0.7rem;
+                            text-align: center;
+                            width: 95%;
+                            color: $white;
+                            z-index: 1;
+                        }
 
-                            p {
-                                position: absolute;
-                                top: 30%;
-                                left: 1.5%;
-                                right: 1.5%;
-                                z-index: 1;
-                                margin: 0;
-                                color: #ffe000;
-                                text-align: center;
-                                font-size: 1.6rem;
-                                font-weight: 600;
-                                width: 95%;
-                                line-height: initial;
-                            }
+                        p {
+                            position: absolute;
+                            top: 30%;
+                            left: 1.5%;
+                            right: 1.5%;
+                            z-index: 1;
+                            margin: 0;
+                            color: #ffe000;
+                            text-align: center;
+                            font-size: 1.6rem;
+                            font-weight: 600;
+                            width: 95%;
+                            line-height: initial;
+                        }
                     }
 
                     &-maintenance:after {
@@ -394,11 +397,11 @@
                 .game-listing {
                     width: 33.33333333%;
                     padding: 0 0.2% 1% 0.2%;
-    
-                .label-game-title {
+
+                    .label-game-title {
                         font-size: 1.4rem;
                     }
-    
+
                     &-maintenance:after {
                         left: 1.5%;
                         right: 1.5%;

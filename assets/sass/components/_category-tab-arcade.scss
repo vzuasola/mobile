@@ -1,0 +1,91 @@
+// Arcade drawer
+.mobile-arcade {
+        .providers-tab-list {
+        background: $cat-tab-bg;
+
+        .game-providers {
+            margin-left: -0.1rem;
+       }
+    }
+
+    .provider-menu {
+        margin-right: -90vw;
+        width: 90vw;
+    }
+
+    .arcade-drawer.game-providers {
+        &-list.arcade-drawer {
+            width: 33.33333%;
+            position: relative;
+            min-height: 0.1rem;
+            float: left;
+            // border-top: 0.1rem solid $gray;
+            // border-bottom: 0.1rem solid $gray;
+            border-left: 0.1rem solid $gray;
+        }
+
+        &-list a.active {
+            background: $red;
+        }
+
+        &-list:first-child {
+            border-top: 0.1rem solid $gray;
+
+            svg {
+                width: 3.3rem;
+                border: 0;
+                fill: $white;
+            }
+        }
+
+        &-list:first-child+li {
+            border-top: 0.1rem solid $gray;
+        }
+
+        &-list:first-child+li+li {
+            border-top: 0.1rem solid $gray;
+        }
+
+        &-list:first-child {
+            svg {
+                width: 3.3rem;
+                border: 0;
+                fill: $white;
+            }
+        }
+
+        &-list:nth-last-child(1) {
+            border-right: 0.1rem solid $gray;
+            margin-left: 0;
+        }
+
+        a {
+            background: $dark-gray;
+
+            p {
+                margin: 0;
+                padding-top: 0.5rem;
+            }
+
+            img {
+                height: 4rem;
+                width: 4rem;
+            }
+        }
+    }
+}
+
+@media only screen 
+  and (max-device-width: 320px) {
+      .mobile-arcade {
+        .arcade-drawer.game-providers {
+            &-list.arcade-drawer {
+                width: 50%;
+            }
+
+            &-list:first-child+li+li {
+                border-top: 0;
+            }
+        }
+      }
+}
