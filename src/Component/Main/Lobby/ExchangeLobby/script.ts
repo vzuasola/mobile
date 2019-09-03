@@ -45,14 +45,13 @@ export class ExchangeLobbyComponent implements ComponentInterface {
         this.games = undefined;
         this.events = {};
         this.exchangeXhrRequest("maintenance", (maintenanceResponse) => {
-            // In prep for MEXC2-29 Soft Maintenance per tile
-            /*this.maintenance = maintenanceResponse.maintenance;
+            this.maintenance = maintenanceResponse.maintenance;
             ComponentManager.broadcast("game.maintenance", {
                 games: maintenanceResponse.game_providers,
-            });*/
+            });
             this.exchangeXhrRequest("lobby", (response) => {
                 this.games = response;
-                // this.pushMaintenance();
+                this.pushMaintenance();
                 this.highlightMenu();
                 this.setLobby();
             });
@@ -81,14 +80,13 @@ export class ExchangeLobbyComponent implements ComponentInterface {
         this.configs = attachments.configs;
         this.games = undefined;
         this.exchangeXhrRequest("maintenance", (maintenanceResponse) => {
-            // In prep for MEXC2-29 Soft Maintenance per tile
-            /*this.maintenance = maintenanceResponse.maintenance;
+            this.maintenance = maintenanceResponse.maintenance;
             ComponentManager.broadcast("game.maintenance", {
                 games: maintenanceResponse.game_providers,
-            });*/
+            });
             this.exchangeXhrRequest("lobby", (response) => {
                 this.games = response;
-                // this.pushMaintenance();
+                this.pushMaintenance();
                 this.highlightMenu();
                 this.setLobby();
             });
