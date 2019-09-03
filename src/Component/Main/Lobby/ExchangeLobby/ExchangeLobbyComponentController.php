@@ -128,9 +128,10 @@ class ExchangeLobbyComponentController
             // Landscape Mode
             $definition['img_landscape'] = $imgUrl;
             $landscapesize = $tile['field_lobby_landscape_size'][0]['value'];
+            
 
             if ($size != $landscapesize) {
-                $overrideSize = ($landscapesize == 'small') ? 'small-override' : 'large-override';
+                $overrideSize = ($landscapesize == 'small') ? 'col-4 small-override' : 'col-8 large-override';
                 $definition['img_landscape'] = $this->asset->generateAssetUri(
                     $tile["field_lobby_thumbnail_$landscapesize"][0]['url'],
                     ['product' => self::PRODUCT]
