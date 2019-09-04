@@ -490,11 +490,11 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         });
     }
 
-    private function refreshResponse() {
+    private refreshResponse() {
         this.response = undefined;
-            this.generateLobby(() => {
-                this.setLobby();
-            });
+        this.generateLobby(() => {
+            this.setLobby();
+        });
     }
 
 }
