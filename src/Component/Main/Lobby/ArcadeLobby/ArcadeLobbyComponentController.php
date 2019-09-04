@@ -41,6 +41,10 @@ class ArcadeLobbyComponentController
 
     private $currentLanguage;
 
+    private $recentGames;
+
+    private $favorite;
+
     /**
      *
      */
@@ -55,7 +59,9 @@ class ArcadeLobbyComponentController
             $container->get('asset'),
             $container->get('uri'),
             $container->get('redis_cache_adapter'),
-            $container->get('lang')
+            $container->get('lang'),
+            $container->get('recents_fetcher'),
+            $container->get('favorites_fetcher')
         );
     }
 
@@ -71,7 +77,9 @@ class ArcadeLobbyComponentController
         $asset,
         $url,
         $cacher,
-        $currentLanguage
+        $currentLanguage,
+        $recentGames,
+        $favorite
     ) {
         $this->product = $product;
         $this->configs = $configs->withProduct(self::PRODUCT);
@@ -82,6 +90,8 @@ class ArcadeLobbyComponentController
         $this->url = $url;
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
+        $this->recentGames = $recentGames;
+        $this->favorite = $favorite;
     }
 
     /**
