@@ -182,18 +182,18 @@ class ArcadeLobbyComponentController
         $data = [];
         try {
             $gamesCollections = $this->viewsFetcher->getViewById('games_collection');
+        } catch (\Exception $e) {
+            $gamesCollections = [];
+        }
 
-            if ($gamesCollections) {
-                foreach ($gamesCollections as $gamesCollection) {
-                    if (isset($gamesCollection['field_type'][0]['name'][0]['value'])
-                        && isset($gamesCollection['field_games'])) {
-                            $data[$gamesCollection['field_type'][0]['name'][0]['value']] =
-                                $this->getGameCodes($gamesCollection['field_games']);
-                    }
+        if ($gamesCollections) {
+            foreach ($gamesCollections as $gamesCollection) {
+                if (isset($gamesCollection['field_type'][0]['name'][0]['value'])
+                    && isset($gamesCollection['field_games'])) {
+                        $data[$gamesCollection['field_type'][0]['name'][0]['value']] =
+                            $this->getGameCodes($gamesCollection['field_games']);
                 }
             }
-        } catch (\Exception $e) {
-            $data = [];
         }
 
         return $this->rest->output($response, $data);
