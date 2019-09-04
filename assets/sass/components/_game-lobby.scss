@@ -110,20 +110,14 @@
         #game-container {
             .game-tiles.large-override,
             .game-tiles.col-4.large-override,
-            .game-tiles.col-4 {
-                width: 50%;
-            }
-
-            .game-tiles.col-4.small-override {
-                width: 100%;
-            }
-
-            .game-tiles.col-4.col-8 {
-                width: 100%;
-            }
-
+            .game-tiles.col-4,
             .game-tiles.col-4.col-8.large-override {
                 width: 50%;
+            }
+
+            .game-tiles.col-4.small-override,
+            .game-tiles.col-4.col-8 {
+                width: 100%;
             }
         }
 
