@@ -39,7 +39,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.attachments = attachments;
         this.gameCategories = new GamesCategory(
             this.attachments,
-            this.element,
         );
         this.generateLobby(() => {
             this.highlightMenu();
@@ -51,6 +50,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.listenToScroll();
         this.listenGameLaunch();
         this.listenToLaunchGameLoader();
+        this.listenOnLogin();
+        this.listenOnLogout();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -65,13 +66,14 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenToScroll();
             this.listenGameLaunch();
             this.listenToLaunchGameLoader();
+            this.listenOnLogin();
+            this.listenOnLogout();
         }
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
         this.gameCategories = new GamesCategory(
             this.attachments,
-            this.element,
         );
 
         this.generateLobby(() => {
@@ -400,7 +402,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 gameCode,
             },
         }).then((result) => {
-            console.log(result);
             if (result.success) {
                 this.response = undefined;
                 console.log("recentlyplayed");
@@ -472,6 +473,30 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                     return;
                 }
             }
+        });
+    }
+
+    /**
+     * Refresh category on login
+     */
+    private listenOnLogin() {
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            this.response = undefined;
+            this.generateLobby(() => {
+                this.setLobby();
+            });
+        });
+    }
+
+    /**
+     * Refresh category on logout
+     */
+    private listenOnLogout() {
+        ComponentManager.subscribe("session.logout", (event, src, data) => {
+            this.response = undefined;
+            this.generateLobby(() => {
+                this.setLobby();
+            });
         });
     }
 
