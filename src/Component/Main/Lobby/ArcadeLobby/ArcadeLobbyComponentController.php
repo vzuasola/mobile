@@ -129,6 +129,18 @@ class ArcadeLobbyComponentController
     }
 
     /**
+     * set player's recently played games
+     */
+    public function recent($request, $response)
+    {
+        $gameCode = $request->getParsedBody();
+        if (isset($gameCode['gameCode'])) {
+            $result = $this->setRecentlyPlayedGames($gameCode['gameCode']);
+            return $this->rest->output($response, $result);
+        }
+    }
+
+    /**
      * Retrieves list of player's favorite games
      */
     public function getFavorites($request, $response)
@@ -172,6 +184,41 @@ class ArcadeLobbyComponentController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+     /**
+     * Retrieves list of games collection which will be used for sorting games.
+     */
+    public function getGamesCollection($request, $response)
+    {
+        $data = [];
+        try {
+            $gamesCollections = $this->viewsFetcher->getViewById('games_collection');
+        } catch (\Exception $e) {
+            $gamesCollections = [];
+        }
+
+        foreach ($gamesCollections as $gamesCollection) {
+            if (isset($gamesCollection['field_type'][0]['name'][0]['value'])) {
+                $type = $gamesCollection['field_type'][0]['name'][0]['value'];
+                $games = $gamesCollection['field_games'] ?? [];
+                $data[$type] = $this->getGameCodes($games);
+            }
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    private function getGameCodes($gamesCollectionList)
+    {
+        $data = [];
+        foreach ($gamesCollectionList as $games) {
+            if ($games['field_game_code'][0]['value']) {
+                $data[] = 'id:' . $games['field_game_code'][0]['value'];
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -391,5 +438,45 @@ class ArcadeLobbyComponentController
     public static function sortGamesByTimestamp($game1, $game2)
     {
         return ($game1['timestamp'] > $game2['timestamp']) ? -1 : 1;
+    }
+
+    /**
+     * Set recently played games
+     */
+    private function setRecentlyPlayedGames($gameCode)
+    {
+        $response = ['success' => false];
+        try {
+            if ($this->playerSession->isLogin()) {
+                $recentlyPlayed = $this->recentGames->getRecents();
+                $recentlyPlayed = $this->proccessSpecialGames($recentlyPlayed);
+                $recentlyPlayed = (is_array($recentlyPlayed)) ? $recentlyPlayed : [];
+                usort($recentlyPlayed, [$this, 'sortGamesByTimestamp']);
+                $recent = [];
+                foreach ($recentlyPlayed as $games) {
+                    $recent[] = $games['id'];
+                }
+
+                // Remove last item when it reaches 21
+                if (count($recent) >= 21) {
+                    $removedGameCode = end($recent);
+                    $this->recentGames->removeRecents([$removedGameCode]);
+                }
+
+                // Move item to the top of stack if it exists already
+                if ((count($recent) >= 0 && count($recent) < 22)
+                    && in_array($gameCode, $recent)) {
+                    $this->recentGames->removeRecents([$gameCode]);
+                }
+
+                $this->recentGames->saveRecents([$gameCode]);
+
+                $response['success'] = true;
+            }
+        } catch (\Exception $e) {
+            $response['success'] = false;
+        }
+
+        return $response;
     }
 }
