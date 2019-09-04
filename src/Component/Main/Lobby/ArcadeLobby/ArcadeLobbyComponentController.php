@@ -188,8 +188,7 @@ class ArcadeLobbyComponentController
 
         if ($gamesCollections) {
             foreach ($gamesCollections as $gamesCollection) {
-                if (isset($gamesCollection['field_type'][0]['name'][0]['value'])
-                    && isset($gamesCollection['field_games'])) {
+                if (isset($gamesCollection['field_type'][0]['name'][0]['value'])) {
                         $data[$gamesCollection['field_type'][0]['name'][0]['value']] =
                             $this->getGameCodes($gamesCollection['field_games']);
                 }
