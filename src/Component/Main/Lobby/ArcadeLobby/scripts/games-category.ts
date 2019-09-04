@@ -4,18 +4,15 @@ import { ProviderDrawer } from "./provider-drawer";
 import * as categoryTemplate from "../handlebars/categories.handlebars";
 
 export class GamesCategory {
-    private element: HTMLElement;
     private configs: any[];
     private isLogin: boolean;
     private categories: any[];
-    private availableCategories: any[];
     private filteredCategories: any[];
     private games: any[];
 
-    constructor(attachments, element) {
+    constructor(attachments) {
         this.configs = attachments.configs;
         this.isLogin = attachments.isLogin;
-        this.element = element;
     }
 
     render() {
@@ -42,6 +39,11 @@ export class GamesCategory {
         return this.filteredCategories;
     }
 
+    /* Returns list of categories that have available games*/
+    getUnFilteredCategories() {
+        return this.categories;
+    }
+
     /**
      * Gets current active category from url, if none is found, use first tab as default.
      */
@@ -62,7 +64,6 @@ export class GamesCategory {
     setCategories(categories, games) {
         this.categories = categories;
         this.games = games;
-        this.availableCategories = Object.keys(games);
         this.filteredCategories = this.filterCategories(categories);
     }
 
@@ -91,12 +92,12 @@ export class GamesCategory {
         for (const category of categories) {
             /* tslint:disable:no-string-literal */
             if (category.hasOwnProperty("field_games_alias") &&
-                this.availableCategories.indexOf(category["field_games_alias"]) !== -1) {
+                this.games.hasOwnProperty(category["field_games_alias"]) &&
+                this.games[category["field_games_alias"]].length) {
                     filteredCategories.push(category);
             }
             /* tslint:disable:no-string-literal */
         }
-
         return filteredCategories;
     }
 
