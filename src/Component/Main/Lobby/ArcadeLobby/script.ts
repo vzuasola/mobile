@@ -403,11 +403,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             },
         }).then((result) => {
             if (result.success) {
-                this.response = undefined;
-                console.log("recentlyplayed");
-                this.generateLobby(() => {
-                    this.setLobby();
-                });
+                this.refreshResponse();
             }
         }).fail((error, message) => {
             console.log(error);
@@ -481,10 +477,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenOnLogin() {
         ComponentManager.subscribe("session.login", (event, src, data) => {
-            this.response = undefined;
-            this.generateLobby(() => {
-                this.setLobby();
-            });
+            this.refreshResponse();
         });
     }
 
@@ -493,11 +486,15 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenOnLogout() {
         ComponentManager.subscribe("session.logout", (event, src, data) => {
-            this.response = undefined;
+            this.refreshResponse();
+        });
+    }
+
+    private function refreshResponse() {
+        this.response = undefined;
             this.generateLobby(() => {
                 this.setLobby();
             });
-        });
     }
 
 }
