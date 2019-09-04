@@ -1,6 +1,6 @@
+declare var navigator: any;
+
 import * as utility from "@core/assets/js/components/utility";
-import * as categoriesTemplate from "./handlebars/categories.handlebars";
-import * as gameTemplate from "./handlebars/games.handlebars";
 import {LazyLoader} from "./scripts/lazy-loader";
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
@@ -8,6 +8,7 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import { GamesCategory } from "./scripts/games-category";
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
+import PopupWindow from "@app/assets/script/components/popup";
 /**
  *
  */
@@ -16,6 +17,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private attachments: any;
     private response: any;
     private groupedGames: any;
+    private windowObject: any;
     private lazyLoader: LazyLoader;
     private gameCategories: GamesCategory;
     private gamesCollectionSort: GamesCollectionSorting;
@@ -47,6 +49,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.listenHashChange();
         this.listenClickGameTile();
         this.listenToScroll();
+        this.listenGameLaunch();
+        this.listenToLaunchGameLoader();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -59,6 +63,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenHashChange();
             this.listenClickGameTile();
             this.listenToScroll();
+            this.listenGameLaunch();
+            this.listenToLaunchGameLoader();
         }
         this.response = undefined;
         this.element = element;
@@ -382,6 +388,90 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "game-listing-item", true);
             this.showLogin(el);
+        });
+    }
+
+    private setRecentlyPlayedGame(gameCode) {
+        xhr({
+            url: Router.generateRoute("arcade_lobby", "recent"),
+            type: "json",
+            method: "post",
+            data: {
+                gameCode,
+            },
+        }).then((result) => {
+            console.log(result);
+            if (result.success) {
+                this.response = undefined;
+                console.log("recentlyplayed");
+                this.generateLobby(() => {
+                    this.setLobby();
+                });
+            }
+        }).fail((error, message) => {
+            console.log(error);
+        });
+    }
+
+    /**
+     * Event listener for game item click
+     */
+    private listenGameLaunch() {
+        ComponentManager.subscribe("game.launch", (event, src, data) => {
+            const el = utility.hasClass(data.src, "game-list", true);
+            if (el) {
+                const gameCode = el.getAttribute("data-game-code");
+                console.log("et recent");
+                this.setRecentlyPlayedGame(gameCode);
+            }
+        });
+    }
+
+    /**
+     * Event listener for launching pop up loader
+     */
+    private listenToLaunchGameLoader() {
+        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
+                // Pop up loader with all data
+                const prop = {
+                    width: 360,
+                    height: 720,
+                    scrollbars: 1,
+                    scrollable: 1,
+                    resizable: 1,
+                };
+
+                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
+                const source = utility.getParameterByName("source");
+
+                for (const key in data.options) {
+                    if (data.options.hasOwnProperty(key)) {
+                        const param = data.options[key];
+                        url = utility.addQueryParam(url, key, param);
+                    }
+                }
+
+                url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+                url = utility.addQueryParam(url, "loaderFlag", "true");
+
+                if (data.options.target === "popup" || data.options.target === "_blank") {
+                    this.windowObject = PopupWindow(url, "gameWindow", prop);
+                }
+
+                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
+                    return;
+                }
+
+                // handle redirects if we are on a PWA standalone
+                if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                    source === "pwa" &&
+                    (data.options.target !== "popup" || data.options.target !== "_blank")
+                ) {
+                    window.location.href = url;
+                    return;
+                }
+            }
         });
     }
 
