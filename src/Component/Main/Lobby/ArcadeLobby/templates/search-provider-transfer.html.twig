@@ -4,17 +4,22 @@
         <li class="{{ liClass }} spt-list-menu-item">
             <a href="#" class="spt-item-links search-tab">
                 {{ search_tab }}
+                {% include '@app/web/images/svg/lobby/search.svg' %}
             </a>
         </li>
         <li class="{{ liClass }} spt-list-menu-item">
             <a href="#" class="spt-item-links games-provider main">
                 {{ provider_tab }}
+                <svg viewBox="0 0 20 20">
+                    <use xlink:href="#product-arcade" />
+                </svg>
             </a>
         </li>
         {% if authenticated and transfer_url %}
             <li class="{{ liClass }} spt-list-menu-item spt-list-menu-transfer">
                 <a href="{{ url(transfer_url) }}" class="spt-item-links games-transfer">
                     {{ transfer_title }}
+                    {% include '@app/web/images/svg/lobby/transfer.svg' %}
                 </a>
             </li>
         {% endif %}
