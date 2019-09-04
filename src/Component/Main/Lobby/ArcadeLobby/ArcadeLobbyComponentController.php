@@ -174,6 +174,35 @@ class ArcadeLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
+     /**
+     * Retrieves list of games collection which will be used for sorting games.
+     */
+    public function getGamesCollection($request, $response)
+    {
+        $data = [];
+        try {
+            $gamesCollections = $this->viewsFetcher->getViewById('games_collection');
+
+            if ($gamesCollections) {
+                foreach ($gamesCollections as $gamesCollection) {
+                    if (isset($gamesCollection['field_type'][0]['name'][0]['value'])
+                        && isset($gamesCollection['field_games'])) {
+                        foreach ($gamesCollection['field_games'] as $games) {
+                            if ($games['field_game_code'][0]['value']) {
+                                $data[$gamesCollection['field_type'][0]['name'][0]['value']][] =
+                                    'id:' . $games['field_game_code'][0]['value'];
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
     /**
      * Gets data from drupal
      */

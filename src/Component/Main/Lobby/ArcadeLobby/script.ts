@@ -7,6 +7,7 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import { GamesCategory } from "./scripts/games-category";
+import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 /**
  *
  */
@@ -17,10 +18,12 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private groupedGames: any;
     private lazyLoader: LazyLoader;
     private gameCategories: GamesCategory;
+    private gamesCollectionSort: GamesCollectionSorting;
     private productMenu: string = "product-arcade";
 
     constructor() {
         this.lazyLoader = new LazyLoader();
+        this.gamesCollectionSort = new GamesCollectionSorting();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -88,7 +91,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private setLobby() {
         // group games by category
         const groupedGames = this.groupGamesByCategory();
-        this.groupedGames = this.sortGamesByCategory(groupedGames);
+        this.groupedGames = this.sortGamesByGamesCollection(groupedGames);
         // populate categories
         this.gameCategories.setCategories(this.response.categories, this.groupedGames);
         this.gameCategories.render();
@@ -151,6 +154,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         req.fav = {
             type: "getFavorites",
         };
+        req["games-collection"] = {
+            type: "getGamesCollection",
+        };
 
         return req;
     }
@@ -179,6 +185,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         }
         promises.push("recent");
         promises.push("fav");
+        promises.push("games-collection");
         return promises;
     }
 
@@ -190,7 +197,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         const promises: any = {
             games: {},
         };
-        const key = "all-games";
 
         const gamesList = {
             "all-games": {},
@@ -203,38 +209,40 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 const response = responses["pager" + page];
                 Object.assign(promises, response);
                 if (typeof response.games["all-games"] !== "undefined") {
-                    gamesList[key] = this.getGamesList(
-                        key,
-                        response.games[key],
-                        gamesList[key],
-                    );
+                    gamesList["all-games"] = response.games["all-games"];
                 }
             }
         }
 
+        if (responses.hasOwnProperty("fav")) {
+            gamesList.favorites = this.getGamesDefinition(responses.fav, gamesList["all-games"]);
+        }
+
+        if (responses.hasOwnProperty("recent")) {
+            gamesList["recently-played"] = this.getGamesDefinition(responses.recent, gamesList["all-games"]);
+        }
+
+        if (responses.hasOwnProperty("games-collection")) {
+            promises.gamesCollection = responses["games-collection"];
+        }
         promises.games = gamesList;
         return promises;
     }
 
     /**
-     * Creates array of games
-     * @param key
-     * @param list
+     * Gets game definition based on ID
      * @param gamesList
+     * @param allGames
      */
-    private getGamesList(key, list, gamesList) {
-        for (const id in list) {
-            if (list.hasOwnProperty(id)) {
-                const game = list[id];
-                if (key !== "all-games") {
-                    gamesList[Object.keys(gamesList).length] = game;
-                }
-                if (!gamesList[id]) {
-                    gamesList[id] = game;
-                }
+    private getGamesDefinition(gamesList, allGames) {
+        const games = [];
+        for (const id of gamesList) {
+            if (allGames.hasOwnProperty(id)) {
+               games.push(allGames[id]);
             }
         }
-        return gamesList;
+
+        return games;
     }
 
     /**
@@ -261,6 +269,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private groupGamesByCategory() {
         const gamesList: any = [];
         gamesList["all-games"] = [];
+        gamesList["recently-played"] = [];
+        gamesList["favorites"]  = [];
         const allGames = this.response["games"]["all-games"];
         for (const gameId in allGames) {
             if (allGames.hasOwnProperty(gameId)) {
@@ -286,22 +296,29 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 gamesList["all-games"].push(game);
             }
         }
-
+        gamesList["recently-played"] = this.response["games"]["recently-played"];
+        gamesList["favorites"] = this.response["games"]["favorites"];
         return gamesList;
     }
 
     /**
-     * Sorts games by weight
+     * Sorts games via Games Collection Sorting
      * @param gamesList
      */
-    private sortGamesByCategory(gamesList) {
-        for (const category in gamesList) {
-            if (gamesList.hasOwnProperty(category)) {
-                let categoryGames = gamesList[category];
-                categoryGames = categoryGames.sort((a, b) => {
-                    return a.categories[category] - b.categories[category];
-                });
-                gamesList[category] = categoryGames;
+    private sortGamesByGamesCollection(gamesList) {
+        const sortedGamesList: any = [];
+        const exempFromSort: any = ["favorites", "recently-played"];
+
+        for (const category of Object.keys(gamesList)) {
+            if (gamesList.hasOwnProperty(category) && exempFromSort.indexOf(category) === -1) {
+                sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
+                    this.response,
+                    category,
+                    true,
+                    gamesList[category],
+                );
+
+                gamesList[category] = sortedGamesList[category];
             }
         }
 
