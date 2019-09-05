@@ -1,4 +1,5 @@
-.mobile-live-dealer, .mobile-arcade {
+.mobile-live-dealer,
+.mobile-arcade {
     @media (orientation: landscape) {
         .provider-10,
         .provider-9,
@@ -119,10 +120,6 @@
             .game-providers-item:last-child {
                 width: 20.2857%;
                 position: relative;
-            }
-
-            .game-providers-item:nth-last-child(2) {
-                display: none;
             }
         }
 
