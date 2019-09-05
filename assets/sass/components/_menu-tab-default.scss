@@ -95,8 +95,7 @@
     @media (orientation: portrait) {
         .provider-10,
         .provider-9,
-        .provider-8,
-        .provider-7 {
+        .provider-8 {
             .game-providers-item {
                 width: 13.2857%;
             }
@@ -107,6 +106,21 @@
             }
 
             .game-providers-item:nth-last-child(3),
+            .game-providers-item:nth-last-child(2) {
+                display: none;
+            }
+        }
+
+        .provider-7 {
+            .game-providers-item {
+                width: 13.2857%;
+            }
+
+            .game-providers-item:last-child {
+                width: 20.2857%;
+                position: relative;
+            }
+
             .game-providers-item:nth-last-child(2) {
                 display: none;
             }
