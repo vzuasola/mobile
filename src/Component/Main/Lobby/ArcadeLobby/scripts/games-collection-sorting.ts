@@ -11,7 +11,8 @@ export class GamesCollectionSorting {
         if (gamesResponse.hasOwnProperty("gamesCollection")
             && gamesResponse.gamesCollection.hasOwnProperty(gamesCollectionType)) {
             for (const id of gamesResponse.gamesCollection[gamesCollectionType]) {
-                if (gamesResponse.games["all-games"].hasOwnProperty(id)) {
+                if (gamesResponse.games["all-games"].hasOwnProperty(id) &&
+                    sortedCollectionId.indexOf(id) === -1) {
                    sortedCollection.push(gamesResponse.games["all-games"][id]);
                    sortedCollectionId.push(id);
                 }
