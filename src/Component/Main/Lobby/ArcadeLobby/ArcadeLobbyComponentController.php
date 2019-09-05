@@ -331,8 +331,10 @@ class ArcadeLobbyComponentController
         $gamesList = [];
         foreach ($games as $game) {
             $special = ($categoryId === $this::RECOMMENDED_GAMES);
-
-            $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($game, $special);
+            $processedGame = $this->processGame($game, $special);
+            if (count($processedGame['categories'])) {
+                $gamesList['id:' . $game['field_game_code'][0]['value']] =  $processedGame;
+            }
         }
         return $gamesList;
     }
@@ -398,8 +400,10 @@ class ArcadeLobbyComponentController
             $categoryList = [];
 
             foreach ($game['field_games_list_category'] as $category) {
-                $categoryList[$category['field_games_alias'][0]['value']] =
+                if ($category['field_games_disable'][0]['value'] !== "1") {
+                    $categoryList[$category['field_games_alias'][0]['value']] =
                     $category['field_games_alias'][0]['value'];
+                }
             }
 
             $processGame['categories'] = $categoryList;
