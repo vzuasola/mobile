@@ -415,11 +415,12 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenGameLaunch() {
         ComponentManager.subscribe("game.launch", (event, src, data) => {
-            const el = utility.hasClass(data.src, "game-list", true);
-            if (el) {
-                const gameCode = el.getAttribute("data-game-code");
-                console.log("et recent");
-                this.setRecentlyPlayedGame(gameCode);
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
+                const el = utility.hasClass(data.src, "game-list", true);
+                if (el) {
+                    const gameCode = el.getAttribute("data-game-code");
+                    this.setRecentlyPlayedGame(gameCode);
+                }
             }
         });
     }
