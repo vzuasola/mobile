@@ -8,6 +8,7 @@ export class GamesCategory {
     private isLogin: boolean;
     private categories: any[];
     private filteredCategories: any[];
+    private filteredCategoriesAlias: any[] = [];
     private games: any[];
 
     constructor(attachments) {
@@ -37,6 +38,11 @@ export class GamesCategory {
     /* Returns list of categories that have available games*/
     getFilteredCategories() {
         return this.filteredCategories;
+    }
+
+    /* Returns list of categories alias that have available games*/
+    getFilteredCategoriesAlias() {
+        return this.filteredCategoriesAlias;
     }
 
     /* Returns list of categories that have available games*/
@@ -95,12 +101,16 @@ export class GamesCategory {
                 this.games.hasOwnProperty(category["field_games_alias"]) &&
                 this.games[category["field_games_alias"]].length) {
                     filteredCategories.push(category);
+                    this.filteredCategoriesAlias.push(category["field_games_alias"]);
             }
             /* tslint:disable:no-string-literal */
         }
         return filteredCategories;
     }
 
+    /**
+     * Move game categories element to categories-container
+     */
     private moveProviders() {
         const container = document.querySelector("#categories-container");
         const providersEl = document.querySelector("#game-categories");
@@ -117,6 +127,9 @@ export class GamesCategory {
         providerdrawer.activate();
     }
 
+    /**
+     * Make height of elements equal
+     */
     private equalizeProviderHeight() {
         setTimeout(() => {
             const equalProvider = new EqualHeight("#game-categories .provider-menu .game-providers-list a");

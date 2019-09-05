@@ -403,7 +403,32 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             },
         }).then((result) => {
             if (result.success) {
-                this.refreshResponse();
+                this.getRecentlyPlayedGame();
+            }
+        }).fail((error, message) => {
+            console.log(error);
+        });
+    }
+
+    private getRecentlyPlayedGame() {
+        xhr({
+            url: Router.generateRoute("arcade_lobby", "getRecentlyPlayed"),
+            type: "json",
+        }).then((result) => {
+            if (result) {
+                const activeCategory = this.gameCategories.getActiveCategory();
+                const recentlyPlayedGames = this.getGamesDefinition(result, this.response.games["all-games"]);
+                this.response.games["recently-played"] = recentlyPlayedGames;
+                this.groupedGames["recently-played"] = recentlyPlayedGames;
+                // re-render categories, if recently played is not yet active
+                if (this.gameCategories.getFilteredCategoriesAlias().indexOf("recently-played") === -1) {
+                    this.gameCategories.setCategories(this.response.categories, this.groupedGames);
+                    this.gameCategories.render();
+                }
+                // re-render games if active category is recently played
+                if (activeCategory === "recently-played") {
+                    this.populateGames(activeCategory);
+                }
             }
         }).fail((error, message) => {
             console.log(error);
@@ -491,6 +516,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         });
     }
 
+    /**
+     * Refresh category and games
+     */
     private refreshResponse() {
         this.response = undefined;
         this.generateLobby(() => {
