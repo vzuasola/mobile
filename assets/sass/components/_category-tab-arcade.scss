@@ -1,12 +1,15 @@
 // Arcade drawer
 .mobile-arcade {
-        .providers-tab-list {
-        background: $cat-tab-bg;
+    .providers-tab-list {
+    background: $cat-tab-bg;
 
-        .game-providers {
-            margin-left: -0.1rem;
-            width: 101%;
-       }
+    // Provider Drawer
+    .provider-menu {
+            .game-providers {
+                margin-left: -0.1rem;
+                width: 101%;
+            }
+        }
     }
 
     .provider-menu {
