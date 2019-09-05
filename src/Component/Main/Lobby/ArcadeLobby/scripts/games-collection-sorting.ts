@@ -6,13 +6,14 @@ export class GamesCollectionSorting {
      */
     sortGamesCollection(gamesResponse, gamesCollectionType, sortAlphabetical = false, gamesListArr?) {
         const sortedCollection = [];
-        const sortedAlpha = {};
+        const sortedCollectionId = [];
         let sortedAlphaArr = [];
         if (gamesResponse.hasOwnProperty("gamesCollection")
             && gamesResponse.gamesCollection.hasOwnProperty(gamesCollectionType)) {
             for (const id of gamesResponse.gamesCollection[gamesCollectionType]) {
                 if (gamesResponse.games["all-games"].hasOwnProperty(id)) {
                    sortedCollection.push(gamesResponse.games["all-games"][id]);
+                   sortedCollectionId.push(id);
                 }
             }
         }
@@ -20,7 +21,7 @@ export class GamesCollectionSorting {
         if (sortAlphabetical) {
             sortedAlphaArr = this.sortGameTitleAlphabetical(gamesListArr);
             for (const game of sortedAlphaArr) {
-                if (!sortedCollection.hasOwnProperty("id:" + game.game_code)) {
+                if (sortedCollectionId.indexOf("id:" + game.game_code) === -1) {
                     sortedCollection.push(game);
                 }
             }
