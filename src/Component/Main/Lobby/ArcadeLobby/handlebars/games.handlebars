@@ -11,13 +11,24 @@
         data-game-title="{{this.title}}"
         data-game-target="{{this.target}}"
         data-game-loader="{{this.use_game_loader}}"
+        data-game-lobby="false"
         >
-            {{#if this.ribbon}}
-                <span class="game-ribbon"
-                    style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
-                >
-                    {{this.ribbon.name}}
-                </span>
+            {{#if ../this.isAllGames}}
+                {{#if this.all_games_ribbon}}
+                    <div class="game-ribbon"
+                        style="background: {{this.all_games_ribbon.background}}; color: {{this.all_games_ribbon.color}};"
+                    >
+                        {{this.all_games_ribbon.name}}
+                    </div>
+                {{/if}}
+            {{else}}
+                {{#if this.ribbon}}
+                    <div class="game-ribbon"
+                        style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
+                    >
+                        {{this.ribbon.name}}
+                    </div>
+                {{/if}}
             {{/if}}
             <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
         </a>

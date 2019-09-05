@@ -38,6 +38,7 @@ export class LazyLoader {
             games: batch[this.startBatch],
             isLogin: this.authenticated,
             configs: this.configs,
+            isAllGames: activeTab === "all-games",
         });
 
         if (gameContainer) {
@@ -66,6 +67,7 @@ export class LazyLoader {
                     games: batch[this.currentBatch],
                     isLogin: this.authenticated,
                     configs: this.configs,
+                    isAllGames: this.activeTab === "all-games",
                 });
                 this.showItems(template, gameLoader, gameContainer);
             }
