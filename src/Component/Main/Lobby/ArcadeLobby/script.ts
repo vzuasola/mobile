@@ -52,6 +52,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.listenToLaunchGameLoader();
         this.listenOnLogin();
         this.listenOnLogout();
+        this.listenOnResize();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -68,6 +69,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenToLaunchGameLoader();
             this.listenOnLogin();
             this.listenOnLogout();
+            this.listenOnResize();
         }
         this.response = undefined;
         this.element = element;
@@ -513,6 +515,12 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private listenOnLogout() {
         ComponentManager.subscribe("session.logout", (event, src, data) => {
             this.refreshResponse();
+        });
+    }
+
+    private listenOnResize() {
+        window.addEventListener("resize", () => {
+            this.gameCategories.setActiveCategory(this.gameCategories.getActiveCategory());
         });
     }
 
