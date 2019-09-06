@@ -260,8 +260,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private populateGames(activeCategory) {
         /* tslint:disable:no-string-literal */
-        const enableLazyLoad = (this.attachments.configs.hasOwnProperty("lobby_infinite_scroll")) ?
-        this.attachments.configs["lobby_infinite_scroll"] : false;
+        const enableLazyLoad = (this.attachments.configs.hasOwnProperty("arcade_lobby_infinite_scroll")) ?
+        this.attachments.configs["arcade_lobby_infinite_scroll"] : false;
         /* tslint:disable:no-string-literal */
         this.lazyLoader.init(
             this.groupedGames[activeCategory],
