@@ -1,6 +1,6 @@
-.mobile-live-dealer,
-.mobile-arcade {
+.mobile-live-dealer {
     @media (orientation: landscape) {
+
         .provider-10,
         .provider-9,
         .provider-8 {
@@ -14,7 +14,17 @@
             }
         }
 
-        .provider-7,
+        .provider-7 {
+            .game-providers-item {
+                width: 10.1111%;
+            }
+
+            .game-providers-item:last-child {
+                width: 19.1111%;
+                position: relative;
+            }
+        }
+
         .provider-6 {
             .game-providers-item {
                 width: 11.5%;
@@ -83,9 +93,11 @@
     }
 
     @media (orientation: portrait) {
+
         .provider-10,
         .provider-9,
-        .provider-8 {
+        .provider-8,
+        .provider-7 {
             .game-providers-item {
                 width: 13.2857%;
             }
@@ -101,7 +113,7 @@
             }
         }
 
-        .provider-7 {
+        .provider-6 {
             .game-providers-item {
                 width: 13.2857%;
             }
@@ -113,17 +125,6 @@
 
             .game-providers-item:nth-last-child(2) {
                 display: none;
-            }
-        }
-
-        .provider-6 {
-            .game-providers-item {
-                width: 13.2857%;
-            }
-
-            .game-providers-item:last-child {
-                width: 20.2857%;
-                position: relative;
             }
         }
 
@@ -187,6 +188,7 @@
     @media (orientation: landscape) {
         #game-container {
             .game-lobby-container {
+
                 &.featured,
                 &.providers {
                     .game-listing {
@@ -194,9 +196,9 @@
                         padding: 0 0.2% 1% 0.2%;
 
                         &-maintenance {
-                                &-title {
-                                    bottom: 1.2rem;
-                                }
+                            &-title {
+                                bottom: 1.2rem;
+                            }
                         }
 
                         &-maintenance:after {
