@@ -7,7 +7,7 @@
     {{/condition}}
         {{#each categories}}
                 {{#condition @index "<=" 7}}
-                <li class="game-providers-item game-providers-tab">
+                <li class="game-providers-item game-providers-tab main-tab">
                     <a
                         href="#{{this.field_games_alias}}"
                         class="category-tab category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
