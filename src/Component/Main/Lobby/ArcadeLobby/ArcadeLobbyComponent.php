@@ -69,8 +69,8 @@ class ArcadeLobbyComponent implements ComponentWidgetInterface
             'authenticated' => $this->playerSession->isLogin(),
             'search_tab' => $arCadeconfigs['search_tab_title'] ?? 'Search',
             'provider_tab' => $arCadeconfigs['provider_tab_title'] ?? 'Providers',
-            'transfer_title' => $arCadeconfigs['games_transfer_title'] ?? '',
-            'transfer_url' => $arCadeconfigs['games_transfer_link'] ?? '',
+            'transfer_title' => $arCadeconfigs['transfer_title'] ?? '',
+            'transfer_url' => $arCadeconfigs['transfer_link'] ?? '',
         ];
     }
 }
