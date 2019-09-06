@@ -87,7 +87,23 @@ export class GamesCategory {
             utility.addClass(categoryEl, "active");
             utility.addClass(utility.findParent(categoryEl, "li"), "active");
         }
-
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const shownCategories: any = document.querySelectorAll(".game-providers-tab.main-tab a");
+        let isActiveMore = true;
+        let ctr: number = 0;
+        for (const category of shownCategories) {
+            if (category.getAttribute("data-category-filter-id") === activeCategory
+                && ((isPortrait && ctr < 6) || (!isPortrait && ctr < 8))) {
+                isActiveMore = false;
+                break;
+            }
+            ctr++;
+        }
+        if (isActiveMore) {
+            utility.addClass(document.querySelector(".game-providers-more"), "active");
+        } else {
+            utility.removeClass(document.querySelector(".game-providers-more"), "active");
+        }
     }
 
     /**
