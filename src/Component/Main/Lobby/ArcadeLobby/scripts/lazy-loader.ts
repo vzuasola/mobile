@@ -6,11 +6,6 @@ export class LazyLoader {
     private configs: any[];
     private batchLength: number = 0;
     private loaded: boolean = true;
-    private config = {
-        itemsLandscape: 8,
-        itemsPortrait: 12,
-        itemsFeatured: 4,
-    };
     private startBatch: number = 0;
     private data: any[];
     private lazyLoad: boolean;
@@ -89,13 +84,8 @@ export class LazyLoader {
             return batch;
         }
 
-        let numberOfItems = this.config.itemsLandscape;
-        if (window.innerHeight > window.innerWidth) {
-            numberOfItems = this.config.itemsPortrait;
-        }
-
         while (temp.length > 0) {
-            batch.push(temp.splice(0, numberOfItems));
+            batch.push(temp.splice(0, 12));
         }
 
         this.batchLength = batch.length;
