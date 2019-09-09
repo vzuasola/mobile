@@ -6,18 +6,20 @@
     <ul class="main-game-providers game-providers provider-{{categories.length}}">
     {{/condition}}
         {{#each categories}}
-            <li class="game-providers-item game-providers-tab main-tab">
-                <a
-                    href="#{{this.field_games_alias}}"
-                    class="category-tab category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
-                    data-category-filter-id="{{this.field_games_alias}}"
-                    data-category-filter-name="{{{this.name}}}"
-                >
-                {{#if this.field_games_logo }}
-                    <img src="{{this.field_games_logo}}" alt="{{{this.name}}}">
-                {{/if}}
-                </a>
-            </li>
+            {{#condition @index "<=" 9}}
+                <li class="game-providers-item game-providers-tab main-tab">
+                    <a
+                        href="#{{this.field_games_alias}}"
+                        class="category-tab category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
+                        data-category-filter-id="{{this.field_games_alias}}"
+                        data-category-filter-name="{{{this.name}}}"
+                    >
+                    {{#if this.field_games_logo }}
+                        <img src="{{this.field_games_logo}}" alt="{{{this.name}}}">
+                    {{/if}}
+                    </a>
+                </li>
+            {{/condition}}
         {{/each}}
         <li class="game-providers-item game-providers-more">
             <span class="provider-drawer providers-more"></span>
