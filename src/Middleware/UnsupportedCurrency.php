@@ -40,8 +40,7 @@ class UnsupportedCurrency implements ResponseMiddlewareInterface
         try {
             if (in_array($this->product, self::PRODUCTS)) {
                 $this->ucp = $this->configFetcher->getGeneralConfigById('page_not_found');
-                if (!$request->isXhr() && // Make sure request is NOT ajax
-                    $response->getStatusCode() === 200 && // Override only if the supposed response is 200
+                if ($response->getStatusCode() === 200 && // Override only if the supposed response is 200
                     $this->playerSession->isLogin() &&
                     $this->ucp['currency_mapping']
                 ) {
