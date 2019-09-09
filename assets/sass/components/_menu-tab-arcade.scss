@@ -2,7 +2,8 @@
     @media (orientation: landscape) {
 
         .provider-10,
-        .provider-9 {
+        .provider-9,
+        .provider-8 {
             .game-providers-item {
                 width: 10%;
             }
@@ -13,7 +14,19 @@
             }
         }
 
-        .provider-8,
+        .provider-10 {
+            .game-providers-item:nth-last-child(3),
+            .game-providers-item:nth-last-child(2) {
+                display: none;
+            }
+        }
+
+        .provider-9 {
+            .game-providers-item:nth-last-child(2) {
+                display: none;
+            }
+        }
+
         .provider-7 {
             .game-providers-item {
                 width: 11.5%;
@@ -79,12 +92,24 @@
                 position: relative;
             }
         }
+
+        .provider-2 {
+            .game-providers-item {
+                width: 50%;
+            }
+
+            .game-providers-item:last-child {
+                width: 50%;
+                position: relative;
+            }
+        }
     }
 
     @media (orientation: portrait) {
 
         .provider-10,
-        .provider-9 {
+        .provider-9,
+        .provider-8 {
             .game-providers-item {
                 width: 13.2857%;
             }
@@ -100,7 +125,19 @@
             }
         }
 
-        .provider-8,
+        .provider-10 {
+            .game-providers-item:nth-last-child(5),
+            .game-providers-item:nth-last-child(4) {
+                display: none;
+            }
+        }
+
+        .provider-9 {
+            .game-providers-item:nth-last-child(4) {
+                display: none;
+            }
+        }
+
         .provider-7 {
             .game-providers-item {
                 width: 13.2857%;
@@ -129,17 +166,6 @@
 
         .provider-5 {
             .game-providers-item {
-                width: 13.2857%;
-            }
-
-            .game-providers-item:last-child {
-                width: 20.2857%;
-                position: relative;
-            }
-        }
-
-        .provider-4 {
-            .game-providers-item {
                 width: 15.6667%;
             }
 
@@ -149,7 +175,7 @@
             }
         }
 
-        .provider-3 {
+        .provider-4 {
             .game-providers-item {
                 width: 19%;
             }
@@ -160,7 +186,7 @@
             }
         }
 
-        .provider-2 {
+        .provider-3 {
             .game-providers-item {
                 width: 24%;
             }
@@ -171,13 +197,24 @@
             }
         }
 
-        .provider-1 {
+        .provider-2 {
             .game-providers-item {
                 width: 32.333333333%;
             }
 
             .game-providers-item:last-child {
                 width: 35.333333%;
+                position: relative;
+            }
+        }
+
+        .provider-1 {
+            .game-providers-item {
+                width: 50%;
+            }
+
+            .game-providers-item:last-child {
+                width: 50%;
                 position: relative;
             }
         }
