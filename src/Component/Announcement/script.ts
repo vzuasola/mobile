@@ -95,6 +95,7 @@ export class AnnouncementComponent implements ComponentInterface {
      */
     private bindDismissButton(element) {
         utility.delegate(element, ".btn-dismiss", "click", (event, src) => {
+            event.preventDefault();
             this.showAnnouncementBar = false;
             this.readAnnounceBarItem();
             utility.addClass(this.element.querySelector(".mount-announcement"), "hidden");
