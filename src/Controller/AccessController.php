@@ -13,12 +13,11 @@ class AccessController extends BaseController
      */
     public function unsupportedCurrency($request, $response)
     {
-        $product = $this->get('product_resolver')->getProduct();
-        $content = $this->get('config_fetcher')->withProduct($product)->getGeneralConfigById('page_not_found');
-        $data = [
-            'ucp_content' => $content['ucp_content']['value']
-        ];
-
-        return $this->view->render($response, '@site/unsupported-currency-page.html.twig', $data);
+        $data['title'] = 'Unsupported asdasd';
+        return $this->widgets->render($response, '@site/page.html.twig', $data, [
+            'components_override' => [
+                'main' => 'ucp',
+            ],
+        ]);
     }
 }
