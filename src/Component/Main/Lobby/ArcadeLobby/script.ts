@@ -5,9 +5,11 @@ import {LazyLoader} from "./scripts/lazy-loader";
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
+
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import { GamesCategory } from "./scripts/games-category";
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
+import {GamesSearch} from "./scripts/games-search";
 import PopupWindow from "@app/assets/script/components/popup";
 /**
  *
@@ -21,11 +23,13 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private lazyLoader: LazyLoader;
     private gameCategories: GamesCategory;
     private gamesCollectionSort: GamesCollectionSorting;
+    private gamesSearch: GamesSearch;
     private productMenu: string = "product-arcade";
 
     constructor() {
         this.lazyLoader = new LazyLoader();
         this.gamesCollectionSort = new GamesCollectionSorting();
+        this.gamesSearch = new GamesSearch();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -53,6 +57,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.listenOnLogin();
         this.listenOnLogout();
         this.listenOnResize();
+        this.listenOnSearch();
+        this.gamesSearch.handleOnLoad(this.element, this.attachments);
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -70,6 +76,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenOnLogin();
             this.listenOnLogout();
             this.listenOnResize();
+            this.listenOnSearch();
         }
         this.response = undefined;
         this.element = element;
@@ -82,6 +89,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.highlightMenu();
             this.setLobby();
         });
+
+        this.gamesSearch.handleOnReLoad(this.element, this.attachments);
     }
 
     /**
@@ -106,7 +115,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.gameCategories.setCategories(this.response.categories, this.groupedGames);
         this.gameCategories.render();
         // populate games
-        this.populateGames(this.gameCategories.getActiveCategory());
+        const activeCategory = this.gameCategories.getActiveCategory();
+        this.populateGames(activeCategory);
+        this.gamesSearch.setGamesList(this.groupedGames, this.response, activeCategory);
     }
 
     /**
@@ -258,13 +269,14 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     /**
      * Populate game thumbnails
      */
-    private populateGames(activeCategory) {
+    private populateGames(activeCategory, games?) {
         /* tslint:disable:no-string-literal */
         const enableLazyLoad = (this.attachments.configs.hasOwnProperty("arcade_lobby_infinite_scroll")) ?
         this.attachments.configs["arcade_lobby_infinite_scroll"] : false;
+        const gamesList: any[] = (games) ? games : this.groupedGames[activeCategory];
         /* tslint:disable:no-string-literal */
         this.lazyLoader.init(
-            this.groupedGames[activeCategory],
+            gamesList,
             this.attachments.authenticated,
             this.attachments.configs,
             this.element.querySelector("#game-container"),
@@ -395,48 +407,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         });
     }
 
-    private setRecentlyPlayedGame(gameCode) {
-        xhr({
-            url: Router.generateRoute("arcade_lobby", "recent"),
-            type: "json",
-            method: "post",
-            data: {
-                gameCode,
-            },
-        }).then((result) => {
-            if (result.success) {
-                this.getRecentlyPlayedGame();
-            }
-        }).fail((error, message) => {
-            console.log(error);
-        });
-    }
-
-    private getRecentlyPlayedGame() {
-        xhr({
-            url: Router.generateRoute("arcade_lobby", "getRecentlyPlayed"),
-            type: "json",
-        }).then((result) => {
-            if (result) {
-                const activeCategory = this.gameCategories.getActiveCategory();
-                const recentlyPlayedGames = this.getGamesDefinition(result, this.response.games["all-games"]);
-                this.response.games["recently-played"] = recentlyPlayedGames;
-                this.groupedGames["recently-played"] = recentlyPlayedGames;
-                // re-render categories, if recently played is not yet active
-                if (this.gameCategories.getFilteredCategoriesAlias().indexOf("recently-played") === -1) {
-                    this.gameCategories.setCategories(this.response.categories, this.groupedGames);
-                    this.gameCategories.render();
-                }
-                // re-render games if active category is recently played
-                if (activeCategory === "recently-played") {
-                    this.populateGames(activeCategory);
-                }
-            }
-        }).fail((error, message) => {
-            console.log(error);
-        });
-    }
-
     /**
      * Event listener for game item click
      */
@@ -518,9 +488,21 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         });
     }
 
+     /**
+     * Event listener on screen resize
+     */
     private listenOnResize() {
         window.addEventListener("resize", () => {
             this.gameCategories.setActiveCategory(this.gameCategories.getActiveCategory());
+        });
+    }
+
+    /**
+     * Listen for a successful search and show search results
+     */
+    private listenOnSearch() {
+        ComponentManager.subscribe("games.search.success", (event, src, data) => {
+           this.populateGames(data.activeCategory, data.games);
         });
     }
 
@@ -531,6 +513,60 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.response = undefined;
         this.generateLobby(() => {
             this.setLobby();
+        });
+    }
+
+    /**
+     * Recently Played handlers
+     */
+
+     /**
+      * Set recently played game after game launch
+      * @param gameCode
+      */
+    private setRecentlyPlayedGame(gameCode) {
+        xhr({
+            url: Router.generateRoute("arcade_lobby", "recent"),
+            type: "json",
+            method: "post",
+            data: {
+                gameCode,
+            },
+        }).then((result) => {
+            if (result.success) {
+                this.getRecentlyPlayedGame();
+            }
+        }).fail((error, message) => {
+            console.log(error);
+        });
+    }
+
+     /**
+      * Refresh game categories and game tiles to add 
+      * recently played games
+      */
+    private getRecentlyPlayedGame() {
+        xhr({
+            url: Router.generateRoute("arcade_lobby", "getRecentlyPlayed"),
+            type: "json",
+        }).then((result) => {
+            if (result) {
+                const activeCategory = this.gameCategories.getActiveCategory();
+                const recentlyPlayedGames = this.getGamesDefinition(result, this.response.games["all-games"]);
+                this.response.games["recently-played"] = recentlyPlayedGames;
+                this.groupedGames["recently-played"] = recentlyPlayedGames;
+                // re-render categories, if recently played is not yet active
+                if (this.gameCategories.getFilteredCategoriesAlias().indexOf("recently-played") === -1) {
+                    this.gameCategories.setCategories(this.response.categories, this.groupedGames);
+                    this.gameCategories.render();
+                }
+                // re-render games if active category is recently played
+                if (activeCategory === "recently-played") {
+                    this.populateGames(activeCategory);
+                }
+            }
+        }).fail((error, message) => {
+            console.log(error);
         });
     }
 
