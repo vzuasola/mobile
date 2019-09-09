@@ -367,6 +367,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         utility.listen(window, "hashchange", (event, src: any) => {
             if (ComponentManager.getAttribute("product") === "mobile-arcade") {
                 this.setLobby();
+                if (utility.getHash(window.location.href) !== this.gameCategories.getActiveCategory()) {
+                    window.location.hash = this.gameCategories.getActiveCategory();
+                }
             }
         });
     }
