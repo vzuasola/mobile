@@ -100,7 +100,8 @@
             }
         }
 
-        .provider-8 {
+        .provider-8,
+        .provider-7 {
             .game-providers-item {
                 width: 13.2857%;
             }
@@ -112,17 +113,6 @@
 
             .game-providers-item:nth-last-child(2) {
                 display: none;
-            }
-        }
-
-        .provider-7 {
-            .game-providers-item {
-                width: 13.2857%;
-            }
-
-            .game-providers-item:last-child {
-                width: 20.2857%;
-                position: relative;
             }
         }
 
@@ -139,6 +129,17 @@
 
         .provider-5 {
             .game-providers-item {
+                width: 13.2857%;
+            }
+
+            .game-providers-item:last-child {
+                width: 20.2857%;
+                position: relative;
+            }
+        }
+
+        .provider-4 {
+            .game-providers-item {
                 width: 15.6667%;
             }
 
@@ -148,7 +149,7 @@
             }
         }
 
-        .provider-4 {
+        .provider-3 {
             .game-providers-item {
                 width: 19%;
             }
@@ -159,7 +160,7 @@
             }
         }
 
-        .provider-3 {
+        .provider-2 {
             .game-providers-item {
                 width: 24%;
             }
@@ -170,7 +171,7 @@
             }
         }
 
-        .provider-2 {
+        .provider-1 {
             .game-providers-item {
                 width: 32.333333333%;
             }
