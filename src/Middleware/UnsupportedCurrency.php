@@ -51,7 +51,6 @@ class UnsupportedCurrency implements ResponseMiddlewareInterface
                         $stream = fopen('php://memory', 'r+');
                         fwrite($stream, '');
                         $response = $response->withBody(new Body($stream));
-
                         // Call event
                         $event = $this->handler->getEvent('unsupported_currency');
                         $response = $event($request, $response);
