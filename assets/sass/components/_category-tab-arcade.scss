@@ -154,9 +154,8 @@
     }
 }
 
-@media only screen 
-  and (max-device-width: 320px) {
-      .mobile-arcade {
+@media only screen and (max-device-width: 414px) {
+    .mobile-arcade {
         .arcade-drawer.game-providers {
             &-list.arcade-drawer {
                 width: 50%;
@@ -166,11 +165,7 @@
                 border-top: 0;
             }
         }
-      }
-}
 
-@media only screen and (max-device-width: 360px) {
-    .mobile-arcade {
         .spt-list {
             .spt-item {
                 &-links {
