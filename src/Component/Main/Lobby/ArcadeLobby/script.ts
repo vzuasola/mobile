@@ -5,7 +5,6 @@ import {LazyLoader} from "./scripts/lazy-loader";
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
-
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import { GamesCategory } from "./scripts/games-category";
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
@@ -488,7 +487,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         });
     }
 
-     /**
+    /**
      * Event listener on screen resize
      */
     private listenOnResize() {
@@ -520,10 +519,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      * Recently Played handlers
      */
 
-     /**
-      * Set recently played game after game launch
-      * @param gameCode
-      */
+    /**
+     * Set recently played game after game launch
+     * @param gameCode
+     */
     private setRecentlyPlayedGame(gameCode) {
         xhr({
             url: Router.generateRoute("arcade_lobby", "recent"),
@@ -541,10 +540,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         });
     }
 
-     /**
-      * Refresh game categories and game tiles to add 
-      * recently played games
-      */
+    /**
+     * Refresh game categories and game tiles to add
+     * recently played games
+     */
     private getRecentlyPlayedGame() {
         xhr({
             url: Router.generateRoute("arcade_lobby", "getRecentlyPlayed"),

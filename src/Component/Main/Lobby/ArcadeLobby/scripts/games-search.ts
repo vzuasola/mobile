@@ -160,7 +160,6 @@ export class GamesSearch {
         }
     }
 
-
     /**
      * Function that updates search blurb
      * @param {[int]} count   [number of results found]
