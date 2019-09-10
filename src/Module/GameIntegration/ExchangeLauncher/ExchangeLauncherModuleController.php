@@ -56,7 +56,9 @@ class ExchangeLauncherModuleController
         $data['currency'] = false;
 
         if ($this->checkCurrency()) {
+            $requestData = $request->getParsedBody();
             $data = $this->getGameLobby();
+            $data['gameCode'] = $requestData['gameCode'] ?? '';
         }
 
         return $this->rest->output($response, $data);
