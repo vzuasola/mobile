@@ -168,3 +168,15 @@
         }
       }
 }
+
+@media only screen and (max-device-width: 360px) {
+    .mobile-arcade {
+        .spt-list {
+            .spt-item {
+                &-links {
+                    font-size: 1.3rem;
+                }
+            }
+        }
+    }
+}
