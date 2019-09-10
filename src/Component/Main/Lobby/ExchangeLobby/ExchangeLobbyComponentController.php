@@ -124,8 +124,18 @@ class ExchangeLobbyComponentController
                 'alt' => $tile["field_lobby_thumbnail_$size"][0]['alt'],
                 'url' => $imgUrl
             ];
-
-            $definition['size'] = $size;
+            $definition['size'] = $size == 'small' ? 'col-4' : 'col-8';
+            // Landscape Mode
+            $definition['img_landscape'] = $imgUrl;
+            $landscapesize = $tile['field_lobby_landscape_size'][0]['value'];
+            if ($size != $landscapesize) {
+                $overrideSize = ($landscapesize == 'small') ? 'col-4 small-override' : 'col-8 large-override';
+                $definition['img_landscape'] = $this->asset->generateAssetUri(
+                    $tile["field_lobby_thumbnail_$landscapesize"][0]['url'],
+                    ['product' => self::PRODUCT]
+                );
+            }
+            $definition['overridesize'] = isset($overrideSize) ? $overrideSize : '';
             $definition['title'] = $tile['title'][0]['value'] ?? '';
             $definition['game_provider'] = $tile['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
             $definition['target'] = $tile['field_target'][0]['value'] ?? '';
