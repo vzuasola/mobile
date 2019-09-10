@@ -40,6 +40,7 @@ import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccoun
 import {FooterComponent} from "@app/src/Component/Footer/script";
 import {CookieNotifComponent} from "@app/src/Component/CookieNotif/script";
 import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
+import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -82,4 +83,5 @@ ComponentManager.setComponents({
     footer: new FooterComponent(),
     cookie_notification: new CookieNotifComponent(),
     game_loader: new GameLoaderComponent(),
+    ucp: new UnsupportedCurrencyComponent(),
 });

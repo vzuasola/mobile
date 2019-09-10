@@ -44,18 +44,7 @@ export class ExchangeLobbyComponent implements ComponentInterface {
         this.configs = attachments.configs;
         this.games = undefined;
         this.events = {};
-        this.exchangeXhrRequest("maintenance", (maintenanceResponse) => {
-            this.maintenance = maintenanceResponse.maintenance;
-            ComponentManager.broadcast("game.maintenance", {
-                games: maintenanceResponse.game_providers,
-            });
-            this.exchangeXhrRequest("lobby", (response) => {
-                this.games = response;
-                this.pushMaintenance();
-                this.highlightMenu();
-                this.setLobby();
-            });
-        });
+        this.initLobby();
         this.listenClickGameTile();
         this.listenToLaunchGameLoader();
         this.highlightQuickNavMenu();
@@ -79,6 +68,12 @@ export class ExchangeLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.configs = attachments.configs;
         this.games = undefined;
+        this.initLobby();
+        this.listenToLaunchGameLoader();
+        this.highlightQuickNavMenu();
+    }
+
+    private initLobby() {
         this.exchangeXhrRequest("maintenance", (maintenanceResponse) => {
             this.maintenance = maintenanceResponse.maintenance;
             ComponentManager.broadcast("game.maintenance", {
@@ -91,8 +86,6 @@ export class ExchangeLobbyComponent implements ComponentInterface {
                 this.setLobby();
             });
         });
-        this.listenToLaunchGameLoader();
-        this.highlightQuickNavMenu();
     }
 
     private exchangeXhrRequest(method: string, callback) {

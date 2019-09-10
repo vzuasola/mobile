@@ -51,7 +51,8 @@
             border-radius: 0.1rem;
         }
 
-        .tag-generic {
+        .tag-generic,
+        .tag-anniversary {
             svg {
                 background: $red;
                 fill: $yellow;
