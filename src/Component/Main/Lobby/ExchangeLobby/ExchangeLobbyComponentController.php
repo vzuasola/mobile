@@ -124,20 +124,8 @@ class ExchangeLobbyComponentController
                 'alt' => $tile["field_lobby_thumbnail_$size"][0]['alt'],
                 'url' => $imgUrl
             ];
-            // @todo size value will depend on drupal
-            $definition['size'] = $size;
-            // In prep for MEXC2-24 Game Lobby - Landscape Mode
-            /*$definition['img_landscape'] = $imgUrl;
-            $landscapesize = $tile['field_game_landscape_size'][0]['value'];
 
-            if ($size != $landscapesize) {
-                $overrideSize = ($landscapesize == 'small') ? 'small-override' : 'large-override';
-                $definition['img_landscape'] = $this->asset->generateAssetUri(
-                    $tile["field_game_thumbnail_$landscapesize"][0]['url'],
-                    ['product' => self::PRODUCT]
-                );
-            }
-            $definition['overridesize'] = isset($overrideSize) ? $overrideSize : '';*/
+            $definition['size'] = $size;
             $definition['title'] = $tile['title'][0]['value'] ?? '';
             $definition['game_provider'] = $tile['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
             $definition['target'] = $tile['field_target'][0]['value'] ?? '';
