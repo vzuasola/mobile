@@ -1,13 +1,15 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Lobby\LotteryLobby;
+namespace App\MobileEntry\Component\Main\Lobby\ExchangeLobby;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
+use App\MobileEntry\Services\Product\Products;
 
-class LotteryLobbyComponentController
+class ExchangeLobbyComponentController
 {
-    const PRODUCT = 'mobile-lottery';
+    const PRODUCT = 'mobile-exchange';
     const TIMEOUT = 1800;
+    private $productCategory;
     /**
      *
      */
@@ -20,7 +22,8 @@ class LotteryLobbyComponentController
             $container->get('config_fetcher'),
             $container->get('asset'),
             $container->get('redis_cache_adapter'),
-            $container->get('lang')
+            $container->get('lang'),
+            $container->get('uri')
         );
     }
 
@@ -34,26 +37,35 @@ class LotteryLobbyComponentController
         $configs,
         $asset,
         $cacher,
-        $currentLanguage
+        $currentLanguage,
+        $url
     ) {
         $this->playerSession = $playerSession;
-        $this->views = $views->withProduct(self::PRODUCT);
+        $this->views = $views->withProduct(self::PRODUCT)->setLanguage('in');
         $this->rest = $rest;
         $this->configs = $configs;
         $this->asset = $asset;
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
+        $this->url = $url;
     }
 
     /**
-     * Retrieves list of games
+     * Retrieves lobby tiles
      */
     public function lobby($request, $response)
     {
-        $item = $this->cacher->getItem('views.lottery-lobby-data.' . $this->currentLanguage);
+        $item = $this->cacher->getItem('views.exchange-lobby-data.' . $this->currentLanguage);
 
         if (!$item->isHit()) {
-            $data = $this->getGamesList();
+            $params = $request->getQueryParams();
+            $keyword = 'exchange';
+            if ($params['keyword'] && in_array($params['keyword'], Products::PRODUCT_ALIAS['exchange'])) {
+                $keywords = explode('/', $params['keyword']);
+                $this->productCategory = $keyword = $keywords[1] ?? '/';
+            }
+
+            $data = $this->getLobbyTiles($keyword);
 
             if (!empty($data)) {
                 $item->set([
@@ -71,69 +83,65 @@ class LotteryLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
-
     /**
-     * Retrieves list of games from drupal
+     * Retrieves lobby tiles from drupal
      */
-    private function getGamesList()
+    private function getLobbyTiles($keyword)
     {
         try {
-            $gamesList = [];
-            $games = $this->views->getViewById('games_list');
-            foreach ($games as $game) {
-                $gamesList[] = $this->getGameDefinition($game);
+            $lobbyTiles = [];
+            $tiles = $this->views->getViewById('lobby_tiles');
+
+            foreach ($tiles as $tile) {
+                $lobbyTiles[] = $this->getTileDefinition($tile, $keyword);
             }
         } catch (\Exception $e) {
-            $gamesList = [];
+            $lobbyTiles = [];
         }
-        return $gamesList;
+        return $lobbyTiles;
     }
 
     /**
-     * Process games list array
+     * Process lobby tiles array
      */
-    private function getGameDefinition($game)
+    private function getTileDefinition($tile, $keyword)
     {
         try {
             $definition = [];
-            if (isset($game['field_game_ribbon'][0])) {
-                $ribbon = $game['field_game_ribbon'][0];
+            if (isset($tile['field_lobby_tile_ribbon'][0])) {
+                $ribbon = $tile['field_lobby_tile_ribbon'][0];
                 $definition['ribbon']['name'] = $ribbon['field_ribbon_label'][0]['value'];
                 $definition['ribbon']['background'] = $ribbon['field_ribbon_background_color'][0]['color'];
                 $definition['ribbon']['color'] = $ribbon['field_ribbon_text_color'][0]['color'];
             }
-            $size = $game['field_game_thumbnail_size'][0]['value'];
-            $definition['size'] = $size == 'small' ? 'col-4' : 'col-8';
+            $size = $tile['field_lobby_thumbnail_size'][0]['value'];
+            $definition['size'] = $size == 'small' ? 'small-image' : 'large-image';
             $imgUrl = $this->asset->generateAssetUri(
-                $game["field_game_thumbnail_$size"][0]['url'],
+                $tile["field_lobby_thumbnail_$size"][0]['url'],
                 ['product' => self::PRODUCT]
             );
             $definition['image'] = [
-                'alt' => $game["field_game_thumbnail_small"][0]['alt'],
+                'alt' => $tile["field_lobby_thumbnail_$size"][0]['alt'],
                 'url' => $imgUrl
             ];
-            $definition['img_landscape'] = $imgUrl;
-            $landscapesize = $game['field_game_landscape_size'][0]['value'];
 
-            if ($size != $landscapesize) {
-                $overrideSize = ($landscapesize == 'small') ? 'col-4 small-override' : 'col-8 large-override';
-                $definition['img_landscape'] = $this->asset->generateAssetUri(
-                    $game["field_game_thumbnail_$landscapesize"][0]['url'],
-                    ['product' => self::PRODUCT]
-                );
+            $definition['size'] = $size;
+            $definition['title'] = $tile['title'][0]['value'] ?? '';
+            $definition['game_provider'] = $tile['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
+            $definition['target'] = $tile['field_target'][0]['value'] ?? '';
+            $definition['use_game_loader'] = isset($tile['field_use_game_loader'][0]['value'])
+                ? $tile['field_use_game_loader'][0]['value'] : "false";
+            $definition['tile_url'] = $tileUrl = $tile['field_lobby_tile_url'][0]['value'] ?? '';
+            if ($tileUrl != '') {
+                $tileUrl = '/' . $keyword . '/' .$tileUrl;
+                $definition['tile_url'] = $this->url->generateUri($tileUrl, ['skip_parsers' => true]);
             }
-            $definition['overridesize'] = isset($overrideSize) ? $overrideSize : '';
-            $definition['title'] = $game['title'][0]['value'] ?? '';
-            $definition['game_provider'] = $game['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
-            $definition['target'] = $game['field_target'][0]['value'] ?? '';
-            $definition['use_game_loader'] = isset($game['field_use_game_loader'][0]['value'])
-                ? $game['field_use_game_loader'][0]['value'] : "false";
             $definition['game_maintenance_text'] = null;
             $definition['game_maintenance'] = false;
 
-            if ($this->checkIfMaintenance($game)) {
+            if ($this->checkIfMaintenance($tile)) {
                 $definition['game_maintenance'] = true;
-                $definition['game_maintenance_text'] = $game['field_maintenance_blurb'][0]['value'];
+                $definition['game_maintenance_text'] = $tile['field_maintenance_blurb'][0]['value'];
             }
 
             return $definition;
@@ -150,7 +158,7 @@ class LotteryLobbyComponentController
         try {
             $list = [];
             $providers = [];
-            $games = $this->views->getViewById('games_list');
+            $games = $this->views->getViewById('lobby_tiles');
             foreach ($games as $game) {
                 $maintenance = $this->getGameMaintenance($game);
                 $list["maintenance"][] = $maintenance["maintenance"];

@@ -77,3 +77,11 @@ $container['event_legacy_login_failed'] = function ($c) {
         return $response->withStatus(302)->withHeader('Location', $destination);
     };
 };
+
+$container['event_unsupported_currency'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        $controller = $c['resolver']['App\MobileEntry\Controller\AccessController'];
+
+        return $controller->unsupportedCurrency($request, $response);
+    };
+};

@@ -1,38 +1,45 @@
-<ul class="game-lottery-lobby-container clearfix">
+<ul class="game-exchange-lobby-container clearfix">
 {{#each games}}
-    <li class="game-tiles lottery-game-tile {{this.size}} {{this.overridesize}}">
-        <a class="game-listing-item "
+    <li class="game-tiles exchange-game-tile col-4">
+        <a class="game-listing-item
+        {{!-- Add exchange-launcher class if tile will not redirect to inner page --}}
+        {{#unless this.tile_url}}
+            exchange-launcher
+        {{/unless}}"
         {{#if ../isLogin}}
-        data-game-launch="true"
+            data-game-launch="true"
         {{/if}}
-        data-game-provider="{{this.game_provider}}"
-        data-game-title="{{this.title}}"
-        data-game-target="{{this.target}}"
-        data-game-loader="{{this.use_game_loader}}"
+        data-game-provider="{{ this.game_provider }}"
+        data-game-title="{{ this.title }}"
+        data-game-target="{{ this.target }}"
+        data-game-loader="{{ this.use_game_loader }}"
         data-game-lobby="true"
-        data-game-maintenance="{{this.game_maintenance}}"
+        {{#if this.tile_url}}
+            href="{{ this.tile_url }}"
+        {{/if}}
+        data-game-maintenance="{{ this.game_maintenance}}"
         >
             {{#if this.ribbon}}
                 <span class="game-ribbon lottery-ribbon"
-                    style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
+                    style="background: {{ this.ribbon.background}}; color: {{ this.ribbon.color }};"
                 >
-                    {{this.ribbon.name}}
+                    {{ this.ribbon.name }}
                 </span>
             {{/if}}
             <picture>
                 <source srcset="{{ this.img_landscape }}" media="(min-width: 40em) and (orientation: landscape)">
                 <img
-                    src="{{this.image.url}}"
+                    src="{{ this.image.url }}"
                     alt="{{ this.image.alt }}"
                     class="w-100"
                 >
             </picture>
         </a>
         {{#if this.game_maintenance}}
-            <div class="lottery-tile-maintenance">
-                <p>{{this.game_maintenance_text}}</p>
+            <div class="exchange-tile-maintenance">
+                <p>{{ this.game_maintenance_text }}</p>
             </div>
-        {{/if}}    
+        {{/if}}
     </li>
 {{/each}}
 </ul>
