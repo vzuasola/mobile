@@ -47,7 +47,6 @@ class UnsupportedCurrencyComponent implements ComponentWidgetInterface
     public function getData()
     {
         $content = $this->configs->getGeneralConfigById('page_not_found');
-
-        return ['ucp_content' => $content['ucp_content']['value']];
+        return ['ucp_content' => $content['ucp_content']['value'] ?? ''];
     }
 }
