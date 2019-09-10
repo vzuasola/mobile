@@ -153,7 +153,7 @@ components:
 
   game_loader:
     class: App\MobileEntry\Component\GameLoader\GameLoaderComponent
-  
+
   ucp:
     class: App\MobileEntry\Component\Main\UnsupportedCurrency\UnsupportedCurrencyComponent
 
