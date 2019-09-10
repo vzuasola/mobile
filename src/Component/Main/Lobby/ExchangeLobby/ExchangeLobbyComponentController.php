@@ -224,7 +224,7 @@ class ExchangeLobbyComponentController
             }
         }
 
-        return checkDateStartEnd($dateStart, $dateEnd, $currentDate);
+        return $this->checkDateStartEnd($dateStart, $dateEnd, $currentDate);
     }
 
     private function checkDateStartEnd($dateStart, $dateEnd, $currentDate)
