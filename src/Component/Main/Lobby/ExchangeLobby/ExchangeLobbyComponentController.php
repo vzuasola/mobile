@@ -224,6 +224,11 @@ class ExchangeLobbyComponentController
             }
         }
 
+        return $this->checkDateStartEnd($dateStart, $dateEnd, $currentDate);
+    }
+
+    private function checkDateStartEnd($dateStart, $dateEnd, $currentDate)
+    {
         if ($dateStart && !$dateEnd) {
             $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
             $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
