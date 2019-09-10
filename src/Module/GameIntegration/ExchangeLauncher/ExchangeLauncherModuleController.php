@@ -55,7 +55,7 @@ class ExchangeLauncherModuleController
     {
         $data['currency'] = false;
 
-        if ($this->checkCurrency($request)) {
+        if ($this->checkCurrency()) {
             $data = $this->getGameLobby();
         }
 
@@ -82,11 +82,11 @@ class ExchangeLauncherModuleController
         return $data;
     }
 
-    private function checkCurrency($request)
+    private function checkCurrency()
     {
         try {
-            $config =  $this->config->getGeneralConfigById('games_exchange_provider');
-            $currencies = explode("\r\n", $config['currency']);
+            $exchangeConfig =  $this->config->getGeneralConfigById('games_exchange_provider');
+            $currencies = explode("\r\n", $exchangeConfig['currency']);
             $playerCurrency = $this->player->getCurrency();
 
             if (in_array($playerCurrency, $currencies)) {
