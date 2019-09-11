@@ -1,5 +1,8 @@
 // Arcade drawer
 .mobile-arcade {
+    #game-container {
+        padding-top: 0;
+    }
     .providers-tab-list {
     background: $cat-tab-bg;
 
