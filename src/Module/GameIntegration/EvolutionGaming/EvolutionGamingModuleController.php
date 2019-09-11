@@ -76,7 +76,7 @@ class EvolutionGamingModuleController
                 'languageCode' => $requestData['langCode']
             ];
 
-            if (isset($requestData['gameCode'])) {
+            if (isset($requestData['gameCode']) && $requestData['gameCode'] !== 'undefined') {
                 $options['category'] = $requestData['gameCode'];
             }
 
