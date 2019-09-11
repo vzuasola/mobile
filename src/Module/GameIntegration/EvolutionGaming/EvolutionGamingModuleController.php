@@ -52,28 +52,36 @@ class EvolutionGamingModuleController
 
         if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
-            if ($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') {
-                $data = $this->getGameUrl($request, $response);
+            if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
+                $requestData['lobby'] === "false"
+            ) {
+                $data = $this->getGameUrl($request);
             }
 
-            if (!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') {
-                $data = $this->getGameLobby($request, $response);
+            if ($requestData['lobby'] === "true") {
+                $data = $this->getGameLobby($request);
             }
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function getGameLobby($request, $response)
+    private function getGameLobby($request)
     {
         $data['currency'] = true;
         $requestData = $request->getParsedBody();
 
         try {
+            $options = [
+                'languageCode' => $requestData['langCode']
+            ];
+
+            if (isset($requestData['gameCode']) && $requestData['gameCode'] !== 'undefined') {
+                $options['category'] = $requestData['gameCode'];
+            }
+
             $responseData = $this->evoGaming->getLobby('icore_evo', [
-                'options' => [
-                    'languageCode' => $requestData['langCode'],
-                ]
+                'options' => $options
             ]);
 
             if ($responseData) {
@@ -86,7 +94,7 @@ class EvolutionGamingModuleController
         return $data;
     }
 
-    private function getGameUrl($request, $response)
+    private function getGameUrl($request)
     {
         $data['currency'] = true;
         $requestData = $request->getParsedBody();

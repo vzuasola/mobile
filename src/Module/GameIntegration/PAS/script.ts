@@ -192,6 +192,11 @@ export class PASModule implements ModuleInterface, GameInterface {
                 if (DafaConnect.isDafaconnect()) {
                     key = "dafaconnect";
                 }
+
+                if (product === "mobile-games") {
+                    key = "dafabetgames";
+                }
+
                 iapiConf = this.iapiConfs[key];
 
                 // Get Login if not login, login, then launch
@@ -323,12 +328,16 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Check if iapiconfig will be used for loggin in
      */
     private checkIapiConfig(key) {
-        let ret = false;
+        let ret = false; // if false do keepalive
         if (key === "dafagold" && !this.isGold) {
             ret = true;
         }
 
         if (key === "dafa888" && DafaConnect.isDafaconnect()) {
+            ret = true;
+        }
+
+        if (key === "dafabetgames" && DafaConnect.isDafaconnect()) {
             ret = true;
         }
 
