@@ -49,24 +49,64 @@ class SkywindModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
+
         if ($this->checkCurrency($request)) {
-            $data['currency'] = true;
             $requestData = $request->getParsedBody();
-            try {
-                $responseData = $this->skywind->getGameUrlById('icore_sw', $requestData['gameCode'], [
-                    'options' => [
-                        'languageCode' => $requestData['langCode'],
-                        'playMode' => true
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
-                }
-            } catch (\Exception $e) {
-                $data = [];
+            if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
+                $requestData['lobby'] === "false"
+            ) {
+                $data = $this->getGameUrl($request);
+            }
+
+            if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
+                $requestData['lobby'] === "true"
+            ) {
+                $data = $this->getGameLobby($request);
             }
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    private function getGameLobby($request)
+    {
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
+
+        try {
+            $responseData = $this->skywind->getLobby('icore_sw', [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                ]
+            ]);
+            if ($responseData) {
+                $data['gameurl'] = $responseData;
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
+        return $data;
+    }
+
+    private function getGameUrl($request)
+    {
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
+        try {
+            $responseData = $this->skywind->getGameUrlById('icore_sw', $requestData['gameCode'], [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                    'playMode' => true
+                ]
+            ]);
+            if ($responseData['url']) {
+                $data['gameurl'] = $responseData['url'];
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
+        return $data;
     }
 }
