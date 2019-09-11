@@ -55,18 +55,18 @@ class EvolutionGamingModuleController
             if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
                 $requestData['lobby'] === "false"
             ) {
-                $data = $this->getGameUrl($request, $response);
+                $data = $this->getGameUrl($request);
             }
 
             if ($requestData['lobby'] === "true") {
-                $data = $this->getGameLobby($request, $response);
+                $data = $this->getGameLobby($request);
             }
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function getGameLobby($request, $response)
+    private function getGameLobby($request)
     {
         $data['currency'] = true;
         $requestData = $request->getParsedBody();
@@ -94,7 +94,7 @@ class EvolutionGamingModuleController
         return $data;
     }
 
-    private function getGameUrl($request, $response)
+    private function getGameUrl($request)
     {
         $data['currency'] = true;
         $requestData = $request->getParsedBody();

@@ -68,6 +68,7 @@ export class EvolutionGamingModule implements ModuleInterface, GameInterface {
                     gameCode: options.code,
                     langCode,
                     playMode: true,
+                    lobby: options.lobby,
                 },
             }).then((response) => {
                 if (response.gameurl) {
