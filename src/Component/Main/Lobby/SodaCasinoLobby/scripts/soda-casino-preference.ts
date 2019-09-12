@@ -4,7 +4,7 @@ import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/ass
 import {Loader} from "@app/assets/script/components/loader";
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
-export class CasinoPreference {
+export class SodaCasinoPreference {
     private loader;
     private isLogin: boolean;
     private fromGameLaunch: boolean = false;
