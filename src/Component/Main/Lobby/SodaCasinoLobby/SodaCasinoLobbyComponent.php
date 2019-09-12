@@ -47,7 +47,7 @@ class SodaCasinoLobbyComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Main/Lobby/CasinoLobby/template.html.twig';
+        return '@component/Main/Lobby/SodaCasinoLobby/template.html.twig';
     }
 
     /**
