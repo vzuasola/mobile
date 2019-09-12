@@ -1,0 +1,44 @@
+<div id="games-search-filter-lightbox" class="modal games-search-filter">
+    <div class="modal-content games-search-filter-content">
+        <div class="modal-inner-container">
+            <a href="#" class="games-search-filter-back page-title-back-button">
+                <svg data-name="closed" class="modal-close" viewBox="0 30 24 44.999">
+                    <use xlink:href="#arrow" />
+                </svg>
+            </a>
+            <h2>{{ filter_title }}</h2>
+            <a href="#" class="games-search-back games-filter-close">
+                {% include '@app/web/images/svg/closed.svg' %}
+            </a>
+            <div class="modal-body games-search-filter-body clearfix">
+                {% for parent in parent_filters %}
+                    <div class="games-search-filter-list clearfix">
+                    <p>{{ parent.name }}</p>
+                    <ul class="col-12">
+                        {% if filters %}
+                            {% for dataFilter in filters %}
+                                {% if dataFilter.parent == parent.value %}
+                                    <li>
+                                        <label for="{{ dataFilter.value }}">{{ dataFilter.name }}</label>
+                                        <input class="filter-checkbox" type="checkbox" id="{{ dataFilter.value }}" data-parent="{{ parent.value }}" value="{{ dataFilter.value }}">
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    </div>
+                {% endfor %}
+                <div class="filter-form-field">
+                    <input id="filterSubmit" class="filter-form-field-btn btn btn-small btn-yellow btn-lower-case" type="submit" name="filter-submit" value="{{ games_filter_submit }}" disabled="disabled">
+                </div>
+                <div class="filter-form-field">
+                    <input id="filterReset" class="filter-form-field-btn btn btn-small btn-gray btn-lower-case" type="reset" name="filter-reset" value="{{ games_filter_cancel }}" disabled="disabled">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<span class="hidden">
+    {% include '@app/web/images/svg/lobby/search-checked.svg' ignore missing %}
+</span>
+

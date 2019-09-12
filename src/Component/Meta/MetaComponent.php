@@ -94,7 +94,14 @@ class MetaComponent implements ComponentWidgetInterface
         '/jin',
         '/elite',
         '/vip',
-        '/exclusive'
+        '/exclusive',
+        // soda-casino
+        '/soda-casino',
+        '/suda',
+        '/soda',
+        '/sodabt',
+        '/sodfa',
+        '/sd'
     ];
 
     /**
