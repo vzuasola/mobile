@@ -266,7 +266,7 @@ class ArcadeLobbyComponentController
                     $category['field_games_logo']
                 );
                 $category['field_games_logo'] = $this->asset->generateAssetUri(
-                    $category['field_games_logo'],
+                    $categoryLogo,
                     ['product' => self::PRODUCT]
                 );
             }
