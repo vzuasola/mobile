@@ -101,7 +101,14 @@ class HeaderComponent implements ComponentWidgetInterface
         '/jin',
         '/elite',
         '/vip',
-        '/exclusive'
+        '/exclusive',
+        // mobile-soda-casino
+        '/soda-casino',
+        '/suda',
+        '/soda',
+        '/sodabt',
+        '/sodfa',
+        '/sd'
     ];
 
     /**

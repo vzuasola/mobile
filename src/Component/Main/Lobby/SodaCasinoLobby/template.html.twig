@@ -1,0 +1,11 @@
+<div class="game-container">
+    <div id="game-categories" class="category-tab">
+    </div>
+    <span class="search-blurb" id="blurb-lobby"></span>
+    <div id="game-container" class="game-tiles clear">
+        {% include '@component/Main/Lobby/SodaCasinoLobby/templates/loader.html.twig' %}
+    </div>
+</div>
+{{ include('@component/Main/Lobby/SodaCasinoLobby/templates/search.html.twig') }}
+{{ include('@app/src/Module/GameIntegration/templates/ucl.html.twig') }}
+{{ include('@component/Main/Lobby/SodaCasinoLobby/templates/search-filter.html.twig') }}

@@ -90,6 +90,10 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\LotteryLobby\LotteryLobbyComponent
     parent: lobby
 
+  soda_casino_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\SodaCasinoLobby\SodaCasinoLobbyComponent
+    parent: lobby
+
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
 
@@ -285,3 +289,6 @@ modules:
 
   exchange_integration:
     class: App\MobileEntry\Module\ProductIntegration\Exchange\ExchangeIntegrationModule
+
+  soda_casino_integration:
+    class: App\MobileEntry\Module\ProductIntegration\SodaCasino\SodaCasinoIntegrationModule

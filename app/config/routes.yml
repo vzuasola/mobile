@@ -170,6 +170,20 @@ routes:
         attributes:
             product: mobile-lottery
 
+    /{id:soda-casino|suda|soda|sodabt|sodfa|sd}:
+        method: GET
+        action: App\MobileEntry\Controller\SodaCasinoController:view
+        components:
+            main: lobby
+            lobby_content: soda_casino_lobby
+        headers:
+            Cache-Control: public, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-soda-casino
+
     /{id:live-dealer|macau|live|live-games|xianchang|zhenren}:
         method: GET
         action: App\MobileEntry\Controller\LiveDealerController:view
