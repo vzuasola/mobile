@@ -259,26 +259,20 @@ class ArcadeLobbyComponentController
     {
         $categoryList = [];
         foreach ($categories as $category) {
-            $isPublished = $this->checkIfPublished(
-                $category['field_publish_date'],
-                $category['field_unpublish_date']
-            );
-            if ($isPublished) {
-                $category['published'] = $isPublished;
-                if ($category['field_games_logo']) {
-                    $categoryLogo = str_replace(
-                        '/' . $this->currentLanguage . '/',
-                        '/',
-                        $category['field_games_logo']
-                    );
-                    $category['field_games_logo'] = $this->asset->generateAssetUri(
-                        $category['field_games_logo'],
-                        ['product' => self::PRODUCT]
-                    );
-                }
-                $categoryList[] = $category;
+            if ($category['field_games_logo']) {
+                $categoryLogo = str_replace(
+                    '/' . $this->currentLanguage . '/',
+                    '/',
+                    $category['field_games_logo']
+                );
+                $category['field_games_logo'] = $this->asset->generateAssetUri(
+                    $categoryLogo,
+                    ['product' => self::PRODUCT]
+                );
             }
+            $categoryList[] = $category;
         }
+
         return $categoryList;
     }
 
@@ -373,16 +367,7 @@ class ArcadeLobbyComponentController
             ];
 
             if (isset($game['field_game_filter']) && count($game['field_game_filter']) > 0) {
-                $filters = [];
-                foreach ($game['field_game_filter'] as $filter) {
-                    if (isset($filter['parent']) &&
-                        isset($filter['parent']['field_games_filter_value'])) {
-                        $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
-                            = $filter['field_games_filter_value'][0]['value'];
-                    }
-                }
-
-                $processGame['filters'] = json_encode($filters);
+                $processGame['filters'] = $this->getGameFilters($game['field_game_filter']);
             }
 
 
@@ -397,21 +382,51 @@ class ArcadeLobbyComponentController
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
                 && $game['field_disable_game_loader'][0]['value']) ? "false" : "true";
 
-            $categoryList = [];
-
-            foreach ($game['field_games_list_category'] as $category) {
-                if ($category['field_games_disable'][0]['value'] !== "1") {
-                    $categoryList[$category['field_games_alias'][0]['value']] =
-                    $category['field_games_alias'][0]['value'];
-                }
-            }
-
-            $processGame['categories'] = $categoryList;
+            $processGame['categories'] = $this->getGameCategories($game['field_games_list_category']);
 
             return $processGame;
         } catch (\Exception $e) {
             return [];
         }
+    }
+
+    /**
+     * Get games filters
+     */
+    private function getGameFilters($gameFilters)
+    {
+        $filters = [];
+        foreach ($gameFilters as $filter) {
+            if (isset($filter['parent']) &&
+                isset($filter['parent']['field_games_filter_value'])) {
+                $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
+                    = $filter['field_games_filter_value'][0]['value'];
+            }
+        }
+
+        return json_encode($filters);
+    }
+
+    /**
+     * Get games list of published and enabled categories
+     */
+    private function getGameCategories($gameCategories)
+    {
+        $categoryList = [];
+        foreach ($gameCategories as $category) {
+            $isPublished = $this->checkIfPublished(
+                $category['field_publish_date'][0]['value'] ?? '',
+                $category['field_unpublish_date'][0]['value'] ?? ''
+            );
+            if ($category['field_games_disable'][0]['value'] !== "1" &&
+                $isPublished
+            ) {
+                $categoryList[$category['field_games_alias'][0]['value']] =
+                $category['field_games_alias'][0]['value'];
+            }
+        }
+
+        return $categoryList;
     }
 
     /**
