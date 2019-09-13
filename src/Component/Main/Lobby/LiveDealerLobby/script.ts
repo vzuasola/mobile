@@ -25,6 +25,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private gameLink: string;
     private configs: any[];
     private providers: any;
+    private productMenu: string = "product-live-dealer";
     private lazyLoader: LazyLoader;
 
     constructor() {
@@ -50,6 +51,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 providers: this.providers,
             });
             this.generateLobby(() => {
+                this.highlightMenu();
                 this.setLobby();
             });
         });
@@ -88,6 +90,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 providers: this.providers,
             });
             this.generateLobby(() => {
+                this.highlightMenu();
                 this.setLobby();
             });
         });
@@ -272,9 +275,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         if (activeTab) {
             utility.addClass(activeTab, "active");
         }
-        if (activeTabClass) {
-            utility.addClass(contTab, activeTabClass);
-        }
     }
 
     /**
@@ -311,6 +311,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                     this.element.querySelector("#game-loader"),
                     this.element.querySelector("#game-container"),
                 );
+                this.setActiveTab();
             }
         });
     }
@@ -413,26 +414,10 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         });
     }
 
-    private updatePopupWindow(url) {
-        try {
-            if (this.windowObject.location.href !== "about:blank" &&
-                url === this.gameLink &&
-                !this.windowObject.closed
-            ) {
-                this.windowObject.focus();
-            } else {
-                this.gameLink = url;
-                this.windowObject.location.href = url;
-            }
-        } catch (e) {
-            if (url !== this.gameLink) {
-                this.gameLink = url;
-                this.windowObject.location.href = url;
-            }
-
-            if (this.windowObject) {
-                this.windowObject.focus();
-            }
-        }
+    /**
+     * Helper function to set live dealer left menu tile to active
+     */
+    private highlightMenu() {
+        ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
     }
 }
