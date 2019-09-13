@@ -76,7 +76,6 @@ ComponentManager.setModules({
     generic_integration: new GenericIntegrationModule(),
     owsports_integration: new OWSportsIntegrationModule(),
     als_integration: new ALSIntegrationModule(),
-    casino_integration: new CasinoIntegrationModule(),
     exchange_integration: new ExchangeIntegrationModule(),
     gold_deluxe_integration: new GoldDeluxeModule(),
     games_integration: new GamesIntegrationModule(),

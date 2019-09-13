@@ -18,7 +18,7 @@ import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/route
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "@app/assets/script/components/games-filter";
-import {CasinoPreference} from "./scripts/casino-preference";
+import {SodaCasinoPreference} from "./scripts/soda-casino-preference";
 import {Marker} from "@app/assets/script/components/marker";
 import PopupWindow from "@app/assets/script/components/popup";
 
@@ -33,7 +33,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private gameLauncher;
     private gamesSearch: GamesSearch;
     private gamesFilter: GamesFilter;
-    private casinoPreference: CasinoPreference;
+    private casinoPreference: SodaCasinoPreference;
     private currentPage: number;
     private pager: number;
     private load: boolean;
@@ -51,7 +51,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.gameLauncher = GameLauncher;
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
-        this.casinoPreference = new CasinoPreference();
+        this.casinoPreference = new SodaCasinoPreference();
     }
 
     onLoad(element: HTMLElement, attachments: {

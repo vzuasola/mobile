@@ -8,7 +8,7 @@ export class SodaCasinoPreference {
     private loader;
     private isLogin: boolean;
     private fromGameLaunch: boolean = false;
-    private productCheckPreference: any = ["mobile-casino", "mobile-casino-gold"];
+    private productCheckPreference: any = ["mobile-soda-casino", "mobile-casino-gold"];
     private casinoOptionMapping: any = {"mobile-casino-gold": "casino_gold", "mobile-casino": "casino"};
 
     constructor() {
