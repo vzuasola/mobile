@@ -161,7 +161,7 @@ class SodaCasinoLobbyComponentController
         $cacheKey = 'views.'. $product .'-lobby-data.';
         $item = $this->cacher->getItem($cacheKey . $this->currentLanguage);
 
-       // if (!$item->isHit()) {
+        if (!$item->isHit()) {
             $data = $this->generateLobbyData($product);
 
             $item->set([
@@ -171,11 +171,11 @@ class SodaCasinoLobbyComponentController
             $this->cacher->save($item, [
                 'expires' => self::TIMEOUT,
             ]);
-        // } else {
-        //     $body = $item->get();
+        } else {
+            $body = $item->get();
 
-        //     $data = $body['body'];
-        // }
+            $data = $body['body'];
+        }
 
         return $data;
     }
