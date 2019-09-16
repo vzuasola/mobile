@@ -18,7 +18,7 @@ import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/route
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "@app/assets/script/components/games-filter";
-import {CasinoPreference} from "./scripts/casino-preference";
+import {SodaCasinoPreference} from "./scripts/soda-casino-preference";
 import {Marker} from "@app/assets/script/components/marker";
 import PopupWindow from "@app/assets/script/components/popup";
 
@@ -33,7 +33,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private gameLauncher;
     private gamesSearch: GamesSearch;
     private gamesFilter: GamesFilter;
-    private casinoPreference: CasinoPreference;
+    private casinoPreference: SodaCasinoPreference;
     private currentPage: number;
     private pager: number;
     private load: boolean;
@@ -44,14 +44,15 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private lobbyProducts: any[] = ["mobile-soda-casino"];
     private windowObject: any;
     private gameLink: string;
-    private productMenu = "product-casino";
+    private productMenu = "product-soda-casino";
 
     constructor() {
         this.loader = new Loader(document.body, true);
         this.gameLauncher = GameLauncher;
-        this.gamesSearch = new GamesSearch();
-        this.gamesFilter = new GamesFilter();
-        this.casinoPreference = new CasinoPreference();
+        /* remove comment on game category and search implementation */
+        // this.gamesSearch = new GamesSearch();
+        // this.gamesFilter = new GamesFilter();
+        this.casinoPreference = new SodaCasinoPreference();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -75,27 +76,32 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.currentPage = 0;
         this.load = true;
         this.checkLoginState();
-        this.listenChangeCategory();
-        this.listenHashChange();
+        /* remove comment on game category and search implementation */
+        // this.listenChangeCategory();
+        // this.listenHashChange();
         this.listenClickGameTile();
         this.listenGameLaunch();
-        this.listenFavoriteClick();
+        /* remove comment on game category and search implementation */
+        // this.listenFavoriteClick();
         this.generateLobby(() => {
-            this.highlightMenu();
+            /* remove comment on game category and search implementation */
+            // this.highlightMenu();
             this.lobby();
         });
-        this.listenToCategory();
-        this.listenToScroll();
-        this.listenToSwipe();
-        this.initMarker();
-        this.listenOnSearch();
-        this.listenOnFilter();
+        /* remove comment on game category and search implementation */
+        // this.listenToCategory();
+        // this.listenToScroll();
+        // this.listenToSwipe();
+        // this.initMarker();
+        // this.listenOnSearch();
+        // this.listenOnFilter();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        this.gamesSearch.handleOnLoad(this.element, attachments);
-        this.gamesFilter.handleOnLoad(this.element, attachments);
-        this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
+        /* remove comment on game category and search implementation */
+        // this.gamesSearch.handleOnLoad(this.element, attachments);
+        // this.gamesFilter.handleOnLoad(this.element, attachments);
+        // this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
         this.listenOnCloseFilter();
         this.listenOnLogout();
         this.listenToLaunchGameLoader();
@@ -116,16 +122,18 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         if (!this.element) {
             this.checkLoginState();
-            this.listenChangeCategory();
-            this.listenHashChange();
+            /* remove comment on game category and search implementation */
+            // this.listenChangeCategory();
+            // this.listenHashChange();
             this.listenClickGameTile();
             this.listenGameLaunch();
-            this.listenFavoriteClick();
-            this.listenToCategory();
-            this.listenToScroll();
-            this.listenOnSearch();
-            this.listenOnFilter();
-            this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
+            /* remove comment on game category and search implementation */
+            // this.listenFavoriteClick();
+            // this.listenToCategory();
+            // this.listenToScroll();
+            // this.listenOnSearch();
+            // this.listenOnFilter();
+            // this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
             this.listenOnCloseFilter();
             this.listenOnLogout();
         }
@@ -137,66 +145,69 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.currentPage = 0;
         this.load = true;
         this.generateLobby(() => {
-            this.highlightMenu();
+            /* remove comment on game category and search implementation */
+            // this.highlightMenu();
             this.lobby();
         });
-        this.listenToSwipe();
-        this.initMarker();
-        this.gamesSearch.handleOnReLoad(this.element, attachments);
-        this.gamesFilter.handleOnReLoad(this.element, attachments);
+        /* remove comment on game category and search implementation */
+        // this.listenToSwipe();
+        // this.initMarker();
+        // this.gamesSearch.handleOnReLoad(this.element, attachments);
+        // this.gamesFilter.handleOnReLoad(this.element, attachments);
 
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
         this.listenToLaunchGameLoader();
     }
-
-    private initMarker() {
-        // Checkbox
-        new Marker({
-            parent: ".games-search-filter-body",
-            iconDefault: iconUnCheckedTemplate(),
-            iconActive: iconCheckedTemplate(),
-        });
-    }
+    /* remove comment on game category and search implementation */
+    // private initMarker() {
+    //     // Checkbox
+    //     new Marker({
+    //         parent: ".games-search-filter-body",
+    //         iconDefault: iconUnCheckedTemplate(),
+    //         iconActive: iconCheckedTemplate(),
+    //     });
+    // }
 
     private highlightMenu() {
         ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
     }
 
     private getActiveIndex(list: HTMLElement) {
-        const slides = list.querySelectorAll(".game-category");
+        /* remove comment on game category and search implementation */
+        // const slides = list.querySelectorAll(".game-category");
 
-        for (const key in slides) {
-            if (slides.hasOwnProperty(key)) {
-                const slide = slides[key];
-                if (utility.hasClass(slide, "active")) {
-                    return key + 1;
-                }
-            }
-        }
+        // for (const key in slides) {
+        //     if (slides.hasOwnProperty(key)) {
+        //         const slide = slides[key];
+        //         if (utility.hasClass(slide, "active")) {
+        //             return key + 1;
+        //         }
+        //     }
+        // }
 
         return 1;
     }
     private checkLoginState() {
-        if (ComponentManager.getAttribute("product") === "mobile-casino-gold" && !this.isLogin) {
-            const lang = ComponentManager.getAttribute("language");
-            const product = window.location.pathname.replace("/" + lang + "/", "");
-            this.loader.show();
-            const params = utility.getParameters(window.location.search);
-            let url = "/" + lang + "/login";
-            url = utility.addQueryParam(url, "product", product);
-            for (const key in params) {
-                if (key !== "" && params[key] !== "") {
-                    url = utility.addQueryParam(url, key, params[key]);
-                }
-            }
-            Router.navigate(url, ["*"]);
-            Router.on(RouterClass.afterNavigate, (event) => {
-               ComponentManager.broadcast("redirect.postlogin.casino-gold", { loader: this.loader });
-            });
-            return;
-        }
+        // if (ComponentManager.getAttribute("product") === "mobile-soda-casino" && !this.isLogin) {
+        //     const lang = ComponentManager.getAttribute("language");
+        //     const product = window.location.pathname.replace("/" + lang + "/", "");
+        //     this.loader.show();
+        //     const params = utility.getParameters(window.location.search);
+        //     let url = "/" + lang + "/login";
+        //     url = utility.addQueryParam(url, "product", product);
+        //     for (const key in params) {
+        //         if (key !== "" && params[key] !== "") {
+        //             url = utility.addQueryParam(url, key, params[key]);
+        //         }
+        //     }
+        //     Router.navigate(url, ["*"]);
+        //     Router.on(RouterClass.afterNavigate, (event) => {
+        //        ComponentManager.broadcast("redirect.postlogin.casino-gold", { loader: this.loader });
+        //     });
+        //     return;
+        // }
     }
     /**
      * Initialized games lobby
@@ -225,7 +236,9 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     }
 
     private getPagerPromises() {
-        const promises = ["allGames", "recent", "fav"];
+        /* remove comment on game category and search implementation
+        const promises = ["allGames", "recent", "fav"]; */
+        const promises = ["allGames"];
         return promises;
     }
 
@@ -312,7 +325,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         for (const id in lobbyRequests) {
             if (lobbyRequests.hasOwnProperty(id)) {
                 const currentRequest = lobbyRequests[id];
-                const uri = Router.generateRoute("casino_lobby", currentRequest.type);
+                const uri = Router.generateRoute("soda_casino_lobby", currentRequest.type);
                 xhr({
                     url: uri,
                     type: "json",
@@ -327,9 +340,11 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                         // clone respone object
                         const newResponse = Object.assign({}, mergeResponse);
 
-                        newResponse.games = this.getCategoryGames(newResponse.games);
+                        /* remove comment on game category and search implementation */
+                        // newResponse.games = this.getCategoryGames(newResponse.games);
                         newResponse.games = this.groupGamesByContainer(newResponse.games);
-                        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
+                        /* remove comment on game category and search implementation */
+                        // newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
                         if (pageResponse.hasOwnProperty("fav")) {
                             const key = "fav";
                             const favoritesList = pageResponse[key];
@@ -354,19 +369,21 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             type: "lobby",
         };
 
-        req.recent = {
-            type: "getRecentlyPlayed",
-        };
-        req.fav = {
-            type: "getFavorites",
-        };
+        /* remove comment on game category and search implementation */
+        // req.recent = {
+        //     type: "getRecentlyPlayed",
+        // };
+        // req.fav = {
+        //     type: "getFavorites",
+        // };
 
         return req;
     }
 
     private lobby() {
-        this.gamesSearch.setGamesList(this.response);
-        this.gamesFilter.setGamesList(this.response);
+        /* remove comment on game category and search implementation */
+        // this.gamesSearch.setGamesList(this.response);
+        // this.gamesFilter.setGamesList(this.response);
         this.setLobby();
     }
 
@@ -374,11 +391,14 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
      * Populate lobby with the set response
      */
     private setLobby(key?: string) {
-        if (!key) {
-            key = this.response.categories[0].field_games_alias;
-            key = this.getActiveCategory(this.response.games, key);
-        }
-        this.setCategories(this.response.categories, key);
+        key = "all-games";
+        /* remove default key value on game category implementation */
+        /* remove comment on game category and search implementation */
+        // if (!key) {
+        //     key = this.response.categories[0].field_games_alias;
+        //     key = this.getActiveCategory(this.response.games, key);
+        // }
+        // this.setCategories(this.response.categories, key);
         this.setGames(this.response.games[key], key);
     }
 
@@ -436,9 +456,9 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
             isRecommended: isRecommend,
-            isAllGames: activeCategory === "all-games",
+            isAllGames: "all-games",
+            /* isAllGames: activeCategory === "all-games" */
         });
-
         if (this.currentPage > page) {
             template = "";
             for (let ctr = 0; ctr <= this.currentPage; ctr++) {
@@ -549,7 +569,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             if (el) {
                 const gameCode = el.getAttribute("data-game-code");
                 xhr({
-                    url: Router.generateRoute("casino_lobby", "recent"),
+                    url: Router.generateRoute("soda_casino_lobby", "recent"),
                     type: "json",
                     method: "post",
                     data: {
@@ -559,7 +579,8 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                     if (result.success) {
                         this.response = null;
                         this.generateLobby(() => {
-                            this.updateCategorySpecial();
+                              /* remove comment on game category and search implementation */
+                              // this.updateCategorySpecial();
                         });
                         this.fromGameLaunch = true;
                         ComponentManager.broadcast("success.game.launch", {launchedGame: gameCode});
@@ -580,7 +601,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             if (el && this.isLogin) {
                 const gameCode = el.parentElement.getAttribute("data-game-code");
                 xhr({
-                    url: Router.generateRoute("casino_lobby", "favorite"),
+                    url: Router.generateRoute("soda_casino_lobby", "favorite"),
                     type: "json",
                     method: "post",
                     data: {
@@ -602,12 +623,13 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     }
 
     private updateCategorySpecial() {
-        const activeSearch = this.element.querySelector(".search-tab");
+        /* remove comment on game category and search implementation */
+        // const activeSearch = this.element.querySelector(".search-tab");
 
-        if (utility.hasClass(activeSearch, "active")) {
-            this.setCategories(this.response.categories, "search");
-            return;
-        }
+        // if (utility.hasClass(activeSearch, "active")) {
+        //     this.setCategories(this.response.categories, "search");
+        //     return;
+        // }
 
         this.setLobby();
     }

@@ -42,19 +42,20 @@ trait GameTrait
                         ['product' => $product]
                     )
             ];
+            $processGame['filters'] = "";
+            /* remove comment on game category implementation */
+            // if (count($game['field_game_filter']) > 0) {
+            //     $filters = [];
+            //     foreach ($game['field_game_filter'] as $filter) {
+            //         if (isset($filter['parent']) &&
+            //             isset($filter['parent']['field_games_filter_value'])) {
+            //             $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
+            //                 = $filter['field_games_filter_value'][0]['value'];
+            //         }
+            //     }
 
-            if (count($game['field_game_filter']) > 0) {
-                $filters = [];
-                foreach ($game['field_game_filter'] as $filter) {
-                    if (isset($filter['parent']) &&
-                        isset($filter['parent']['field_games_filter_value'])) {
-                        $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
-                            = $filter['field_games_filter_value'][0]['value'];
-                    }
-                }
-
-                $processGame['filters'] = json_encode($filters);
-            }
+            //     $processGame['filters'] = json_encode($filters);
+            // }
 
 
             $processGame['title'] = $game['title'][0]['value'] ?? "";
@@ -69,13 +70,11 @@ trait GameTrait
                 && $game['field_disable_game_loader'][0]['value']) ? "false" : "false";
 
             $categoryList = [];
-
-            foreach ($game['field_games_list_category'] as $category) {
-                $categoryList[$category['field_games_alias'][0]['value']] =
-                    $category['field_draggable_views']['category']['weight'];
-            }
-
-            $processGame['categories'] = $categoryList;
+            /* remove comment on game category implementation */
+            // foreach ($game['field_games_list_category'] as $category) {
+            //     $categoryList[$category['field_games_alias'][0]['value']] =
+            //         $category['field_draggable_views']['category']['weight'];
+            // }
 
             return $processGame;
         } catch (\Exception $e) {
@@ -113,7 +112,6 @@ trait GameTrait
 
             $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($product, $game, $special);
         }
-
         return $gamesList;
     }
 

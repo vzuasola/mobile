@@ -83,13 +83,13 @@ class SodaCasinoLobbyComponentController
         $params = $request->getQueryParams();
         $product = $params['lobbyProduct'] ?? 'mobile-soda-casino';
         $data = $this->getLobbyData($product);
-
         if (!isset($params['pvw'])) {
             $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
 
         $enableRecommended = false;
-        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
+        // $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
+        $data['categories'] = [];
         $data['enableRecommended'] = $enableRecommended;
 
         unset($data['categories_list']);
@@ -183,20 +183,22 @@ class SodaCasinoLobbyComponentController
     private function generateLobbyData($product)
     {
         $data = [];
-        $categories = $this->views->withProduct($product)->getViewById('games_category');
+        /* remove comment on game category / search implementation */
+        // $categories = $this->views->withProduct($product)->getViewById('games_category');
         $definitions = $this->getDefinitions($product);
-
         $asyncData = Async::resolve($definitions);
         $specialCategories = [];
-        $specialCategories = $this->getSpecialCategories($categories);
+        /* remove comment on game category / search implementation */
+        // $specialCategories = $this->getSpecialCategories($categories);
 
         $data['special_categories'] = $specialCategories;
-        $data['categories_list'] = $categories;
+        /* remove comment on game category / search implementation */
+        // $data['categories_list'] = $categories;
+        $data['categories_list'] = [];
         $data['games'] = $this->getGamesAndCategory(
             $asyncData['all-games'],
             $product
         );
-
         return $data;
     }
 
@@ -244,7 +246,7 @@ class SodaCasinoLobbyComponentController
         $definitions = [];
 
         try {
-            $definitions['configs'] = $this->configAsync->getConfig('casino.casino_configuration');
+            $definitions['configs'] = $this->configAsync->getConfig('soda_casino.casino_configuration');
             $definitions['all-games'] = $this->viewsAsync->withProduct($product)->getViewById('games_list');
         } catch (\Exception $e) {
             $definitions = [];
