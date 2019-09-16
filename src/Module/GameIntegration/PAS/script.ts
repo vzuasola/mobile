@@ -177,7 +177,10 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     launch(options) {
-        const product = ComponentManager.getAttribute("product");
+        let product = ComponentManager.getAttribute("product");
+        if (options.currentProduct) {
+            product = options.currentProduct;
+        }
         if (options.provider === this.key) {
 
             // remap language
