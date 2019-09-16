@@ -199,7 +199,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     key = "dafaconnect";
                 }
 
-                if (product === "mobile-games") {
+                if (product === "mobile-games" || product === "mobile-live-dealer") {
                     key = "dafabetgames";
                 }
 
