@@ -456,7 +456,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
             isRecommended: isRecommend,
-            isAllGames: "all-games",
+            isAllGames: 0,
             /* isAllGames: activeCategory === "all-games" */
         });
         if (this.currentPage > page) {
