@@ -405,8 +405,28 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private listenClickGameTile() {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "game-listing-item", true);
-            this.showLogin(el);
+            if (el) {
+                this.showLogin(el);
+            }
+
+            const provider = utility.hasClass(src, "games-provider", true);
+            if (provider) {
+                event.preventDefault();
+                ComponentManager.broadcast("provider_tab.click");
+            }
         });
+    }
+
+    private checkHash(redirect: string) {
+        const hash = utility.getHash(window.location.href);
+        const activeDrawer =
+            document.querySelectorAll('[data-category-filter-id="' + this.gameCategories.getActiveCategory() + '"]');
+
+        if (activeDrawer) {
+            if (hash === activeDrawer[0].getAttribute("data-category-filter-id")) {
+                window.location.hash = redirect;
+            }
+        }
     }
 
     /**
