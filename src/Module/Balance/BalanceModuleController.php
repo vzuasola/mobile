@@ -29,6 +29,7 @@ class BalanceModuleController
         'mobile-casino' => 1,
         'mobile-casino-gold' => 2,
         'mobile-live-dealer' => 5,
+        'mobile-exchange' => 10,
         'mobile-lottery' => 5,
     ];
 

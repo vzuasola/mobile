@@ -16,6 +16,7 @@ middlewares:
     page_cache: App\MobileEntry\Middleware\ResponseCache
     headers: App\Middleware\Response\Headers
     lazy_token: App\Middleware\Response\LazyToken
+    ucp: App\MobileEntry\Middleware\UnsupportedCurrency
     # profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
 
   cache:

@@ -32,10 +32,8 @@ export class ExchangeIntegrationModule extends Redirectable implements ModuleInt
                             "/" + this.getRedirectLanguage(src) + "/");
                     }
 
-                    Redirector.redirect(response.url, () => {
-                        this.loader.hide();
-                    });
-
+                    Router.navigate(response.url, ["*"], {removeParams: ["product"]});
+                    this.loader.hide();
                     return;
                 }
 
