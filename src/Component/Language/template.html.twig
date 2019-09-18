@@ -12,11 +12,13 @@
                     <li class="col-6">
                         <ul>
                     {% endif %}
-                    <li class="{{ lang.id }} {{ isActive }}">
-                        <a href="#" class="language-link" data-lang="{{ lang.prefix }}">
-                        {{ lang.name }}
-                        </a>
-                    </li>
+                    {% if lang.hide != true %}
+                        <li class="{{ lang.id }} {{ isActive }}">
+                            <a href="#" class="language-link" data-lang="{{ lang.prefix }}">
+                            {{ lang.name }}
+                            </a>
+                        </li>
+                    {% endif %}
                     {# Closing Container #}
                     {%if loop.index == limit or loop.index == language|length %}
                         </ul>

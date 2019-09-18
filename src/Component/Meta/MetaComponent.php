@@ -94,7 +94,7 @@ class MetaComponent implements ComponentWidgetInterface
         '/jin',
         '/elite',
         '/vip',
-        '/exclusive'
+        '/exclusive',
     ];
 
     /**

@@ -142,6 +142,20 @@ routes:
         attributes:
             product: mobile-sports-df
 
+    /{id:exchange|cricket|indiabet|cric-exchange|betting-exchange}:
+        method: GET
+        action: App\MobileEntry\Controller\ExchangeController:view
+        components:
+            main: lobby
+            lobby_content: exchange_lobby
+        headers:
+            Cache-Control: public, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-exchange
+
     /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}:
         method: GET
         action: App\MobileEntry\Controller\LotteryController:view
@@ -196,6 +210,15 @@ routes:
             expires: 1800
 
     /api/plugins/component/route/casino_lobby/lobby:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: private, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+
+    /api/plugins/component/route/exchange_lobby/lobby:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
         headers:
@@ -350,6 +373,19 @@ routes:
             expires: 1800
         attributes:
             product: mobile-lottery
+
+    /{id:exchange|cricket|indiabet|cric-exchange|betting-exchange}/*.*:
+        method: GET
+        action: App\MobileEntry\Controller\NodeController:view
+        components:
+            main: node
+        headers:
+            Cache-Control: public, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-exchange
 
     /*.*:
         method: ANY

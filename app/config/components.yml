@@ -39,8 +39,8 @@ components:
     class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
     parent: node
 
-  node_lottery_page:
-    class: App\MobileEntry\Component\Node\LotteryPage\LotteryPageComponent
+  node_inner_page:
+    class: App\MobileEntry\Component\Node\InnerPage\InnerPageComponent
     parent: node
 
   lobby:
@@ -80,6 +80,10 @@ components:
 
   casino_gold_lobby:
     class: App\MobileEntry\Component\Main\Lobby\CasinoGoldLobby\CasinoGoldLobbyComponent
+    parent: lobby
+
+  exchange_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\ExchangeLobby\ExchangeLobbyComponent
     parent: lobby
 
   lottery_lobby:
@@ -153,6 +157,9 @@ components:
 
   game_loader:
     class: App\MobileEntry\Component\GameLoader\GameLoaderComponent
+
+  ucp:
+    class: App\MobileEntry\Component\Main\UnsupportedCurrency\UnsupportedCurrencyComponent
 
 # Define modules
 modules:
@@ -242,6 +249,9 @@ modules:
 
   gpi_sode_integration:
     class: App\MobileEntry\Module\GameIntegration\GPISode\GPISodeModule
+    
+  exchange_launcher_integration:
+    class: App\MobileEntry\Module\GameIntegration\ExchangeLauncher\ExchangeLauncherModule
 
   tgp_integration:
     class: App\MobileEntry\Module\GameIntegration\TGP\TGPModule
@@ -261,9 +271,6 @@ modules:
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
-  exchange_integration:
-    class: App\MobileEntry\Module\ProductIntegration\Exchange\ExchangeIntegrationModule
-
   games_integration:
     class: App\MobileEntry\Module\ProductIntegration\Games\GamesIntegrationModule
 
@@ -275,3 +282,6 @@ modules:
 
   lottery_integration:
     class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
+
+  exchange_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Exchange\ExchangeIntegrationModule
