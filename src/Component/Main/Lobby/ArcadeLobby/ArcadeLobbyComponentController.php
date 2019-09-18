@@ -228,10 +228,17 @@ class ArcadeLobbyComponentController
     {
         $data = [];
         try {
+            $gamesProviders = $this->viewsFetcher->getViewById('games_providers');
+        } catch (\Exception $e) {
+            $gamesProviders = [];
+        }
+
+        try {
             $categories = $this->viewsFetcher->getViewById('games_category');
         } catch (\Exception $e) {
             $categories = [];
         }
+
         try {
             $allGames = $this->viewsFetcher->getViewById(
                 'games_list',
@@ -244,6 +251,7 @@ class ArcadeLobbyComponentController
         }
 
         $data['categories_list'] = $categories;
+        $data['providers_list'] = $gamesProviders;
         $data['games']['all-games'] = $this->processAllGames(
             $allGames,
             'all-games'

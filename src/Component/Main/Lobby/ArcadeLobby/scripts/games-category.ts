@@ -10,6 +10,7 @@ export class GamesCategory {
     private categories: any[];
     private filteredCategories: any[];
     private filteredCategoriesAlias: any[] = [];
+    private filteredCategoryObj: any[] = [];
     private games: any[];
     private sync: SyncEvents = new SyncEvents();
 
@@ -135,6 +136,21 @@ export class GamesCategory {
     }
 
     /**
+     * Sort providers
+     */
+    sortProviders(providersSort) {
+        const sortedProviders: any = [];
+        for (const providerSort of providersSort) {
+            if (this.filteredCategoryObj.hasOwnProperty(providerSort.field_games_alias)) {
+                sortedProviders.push(this.filteredCategoryObj[providerSort.field_games_alias]);
+            }
+        }
+        if (sortedProviders.length) {
+            this.filteredCategories = sortedProviders;
+        }
+    }
+
+    /**
      * Filter categories
      */
     private filterCategories(categories) {
@@ -146,6 +162,13 @@ export class GamesCategory {
                 this.games[category["field_games_alias"]].length) {
                     filteredCategories.push(category);
                     this.filteredCategoriesAlias.push(category["field_games_alias"]);
+                    if (!this.filteredCategoryObj.hasOwnProperty(category["field_games_alias"])) {
+                        this.filteredCategoryObj[category["field_games_alias"]] = [];
+                    }
+
+                    if (typeof this.filteredCategoryObj[category["field_games_alias"]] !== "undefined") {
+                        this.filteredCategoryObj[category["field_games_alias"]] = category;
+                    }
             }
             /* tslint:disable:no-string-literal */
         }
