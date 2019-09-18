@@ -412,21 +412,29 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             const provider = utility.hasClass(src, "games-provider", true);
             if (provider) {
                 event.preventDefault();
-                ComponentManager.broadcast("provider_tab.click");
+                const filteredCategories = this.response.categories.filter((prov, key) => {
+                    return prov.field_games_is_sub_category === "0";
+                });
+
+                this.gameCategories.setCategories(filteredCategories, this.groupedGames);
+                this.gameCategories.sortProviders(this.response.providers_list);
+                this.gameCategories.render(() => {
+                    setTimeout(() => {
+                        ComponentManager.broadcast("drawer.open");
+                    }, 300);
+                });
+            }
+
+            const drawer = utility.hasClass(src, "providers-more");
+            if (drawer) {
+                this.gameCategories.setCategories(this.response.categories, this.groupedGames);
+                this.gameCategories.render(() => {
+                    setTimeout(() => {
+                        ComponentManager.broadcast("drawer.open");
+                    }, 300);
+                });
             }
         });
-    }
-
-    private checkHash(redirect: string) {
-        const hash = utility.getHash(window.location.href);
-        const activeDrawer =
-            document.querySelectorAll('[data-category-filter-id="' + this.gameCategories.getActiveCategory() + '"]');
-
-        if (activeDrawer) {
-            if (hash === activeDrawer[0].getAttribute("data-category-filter-id")) {
-                window.location.hash = redirect;
-            }
-        }
     }
 
     /**
@@ -471,9 +479,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
 
                 url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
                 url = utility.addQueryParam(url, "loaderFlag", "true");
-
                 if (data.options.target === "popup" || data.options.target === "_blank") {
-                    this.windowObject = PopupWindow(url, "gameWindow", prop);
+                    window.open(url);
+                    return;
                 }
 
                 if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
