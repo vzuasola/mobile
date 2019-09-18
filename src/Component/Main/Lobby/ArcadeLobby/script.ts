@@ -412,7 +412,25 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             const provider = utility.hasClass(src, "games-provider", true);
             if (provider) {
                 event.preventDefault();
-                ComponentManager.broadcast("provider_tab.click");
+                const filteredCategories = this.response.categories.filter((prov, key) => {
+                    return prov.field_games_is_sub_category === "0";
+                });
+                this.gameCategories.setCategories(filteredCategories, this.groupedGames);
+                this.gameCategories.render(() => {
+                    setTimeout(() => {
+                        ComponentManager.broadcast("drawer.open");
+                    }, 300);
+                });
+            }
+
+            const drawer = utility.hasClass(src, "providers-more");
+            if (drawer) {
+                this.gameCategories.setCategories(this.response.categories, this.groupedGames);
+                this.gameCategories.render(() => {
+                    setTimeout(() => {
+                        ComponentManager.broadcast("drawer.open");
+                    }, 300);
+                });
             }
         });
     }

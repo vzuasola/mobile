@@ -1,5 +1,6 @@
 import * as utility from "@core/assets/js/components/utility";
 import EqualHeight from "@app/assets/script/components/equal-height";
+import SyncEvents from "@core/assets/js/components/utils/sync-events";
 import { ProviderDrawer } from "./provider-drawer";
 import * as categoryTemplate from "../handlebars/categories.handlebars";
 
@@ -10,13 +11,14 @@ export class GamesCategory {
     private filteredCategories: any[];
     private filteredCategoriesAlias: any[] = [];
     private games: any[];
+    private sync: SyncEvents = new SyncEvents();
 
     constructor(attachments) {
         this.configs = attachments.configs;
         this.isLogin = attachments.isLogin;
     }
 
-    render() {
+    render(callback?) {
         const activeCategory = this.getActiveCategory();
         const gameCategoriesEl = document.querySelector("#game-categories");
         const template = categoryTemplate({
@@ -27,11 +29,37 @@ export class GamesCategory {
         });
 
         if (gameCategoriesEl) {
+            const promises = [];
             gameCategoriesEl.innerHTML = template;
-            this.setActiveCategory(activeCategory);
-            this.moveProviders();
-            this.activateProviderDrawer();
-            this.equalizeProviderHeight();
+            const promiseCategory = () => {
+                return new Promise((promiseCategoryResolve, promiseCategoryReject) => {
+                    this.setActiveCategory(activeCategory);
+                    this.moveProviders();
+                    this.activateProviderDrawer();
+                    promiseCategoryResolve();
+                });
+            };
+            promises.push(promiseCategory);
+
+            const equalizePromise = () => {
+                return new Promise((equalizePromiseResolve, equalizePromiseReject) => {
+                    this.equalizeProviderHeight();
+                    equalizePromiseResolve();
+                });
+            };
+            promises.push(equalizePromise);
+
+            if (callback) {
+                const callbackPromise = () => {
+                    return new Promise((callbackPromiseResolve, callbackPromiseReject) => {
+                        callback();
+                        callbackPromiseResolve();
+                    });
+                };
+                promises.push(callbackPromise);
+            }
+
+            this.sync.executeWithArgs(promises, []);
         }
     }
 
@@ -147,10 +175,7 @@ export class GamesCategory {
      * Make height of elements equal
      */
     private equalizeProviderHeight() {
-        setTimeout(() => {
-            const equalProvider = new EqualHeight("#game-categories .provider-menu .game-providers-list a");
-            equalProvider.init();
-        }, 1000);
-
+        const equalProvider = new EqualHeight("#game-categories .provider-menu .game-providers-list a");
+        equalProvider.init();
     }
 }
