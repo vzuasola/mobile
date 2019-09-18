@@ -101,3 +101,41 @@
         background: rgba(0, 0, 0, 0.75);
     }
 }
+
+.header-mobile-soda-casino {
+    // Content
+    .login-content {
+        padding: 4rem 5rem;
+        border-radius: 0.8rem;
+        background: #001F51 0% 0% no-repeat padding-box;
+    }
+
+    .login.login-field-username {
+        border:none;
+        border-bottom:1px solid black;
+    }
+
+    .login-submit {
+        text-align: center;
+        font: Bold 3rem/3.7rem Roboto;
+        letter-spacing: 0;
+        color: #FFC371;
+        opacity: 1;
+    }
+
+    .btn-join {
+        text-align: center;
+        font: Bold 3rem/3.7rem Roboto;
+        letter-spacing: 0;
+        color: #FF5F6D;
+        opacity: 1;
+        background-color: transparent;
+    }
+
+    .login-remember-username, 
+    .login-help-link,
+    .mb-10 {
+        font-family: Roboto;
+        font-weight: normal;
+    }
+}

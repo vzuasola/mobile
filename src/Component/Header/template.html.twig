@@ -1,4 +1,4 @@
-<div class="header-dafabet container clearfix">
+<div class="header-dafabet header-{{ app.product_resolver.getProduct }} container clearfix">
     {{ include('@component/Header/templates/logo.html.twig') }}
     {% if is_login %}
     <div class="account-balance">
