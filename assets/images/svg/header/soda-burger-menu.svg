@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 46 28" class="mobile-menu-burger-icon">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.025" y1="1" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ff5f6d"/>
+      <stop offset="0.19" stop-color="#ff646d"/>
+      <stop offset="0.391" stop-color="#ff746d"/>
+      <stop offset="0.638" stop-color="#ff8f6e"/>
+      <stop offset="0.903" stop-color="#ffb370"/>
+      <stop offset="1" stop-color="#ffc371"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_1" data-name="Group 1" transform="translate(-0.019 -0.013)">
+    <rect id="Rectangle_172" data-name="Rectangle 172" width="46" height="4" transform="translate(0.019 0.013)" fill="url(#linear-gradient)"/>
+    <rect id="Rectangle_173" data-name="Rectangle 173" width="46" height="4" transform="translate(0.019 12.013)" fill="url(#linear-gradient)"/>
+    <rect id="Rectangle_174" data-name="Rectangle 174" width="46" height="4" transform="translate(0.019 24.013)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>
