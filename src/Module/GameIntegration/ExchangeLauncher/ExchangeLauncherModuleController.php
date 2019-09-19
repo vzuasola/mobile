@@ -71,10 +71,12 @@ class ExchangeLauncherModuleController
             $exchangeConfig =  $this->config->getGeneralConfigById('games_exchange_provider');
             $gameDomain = $exchangeConfig['exchange_tablet_url'];
             $query = $exchangeConfig['tablet_game_url'];
-
             $gameUri = "$gameDomain/$query";
 
-            $data['gameurl'] = $gameUri;
+            if (filter_var($gameUri, FILTER_VALIDATE_URL)) {
+                $data['gameurl'] = $gameUri;
+            }
+
         } catch (\Exception $e) {
             $data = [];
         }
