@@ -1,7 +1,14 @@
 .mobile-soda-casino {
+    background: #001F51 ! important;
     #game-container {
+        .game-listing {
+            padding: 0 1% 1.75% 1%;
+        }   
+    }
+
+    .game-container {
         background: #02122E;
-        padding-top: 1.75%;
+
     }
 
     .game-ribbon {
@@ -15,6 +22,7 @@
         border-radius: unset;
         border-bottom-right-radius: 1.2rem;
     }
+
 }
 
 .mobile-lottery,
