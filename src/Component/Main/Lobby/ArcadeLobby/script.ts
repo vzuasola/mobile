@@ -425,7 +425,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 });
             }
 
-            const drawer = utility.hasClass(src, "providers-more");
+            const drawer = utility.hasClass(src, "providers-more", true);
             if (drawer) {
                 this.gameCategories.setCategories(this.response.categories, this.groupedGames);
                 this.gameCategories.render(() => {
