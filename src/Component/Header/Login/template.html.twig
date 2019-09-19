@@ -42,7 +42,11 @@
                 </a>
             </form>
         </div>
-        {% include '@app/web/images/svg/closed.svg' ignore missing %}
+        {% if app.product_resolver.getProduct == "mobile-soda-casino" %}
+            {% include '@app/web/images/svg/soda-closed.svg' ignore missing %}
+        {% else %}
+            {% include '@app/web/images/svg/closed.svg' ignore missing %}
+        {% endif %}
     </div>
 </div>
 {% endif %}

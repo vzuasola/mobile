@@ -1,8 +1,13 @@
 <section>
     <span class="mobile-menu-icon"></span>
-    <svg class="mobile-menu-burger-icon" viewBox="0 90 24 15.197">
-        <use xlink:href="#burger-menu" />
-    </svg>
+    {% if app.product_resolver.getProduct == "mobile-soda-casino" %}
+        {% include '@app/web/images/svg/header/soda-burger-menu.svg' ignore missing %}
+    {% else %}
+        <svg class="mobile-menu-burger-icon" viewBox="0 90 24 15.197">
+            <use xlink:href="#burger-menu" />
+        </svg>
+    {% endif %}
+
     <span class="mobile-menu-indicator hidden"></span>
 
     <nav class="mobile-menu">

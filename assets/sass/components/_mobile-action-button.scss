@@ -62,7 +62,7 @@
     }
 }
 
-// Mobile/Tablet buttons
+// SODA CASINO
 .header-mobile-soda-casino {
     .login-trigger.btn-yellow {
         border: 1px solid #FFC371;
@@ -72,13 +72,13 @@
         letter-spacing: 0;
         color: #FFC371;
         opacity: 1;
-        width: 162px;
+        width: 16.2rem;
         height: 3rem;
     }
 
     .login-trigger.btn {
         max-width: 10.5rem;
-        border: 1px solid #FFC371;
+        border: 0.1rem solid #FFC371;
         border-radius: 2.4rem;
         opacity: 1;
         font-size: 1.5rem;
@@ -98,11 +98,16 @@
     }
 
     .login-submit.btn {
-        border: 2px solid #FFC371;
+        border: 0.2rem solid #FFC371;
     }
 
     .btn-join.btn {
-        border: 2px solid #FF5F6D;
+        border: 0.2rem solid #FF5F6D;
+    }
+
+    .login .modal-close-button {
+        background: transparent;
+        fill: #e4e4e4;
     }
     
 }

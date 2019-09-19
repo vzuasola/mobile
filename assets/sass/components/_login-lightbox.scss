@@ -138,4 +138,15 @@
         font-family: Roboto;
         font-weight: normal;
     }
+    
+    .modal-close-button {
+        width: 1.5rem;
+        height: 1.5rem;
+        path {
+            fill: #fff;
+        }
+        rect {
+            fill: #900000;
+        }
+    }
 }
