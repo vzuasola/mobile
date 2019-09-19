@@ -425,7 +425,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 });
             }
 
-            const drawer = utility.hasClass(src, "providers-more");
+            const drawer = utility.hasClass(src, "providers-more", true);
             if (drawer) {
                 this.gameCategories.setCategories(this.response.categories, this.groupedGames);
                 this.gameCategories.render(() => {
@@ -489,8 +489,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 }
 
                 // handle redirects if we are on a PWA standalone
-                if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                    source === "pwa" &&
+                if (((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                    source === "pwa") ||
                     (data.options.target !== "popup" || data.options.target !== "_blank")
                 ) {
                     window.location.href = url;
