@@ -76,7 +76,6 @@ class ExchangeLauncherModuleController
             if (filter_var($gameUri, FILTER_VALIDATE_URL)) {
                 $data['gameurl'] = $gameUri;
             }
-
         } catch (\Exception $e) {
             $data = [];
         }
