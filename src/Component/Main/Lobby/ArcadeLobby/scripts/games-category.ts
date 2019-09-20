@@ -11,6 +11,7 @@ export class GamesCategory {
     private filteredCategories: any[];
     private filteredCategoriesAlias: any[] = [];
     private filteredCategoryObj: any[] = [];
+    private providers: any[] = [];
     private games: any[];
     private sync: SyncEvents = new SyncEvents();
 
@@ -19,7 +20,7 @@ export class GamesCategory {
         this.isLogin = attachments.isLogin;
     }
 
-    render(callback?) {
+    render(isProviderTab, callback?) {
         const activeCategory = this.getActiveCategory();
         const gameCategoriesEl = document.querySelector("#game-categories");
         const template = categoryTemplate({
@@ -27,6 +28,7 @@ export class GamesCategory {
             configs: this.configs,
             active: activeCategory,
             isLogin: this.isLogin,
+            moreProviders: (isProviderTab) ? this.providers : this.getFilteredCategories(),
         });
 
         if (gameCategoriesEl) {
@@ -146,7 +148,7 @@ export class GamesCategory {
             }
         }
         if (sortedProviders.length) {
-            this.filteredCategories = sortedProviders;
+            this.providers = sortedProviders;
         }
     }
 
@@ -162,12 +164,17 @@ export class GamesCategory {
                 this.games[category["field_games_alias"]].length) {
                     filteredCategories.push(category);
                     this.filteredCategoriesAlias.push(category["field_games_alias"]);
+
                     if (!this.filteredCategoryObj.hasOwnProperty(category["field_games_alias"])) {
                         this.filteredCategoryObj[category["field_games_alias"]] = [];
                     }
 
                     if (typeof this.filteredCategoryObj[category["field_games_alias"]] !== "undefined") {
                         this.filteredCategoryObj[category["field_games_alias"]] = category;
+                    }
+
+                    if (category.field_games_is_sub_category === "0") {
+                        this.providers.push(category);
                     }
             }
             /* tslint:disable:no-string-literal */
