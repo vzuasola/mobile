@@ -110,14 +110,60 @@
         background: #001F51 0% 0% no-repeat padding-box;
     }
 
-    .login.login-field-username {
-        border:none;
-        border-bottom:1px solid black;
+    .login {
+        // Input fields
+        &-field {
+            position: relative;
+
+            input {
+                padding: 0.5rem 1rem 0.5rem 3.8rem;
+                border: 0;
+                outline: 0;
+                background: transparent;
+                border-bottom: 0.3rem solid #FFFFFF;
+                font: normal 2rem/2.7rem Roboto;
+                color: #FFFFFF;
+            }
+
+            .invalid::placeholder {
+                color: $red;
+            }
+
+            .invalid {
+                background: #faffbd;
+            }
+
+            .invalid ~ .login-field-icon,
+            .invalid ~ span .password-icon-mask,
+            .invalid ~ span .password-icon-unmask {
+                fill: $red;
+            }
+
+            &-icon {
+                position: absolute;
+                top: 0.8rem;
+                left: 1rem;
+                width: 2rem;
+                fill: $white;
+            }
+
+            @-webkit-keyframes autofill {
+                to {
+                    color: $white;
+                    background: transparent;
+                }
+            }
+
+            input:-webkit-autofill {
+                -webkit-animation-name: autofill;
+                -webkit-animation-fill-mode: both;
+            }
+        }
     }
 
     .login-submit {
         text-align: center;
-        font: Bold 3rem/3.7rem Roboto;
+        font: Bold 2rem/2.7rem Roboto;
         letter-spacing: 0;
         color: #FFC371;
         opacity: 1;
@@ -125,7 +171,7 @@
 
     .btn-join {
         text-align: center;
-        font: Bold 3rem/3.7rem Roboto;
+        font: Bold 2rem/2.7rem Roboto;
         letter-spacing: 0;
         color: #FF5F6D;
         opacity: 1;
