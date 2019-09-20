@@ -433,7 +433,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         });
     }
 
-    private broadcastOpenDrawer(isProviderTab, ) {
+    private broadcastOpenDrawer(isProviderTab) {
         this.gameCategories.render(isProviderTab, () => {
             setTimeout(() => {
                 ComponentManager.broadcast("drawer.open");
