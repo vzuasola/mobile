@@ -431,14 +431,16 @@ export class ArcadeLobbyComponent implements ComponentInterface {
 
     private listenProviderMoreEvent() {
         ComponentManager.subscribe(utility.eventType(), (src, target) => {
-            const more = utility.hasClass(target, "provider-drawer", true);
-            if (more) {
-                this.gameCategories.setCategories(this.response.categories, this.groupedGames);
-                this.gameCategories.render(() => {
-                    setTimeout(() => {
-                        ComponentManager.broadcast("drawer.open");
-                    }, 300);
-                });
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
+                const more = utility.hasClass(target, "provider-drawer", true);
+                if (more) {
+                    this.gameCategories.setCategories(this.response.categories, this.groupedGames);
+                    this.gameCategories.render(() => {
+                        setTimeout(() => {
+                            ComponentManager.broadcast("drawer.open");
+                        }, 300);
+                    });
+                }
             }
         });
     }
