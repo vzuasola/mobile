@@ -417,11 +417,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             if (provider) {
                 event.preventDefault();
                 this.gameCategories.sortProviders(this.response.providers_list);
-                this.gameCategories.render(true, () => {
-                    setTimeout(() => {
-                        ComponentManager.broadcast("drawer.open");
-                    }, 300);
-                });
+                this.broadcastOpenDrawer(true);
             }
         });
     }
@@ -431,13 +427,17 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             if (ComponentManager.getAttribute("product") === "mobile-arcade") {
                 const more = utility.hasClass(target, "provider-drawer", true);
                 if (more) {
-                    this.gameCategories.render(false, () => {
-                        setTimeout(() => {
-                            ComponentManager.broadcast("drawer.open");
-                        }, 300);
-                    });
+                    this.broadcastOpenDrawer(false);
                 }
             }
+        });
+    }
+
+    private broadcastOpenDrawer(isProviderTab, ) {
+        this.gameCategories.render(isProviderTab, () => {
+            setTimeout(() => {
+                ComponentManager.broadcast("drawer.open");
+            }, 300);
         });
     }
 
