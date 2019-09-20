@@ -57,6 +57,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.listenOnLogout();
         this.listenOnResize();
         this.listenOnSearch();
+        this.listenProviderMoreEvent();
         this.gamesSearch.handleOnLoad(this.element, this.attachments);
     }
 
@@ -76,6 +77,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenOnLogout();
             this.listenOnResize();
             this.listenOnSearch();
+            this.listenProviderMoreEvent();
         }
         this.response = undefined;
         this.element = element;
@@ -424,9 +426,13 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                     }, 300);
                 });
             }
+        });
+    }
 
-            const drawer = utility.hasClass(src, "providers-more", true);
-            if (drawer) {
+    private listenProviderMoreEvent() {
+        ComponentManager.subscribe(utility.eventType(), (src, target) => {
+            const more = utility.hasClass(target, "provider-drawer", true);
+            if (more) {
                 this.gameCategories.setCategories(this.response.categories, this.groupedGames);
                 this.gameCategories.render(() => {
                     setTimeout(() => {
