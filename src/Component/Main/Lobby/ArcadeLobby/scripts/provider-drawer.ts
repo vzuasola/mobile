@@ -18,7 +18,7 @@ export class ProviderDrawer {
     }
 
     private closeEvents() {
-        ComponentManager.subscribe("click", (src, target) => {
+        ComponentManager.subscribe(utility.eventType(), (src, target) => {
             if (ComponentManager.getAttribute("product") === "mobile-arcade") {
                 if (utility.hasClass(target, "close-svg") ||
                     utility.hasClass(target, "close-drawer") ||
