@@ -19,7 +19,7 @@ export class ProviderDrawer {
 
     private closeEvents() {
         ComponentManager.subscribe(utility.eventType(), (src, target) => {
-            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
+            if (ComponentManager.getAttribute("product") === "mobile-arcade" && src.cancelable) {
                 if (utility.hasClass(target, "close-svg") ||
                     utility.hasClass(target, "close-drawer") ||
                     utility.hasClass(target, "provider-menu-overlay")

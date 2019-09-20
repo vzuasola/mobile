@@ -114,7 +114,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.groupedGames = this.sortGamesByGamesCollection(groupedGames);
         // populate categories
         this.gameCategories.setCategories(this.response.categories, this.groupedGames);
-        this.gameCategories.render();
+        this.gameCategories.render(false);
         // populate games
         const activeCategory = this.gameCategories.getActiveCategory();
         this.populateGames(activeCategory);
@@ -416,13 +416,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             const provider = utility.hasClass(src, "games-provider", true);
             if (provider) {
                 event.preventDefault();
-                const filteredCategories = this.response.categories.filter((prov, key) => {
-                    return prov.field_games_is_sub_category === "0";
-                });
-
-                this.gameCategories.setCategories(filteredCategories, this.groupedGames);
                 this.gameCategories.sortProviders(this.response.providers_list);
-                this.gameCategories.render(() => {
+                this.gameCategories.render(true, () => {
                     setTimeout(() => {
                         ComponentManager.broadcast("drawer.open");
                     }, 300);
@@ -436,8 +431,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             if (ComponentManager.getAttribute("product") === "mobile-arcade") {
                 const more = utility.hasClass(target, "provider-drawer", true);
                 if (more) {
-                    this.gameCategories.setCategories(this.response.categories, this.groupedGames);
-                    this.gameCategories.render(() => {
+                    this.gameCategories.render(false, () => {
                         setTimeout(() => {
                             ComponentManager.broadcast("drawer.open");
                         }, 300);
@@ -598,7 +592,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 // re-render categories, if recently played is not yet active
                 if (this.gameCategories.getFilteredCategoriesAlias().indexOf("recently-played") === -1) {
                     this.gameCategories.setCategories(this.response.categories, this.groupedGames);
-                    this.gameCategories.render();
+                    this.gameCategories.render(false);
                 }
                 // re-render games if active category is recently played
                 if (activeCategory === "recently-played") {
