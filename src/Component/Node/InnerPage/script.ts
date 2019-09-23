@@ -10,7 +10,7 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 export class InnerPageComponent implements ComponentInterface {
     private element: HTMLElement;
     private events: {};
-    private productMenu: string = "product-lottery";
+    private productMenu: string;
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
@@ -79,9 +79,11 @@ export class InnerPageComponent implements ComponentInterface {
      *  Helper function used to highlight product on Left Nav Menu
      */
     private highlightMenu() {
-        ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
+        const product = ComponentManager.getAttribute("product");
+        const productClass = product.replace("mobile", "product");
+
         setTimeout (() => {
-            ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
+            ComponentManager.broadcast("menu.highlight", { menu: productClass });
         }, 200);
     }
 }

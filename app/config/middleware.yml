@@ -11,12 +11,12 @@ middlewares:
     session: App\Middleware\Request\Session
 
   response:
+    ucp: App\MobileEntry\Middleware\UnsupportedCurrency
     token: App\Middleware\Response\Token
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponse
     page_cache: App\MobileEntry\Middleware\ResponseCache
     headers: App\Middleware\Response\Headers
     lazy_token: App\Middleware\Response\LazyToken
-    ucp: App\MobileEntry\Middleware\UnsupportedCurrency
     # profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
 
   cache:
