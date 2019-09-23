@@ -1,3 +1,36 @@
+.mobile-soda-casino {
+
+    #game-container {
+        .game-listing {
+            padding: 0 1% 1.75% 1%;
+        }   
+    }
+
+    .game-container {
+        background: #02122E;
+    }
+
+    .game-ribbon {
+        top: 0;
+        width: 62px;
+        max-height: 98px;
+        text-align: center;
+        font: Medium 20px/24px Roboto;
+        letter-spacing: 0;
+        opacity: 1;
+        border-radius: unset;
+        border-bottom-right-radius: 1.2rem;
+    }
+
+    .component-widget-wrapper {
+        background: #001F51;
+    }
+
+    .sponsors-list {    
+        background: #001F51;
+    }
+}
+
 .mobile-lottery,
 .mobile-exchange {
     .lottery-lobby-tile-container,

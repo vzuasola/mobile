@@ -90,7 +90,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         });
         /* remove comment on game category and search implementation */
         // this.listenToCategory();
-        // this.listenToScroll();
+        this.listenToScroll();
         // this.listenToSwipe();
         // this.initMarker();
         // this.listenOnSearch();
@@ -130,7 +130,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             /* remove comment on game category and search implementation */
             // this.listenFavoriteClick();
             // this.listenToCategory();
-            // this.listenToScroll();
+            this.listenToScroll();
             // this.listenOnSearch();
             // this.listenOnFilter();
             // this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
@@ -766,7 +766,9 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                     if (!this.response.games[hash]) {
                         const categoriesEl = this.element.querySelector("#game-categories");
                         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-                        hash = activeLink.getAttribute("data-category-filter-id");
+                       /* remove comment on game category implementation; forcedsete hash to all-games */
+                       // hash = activeLink.getAttribute("data-category-filter-id");
+                        hash = "all-games";
                     }
                     let pager = this.getPagedContent(this.response.games[hash]);
 

@@ -61,3 +61,53 @@
             }
     }
 }
+
+// SODA CASINO
+.header-mobile-soda-casino {
+    .login-trigger.btn-yellow {
+        border: 1px solid #FFC371;
+        background-color: transparent;
+        text-align: center;
+        font: Medium 2.4rem/2.8rem Roboto;
+        letter-spacing: 0;
+        color: #FFC371;
+        opacity: 1;
+        width: 16.2rem;
+        height: 3rem;
+    }
+
+    .login-trigger.btn {
+        max-width: 10.5rem;
+        border: 0.1rem solid #FFC371;
+        border-radius: 2.4rem;
+        opacity: 1;
+        font-size: 1.5rem;
+        padding: 0.3rem 0.4rem;
+
+        @include media(">tablet") {
+            max-width: 16.5rem;
+        }
+    }
+
+    .login-submit.btn ,
+    .btn-join.btn {
+        background-color: transparent;
+        border-radius: 4.3rem;
+        opacity: 1;
+        font-size: 2.4rem;
+    }
+
+    .login-submit.btn {
+        border: 0.2rem solid #FFC371;
+    }
+
+    .btn-join.btn {
+        border: 0.2rem solid #FF5F6D;
+    }
+
+    .login .modal-close-button {
+        background: transparent;
+        fill: #e4e4e4;
+    }
+    
+}

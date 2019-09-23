@@ -21,6 +21,19 @@ header {
         right: 1rem;
         top: 1.8rem;
     }
+    /*SODA CASINO*/
+    .header-mobile-soda-casino {
+        top: 0px;
+        left: 0px;
+        background: #001F51 0% 0% no-repeat padding-box;
+        box-shadow: 0px 4px 4px #000000;
+
+        .container {
+            padding-top: 0.1rem;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+    }
 }
 
 @import "../components/mobile-action-button";
