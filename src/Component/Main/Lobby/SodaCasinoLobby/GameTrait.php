@@ -123,7 +123,7 @@ trait GameTrait
         $categoryList = [];
         foreach ($categories as $category) {
             // remove recommended games from category as it will not have its own tab.
-            if ($category['field_games_alias'] === $this::RECOMMENDED_GAMES) {
+            if ($category['field_alias'] === $this::RECOMMENDED_GAMES) {
                 $enableRecommended = true;
                 continue;
             }

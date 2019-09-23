@@ -88,8 +88,7 @@ class SodaCasinoLobbyComponentController
         }
 
         $enableRecommended = false;
-        // $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
-        $data['categories'] = [];
+        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
         $data['enableRecommended'] = $enableRecommended;
 
         unset($data['categories_list']);
@@ -161,7 +160,7 @@ class SodaCasinoLobbyComponentController
         $cacheKey = 'views.'. $product .'-lobby-data.';
         $item = $this->cacher->getItem($cacheKey . $this->currentLanguage);
 
-        if (!$item->isHit()) {
+        if ($item->isHit()) {
             $data = $this->generateLobbyData($product);
 
             $item->set([
@@ -183,18 +182,14 @@ class SodaCasinoLobbyComponentController
     private function generateLobbyData($product)
     {
         $data = [];
-        /* remove comment on game category / search implementation */
-        // $categories = $this->views->withProduct($product)->getViewById('games_category');
+        $categories = $this->views->withProduct($product)->getViewById('games_category');
         $definitions = $this->getDefinitions($product);
         $asyncData = Async::resolve($definitions);
         $specialCategories = [];
-        /* remove comment on game category / search implementation */
-        // $specialCategories = $this->getSpecialCategories($categories);
+        $specialCategories = $this->getSpecialCategories($categories);
 
         $data['special_categories'] = $specialCategories;
-        /* remove comment on game category / search implementation */
-        // $data['categories_list'] = $categories;
-        $data['categories_list'] = [];
+        $data['categories_list'] = $categories;
         $data['games'] = $this->getGamesAndCategory(
             $asyncData['all-games'],
             $product
@@ -274,8 +269,8 @@ class SodaCasinoLobbyComponentController
     {
         $specialCategories = [];
         foreach ($categories as $category) {
-            if (strtolower($category['field_isordinarycategory']) === "false") {
-                $specialCategories[$category['field_games_alias']] = $category;
+            if (strtolower($category['field_is_ordinary_category']) === "false") {
+                $specialCategories[$category['field_alias']] = $category;
             }
         }
 

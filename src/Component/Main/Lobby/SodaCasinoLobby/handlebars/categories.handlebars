@@ -9,11 +9,11 @@
     <ul class="game-category">
     {{#each categories}}
         {{#if this.published }}
-            <li class="game-category-item {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
+            <li class="game-category-item {{#condition ../active "===" this.field_alias}}active{{/condition}}">
                 <a
-                    href="#{{this.field_games_alias}}"
-                    class="category-tab category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
-                    data-category-filter-id="{{this.field_games_alias}}"
+                    href="#{{this.field_alias}}"
+                    class="category-tab category-{{this.field_alias}} {{#condition ../active "===" this.field_alias}}active{{/condition}}"
+                    data-category-filter-id="{{this.field_alias}}"
                     data-category-filter-name="{{{this.name}}}"
                 >
                     {{{this.name}}}

@@ -391,15 +391,13 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
      * Populate lobby with the set response
      */
     private setLobby(key?: string) {
-        key = "all-games";
-        /* remove default key value on game category implementation */
-        /* remove comment on game category and search implementation */
-        // if (!key) {
-        //     key = this.response.categories[0].field_games_alias;
-        //     key = this.getActiveCategory(this.response.games, key);
-        // }
-        // this.setCategories(this.response.categories, key);
-        this.setGames(this.response.games[key], key);
+        if (!key) {
+            key = this.response.categories[0].field_alias;
+            key = this.getActiveCategory(this.response.games, key);
+        }
+
+        this.setCategories(this.response.categories, key);
+        // this.setGames(this.response.games[key], key);
     }
 
     /**
@@ -449,6 +447,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
      */
     private setGames(data, activeCategory: string = " ", page: number = 0, isRecommend = false) {
         const gamesEl = this.element.querySelector("#game-container");
+        console.log(data);
         const pager = this.getPagedContent(data);
 
         let template = gameTemplate({
@@ -456,8 +455,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
             isRecommended: isRecommend,
-            isAllGames: "all-games",
-            /* isAllGames: activeCategory === "all-games" */
+            isAllGames: activeCategory === "all-games",
         });
         if (this.currentPage > page) {
             template = "";
