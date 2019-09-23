@@ -1,4 +1,4 @@
-{% if app.lang == "ch" or app.lang == "sc" and app.product_resolver.getProduct != "mobile-casino-gold" %}
+{% if app.lang == "ch" or app.lang == "sc" and app.product_resolver.getProduct != "mobile-casino-gold" and app.product_resolver.getProduct != "mobile-soda-casino" %}
     <img src="{{ asset('images/dafabet_logo_chinese.png') }}" alt="{{ logo_title }}" class="logo-img">
 {% elseif app.product_resolver.getProduct == "mobile-casino-gold" %}
     <img src="{{ asset('images/dafabet-gold-sc.png') }}" alt="{{ logo_title }}" class="logo-img">
