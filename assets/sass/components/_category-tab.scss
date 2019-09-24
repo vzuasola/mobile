@@ -178,3 +178,50 @@
         border-radius: 0.3rem;
     }
 }
+
+// Soda Casino
+.mobile-soda-casino {
+    .category-tab {
+        background: $soda-blue;
+
+        .game-search {
+            .search-tab {
+                width: 5rem;
+                background: $soda-blue;
+                border-right: 0.1rem solid $soda-blue;
+
+                svg {
+                    margin: 1.2rem 0 0 2.5rem;
+                }
+            }
+
+            .search-tab.active {
+                svg {
+                    fill: #FFC371;
+                }
+            }
+        }
+    }
+
+    .category-tab-list {
+        margin-left: 5rem;
+        background: $soda-blue;
+
+        .game-category {
+            &-item {
+                border-left: 0.1rem solid $soda-blue;
+            }
+
+            &-item.active {
+                .active {
+                    background: $soda-dark-blue;
+                    color: #FFC371;
+                }
+            }
+        }
+
+        a {
+            background: $soda-blue;
+        }
+    }
+}

@@ -160,7 +160,7 @@ class SodaCasinoLobbyComponentController
         $cacheKey = 'views.'. $product .'-lobby-data.';
         $item = $this->cacher->getItem($cacheKey . $this->currentLanguage);
 
-        if ($item->isHit()) {
+        if (!$item->isHit()) {
             $data = $this->generateLobbyData($product);
 
             $item->set([

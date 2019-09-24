@@ -77,8 +77,8 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.load = true;
         this.checkLoginState();
         /* remove comment on game category and search implementation */
-        // this.listenChangeCategory();
-        // this.listenHashChange();
+        this.listenChangeCategory();
+        this.listenHashChange();
         this.listenClickGameTile();
         this.listenGameLaunch();
         /* remove comment on game category and search implementation */
@@ -123,8 +123,8 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         if (!this.element) {
             this.checkLoginState();
             /* remove comment on game category and search implementation */
-            // this.listenChangeCategory();
-            // this.listenHashChange();
+            this.listenChangeCategory();
+            this.listenHashChange();
             this.listenClickGameTile();
             this.listenGameLaunch();
             /* remove comment on game category and search implementation */
@@ -340,11 +340,9 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                         // clone respone object
                         const newResponse = Object.assign({}, mergeResponse);
 
-                        /* remove comment on game category and search implementation */
-                        // newResponse.games = this.getCategoryGames(newResponse.games);
+                        newResponse.games = this.getCategoryGames(newResponse.games);
                         newResponse.games = this.groupGamesByContainer(newResponse.games);
-                        /* remove comment on game category and search implementation */
-                        // newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
+                        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
                         if (pageResponse.hasOwnProperty("fav")) {
                             const key = "fav";
                             const favoritesList = pageResponse[key];
@@ -397,7 +395,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         }
 
         this.setCategories(this.response.categories, key);
-        // this.setGames(this.response.games[key], key);
+        this.setGames(this.response.games[key], key);
     }
 
     /**
@@ -447,7 +445,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
      */
     private setGames(data, activeCategory: string = " ", page: number = 0, isRecommend = false) {
         const gamesEl = this.element.querySelector("#game-container");
-        console.log(data);
         const pager = this.getPagedContent(data);
 
         let template = gameTemplate({
@@ -930,8 +927,8 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private filterCategories(categories, gamesList) {
         const filteredCategory: any = [];
         for (const category of categories) {
-            if (gamesList.hasOwnProperty(category.field_games_alias)
-                && gamesList[category.field_games_alias].length) {
+            if (gamesList.hasOwnProperty(category.field_alias)
+                && gamesList[category.field_alias].length) {
                 filteredCategory.push(category);
             }
         }
