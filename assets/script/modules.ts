@@ -20,6 +20,7 @@ import {RubyPlayModule} from "@app/src/Module/GameIntegration/RubyPlay/script";
 import {EvolutionGamingModule} from "@app/src/Module/GameIntegration/EvolutionGaming/script";
 import {EBetModule} from "@app/src/Module/GameIntegration/EBet/script";
 import {GPIModule} from "@app/src/Module/GameIntegration/GPI/script";
+import {GPIArcadeModule} from "@app/src/Module/GameIntegration/GPIArcade/script";
 import {GPIKenoModule} from "@app/src/Module/GameIntegration/GPIKeno/script";
 import {GPIPkModule} from "@app/src/Module/GameIntegration/GPIPk/script";
 import {GPIThaiModule} from "@app/src/Module/GameIntegration/GPIThai/script";
@@ -61,6 +62,7 @@ ComponentManager.setModules({
     evolution_gaming_integration: new EvolutionGamingModule(),
     ebet_integration: new EBetModule(),
     gpi_integration: new GPIModule(),
+    gpi_arcade_integration: new GPIArcadeModule(),
     gpi_keno_integration: new GPIKenoModule(),
     gpi_pk_integration: new GPIPkModule(),
     gpi_thai_integration: new GPIThaiModule(),
