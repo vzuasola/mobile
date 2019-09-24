@@ -76,13 +76,17 @@ class GPIArcadeModuleController
             $versionno = $gpiConfig['gpi_lottery_keno_version_no'];
             $vendor = $gpiConfig['gpi_vendor_id'];
             $ticket = $sessiontokenizer . '.1037';
+            $gameCode = $requestData['gameCode'];
 
             $args = array_merge([
                 'lang' => $requestData['langCode'],
-                'op' => $vendor,
-                'token' => $ticket,
-                'sys' => 'CUSTOM',
+                'vendor' => $vendor,
+                'ticket' => $ticket,
             ], $extraParams);
+
+            if ($gameCode) {
+                $args['game'] = $gameCode;
+            }
 
             $query = http_build_query($args);
 

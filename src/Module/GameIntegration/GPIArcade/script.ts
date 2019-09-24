@@ -9,8 +9,8 @@ import {GameInterface} from "../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 
 export class GPIArcadeModule implements ModuleInterface, GameInterface {
-    private key: string = "gpi";
-    private moduleName: string = "gpi_integration";
+    private key: string = "gpi_arcade";
+    private moduleName: string = "gpi_arcade_integration";
     private currencies: any;
     private languages: any;
     private windowObject: any;
