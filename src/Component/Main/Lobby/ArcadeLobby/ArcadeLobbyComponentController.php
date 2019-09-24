@@ -140,6 +140,18 @@ class ArcadeLobbyComponentController
         }
     }
 
+     /**
+     * set player's favorite games
+     */
+    public function favorite($request, $response)
+    {
+        $gameCode = $request->getParsedBody();
+        if (isset($gameCode['gameCode'])) {
+            $result = $this->toggleFavoriteGames($gameCode['gameCode']);
+            return $this->rest->output($response, $result);
+        }
+    }
+
     /**
      * Retrieves list of player's favorite games
      */
@@ -497,6 +509,41 @@ class ArcadeLobbyComponentController
                 }
 
                 $this->recentGames->saveRecents([$gameCode]);
+
+                $response['success'] = true;
+            }
+        } catch (\Exception $e) {
+            $response['success'] = false;
+        }
+
+        return $response;
+    }
+
+    /**
+     * Set favorite games
+     */
+    private function toggleFavoriteGames($gameCode)
+    {
+        $response = ['success' => false];
+        try {
+            if ($this->playerSession->isLogin()) {
+                $favoriteGames = $this->favorite->getFavorites();
+                $favoriteGames = $this->proccessSpecialGames($favoriteGames);
+                $favoriteGames = (is_array($favoriteGames)) ? $favoriteGames : [];
+                $favorites = [];
+                foreach ($favoriteGames as $games) {
+                    $favorites[] = $games['id'];
+                }
+
+                if (count($favorites) >= 0 &&
+                    in_array($gameCode, $favorites)
+                ) {
+                    $this->favorite->removeFavorites([$gameCode]);
+                    $response['success'] = true;
+                    return $response;
+                }
+
+                $this->favorite->saveFavorites([$gameCode]);
 
                 $response['success'] = true;
             }

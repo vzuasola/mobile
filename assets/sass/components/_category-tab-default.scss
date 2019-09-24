@@ -341,6 +341,37 @@
                         margin: 0;
                     }
 
+                    .game-favorite {
+                        position: absolute;
+                        top: 0;
+                        outline: none;
+                        border: 0;
+                        cursor: pointer;
+                        right: 2.75%;
+                        width: 40%;
+                        height: 40%;
+
+                        svg {
+                            margin: 15% 0 0 55%;
+                            width: 32%;
+                            outline: none;
+                            border: 0;
+                            cursor: pointer;
+
+                            path {
+                                fill: $white;
+                            }
+                        }
+                    }
+
+                    .game-favorite.active {
+                        svg {
+                            path {
+                                fill: $yellow;
+                            }
+                        }
+                    }
+
                     &-maintenance {
                         &-title {
                             position: absolute;

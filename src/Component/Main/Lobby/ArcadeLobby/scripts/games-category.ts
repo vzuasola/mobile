@@ -108,7 +108,7 @@ export class GamesCategory {
      * Set active category
      */
     setActiveCategory(activeCategory) {
-        const prevActiveEl = document.querySelector(".category-tab .active");
+        const prevActiveEl = document.querySelector(".category-tab.active");
         if (prevActiveEl) {
             utility.removeClass(prevActiveEl, "active");
             utility.removeClass(utility.findParent(prevActiveEl, "li"), "active");
@@ -157,6 +157,7 @@ export class GamesCategory {
      */
     private filterCategories(categories) {
         const filteredCategories: any[] = [];
+        this.providers = this.filteredCategoryObj = this.filteredCategoriesAlias = [];
         for (const category of categories) {
             /* tslint:disable:no-string-literal */
             if (category.hasOwnProperty("field_games_alias") &&
