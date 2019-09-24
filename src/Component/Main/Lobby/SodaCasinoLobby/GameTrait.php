@@ -68,7 +68,7 @@ trait GameTrait
             $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
                 && $game['field_disable_game_loader'][0]['value']) ? "false" : "false";
-                
+
             $categoryList = [];
             foreach ($game['field_games_list_category'] as $category) {
                 $categoryList[$category['field_alias'][0]['value']] = $category['weight'];
