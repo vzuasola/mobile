@@ -19,6 +19,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private response: any;
     private groupedGames: any;
     private windowObject: any;
+    private favoritesList: any = [];
     private lazyLoader: LazyLoader;
     private gameCategories: GamesCategory;
     private gamesCollectionSort: GamesCollectionSorting;
@@ -58,6 +59,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.listenOnResize();
         this.listenOnSearch();
         this.listenProviderMoreEvent();
+        this.listenFavoriteClick();
         this.gamesSearch.handleOnLoad(this.element, this.attachments);
     }
 
@@ -78,6 +80,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenOnResize();
             this.listenOnSearch();
             this.listenProviderMoreEvent();
+            this.listenFavoriteClick();
         }
         this.response = undefined;
         this.element = element;
@@ -238,6 +241,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
 
         if (responses.hasOwnProperty("fav")) {
             gamesList.favorites = this.getGamesDefinition(responses.fav, gamesList["all-games"]);
+            this.setFavoritesList(responses.fav);
         }
 
         if (responses.hasOwnProperty("recent")) {
@@ -281,6 +285,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.attachments.authenticated,
             this.attachments.configs,
             this.element.querySelector("#game-container"),
+            this.favoritesList,
             activeCategory,
             enableLazyLoad,
         );
@@ -433,6 +438,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         });
     }
 
+    /**
+     * Broadcast event to open provider drawer
+     */
     private broadcastOpenDrawer(isProviderTab) {
         this.gameCategories.render(isProviderTab, () => {
             setTimeout(() => {
@@ -568,7 +576,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             },
         }).then((result) => {
             if (result.success) {
-                this.getRecentlyPlayedGame();
+                this.doUpdateSpecialCategory("getRecentlyPlayed", "recently-played");
             }
         }).fail((error, message) => {
             console.log(error);
@@ -579,29 +587,85 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      * Refresh game categories and game tiles to add
      * recently played games
      */
-    private getRecentlyPlayedGame() {
+    private doUpdateSpecialCategory(method, category, callback?) {
         xhr({
-            url: Router.generateRoute("arcade_lobby", "getRecentlyPlayed"),
+            url: Router.generateRoute("arcade_lobby", method),
             type: "json",
         }).then((result) => {
             if (result) {
-                const activeCategory = this.gameCategories.getActiveCategory();
-                const recentlyPlayedGames = this.getGamesDefinition(result, this.response.games["all-games"]);
-                this.response.games["recently-played"] = recentlyPlayedGames;
-                this.groupedGames["recently-played"] = recentlyPlayedGames;
-                // re-render categories, if recently played is not yet active
-                if (this.gameCategories.getFilteredCategoriesAlias().indexOf("recently-played") === -1) {
-                    this.gameCategories.setCategories(this.response.categories, this.groupedGames);
-                    this.gameCategories.render(false);
+                if (callback) {
+                    callback(result);
                 }
-                // re-render games if active category is recently played
-                if (activeCategory === "recently-played") {
-                    this.populateGames(activeCategory);
-                }
+                this.updateLobbyByCategory(result, category);
             }
         }).fail((error, message) => {
             console.log(error);
         });
     }
 
+    /**
+     * Favorites handlers
+     */
+    /**
+     * Event listener for favorites click
+     */
+    private listenFavoriteClick() {
+        ComponentManager.subscribe("click", (event, src) => {
+            const el = utility.hasClass(src, "game-favorite", true);
+            if (el && this.attachments.authenticated) {
+                const gameCode = el.parentElement.getAttribute("data-game-code");
+                xhr({
+                    url: Router.generateRoute("arcade_lobby", "favorite"),
+                    type: "json",
+                    method: "post",
+                    data: {
+                        gameCode,
+                    },
+                }).then((result) => {
+                    if (result.success) {
+                        this.doUpdateSpecialCategory("getFavorites", "favorites", (response) => {
+                            this.setFavoritesList(response);
+                        });
+                        utility.toggleClass(el, "active");
+                    }
+                }).fail((error, message) => {
+                    console.log(error);
+                });
+            }
+        });
+    }
+
+    /**
+     * Refresh game categories and game tiles to add
+     * recently played / favorites games
+     */
+    private updateLobbyByCategory(result, category) {
+        const categoryGames = this.getGamesDefinition(result, this.response.games["all-games"]);
+
+        this.response.games[category] = categoryGames;
+        this.groupedGames[category] = categoryGames;
+        // re-render categories, if recently played / favorites is not yet active
+        if (this.gameCategories.getFilteredCategoriesAlias().indexOf(category) === -1
+            || !categoryGames.length) {
+            this.gameCategories.setCategories(this.response.categories, this.groupedGames);
+            this.gameCategories.render(false);
+        }
+        // re-render games if active category is recently played / favorites
+        if (this.gameCategories.getActiveCategory() === category || !categoryGames.length) {
+            this.populateGames(this.gameCategories.getActiveCategory());
+        }
+
+        if (!categoryGames.length) {
+            window.location.hash = this.gameCategories.getActiveCategory();
+        }
+    }
+
+    private setFavoritesList(favorites) {
+        this.favoritesList = [];
+        if (favorites) {
+            for (const id of favorites) {
+                this.favoritesList[id.substr(3)] = "active";
+            }
+        }
+    }
 }
