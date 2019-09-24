@@ -21,6 +21,7 @@ class BalanceModuleController
         'opus_keno' => 9,
         'exchange' => 10,
         'esports' => 11,
+        'soda_casino' => 13,
     ];
 
     const PRODUCT_MAPPING = [
@@ -32,6 +33,7 @@ class BalanceModuleController
         'mobile-exchange' => 10,
         'mobile-lottery' => 5,
         'mobile-arcade' => 5,
+        'mobile-soda-casino' => 13,
     ];
 
     private $rest;

@@ -1,4 +1,7 @@
 {% set logoUri = header.logo_uri is defined ? header.logo_uri : url('/') %}
+{% if app.product_resolver.getProduct == "mobile-soda-casino" %}
+    {% set logoUri = url('/soda-casino') %}
+{% endif %}
 
 <a
     href="{{ logoUri }}"
