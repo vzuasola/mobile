@@ -174,7 +174,7 @@ export class GamesCategory {
                         this.filteredCategoryObj[category["field_games_alias"]] = category;
                     }
 
-                    if (category.field_games_is_sub_category === "0") {
+                    if (category.field_games_is_sub_category === "1") {
                         this.providers.push(category);
                     }
             }
