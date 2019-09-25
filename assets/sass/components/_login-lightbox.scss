@@ -126,17 +126,17 @@
             }
 
             .invalid::placeholder {
-                color: $red;
+                color: $white;
             }
 
             .invalid {
-                background: #faffbd;
+                background: $soda-blue;
             }
 
             .invalid ~ .login-field-icon,
             .invalid ~ span .password-icon-mask,
             .invalid ~ span .password-icon-unmask {
-                fill: $red;
+                fill: $white;
             }
 
             &-icon {
