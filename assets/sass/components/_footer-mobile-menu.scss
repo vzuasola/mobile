@@ -60,3 +60,13 @@
         }
     }
 }
+
+.mobile-soda-casino {
+    .footer-mobile-menu li a {
+        background: $soda-blue;
+        border-top: 0.1rem solid $soda-gray;
+        border-right: 0.1rem solid $soda-gray;
+        border-left: 0.1rem solid $soda-gray;
+        border-bottom: 0.1rem solid $soda-gray;
+    }
+}
