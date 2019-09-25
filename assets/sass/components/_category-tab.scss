@@ -188,7 +188,7 @@
             .search-tab {
                 width: 5rem;
                 background: $soda-blue;
-                border-right: 0;
+                border-right: 0.1rem solid $soda-dark-blue;
 
                 svg {
                     margin: 1.2rem 0 0 2.5rem;
@@ -209,9 +209,6 @@
 
         .game-category {
             &-item {
-                display: block;
-                float: left;
-                margin-left: 0;
                 border-left: 0.1rem solid $soda-dark-blue;
             }
 
