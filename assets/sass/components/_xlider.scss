@@ -119,3 +119,21 @@
         opacity: 1;
     }
 }
+
+/*SODA CASINO*/
+.mobile-soda-casino {
+    .xlider {
+        &-blurb {
+            background: #02122E 0% 0% no-repeat padding-box;
+            opacity: 0.9;
+        }
+
+        .btn-soda.btn {
+           border: 0.1rem solid #FF5F6D;
+           border-radius: 2.5rem;
+           opacity: 1;
+           color: #FF5F6D;
+        }
+
+    }
+}
