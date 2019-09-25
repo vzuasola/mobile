@@ -55,11 +55,38 @@
 }
 
 .mobile-soda-casino {
-    .sponsors-lists {
-        border-bottom: 0.2rem solid #000000;
-        font: Bold 0.2rem/0.5rem Roboto;
-        letter-spacing: 0;
-        color: #000000;
-        opacity: 1;
+    .sponsors {
+        &-lists {
+            border-bottom: 0.2rem solid #000000;
+            font: Bold 0.2rem/0.5rem Roboto;
+            letter-spacing: 0;
+            color: #000000;
+            opacity: 1;
+        }
+
+        &-title,
+        &-desc {
+            font-size: 1.4rem;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            margin: 0;
+        }
+
+        .col-4 + &-lists.col-4:nth-last-child(3),
+        .col-6 + &-lists.col-4:nth-last-child(3),
+        .col-12 + &-lists.col-4:nth-last-child(3),
+        &-lists.col-4:nth-last-child(2),
+        &-lists.col-6:nth-last-child(2),
+        &-lists:last-child {
+            border-bottom: 0.2rem solid #000000 !important;
+        }
+
+        .col-4 + &-lists.col-4:nth-child(3),
+        .col-6 + &-lists.col-6:nth-last-child(2) {
+            border-bottom: 0.2rem solid #000000;
+        }
+
+        .col-4 + .sponsors-lists.col-4:nth-child(3), .col-6 + .sponsors-lists.col-6:nth-last-child(2) {
+            border-bottom: 0.2rem solid #000000;
+        }
     }
 }
