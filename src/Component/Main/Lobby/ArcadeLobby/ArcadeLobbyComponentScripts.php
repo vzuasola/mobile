@@ -51,6 +51,12 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
         }
 
         try {
+            $searchConfig = $this->configs->getConfig('games_search.search_configuration');
+        } catch (\Exception $e) {
+            $searchConfig = [];
+        }
+
+        try {
             $pager = $this->views->getViewById('games_list', ['pager' => 1]);
         } catch (\Exception $e) {
             $pager = [];
@@ -61,6 +67,14 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
             'product' => $this->getProductIntegration(),
             'pagerConfig' => $pager ?? [],
             'configs' => $arcadeConfigs,
+            'search_blurb' => $searchConfig['search_blurb'] ?? "",
+            'search_no_result_msg' => $searchConfig['search_no_result_msg'] ?? "",
+            'filter_no_result_msg' => $searchConfig['filter_no_result_msg'] ?? "",
+            'msg_recommended_available' => $searchConfig['msg_recommended_available'] ?? "",
+            'msg_no_recommended' => $searchConfig['msg_no_recommended'] ?? "",
+            'title_weight' => $searchConfig['title_weight'] ?? 0,
+            'keywords_weight' => $searchConfig['keywords_weight'] ?? 0,
+
         ];
     }
 

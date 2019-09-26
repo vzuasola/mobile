@@ -9,6 +9,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import { GamesCategory } from "./scripts/games-category";
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import {GamesSearch} from "./scripts/games-search";
+import {GamesFilter} from "@app/assets/script/components/games-filter";
 import PopupWindow from "@app/assets/script/components/popup";
 /**
  *
@@ -24,12 +25,14 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private gameCategories: GamesCategory;
     private gamesCollectionSort: GamesCollectionSorting;
     private gamesSearch: GamesSearch;
+    private gamesFilter: GamesFilter;
     private productMenu: string = "product-arcade";
 
     constructor() {
         this.lazyLoader = new LazyLoader();
         this.gamesCollectionSort = new GamesCollectionSorting();
         this.gamesSearch = new GamesSearch();
+        this.gamesFilter = new GamesFilter();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -50,17 +53,20 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         });
 
         this.listenHashChange();
-        this.listenClickGameTile();
+        this.listenProviderMoreEvent();
         this.listenToScroll();
+        this.listenClickGameTile();
         this.listenGameLaunch();
+        this.listenFavoriteClick();
         this.listenToLaunchGameLoader();
         this.listenOnLogin();
         this.listenOnLogout();
         this.listenOnResize();
         this.listenOnSearch();
-        this.listenProviderMoreEvent();
-        this.listenFavoriteClick();
+        this.listenOnFilter();
+        this.listenOnCloseFilter();
         this.gamesSearch.handleOnLoad(this.element, this.attachments);
+        this.gamesFilter.handleOnLoad(this.element, this.attachments, false);
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -71,16 +77,18 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     }) {
         if (!this.element) {
             this.listenHashChange();
-            this.listenClickGameTile();
+            this.listenProviderMoreEvent();
             this.listenToScroll();
+            this.listenClickGameTile();
             this.listenGameLaunch();
+            this.listenFavoriteClick();
             this.listenToLaunchGameLoader();
             this.listenOnLogin();
             this.listenOnLogout();
             this.listenOnResize();
             this.listenOnSearch();
-            this.listenProviderMoreEvent();
-            this.listenFavoriteClick();
+            this.listenOnFilter();
+            this.listenOnCloseFilter();
         }
         this.response = undefined;
         this.element = element;
@@ -95,6 +103,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         });
 
         this.gamesSearch.handleOnReLoad(this.element, this.attachments);
+        this.gamesFilter.handleOnReLoad(this.element, this.attachments, false);
     }
 
     /**
@@ -122,6 +131,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         const activeCategory = this.gameCategories.getActiveCategory();
         this.populateGames(activeCategory);
         this.gamesSearch.setGamesList(this.groupedGames, this.response, activeCategory);
+        this.gamesFilter.setGamesList({games: this.groupedGames});
     }
 
     /**
@@ -250,6 +260,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
 
         if (responses.hasOwnProperty("games-collection")) {
             promises.gamesCollection = responses["games-collection"];
+            gamesList["recommended-games"] = (responses["games-collection"].hasOwnProperty("recommended-games"))
+                ? this.getGamesDefinition(responses["games-collection"]["recommended-games"], gamesList["all-games"])
+                : [];
         }
         promises.games = gamesList;
         return promises;
@@ -326,6 +339,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         }
         gamesList["recently-played"] = this.response["games"]["recently-played"];
         gamesList["favorites"] = this.response["games"]["favorites"];
+        gamesList["recommended-games"] = this.response["games"]["recommended-games"];
         return gamesList;
     }
 
@@ -335,7 +349,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private sortGamesByGamesCollection(gamesList) {
         const sortedGamesList: any = [];
-        const exempFromSort: any = ["favorites", "recently-played"];
+        const exempFromSort: any = ["favorites", "recently-played", "recommended-games"];
 
         for (const category of Object.keys(gamesList)) {
             if (gamesList.hasOwnProperty(category) && exempFromSort.indexOf(category) === -1) {
@@ -390,12 +404,13 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 if (utility.getHash(window.location.href) !== activeCategory) {
                     window.location.hash = activeCategory;
                 }
+                ComponentManager.broadcast("category.change");
             }
         });
     }
 
     /**
-     * Event listener for url hash change
+     * Event listener for scrolling for lazy load
      */
     private listenToScroll() {
         utility.listen(window, "scroll", (event, src) => {
@@ -409,7 +424,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     }
 
     /**
-     * Event listener for game item click
+     * Event listener for click
      */
     private listenClickGameTile() {
         ComponentManager.subscribe("click", (event, src, data) => {
@@ -424,9 +439,33 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 this.gameCategories.sortProviders(this.response.providers_list);
                 this.broadcastOpenDrawer(true);
             }
+
+            // listen click for game categories
+            const providerItem = utility.hasClass(src, "category-tab", true);
+            const categoryItem = utility.hasClass(src, "category-provider-menu", true, 1);
+            if (providerItem &&
+                !utility.hasClass(src, "game-providers-more", true)
+            ) {
+                this.reloadGames(providerItem);
+            }
+
+            if (categoryItem) {
+                this.reloadGames(categoryItem);
+            }
         });
     }
 
+    private reloadGames(category) {
+        if (utility.getHash(window.location.href) === category.getAttribute("data-category-filter-id")) {
+            this.gameCategories.setActiveCategory(category.getAttribute("data-category-filter-id"));
+            this.populateGames(category.getAttribute("data-category-filter-id"));
+            ComponentManager.broadcast("category.change");
+        }
+    }
+
+    /**
+     * Event listener for click on More Drawer
+     */
     private listenProviderMoreEvent() {
         ComponentManager.subscribe(utility.eventType(), (src, target) => {
             if (ComponentManager.getAttribute("product") === "mobile-arcade") {
@@ -450,7 +489,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     }
 
     /**
-     * Event listener for game item click
+     * Event listener for game launch
      */
     private listenGameLaunch() {
         ComponentManager.subscribe("game.launch", (event, src, data) => {
@@ -546,6 +585,52 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("games.search.success", (event, src, data) => {
            this.populateGames(data.activeCategory, data.games);
         });
+    }
+
+    /**
+     * Listen for a successful filter
+     */
+    private listenOnFilter() {
+        ComponentManager.subscribe("games.filter.success", (event: Event, src, data) => {
+            this.gamesSearch.activateSearchTab();
+            if (data.filteredGames && data.filteredGames.length) {
+                this.gamesSearch.clearSearchBlurbLobby();
+                this.populateGames(data.activeCategory, data.filteredGames);
+            } else {
+                const recommendedGames = this.groupedGames["recommended-games"];
+                let recommended: boolean = false;
+                if (recommendedGames) {
+                    recommended = true;
+                    this.populateGames(this.gameCategories.getActiveCategory(), recommendedGames);
+                }
+                this.updateBlurbForFilter(recommended);
+            }
+        });
+    }
+
+    /**
+     * Listen for closing of filter lightbox
+     */
+    private listenOnCloseFilter() {
+        ComponentManager.subscribe("games.reload", (event: Event, src, data) => {
+            ComponentManager.broadcast("category.change");
+            const activeCategory = this.gameCategories.getActiveCategory();
+            this.gameCategories.setActiveCategory(activeCategory);
+            this.populateGames(activeCategory);
+        });
+    }
+
+    /**
+     * Update filter blurb
+     */
+    private updateBlurbForFilter(recommended: boolean) {
+        const searchBlurbEl = this.element.querySelector("#blurb-lobby");
+        let recommendedBlurb = this.attachments.msg_no_recommended;
+        if (recommended) {
+            recommendedBlurb = this.attachments.msg_recommended_available;
+        }
+        recommendedBlurb = "<span>" + recommendedBlurb + "</span>";
+        searchBlurbEl.innerHTML = this.attachments.filter_no_result_msg + recommendedBlurb;
     }
 
     /**
@@ -660,6 +745,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         }
     }
 
+    /**
+     * Set favorites list to be used to set favorites icon state
+     */
     private setFavoritesList(favorites) {
         this.favoritesList = [];
         if (favorites) {

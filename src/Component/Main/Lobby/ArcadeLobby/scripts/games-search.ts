@@ -24,6 +24,7 @@ export class GamesSearch {
     private searchBlurb;
     private recommendedGames;
     private timer;
+    private hasResult;
     private activeCategory: string;
 
     constructor() {
@@ -45,6 +46,7 @@ export class GamesSearch {
             title_weight: number,
             keywords_weight: 0,
             search_no_result_msg: string,
+            filter_no_result_msg: string,
             search_blurb: string,
             msg_recommended_available: string,
             msg_no_recommended: string,
@@ -69,6 +71,7 @@ export class GamesSearch {
             title_weight: number,
             keywords_weight: 0,
             search_no_result_msg: string,
+            filter_no_result_msg: string,
             search_blurb: string,
             msg_recommended_available: string,
             msg_no_recommended: string,
@@ -100,6 +103,40 @@ export class GamesSearch {
         }
     }
 
+    /*
+     * Function that enables search tab and sets category in URL to inactive
+     */
+    activateSearchTab() {
+        // set search tab as active tab
+        this.deactivateSearchTab();
+        const actives = document.querySelectorAll(".category-" + this.activeCategory);
+        for (const id in actives) {
+            if (actives.hasOwnProperty(id)) {
+                const active = actives[id];
+                utility.removeClass(active, "active");
+                utility.removeClass(utility.findParent(active, "li"), "active");
+           }
+        }
+
+        utility.addClass(this.element.querySelector(".search-tab"), "active");
+    }
+
+    /**
+     * Function that clears search results.
+     */
+    clearSearchResult() {
+        this.element.querySelector(".games-search-result").innerHTML = "";
+        this.element.querySelector(".games-search-input").value = "";
+    }
+
+    clearSearchBlurbPreview() {
+        this.element.querySelector("#blurb-preview").innerHTML = "";
+    }
+
+    clearSearchBlurbLobby() {
+        this.element.querySelector("#blurb-lobby").innerHTML = "";
+    }
+
     /**
      * Callback function on search success on search preview
      * and search games result via lobby
@@ -119,7 +156,7 @@ export class GamesSearch {
         this.setGamesResultPreview(sortedGames);
     }
 
-    private onSuccessSearchLobby(response, keyword) {
+    private onSuccessSearchLobby(response) {
         // populate search results in games lobby search tab
         ComponentManager.broadcast("games.search.success", {
             games: response,
@@ -188,40 +225,6 @@ export class GamesSearch {
         if (gamesPreview) {
             gamesPreview.innerHTML = previewTemplate;
         }
-    }
-
-    /**
-     * Function that clears search results.
-     */
-    private clearSearchResult() {
-        this.element.querySelector(".games-search-result").innerHTML = "";
-        this.element.querySelector(".games-search-input").value = "";
-    }
-
-    private clearSearchBlurbPreview() {
-        this.element.querySelector("#blurb-preview").innerHTML = "";
-    }
-
-    private clearSearchBlurbLobby() {
-        this.element.querySelector("#blurb-lobby").innerHTML = "";
-    }
-
-    /*
-     * Function that enables search tab and sets category in URL to inactive
-     */
-    private activateSearchTab() {
-        // set search tab as active tab
-        this.deactivateSearchTab();
-        const actives = document.querySelectorAll(".category-" + this.activeCategory);
-        for (const id in actives) {
-            if (actives.hasOwnProperty(id)) {
-                const active = actives[id];
-                utility.removeClass(active, "active");
-                utility.removeClass(utility.findParent(active, "li"), "active");
-           }
-        }
-
-        utility.addClass(this.element.querySelector(".search-tab"), "active");
     }
 
     /*
@@ -336,11 +339,13 @@ export class GamesSearch {
             const keyword =  this.element.querySelector(".games-search-input");
             if (this.timer !== null) {
                 clearTimeout(this.timer);
+                this.hasResult = false;
             }
 
             this.timer = setTimeout(() => {
                 if (keyword && keyword.value) {
                     this.searchObj.search(keyword.value);
+                    this.hasResult = true;
                 } else {
                     this.clearSearchResult();
                     this.clearSearchBlurbPreview();
@@ -352,7 +357,7 @@ export class GamesSearch {
     private listenSubmitGameSearch() {
         ComponentManager.subscribe("submit", (event, src) => {
             const el = utility.hasClass(src, "games-search-form", true);
-            if (el) {
+            if (el && this.hasResult) {
                 event.preventDefault();
                 this.showResultInLobby();
             }
@@ -367,7 +372,7 @@ export class GamesSearch {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "games-search-submit", true);
             const keyword = this.element.querySelector(".games-search-input");
-            if (el && keyword.value) {
+            if (el && keyword.value && this.hasResult) {
                 keyword.blur();
                 event.preventDefault();
                 this.showResultInLobby();
@@ -379,11 +384,12 @@ export class GamesSearch {
      * Shows search result in games lobby.
      */
     private showResultInLobby() {
+        const resultCount: number = (this.searchResult) ? this.searchResult.length : 0;
         this.activateSearchTab();
         this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
-                { count: this.searchResult.length, keyword: this.searchKeyword });
-        if (this.searchResult.length) {
-            this.onSuccessSearchLobby(this.searchResult, this.searchKeyword);
+                { count: resultCount, keyword: this.searchKeyword });
+        if (resultCount) {
+            this.onSuccessSearchLobby(this.searchResult);
         } else {
             this.element.querySelector("#game-container").innerHTML = "";
         }
@@ -455,4 +461,5 @@ export class GamesSearch {
             }
         });
     }
+
 }
