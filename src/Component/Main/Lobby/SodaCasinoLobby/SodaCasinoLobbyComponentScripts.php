@@ -44,7 +44,7 @@ class SodaCasinoLobbyComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-       try {
+        try {
             $config = $this->configs->getConfig('games_search.search_configuration');
             $sodaCasinoGeneralConfig = $this->configs->getConfig('gts.gts_configuration');
             $pager = $this->views->getViewById('games_list', ['pager' => 1]);
