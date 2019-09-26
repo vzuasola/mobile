@@ -100,14 +100,17 @@ class ArcadeLobbyComponentController
     public function lobby($request, $response)
     {
         $query = $request->getQueryParams();
+        $isPreview = $query['pvw'] ?? false;
+        $previewKey = $isPreview ? "preview" : "no-preview";
+
         $page = null;
         if (isset($query['page'])) {
             $page = $query['page'];
         }
 
-        $item = $this->cacher->getItem('views.arcade-lobby-data.' . $page . $this->currentLanguage);
+        $item = $this->cacher->getItem('views.arcade-lobby-data.' . $page . $this->currentLanguage . "-" . $previewKey);
         if (!$item->isHit()) {
-            $data = $this->generatePageLobbyData($page);
+            $data = $this->generatePageLobbyData($page, $isPreview);
             if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
                 $item->set([
                     'body' => $data,
@@ -236,7 +239,7 @@ class ArcadeLobbyComponentController
     /**
      * Gets data from drupal
      */
-    private function generatePageLobbyData($page)
+    private function generatePageLobbyData($page, $isPreview)
     {
         $data = [];
         try {
@@ -266,7 +269,8 @@ class ArcadeLobbyComponentController
         $data['providers_list'] = $gamesProviders;
         $data['games']['all-games'] = $this->processAllGames(
             $allGames,
-            'all-games'
+            'all-games',
+            $isPreview
         );
 
         return $data;
@@ -340,12 +344,16 @@ class ArcadeLobbyComponentController
     /**
      * Arrange games per category
      */
-    private function processAllGames($games, $categoryId)
+    private function processAllGames($games, $categoryId, $isPreview)
     {
         $gamesList = [];
         foreach ($games as $game) {
             $special = ($categoryId === $this::RECOMMENDED_GAMES);
             $processedGame = $this->processGame($game, $special);
+            $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
+            if (!$isPreview && $preview_mode) {
+                continue;
+            }
             if (count($processedGame['categories'])) {
                 $gamesList['id:' . $game['field_game_code'][0]['value']] =  $processedGame;
             }
