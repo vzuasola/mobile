@@ -89,7 +89,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.lobby();
         });
         /* remove comment on game category and search implementation */
-        // this.listenToCategory();
+        this.listenToCategory();
         this.listenToScroll();
         this.listenToSwipe();
         // this.initMarker();
@@ -129,7 +129,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.listenGameLaunch();
             /* remove comment on game category and search implementation */
             // this.listenFavoriteClick();
-            // this.listenToCategory();
+            this.listenToCategory();
             this.listenToScroll();
             // this.listenOnSearch();
             // this.listenOnFilter();
@@ -501,7 +501,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         utility.listen(window, "hashchange", (event, src: any) => {
             if (this.lobbyProducts.indexOf(ComponentManager.getAttribute("product")) !== -1) {
                 this.currentPage = 0;
-                const first = this.response.categories[0].field_games_alias;
+                const first = this.response.categories[0].field_alias;
                 const key = this.getActiveCategory(this.response.games, first);
                 if (utility.getHash(window.location.href) !== key &&
                     key !== first
@@ -521,8 +521,8 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                             src = category;
                             break;
                         }
+                    }
                 }
-            }
 
                 if (activeLink) {
                     utility.removeClass(activeLink, "active");
