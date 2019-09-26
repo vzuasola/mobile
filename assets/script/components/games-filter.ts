@@ -20,19 +20,22 @@ export class GamesFilter {
     private fav: boolean;
     private recent: boolean;
     private enabledFilters: any;
-    handleOnLoad(element: HTMLElement, attachments: {}) {
+    private enableGamesGrouping: boolean;
+    handleOnLoad(element: HTMLElement, attachments: {}, enableGamesGrouping?) {
         this.fav = false;
         this.recent = false;
         this.enabledFilters = [];
         this.element = element;
+        this.enableGamesGrouping = (enableGamesGrouping !== "undefined") ? enableGamesGrouping : true;
         this.listenOnOpen();
         this.listenOnClick();
         this.listenOnCategoryChange();
         this.listenOnSuccessSearch();
     }
 
-    handleOnReLoad(element: HTMLElement, attachments: {}) {
+    handleOnReLoad(element: HTMLElement, attachments: {}, enableGamesGrouping?) {
         this.element = element;
+        this.enableGamesGrouping = (enableGamesGrouping !== "undefined") ? enableGamesGrouping : true;
         this.listenOnClick();
         this.listenOnOpen();
         this.listenOnCategoryChange();
@@ -143,7 +146,9 @@ export class GamesFilter {
                 flag = "general";
             }
 
-            filteredGames = this.groupGamesList(filteredGames);
+            if (this.enableGamesGrouping) {
+                filteredGames = this.groupGamesList(filteredGames);
+            }
 
             Modal.close("#games-search-filter-lightbox");
             Modal.close("#games-search-lightbox");
@@ -168,8 +173,12 @@ export class GamesFilter {
         const allGames = [];
         if (this.gameMasterList[key]) {
             for (const games of this.gameMasterList[key]) {
-                for (const game of games) {
-                    allGames.push(game);
+                if (this.enableGamesGrouping) {
+                    for (const game of games) {
+                        allGames.push(game);
+                    }
+                } else {
+                    allGames.push(games);
                 }
             }
         }
