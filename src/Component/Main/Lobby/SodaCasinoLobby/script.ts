@@ -91,7 +91,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         /* remove comment on game category and search implementation */
         // this.listenToCategory();
         this.listenToScroll();
-        // this.listenToSwipe();
+        this.listenToSwipe();
         // this.initMarker();
         // this.listenOnSearch();
         // this.listenOnFilter();
@@ -150,7 +150,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.lobby();
         });
         /* remove comment on game category and search implementation */
-        // this.listenToSwipe();
+        this.listenToSwipe();
         // this.initMarker();
         // this.gamesSearch.handleOnReLoad(this.element, attachments);
         // this.gamesFilter.handleOnReLoad(this.element, attachments);
