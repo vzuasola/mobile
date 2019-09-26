@@ -10,7 +10,10 @@ import { GamesCategory } from "./scripts/games-category";
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "@app/assets/script/components/games-filter";
-import PopupWindow from "@app/assets/script/components/popup";
+import {Marker} from "@app/assets/script/components/marker";
+
+import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
+import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
 /**
  *
  */
@@ -65,6 +68,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.listenOnSearch();
         this.listenOnFilter();
         this.listenOnCloseFilter();
+        this.initMarker();
         this.gamesSearch.handleOnLoad(this.element, this.attachments);
         this.gamesFilter.handleOnLoad(this.element, this.attachments, false);
     }
@@ -89,6 +93,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenOnSearch();
             this.listenOnFilter();
             this.listenOnCloseFilter();
+            this.initMarker();
         }
         this.response = undefined;
         this.element = element;
@@ -386,6 +391,15 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private highlightMenu() {
         ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
+    }
+
+    private initMarker() {
+        // Checkbox
+        new Marker({
+            parent: ".games-search-filter-body",
+            iconDefault: iconUnCheckedTemplate(),
+            iconActive: iconCheckedTemplate(),
+        });
     }
 
     /**
