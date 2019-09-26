@@ -62,6 +62,7 @@ class SodaCasinoLobbyComponentScripts implements ComponentAttachmentInterface
             'title_weight' => $config['title_weight'] ?? 0,
             'keywords_weight' => $config['keywords_weight'] ?? 0,
             'configs' => $sodaCasinoGeneralConfig ?? [],
+            'pagerConfig' => $pager ?? [],
             'product' => $this->getProductIntegration(),
             'infinite_scroll' => $sodaCasinoGeneralConfig['gts_lobby_infinite_scroll'] ?? true
         ];
