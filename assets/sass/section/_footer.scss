@@ -1,4 +1,5 @@
 .footer {
+    margin-top: 1rem;
     font-size: 1.2rem;
     color: $white;
 
@@ -10,9 +11,10 @@
 }
 
 .mobile-soda-casino {
-    .footer {
-	    background: $soda-gray;
-	}
+    .footer-mobile-soda-casino {
+        background: $soda-gray;
+        margin-top: 0;
+    }
 }
 
 @import "../components/app-download";

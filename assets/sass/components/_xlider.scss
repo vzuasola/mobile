@@ -135,5 +135,20 @@
            color: #FF5F6D;
         }
 
+        .btn-soda.btn:focus,
+        .btn-soda.btn.focus,
+        .btn-soda.btn:hover,
+        .btn-soda.btn:active,
+        .btn-soda.btn.active {
+            border-color: #ffe000;
+            background-color: #ffe000;
+            color: #373737;
+        }
+
+        .fade .xlider-blurb.bottom {
+            bottom: 0;
+            opacity: 0.9;
+        }
+
     }
 }
