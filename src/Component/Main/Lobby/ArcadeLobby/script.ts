@@ -522,16 +522,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenToLaunchGameLoader() {
         ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
-                // Pop up loader with all data
-                const prop = {
-                    width: 360,
-                    height: 720,
-                    scrollbars: 1,
-                    scrollable: 1,
-                    resizable: 1,
-                };
-
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {               
                 let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
                 const source = utility.getParameterByName("source");
 
