@@ -522,7 +522,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenToLaunchGameLoader() {
         ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === "mobile-arcade") {               
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
                 let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
                 const source = utility.getParameterByName("source");
 
