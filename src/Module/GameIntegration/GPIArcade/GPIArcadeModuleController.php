@@ -55,25 +55,23 @@ class GPIArcadeModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
-        if ($this->checkCurrency($request)) {
-            $data = $this->getGameLobby($request, $response);
+        if ($this->checkCurrency()) {
+            $data = $this->getGameLobby($request);
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function getGameLobby($request, $response)
+    private function getGameLobby($request)
     {
         $data['currency'] = true;
         $requestData = $request->getParsedBody();
         try {
             $gpiConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
-            $providerMapping = Config::parse($gpiConfig['gpi_arcade_language_mapping'] ?? '');
             $extraParams = Config::parse($gpiConfig['gpi_arcade_extra_params']);
             $sessiontokenizer = $this->playerSession->getToken();
 
             $domain = $gpiConfig['gpi_game_url'];
-            $versionno = $gpiConfig['gpi_lottery_keno_version_no'];
             $vendor = $gpiConfig['gpi_vendor_id'];
             $ticket = $sessiontokenizer . '.1037';
             $gameCode = $requestData['gameCode'];
@@ -100,11 +98,11 @@ class GPIArcadeModuleController
         return $data;
     }
 
-    private function checkCurrency($request)
+    private function checkCurrency()
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
-            $currencies = explode("\r\n", $config['gpi_arcade_currency']);
+            $currencyConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
+            $currencies = explode("\r\n", $currencyConfig['gpi_arcade_currency']);
             $playerCurrency = $this->player->getCurrency();
 
             if (in_array($playerCurrency, $currencies)) {
