@@ -31,6 +31,11 @@
 
             &-more {
                 padding-top: 1.2rem;
+
+                .active {
+                    background: $dark-red;
+                    color: $yellow;
+                }
             }
 
             &-item:first-child {
@@ -45,11 +50,6 @@
 
             &-item.active {
                 background: $dark-red;
-
-                .active {
-                    background: $dark-red;
-                    color: $yellow;
-                }
             }
 
             .providers-more.active,
