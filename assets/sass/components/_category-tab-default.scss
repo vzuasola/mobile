@@ -50,6 +50,11 @@
 
             &-item.active {
                 background: $dark-red;
+
+                .active {
+                    background: $dark-red;
+                    color: $yellow;
+                }
             }
 
             .providers-more.active,
