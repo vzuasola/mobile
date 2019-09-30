@@ -197,6 +197,9 @@ export class PASModule implements ModuleInterface, GameInterface {
                     key = "dafabetgames";
                 }
 
+                if (product === "mobile-soda-casino" || options.currentProduct === "mobile-soda-casino") {
+                    key = "soda";
+                }
                 iapiConf = this.iapiConfs[key];
 
                 // Get Login if not login, login, then launch
