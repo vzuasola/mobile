@@ -93,20 +93,20 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenOnSearch();
             this.listenOnFilter();
             this.listenOnCloseFilter();
-            this.initMarker();
         }
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
         this.gameCategories = new GamesCategory(
             this.attachments,
-        );
+            );
 
         this.generateLobby(() => {
             this.highlightMenu();
             this.setLobby();
         });
 
+        this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, this.attachments);
         this.gamesFilter.handleOnReLoad(this.element, this.attachments, false);
     }
