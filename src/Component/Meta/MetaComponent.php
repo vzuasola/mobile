@@ -101,7 +101,7 @@ class MetaComponent implements ComponentWidgetInterface
         '/soda',
         '/sodabt',
         '/sodfa',
-        '/sd'
+        '/sda'
     ];
 
     /**

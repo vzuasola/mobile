@@ -43,6 +43,7 @@ class HeaderComponentController
     public function getlogo($request, $response)
     {
         $params = $request->getQueryParams();
+        $product = $params['product'] ?? 'mobile-entrypage';
         try {
             $headerConfigsByProduct = $this->configs
                 ->withProduct($product)
@@ -50,7 +51,7 @@ class HeaderComponentController
         } catch (\Exception $e) {
             $headerConfigsByProduct = [];
         }
-        $product = $params['product'] ?? 'mobile-entrypage';
+
         $lang = $params['language'] ?? 'en';
         $data['logo_title'] = $headerConfigsByProduct['logo_title'] ?? 'Dafabet';
         $data['logo_link'] = ($product == 'mobile-soda-casino') ? '/soda-casino' : '/';
