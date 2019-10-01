@@ -11,8 +11,6 @@ class HeaderComponentController
      */
     private $rest;
 
-    private $product;
-
     /**
      *
      */
@@ -43,10 +41,10 @@ class HeaderComponentController
     public function getlogo($request, $response)
     {
         $params = $request->getQueryParams();
-        $product = $params['product'] ?? 'mobile-entrypage';
+        $currentProduct = $params['product'] ?? 'mobile-entrypage';
         try {
             $headerConfigsByProduct = $this->configs
-                ->withProduct($product)
+                ->withProduct($currentProduct)
                 ->getConfig('webcomposer_config.header_configuration');
         } catch (\Exception $e) {
             $headerConfigsByProduct = [];
@@ -54,15 +52,15 @@ class HeaderComponentController
 
         $lang = $params['language'] ?? 'en';
         $data['logo_title'] = $headerConfigsByProduct['logo_title'] ?? 'Dafabet';
-        $data['logo_link'] = ($product == 'mobile-soda-casino') ? '/soda-casino' : '/';
-        $data['product'] =  $product;
+        $data['logo_link'] = ($currentProduct == 'mobile-soda-casino') ? '/soda-casino' : '/';
+        $data['product'] =  $currentProduct;
         $data['language'] = $lang;
 
-        if ($lang == "ch" or $lang == "sc" and $product != "mobile-casino-gold" and $product != "mobile-soda-casino") {
+        if ($lang == "ch" || $lang == "sc" && $currentProduct != "mobile-casino-gold" && $currentProduct != "mobile-soda-casino") {
             $data['logo'] = '/images/dafabet_logo_chinese.png';
-        } elseif ($product == "mobile-casino-gold") {
+        } elseif ($currentProduct == "mobile-casino-gold") {
             $data['logo'] = '/images/dafabet-gold-sc.png';
-        } elseif ($product == "mobile-soda-casino") {
+        } elseif ($currentProduct == "mobile-soda-casino") {
             $data['logo'] = '/images/soda-casino-logo.png';
         } else {
             $data['logo'] = '/images/dafabet_logo.png';
