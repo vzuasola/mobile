@@ -11,6 +11,8 @@ class HeaderComponentController
      */
     private $rest;
 
+    private $product;
+
     /**
      *
      */
