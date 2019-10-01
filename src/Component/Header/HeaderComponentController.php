@@ -58,7 +58,7 @@ class HeaderComponentController
         $data['product'] =  $currentProduct;
         $data['language'] = $lang;
 
-        if ($lang == "ch" || $lang == "sc" 
+        if ($lang == "ch" || $lang == "sc"
             && $currentProduct != "mobile-casino-gold"
             && $currentProduct != "mobile-soda-casino") {
             $data['logo'] = '/images/dafabet_logo_chinese.png';
