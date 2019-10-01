@@ -58,9 +58,9 @@ class HeaderComponentController
         $data['product'] =  $product;
         $data['language'] = $lang;
 
-        if ($lang == "ch" or $lang == "sc" and $product != "mobile-casino-gold" and $product != "mobile-soda-casino" ) {
+        if ($lang == "ch" or $lang == "sc" and $product != "mobile-casino-gold" and $product != "mobile-soda-casino") {
             $data['logo'] = '/images/dafabet_logo_chinese.png';
-        } elseif($product == "mobile-casino-gold") {
+        } elseif ($product == "mobile-casino-gold") {
             $data['logo'] = '/images/dafabet-gold-sc.png';
         } elseif ($product == "mobile-soda-casino") {
             $data['logo'] = '/images/soda-casino-logo.png';
