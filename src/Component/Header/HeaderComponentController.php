@@ -13,6 +13,8 @@ class HeaderComponentController
 
     private $product;
 
+    private $configs;
+
     /**
      *
      */
