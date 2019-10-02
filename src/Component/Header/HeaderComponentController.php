@@ -13,6 +13,8 @@ class HeaderComponentController
 
     private $product;
 
+    private $configs;
+
     /**
      *
      */
@@ -20,6 +22,7 @@ class HeaderComponentController
     {
         return new static(
             $container->get('rest'),
+            $container->get('config_fetcher'),
             $container->get('product_resolver')
         );
     }
@@ -29,9 +32,11 @@ class HeaderComponentController
      */
     public function __construct(
         $rest,
+        $configs,
         $product
     ) {
         $this->rest = $rest;
+        $this->configs = $configs;
         $this->product = $product;
     }
 
