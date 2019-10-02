@@ -108,7 +108,7 @@ class HeaderComponent implements ComponentWidgetInterface
         '/soda',
         '/sodabt',
         '/sodfa',
-        '/sd'
+        '/sda'
     ];
 
     /**

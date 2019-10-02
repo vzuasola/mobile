@@ -54,10 +54,23 @@
     }
 }
 /*SODA CASINO*/
-.header-mobile-soda-casino {
-    .logo img {
-        top: -1rem;
-        width: 70%;
-        left: 3.2rem;
+.mobile-soda-casino {
+    .logo.mobile-soda-casino {
+            background: $red;
+    }
+    
+    .header-mobile-soda-casino {
+        .logo img {
+            top: -1rem;
+            width: 70%;
+            left: 3.2rem;
+        }
+
+        .logo {
+            img {
+                top: -1rem;
+                width: 75%;
+            }
+        }
     }
 }
