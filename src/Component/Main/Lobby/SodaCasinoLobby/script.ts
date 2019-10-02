@@ -50,7 +50,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.loader = new Loader(document.body, true);
         this.gameLauncher = GameLauncher;
         /* remove comment on game category and search implementation */
-        // this.gamesSearch = new GamesSearch();
+        this.gamesSearch = new GamesSearch();
         // this.gamesFilter = new GamesFilter();
         this.casinoPreference = new SodaCasinoPreference();
     }
@@ -81,8 +81,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.listenHashChange();
         this.listenClickGameTile();
         this.listenGameLaunch();
-        /* remove comment on game category and search implementation */
-        // this.listenFavoriteClick();
+        this.listenFavoriteClick();
         this.generateLobby(() => {
             this.highlightMenu();
             this.lobby();
@@ -98,7 +97,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.currentPage = 0;
         this.load = true;
         /* remove comment on game category and search implementation */
-        // this.gamesSearch.handleOnLoad(this.element, attachments);
+        this.gamesSearch.handleOnLoad(this.element, attachments);
         // this.gamesFilter.handleOnLoad(this.element, attachments);
         // this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
         this.listenOnCloseFilter();
@@ -126,8 +125,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.listenHashChange();
             this.listenClickGameTile();
             this.listenGameLaunch();
-            /* remove comment on game category and search implementation */
-            // this.listenFavoriteClick();
+            this.listenFavoriteClick();
             this.listenToCategory();
             this.listenToScroll();
             // this.listenOnSearch();
@@ -150,7 +148,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         /* remove comment on game category and search implementation */
         this.listenToSwipe();
         // this.initMarker();
-        // this.gamesSearch.handleOnReLoad(this.element, attachments);
+        this.gamesSearch.handleOnReLoad(this.element, attachments);
         // this.gamesFilter.handleOnReLoad(this.element, attachments);
 
         this.pager = 0;
@@ -173,17 +171,16 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     }
 
     private getActiveIndex(list: HTMLElement) {
-        /* remove comment on game category and search implementation */
-        // const slides = list.querySelectorAll(".game-category");
+        const slides = list.querySelectorAll(".game-category");
 
-        // for (const key in slides) {
-        //     if (slides.hasOwnProperty(key)) {
-        //         const slide = slides[key];
-        //         if (utility.hasClass(slide, "active")) {
-        //             return key + 1;
-        //         }
-        //     }
-        // }
+        for (const key in slides) {
+            if (slides.hasOwnProperty(key)) {
+                const slide = slides[key];
+                if (utility.hasClass(slide, "active")) {
+                    return key + 1;
+                }
+            }
+        }
 
         return 1;
     }
@@ -236,7 +233,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private getPagerPromises() {
         /* remove comment on game category and search implementation
         const promises = ["allGames", "recent", "fav"]; */
-        const promises = ["allGames"];
+        const promises = ["allGames", "fav"];
         return promises;
     }
 
@@ -369,16 +366,16 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         // req.recent = {
         //     type: "getRecentlyPlayed",
         // };
-        // req.fav = {
-        //     type: "getFavorites",
-        // };
+        req.fav = {
+            type: "getFavorites",
+        };
 
         return req;
     }
 
     private lobby() {
         /* remove comment on game category and search implementation */
-        // this.gamesSearch.setGamesList(this.response);
+        this.gamesSearch.setGamesList(this.response);
         // this.gamesFilter.setGamesList(this.response);
         this.setLobby();
     }
@@ -606,6 +603,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                         this.generateLobby(() => {
                             this.updateCategorySpecial();
                         });
+                        console.log(el);
                         ComponentManager.broadcast("games.favorite", { srcElement: el });
                     }
                 }).fail((error, message) => {
@@ -616,13 +614,12 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     }
 
     private updateCategorySpecial() {
-        /* remove comment on game category and search implementation */
-        // const activeSearch = this.element.querySelector(".search-tab");
+        const activeSearch = this.element.querySelector(".search-tab");
 
-        // if (utility.hasClass(activeSearch, "active")) {
-        //     this.setCategories(this.response.categories, "search");
-        //     return;
-        // }
+        if (utility.hasClass(activeSearch, "active")) {
+            this.setCategories(this.response.categories, "search");
+            return;
+        }
 
         this.setLobby();
     }
@@ -761,9 +758,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                     if (!this.response.games[hash]) {
                         const categoriesEl = this.element.querySelector("#game-categories");
                         const activeLink = categoriesEl.querySelector(".category-tab .active a");
-                       /* remove comment on game category implementation; forcedsete hash to all-games */
-                       // hash = activeLink.getAttribute("data-category-filter-id");
-                        hash = "all-games";
+                        hash = activeLink.getAttribute("data-category-filter-id");
                     }
                     let pager = this.getPagedContent(this.response.games[hash]);
 
