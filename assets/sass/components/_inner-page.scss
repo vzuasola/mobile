@@ -35,9 +35,5 @@
         opacity: 1;
         font-size: 1.5rem;
         padding: 0.4rem 0.4rem;
-
-        @include media(">tablet") {
-            max-width: 16.5rem;
-        }
     }
 }
