@@ -84,8 +84,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         /* remove comment on game category and search implementation */
         // this.listenFavoriteClick();
         this.generateLobby(() => {
-            /* remove comment on game category and search implementation */
-            // this.highlightMenu();
+            this.highlightMenu();
             this.lobby();
         });
         /* remove comment on game category and search implementation */
@@ -145,8 +144,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.currentPage = 0;
         this.load = true;
         this.generateLobby(() => {
-            /* remove comment on game category and search implementation */
-            // this.highlightMenu();
+            this.highlightMenu();
             this.lobby();
         });
         /* remove comment on game category and search implementation */
