@@ -340,6 +340,10 @@ export class PASModule implements ModuleInterface, GameInterface {
             ret = true;
         }
 
+        if (key === "soda" && DafaConnect.isDafaconnect()) {
+            ret = true;
+        }
+
         if (key === "dafabetgames" && DafaConnect.isDafaconnect()) {
             ret = true;
         }
