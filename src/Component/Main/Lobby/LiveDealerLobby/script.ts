@@ -393,7 +393,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
                 url = utility.addQueryParam(url, "loaderFlag", "true");
                 if (data.options.target === "popup" || data.options.target === "_blank") {
-                    window.open(url);
+                    window.open(url, "", "width=360,height=720");
                     return;
                 }
 
