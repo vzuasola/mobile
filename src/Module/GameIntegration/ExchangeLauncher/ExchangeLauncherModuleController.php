@@ -73,11 +73,6 @@ class ExchangeLauncherModuleController
             $gameDomain = $exchangeConfig['exchange_tablet_url'];
             $query = $exchangeConfig['tablet_game_url'];
             $gameUri = "$gameDomain.$siteDomain/$query";
-
-            if (filter_var($gameDomain, FILTER_VALIDATE_URL)) {
-                $gameUri = "$gameDomain/$query";
-            }
-
             $data['gameurl'] = $gameUri;
         } catch (\Exception $e) {
             $data = [];
