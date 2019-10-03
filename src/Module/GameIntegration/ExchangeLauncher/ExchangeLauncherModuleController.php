@@ -69,13 +69,16 @@ class ExchangeLauncherModuleController
         $data['currency'] = true;
         try {
             $exchangeConfig =  $this->config->getGeneralConfigById('games_exchange_provider');
+            $siteDomain = Host::getDomain();
             $gameDomain = $exchangeConfig['exchange_tablet_url'];
             $query = $exchangeConfig['tablet_game_url'];
-            $gameUri = "$gameDomain/$query";
+            $gameUri = "$gameDomain.$siteDomain/$query";
 
-            if (filter_var($gameUri, FILTER_VALIDATE_URL)) {
-                $data['gameurl'] = $gameUri;
+            if (filter_var($gameDomain, FILTER_VALIDATE_URL)) {
+                $gameUri = "$gameDomain/$query";
             }
+
+            $data['gameurl'] = $gameUri;
         } catch (\Exception $e) {
             $data = [];
         }
