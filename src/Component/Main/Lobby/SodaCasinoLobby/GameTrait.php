@@ -65,9 +65,10 @@ trait GameTrait
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
+            $processGame['is_soda'] = "true";
             $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
-                && $game['field_disable_game_loader'][0]['value']) ? "false" : "false";
+                && $game['field_disable_game_loader'][0]['value']) ? "false" : "true";
 
             $categoryList = [];
             foreach ($game['field_games_list_category'] as $category) {

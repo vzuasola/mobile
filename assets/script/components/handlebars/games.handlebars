@@ -18,6 +18,11 @@
         {{#if this.game_subprovider }}
             data-game-subprovider="{{this.game_subprovider}}"
         {{/if}}
+        {{#if this.is_soda }}
+            data-game-real="{{this.real_mode}}"
+            data-game-product="casino"
+            data-game-type="html"
+        {{/if}}
         data-game-loader="{{this.use_game_loader}}"
         >
            {{#if ../../this.isAllGames}}
