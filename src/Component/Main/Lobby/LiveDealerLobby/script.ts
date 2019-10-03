@@ -395,8 +395,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 url = utility.addQueryParam(url, "loaderFlag", "true");
                 if (data.options.target === "popup" || data.options.target === "_blank") {
                     this.windowCounter++;
-                    console.log("gameWindow" + this.windowCounter);
-                    window.open(url, "gameWindow" + this.windowCounter, "width=360,height=720");
+                    this.windowObject = window.open(url, "gameWindow" + this.windowCounter, "width=360,height=720");
                     return;
                 }
 
