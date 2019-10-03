@@ -14,6 +14,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
  *
  */
 export class LiveDealerLobbyComponent implements ComponentInterface {
+    private windowCounter: number = 0;
     private groupedGames: any;
     private availableTabs: any[];
     private tabs: any[];
@@ -393,7 +394,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
                 url = utility.addQueryParam(url, "loaderFlag", "true");
                 if (data.options.target === "popup" || data.options.target === "_blank") {
-                    window.open(url, "", "width=360,height=720");
+                    this.windowCounter++;
+                    console.log("gameWindow" + this.windowCounter);
+                    window.open(url, "gameWindow" + this.windowCounter, "width=360,height=720");
                     return;
                 }
 
