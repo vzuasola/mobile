@@ -170,7 +170,7 @@ routes:
         attributes:
             product: mobile-lottery
 
-    /{id:soda-casino|suda|soda|sodabt|sodfa|sd}:
+    /{id:soda-casino|suda|soda|sodabt|sodfa|sda}:
         method: GET
         action: App\MobileEntry\Controller\SodaCasinoController:view
         components:
