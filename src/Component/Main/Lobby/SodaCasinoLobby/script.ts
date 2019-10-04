@@ -75,7 +75,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        this.checkLoginState();
         /* remove comment on game category and search implementation */
         this.listenChangeCategory();
         this.listenHashChange();
@@ -119,7 +118,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         }) {
         this.isLogin = attachments.authenticated;
         if (!this.element) {
-            this.checkLoginState();
             /* remove comment on game category and search implementation */
             this.listenChangeCategory();
             this.listenHashChange();
@@ -184,23 +182,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
 
         return 1;
     }
-    private checkLoginState() {
-        if (ComponentManager.getAttribute("product") === "mobile-soda-casino" && !this.isLogin) {
-            const lang = ComponentManager.getAttribute("language");
-            const product = window.location.pathname.replace("/" + lang + "/", "");
-            this.loader.show();
-            const params = utility.getParameters(window.location.search);
-            let url = "/" + lang + "/login";
-            url = utility.addQueryParam(url, "product", product);
-            for (const key in params) {
-                if (key !== "" && params[key] !== "") {
-                    url = utility.addQueryParam(url, key, params[key]);
-                }
-            }
-            Router.navigate(url, ["*"]);
-            return;
-        }
-    }
+
     /**
      * Initialized games lobby
      */
