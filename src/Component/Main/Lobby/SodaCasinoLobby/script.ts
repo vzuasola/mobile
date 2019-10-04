@@ -52,7 +52,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         /* remove comment on game category and search implementation */
         this.gamesSearch = new GamesSearch();
         // this.gamesFilter = new GamesFilter();
-        this.casinoPreference = new SodaCasinoPreference();
+        // this.casinoPreference = new SodaCasinoPreference();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -185,24 +185,21 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         return 1;
     }
     private checkLoginState() {
-        // if (ComponentManager.getAttribute("product") === "mobile-soda-casino" && !this.isLogin) {
-        //     const lang = ComponentManager.getAttribute("language");
-        //     const product = window.location.pathname.replace("/" + lang + "/", "");
-        //     this.loader.show();
-        //     const params = utility.getParameters(window.location.search);
-        //     let url = "/" + lang + "/login";
-        //     url = utility.addQueryParam(url, "product", product);
-        //     for (const key in params) {
-        //         if (key !== "" && params[key] !== "") {
-        //             url = utility.addQueryParam(url, key, params[key]);
-        //         }
-        //     }
-        //     Router.navigate(url, ["*"]);
-        //     Router.on(RouterClass.afterNavigate, (event) => {
-        //        ComponentManager.broadcast("redirect.postlogin.casino-gold", { loader: this.loader });
-        //     });
-        //     return;
-        // }
+        if (ComponentManager.getAttribute("product") === "mobile-soda-casino" && !this.isLogin) {
+            const lang = ComponentManager.getAttribute("language");
+            const product = window.location.pathname.replace("/" + lang + "/", "");
+            this.loader.show();
+            const params = utility.getParameters(window.location.search);
+            let url = "/" + lang + "/login";
+            url = utility.addQueryParam(url, "product", product);
+            for (const key in params) {
+                if (key !== "" && params[key] !== "") {
+                    url = utility.addQueryParam(url, key, params[key]);
+                }
+            }
+            Router.navigate(url, ["*"]);
+            return;
+        }
     }
     /**
      * Initialized games lobby
@@ -569,8 +566,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                     if (result.success) {
                         this.response = null;
                         this.generateLobby(() => {
-                              /* remove comment on game category and search implementation */
-                              // this.updateCategorySpecial();
+                            this.updateCategorySpecial();
                         });
                         this.fromGameLaunch = true;
                         ComponentManager.broadcast("success.game.launch", {launchedGame: gameCode});
@@ -816,7 +812,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
 
     private listenOnLogout() {
         ComponentManager.subscribe("session.logout.finished", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === "mobile-casino-gold") {
+            if (ComponentManager.getAttribute("product") === "mobile-soda-casino") {
                 Router.navigate("/" + ComponentManager.getAttribute("language"), ["*"]);
                 return;
             }
@@ -954,7 +950,13 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             }
 
             url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+            url = utility.addQueryParam(url, "product", ComponentManager.getAttribute("product"));
+            url = utility.addQueryParam(url, "productMap", ComponentManager.getAttribute("product"));
             url = utility.addQueryParam(url, "loaderFlag", "true");
+            if (data.options.target === "popup") {
+                this.windowObject = PopupWindow(url, "gameWindow", prop);
+            }
+
             if (data.options.target === "popup") {
                 this.windowObject = PopupWindow(url, "gameWindow", prop);
             }
@@ -971,7 +973,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                 window.location.href = url;
                 return;
             }
-
             this.windowObject = PopupWindow("", "gameWindow", prop);
 
             this.updatePopupWindow(url);

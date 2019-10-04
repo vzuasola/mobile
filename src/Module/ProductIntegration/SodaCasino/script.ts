@@ -8,39 +8,46 @@ import {Redirector} from "@app/assets/script/components/redirector";
 import {Redirectable} from "../scripts/redirectable";
 
 export class SodaCasinoIntegrationModule extends Redirectable implements ModuleInterface {
-    protected code = "casino";
+    protected code = "soda-casino";
     protected isLoginOnly = false;
 
-    doRequest(src) {
-        this.getPreferredCasino(src);
-    }
+    protected doRequest(src) {
+        const url = src.getAttribute("data-post-login-url");
 
-    private getPreferredCasino(src) {
-        this.loader.show();
+        if (url) {
+            this.loader.show();
 
-        xhr({
-            url: Router.generateRoute("casino_option", "preference"),
-            type: "json",
-        }).then((response) => {
-            if (response.success) {
-                if (!this.isSupportedLanguage(src)) {
-                    response.redirect = response.redirect.replace(
-                        "\/" + ComponentManager.getAttribute("language") + "\/",
-                        "/" + this.getRedirectLanguage(src) + "/");
-                }
-                // redirect to URL
-                if (response.redirect) {
-                    Router.navigate(response.redirect, ["*"], {removeParams: ["product"]});
+            xhr({
+                url: Router.generateModuleRoute("login_redirect", "process"),
+                type: "json",
+                method: "post",
+                data: {
+                    url,
+                },
+            }).then((response) => {
+                if (typeof response.url !== "undefined") {
+                    if (!this.isSupportedLanguage(src)) {
+                        response.url = response.url.replace(
+                            "\/" + ComponentManager.getAttribute("language") + "\/",
+                            "/" + this.getRedirectLanguage(src) + "/");
+                    }
+                    if (utility.isExternal(response.url)) {
+                        Redirector.redirect(response.url, () => {
+                            this.loader.hide();
+                        });
+
+                        return;
+                    }
+
+                    Router.navigate(response.url, ["*"], {removeParams: ["product"]});
                     this.loader.hide();
                     return;
                 }
 
-                ComponentManager.broadcast("casino.preference");
-            }
-
-            this.loader.hide();
-        }).fail((error, message) => {
-            this.loader.hide();
-        });
+                this.loader.hide();
+            }).fail((error, message) => {
+                this.loader.hide();
+            });
+        }
     }
 }
