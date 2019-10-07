@@ -66,14 +66,14 @@ class SodaCasinoLobbyComponentController
         $currentLanguage
     ) {
         $this->playerSession = $playerSession;
-        $this->views = $views;
+        $this->views = $views->withProduct('mobile-soda-casino');
         $this->rest = $rest;
         $this->configs = $configs;
         $this->asset = $asset;
         $this->recentGames = $recentGames;
         $this->favorite = $favorite;
-        $this->configAsync = $configAsync;
-        $this->viewsAsync = $viewsAsync;
+        $this->configAsync = $configAsync->withProduct('mobile-soda-casino');
+        $this->viewsAsync = $viewsAsync->withProduct('mobile-soda-casino');
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
     }
@@ -155,6 +155,33 @@ class SodaCasinoLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
+    public function getGamesCollection($request, $response)
+    {
+        $data = [];
+        try {
+            $gamesCollections = $this->views->getViewById('games_collection');
+
+            if ($gamesCollections) {
+                foreach ($gamesCollections as $gamesCollection) {
+                    if (isset($gamesCollection['field_type'][0]['name'][0]['value'])
+                        && isset($gamesCollection['field_games'])) {
+                        foreach ($gamesCollection['field_games'] as $games) {
+                            if ($games['field_game_code'][0]['value']) {
+                                $data[$gamesCollection['field_type'][0]['name'][0]['value']][] =
+                                    'id:' . $games['field_game_code'][0]['value'];
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            ddd($e->getMessage());
+            $data = [];
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
     private function getLobbyData($product)
     {
         $cacheKey = 'views.'. $product .'-lobby-data.';
@@ -182,7 +209,7 @@ class SodaCasinoLobbyComponentController
     private function generateLobbyData($product)
     {
         $data = [];
-        $categories = $this->views->withProduct($product)->getViewById('games_category');
+        $categories = $this->views->getViewById('games_category');
         $definitions = $this->getDefinitions($product);
         $asyncData = Async::resolve($definitions);
         $specialCategories = [];
@@ -242,7 +269,7 @@ class SodaCasinoLobbyComponentController
 
         try {
             $definitions['configs'] = $this->configAsync->getConfig('soda_casino.casino_configuration');
-            $definitions['all-games'] = $this->viewsAsync->withProduct($product)->getViewById('games_list');
+            $definitions['all-games'] = $this->viewsAsync->getViewById('games_list');
         } catch (\Exception $e) {
             $definitions = [];
         }
