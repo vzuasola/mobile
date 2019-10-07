@@ -10,3 +10,30 @@
     background: url($unsupported-currency) no-repeat top center;
     background-size: auto 100%;
 }
+
+// SODA CASINO
+.mobile-soda-casino {
+    .unsupported-currency-image {
+        height: 16rem;
+        background: url($unsupported-currency-gold) no-repeat top center;
+    }
+
+    .btn-soda {
+        border: 0.1rem solid #FFC371;
+        background-color: transparent;
+        text-align: center;
+        font-weight: normal;
+        font-size: 2.4rem;
+        letter-spacing: 0;
+        color: #FFC371;
+        opacity: 1;
+    }
+
+    .btn {
+        border: 0.1rem solid #FFC371;
+        border-radius: 2.4rem;
+        opacity: 1;
+        font-size: 1.5rem;
+        padding: 0.4rem 0.4rem;
+    }
+}

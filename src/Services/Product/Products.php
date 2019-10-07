@@ -118,7 +118,7 @@ class Products
             'soda',
             'sodabt',
             'sodfa',
-            'sd',
+            'sda',
         ],
     ];
 }

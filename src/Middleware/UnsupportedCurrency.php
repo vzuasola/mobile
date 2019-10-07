@@ -16,7 +16,8 @@ use App\Drupal\Config;
 class UnsupportedCurrency implements ResponseMiddlewareInterface
 {
     const PRODUCTS = [
-        'mobile-exchange'
+        'mobile-exchange',
+        'mobile-soda-casino'
     ];
 
     /**
@@ -39,7 +40,7 @@ class UnsupportedCurrency implements ResponseMiddlewareInterface
     {
         try {
             if (in_array($this->product, self::PRODUCTS)) {
-                $this->ucp = $this->configFetcher->getGeneralConfigById('page_not_found');
+                $this->ucp = $this->configFetcher->getConfig('webcomposer_config.page_not_found');
                 if ($response->getStatusCode() === 200 && // Override only if the supposed response is 200
                     $this->playerSession->isLogin() &&
                     $this->ucp['currency_mapping']
