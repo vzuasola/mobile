@@ -46,7 +46,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private lobbyProducts: any[] = ["mobile-soda-casino"];
     private windowObject: any;
     private gameLink: string;
-    private productMenu = "product-soda-casino";
+    private productMenu: string = "product-soda-casino";
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -567,26 +567,13 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             const el = utility.hasClass(data.src, "game-list", true);
             if (el) {
                 const gameCode = el.getAttribute("data-game-code");
-                xhr({
-                    url: Router.generateRoute("soda_casino_lobby", "recent"),
-                    type: "json",
-                    method: "post",
-                    data: {
-                        gameCode,
-                    },
-                }).then((result) => {
-                    if (result.success) {
-                        this.response = null;
-                        this.generateLobby(() => {
-                            this.updateCategorySpecial();
-                        });
-                        this.fromGameLaunch = true;
-                        ComponentManager.broadcast("success.game.launch", {launchedGame: gameCode});
-                    }
-                }).fail((error, message) => {
-                    // do nothing
+                this.response = null;
+                this.generateLobby(() => {
+                    this.updateCategorySpecial();
                 });
-            }
+                this.fromGameLaunch = true;
+                ComponentManager.broadcast("success.game.launch", {launchedGame: gameCode});
+             }
         });
     }
 

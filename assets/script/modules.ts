@@ -41,6 +41,7 @@ import {GamesIntegrationModule} from "@app/src/Module/ProductIntegration/Games/s
 import {LiveDealerIntegrationModule} from "@app/src/Module/ProductIntegration/LiveDealer/script";
 import {ArcadeIntegrationModule} from "@app/src/Module/ProductIntegration/Arcade/script";
 import {LotteryIntegrationModule} from "@app/src/Module/ProductIntegration/Lottery/script";
+import {SodaCasinoIntegrationModule} from "@app/src/Module/ProductIntegration/SodaCasino/script";
 
 ComponentManager.setModules({
     avaya: new AvayaModule(),
@@ -83,4 +84,5 @@ ComponentManager.setModules({
     live_dealer_integration: new LiveDealerIntegrationModule(),
     arcade_integration: new ArcadeIntegrationModule(),
     lottery_integration: new LotteryIntegrationModule(),
+    soda_casino_integration: new SodaCasinoIntegrationModule(),
 });
