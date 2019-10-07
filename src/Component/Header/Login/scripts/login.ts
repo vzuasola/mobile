@@ -14,6 +14,8 @@ import {Modal} from "@app/assets/script/components/modal";
 import {CheckboxStyler} from "@app/assets/script/components/checkbox-styler";
 import {PasswordMask} from "@app/assets/script/components/password-mask";
 
+import * as logoTemplate from "../handlebars/logo.handlebars";
+
 export class Login {
     private loader: Loader;
     private sync: SyncEvents;
@@ -29,6 +31,7 @@ export class Login {
     private productVia: any = false;
     private srcElement: HTMLElement;
     private action: any = false;
+    private logoData: any;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -342,6 +345,7 @@ export class Login {
 
             if (!this.isLogin) {
                 Modal.open("#login-lightbox");
+                this.getLogo();
             }
         });
     }
@@ -381,6 +385,32 @@ export class Login {
                     },
                 );
             });
+        });
+    }
+    /**
+     * Set logo
+     *
+     */
+    private generateLogoMarkup(data) {
+        const logo: HTMLElement = this.element.querySelector("#login-logo");
+        const template = logoTemplate({
+            logoData: data,
+        });
+        logo.innerHTML = template;
+    }
+
+    private getLogo() {
+        xhr({
+            url: Router.generateRoute("header", "getlogo"),
+            type: "json",
+            data: {
+                product: ComponentManager.getAttribute("product"),
+                language: ComponentManager.getAttribute("language"),
+            },
+        }).then((response) => {
+            console.log(response);
+            this.logoData = response;
+            this.generateLogoMarkup(this.logoData);
         });
     }
 }
