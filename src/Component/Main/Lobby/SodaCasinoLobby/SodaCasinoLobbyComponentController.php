@@ -175,7 +175,6 @@ class SodaCasinoLobbyComponentController
                 }
             }
         } catch (\Exception $e) {
-            ddd($e->getMessage());
             $data = [];
         }
 
