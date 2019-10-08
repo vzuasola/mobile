@@ -271,6 +271,9 @@ modules:
   videoracing_integration:
     class: App\MobileEntry\Module\GameIntegration\VideoRacing\VideoRacingModule
 
+  fun_gaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\FunGaming\FunGamingModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
