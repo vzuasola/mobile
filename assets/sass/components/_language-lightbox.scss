@@ -45,19 +45,22 @@
     }
 
     li {
-        display: inline;
+        padding: 0;
 
         a {
             position: relative;
             display: block;
             background: #333031;
-            margin: 1rem 1.2rem;
-            padding: 0.4rem 1rem;
+            margin: 0.7rem 0.4rem;
+            padding: 0.2rem 0.4rem;
             border: 0.1rem solid #5f5e5e;
-            border-radius: 0.7rem;
+            border-radius: 0.4rem;
             color: $light-gray;
             cursor: pointer;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
+            display: grid;
+            align-items: center;
+            grid-template-columns: 2.5rem 75%;
         }
         
         // active/hover state
@@ -78,83 +81,84 @@
 
         // Arrow icon 
         &.active a:after {
-            @include image-replacement($sprite-mobile, 0, -7.3rem, 3rem, 2.5rem, 2.5rem);
+            @include image-replacement($sprite-mobile, 0.7rem, -8rem, 3rem, 1.5rem, 2.5rem);
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: -0.2rem;
             content: "";
         }
     }
 
     // Flag icons
     a:before {
-        @include image-replacement($sprite-language, 0, 0.4rem, 4rem, 3.1rem);
+        @include image-replacement($sprite-language, 0, 0.3rem, 2.2rem, 2rem);
         margin-right: 0.2rem;
+        margin-bottom: 0.3rem;
         content: "";
     }
 
     .eu a:before,
     a.eu:before {
-        background-position: 0 -3.6rem
+        background-position: 0 -1.8rem;
     }
 
     .zh-hans a:before,
     a.zh-hans:before {
-        background-position: 0 -7.6rem
+        background-position: 0 -3.8rem;
     }
 
     .zh-hant a:before,
     a.zh-hant:before {
-        background-position: 0 -11.6rem;
+        background-position: 0 -5.8rem;
     }
 
     .th a:before,
     a.th:before {
-        background-position: 0 -15.6rem;
+        background-position: 0 -7.8rem;
     }
 
     .vi a:before,
     a.vi:before {
-        background-position: 0 -19.6rem;
+        background-position: 0 -9.8rem;
     }
 
     .id a:before,
     a.id:before {
-        background-position: 0 -23.6rem;
+        background-position: 0 -11.8rem;
     }
 
     .ja a:before,
     a.ja:before {
-        background-position: 0 -27.6rem;
+        background-position: 0 -13.8rem;
     }
 
     .ko a:before,
     a.ko:before {
-        background-position: 0 -31.6rem;
+        background-position: 0 -15.8rem;
     }
 
     .hi a:before,
     a.hi:before {
-        background-position: 0 -35.6rem;
+        background-position: 0 -17.8rem;
     }
 
     .el a:before,
     a.el:before {
-        background-position: 0 -39.6rem;
+        background-position: 0 -19.8rem;
     }
 
     .pl a:before,
     a.pl:before {
-        background-position: 0 -43.6rem;
+        background-position: 0 -21.8rem;
     }
 
     .es  a:before,
     a.es :before {
-        background-position: 0 -47.6rem;
+        background-position: 0 -23.8rem;
     }
 
     .pt-br  a:before,
     a.pt-br :before {
-        background-position: 0 -51.6rem;
+        background-position: 0 -25.8rem;
     }
 }

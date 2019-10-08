@@ -1,17 +1,17 @@
 <?php
 
-namespace App\MobileEntry\Component\Node\LotteryPage;
+namespace App\MobileEntry\Component\Node\InnerPage;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
-class LotteryPageComponent implements ComponentWidgetInterface
+class InnerPageComponent implements ComponentWidgetInterface
 {
     /**
      * {@inheritdoc}
      */
     public function getTemplate($options = [])
     {
-        return '@component/Node/LotteryPage/template.html.twig';
+        return '@component/Node/InnerPage/template.html.twig';
     }
 
     /**

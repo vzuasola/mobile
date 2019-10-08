@@ -16,6 +16,7 @@ import {GamesLobbyComponent} from "@app/src/Component/Main/Lobby/GamesLobby/scri
 import {LiveDealerLobbyComponent} from "@app/src/Component/Main/Lobby/LiveDealerLobby/script";
 import {CasinoLobbyComponent} from "@app/src/Component/Main/Lobby/CasinoLobby/script";
 import {LotteryLobbyComponent} from "@app/src/Component/Main/Lobby/LotteryLobby/script";
+import {ExchangeLobbyComponent} from "@app/src/Component/Main/Lobby/ExchangeLobby/script";
 import {LobbyComponent} from "@app/src/Component/Main/Lobby/script";
 import {MarketingComponent} from "@app/src/Component/Marketing/script";
 import {MarketingSpaceComponent} from "@app/src/Component/MarketingSpace/script";
@@ -27,7 +28,7 @@ import {LanguageComponent} from "@app/src/Component/Language/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
 import {CantLoginComponent} from "@app/src/Component/Main/CantLogin/script";
 import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script";
-import {LotteryPageComponent} from "@app/src/Component/Node/LotteryPage/script";
+import {InnerPageComponent} from "@app/src/Component/Node/InnerPage/script";
 import {CantLoginForgotPasswordComponent} from "@app/src/Component/Main/CantLogin/ForgotPassword/script";
 import {CantLoginForgotUsernameComponent} from "@app/src/Component/Main/CantLogin/ForgotUsername/script";
 import {CantLoginResetPasswordComponent} from "@app/src/Component/Main/CantLogin/ResetPassword/script";
@@ -38,6 +39,7 @@ import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccoun
 import {FooterComponent} from "@app/src/Component/Footer/script";
 import {CookieNotifComponent} from "@app/src/Component/CookieNotif/script";
 import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
+import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -59,6 +61,7 @@ ComponentManager.setComponents({
     live_dealer_lobby: new LiveDealerLobbyComponent(),
     casino_lobby: new CasinoLobbyComponent(),
     lottery_lobby: new LotteryLobbyComponent(),
+    exchange_lobby: new ExchangeLobbyComponent(),
     node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
@@ -67,7 +70,7 @@ ComponentManager.setComponents({
     profiler: new ProfilerComponent(),
     cant_login: new CantLoginComponent(),
     node_promotions: new PromotionsNodeComponent(),
-    node_lottery_page: new LotteryPageComponent(),
+    node_inner_page: new InnerPageComponent(),
     cant_login_forgot_password: new CantLoginForgotPasswordComponent(),
     cant_login_forgot_username: new CantLoginForgotUsernameComponent(),
     cant_login_reset_password: new CantLoginResetPasswordComponent(),
@@ -78,4 +81,5 @@ ComponentManager.setComponents({
     footer: new FooterComponent(),
     cookie_notification: new CookieNotifComponent(),
     game_loader: new GameLoaderComponent(),
+    ucp: new UnsupportedCurrencyComponent(),
 });

@@ -33,7 +33,12 @@ class HeaderComponent implements ComponentWidgetInterface
         '/lotto-numbers',
         '/numbers',
         '/draw',
-        '/live-draws'
+        '/live-draws',
+        '/exchange',
+        '/cricket',
+        '/indiabet',
+        '/cric-exchange',
+        '/betting-exchange'
     ];
 
     /**
