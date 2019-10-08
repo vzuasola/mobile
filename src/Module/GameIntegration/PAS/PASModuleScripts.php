@@ -55,8 +55,11 @@ class PASModuleScripts implements ComponentAttachmentInterface
         $currency = null;
         try {
             $ptConfig = $this->config->getConfig('webcomposer_config.games_playtech_provider');
+            $currency = null;
+            $playerId = null;
             if ($this->playerSession->isLogin()) {
                 $currency = $this->player->getCurrency();
+                $playerId = $this->player->getPlayerID();
             }
             $iapiConfigs = $ptConfig['iapiconf_override'] ?? [];
             if ($iapiConfigs) {
@@ -74,6 +77,7 @@ class PASModuleScripts implements ComponentAttachmentInterface
             'futuramaGold' => $ptConfig['futurama_gold_switch'] ?? false,
             'authenticated' => $this->playerSession->isLogin(),
             'username' => $this->playerSession->getUsername(),
+            'playerId' => $playerId,
             'currency' => $currency,
             'token' => $this->playerSession->getToken(),
             'iapiconfOverride' => [],
