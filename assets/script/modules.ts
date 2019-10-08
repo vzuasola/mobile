@@ -31,6 +31,7 @@ import {AllBetModule} from "@app/src/Module/GameIntegration/AllBet/script";
 import {WACModule} from "@app/src/Module/GameIntegration/WAC/script";
 import {EzugiGamingModule} from "@app/src/Module/GameIntegration/EzugiGaming/script";
 import {VideoRacingModule} from "@app/src/Module/GameIntegration/VideoRacing/script";
+import {FunGamingModule} from "@app/src/Module/GameIntegration/FunGaming/script";
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
 import {GenericIntegrationModule} from "@app/src/Module/ProductIntegration/Generic/script";
@@ -73,6 +74,7 @@ ComponentManager.setModules({
     wac_integration: new WACModule(),
     ezugi_gaming_integration: new EzugiGamingModule(),
     videoracing_integration: new VideoRacingModule(),
+    fun_gaming_integration: new FunGamingModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
     generic_integration: new GenericIntegrationModule(),
