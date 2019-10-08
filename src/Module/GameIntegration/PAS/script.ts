@@ -31,6 +31,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private futuramaGold: boolean;
     private username: string;
     private currency: string;
+    private playerId: string;
     private token: string;
     private languages: any;
     private windowObject: any;
@@ -61,6 +62,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         futuramaGold: boolean,
         authenticated: boolean,
         username: string,
+        playerId: string,
         currency: string,
         token: string,
         iapiconfOverride: {},
@@ -84,6 +86,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         this.pasErrorConfig = attachments.pasErrorConfig;
         if (attachments.username) {
             this.username = attachments.username.toUpperCase();
+            this.playerId = attachments.playerId;
             this.currency = attachments.currency;
         }
         this.token = attachments.token;
@@ -174,7 +177,10 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     launch(options) {
-        const product = ComponentManager.getAttribute("product");
+        let product = ComponentManager.getAttribute("product");
+        if (options.currentProduct) {
+            product = options.currentProduct;
+        }
         if (options.provider === this.key) {
 
             // remap language
@@ -192,6 +198,11 @@ export class PASModule implements ModuleInterface, GameInterface {
                 if (DafaConnect.isDafaconnect()) {
                     key = "dafaconnect";
                 }
+
+                if (product === "mobile-games" || product === "mobile-live-dealer") {
+                    key = "dafabetgames";
+                }
+
                 iapiConf = this.iapiConfs[key];
 
                 // Get Login if not login, login, then launch
@@ -207,8 +218,11 @@ export class PASModule implements ModuleInterface, GameInterface {
                         this.pasLaunch(options);
                         return;
                     } else {
-                        iapiLoginUsernameExternalToken(this.username.toUpperCase(), this.token, 1, language);
-                        // iapiLogin(username, password, real, language);
+                        if (key !== "dafabetgames") {
+                            iapiLoginUsernameExternalToken(this.username.toUpperCase(), this.token, 1, language);
+                        } else {
+                            iapiLogin(this.username.toUpperCase(), this.token + "@" + this.playerId, 1, language);
+                        }
                     }
                 });
 
@@ -323,12 +337,16 @@ export class PASModule implements ModuleInterface, GameInterface {
      * Check if iapiconfig will be used for loggin in
      */
     private checkIapiConfig(key) {
-        let ret = false;
+        let ret = false; // if false do keepalive
         if (key === "dafagold" && !this.isGold) {
             ret = true;
         }
 
         if (key === "dafa888" && DafaConnect.isDafaconnect()) {
+            ret = true;
+        }
+
+        if (key === "dafabetgames" && DafaConnect.isDafaconnect()) {
             ret = true;
         }
 
@@ -392,6 +410,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                         this.username = response.username.toUpperCase();
                         this.token = response.token;
                         this.currency = response.currency;
+                        this.playerId = response.playerId;
                     }
                 }).fail((error, message) => {
                     // Do nothing
