@@ -47,13 +47,13 @@ class FunGamingModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
+            $funGamingConfig =  $this->config->getConfig('webcomposer_config.icore_games_integration');
 
             $data = [
                 'authenticated' => $this->playerSession->isLogin(),
                 'lang' => $this->lang,
-                'currencies' => explode(PHP_EOL, $config[self::KEY . '_currency']),
-                'languages' => Config::parse($config[self::KEY . '_language_mapping'] ?? ''),
+                'currencies' => explode(PHP_EOL, $funGamingConfig[self::KEY . '_currency']),
+                'languages' => Config::parse($funGamingConfig[self::KEY . '_language_mapping'] ?? ''),
             ];
         } catch (\Exception $e) {
             $data = [];
