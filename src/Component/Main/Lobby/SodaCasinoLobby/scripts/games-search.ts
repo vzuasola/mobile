@@ -344,7 +344,8 @@ export class GamesSearch {
         });
 
         ComponentManager.subscribe("games.search", (event, src) => {
-            Modal.open("#games-search-lightbox");
+            const searchInput = this.element.querySelector("#game-search-field");
+            console.log(searchInput);
         });
     }
 

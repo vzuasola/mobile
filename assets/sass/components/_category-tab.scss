@@ -200,6 +200,26 @@
                     fill: #FFC371;
                 }
             }
+
+            .field-game-search {
+                position: absolute;
+                width: 75%;
+                left: 6rem;
+                top: 0.5rem;
+                padding: 0.5rem 2rem;
+                background: $soda-dark-blue;
+                -webkit-border-radius: 50rem;
+                -moz-border-radius: 50rem;
+                border-radius: 50rem;
+                border: 0;
+                color: $soda-gray;
+                visibility: hidden;
+
+                &::placeholder {
+                    color: $soda-gray;
+                    opacity: 0.3;
+                }
+            }
         }
     }
 

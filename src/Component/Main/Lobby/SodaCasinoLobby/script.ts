@@ -51,10 +51,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     constructor() {
         this.loader = new Loader(document.body, true);
         this.gameLauncher = GameLauncher;
-        /* remove comment on game category and search implementation */
         this.gamesSearch = new GamesSearch();
-        // this.gamesFilter = new GamesFilter();
-        // this.casinoPreference = new SodaCasinoPreference();
         this.gamesCollectionSort = new GamesCollectionSorting();
     }
 
@@ -78,7 +75,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        /* remove comment on game category and search implementation */
         this.listenChangeCategory();
         this.listenHashChange();
         this.listenClickGameTile();
@@ -88,20 +84,15 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.highlightMenu();
             this.lobby();
         });
-        /* remove comment on game category and search implementation */
         this.listenToCategory();
         this.listenToScroll();
         this.listenToSwipe();
         // this.initMarker();
-        // this.listenOnSearch();
-        // this.listenOnFilter();
+        this.listenOnSearch();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        /* remove comment on game category and search implementation */
         this.gamesSearch.handleOnLoad(this.element, attachments);
-        // this.gamesFilter.handleOnLoad(this.element, attachments);
-        // this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
         this.listenOnCloseFilter();
         this.listenOnLogout();
         this.listenToLaunchGameLoader();
@@ -260,7 +251,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         gamesDictionary = this.getGamesDictionary(gamesList[key]);
         gamesList[key] = this.gamesCollectionSort.sortGamesCollection(
             promises,
-            "top",
+            "all-games",
             true,
             gamesDictionary,
         );
