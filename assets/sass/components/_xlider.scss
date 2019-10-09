@@ -135,13 +135,14 @@
            color: #FF5F6D;
         }
 
-        .btn-soda.btn:focus,
-        .btn-soda.btn.focus,
-        .btn-soda.btn:hover,
-        .btn-soda.btn:active,
-        .btn-soda.btn.active {
+        .btn.btn-soda:focus,
+        .btn.btn-soda.focus,
+        .btn.btn-soda:hover,
+        .btn.btn-soda:visited,
+        .btn.btn-soda:active,
+        .btn.btn-soda.active {
             border-color: #ffe000;
-            background-color: #ffe000;
+            background-color: transparent;
             color: #373737;
         }
 
