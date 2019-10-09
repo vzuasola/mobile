@@ -38,7 +38,7 @@ class KYGamingModuleController
     {
         $this->rest = $rest;
         $this->kyGaming = $kyGaming;
-        $this->config = $config->withProduct('mobile-games');
+        $this->config = $config->withProduct('mobile-arcade');
         $this->player = $player;
     }
 
@@ -49,55 +49,28 @@ class KYGamingModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
+
         if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
-            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
-                $data = $this->getGameUrl($request, $response);
-            }
-
-            if (!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') {
-                $data = $this->getGameLobby($request, $response);
+            if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
+                $requestData['lobby'] === "false"
+            ) {
+                $data = $this->getGameUrl($request);
             }
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function getGameLobby($request, $response)
+    private function getGameUrl($request)
     {
         $data['currency'] = true;
         $requestData = $request->getParsedBody();
 
         try {
-            $responseData = $this->kyGaming->getLobby('icore_ky', [
+            $responseData = $this->kyGaming->getGameUrlById('icore_ky', $requestData['gameCode'], [
                 'options' => [
                     'languageCode' => $requestData['langCode'],
-                ]
-            ]);
-            if ($responseData) {
-                $data['gameurl'] = $responseData;
-            }
-        } catch (\Exception $e) {
-            $data = [];
-        }
-        return $data;
-    }
-
-    private function getGameUrl($request, $response)
-    {
-        $data['currency'] = true;
-        $requestData = $request->getParsedBody();
-
-        try {
-            $params = explode('|', $requestData['gameCode']);
-            $gameCode = $params[0];
-            $productProvider = $params[1] ?? null;
-
-            $responseData = $this->kyGaming->getGameUrlById('icore_ky', $gameCode, [
-                'options' => [
-                    'languageCode' => $requestData['langCode'],
-                    'playMode' => 'true',
-                    'providerProduct' => $productProvider,
                 ]
             ]);
             if ($responseData['url']) {
@@ -106,6 +79,7 @@ class KYGamingModuleController
         } catch (\Exception $e) {
             $data = [];
         }
+
         return $data;
     }
 }
