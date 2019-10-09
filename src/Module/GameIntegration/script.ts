@@ -45,6 +45,7 @@ export class GameIntegrationModule implements ModuleInterface {
         const ezugiGaming: any = ComponentManager.getModuleInstance("ezugi_gaming_integration");
         const videoRacing: any = ComponentManager.getModuleInstance("videoracing_integration");
         const funGaming: any = ComponentManager.getModuleInstance("fun_gaming_integration");
+        const kyGaming: any = ComponentManager.getModuleInstance("ky_gaming_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
@@ -72,6 +73,7 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("ezugi_gaming", ezugiGaming);
         this.gameLauncher.setProvider("video_racing", videoRacing);
         this.gameLauncher.setProvider("fun_gaming", funGaming);
+        this.gameLauncher.setProvider("ky_gaming", kyGaming);
 
         setTimeout(() => {
             this.gameLauncher.init();
