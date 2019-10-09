@@ -260,7 +260,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         gamesDictionary = this.getGamesDictionary(gamesList[key]);
         gamesList[key] = this.gamesCollectionSort.sortGamesCollection(
             promises,
-            "top",
+            "all-games",
             true,
             gamesDictionary,
         );
