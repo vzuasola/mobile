@@ -408,7 +408,6 @@ export class Login {
                 language: ComponentManager.getAttribute("language"),
             },
         }).then((response) => {
-            console.log(response);
             this.logoData = response;
             this.generateLogoMarkup(this.logoData);
         });

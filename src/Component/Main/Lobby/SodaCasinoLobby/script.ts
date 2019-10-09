@@ -103,7 +103,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         // this.gamesFilter.handleOnLoad(this.element, attachments);
         // this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
         this.listenOnCloseFilter();
-        this.listenOnLogout();
         this.listenToLaunchGameLoader();
     }
 
@@ -133,7 +132,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             // this.listenOnFilter();
             // this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
             this.listenOnCloseFilter();
-            this.listenOnLogout();
         }
         this.response = null;
         this.element = element;
@@ -260,7 +258,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         gamesDictionary = this.getGamesDictionary(gamesList[key]);
         gamesList[key] = this.gamesCollectionSort.sortGamesCollection(
             promises,
-            "top",
+            "all-games",
             true,
             gamesDictionary,
         );
@@ -806,15 +804,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         if (el) {
             return el.getBoundingClientRect().bottom <= window.innerHeight;
         }
-    }
-
-    private listenOnLogout() {
-        ComponentManager.subscribe("session.logout.finished", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === "mobile-soda-casino") {
-                Router.navigate("/" + ComponentManager.getAttribute("language"), ["*"]);
-                return;
-            }
-        });
     }
 
     private getPagedContent(data) {
