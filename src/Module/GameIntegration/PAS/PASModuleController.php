@@ -78,6 +78,7 @@ class PASModuleController
                 'username' => $this->playerSession->getUsername(),
                 'token' => $this->playerSession->getToken(),
                 'currency' => $this->player->getCurrency(),
+                'playerId' => $this->player->getPlayerID(),
             ];
         } catch (\Exception $e) {
             $data['status'] = false;
