@@ -1,7 +1,3 @@
-import * as Handlebars from "handlebars/runtime";
-import * as gamesSearchTemplate from "../handlebars/games-search-result.handlebars";
-import * as gameTemplate from "../handlebars/games.handlebars";
-
 export class RecommendedGames {
     private recommendedGames: any[];
     private config;

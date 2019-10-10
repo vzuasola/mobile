@@ -36,7 +36,7 @@ class SodaCasinoLobbyComponentScripts implements ComponentAttachmentInterface
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
-        $this->views = $views;
+        $this->views = $views->withProduct($product->getProduct());
     }
 
     /**
@@ -61,7 +61,7 @@ class SodaCasinoLobbyComponentScripts implements ComponentAttachmentInterface
             'msg_no_recommended' => $config['msg_no_recommended'] ?? "",
             'title_weight' => $config['title_weight'] ?? 0,
             'keywords_weight' => $config['keywords_weight'] ?? 0,
-            'configs' => $sodaCasinoGeneralConfig ?? [],
+            'soda_configs' => $sodaCasinoGeneralConfig ?? [],
             'pagerConfig' => $pager ?? [],
             'product' => $this->getProductIntegration(),
             'infinite_scroll' => $sodaCasinoGeneralConfig['soda_casino_lobby_infinite_scroll'] ?? true

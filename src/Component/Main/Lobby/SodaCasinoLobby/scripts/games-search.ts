@@ -1,6 +1,4 @@
 import Search from "@app/assets/script/components/search";
-import * as Handlebars from "handlebars/runtime";
-import * as gamesSearchTemplate from "@app/assets/script/components/handlebars/games-search-result.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
@@ -53,16 +51,11 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.listenActivateSearchLightbox();
-        this.listenActivateSearchFilterLightbox();
+        this.listenActivateSearchField();
         this.listenChangeGameSearch();
-        this.listenClickSearchButton();
-        this.listenClickBackButton();
         this.listenClickFavoriteOnPreview();
-        this.listenCategoryChange();
         this.listenClickClearIcon();
         this.listenOnLogin();
-        this.listenSubmitGameSearch();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean,
@@ -75,16 +68,11 @@ export class GamesSearch {
             product: any[],
         }) {
         if (!this.element) {
-            this.listenActivateSearchLightbox();
-            this.listenActivateSearchFilterLightbox();
+            this.listenActivateSearchField();
             this.listenChangeGameSearch();
-            this.listenClickSearchButton();
-            this.listenClickBackButton();
             this.listenClickFavoriteOnPreview();
-            this.listenCategoryChange();
             this.listenClickClearIcon();
             this.listenOnLogin();
-            this.listenSubmitGameSearch();
         }
         this.isLogin = attachments.authenticated;
         this.config = attachments;
@@ -119,10 +107,10 @@ export class GamesSearch {
         this.searchBlurb = blurb;
 
         // set search blurb
-        this.updateSearchBlurb(blurb, this.element.querySelector("#blurb-preview"),
+        this.updateSearchBlurb(blurb, this.element.querySelector("#blurb-lobby"),
             { count: response.length, keyword });
         // populate search results in games preview
-        this.setGamesResultPreview(sortedGames);
+        this.setGamesResult(sortedGames);
     }
 
     private onSuccessSearchLobby(response, keyword) {
@@ -144,22 +132,18 @@ export class GamesSearch {
         let blurb = this.config.search_no_result_msg;
         blurb = "<span>" + blurb + "</span>";
         const recommendedGames = this.recommendedGames.getGames();
-        let recommendedBlurb = this.recommendedGames.getBlurb();
-        if (recommendedBlurb) {
-            recommendedBlurb = "<span>" + recommendedBlurb + "</span>";
-            blurb = blurb.concat(recommendedBlurb);
-        }
 
         this.searchKeyword = keyword;
         this.searchBlurb = blurb;
-        this.updateSearchBlurb(blurb, this.element.querySelector("#blurb-preview"), { count: 0, keyword });
+        this.updateSearchBlurb(blurb, this.element.querySelector("#blurb-lobby"), { count: 0, keyword });
+        this.clearLobbyShowSearch();
 
         if (recommendedGames.length) {
             this.isRecommended = true;
-            this.setGamesResultPreview(recommendedGames);
+            this.setGamesResult(recommendedGames);
             this.searchResult = recommendedGames;
         } else {
-            this.element.querySelector(".games-search-result").innerHTML = "";
+            this.element.querySelector("#game-search-result").innerHTML = "";
             this.searchResult = [];
         }
     }
@@ -205,58 +189,54 @@ export class GamesSearch {
     /**
      * Function that populates game tiles in games preview.
      */
-    private setGamesResultPreview(sortedGames) {
-        const previewTemplate = gamesSearchTemplate({
-            games: sortedGames,
-            favorites: this.favoritesList,
-            isLogin: this.isLogin,
-            isRecommended: this.isRecommended,
-        });
+    private setGamesResult(sortedGames) {
+        const groupedGames = this.groupGames(sortedGames);
+        this.clearLobbyShowSearch();
 
-        const gamesPreview = this.element.querySelector(".games-search-result");
-
-        if (gamesPreview) {
-            gamesPreview.innerHTML = previewTemplate;
-        }
+        // populate search results in games lobby search tab
+        ComponentManager.broadcast("games.search.success", {games: groupedGames, isRecommended: this.isRecommended});
     }
 
     /**
      * Function that clears search results.
      */
     private clearSearchResult() {
-        this.element.querySelector(".games-search-result").innerHTML = "";
-        this.element.querySelector(".games-search-input").value = "";
-    }
-
-    private clearSearchBlurbPreview() {
-        this.element.querySelector("#blurb-preview").innerHTML = "";
+        this.element.querySelector("#game-search-result").innerHTML = "";
+        this.element.querySelector("#game-search-field").value = "";
     }
 
     private clearSearchBlurbLobby() {
         this.element.querySelector("#blurb-lobby").innerHTML = "";
     }
 
+    private clearSearchShowLobby() {
+        const gamesContainer = this.element.querySelector("#game-container");
+        if (gamesContainer) {
+            const gamesResult = this.element.querySelector("#game-search-result");
+            gamesResult.style.display = "none";
+            gamesContainer.style.display = "inline-block";
+        }
+        this.clearSearchResult();
+    }
+
+    private clearLobbyShowSearch() {
+        const gamesResult = this.element.querySelector("#game-search-result");
+        if (gamesResult) {
+            const gamesContainer = this.element.querySelector("#game-container");
+            gamesContainer.style.display = "none";
+            gamesResult.style.display = "inline-block";
+        }
+    }
+
     /*
-     * Function that enables search tab and sets category in URL to inactive
+     * Function that enables search tab
      */
     private activateSearchTab() {
-        const categoriesEl = this.element.querySelector("#game-categories");
-        const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        if (activeLink) {
-            const activeCategory = activeLink.getAttribute("data-category-filter-id");
-            const activeLinkParent = utility.findParent(activeLink, "li");
-            if (activeLinkParent) {
-                utility.removeClass(activeLinkParent, "active");
-            }
-            utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
-        }
-
-        // set search tab as active tab
         utility.addClass(this.element.querySelector(".search-tab"), "active");
     }
 
     /*
-     * Function that disables search tab and sets category in URL to active
+     * Function that disables search tab
      */
     private deactivateSearchTab() {
         utility.removeClass(this.element.querySelector(".search-tab"), "active");
@@ -319,49 +299,25 @@ export class GamesSearch {
     }
 
     /**
-     * Function that shows active category games before initiating a search.
-     */
-    private showPreviousCategoryTab() {
-        const activeCategory = utility.getHash(window.location.href);
-        if (this.gamesList.games[activeCategory]) {
-            // repopulate list of games for active tab
-            ComponentManager.broadcast("games.search.success", {games: this.gamesList.games[activeCategory]});
-        }
-    }
-
-    /**
      * Function that shows search lightbox.
      */
-    private listenActivateSearchLightbox() {
+    private listenActivateSearchField() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "search-tab", true);
             if (el) {
                 event.preventDefault();
                 this.clearSearchResult();
-                this.clearSearchBlurbPreview();
+                this.clearSearchBlurbLobby();
                 ComponentManager.broadcast("games.search");
             }
         });
 
         ComponentManager.subscribe("games.search", (event, src) => {
-            Modal.open("#games-search-lightbox");
-        });
-    }
-
-    /**
-     * Function that shows search filter lightbox.
-     */
-    private listenActivateSearchFilterLightbox() {
-        ComponentManager.subscribe("click", (event, src) => {
-            const el = utility.hasClass(src, "games-filter", true);
-            if (el) {
-                event.preventDefault();
-                ComponentManager.broadcast("games.search.filter");
-            }
-        });
-
-        ComponentManager.subscribe("games.search.filter", (event, src) => {
-            Modal.open("#games-search-filter-lightbox");
+            const searchInput = this.element.querySelector("#game-search-field");
+            const categoryTab = this.element.querySelector(".game-category");
+            this.activateSearchTab();
+            categoryTab.style.visibility = "hidden";
+            searchInput.style.visibility = "visible";
         });
     }
 
@@ -370,7 +326,8 @@ export class GamesSearch {
      */
     private listenChangeGameSearch() {
         ComponentManager.subscribe("keyup", (event, src) => {
-            const keyword =  this.element.querySelector(".games-search-input");
+            const keyword = this.element.querySelector("#game-search-field");
+
             if (this.timer !== null) {
                 clearTimeout(this.timer);
             }
@@ -380,65 +337,9 @@ export class GamesSearch {
                     this.searchObj.search(keyword.value);
                 } else {
                     this.clearSearchResult();
-                    this.clearSearchBlurbPreview();
+                    this.clearSearchBlurbLobby();
                 }
             }, 1000);
-        });
-    }
-
-    private listenSubmitGameSearch() {
-        ComponentManager.subscribe("submit", (event, src) => {
-            const el = utility.hasClass(src, "games-search-form", true);
-            if (el) {
-                event.preventDefault();
-                this.showResultInLobby();
-            }
-        });
-    }
-
-    /**
-     * Listens for click event on search button.
-     * Shows games search result in games lobby.
-     */
-    private listenClickSearchButton() {
-        ComponentManager.subscribe("click", (event, src) => {
-            const el = utility.hasClass(src, "games-search-submit", true);
-            const keyword = this.element.querySelector(".games-search-input");
-            if (el && keyword.value) {
-                keyword.blur();
-                event.preventDefault();
-                this.showResultInLobby();
-            }
-        });
-    }
-
-    /**
-     * Shows search result in games lobby.
-     */
-    private showResultInLobby() {
-        this.activateSearchTab();
-        this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
-                { count: this.searchResult.length, keyword: this.searchKeyword });
-        if (this.searchResult.length) {
-            this.onSuccessSearchLobby(this.searchResult, this.searchKeyword);
-        } else {
-            this.element.querySelector("#game-container").innerHTML = "";
-        }
-
-        Modal.close("#games-search-lightbox");
-    }
-
-    /**
-     * Listens for click event on back button.
-     * Shows games of active category in lobby before initiating search.
-     */
-    private listenClickBackButton() {
-        ComponentManager.subscribe("click", (event, src) => {
-            const el = utility.hasClass(src, "games-search-back", true);
-            if (el) {
-                event.preventDefault();
-                Modal.close("#games-search-lightbox");
-            }
         });
     }
 
@@ -453,26 +354,27 @@ export class GamesSearch {
     }
 
     /**
-     * Listens for click event on category tabs to deactivate search tab
-     * as well as clear all search blurb.
-     */
-    private listenCategoryChange() {
-        ComponentManager.subscribe("category.change", (event, src, data) => {
-            this.deactivateSearchTab();
-            this.clearSearchBlurbLobby();
-        });
-    }
-
-    /**
      * Clears search result and search blurb when clear icon is clicked.
      */
     private listenClickClearIcon() {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "close-icon", true);
             if (el) {
+                event.preventDefault();
+                this.clearSearchShowLobby();
                 this.clearSearchResult();
-                this.clearSearchBlurbPreview();
+                this.clearSearchBlurbLobby();
+
+                ComponentManager.broadcast("games.search.close");
             }
+        });
+
+        ComponentManager.subscribe("games.search.close", (event, src) => {
+            const searchInput = this.element.querySelector("#game-search-field");
+            const categoryTab = this.element.querySelector(".game-category");
+            categoryTab.style.visibility = "visible";
+            searchInput.style.visibility = "hidden";
+            this.deactivateSearchTab();
         });
     }
 

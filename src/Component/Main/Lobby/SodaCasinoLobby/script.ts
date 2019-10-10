@@ -31,6 +31,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private attachments: any;
     private response: any;
     private isLogin: boolean;
+    private sodaConfigs: any;
     private gameLauncher;
     private gamesSearch: GamesSearch;
     private gamesFilter: GamesFilter;
@@ -51,10 +52,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     constructor() {
         this.loader = new Loader(document.body, true);
         this.gameLauncher = GameLauncher;
-        /* remove comment on game category and search implementation */
         this.gamesSearch = new GamesSearch();
-        // this.gamesFilter = new GamesFilter();
-        // this.casinoPreference = new SodaCasinoPreference();
         this.gamesCollectionSort = new GamesCollectionSorting();
     }
 
@@ -67,6 +65,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             search_blurb: string,
             msg_recommended_available: string,
             msg_no_recommended: string,
+            soda_configs: any,
             product: any[],
             infinite_scroll: boolean,
         }) {
@@ -75,10 +74,10 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.attachments = attachments;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
+        this.sodaConfigs = attachments.soda_configs;
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        /* remove comment on game category and search implementation */
         this.listenChangeCategory();
         this.listenHashChange();
         this.listenClickGameTile();
@@ -88,20 +87,15 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.highlightMenu();
             this.lobby();
         });
-        /* remove comment on game category and search implementation */
         this.listenToCategory();
         this.listenToScroll();
         this.listenToSwipe();
         // this.initMarker();
-        // this.listenOnSearch();
-        // this.listenOnFilter();
+        this.listenOnSearch();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        /* remove comment on game category and search implementation */
         this.gamesSearch.handleOnLoad(this.element, attachments);
-        // this.gamesFilter.handleOnLoad(this.element, attachments);
-        // this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
         this.listenOnCloseFilter();
         this.listenToLaunchGameLoader();
     }
@@ -115,6 +109,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             search_blurb: string,
             msg_recommended_available: string,
             msg_no_recommended: string,
+            soda_configs: any,
             product: any[],
             infinite_scroll: boolean,
         }) {
@@ -137,6 +132,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.element = element;
         this.attachments = attachments;
         this.product = attachments.product;
+        this.sodaConfigs = attachments.soda_configs;
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -340,6 +336,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                         // clone respone object
                         const newResponse = Object.assign({}, mergeResponse);
                         newResponse.games = this.getCategoryGames(newResponse);
+                        newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
                         newResponse.games = this.groupGamesByContainer(newResponse.games);
                         newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
                         if (pageResponse.hasOwnProperty("fav")) {
@@ -347,7 +344,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                             const favoritesList = pageResponse[key];
                             newResponse.favorite_list = this.getFavoritesList(favoritesList);
                         }
-
                         this.response = newResponse;
                         if (callback) {
                             callback();
@@ -380,6 +376,16 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         return req;
     }
 
+    private doSortRecommended(newResponse) {
+        let sortedRecommended: any = [];
+        sortedRecommended = this.gamesCollectionSort.sortGamesCollection(
+            newResponse,
+            "recommended",
+        );
+
+        return sortedRecommended;
+    }
+
     private lobby() {
         /* remove comment on game category and search implementation */
         this.gamesSearch.setGamesList(this.response);
@@ -408,6 +414,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         const categoriesEl = this.element.querySelector("#game-categories");
 
         const template = categoriesTemplate({
+            placeholder: this.sodaConfigs.search_placeholder,
             categories: data,
             active: key,
         });
@@ -445,8 +452,14 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, activeCategory: string = " ", page: number = 0, isRecommend = false) {
-        const gamesEl = this.element.querySelector("#game-container");
+    private setGames(
+        data,
+        activeCategory: string = " ",
+        page: number = 0,
+        isRecommend = false,
+        container: string = "#game-container") {
+
+        const gamesEl = this.element.querySelector(container);
         const pager = this.getPagedContent(data);
 
         let template = gameTemplate({
@@ -780,8 +793,8 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
 
     private listenOnSearch() {
          ComponentManager.subscribe("games.search.success", (event, src, data) => {
-             this.searchResults = data.games;
-             this.setGames(data.games, " ", 0, data.isRecommended);
+            this.searchResults = data.games;
+            this.setGames(data.games, " ", 0, data.isRecommended, "#game-search-result");
          });
      }
 

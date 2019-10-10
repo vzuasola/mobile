@@ -1,7 +1,8 @@
 .game-container {
     background: $dark-red;
 
-    #game-container {
+    #game-container,
+    #game-search-result {
         position: relative;
         transition:all 0.5s ease-in-out;
         z-index: 0;

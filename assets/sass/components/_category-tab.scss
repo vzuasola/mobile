@@ -196,10 +196,50 @@
             }
 
             .search-tab.active {
+                background: $soda-blue;
+                border: 0;
+
                 svg {
                     fill: #FFC371;
                 }
             }
+
+            form {
+                margin: 0;
+
+                .field-game-search {
+                    position: absolute;
+                    width: 75%;
+                    left: 5.5rem;
+                    top: 0.5rem;
+                    padding: 0.5rem 2rem;
+                    background: $soda-dark-blue;
+                    -webkit-border-radius: 50rem;
+                    -moz-border-radius: 50rem;
+                    border-radius: 50rem;
+                    border: 0;
+                    color: $white;
+                    visibility: hidden;
+    
+                    &::placeholder {
+                        color: $soda-gray;
+                        opacity: 0.5;
+                    }
+                }
+    
+                .close-icon {
+                    right: 1%;
+    
+                    &::after {
+                        top: 0.9rem;
+                        content: "x";
+                        color: $soda-gray;
+                        opacity: 0.5;
+                        transform: scale3d(2.2, 1.75, 0.1);
+                    }
+                }
+            }
+
         }
     }
 
