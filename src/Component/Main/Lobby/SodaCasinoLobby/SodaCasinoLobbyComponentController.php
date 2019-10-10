@@ -87,7 +87,7 @@ class SodaCasinoLobbyComponentController
             $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
 
-        $enableRecommended = false;
+        $enableRecommended = true;
         $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
         $data['enableRecommended'] = $enableRecommended;
 
