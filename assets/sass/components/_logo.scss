@@ -55,10 +55,12 @@
 }
 /*SODA CASINO*/
 .mobile-soda-casino {
-    .logo.mobile-soda-casino {
+    .mobile-menu-header {
+        .logo {
             background: $red;
+        }
     }
-    
+
     .header-mobile-soda-casino {
         .logo img {
             top: -1rem;
