@@ -47,7 +47,6 @@ class SodaCasinoLobbyComponentScripts implements ComponentAttachmentInterface
         try {
             $config = $this->configs->getConfig('games_search.search_configuration');
             $sodaCasinoGeneralConfig = $this->configs->getConfig('soda_casino.soda_casino_configuration');
-            $pager = $this->views->getViewById('games_list', ['pager' => 1]);
         } catch (\Exception $e) {
             $config = [];
         }
@@ -62,7 +61,6 @@ class SodaCasinoLobbyComponentScripts implements ComponentAttachmentInterface
             'title_weight' => $config['title_weight'] ?? 0,
             'keywords_weight' => $config['keywords_weight'] ?? 0,
             'soda_configs' => $sodaCasinoGeneralConfig ?? [],
-            'pagerConfig' => $pager ?? [],
             'product' => $this->getProductIntegration(),
             'infinite_scroll' => $sodaCasinoGeneralConfig['soda_casino_lobby_infinite_scroll'] ?? true
         ];
