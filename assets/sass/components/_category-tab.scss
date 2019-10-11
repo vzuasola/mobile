@@ -205,13 +205,16 @@
             }
 
             form {
+                height: 100%;
                 margin: 0;
+                visibility: hidden;
 
                 .field-game-search {
                     position: absolute;
                     width: 75%;
+                    height: 80%;
                     left: 5.5rem;
-                    top: 0.5rem;
+                    margin: 1% 0;
                     padding: 0.5rem 2rem;
                     background: $soda-dark-blue;
                     -webkit-border-radius: 50rem;
@@ -219,7 +222,6 @@
                     border-radius: 50rem;
                     border: 0;
                     color: $white;
-                    visibility: hidden;
     
                     &::placeholder {
                         color: $soda-gray;
