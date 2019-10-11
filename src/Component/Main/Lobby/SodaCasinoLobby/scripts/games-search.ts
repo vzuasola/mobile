@@ -57,6 +57,7 @@ export class GamesSearch {
         this.listenClickFavoriteOnPreview();
         this.listenClickClearIcon();
         this.listenOnLogin();
+        this.listenSubmitGameSearch();
     }
 
     handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean,
@@ -74,6 +75,7 @@ export class GamesSearch {
             this.listenClickFavoriteOnPreview();
             this.listenClickClearIcon();
             this.listenOnLogin();
+            this.listenSubmitGameSearch();
         }
         this.isLogin = attachments.authenticated;
         this.config = attachments;
@@ -209,7 +211,7 @@ export class GamesSearch {
      */
     private clearSearchResult() {
         this.element.querySelector("#game-search-result").innerHTML = "";
-        this.element.querySelector("#game-search-form").value = "";
+        this.element.querySelector("#game-search-field").value = "";
     }
 
     private clearSearchBlurbLobby() {
@@ -347,6 +349,18 @@ export class GamesSearch {
                     this.clearSearchBlurbLobby();
                 }
             }, 1000);
+        });
+    }
+
+    /**
+     * Listens for form submit events
+     */
+    private listenSubmitGameSearch() {
+        ComponentManager.subscribe("submit", (event, src) => {
+            const el = utility.hasClass(src, "soda-game-search-form", true);
+            if (el) {
+                event.preventDefault();
+            }
         });
     }
 
