@@ -222,6 +222,7 @@
                     border-radius: 50rem;
                     border: 0;
                     color: $white;
+                    z-index: 100;
     
                     &::placeholder {
                         color: $soda-gray;
@@ -231,6 +232,7 @@
     
                 .close-icon {
                     right: 1%;
+                    z-index: 100;
     
                     &::after {
                         top: 0.9rem;
