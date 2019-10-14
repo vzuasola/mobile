@@ -48,12 +48,15 @@ class AsiaGamingModuleScripts implements ComponentAttachmentInterface
     {
         try {
             $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
+            $customLobby = ($config[self::KEY . '_custom_lobbyDomain_enabled'] ?? false) ?
+                ($config[self::KEY . '_custom_lobbyDomain'] ?? '') : '';
 
             $data = [
                 'authenticated' => $this->playerSession->isLogin(),
                 'lang' => $this->lang,
                 'currencies' => explode(PHP_EOL, $config[self::KEY . '_currency']),
                 'languages' => Config::parse($config[self::KEY . '_language_mapping'] ?? ''),
+                'customLobby' => $customLobby,
             ];
         } catch (\Exception $e) {
             $data = [];
