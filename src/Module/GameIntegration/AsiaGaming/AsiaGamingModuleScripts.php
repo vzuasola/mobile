@@ -3,7 +3,7 @@
 namespace App\MobileEntry\Module\GameIntegration\AsiaGaming;
 
 use App\Drupal\Config;
-
+use App\MobileEntry\Services\Product\ProductResolver;
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 use App\Plugins\Token\Parser;
 
@@ -23,6 +23,11 @@ class AsiaGamingModuleScripts implements ComponentAttachmentInterface
      */
     private $parser;
 
+    /**
+     * @var ProductResolver
+     */
+    private $productResolver;
+
     const KEY = 'asia_gaming';
 
     /**
@@ -34,7 +39,8 @@ class AsiaGamingModuleScripts implements ComponentAttachmentInterface
             $container->get('player_session'),
             $container->get('config_fetcher'),
             $container->get('lang'),
-            $container->get('token_parser')
+            $container->get('token_parser'),
+            $container->get('product_resolver')
         );
     }
 
@@ -44,17 +50,21 @@ class AsiaGamingModuleScripts implements ComponentAttachmentInterface
      * @param $config
      * @param $lang
      * @param Parser $parser
+     * @param ProductResolver $productResolver
      */
     public function __construct(
         $playerSession,
         $config,
         $lang,
-        Parser $parser
+        Parser $parser,
+        ProductResolver $productResolver
     ) {
         $this->playerSession = $playerSession;
-        $this->config = $config->withProduct('mobile-games');
         $this->lang = $lang;
         $this->parser = $parser;
+        $this->productResolver = $productResolver;
+        $product = $this->productResolver->getProduct();
+        $this->config = $config->withProduct($product);
     }
 
     /**
