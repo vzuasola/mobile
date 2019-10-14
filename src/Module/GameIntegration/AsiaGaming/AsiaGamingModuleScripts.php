@@ -5,6 +5,7 @@ namespace App\MobileEntry\Module\GameIntegration\AsiaGaming;
 use App\Drupal\Config;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
+use App\Plugins\Token\Parser;
 
 /**
  *
@@ -17,6 +18,11 @@ class AsiaGamingModuleScripts implements ComponentAttachmentInterface
 
     private $lang;
 
+    /**
+     * @var Parser
+     */
+    private $parser;
+
     const KEY = 'asia_gaming';
 
     /**
@@ -27,18 +33,30 @@ class AsiaGamingModuleScripts implements ComponentAttachmentInterface
         return new static(
             $container->get('player_session'),
             $container->get('config_fetcher'),
-            $container->get('lang')
+            $container->get('lang'),
+            $container->get('token_parser')
         );
     }
 
     /**
-     * Public constructor
+     * AsiaGamingModuleScripts public constructor.
+     * @param $playerSession
+     * @param $config
+     * @param $lang
+     * @param Parser $parser
      */
-    public function __construct($playerSession, $config, $lang)
+    public function __construct(
+        $playerSession,
+        $config,
+        $lang,
+        Parser $parser
+    )
     {
         $this->playerSession = $playerSession;
         $this->config = $config->withProduct('mobile-games');
         $this->lang = $lang;
+        $this->parser = $parser;
+
     }
 
     /**
@@ -48,8 +66,9 @@ class AsiaGamingModuleScripts implements ComponentAttachmentInterface
     {
         try {
             $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-            $customLobby = ($config[self::KEY . '_custom_lobbyDomain_enabled'] ?? false) ?
-                ($config[self::KEY . '_custom_lobbyDomain'] ?? '') : '';
+            $customLobby = $this->parser->processTokens(
+                ($config[self::KEY . '_custom_lobbyDomain_enabled'] ?? false) ?
+                ($config[self::KEY . '_custom_lobbyDomain'] ?? '') : '');
 
             $data = [
                 'authenticated' => $this->playerSession->isLogin(),
