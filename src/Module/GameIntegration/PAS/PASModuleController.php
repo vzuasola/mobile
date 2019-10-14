@@ -15,7 +15,9 @@ class PASModuleController
         'mobile-casino' => 'dafa888',
         'mobile-casino-gold' => 'dafagold',
         'dafaconnect' => 'dafaconnect',
-        'mobile-live-dealer' => 'dafa888',
+        'mobile-live-dealer' => 'dafabetgames',
+        'mobile-games' => 'dafabetgames',
+        'mobile-entrypage' => 'dafa888',
     ];
 
     private $rest;
@@ -75,6 +77,7 @@ class PASModuleController
                 'username' => $this->playerSession->getUsername(),
                 'token' => $this->playerSession->getToken(),
                 'currency' => $this->player->getCurrency(),
+                'playerId' => $this->player->getPlayerID(),
             ];
         } catch (\Exception $e) {
             $data['status'] = false;
