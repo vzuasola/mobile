@@ -211,10 +211,10 @@
 
                 .field-game-search {
                     position: absolute;
-                    width: 75%;
+                    width: 83%;
                     height: 80%;
+                    top: 10%;
                     left: 5.5rem;
-                    margin: 1% 0;
                     padding: 0.5rem 2rem;
                     background: $soda-dark-blue;
                     -webkit-border-radius: 50rem;
@@ -222,7 +222,7 @@
                     border-radius: 50rem;
                     border: 0;
                     color: $white;
-                    z-index: 100;
+                    z-index: 999;
     
                     &::placeholder {
                         color: $soda-gray;
@@ -231,8 +231,8 @@
                 }
     
                 .close-icon {
-                    right: 1%;
-                    z-index: 100;
+                    right: 2%;
+                    z-index: 999;
     
                     &::after {
                         top: 0.9rem;
@@ -240,6 +240,7 @@
                         color: $soda-gray;
                         opacity: 0.5;
                         transform: scale3d(2.2, 1.75, 0.1);
+                        z-index: 999;
                     }
                 }
             }
