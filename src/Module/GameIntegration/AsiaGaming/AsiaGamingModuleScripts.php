@@ -50,13 +50,11 @@ class AsiaGamingModuleScripts implements ComponentAttachmentInterface
         $config,
         $lang,
         Parser $parser
-    )
-    {
+    ) {
         $this->playerSession = $playerSession;
         $this->config = $config->withProduct('mobile-games');
         $this->lang = $lang;
         $this->parser = $parser;
-
     }
 
     /**
@@ -65,10 +63,12 @@ class AsiaGamingModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
+            $config = $this->config->getConfig('webcomposer_config.icore_games_integration');
             $customLobby = $this->parser->processTokens(
-                ($config[self::KEY . '_custom_lobbyDomain_enabled'] ?? false) ?
-                ($config[self::KEY . '_custom_lobbyDomain'] ?? '') : '');
+                ($config[self::KEY . '_custom_lobbyDomain_enabled'] ?? false)
+                    ? ($config[self::KEY . '_custom_lobbyDomain'] ?? '')
+                    : ''
+            );
 
             $data = [
                 'authenticated' => $this->playerSession->isLogin(),
