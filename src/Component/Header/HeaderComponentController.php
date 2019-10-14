@@ -49,6 +49,7 @@ class HeaderComponentController
     {
         $params = $request->getQueryParams();
         $currentProduct = $params['product'] ?? 'mobile-entrypage';
+        $productStyle = $params['style'] ?? 'mobile-entrypage';
         try {
             $headerConfigsByProduct = $this->configs
                 ->withProduct($currentProduct)
@@ -69,7 +70,7 @@ class HeaderComponentController
             $data['logo'] = '/images/dafabet_logo_chinese.png';
         } elseif ($currentProduct == "mobile-casino-gold") {
             $data['logo'] = '/images/dafabet-gold-sc.png';
-        } elseif ($currentProduct == "mobile-soda-casino") {
+        } elseif ($currentProduct == "mobile-soda-casino" && $productStyle == "mobile-soda-casino") {
             $data['logo'] = '/images/soda-casino-logo.png';
         } else {
             $data['logo'] = '/images/dafabet_logo.png';
