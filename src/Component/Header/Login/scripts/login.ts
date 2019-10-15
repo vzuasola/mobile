@@ -287,7 +287,12 @@ export class Login {
                         });
                     }
                 } else {
-                    utility.removeClass(loginModal, product + "-modal");
+                    const modal = this.element.querySelector("#login-lightbox");
+                    const closeElement = utility.hasClass(modal, "modal-active", true);
+
+                    if (!closeElement) {
+                        utility.removeClass(loginModal, product + "-modal");
+                    }
                 }
             }
         });
