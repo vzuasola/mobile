@@ -206,9 +206,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     }
 
     private getPagerPromises() {
-        /* remove comment on game category and search implementation
-        const promises = ["allGames", "recent", "fav"]; */
-        const promises = ["allGames", "fav", "games-collection"];
+        const promises = ["allGames", "recent", "fav", "games-collection"];
         return promises;
     }
 
@@ -362,10 +360,9 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             type: "lobby",
         };
 
-        /* remove comment on game category and search implementation */
-        // req.recent = {
-        //     type: "getRecentlyPlayed",
-        // };
+        req.recent = {
+            type: "getRecentlyPlayed",
+        };
         req.fav = {
             type: "getFavorites",
         };
@@ -387,9 +384,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     }
 
     private lobby() {
-        /* remove comment on game category and search implementation */
         this.gamesSearch.setGamesList(this.response);
-        // this.gamesFilter.setGamesList(this.response);
         this.setLobby();
     }
 
@@ -571,7 +566,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     }
 
     /**
-     * Event listener for game item click
+     * Event listener for game item click - adding games to recently played
      */
     private listenGameLaunch() {
         ComponentManager.subscribe("game.launch", (event, src, data) => {
@@ -589,7 +584,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     }
 
     /**
-     * Event listener for game item click
+     * Event listener for game item click -adding games to favorites
      */
     private listenFavoriteClick() {
         ComponentManager.subscribe("click", (event, src) => {
@@ -871,21 +866,18 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         gamesList["recently-played"] = response.games["recently-played"];
         response.games = gamesList;
         gamesList = this.doSortCategoryGames(response, gamesList);
-        /* tslint:enable:no-string-literal */
 
         return gamesList;
     }
 
     private doSortCategoryGames(response, gamesList) {
         const sortedGamesList: any = [];
-        const favoritesKey = "favorites";
         const exemptFromSort: any = ["all-games", "favorites", "recently-played"];
 
-        /* tslint:enable:no-string-literal */
+        /* tslint:disable:no-string-literal */
         sortedGamesList["all-games"] = response.games["all-games"];
-        sortedGamesList[favoritesKey] = response.games[favoritesKey];
+        sortedGamesList["favorites"] = response.games["favorites"];
         sortedGamesList["recently-played"] = response.games["recently-played"];
-        /* tslint:enable:no-string-literal */
 
         for (const category in gamesList) {
             if (gamesList.hasOwnProperty(category) && exemptFromSort.indexOf(category) === -1) {
