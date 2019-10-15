@@ -32,6 +32,7 @@ export class Login {
     private srcElement: HTMLElement;
     private action: any = false;
     private logoData: any;
+    private loginStyle: any;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -265,22 +266,28 @@ export class Login {
         ComponentManager.subscribe("click", (event, src) => {
             if (!this.isLogin) {
                 const element = utility.hasClass(src, "login-trigger", true);
+                const product = ComponentManager.getAttribute("product");
+                const loginModal = this.element.querySelector("#login-lightbox");
 
                 if (element) {
+                    utility.addClass(loginModal, product + "-modal");
                     event.preventDefault();
-
                     if (element.getAttribute("data-product-login-via")
                         && element.getAttribute("data-product-reg-via")) {
                         ComponentManager.broadcast("header.login", {
                             src: element,
                             productVia: element.getAttribute("data-product-login-via"),
                             regVia: element.getAttribute("data-product-reg-via"),
+                            loginStyle: product,
                         });
                     } else {
                         ComponentManager.broadcast("header.login", {
                             src: element,
+                            loginStyle: product,
                         });
                     }
+                } else {
+                    utility.removeClass(loginModal, product + "-modal");
                 }
             }
         });
@@ -345,7 +352,7 @@ export class Login {
 
             if (!this.isLogin) {
                 Modal.open("#login-lightbox");
-                this.getLogo();
+                this.getLogo( data.loginStyle );
             }
         });
     }
@@ -399,13 +406,19 @@ export class Login {
         logo.innerHTML = template;
     }
 
-    private getLogo() {
+    private getLogo(loginStyle) {
+        this.loginStyle = "mobile-entrypage";
+        if (loginStyle && typeof loginStyle !== "undefined") {
+            this.loginStyle = loginStyle;
+        }
+
         xhr({
             url: Router.generateRoute("header", "getlogo"),
             type: "json",
             data: {
                 product: ComponentManager.getAttribute("product"),
                 language: ComponentManager.getAttribute("language"),
+                style: loginStyle,
             },
         }).then((response) => {
             this.logoData = response;

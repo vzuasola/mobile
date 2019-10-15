@@ -79,7 +79,6 @@
     .login-trigger.btn {
         max-width: 10.5rem;
         border: 0.1rem solid #FFC371;
-        border-radius: 2.4rem;
         opacity: 1;
         font-size: 1.5rem;
         padding: 0.3rem 0.4rem;
@@ -88,7 +87,10 @@
             max-width: 16.5rem;
         }
     }
+    
+}
 
+.mobile-soda-casino-modal {
     .login-submit.btn ,
     .btn-join.btn {
         background-color: transparent;
@@ -105,9 +107,8 @@
         border: 0.2rem solid #FF5F6D;
     }
 
-    .login .modal-close-button {
+    .modal-close-button {
         background: transparent;
         fill: #e4e4e4;
     }
-    
 }

@@ -156,6 +156,7 @@ export class HeaderComponent implements ComponentInterface {
             data: {
                 product: ComponentManager.getAttribute("product"),
                 language: ComponentManager.getAttribute("language"),
+                style: ComponentManager.getAttribute("product"),
             },
         }).then((response) => {
             this.logoData = response;
