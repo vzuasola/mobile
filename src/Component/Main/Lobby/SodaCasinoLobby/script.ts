@@ -866,7 +866,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         gamesList["recently-played"] = response.games["recently-played"];
         response.games = gamesList;
         gamesList = this.doSortCategoryGames(response, gamesList);
-        /* tslint:enable:no-string-literal */
 
         return gamesList;
     }
@@ -875,11 +874,10 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         const sortedGamesList: any = [];
         const exemptFromSort: any = ["all-games", "favorites", "recently-played"];
 
-        /* tslint:enable:no-string-literal */
+        /* tslint:disable:no-string-literal */
         sortedGamesList["all-games"] = response.games["all-games"];
         sortedGamesList["favorites"] = response.games["favorites"];
         sortedGamesList["recently-played"] = response.games["recently-played"];
-        /* tslint:enable:no-string-literal */
 
         for (const category in gamesList) {
             if (gamesList.hasOwnProperty(category) && exemptFromSort.indexOf(category) === -1) {
