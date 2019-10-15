@@ -370,7 +370,7 @@ export class GamesSearch {
      */
     private listenClickFavoriteOnPreview() {
         ComponentManager.subscribe("games.favorite", (event, src, data) => {
-            utility.toggleClass(data.srcElement, "active");
+            this.clearLobbyShowSearch();
         });
     }
 

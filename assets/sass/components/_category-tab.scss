@@ -222,7 +222,7 @@
                     border-radius: 50rem;
                     border: 0;
                     color: $white;
-                    z-index: 999;
+                    z-index: 10;
     
                     &::placeholder {
                         color: $soda-gray;
@@ -232,7 +232,9 @@
     
                 .close-icon {
                     right: 2%;
-                    z-index: 999;
+                    z-index: 11;
+                    width: 4rem;
+                    height: 4rem;
     
                     &::after {
                         top: 0.9rem;
@@ -240,7 +242,6 @@
                         color: $soda-gray;
                         opacity: 0.5;
                         transform: scale3d(2.2, 1.75, 0.1);
-                        z-index: 999;
                     }
                 }
             }
