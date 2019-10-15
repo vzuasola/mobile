@@ -8,19 +8,14 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as categoriesTemplate from "./handlebars/categories.handlebars";
 import * as gameTemplate from "@app/assets/script/components/handlebars/games.handlebars";
-import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
-import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
 
 import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
+import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {GamesSearch} from "./scripts/games-search";
-import {GamesFilter} from "@app/assets/script/components/games-filter";
-import {SodaCasinoPreference} from "./scripts/soda-casino-preference";
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
-import {Marker} from "@app/assets/script/components/marker";
 import PopupWindow from "@app/assets/script/components/popup";
 
 /**
@@ -34,9 +29,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private sodaConfigs: any;
     private gameLauncher;
     private gamesSearch: GamesSearch;
-    private gamesFilter: GamesFilter;
     private gamesCollectionSort: GamesCollectionSorting;
-    private casinoPreference: SodaCasinoPreference;
     private currentPage: number;
     private pager: number;
     private load: boolean;
@@ -90,13 +83,11 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.listenToCategory();
         this.listenToScroll();
         this.listenToSwipe();
-        // this.initMarker();
         this.listenOnSearch();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
-        this.listenOnCloseFilter();
         this.listenToLaunchGameLoader();
     }
 
@@ -115,7 +106,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         }) {
         this.isLogin = attachments.authenticated;
         if (!this.element) {
-            /* remove comment on game category and search implementation */
             this.listenChangeCategory();
             this.listenHashChange();
             this.listenClickGameTile();
@@ -123,10 +113,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.listenFavoriteClick();
             this.listenToCategory();
             this.listenToScroll();
-            // this.listenOnSearch();
-            // this.listenOnFilter();
-            // this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
-            this.listenOnCloseFilter();
         }
         this.response = null;
         this.element = element;
@@ -140,26 +126,14 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.highlightMenu();
             this.lobby();
         });
-        /* remove comment on game category and search implementation */
         this.listenToSwipe();
-        // this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
-        // this.gamesFilter.handleOnReLoad(this.element, attachments);
 
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
         this.listenToLaunchGameLoader();
     }
-    /* remove comment on game category and search implementation */
-    // private initMarker() {
-    //     // Checkbox
-    //     new Marker({
-    //         parent: ".games-search-filter-body",
-    //         iconDefault: iconUnCheckedTemplate(),
-    //         iconActive: iconCheckedTemplate(),
-    //     });
-    // }
 
     private highlightMenu() {
         ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
@@ -708,45 +682,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         }
     }
 
-    private listenOnFilter() {
-        ComponentManager.subscribe("games.filter.success", (event: Event, src, data) => {
-            if (data.filteredGames) {
-                this.element.querySelector("#blurb-lobby").innerHTML = "";
-                this.activateSearchTab();
-                this.searchResults = data.filteredGames;
-                this.setGames(data.filteredGames);
-            } else {
-                const gamesEl = this.element.querySelector("#game-container");
-                let recommended: boolean = false;
-                gamesEl.innerHTML = "";
-                this.activateSearchTab();
-                if (this.response.games["recommended-games"]  && this.response.enableRecommended ) {
-                    this.searchResults = this.response.games["recommended-games"];
-                    this.setGames(this.response.games["recommended-games"], "recommended-games", 0, true);
-                    recommended = true;
-                }
-                this.updateBlurbForFilter(recommended);
-            }
-        });
-    }
-
-    private listenOnCloseFilter() {
-        ComponentManager.subscribe("games.reload", (event: Event, src, data) => {
-            this.setLobby();
-            ComponentManager.broadcast("category.change");
-        });
-    }
-
-    private updateBlurbForFilter(recommended: boolean) {
-        const searchBlurbEl = this.element.querySelector("#blurb-lobby");
-        let recommendedBlurb = this.attachments.msg_no_recommended;
-        if (recommended) {
-            recommendedBlurb = this.attachments.msg_recommended_available;
-        }
-        recommendedBlurb = "<span>" + recommendedBlurb + "</span>";
-        searchBlurbEl.innerHTML = this.attachments.filter_no_result_msg + recommendedBlurb;
-    }
-
     private listenToScroll() {
         utility.addEventListener(window, "scroll", (event, src) => {
             const gameLoader: HTMLElement = this.element.querySelector("#game-loader");
@@ -792,21 +727,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.setGames(data.games, " ", 0, data.isRecommended, "#game-search-result");
          });
      }
-
-    private activateSearchTab() {
-        const categoriesEl = this.element.querySelector("#game-categories");
-        const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        if (activeLink) {
-            const activeCategory = activeLink.getAttribute("data-category-filter-id");
-            const activeLinkParent = utility.findParent(activeLink, "li");
-            if (activeLinkParent) {
-                utility.removeClass(activeLinkParent, "active");
-            }
-            utility.removeClass(this.element.querySelector(".category-" + activeCategory), "active");
-        }
-        utility.addClass(this.element.querySelector(".search-tab"), "active");
-        utility.addClass(this.element.querySelector(".search-blurb"), "active");
-    }
 
     private isSeen(el) {
         if (el) {
