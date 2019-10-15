@@ -113,10 +113,10 @@
                 border: 0;
                 outline: 0;
                 background: transparent;
-                border-bottom: 0.3rem solid #FFFFFF;
+                border-bottom: 0.3rem solid $white;
                 font-weight: normal;
                 font-size: 1.7rem;
-                color: #FFFFFF;
+                color: $white;
             }
 
             .invalid::placeholder {
