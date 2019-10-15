@@ -49,15 +49,24 @@ class WACModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
-
         if ($this->checkCurrency($request)) {
-            $data = $this->getGameLobby($request, $response);
+            $requestData = $request->getParsedBody();
+            if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
+                $requestData['lobby'] === "false") {
+                    $data = $this->getGameUrl($request);
+            }
+
+            if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
+                $requestData['lobby'] === "true"
+            ) {
+                $data = $this->getGameLobby($request);
+            }
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function getGameLobby($request, $response)
+    private function getGameLobby($request)
     {
         $data['currency'] = true;
         $requestData = $request->getParsedBody();
@@ -72,6 +81,29 @@ class WACModuleController
 
             if ($responseData) {
                 $data['gameurl'] = $responseData;
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
+        return $data;
+    }
+
+    private function getGameUrl($request)
+    {
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
+
+        try {
+            $params = explode('|', $requestData['gameCode']);
+            $responseData = $this->wac->getGameUrlById('icore_wac', $params[0], [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                    'providerProduct' => $params[1] ?? null,
+                ]
+            ]);
+            if ($responseData['url']) {
+                $data['gameurl'] = $responseData['url'];
             }
         } catch (\Exception $e) {
             $data = [];

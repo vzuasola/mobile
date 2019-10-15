@@ -31,6 +31,7 @@ class BalanceModuleController
         'mobile-live-dealer' => 5,
         'mobile-exchange' => 10,
         'mobile-lottery' => 5,
+        'mobile-arcade' => 5,
     ];
 
     private $rest;

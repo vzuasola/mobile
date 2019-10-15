@@ -6,6 +6,7 @@ import PopupWindow from "@app/assets/script/components/popup";
 import {Avaya} from "./scripts/avaya";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
+import {DafaConnect} from "@app/assets/script/dafa-connect";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 /**
@@ -120,6 +121,10 @@ export class AvayaModule implements ModuleInterface {
                 }
 
                 this.avayaLink = updatedUrl;
+                if (DafaConnect.isDafaconnect()) {
+                    window.open(updatedUrl);
+                    return;
+                }
                 this.windowObject.location.href = updatedUrl;
             }
         } catch (e) {
@@ -173,6 +178,8 @@ export class AvayaModule implements ModuleInterface {
                 this.windowObject = window;
             } else if (target === "_blank") {
                 this.windowObject = window.open("", "_blank");
+            } else if (DafaConnect.isDafaconnect()) {
+                this.windowObject = window;
             } else {
                 // Popup
                 // We use a different data attribute for the popup,

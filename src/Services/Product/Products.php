@@ -13,6 +13,7 @@ class Products
         'casino-gold' => 'mobile-casino-gold',
         'live-dealer' => 'mobile-live-dealer',
         'lottery' => 'mobile-lottery',
+        'arcade' => 'mobile-arcade',
         'exchange' => 'mobile-exchange'
     ];
 

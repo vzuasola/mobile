@@ -33,6 +33,7 @@ export class GameIntegrationModule implements ModuleInterface {
         const evoGaming: any = ComponentManager.getModuleInstance("evolution_gaming_integration");
         const eBet: any = ComponentManager.getModuleInstance("ebet_integration");
         const gpi: any = ComponentManager.getModuleInstance("gpi_integration");
+        const gpiArcade: any = ComponentManager.getModuleInstance("gpi_arcade_integration");
         const gpiKeno: any = ComponentManager.getModuleInstance("gpi_keno_integration");
         const gpiPk: any = ComponentManager.getModuleInstance("gpi_pk_integration");
         const gpiThai: any = ComponentManager.getModuleInstance("gpi_thai_integration");
@@ -43,6 +44,8 @@ export class GameIntegrationModule implements ModuleInterface {
         const wac: any = ComponentManager.getModuleInstance("wac_integration");
         const ezugiGaming: any = ComponentManager.getModuleInstance("ezugi_gaming_integration");
         const videoRacing: any = ComponentManager.getModuleInstance("videoracing_integration");
+        const funGaming: any = ComponentManager.getModuleInstance("fun_gaming_integration");
+        const kyGaming: any = ComponentManager.getModuleInstance("ky_gaming_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
@@ -58,6 +61,7 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("evo_gaming", evoGaming);
         this.gameLauncher.setProvider("ebet", eBet);
         this.gameLauncher.setProvider("gpi", gpi);
+        this.gameLauncher.setProvider("gpi_arcade", gpiArcade);
         this.gameLauncher.setProvider("gpi_keno", gpiKeno);
         this.gameLauncher.setProvider("gpi_pk", gpiPk);
         this.gameLauncher.setProvider("gpi_thai", gpiThai);
@@ -68,6 +72,8 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("wac", wac);
         this.gameLauncher.setProvider("ezugi_gaming", ezugiGaming);
         this.gameLauncher.setProvider("video_racing", videoRacing);
+        this.gameLauncher.setProvider("fun_gaming", funGaming);
+        this.gameLauncher.setProvider("ky_gaming", kyGaming);
 
         setTimeout(() => {
             this.gameLauncher.init();
