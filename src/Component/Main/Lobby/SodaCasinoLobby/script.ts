@@ -549,13 +549,26 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             const el = utility.hasClass(data.src, "game-list", true);
             if (el) {
                 const gameCode = el.getAttribute("data-game-code");
-                this.response = null;
-                this.generateLobby(() => {
-                    this.updateCategorySpecial();
+                xhr({
+                    url: Router.generateRoute("soda_casino_lobby", "recent"),
+                    type: "json",
+                    method: "post",
+                    data: {
+                        gameCode,
+                    },
+                }).then((result) => {
+                    if (result.success) {
+                        this.response = null;
+                        this.generateLobby(() => {
+                            this.updateCategorySpecial();
+                        });
+                        this.fromGameLaunch = true;
+                        ComponentManager.broadcast("success.game.launch", {launchedGame: gameCode});
+                    }
+                }).fail((error, message) => {
+                    // do nothing
                 });
-                this.fromGameLaunch = true;
-                ComponentManager.broadcast("success.game.launch", {launchedGame: gameCode});
-             }
+            }
         });
     }
 
