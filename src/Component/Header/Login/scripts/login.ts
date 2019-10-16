@@ -289,6 +289,11 @@ export class Login {
                 } else {
                     const modal = this.element.querySelector("#login-lightbox");
                     const closeElement = utility.hasClass(modal, "modal-active", true);
+                    const gameLaunch = utility.hasClass(src, "game-list", true);
+
+                    if (gameLaunch) {
+                        utility.addClass(loginModal, product + "-modal");
+                    }
 
                     if (!closeElement) {
                         utility.removeClass(loginModal, product + "-modal");
@@ -310,7 +315,6 @@ export class Login {
 
             this.srcElement = null;
             this.action = false;
-
             // nullify join button since we are putting different reg via values
             // on it
             const form: HTMLElement = this.element.querySelector(".login-form");
@@ -354,10 +358,10 @@ export class Login {
             if (data && typeof data.action !== "undefined") {
                 this.action = data.action;
             }
-
+            /*productStyle = "mobile-soda-casino";*/
             if (!this.isLogin) {
                 Modal.open("#login-lightbox");
-                this.getLogo( data.loginStyle );
+                this.getLogo(data.loginStyle);
             }
         });
     }
