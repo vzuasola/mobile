@@ -109,9 +109,11 @@ export class LobbySliderComponent implements ComponentInterface {
             });
 
             if (el) {
+                const product = ComponentManager.getAttribute("product");
                 event.preventDefault();
                 ComponentManager.broadcast("header.login", {
                     src: el,
+                    loginStyle: product,
                 });
             }
         });

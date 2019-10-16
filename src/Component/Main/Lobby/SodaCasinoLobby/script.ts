@@ -528,11 +528,13 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private listenClickGameTile() {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "game-listing-item", true);
+            const product = ComponentManager.getAttribute("product");
             if (el && !this.isLogin) {
                 ComponentManager.broadcast("header.login", {
                     src: el,
                     productVia: this.product[0].login_via,
                     regVia: this.product[0].reg_via,
+                    loginStyle: product,
                     fromGameLaunch: "true",
                 });
             }
