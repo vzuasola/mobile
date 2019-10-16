@@ -117,13 +117,6 @@ export class GamesSearch {
         this.setGamesResult(sortedGames);
     }
 
-    private onSuccessSearchLobby(response, keyword) {
-        const groupedGames = this.groupGames(response);
-
-        // populate search results in games lobby search tab
-        ComponentManager.broadcast("games.search.success", {games: groupedGames, isRecommended: this.isRecommended});
-    }
-
     private onBeforeSearch(data) {
         // placeholder
         this.isRecommended = false;
@@ -222,10 +215,16 @@ export class GamesSearch {
         const gamesContainer = this.element.querySelector("#game-container");
         if (gamesContainer) {
             const gamesResult = this.element.querySelector("#game-search-result");
+            const searchInput = this.element.querySelector("#game-search-form");
+            const categoryTab = this.element.querySelector(".game-category");
+            categoryTab.style.visibility = "visible";
+            searchInput.style.visibility = "hidden";
             gamesResult.style.display = "none";
             gamesContainer.style.display = "inline-block";
         }
         this.clearSearchResult();
+        this.clearSearchBlurbLobby();
+        this.deactivateSearchTab();
     }
 
     private clearLobbyShowSearch() {
@@ -370,7 +369,7 @@ export class GamesSearch {
      */
     private listenClickFavoriteOnPreview() {
         ComponentManager.subscribe("games.favorite", (event, src, data) => {
-            this.clearLobbyShowSearch();
+            this.clearSearchShowLobby();
         });
     }
 
@@ -383,19 +382,13 @@ export class GamesSearch {
             if (el) {
                 event.preventDefault();
                 this.clearSearchShowLobby();
-                this.clearSearchResult();
-                this.clearSearchBlurbLobby();
 
                 ComponentManager.broadcast("games.search.close");
             }
         });
 
         ComponentManager.subscribe("games.search.close", (event, src) => {
-            const searchInput = this.element.querySelector("#game-search-form");
-            const categoryTab = this.element.querySelector(".game-category");
-            categoryTab.style.visibility = "visible";
-            searchInput.style.visibility = "hidden";
-            this.deactivateSearchTab();
+            this.clearSearchShowLobby();
         });
     }
 
