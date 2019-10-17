@@ -8,21 +8,21 @@
                 <div class="login-field mb-20">
                     <input type="text" class="login-field-username input-block-level" name="username" placeholder="{{ username_placeholder }}">
                     <svg class="login-field-icon" viewBox="0 210 24 25.087">
-                        <use xlink:href="#user-login"/>
+                        <use xlink:href="#user-login" id="user-login-svg"/>
                     </svg>
                 </div>
                 <div class="login-field">
                     <input type="password" class="login-field-password input-block-level password-mask-enabled" name="password" placeholder="{{ password_placeholder }}">
                     <svg class="login-field-icon" viewBox="0 240 24 29.247">
-                        <use xlink:href="#user-password"/>
+                        <use xlink:href="#user-password" id="user-password-svg"/>
                     </svg>
                     {% set passwordClass = true ? " password-mask-enabled" : "" %}
                     <span class="hidden password-mask-icon mask">
                         <svg class="password-icon-mask" viewBox="0 150 24 19.128">
-                            <use xlink:href="#password-mask"/>
+                            <use xlink:href="#password-mask" id="password-mask-svg"/>
                         </svg>
                         <svg class="password-icon-unmask" viewBox="0 180 24 14.018">
-                            <use xlink:href="#password-unmask"/>
+                            <use xlink:href="#password-unmask" id="password-unmask-svg"/>
                         </svg>
                     </span>
                 </div>
