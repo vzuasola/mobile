@@ -36,7 +36,7 @@ class SodaCasinoLobbyComponentScripts implements ComponentAttachmentInterface
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
-        $this->views = $views->withProduct($product->getProduct());
+        $this->views = $views;
     }
 
     /**
@@ -70,7 +70,7 @@ class SodaCasinoLobbyComponentScripts implements ComponentAttachmentInterface
     {
         try {
             $result = [];
-            $products = $this->views->withProduct('mobile-entrypage')->getViewById('products');
+            $products = $this->views->getViewById('products');
 
             foreach ($products as $product) {
                 $instanceId = $product['field_product_instance_id'][0]['value'];
