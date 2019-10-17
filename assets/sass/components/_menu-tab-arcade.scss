@@ -1,4 +1,4 @@
-.mobile-live-dealer {
+.mobile-arcade {
     @media (orientation: landscape) {
 
         .provider-10,
@@ -14,18 +14,20 @@
             }
         }
 
-        .provider-7 {
-            .game-providers-item {
-                width: 10.1111%;
-            }
-
-            .game-providers-item:last-child {
-                width: 19.1111%;
-                position: relative;
+        .provider-10 {
+            .game-providers-item:nth-last-child(3),
+            .game-providers-item:nth-last-child(2) {
+                display: none;
             }
         }
 
-        .provider-6 {
+        .provider-9 {
+            .game-providers-item:nth-last-child(2) {
+                display: none;
+            }
+        }
+
+        .provider-7 {
             .game-providers-item {
                 width: 11.5%;
             }
@@ -36,7 +38,7 @@
             }
         }
 
-        .provider-5 {
+        .provider-6 {
             .game-providers-item {
                 width: 13.2857%;
             }
@@ -47,7 +49,7 @@
             }
         }
 
-        .provider-4 {
+        .provider-5 {
             .game-providers-item {
                 width: 15.6667%;
             }
@@ -58,7 +60,7 @@
             }
         }
 
-        .provider-3 {
+        .provider-4 {
             .game-providers-item {
                 width: 19%;
             }
@@ -69,7 +71,7 @@
             }
         }
 
-        .provider-2 {
+        .provider-3 {
             .game-providers-item {
                 width: 24%;
             }
@@ -80,7 +82,7 @@
             }
         }
 
-        .provider-1 {
+        .provider-2 {
             .game-providers-item {
                 width: 32.333333333%;
             }
@@ -90,14 +92,24 @@
                 position: relative;
             }
         }
+
+        .provider-1 {
+            .game-providers-item {
+                width: 50%;
+            }
+
+            .game-providers-item:last-child {
+                width: 50%;
+                position: relative;
+            }
+        }
     }
 
     @media (orientation: portrait) {
 
         .provider-10,
         .provider-9,
-        .provider-8,
-        .provider-7 {
+        .provider-8 {
             .game-providers-item {
                 width: 13.2857%;
             }
@@ -113,7 +125,20 @@
             }
         }
 
-        .provider-6 {
+        .provider-10 {
+            .game-providers-item:nth-last-child(5),
+            .game-providers-item:nth-last-child(4) {
+                display: none;
+            }
+        }
+
+        .provider-9 {
+            .game-providers-item:nth-last-child(4) {
+                display: none;
+            }
+        }
+
+        .provider-7 {
             .game-providers-item {
                 width: 13.2857%;
             }
@@ -128,7 +153,7 @@
             }
         }
 
-        .provider-5 {
+        .provider-6 {
             .game-providers-item {
                 width: 13.2857%;
             }
@@ -139,7 +164,7 @@
             }
         }
 
-        .provider-4 {
+        .provider-5 {
             .game-providers-item {
                 width: 15.6667%;
             }
@@ -150,7 +175,7 @@
             }
         }
 
-        .provider-3 {
+        .provider-4 {
             .game-providers-item {
                 width: 19%;
             }
@@ -161,7 +186,7 @@
             }
         }
 
-        .provider-2 {
+        .provider-3 {
             .game-providers-item {
                 width: 24%;
             }
@@ -172,7 +197,7 @@
             }
         }
 
-        .provider-1 {
+        .provider-2 {
             .game-providers-item {
                 width: 32.333333333%;
             }
@@ -182,32 +207,15 @@
                 position: relative;
             }
         }
-    }
 
-    // Landscape
-    @media (orientation: landscape) {
-        #game-container {
-            .game-lobby-container {
+        .provider-1 {
+            .game-providers-item {
+                width: 50%;
+            }
 
-                &.featured,
-                &.providers {
-                    .game-listing {
-                        width: 25%;
-                        padding: 0 0.2% 1% 0.2%;
-
-                        &-maintenance {
-                            &-title {
-                                bottom: 1.2rem;
-                            }
-                        }
-
-                        &-maintenance:after {
-                            left: 2%;
-                            right: 2%;
-                            bottom: 5%;
-                        }
-                    }
-                }
+            .game-providers-item:last-child {
+                width: 50%;
+                position: relative;
             }
         }
     }

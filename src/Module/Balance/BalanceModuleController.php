@@ -18,7 +18,7 @@ class BalanceModuleController
         'als' => 6,
         // 'fish_hunter' => 7,
         'opus_live_dealer' => 8,
-        'opus_keno' => 9,
+        // 'opus_keno' => 9,
         'exchange' => 10,
         'esports' => 11,
         'soda_casino' => 13,

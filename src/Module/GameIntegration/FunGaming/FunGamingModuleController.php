@@ -1,18 +1,18 @@
 <?php
 
-namespace App\MobileEntry\Module\GameIntegration\WAC;
+namespace App\MobileEntry\Module\GameIntegration\FunGaming;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 
-class WACModuleController
+class FunGamingModuleController
 {
     use ProviderTrait;
 
-    const KEY = 'wac';
+    const KEY = 'fun_gaming';
 
     private $rest;
 
-    private $wac;
+    private $funGaming;
 
     private $config;
 
@@ -34,11 +34,11 @@ class WACModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $wac, $config, $player)
+    public function __construct($rest, $funGaming, $config, $player)
     {
         $this->rest = $rest;
-        $this->wac = $wac;
-        $this->config = $config->withProduct('mobile-live-dealer');
+        $this->funGaming = $funGaming;
+        $this->config = $config->withProduct('mobile-arcade');
         $this->player = $player;
     }
 
@@ -49,44 +49,17 @@ class WACModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
+
         if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
             if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
-                $requestData['lobby'] === "false") {
-                    $data = $this->getGameUrl($request);
-            }
-
-            if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
-                $requestData['lobby'] === "true"
+                $requestData['lobby'] === "false"
             ) {
-                $data = $this->getGameLobby($request);
+                $data = $this->getGameUrl($request);
             }
         }
 
         return $this->rest->output($response, $data);
-    }
-
-    private function getGameLobby($request)
-    {
-        $data['currency'] = true;
-        $requestData = $request->getParsedBody();
-
-        try {
-            $responseData = $this->wac->getLobby('icore_wac', [
-                'options' => [
-                    'languageCode' => $requestData['langCode'],
-                    'gameCode' => $requestData['gameCode'],
-                ]
-            ]);
-
-            if ($responseData) {
-                $data['gameurl'] = $responseData;
-            }
-        } catch (\Exception $e) {
-            $data = [];
-        }
-
-        return $data;
     }
 
     private function getGameUrl($request)
@@ -95,11 +68,9 @@ class WACModuleController
         $requestData = $request->getParsedBody();
 
         try {
-            $params = explode('|', $requestData['gameCode']);
-            $responseData = $this->wac->getGameUrlById('icore_wac', $params[0], [
+            $responseData = $this->funGaming->getGameUrlById('icore_fg', $requestData['gameCode'], [
                 'options' => [
                     'languageCode' => $requestData['langCode'],
-                    'providerProduct' => $params[1] ?? null,
                 ]
             ]);
             if ($responseData['url']) {

@@ -1,0 +1,64 @@
+<ul class="game-lobby-container providers">
+{{#each games}}
+    <li class="game-listing">
+        <a class="game-list game-listing-item"
+        {{#if ../isLogin}}
+        data-game-launch="true"
+        {{/if}}
+        data-game-provider="{{this.game_provider}}"
+        data-game-code="{{this.game_code}}"
+        data-game-platform="{{this.game_platform}}"
+        data-game-title="{{this.title}}"
+        data-game-target="{{this.target}}"
+        data-game-loader="{{this.use_game_loader}}"
+        data-game-lobby="false"
+        >
+            {{#if ../this.isAllGames}}
+                {{#if this.all_games_ribbon}}
+                    <div class="game-ribbon"
+                        style="background: {{this.all_games_ribbon.background}}; color: {{this.all_games_ribbon.color}};"
+                    >
+                        {{this.all_games_ribbon.name}}
+                    </div>
+                {{/if}}
+            {{else}}
+                {{#if this.ribbon}}
+                    <div class="game-ribbon"
+                        style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
+                    >
+                        {{this.ribbon.name}}
+                    </div>
+                {{/if}}
+            {{/if}}
+            {{#if ../isLogin}}
+            <span class="game-favorite {{lookup ../favorites this.game_code}}">
+                <svg viewBox="0 0 33.74 31.49">
+                    <path class="star-body" d="M16.87 0l5.56 9.9L33.74 12l-7.87 8.25 1.43 11.24-10.43-4.8-10.43 4.8 1.43-11.21L0 12l11.31-2.1L16.87 0"/>
+                    <path class="star-border" d="M16.87 4.08l3.82 6.8.46.81.91.17 7.69 1.45-5.33 5.59-.65.69.12.94 1 7.64-7.15-3.29-.84-.39-.83.39-7.19 3.29 1-7.64.12-.94-.66-.69L4 13.31l7.69-1.45.92-.17.45-.81 3.82-6.8m0-4.08l-5.57 9.9L0 12l7.87 8.25-1.43 11.24 10.43-4.8 10.43 4.8-1.43-11.21L33.74 12 22.43 9.9 16.87 0z"/>
+                </svg>
+            </span>
+            {{/if}}
+            <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
+        </a>
+    </li>
+{{/each}}
+</ul>
+<div id="game-loader" class="game-loader">
+    <span class="game-loader-load-more">Load More</span>
+    <div class="sk-fading-circle mobile-game-loader hidden">
+        <div class="sk-fading-circle">
+            <div class="sk-circle1 sk-circle"></div>
+            <div class="sk-circle2 sk-circle"></div>
+            <div class="sk-circle3 sk-circle"></div>
+            <div class="sk-circle4 sk-circle"></div>
+            <div class="sk-circle5 sk-circle"></div>
+            <div class="sk-circle6 sk-circle"></div>
+            <div class="sk-circle7 sk-circle"></div>
+            <div class="sk-circle8 sk-circle"></div>
+            <div class="sk-circle9 sk-circle"></div>
+            <div class="sk-circle10 sk-circle"></div>
+            <div class="sk-circle11 sk-circle"></div>
+            <div class="sk-circle12 sk-circle"></div>
+        </div>
+    </div>
+</div>
