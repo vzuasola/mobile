@@ -13,6 +13,7 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
     private moduleName: string = "asiagaming_integration";
     private currencies: any;
     private languages: any;
+    private customLobby: string;
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
@@ -20,9 +21,11 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
     onLoad(attachments: {
         currencies: any,
         languages: any,
+        customLobby: string,
     }) {
         this.currencies = attachments.currencies;
         this.languages = attachments.languages;
+        this.customLobby = attachments.customLobby;
         this.messageLightbox = new ProviderMessageLightbox();
     }
 
@@ -69,6 +72,11 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
+                    if (this.customLobby) {
+                        response.gameurl = response.gameurl
+                            .replace(/(lobbyUrl=).*?(&)/,
+                                "$1" + this.customLobby + "$2");
+                    }
                     if (options.loader === "true") {
                         window.location.href = response.gameurl;
                     } else {

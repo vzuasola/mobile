@@ -5,12 +5,12 @@ import PopupWindow from "@app/assets/script/components/popup";
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-import {GameInterface} from "./../scripts/game.interface";
+import {GameInterface} from "../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 
-export class WACModule implements ModuleInterface, GameInterface {
-    private key: string = "wac";
-    private moduleName: string = "wac_integration";
+export class FunGamingModule implements ModuleInterface, GameInterface {
+    private key: string = "fun_gaming";
+    private moduleName: string = "fun_gaming_integration";
     private currencies: any;
     private languages: any;
     private windowObject: any;
@@ -65,8 +65,9 @@ export class WACModule implements ModuleInterface, GameInterface {
                 method: "post",
                 data: {
                     product,
-                    langCode,
                     gameCode: options.code,
+                    langCode,
+                    playMode: true,
                     lobby: options.lobby,
                 },
             }).then((response) => {

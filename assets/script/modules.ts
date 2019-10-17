@@ -20,6 +20,7 @@ import {RubyPlayModule} from "@app/src/Module/GameIntegration/RubyPlay/script";
 import {EvolutionGamingModule} from "@app/src/Module/GameIntegration/EvolutionGaming/script";
 import {EBetModule} from "@app/src/Module/GameIntegration/EBet/script";
 import {GPIModule} from "@app/src/Module/GameIntegration/GPI/script";
+import {GPIArcadeModule} from "@app/src/Module/GameIntegration/GPIArcade/script";
 import {GPIKenoModule} from "@app/src/Module/GameIntegration/GPIKeno/script";
 import {GPIPkModule} from "@app/src/Module/GameIntegration/GPIPk/script";
 import {GPIThaiModule} from "@app/src/Module/GameIntegration/GPIThai/script";
@@ -30,6 +31,8 @@ import {AllBetModule} from "@app/src/Module/GameIntegration/AllBet/script";
 import {WACModule} from "@app/src/Module/GameIntegration/WAC/script";
 import {EzugiGamingModule} from "@app/src/Module/GameIntegration/EzugiGaming/script";
 import {VideoRacingModule} from "@app/src/Module/GameIntegration/VideoRacing/script";
+import {FunGamingModule} from "@app/src/Module/GameIntegration/FunGaming/script";
+import {KYGamingModule} from "@app/src/Module/GameIntegration/KYGaming/script";
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
 import {GenericIntegrationModule} from "@app/src/Module/ProductIntegration/Generic/script";
@@ -62,6 +65,7 @@ ComponentManager.setModules({
     evolution_gaming_integration: new EvolutionGamingModule(),
     ebet_integration: new EBetModule(),
     gpi_integration: new GPIModule(),
+    gpi_arcade_integration: new GPIArcadeModule(),
     gpi_keno_integration: new GPIKenoModule(),
     gpi_pk_integration: new GPIPkModule(),
     gpi_thai_integration: new GPIThaiModule(),
@@ -72,6 +76,8 @@ ComponentManager.setModules({
     wac_integration: new WACModule(),
     ezugi_gaming_integration: new EzugiGamingModule(),
     videoracing_integration: new VideoRacingModule(),
+    fun_gaming_integration: new FunGamingModule(),
+    ky_gaming_integration: new KYGamingModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
     generic_integration: new GenericIntegrationModule(),
