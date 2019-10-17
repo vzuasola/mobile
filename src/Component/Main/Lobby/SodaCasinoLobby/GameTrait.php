@@ -43,21 +43,6 @@ trait GameTrait
                     )
             ];
             $processGame['filters'] = "";
-            /* remove comment on game category implementation */
-            // if (count($game['field_game_filter']) > 0) {
-            //     $filters = [];
-            //     foreach ($game['field_game_filter'] as $filter) {
-            //         if (isset($filter['parent']) &&
-            //             isset($filter['parent']['field_games_filter_value'])) {
-            //             $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
-            //                 = $filter['field_games_filter_value'][0]['value'];
-            //         }
-            //     }
-
-            //     $processGame['filters'] = json_encode($filters);
-            // }
-
-
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "pas";
@@ -122,7 +107,6 @@ trait GameTrait
     {
         $categoryList = [];
         foreach ($categories as $category) {
-            // remove recommended games from category as it will not have its own tab.
             if ($category['field_alias'] === $this::RECOMMENDED_GAMES) {
                 $enableRecommended = true;
                 continue;
