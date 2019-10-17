@@ -36,7 +36,7 @@ class SodaCasinoLobbyComponentScripts implements ComponentAttachmentInterface
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
-        $this->views = $views->withProduct($product->getProduct());
+        $this->views = $views;
     }
 
     /**
