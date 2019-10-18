@@ -420,6 +420,7 @@ export class Login {
         if (loginStyle && typeof loginStyle !== "undefined") {
             this.loginStyle = loginStyle;
         }
+        this.setIcon(this.loginStyle);
 
         xhr({
             url: Router.generateRoute("header", "getlogo"),
@@ -433,5 +434,22 @@ export class Login {
             this.logoData = response;
             this.generateLogoMarkup(this.logoData);
         });
+    }
+
+     private setIcon(iconStyle: string) {
+        const userIcon = this.element.querySelector("#user-login-svg");
+        const passwordIcon = this.element.querySelector("#user-password-svg");
+        const passwordMaskIcon = this.element.querySelector("#password-mask-svg");
+        const passwordunMaskIcon = this.element.querySelector("#password-unmask-svg");
+        userIcon.setAttribute("xlink:href", "#user-login");
+        passwordIcon.setAttribute("xlink:href", "#user-password");
+        passwordMaskIcon.setAttribute("xlink:href", "#password-mask");
+        passwordunMaskIcon.setAttribute("xlink:href", "#password-unmask");
+        if (iconStyle && typeof iconStyle !== "undefined" && iconStyle === "mobile-soda-casino" ) {
+            userIcon.setAttribute("xlink:href", "#user-login-soda");
+            passwordIcon.setAttribute("xlink:href", "#user-password-soda");
+            passwordMaskIcon.setAttribute("xlink:href", "#password-mask");
+            passwordunMaskIcon.setAttribute("xlink:href", "#password-unmask");
+        }
     }
 }
