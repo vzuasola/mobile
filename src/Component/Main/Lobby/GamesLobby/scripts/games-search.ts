@@ -19,7 +19,7 @@ export class GamesSearch {
     private config: any;
     private gamesList: any;
     private searchFields = ["title", "keywords"];
-    private product: any[];
+    private product: string;
     private searchResult;
     private searchKeyword;
     private searchBlurb;
@@ -54,6 +54,7 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
+        this.product = ComponentManager.getAttribute("product");
         this.listenActivateSearchLightbox();
         this.listenActivateSearchFilterLightbox();
         this.listenChangeGameSearch();
@@ -90,6 +91,7 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
+        this.product = ComponentManager.getAttribute("product");
     }
 
     setGamesList(gamesList) {
@@ -349,7 +351,7 @@ export class GamesSearch {
     private listenActivateSearchLightbox() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "search-tab", true);
-            if (el) {
+            if (el && this.product === "mobile-games") {
                 event.preventDefault();
                 this.clearSearchResult();
                 this.clearSearchBlurbPreview();
