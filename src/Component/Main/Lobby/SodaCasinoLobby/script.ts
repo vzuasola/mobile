@@ -41,6 +41,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private windowObject: any;
     private gameLink: string;
     private productMenu: string = "product-soda-casino";
+    private events: {} = {};
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -89,6 +90,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.listenToLaunchGameLoader();
+        this.updateHeader();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -113,7 +115,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.listenFavoriteClick();
             this.listenToCategory();
             this.listenToScroll();
-            this.listenOnSearch();
+            this.updateHeader();
         }
         this.response = null;
         this.element = element;
@@ -947,4 +949,23 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         }
     }
 
+    private updateHeader() {
+        if (this.checkEvent("menu.ready")) {
+            ComponentManager.subscribe("menu.ready", (event, target, data) => {
+            ComponentManager.broadcast("menu.update.router.component", { element: ".quicklinks-home", val: "header" });
+            });
+        }
+    }
+
+    /**
+     *  Helper function used to prevent duplication of listeners
+     */
+    private checkEvent(key) {
+        if (this.events.hasOwnProperty(key)) {
+            return false;
+        }
+
+        this.events[key] = key;
+        return true;
+    }
 }

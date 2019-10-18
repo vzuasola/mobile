@@ -46,6 +46,7 @@ export class MenuComponent implements ComponentInterface {
 
         this.listenAnnouncementCount();
         this.listenHighlightMenu();
+        this.updateMenuRouter();
 
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
@@ -55,6 +56,7 @@ export class MenuComponent implements ComponentInterface {
             this.isLogin = false;
         });
 
+        this.menuReady();
         Router.on(RouterClass.afterNavigate, (event) => {
             this.attachProduct();
             this.attachProductToLogin();
@@ -76,6 +78,7 @@ export class MenuComponent implements ComponentInterface {
         this.attachProductToLogin();
 
         this.reloadBalance();
+        this.updateMenuRouter();
         this.pushNotification.handleOnLoad(element, attachments);
     }
 
@@ -112,6 +115,13 @@ export class MenuComponent implements ComponentInterface {
                     target: el.getAttribute("target"),
                 });
             }
+        });
+    }
+
+    private updateMenuRouter() {
+        ComponentManager.subscribe("menu.update.router.component", (event, src, data) => {
+            const menu = this.element.querySelector(data.element);
+            menu.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
         });
     }
 
