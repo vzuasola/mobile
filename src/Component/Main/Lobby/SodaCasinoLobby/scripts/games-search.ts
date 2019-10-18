@@ -17,7 +17,6 @@ export class GamesSearch {
     private config: any;
     private gamesList: any;
     private searchFields = ["title", "keywords"];
-    private product: string;
     private searchResult;
     private searchKeyword;
     private searchBlurb;
@@ -51,7 +50,6 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.product = ComponentManager.getAttribute("product");
         this.listenActivateSearchField();
         this.listenChangeGameSearch();
         this.listenClickFavoriteOnPreview();
@@ -80,7 +78,6 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.product = ComponentManager.getAttribute("product");
     }
 
     setGamesList(gamesList) {
@@ -312,15 +309,16 @@ export class GamesSearch {
     private listenActivateSearchField() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "search-tab", true);
-            if (el && this.product === "mobile-soda-casino") {
+            const product = ComponentManager.getAttribute("product");
+            if (el && product === "mobile-soda-casino") {
                 event.preventDefault();
                 this.clearSearchResult();
                 this.clearSearchBlurbLobby();
-                ComponentManager.broadcast("games.search");
+                ComponentManager.broadcast("soda.games.search");
             }
         });
 
-        ComponentManager.subscribe("games.search", (event, src) => {
+        ComponentManager.subscribe("soda.games.search", (event, src) => {
             const searchInput = this.element.querySelector("#game-search-form");
             const categoryTab = this.element.querySelector(".game-category");
             this.activateSearchTab();
