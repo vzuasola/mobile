@@ -15,6 +15,7 @@ class PASModuleController
         'mobile-casino' => 'dafa888',
         'mobile-casino-gold' => 'dafagold',
         'dafaconnect' => 'dafaconnect',
+        'sodaconnect' => 'sodaconnect',
         'mobile-live-dealer' => 'dafabetgames',
         'mobile-games' => 'dafabetgames',
         'mobile-entrypage' => 'dafa888',
