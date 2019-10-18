@@ -181,6 +181,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         if (options.currentProduct) {
             product = options.currentProduct;
         }
+
         if (options.provider === this.key) {
 
             // remap language
@@ -258,7 +259,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             }
 
             if (DafaConnect.isDafaconnect()) {
-                if(product === "mobile-soda-casino"){
+                if (product === "mobile-soda-casino") {
                     product = "sodaconnect";
                 } else {
                     product = "dafaconnect";
