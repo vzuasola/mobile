@@ -206,6 +206,9 @@ export class PASModule implements ModuleInterface, GameInterface {
                 if (product === "mobile-soda-casino"
                     || options.currentProduct === "mobile-soda-casino") {
                     key = "soda";
+                    if (DafaConnect.isDafaconnect()) {
+                        key = "sodaconnect";
+                    }
                 }
 
                 iapiConf = this.iapiConfs[key];
@@ -255,7 +258,11 @@ export class PASModule implements ModuleInterface, GameInterface {
             }
 
             if (DafaConnect.isDafaconnect()) {
-                product = "dafaconnect";
+                if(product === "mobile-soda-casino"){
+                    product = "sodaconnect";
+                } else {
+                    product = "dafaconnect";
+                }
             }
 
             if (options.maintenance === "true") {
@@ -360,6 +367,10 @@ export class PASModule implements ModuleInterface, GameInterface {
         }
 
         if (key === "dafaconnect" && !DafaConnect.isDafaconnect()) {
+            ret = true;
+        }
+
+        if (key === "sodaconnect" && !DafaConnect.isDafaconnect()) {
             ret = true;
         }
 
