@@ -21,21 +21,21 @@ export class GamesFilter {
     private recent: boolean;
     private enabledFilters: any;
     private enableGamesGrouping: boolean;
-    handleOnLoad(element: HTMLElement, attachments: {}, enableGamesGrouping?) {
+    handleOnLoad(element: HTMLElement, attachments: {}, enableGamesGrouping = true) {
         this.fav = false;
         this.recent = false;
         this.enabledFilters = [];
         this.element = element;
-        this.enableGamesGrouping = (enableGamesGrouping !== "undefined") ? enableGamesGrouping : true;
+        this.enableGamesGrouping = enableGamesGrouping;
         this.listenOnOpen();
         this.listenOnClick();
         this.listenOnCategoryChange();
         this.listenOnSuccessSearch();
     }
 
-    handleOnReLoad(element: HTMLElement, attachments: {}, enableGamesGrouping?) {
+    handleOnReLoad(element: HTMLElement, attachments: {}, enableGamesGrouping = true) {
         this.element = element;
-        this.enableGamesGrouping = (enableGamesGrouping !== "undefined") ? enableGamesGrouping : true;
+        this.enableGamesGrouping = enableGamesGrouping;
         this.listenOnClick();
         this.listenOnOpen();
         this.listenOnCategoryChange();
