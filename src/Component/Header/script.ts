@@ -150,8 +150,6 @@ export class HeaderComponent implements ComponentInterface {
     }
 
     private getLogo() {
-        const headerStyle = document.getElementById("header-dafabet");
-        utility.removeClass(headerStyle, "hidden");
         xhr({
             url: Router.generateRoute("header", "getlogo"),
             type: "json",
