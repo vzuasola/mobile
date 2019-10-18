@@ -113,6 +113,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.listenFavoriteClick();
             this.listenToCategory();
             this.listenToScroll();
+            this.listenOnSearch();
         }
         this.response = null;
         this.element = element;
