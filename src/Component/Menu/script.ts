@@ -120,8 +120,8 @@ export class MenuComponent implements ComponentInterface {
 
     private updateMenuRouter() {
         ComponentManager.subscribe("menu.update.router.component", (event, src, data) => {
-            const menu = this.element.querySelector(".quicklinks-home");
-            menu.setAttribute("data-router-refresh", '["main", "tab_navigation", "header"]');
+            const menu = this.element.querySelector(data.element);
+            menu.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
         });
     }
 
