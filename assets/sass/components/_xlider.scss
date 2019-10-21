@@ -135,6 +135,18 @@
            color: #FF5F6D;
         }
 
+        .btn-soda-yellow.btn {
+           border: 0.1rem solid $soda-yellow;
+           opacity: 1;
+           color: $soda-yellow;
+        }
+
+        .btn-soda-red.btn {
+           border: 0.1rem solid $soda-red;
+           opacity: 1;
+           color: $soda-red;
+        }
+
         .btn.btn-soda:focus,
         .btn.btn-soda.focus,
         .btn.btn-soda:hover,
