@@ -18,7 +18,7 @@ class BalanceModuleController
         'als' => 6,
         // 'fish_hunter' => 7,
         'opus_live_dealer' => 8,
-        'opus_keno' => 9,
+        // 'opus_keno' => 9,
         'exchange' => 10,
         'esports' => 11,
     ];
@@ -31,6 +31,7 @@ class BalanceModuleController
         'mobile-live-dealer' => 5,
         'mobile-exchange' => 10,
         'mobile-lottery' => 5,
+        'mobile-arcade' => 5,
     ];
 
     private $rest;

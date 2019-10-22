@@ -52,11 +52,13 @@ class VoidbridgeModuleController
         if ($this->checkCurrency($request)) {
             $data['currency'] = true;
             $requestData = $request->getParsedBody();
+            $params = explode('|', $requestData['gameCode']);
             try {
-                $responseData = $this->voidbridge->getGameUrlById('icore_vb', $requestData['gameCode'], [
+                $responseData = $this->voidbridge->getGameUrlById('icore_vb', $params[0], [
                     'options' => [
                         'languageCode' => $requestData['langCode'],
                         'userAgent' => $requestData['userAgent'],
+                        'providerProduct' => $params[1] ?? null,
                     ]
                 ]);
                 if ($responseData['url']) {

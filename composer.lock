@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0974a5c4a6e1e9a79e04d1000ff9ee63",
+    "content-hash": "dbe774d929edc18fb9333d667f22ee61",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -39,9 +39,9 @@
             "authors": [
                 {
                     "name": "Bryan Horna",
-                    "role": "developer",
                     "email": "bryanjhv@gmail.com",
-                    "homepage": "https://bryanjhv.github.io"
+                    "homepage": "https://bryanjhv.github.io",
+                    "role": "developer"
                 }
             ],
             "description": "Session middleware and helper for Slim framework 3.",
@@ -3188,11 +3188,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.164.0",
+            "version": "dev-release-v1.169.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "b890f9b417c022f15683e0b28bd2cac002193c90"
+                "reference": "6440d0a40bbc42eac743db1bf5959a2b18672c48"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3243,7 +3243,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2019-09-09T09:18:14+00:00"
+            "time": "2019-10-15T01:37:53+00:00"
         },
         {
             "name": "willdurand/negotiation",
