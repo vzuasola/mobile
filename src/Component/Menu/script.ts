@@ -68,6 +68,7 @@ export class MenuComponent implements ComponentInterface {
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
         this.element = element;
+        this.updateMenuRouter();
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
         this.products = attachments.products;
@@ -78,7 +79,6 @@ export class MenuComponent implements ComponentInterface {
         this.attachProductToLogin();
 
         this.reloadBalance();
-        this.updateMenuRouter();
         this.pushNotification.handleOnLoad(element, attachments);
     }
 
