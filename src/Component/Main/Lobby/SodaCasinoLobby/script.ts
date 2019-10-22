@@ -72,6 +72,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
+        this.updateHeader();
         this.listenChangeCategory();
         this.listenHashChange();
         this.listenClickGameTile();
@@ -90,7 +91,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.listenToLaunchGameLoader();
-        this.updateHeader();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -108,6 +108,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         }) {
         this.isLogin = attachments.authenticated;
         if (!this.element) {
+            this.updateHeader();
             this.listenChangeCategory();
             this.listenHashChange();
             this.listenClickGameTile();
@@ -115,7 +116,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.listenFavoriteClick();
             this.listenToCategory();
             this.listenToScroll();
-            this.updateHeader();
         }
         this.response = null;
         this.element = element;
