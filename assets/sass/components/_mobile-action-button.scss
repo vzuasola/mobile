@@ -65,20 +65,20 @@
 // SODA CASINO
 .header-mobile-soda-casino {
     .login-trigger.btn-yellow {
-        border: 0.1rem solid #FFC371;
+        border: 0.1rem solid $soda-yellow;
         background-color: transparent;
         text-align: center;
         font-weight: normal;
         font-size: 2.4rem;
         letter-spacing: 0;
-        color: #FFC371;
+        color: $soda-yellow;
         opacity: 1;
         width: 9rem;
     }
 
     .login-trigger.btn {
         max-width: 10.5rem;
-        border: 0.1rem solid #FFC371;
+        border: 0.1rem solid $soda-yellow;
         opacity: 1;
         font-size: 1.5rem;
         padding: 0.3rem 0.4rem;
@@ -99,7 +99,7 @@
     }
 
     .login-submit.btn {
-        border: 0.2rem solid #FFC371;
+        border: 0.2rem solid $soda-yellow;
     }
 
     .btn-join.btn {
