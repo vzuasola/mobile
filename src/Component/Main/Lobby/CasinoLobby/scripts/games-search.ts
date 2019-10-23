@@ -52,7 +52,6 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.product = ComponentManager.getAttribute("product");
         this.listenActivateSearchLightbox();
         this.listenActivateSearchFilterLightbox();
         this.listenChangeGameSearch();
@@ -89,7 +88,6 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.product = ComponentManager.getAttribute("product");
     }
 
     setGamesList(gamesList) {

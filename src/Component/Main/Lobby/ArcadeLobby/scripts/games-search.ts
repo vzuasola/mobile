@@ -18,7 +18,6 @@ export class GamesSearch {
     private element;
     private config: any;
     private gamesList: any;
-    private product: string;
     private searchFields = ["title", "keywords"];
     private searchResult;
     private searchKeyword;
@@ -55,7 +54,6 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.product = ComponentManager.getAttribute("product");
         this.listenActivateSearchLightbox();
         this.listenActivateSearchFilterLightbox();
         this.listenChangeGameSearch();
@@ -92,7 +90,6 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.product = ComponentManager.getAttribute("product");
     }
 
     setGamesList(gamesList, response, activeCategory) {
