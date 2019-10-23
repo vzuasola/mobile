@@ -4,8 +4,6 @@ namespace App\MobileEntry\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Interop\Container\ContainerInterface;
-
 use App\Plugins\Middleware\ResponseMiddlewareInterface;
 
 
@@ -45,7 +43,6 @@ class CleanParameters implements ResponseMiddlewareInterface
 
                 $response = $response->withRedirect($uri);
             }
-
         } catch (\Exception $e) {
             // Do nothing
         }
