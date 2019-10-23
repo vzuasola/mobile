@@ -19,7 +19,6 @@ export class GamesSearch {
     private config: any;
     private gamesList: any;
     private searchFields = ["title", "keywords"];
-    private product: string;
     private searchResult;
     private searchKeyword;
     private searchBlurb;
@@ -351,7 +350,8 @@ export class GamesSearch {
     private listenActivateSearchLightbox() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "search-tab", true);
-            if (el && this.product === "mobile-games") {
+            const product = ComponentManager.getAttribute("product");
+            if (el && product === "mobile-games") {
                 event.preventDefault();
                 this.clearSearchResult();
                 this.clearSearchBlurbPreview();
