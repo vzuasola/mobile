@@ -1,5 +1,6 @@
 // Inner Page default styles
-.node-inner-page {
+.node-inner-page,
+.node-basic-page {
     background: $dark-gray;
 }
 
@@ -9,4 +10,9 @@
     height: 14rem;
     background: url($unsupported-currency) no-repeat top center;
     background-size: auto 100%;
+}
+
+// Basic Page : About etc
+.node-basic-page {
+    padding: 1.5rem 0 0.5rem 0;
 }
