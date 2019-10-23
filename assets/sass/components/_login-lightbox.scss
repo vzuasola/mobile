@@ -113,7 +113,7 @@
                 border: 0;
                 outline: 0;
                 background: transparent;
-                border-bottom: 0.3rem solid $white;
+                border-bottom: 0.2rem solid $white;
                 font-weight: normal;
                 font-size: 1.7rem;
                 color: $white;
@@ -135,10 +135,14 @@
 
             &-icon {
                 position: absolute;
-                top: 0.5rem;
-                left: 1rem;
-                width: 2rem;
+                top: -0.3rem;
+                left: 0rem;
+                width: 2.6rem;
                 fill: $white;
+            }
+
+            .login-field-password {
+                top: -0.8rem;
             }
 
             @-webkit-keyframes autofill {
@@ -155,6 +159,15 @@
         }
     }
 
+    // Link/anchor
+    a:not(.btn) {
+        color: $white;
+
+        &:hover {
+            color: $soda-yellow;
+        }
+    }
+
     // Content
     .login-content {
         padding: 4rem 5rem;
@@ -167,7 +180,7 @@
         font-weight: bold;
         font-size: 2rem;
         letter-spacing: 0;
-        color: #FFC371;
+        color: $soda-yellow;
         opacity: 1;
     }
 
