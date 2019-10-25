@@ -321,7 +321,7 @@ class GamesLobbyComponentController
             $processGame = [];
             $size = $game['field_games_list_thumbnail_size'][0]['value'];
             $processGame['size'] = ($special) ? 'size-small' : $size;
-            
+
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
                 $processGame['ribbon']['background'] = $ribbon['field_games_ribbon_color'][0]['color'];

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\MobileEntry\Component\Main\Lobby\CasinoLobby;
+
 use App\MobileEntry\Services\PublishingOptions\PublishingOptions;
 
 /**
@@ -115,7 +116,8 @@ trait GameTrait
             $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
             if (PublishingOptions::checkDuration($publishOn, $unpublishOn)) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
-                $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($product, $game, $special);
+                $gamesList['id:' . $game['field_game_code'][0]['value']] =
+                    $this->processGame($product, $game, $special);
             }
         }
 

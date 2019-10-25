@@ -332,7 +332,7 @@ class ArcadeLobbyComponentController
     {
         try {
             $processGame = [];
-            
+
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
                 $processGame['ribbon']['background'] = $ribbon['field_games_ribbon_color'][0]['color'];
