@@ -5,6 +5,7 @@ namespace App\MobileEntry\Component\Main\Lobby\ArcadeLobby;
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\Async\Async;
 use App\Async\DefinitionCollection;
+use App\MobileEntry\Services\PublishingOptions\PublishingOptions;
 
 class ArcadeLobbyComponentController
 {
@@ -301,61 +302,24 @@ class ArcadeLobbyComponentController
     }
 
     /**
-     * Check if a category is published or not
-     */
-    private function checkIfPublished($dateStart, $dateEnd)
-    {
-        if (!$dateStart && !$dateEnd) {
-            return true;
-        }
-
-        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
-        $currentDate = $currentDate->getTimestamp();
-        if ($dateStart && $dateEnd) {
-            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
-            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-
-            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
-            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
-                return true;
-            }
-        }
-
-        if ($dateStart && !$dateEnd) {
-            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
-            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($startDate->getTimestamp() <= $currentDate) {
-                return true;
-            }
-        }
-
-        if ($dateEnd && !$dateStart) {
-            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
-            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($endDate->getTimestamp() >=$currentDate) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Arrange games per category
      */
     private function processAllGames($games, $categoryId, $isPreview)
     {
         $gamesList = [];
         foreach ($games as $game) {
-            $special = ($categoryId === $this::RECOMMENDED_GAMES);
-            $processedGame = $this->processGame($game, $special);
-            $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
-            if (!$isPreview && $preview_mode) {
-                continue;
-            }
-            if (count($processedGame['categories'])) {
-                $gamesList['id:' . $game['field_game_code'][0]['value']] =  $processedGame;
+            $publishOn = $game['publish_on'][0]['value'] ?? '';
+            $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
+            if (PublishingOptions::checkDuration($publishOn, $unpublishOn)) {
+                $special = ($categoryId === $this::RECOMMENDED_GAMES);
+                $processedGame = $this->processGame($game, $special);
+                $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
+                if (!$isPreview && $preview_mode) {
+                    continue;
+                }
+                if (count($processedGame['categories'])) {
+                    $gamesList['id:' . $game['field_game_code'][0]['value']] =  $processedGame;
+                }
             }
         }
         return $gamesList;
@@ -368,6 +332,7 @@ class ArcadeLobbyComponentController
     {
         try {
             $processGame = [];
+            
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
                 $processGame['ribbon']['background'] = $ribbon['field_games_ribbon_color'][0]['color'];
@@ -442,7 +407,7 @@ class ArcadeLobbyComponentController
     {
         $categoryList = [];
         foreach ($gameCategories as $category) {
-            $isPublished = $this->checkIfPublished(
+            $isPublished = PublishingOptions::checkDuration(
                 $category['field_publish_date'][0]['value'] ?? '',
                 $category['field_unpublish_date'][0]['value'] ?? ''
             );
