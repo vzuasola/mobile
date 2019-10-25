@@ -38,7 +38,6 @@ class PublishingOptions
                 return true;
             }
         }
-        
         return false;
     }
 }
