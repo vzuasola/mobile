@@ -16,7 +16,7 @@ export class HeaderComponent implements ComponentInterface {
         this.attachments = attachments;
         this.attachProduct();
         this.refreshBalance();
-
+        this.componentFinish();
         Router.on(RouterClass.afterNavigate, (event) => {
             if (this.attachments.authenticated) {
                 const wrapper = this.element.querySelector(".account-balance");
@@ -27,10 +27,12 @@ export class HeaderComponent implements ComponentInterface {
                 utility.removeClass(loader, "hidden");
 
                 this.refreshBalance();
+                this.componentFinish();
             } else {
                 this.attachProduct();
             }
             this.refreshHeader();
+            this.componentFinish();
         });
     }
 
@@ -39,6 +41,15 @@ export class HeaderComponent implements ComponentInterface {
         this.attachments = attachments;
         this.attachProduct();
         this.refreshBalance();
+        this.componentFinish();
+    }
+
+    private componentFinish() {
+        ComponentManager.broadcast("token.parse", {
+            element: this.element,
+            method: "parseLink",
+            selector: "[href*=ticket\\.token]",
+        });
     }
 
     private refreshBalance() {
