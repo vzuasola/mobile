@@ -80,6 +80,11 @@ export class MenuComponent implements ComponentInterface {
     }
 
     private menuReady() {
+        ComponentManager.broadcast("token.parse", {
+            element: this.element,
+            method: "parseLink",
+            selector: "[href*=ticket\\.token]",
+        });
         ComponentManager.broadcast("menu.ready");
     }
 
