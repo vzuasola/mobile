@@ -81,7 +81,6 @@ trait GameTrait
 
             return $processGame;
         } catch (\Exception $e) {
-            ddd($e->getMessage());
             return [];
         }
     }
@@ -115,7 +114,8 @@ trait GameTrait
             $publishOn = $game['publish_on'][0]['value'] ?? '';
             $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
             $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
-            if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
+            if (PublishingOptions::checkDuration($publishOn, $unpublishOn)
+                && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $gamesList['id:' . $game['field_game_code'][0]['value']] =
                     $this->processGame($product, $game, $special);

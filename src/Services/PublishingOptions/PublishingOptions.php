@@ -15,6 +15,7 @@ class PublishingOptions
             return true;
         }
 
+        $durationValid = false;
         $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
         $currentDate = $currentDate->getTimestamp();
         if ($dateStart && $dateEnd) {
@@ -24,7 +25,7 @@ class PublishingOptions
             $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
             $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
-                return true;
+                $durationValid = true;
             }
         }
 
@@ -32,17 +33,17 @@ class PublishingOptions
             $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
             $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             if ($startDate->getTimestamp() <= $currentDate) {
-                return true;
+                $durationValid = true;
             }
         }
 
         if ($dateEnd && !$dateStart) {
             $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
             $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($endDate->getTimestamp() >=$currentDate) {
-                return true;
+            if ($endDate->getTimestamp() >= $currentDate) {
+                $durationValid = true;
             }
         }
-        return false;
+        return $durationValid;
     }
 }
