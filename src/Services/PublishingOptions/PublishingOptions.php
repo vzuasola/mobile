@@ -4,6 +4,11 @@ namespace App\MobileEntry\Services\PublishingOptions;
 
 class PublishingOptions
 {
+    /**
+     * Checks if start date and end date is valid
+     * @dateStart string
+     * @dateEnd string
+     */
     public static function checkDuration($dateStart, $dateEnd)
     {
         if (!$dateStart && !$dateEnd) {

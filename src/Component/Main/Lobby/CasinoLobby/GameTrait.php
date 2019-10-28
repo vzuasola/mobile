@@ -114,7 +114,8 @@ trait GameTrait
         foreach ($games as $game) {
             $publishOn = $game['publish_on'][0]['value'] ?? '';
             $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
-            if (PublishingOptions::checkDuration($publishOn, $unpublishOn)) {
+            $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
+            if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $gamesList['id:' . $game['field_game_code'][0]['value']] =
                     $this->processGame($product, $game, $special);

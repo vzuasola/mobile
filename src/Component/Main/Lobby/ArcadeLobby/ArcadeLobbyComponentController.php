@@ -310,7 +310,8 @@ class ArcadeLobbyComponentController
         foreach ($games as $game) {
             $publishOn = $game['publish_on'][0]['value'] ?? '';
             $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
-            if (PublishingOptions::checkDuration($publishOn, $unpublishOn)) {
+            $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
+            if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $processedGame = $this->processGame($game, $special);
                 $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
