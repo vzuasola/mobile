@@ -46,7 +46,7 @@ class TokenParserModuleScripts implements ComponentAttachmentInterface
         }
 
         try {
-            $data['token'] = md5($this->playerSession->getToken());
+            $data['token'] = $this->playerSession->getToken();
         } catch (\Exception $e) {
             $data['token'] = false;
         }
