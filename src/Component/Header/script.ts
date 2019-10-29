@@ -1,7 +1,10 @@
 import * as utility from "@core/assets/js/components/utility";
+import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
+
+import * as logoTemplate from "./handlebars/logo.handlebars";
 
 /**
  *
@@ -10,6 +13,7 @@ export class HeaderComponent implements ComponentInterface {
     private element: HTMLElement;
     private attachments: any;
     private product: string;
+    private logoData: any;
 
     onLoad(element: HTMLElement, attachments: { authenticated: boolean, products: any[]}) {
         this.element = element;
@@ -17,6 +21,8 @@ export class HeaderComponent implements ComponentInterface {
         this.attachProduct();
         this.refreshBalance();
         this.componentFinish();
+        this.getLogo();
+
         Router.on(RouterClass.afterNavigate, (event) => {
             if (this.attachments.authenticated) {
                 const wrapper = this.element.querySelector(".account-balance");
@@ -41,6 +47,7 @@ export class HeaderComponent implements ComponentInterface {
         this.attachments = attachments;
         this.attachProduct();
         this.refreshBalance();
+        this.getLogo();
         this.componentFinish();
     }
 
@@ -140,5 +147,32 @@ export class HeaderComponent implements ComponentInterface {
 
     private formatBalance(balance) {
         return balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    /**
+     * Set logo
+     *
+     */
+    private generateLogoMarkup(data) {
+        const logo: HTMLElement = this.element.querySelector("#header-logo");
+        const template = logoTemplate({
+            logoData: data,
+        });
+        logo.innerHTML = template;
+    }
+
+    private getLogo() {
+        xhr({
+            url: Router.generateRoute("header", "getlogo"),
+            type: "json",
+            data: {
+                product: ComponentManager.getAttribute("product"),
+                language: ComponentManager.getAttribute("language"),
+                style: ComponentManager.getAttribute("product"),
+            },
+        }).then((response) => {
+            this.logoData = response;
+            this.generateLogoMarkup(this.logoData);
+        });
     }
 }

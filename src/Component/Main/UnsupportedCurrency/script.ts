@@ -1,4 +1,4 @@
-import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 /**
  *
@@ -6,12 +6,22 @@ import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 export class UnsupportedCurrencyComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
-        // On load
-        // Nothing to do here
+        this.highlightMenu();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        // On reload
-        // Nothing to do here
+        this.highlightMenu();
+    }
+
+    /**
+     *  Helper function used to highlight product on Left Nav Menu
+     */
+    private highlightMenu() {
+        const product = ComponentManager.getAttribute("product");
+        const productClass = product.replace("mobile", "product");
+
+        setTimeout (() => {
+            ComponentManager.broadcast("menu.highlight", { menu: productClass });
+        }, 200);
     }
 }

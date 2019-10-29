@@ -14,6 +14,8 @@ import {Modal} from "@app/assets/script/components/modal";
 import {CheckboxStyler} from "@app/assets/script/components/checkbox-styler";
 import {PasswordMask} from "@app/assets/script/components/password-mask";
 
+import * as logoTemplate from "../handlebars/logo.handlebars";
+
 export class Login {
     private loader: Loader;
     private sync: SyncEvents;
@@ -29,6 +31,8 @@ export class Login {
     private productVia: any = false;
     private srcElement: HTMLElement;
     private action: any = false;
+    private logoData: any;
+    private loginStyle: any;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -262,21 +266,37 @@ export class Login {
         ComponentManager.subscribe("click", (event, src) => {
             if (!this.isLogin) {
                 const element = utility.hasClass(src, "login-trigger", true);
+                const product = ComponentManager.getAttribute("product");
+                const loginModal = this.element.querySelector("#login-lightbox");
 
                 if (element) {
+                    utility.addClass(loginModal, product + "-modal");
                     event.preventDefault();
-
                     if (element.getAttribute("data-product-login-via")
                         && element.getAttribute("data-product-reg-via")) {
                         ComponentManager.broadcast("header.login", {
                             src: element,
                             productVia: element.getAttribute("data-product-login-via"),
                             regVia: element.getAttribute("data-product-reg-via"),
+                            loginStyle: product,
                         });
                     } else {
                         ComponentManager.broadcast("header.login", {
                             src: element,
+                            loginStyle: product,
                         });
+                    }
+                } else {
+                    const modal = this.element.querySelector("#login-lightbox");
+                    const closeElement = utility.hasClass(modal, "modal-active", true);
+                    const gameLaunch = utility.hasClass(src, "game-list", true);
+
+                    if (gameLaunch) {
+                        utility.addClass(loginModal, product + "-modal");
+                    }
+
+                    if (!closeElement && !gameLaunch) {
+                        utility.removeClass(loginModal, product + "-modal");
                     }
                 }
             }
@@ -295,7 +315,6 @@ export class Login {
 
             this.srcElement = null;
             this.action = false;
-
             // nullify join button since we are putting different reg via values
             // on it
             const form: HTMLElement = this.element.querySelector(".login-form");
@@ -339,9 +358,10 @@ export class Login {
             if (data && typeof data.action !== "undefined") {
                 this.action = data.action;
             }
-
+            /*productStyle = "mobile-soda-casino";*/
             if (!this.isLogin) {
                 Modal.open("#login-lightbox");
+                this.getLogo(data.loginStyle);
             }
         });
     }
@@ -382,5 +402,57 @@ export class Login {
                 );
             });
         });
+    }
+    /**
+     * Set logo
+     *
+     */
+    private generateLogoMarkup(data) {
+        const logo: HTMLElement = this.element.querySelector("#login-logo");
+        const template = logoTemplate({
+            logoData: data,
+        });
+        logo.innerHTML = template;
+    }
+
+    private getLogo(loginStyle) {
+        this.loginStyle = "mobile-entrypage";
+        if (loginStyle && typeof loginStyle !== "undefined") {
+            this.loginStyle = loginStyle;
+        }
+        this.setIcon(this.loginStyle);
+
+        xhr({
+            url: Router.generateRoute("header", "getlogo"),
+            type: "json",
+            data: {
+                product: ComponentManager.getAttribute("product"),
+                language: ComponentManager.getAttribute("language"),
+                style: loginStyle,
+            },
+        }).then((response) => {
+            this.logoData = response;
+            this.generateLogoMarkup(this.logoData);
+        });
+    }
+
+     private setIcon(iconStyle: string) {
+        const userIcon = this.element.querySelector("#user-login-svg");
+        const passwordIcon = this.element.querySelector("#user-password-svg");
+        const passwordMaskIcon = this.element.querySelector("#password-mask-svg");
+        const passwordunMaskIcon = this.element.querySelector("#password-unmask-svg");
+        const passwordStyle = this.element.querySelector("#login-field-password");
+        userIcon.setAttribute("xlink:href", "#user-login");
+        passwordIcon.setAttribute("xlink:href", "#user-password");
+        passwordMaskIcon.setAttribute("xlink:href", "#password-mask");
+        passwordunMaskIcon.setAttribute("xlink:href", "#password-unmask");
+        utility.removeClass(passwordStyle, "login-field-password");
+        if (iconStyle && typeof iconStyle !== "undefined" && iconStyle === "mobile-soda-casino" ) {
+            userIcon.setAttribute("xlink:href", "#user-login-soda");
+            passwordIcon.setAttribute("xlink:href", "#user-password-soda");
+            passwordMaskIcon.setAttribute("xlink:href", "#password-mask-soda");
+            passwordunMaskIcon.setAttribute("xlink:href", "#password-unmask-soda");
+            utility.addClass(passwordStyle, "login-field-password");
+        }
     }
 }

@@ -13,8 +13,9 @@ class Products
         'casino-gold' => 'mobile-casino-gold',
         'live-dealer' => 'mobile-live-dealer',
         'lottery' => 'mobile-lottery',
+        'exchange' => 'mobile-exchange',
         'arcade' => 'mobile-arcade',
-        'exchange' => 'mobile-exchange'
+        'soda-casino' => 'mobile-soda-casino'
     ];
 
     const PRODUCT_DIRECT_INTEGRATION = [
@@ -110,6 +111,14 @@ class Products
             'elite',
             'vip',
             'exclusive',
+        ],
+        'soda-casino' => [
+            'soda-casino',
+            'suda',
+            'soda',
+            'sodabt',
+            'sodfa',
+            'sda',
         ],
     ];
 }

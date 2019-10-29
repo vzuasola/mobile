@@ -181,6 +181,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         if (options.currentProduct) {
             product = options.currentProduct;
         }
+
         if (options.provider === this.key) {
 
             // remap language
@@ -201,6 +202,14 @@ export class PASModule implements ModuleInterface, GameInterface {
 
                 if (product === "mobile-games" || product === "mobile-live-dealer") {
                     key = "dafabetgames";
+                }
+
+                if (product === "mobile-soda-casino"
+                    || options.currentProduct === "mobile-soda-casino") {
+                    key = "soda";
+                    if (DafaConnect.isDafaconnect()) {
+                        key = "sodaconnect";
+                    }
                 }
 
                 iapiConf = this.iapiConfs[key];
@@ -250,7 +259,11 @@ export class PASModule implements ModuleInterface, GameInterface {
             }
 
             if (DafaConnect.isDafaconnect()) {
-                product = "dafaconnect";
+                if (product === "mobile-soda-casino") {
+                    product = "sodaconnect";
+                } else {
+                    product = "dafaconnect";
+                }
             }
 
             if (options.maintenance === "true") {
@@ -346,11 +359,19 @@ export class PASModule implements ModuleInterface, GameInterface {
             ret = true;
         }
 
+        if (key === "soda" && DafaConnect.isDafaconnect()) {
+            ret = true;
+        }
+
         if (key === "dafabetgames" && DafaConnect.isDafaconnect()) {
             ret = true;
         }
 
         if (key === "dafaconnect" && !DafaConnect.isDafaconnect()) {
+            ret = true;
+        }
+
+        if (key === "sodaconnect" && !DafaConnect.isDafaconnect()) {
             ret = true;
         }
 
