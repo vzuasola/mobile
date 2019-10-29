@@ -18,6 +18,7 @@ import {ArcadeLobbyComponent} from "@app/src/Component/Main/Lobby/ArcadeLobby/sc
 import {CasinoLobbyComponent} from "@app/src/Component/Main/Lobby/CasinoLobby/script";
 import {LotteryLobbyComponent} from "@app/src/Component/Main/Lobby/LotteryLobby/script";
 import {ExchangeLobbyComponent} from "@app/src/Component/Main/Lobby/ExchangeLobby/script";
+import {SodaCasinoLobbyComponent} from "@app/src/Component/Main/Lobby/SodaCasinoLobby/script";
 import {LobbyComponent} from "@app/src/Component/Main/Lobby/script";
 import {MarketingComponent} from "@app/src/Component/Marketing/script";
 import {MarketingSpaceComponent} from "@app/src/Component/MarketingSpace/script";
@@ -63,6 +64,7 @@ ComponentManager.setComponents({
     arcade_lobby: new ArcadeLobbyComponent(),
     casino_lobby: new CasinoLobbyComponent(),
     lottery_lobby: new LotteryLobbyComponent(),
+    soda_casino_lobby: new SodaCasinoLobbyComponent(),
     exchange_lobby: new ExchangeLobbyComponent(),
     node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),
