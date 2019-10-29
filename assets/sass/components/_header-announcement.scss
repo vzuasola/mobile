@@ -54,3 +54,21 @@
         }
     }
 }
+
+/*SODA CASINO*/
+.mobile-soda-casino {
+    .mount-announcement{
+        .announcement {
+            // List element
+            &-list {
+                path {
+                    fill: $soda-blue;
+                }
+            }
+        }
+        
+        .announcement-list-content-bottom a {
+            color: $soda-blue;
+        }
+    }
+}

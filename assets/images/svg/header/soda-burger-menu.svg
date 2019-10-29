@@ -1,0 +1,15 @@
+<svg viewBox="0 0 46 28" class="mobile-menu-burger-icon">
+  <linearGradient id="linear-gradient" x1="0.025" y1="1" x2="1" y2="1" gradientUnits="objectBoundingBox">
+    <stop offset="0" stop-color="#ff5f6d"/>
+    <stop offset="0.19" stop-color="#ff646d"/>
+    <stop offset="0.391" stop-color="#ff746d"/>
+    <stop offset="0.638" stop-color="#ff8f6e"/>
+    <stop offset="0.903" stop-color="#ffb370"/>
+    <stop offset="1" stop-color="#ffc371"/>
+  </linearGradient>
+  <g transform="translate(-0.019 -0.013)">
+    <rect width="46" height="4" transform="translate(0.019 0.013)" fill="url(#linear-gradient)"/>
+    <rect width="46" height="4" transform="translate(0.019 12.013)" fill="url(#linear-gradient)"/>
+    <rect width="46" height="4" transform="translate(0.019 24.013)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

@@ -16,3 +16,45 @@
 .node-basic-page {
     padding: 1.5rem 0 0.5rem 0;
 }
+
+
+// SODA CASINO
+.mobile-soda-casino {
+    .unsupported-currency-image {
+        height: 16rem;
+        background: url($unsupported-currency-gold) no-repeat top center;
+    }
+
+    .btn-soda {
+        border: 0.1rem solid $soda-yellow;
+        background-color: transparent;
+        text-align: center;
+        font-weight: normal;
+        font-size: 2.4rem;
+        letter-spacing: 0;
+        color: $soda-yellow;
+        opacity: 1;
+    }
+
+    .btn-soda-yellow {
+        border: 0.1rem solid $soda-yellow;
+        background-color: transparent;
+        text-align: center;
+        font-weight: normal;
+        font-size: 2.4rem;
+        letter-spacing: 0;
+        color: $soda-yellow;
+        opacity: 1;
+    }
+
+    .btn-soda-red {
+        border: 0.1rem solid $soda-red;
+        background-color: transparent;
+        text-align: center;
+        font-weight: normal;
+        font-size: 2.4rem;
+        letter-spacing: 0;
+        color: $soda-red;
+        opacity: 1;
+    }
+}
