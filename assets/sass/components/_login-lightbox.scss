@@ -101,3 +101,115 @@
         background: rgba(0, 0, 0, 0.75);
     }
 }
+
+.mobile-soda-casino-modal {
+    .login {
+        // Input fields
+        &-field {
+            position: relative;
+
+            input {
+                padding: 0.5rem 1rem 0.5rem 3.8rem;
+                border: 0;
+                outline: 0;
+                background: transparent;
+                border-bottom: 0.2rem solid $white;
+                font-weight: normal;
+                font-size: 1.7rem;
+                color: $white;
+            }
+
+            .invalid::placeholder {
+                color: $white;
+            }
+
+            .invalid {
+                background: $soda-blue;
+            }
+
+            .invalid ~ .login-field-icon,
+            .invalid ~ span .password-icon-mask,
+            .invalid ~ span .password-icon-unmask {
+                fill: $white;
+            }
+
+            &-icon {
+                position: absolute;
+                top: -0.3rem;
+                left: 0rem;
+                width: 2.6rem;
+                fill: $white;
+            }
+
+            .login-field-password {
+                top: -0.8rem;
+            }
+
+            @-webkit-keyframes autofill {
+                to {
+                    color: $white;
+                    background: transparent;
+                }
+            }
+
+            input:-webkit-autofill {
+                -webkit-animation-name: autofill;
+                -webkit-animation-fill-mode: both;
+            }
+        }
+    }
+
+    // Link/anchor
+    a:not(.btn) {
+        color: $white;
+
+        &:hover {
+            color: $soda-yellow;
+        }
+    }
+
+    // Content
+    .login-content {
+        padding: 4rem 5rem;
+        border-radius: 0.8rem;
+        background: #001F51 0% 0% no-repeat padding-box;
+    }
+
+    .login-submit {
+        text-align: center;
+        font-weight: bold;
+        font-size: 2rem;
+        letter-spacing: 0;
+        color: $soda-yellow;
+        opacity: 1;
+    }
+
+    .btn-join {
+        text-align: center;
+        font-weight: bold;
+        font-size: 2rem;
+        letter-spacing: 0;
+        color: #FF5F6D;
+        opacity: 1;
+        background-color: transparent;
+    }
+
+    .login-remember-username, 
+    .login-help-link,
+    .mb-10 {
+        font-weight: normal;
+    }
+
+    .modal-close-button {
+        width: 2.5rem;
+        height: 2.5rem;
+        background: transparent;
+        path {
+            fill: $white;
+        }
+        rect {
+            fill: transparent;
+        }
+    }
+}
+

@@ -297,7 +297,8 @@ export class GamesSearch {
     private listenActivateSearchLightbox() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "search-tab", true);
-            if (el) {
+            const product = ComponentManager.getAttribute("product");
+            if (el && product === "mobile-arcade") {
                 event.preventDefault();
                 this.clearSearchResult();
                 this.clearSearchBlurbPreview();

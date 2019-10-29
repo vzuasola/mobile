@@ -1,4 +1,5 @@
 .footer {
+    margin-top: 1rem;
     font-size: 1.2rem;
     color: $white;
 
@@ -6,6 +7,13 @@
         font-size: 1.8rem;
         font-weight: bold;
         line-height: 2.4rem;
+    }
+}
+
+.mobile-soda-casino {
+    .footer-mobile-soda-casino {
+        background: $soda-gray;
+        margin-top: 0;
     }
 }
 

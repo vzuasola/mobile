@@ -94,6 +94,17 @@ export class  ProductLanguage {
             "pt",
             "es",
         ],
+        "soda-casino" : [
+            "en",
+            "sc",
+            "th",
+            "vn",
+            "id",
+            "in",
+            "kr",
+            "pt",
+            "es",
+        ],
     };
 
     getSupportedLanguage() {
