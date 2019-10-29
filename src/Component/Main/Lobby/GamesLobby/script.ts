@@ -102,6 +102,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
         this.listenToLaunchGameLoader();
+        this.componentFinish();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -153,6 +154,15 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.load = true;
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
+        this.componentFinish();
+    }
+
+    private componentFinish() {
+        ComponentManager.broadcast("token.parse", {
+            element: this.element,
+            method: "parseLink",
+            selector: "[href*=ticket\\.token]",
+        });
     }
 
     private highlightMenu() {
