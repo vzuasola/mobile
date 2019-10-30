@@ -294,10 +294,6 @@ export class Login {
                     if (gameLaunch) {
                         utility.addClass(loginModal, product + "-modal");
                     }
-
-                    if (!closeElement && !gameLaunch) {
-                        utility.removeClass(loginModal, product + "-modal");
-                    }
                 }
             }
         });
