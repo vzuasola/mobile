@@ -86,6 +86,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.listenToScroll();
         this.listenToSwipe();
         this.listenOnSearch();
+        this.updateLoginLayout();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -117,6 +118,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.listenToCategory();
             this.listenToScroll();
             this.listenOnSearch();
+            this.updateLoginLayout();
         }
         this.response = null;
         this.element = element;
@@ -968,5 +970,12 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
 
         this.events[key] = key;
         return true;
+    }
+
+    private updateLoginLayout() {
+        ComponentManager.subscribe("login.update.layout.component", (event, src, data) => {
+            const product = ComponentManager.getAttribute("product");
+            utility.removeClass("${data.val}", product + "-modal");
+        });
     }
 }
