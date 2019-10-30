@@ -975,7 +975,10 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private updateLoginLayout() {
         ComponentManager.subscribe("login.update.layout.component", (event, src, data) => {
             const product = ComponentManager.getAttribute("product");
-            utility.removeClass("${data.val}", product + "-modal");
+            const loginModal: HTMLElement = document.getElementById("login-lightbox");
+            setTimeout(() => {
+              utility.removeClass(loginModal, product + "-modal");
+            }, 300);
         });
     }
 }
