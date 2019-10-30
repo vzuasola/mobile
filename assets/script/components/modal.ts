@@ -1,4 +1,5 @@
 import * as utility from "@core/assets/js/components/utility";
+import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 class Modal {
     listen(selector: string) {
@@ -50,6 +51,7 @@ class Modal {
                 this.close(selector);
 
                 event.preventDefault();
+                ComponentManager.broadcast("login.update.layout.component", { element: "#login-lightbox" });
             }
         });
     }

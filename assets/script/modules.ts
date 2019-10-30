@@ -3,6 +3,7 @@ import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {AvayaModule} from "@app/src/Module/Avaya/script";
 import {BalanceModule} from "@app/src/Module/Balance/script";
 import {SessionModule} from "@app/src/Module/Session/script";
+import {TokenParserModule} from "@app/src/Module/TokenParser/script";
 
 import {GameIntegrationModule} from "@app/src/Module/GameIntegration/script";
 import {PASModule} from "@app/src/Module/GameIntegration/PAS/script";
@@ -50,6 +51,7 @@ ComponentManager.setModules({
     avaya: new AvayaModule(),
     balance: new BalanceModule(),
     session: new SessionModule(),
+    token_parser: new TokenParserModule(),
     game_integration: new GameIntegrationModule(),
     pas_integration: new PASModule(),
     voidbridge_integration: new VoidbridgeModule(),

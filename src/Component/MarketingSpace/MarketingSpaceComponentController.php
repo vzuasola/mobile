@@ -69,19 +69,19 @@ class MarketingSpaceComponentController
      */
     public function topLeaderboard($request, $response)
     {
+        $data['is_login'] = $this->playerSession->isLogin();
         try {
             $params = $request->getParsedBody();
-            $views = $this->views;
-            if (isset($params['currentProduct'])) {
-                $views = $this->views->withProduct($params['currentProduct']);
+            if (isset($params['currentProduct']) && $params['currentProduct'] !== 'mobile-entrypage') {
+                $data['top_leaderboard'] = [];
+                return $this->rest->output($response, $data);
             }
 
-            $top_leaderboard = $views->getViewById('top_leaderboard');
-            $data['top_leaderboard'] = $this->processTopLeaderBoard($top_leaderboard);
+            $topLeaderboard = $this->views->getViewById('top_leaderboard');
+            $data['top_leaderboard'] = $this->processTopLeaderBoard($topLeaderboard);
         } catch (\Exception $e) {
             $data['top_leaderboard'] = [];
         }
-        $data['is_login'] = $this->playerSession->isLogin();
 
         return $this->rest->output($response, $data);
     }
