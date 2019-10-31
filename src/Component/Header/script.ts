@@ -169,8 +169,10 @@ export class HeaderComponent implements ComponentInterface {
                 product: ComponentManager.getAttribute("product"),
                 language: ComponentManager.getAttribute("language"),
                 style: ComponentManager.getAttribute("product"),
+                route: ComponentManager.getAttribute("route"),
             },
         }).then((response) => {
+            console.log(response);
             this.logoData = response;
             this.generateLogoMarkup(this.logoData);
         });
