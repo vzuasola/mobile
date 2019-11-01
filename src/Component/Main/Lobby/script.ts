@@ -92,15 +92,7 @@ export class LobbyComponent implements ComponentInterface {
            data.loader.hide();
         });
     }
-
-    private updateLoginLightbox() {
-        ComponentManager.subscribe("update.login.lightbox.component", (event, src, data) => {
-            const product = ComponentManager.getAttribute("product");
-            const loginModal: HTMLElement = document.getElementById("login-lightbox");
-            console.log(loginModal);
-        });
-    }
-
+    
     private updateLoginLayout() {
         ComponentManager.subscribe("login.update.layout.component", (event, src, data) => {
             const loginModal: HTMLElement = document.getElementById("login-lightbox");
