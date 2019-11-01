@@ -40,6 +40,7 @@ export class LobbyComponent implements ComponentInterface {
         this.listenCasinoGoldRedirect();
         this.doLoginProcess(element);
         this.integrateProduct(element);
+        this.updateLoginLayout();
     }
 
     onReload(
@@ -55,6 +56,7 @@ export class LobbyComponent implements ComponentInterface {
         this.productDirectIntegration = attachments.product_direct_integration;
         this.doLoginProcess(element);
         this.integrateProduct(element);
+        this.updateLoginLayout();
     }
 
     private doLoginProcess(element) {
@@ -88,6 +90,23 @@ export class LobbyComponent implements ComponentInterface {
     private listenCasinoGoldRedirect() {
         ComponentManager.subscribe("redirect.postlogin.casino-gold", (event, src, data) => {
            data.loader.hide();
+        });
+    }
+
+    private updateLoginLightbox() {
+        ComponentManager.subscribe("update.login.lightbox.component", (event, src, data) => {
+            const product = ComponentManager.getAttribute("product");
+            const loginModal: HTMLElement = document.getElementById("login-lightbox");
+            console.log(loginModal);
+        });
+    }
+
+    private updateLoginLayout() {
+        ComponentManager.subscribe("login.update.layout.component", (event, src, data) => {
+            const loginModal: HTMLElement = document.getElementById("login-lightbox");
+            setTimeout(() => {
+              utility.removeClass(loginModal, "mobile-soda-casino-modal");
+            }, 300);
         });
     }
 }

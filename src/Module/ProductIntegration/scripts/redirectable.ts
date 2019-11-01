@@ -74,11 +74,11 @@ export abstract class Redirectable implements ModuleInterface {
 
                     if (onlyLogin) {
                         this.element = data.src;
-
                         ComponentManager.broadcast("header.login", {
                             src: data.src,
                             productVia: data.src.getAttribute("data-product-login-via"),
                             regVia: data.src.getAttribute("data-product-reg-via"),
+                            loginStyle: data.src.getAttribute("data-product-login-via"),
                         });
 
                         return;
