@@ -92,7 +92,7 @@ export class LobbyComponent implements ComponentInterface {
            data.loader.hide();
         });
     }
-    
+
     private updateLoginLayout() {
         ComponentManager.subscribe("login.update.layout.component", (event, src, data) => {
             const loginModal: HTMLElement = document.getElementById("login-lightbox");
