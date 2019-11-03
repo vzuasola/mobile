@@ -425,6 +425,7 @@ export class Login {
                 product: ComponentManager.getAttribute("product"),
                 language: ComponentManager.getAttribute("language"),
                 style: loginStyle,
+                route: ComponentManager.getAttribute("route"),
             },
         }).then((response) => {
             this.logoData = response;
