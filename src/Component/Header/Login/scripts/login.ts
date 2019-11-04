@@ -50,6 +50,7 @@ export class Login {
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
+        this.updateLoginLayout();
     }
 
     handleOnReload(element: HTMLElement, attachments: {authenticated: boolean}) {
@@ -57,6 +58,7 @@ export class Login {
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
+        this.updateLoginLayout();
     }
 
     /**
@@ -457,5 +459,14 @@ export class Login {
             passwordunMaskIcon.setAttribute("xlink:href", "#password-unmask-soda");
             utility.addClass(passwordStyle, "login-field-password");
         }
+    }
+
+    private updateLoginLayout() {
+        ComponentManager.subscribe("login.update.layout.component", (event, src, data) => {
+            const loginModal: HTMLElement = this.element.querySelector("#login-lightbox");
+            setTimeout(() => {
+              utility.removeClass(loginModal, "mobile-soda-casino-modal");
+            }, 300);
+        });
     }
 }
