@@ -258,7 +258,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             if (responses.hasOwnProperty("pager" + page)) {
                 const response = responses["pager" + page];
                 Object.assign(promises, response);
-                if (typeof response.games["all-games"] === "object" && Object.keys(response.games["all-games"]).length > 0) {
+                if (typeof response.games["all-games"] === "object"
+                    && Object.keys(response.games["all-games"]).length > 0) {
                     gamesList["all-games"] = response.games["all-games"];
                 }
             }

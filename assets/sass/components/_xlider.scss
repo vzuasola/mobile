@@ -121,18 +121,14 @@
 }
 
 @media (orientation: portrait) {
-    .xlider-item {
-        picture {
-            height: 17rem;
-        }
+    .xlide-item {
+        height: 17rem;
     }
 }
 
 @media (orientation: landscape) {
-    .xlider-item {
-        picture {
-            height: 14.5rem;
-        }
+    .xlide-item {
+        height: 14.5rem;
     }
 }
 
