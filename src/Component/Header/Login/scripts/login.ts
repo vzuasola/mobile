@@ -50,6 +50,7 @@ export class Login {
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
+        this.updateLoginLayout();
     }
 
     handleOnReload(element: HTMLElement, attachments: {authenticated: boolean}) {
@@ -57,6 +58,7 @@ export class Login {
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
+        this.updateLoginLayout();
     }
 
     /**
@@ -308,7 +310,6 @@ export class Login {
         // action: closure => A callback that will be executed after the login process
         ComponentManager.subscribe("header.login", (event, src, data: any) => {
             this.productVia = false;
-
             this.srcElement = null;
             this.action = false;
             // nullify join button since we are putting different reg via values
@@ -413,8 +414,15 @@ export class Login {
 
     private getLogo(loginStyle) {
         this.loginStyle = "mobile-entrypage";
+        let currentProduct = ComponentManager.getAttribute("product");
         if (loginStyle && typeof loginStyle !== "undefined") {
             this.loginStyle = loginStyle;
+            const loginModal = this.element.querySelector("#login-lightbox");
+            utility.removeClass(loginModal, currentProduct + "-modal");
+            if (this.loginStyle === "mobile-soda-casino") {
+                currentProduct = this.loginStyle;
+                utility.addClass(loginModal, currentProduct + "-modal");
+            }
         }
         this.setIcon(this.loginStyle);
 
@@ -422,7 +430,7 @@ export class Login {
             url: Router.generateRoute("header", "getlogo"),
             type: "json",
             data: {
-                product: ComponentManager.getAttribute("product"),
+                product: currentProduct,
                 language: ComponentManager.getAttribute("language"),
                 style: loginStyle,
                 route: ComponentManager.getAttribute("route"),
@@ -451,5 +459,14 @@ export class Login {
             passwordunMaskIcon.setAttribute("xlink:href", "#password-unmask-soda");
             utility.addClass(passwordStyle, "login-field-password");
         }
+    }
+
+    private updateLoginLayout() {
+        ComponentManager.subscribe("login.update.layout.component", (event, src, data) => {
+            const loginModal: HTMLElement = this.element.querySelector("#login-lightbox");
+            setTimeout(() => {
+              utility.removeClass(loginModal, "mobile-soda-casino-modal");
+            }, 300);
+        });
     }
 }
