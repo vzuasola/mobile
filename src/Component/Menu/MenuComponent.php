@@ -173,7 +173,8 @@ class MenuComponent implements ComponentWidgetInterface
         if ($quicklinks) {
             foreach ($quicklinks as $key => $link) {
                 if (($this->idDomain->isLangSelectorHidden() ||
-                    (($this->product->getProduct() == 'mobile-exchange') ||
+                    (($this->product->getProduct() == 'mobile-soda-casino') ||
+                    $this->product->getProduct() == 'mobile-exchange' ||
                     $this->product->getProduct() == 'mobile-casino-gold')) &&
                     strpos($link['attributes']['class'], 'language-trigger') !== false
                 ) {
