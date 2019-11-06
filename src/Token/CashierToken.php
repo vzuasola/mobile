@@ -37,7 +37,7 @@ class CashierToken implements TokenInterface
     {
         $product = $this->resolver->getProduct();
         $config = $this->configs;
-        if ($product == "mobile-live-dealer") {
+        if ($product == "mobile-live-dealer" || $product == "mobile-soda-casino") {
             $config = $this->configs->withProduct($product);
         }
         $headerConfigs = $config->getConfig('webcomposer_config.header_configuration');

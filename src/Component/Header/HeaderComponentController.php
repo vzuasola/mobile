@@ -50,6 +50,7 @@ class HeaderComponentController
         $params = $request->getQueryParams();
         $currentProduct = $params['product'] ?? 'mobile-entrypage';
         $productStyle = $params['style'] ?? 'mobile-entrypage';
+        $productRoute = $params['route'] ?? '/';
         try {
             $headerConfigsByProduct = $this->configs
                 ->withProduct($currentProduct)
@@ -60,7 +61,7 @@ class HeaderComponentController
 
         $lang = $params['language'] ?? 'en';
         $data['logo_title'] = $headerConfigsByProduct['logo_title'] ?? 'Dafabet';
-        $data['logo_link'] = ($currentProduct == 'mobile-soda-casino') ? '/{lang}/soda-casino' : '/{lang}';
+        $data['logo_link'] = ($currentProduct == 'mobile-soda-casino') ? '/{lang}'.$productRoute : '/{lang}';
         $data['product'] =  $currentProduct;
         $data['language'] = $lang;
 
