@@ -112,7 +112,7 @@ components:
 
   promotions:
     class: App\MobileEntry\Component\Main\Promotions\PromotionsComponent
-  
+
   tab_navigation:
     class: App\MobileEntry\Component\TabNavigation\TabNavigationComponent
 
@@ -173,6 +173,9 @@ components:
 modules:
   session:
     class: App\MobileEntry\Module\Session\SessionModule
+
+  token_parser:
+    class: App\MobileEntry\Module\TokenParser\TokenParserModule
 
   avaya:
     class: App\MobileEntry\Module\Avaya\AvayaModule
@@ -260,7 +263,7 @@ modules:
 
   gpi_sode_integration:
     class: App\MobileEntry\Module\GameIntegration\GPISode\GPISodeModule
-    
+
   exchange_launcher_integration:
     class: App\MobileEntry\Module\GameIntegration\ExchangeLauncher\ExchangeLauncherModule
 

@@ -167,6 +167,11 @@ class HeaderComponent implements ComponentWidgetInterface
         try {
             $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
             $cashierMenu = $this->menu->getMultilingualMenu('cashier-menu');
+            if ($this->product->getProduct() == 'mobile-soda-casino') {
+                $cashierMenu = $this->menu
+                ->withProduct('mobile-soda-casino')
+                ->getMultilingualMenu('cashier-menu');
+            }
         } catch (\Exception $e) {
             $headerConfigs = [];
             $cashierMenu = [];

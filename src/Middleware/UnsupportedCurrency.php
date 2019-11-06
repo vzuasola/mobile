@@ -27,10 +27,15 @@ class UnsupportedCurrency implements ResponseMiddlewareInterface
      */
     public function __construct(ContainerInterface $container)
     {
+        $this->request = $container->get('router_request');
+        $this->router = $container->get('route_manager');
         $this->handler = $container->get('handler');
         $this->playerSession = $container->get('player_session');
         $this->product = $container->get('product_resolver')->getProduct();
         $this->configFetcher = $container->get('config_fetcher')->withProduct($this->product);
+
+        // route configuration
+        $this->route = $this->router->getRouteConfiguration($this->request);
     }
 
     /**
@@ -43,7 +48,9 @@ class UnsupportedCurrency implements ResponseMiddlewareInterface
                 $this->ucp = $this->configFetcher->getConfig('webcomposer_config.page_not_found');
                 if ($response->getStatusCode() === 200 && // Override only if the supposed response is 200
                     $this->playerSession->isLogin() &&
-                    $this->ucp['currency_mapping']
+                    $this->ucp['currency_mapping'] &&
+                    isset($this->route['components']['main']) &&
+                    $this->route['components']['main'] === 'lobby'
                 ) {
                     $currencyMap = explode("\r\n", $this->ucp['currency_mapping']);
                     $currency = $this->playerSession->getDetails()['currency'] ?? null;
