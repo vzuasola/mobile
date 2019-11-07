@@ -71,6 +71,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnLoad(this.element, this.attachments);
         this.gamesFilter.handleOnLoad(this.element, this.attachments, false);
+        this.componentFinish();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -109,6 +110,15 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, this.attachments);
         this.gamesFilter.handleOnReLoad(this.element, this.attachments, false);
+        this.componentFinish();
+    }
+
+    private componentFinish() {
+        ComponentManager.broadcast("token.parse", {
+            element: this.element,
+            method: "parseLink",
+            selector: "[href*=ticket\\.token]",
+        });
     }
 
     /**
