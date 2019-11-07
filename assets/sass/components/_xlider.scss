@@ -120,6 +120,18 @@
     }
 }
 
+@media (orientation: portrait) {
+    .xlide-item {
+        height: 17rem;
+    }
+}
+
+@media (orientation: landscape) {
+    .xlide-item {
+        height: 14.5rem;
+    }
+}
+
 /*SODA CASINO*/
 .mobile-soda-casino {
     .xlider {
