@@ -2,10 +2,11 @@
 .mobile-action-button {
     position: absolute;
     top: 50%;
-    right: $container-gutter-xs;
+    right: 1rem;
     text-transform: uppercase;
     line-height: normal;
     @include translateY(-50%);
+    z-index: 2;
 
     .btn-mobile-login {
         max-width: 8rem;
@@ -54,7 +55,8 @@
             max-width: 9.5rem;
             padding: 0.2rem 0.3rem;
             border-radius: 0.3rem;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
+            color: $red;
 
             @include media(">tablet") {
                 max-width: 15.5rem;
