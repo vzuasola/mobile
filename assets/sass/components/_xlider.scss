@@ -8,15 +8,37 @@
     margin: auto;
     overflow: hidden;
 
+    .product-tag {
+        margin: 0;
+        // display: inline-block;
+        width: auto;
+        
+        div {
+            min-width: auto;
+            max-width: none;
+            padding: 0 0.4rem;
+            vertical-align: text-bottom;
+
+            p {
+                line-height: 1.5;
+                // display: inline-block;
+                vertical-align: middle;
+            }
+        }
+    }
+
     // Blurb
     &-blurb {
-        background: rgba(0,0,0,0.9);
         top: 0;
         right: 0;
         width: 50%;
         height: 100%;
         padding: 0.5rem;
         position: absolute;
+
+        .btn {
+            font-size: 1.2rem;
+        }
 
         // Blurb Position (Default is right)
         &.left {
@@ -36,6 +58,7 @@
             text-align: center;
 
             p {
+                display: inline-block;
                 margin: 0;
                 line-height: normal;
             }
@@ -115,8 +138,41 @@
     }
 
     .fade .xlider-blurb.bottom {
-        bottom: 0;
+        bottom: 1rem;
         opacity: 1;
+    }
+}
+
+.indicators {
+    position: absolute;
+    bottom: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    &-item {
+        width: 2rem;
+        height: 0.3rem;
+        margin: 0 0.3rem;
+        border: 0;
+        background-color: $white;
+        outline: 0;
+    }
+
+    &-item-active {
+        background: $yellow;
+    }
+}
+
+@media (orientation: portrait) {
+    .xlide-item {
+        height: 12rem;
+    }
+}
+
+@media (orientation: landscape) {
+    .xlide-item {
+        height: 10rem;
     }
 }
 

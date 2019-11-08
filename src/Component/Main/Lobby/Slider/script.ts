@@ -38,8 +38,17 @@ export class LobbySliderComponent implements ComponentInterface {
                 selector: "#main-slider",
                 loop: true,
                 duration: 300,
-                controls: true,
-                onChange: this.onChangeHandler,
+                controls: false,
+                onInit: () => {
+                    setTimeout(() => {
+                        sliderObj.addIndicators();
+                        sliderObj.updateIndicators();
+                    }, 10);
+                },
+                onChange: (slide, $this) => {
+                    this.onChangeHandler(slide, $this);
+                    sliderObj.updateIndicators();
+                },
             });
             setTimeout(() => {
                 utility.addClass(slider.querySelectorAll(".xlide-item")[1].parentElement, "fade");

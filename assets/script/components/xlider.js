@@ -27,6 +27,7 @@ export default class Xlider extends Siema {
         this.createControls();
 
         window.addEventListener('resize', () => {
+            this.addIndicators();
             this.config.onChange.call(this, this.innerElements[this.currentSlide], this);
         });
     }
@@ -171,6 +172,42 @@ export default class Xlider extends Siema {
             if (callback) {
                 callback.call(this);
             }
+        }
+    }
+
+    addIndicators() {
+        // create a contnier for all indicators
+        // add a class 'indicators' for styling reason
+        this.indicators = document.createElement('div');
+        this.indicators.classList.add('indicators');
+        // loop through slides to create a number of indicators
+        for (let i = 0; i < this.innerElements.length; i++) {
+            // create a indicator
+            const indicator = document.createElement('button');
+            
+            // add a class to indicator
+            indicator.classList.add('indicators-item');
+            
+            // add an event handler to each of them
+            // indicator.addEventListener('click', () => {
+            //     this.goTo(i);
+            // })
+            
+            // append indicator to a container for all of them
+            this.indicators.appendChild(indicator);
+        }
+
+        // add the container full of indicators after selector
+        this.selector.parentNode.insertBefore(this.indicators, this.selector.nextSibling);
+        this.selector.appendChild(this.indicators);
+    }
+
+    updateIndicators() {
+        // loop through all indicators
+        for (let i = 0; i < this.indicators.querySelectorAll('button').length; i++) {
+            // if current indicator matches currentSlide prop, add a class to it, remove otherwise
+            const addOrRemove = this.currentSlide === i ? 'add' : 'remove';
+            this.indicators.querySelectorAll('button')[i].classList[addOrRemove]('indicators-item-active');
         }
     }
 }
