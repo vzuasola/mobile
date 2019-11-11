@@ -19,6 +19,16 @@ export class LobbySliderComponent implements ComponentInterface {
     private sliderData: any;
     private providers: any;
     private gamesTile: any;
+
+    constructor() {
+        Handlebars.registerHelper("replaceRibbon", (markup) => {
+            const ribbon = ribbonTemplate({
+                data: markup,
+            });
+            return markup.banner_blurb.replace("{ribbon}", ribbon);
+        });
+    }
+
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getSliders();
@@ -132,14 +142,6 @@ export class LobbySliderComponent implements ComponentInterface {
 
     private getSliders() {
         const product = ComponentManager.getAttribute("product");
-
-        Handlebars.registerHelper("replaceRibbon", (markup) => {
-            const ribbon = ribbonTemplate({
-                data: markup,
-            });
-
-            return markup.banner_blurb.replace("{ribbon}", ribbon);
-        });
 
         xhr({
             url: Router.generateRoute("lobby_slider", "sliders"),
