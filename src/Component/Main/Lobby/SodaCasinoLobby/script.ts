@@ -956,6 +956,10 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
                 ComponentManager.broadcast("menu.update.router.component", {
                     element: ".quicklinks-home", val: `header", "menu`,
                 });
+
+                ComponentManager.broadcast("menu.update.logo.component", {
+                    element: "#header-logo-link", val: `header", "menu`,
+                });
             });
         }
     }

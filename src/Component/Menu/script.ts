@@ -47,6 +47,7 @@ export class MenuComponent implements ComponentInterface {
         this.listenAnnouncementCount();
         this.listenHighlightMenu();
         this.updateMenuRouter();
+        this.updateLogoRouter();
 
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
@@ -69,6 +70,7 @@ export class MenuComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
         this.element = element;
         this.updateMenuRouter();
+        this.updateLogoRouter();
         this.equalizeProductHeight();
         this.equalizeQuicklinksHeight();
         this.products = attachments.products;
@@ -135,6 +137,15 @@ export class MenuComponent implements ComponentInterface {
                 password.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
                 account.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
             }
+        });
+    }
+
+    private updateLogoRouter() {
+        ComponentManager.subscribe("menu.update.logo.component", (event, src, data) => {
+            const logo = this.element.querySelector(data.element);
+            console.log(data.element);
+            console.log(logo);
+            logo.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
         });
     }
 
