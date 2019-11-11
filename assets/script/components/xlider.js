@@ -184,15 +184,15 @@ export default class Xlider extends Siema {
         for (let i = 0; i < this.innerElements.length; i++) {
             // create a indicator
             const indicator = document.createElement('button');
-            
+
             // add a class to indicator
             indicator.classList.add('indicators-item');
-            
+
             // add an event handler to each of them
             // indicator.addEventListener('click', () => {
             //     this.goTo(i);
             // })
-            
+
             // append indicator to a container for all of them
             this.indicators.appendChild(indicator);
         }
