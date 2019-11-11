@@ -66,9 +66,9 @@ class DownloadComponentController
         }
 
         try {
-            $data['all_apps_text'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
+            $data['entrypage_config'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
         } catch (\Exception $e) {
-            $data['all_apps_text'] = [];
+            $data['entrypage_config'] = [];
         }
 
         return $this->rest->output($response, $data);

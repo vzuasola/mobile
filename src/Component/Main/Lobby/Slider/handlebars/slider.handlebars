@@ -33,20 +33,7 @@
                 >
             </picture>
                 <div class="xlider-blurb {{ this.banner_pos }} {{../sliderData.enable_transition_slider }}">
-                {{#if this.product_ribbon_tag}}
-                    <div class="product-tag">
-                        <div
-                            {{#if this.default_ribbon}}
-                                style="background-color: {{ this.bg_color }}; color: {{ this.text_color }}"
-                            {{else}}
-                                class="tag-{{ this.product }}"
-                            {{/if}}
-                        >
-                            {{ this.product_ribbon_tag }}
-                        </div>
-                    </div>
-                {{/if}}
-                {{{ this.banner_blurb }}}
+                        {{{replaceRibbon this}}}
                 </div>
             </a>
         </div>
