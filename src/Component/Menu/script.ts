@@ -143,8 +143,6 @@ export class MenuComponent implements ComponentInterface {
     private updateLogoRouter() {
         ComponentManager.subscribe("menu.update.logo.component", (event, src, data) => {
             const logo = this.element.querySelector(data.element);
-            console.log(data.element);
-            console.log(logo);
             logo.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
         });
     }
