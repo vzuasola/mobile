@@ -63,10 +63,15 @@ export class DownloadComponent implements ComponentInterface {
         data = this.procesMenu(data);
         const template = downloadTemplate({
             downloadData: data,
-            menuClass: data.downloads_menu.length === 2 ? "app-download-two" : ((data.downloads_menu.length === 1)
-            ? "app-download-full" : "app-download-three"),
-            allApptext: data.all_apps_text.all_apps_text,
-            viewLesstext: data.all_apps_text.view_less_text,
+            menuClass: data.downloads_menu.length === 4 ? "col-3" : ((data.downloads_menu.length === 3)
+            ? "col-4" : data.downloads_menu.length === 2 ? "col-6" :
+            data.downloads_menu.length  === 1 ? "col-12" : "col-3"),
+            menuClassMore: data.downloads_menu.length === 5 ? "col-12" : ((data.downloads_menu.length === 6)
+            ? "app-download-push" : data.downloads_menu.length === 7 ? "col-4 push" : data.downloads_menu.length === 8
+            ? "col-3" : "col-3"),
+            allApptext: data.entrypage_config.all_apps_text,
+            viewLesstext: data.entrypage_config.view_less_text,
+            DownloadApptext: data.entrypage_config.download_app_text,
         });
 
         download.innerHTML = template;

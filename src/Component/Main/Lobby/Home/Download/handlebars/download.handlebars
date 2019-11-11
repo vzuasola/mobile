@@ -1,7 +1,8 @@
 {{#condition downloadData.downloads_menu.length ">" 0}}
+<p class="download-title">{{ DownloadApptext }}</p>
 <ul class="app-download clearfix">
     {{#each downloadData.downloads_menu}}
-        {{#condition @index "<" 3}}
+        {{#condition @index "<" 4}}
             <li class="app-download-list {{ ../this.menuClass}}">
                 <a href="{{ this.uri }}"
                 class="{{ this.attributes.class }} {{ this.attributes.svg }} {{this.attributes.device}} download-box"
@@ -19,14 +20,14 @@
     {{/each}}
 </ul>
 {{/condition}}
-{{#condition downloadData.downloads_menu.length ">" 3}}
+{{#condition downloadData.downloads_menu.length ">" 4}}
     <dl class="ckeditor-accordion">
         <dt data-transition-top="true" class="swap-text" data-text-original="{{ allApptext }}" data-text-swap="{{ viewLesstext }}">{{ allApptext }}</dt>
         <dd>
             <ul class="app-download-accordion clearfix">
             {{#each downloadData.downloads_menu}}
-                {{#condition @index ">" 2}}
-                <li class="app-download-list app-download-three">
+                {{#condition @index ">" 3}}
+                <li class="app-download-list {{ ../this.menuClassMore}}">
                     <a href="{{ this.uri }}"
                     class="{{ this.attributes.class }} {{ this.attributes.svg }} {{this.attributes.device}} download-box"
                     target="{{ this.attributes.target }}"
