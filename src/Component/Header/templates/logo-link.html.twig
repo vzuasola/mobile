@@ -5,9 +5,10 @@
     hreflang="{{ app.lang }}"
     rel="{{ logo_title }}"
     title="{{ logo_title }}"
+    id="header-logo-link"
 
     data-router="true"
-    data-router-refresh='["main", "tab_navigation", "header", "menu"]'
+    data-router-refresh='["main", "tab_navigation"]'
 >
     {{ include('@component/Header/templates/logo-image.html.twig') }}
 </a>
