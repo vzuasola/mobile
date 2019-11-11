@@ -88,7 +88,7 @@ class GamesLobbyComponentController
         if (!$item->isHit()) {
             $data = $this->generatePageLobbyData($page);
 
-            if (isset($data['all-games']) && !empty($data['all-games'])) {
+            if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
                 $item->set([
                     'body' => $data,
                 ]);
