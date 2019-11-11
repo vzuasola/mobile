@@ -163,14 +163,15 @@ class CasinoLobbyComponentController
 
         if (!$item->isHit()) {
             $data = $this->generateLobbyData($product);
+            if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
+                $item->set([
+                    'body' => $data,
+                ]);
 
-            $item->set([
-                'body' => $data,
-            ]);
-
-            $this->cacher->save($item, [
-                'expires' => self::TIMEOUT,
-            ]);
+                $this->cacher->save($item, [
+                    'expires' => self::TIMEOUT,
+                ]);
+            }
         } else {
             $body = $item->get();
 

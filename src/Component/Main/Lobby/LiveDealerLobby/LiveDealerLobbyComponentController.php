@@ -57,14 +57,15 @@ class LiveDealerLobbyComponentController
 
         if (!$item->isHit()) {
             $data = $this->getGamesList($isPreview);
+            if (!empty($data)) {
+                $item->set([
+                    'body' => $data,
+                ]);
 
-            $item->set([
-                'body' => $data,
-            ]);
-
-            $this->cacher->save($item, [
-                'expires' => self::TIMEOUT,
-            ]);
+                $this->cacher->save($item, [
+                    'expires' => self::TIMEOUT,
+                ]);
+            }
         } else {
             $body = $item->get();
             $data = $body['body'];
