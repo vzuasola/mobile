@@ -135,7 +135,7 @@ routes:
         components:
             main: lobby
         headers:
-            Cache-Control: public, max-age=300
+            Cache-Control: no-cache, no-store, must-revalidate
         page_cache:
             enabled: true
             expires: 1800
@@ -148,7 +148,7 @@ routes:
         components:
             main: lobby
         headers:
-            Cache-Control: public, max-age=300
+            Cache-Control: no-cache, no-store, must-revalidate
         page_cache:
             enabled: true
             expires: 1800
