@@ -84,7 +84,7 @@ class FooterComponentController
                         $footerMenu[$key]['uri'] = $this->asset->generateAssetUri(
                             $this->currentLanguage . '/',
                             $link['uri']
-                    );
+                        );
                 }
 
                 if (($this->idDomain->isLangSelectorHidden()) &&
