@@ -2,6 +2,8 @@
 
 namespace App\MobileEntry\Component\Main\Lobby\CasinoLobby;
 
+use App\MobileEntry\Services\PublishingOptions\PublishingOptions;
+
 /**
  * Trait for games
  */
@@ -72,7 +74,7 @@ trait GameTrait
 
             foreach ($game['field_games_list_category'] as $category) {
                 $categoryList[$category['field_games_alias'][0]['value']] =
-                    $category['field_draggable_views']['category']['weight'];
+                    $category['field_draggable_views']['category']['weight'] ?? 0;
             }
 
             $processGame['categories'] = $categoryList;
@@ -109,9 +111,15 @@ trait GameTrait
     {
         $gamesList = [];
         foreach ($games as $game) {
-            $special = ($categoryId === $this::RECOMMENDED_GAMES);
-
-            $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($product, $game, $special);
+            $publishOn = $game['publish_on'][0]['value'] ?? '';
+            $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
+            $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
+            if (PublishingOptions::checkDuration($publishOn, $unpublishOn)
+                && $status) {
+                $special = ($categoryId === $this::RECOMMENDED_GAMES);
+                $gamesList['id:' . $game['field_game_code'][0]['value']] =
+                    $this->processGame($product, $game, $special);
+            }
         }
 
         return $gamesList;
@@ -130,7 +138,7 @@ trait GameTrait
                 continue;
             }
 
-            $isPublished = $this->checkIfPublished(
+            $isPublished = PublishingOptions::checkDuration(
                 $category['field_publish_date'],
                 $category['field_unpublish_date']
             );
@@ -140,50 +148,6 @@ trait GameTrait
             }
         }
         return $categoryList;
-    }
-
-
-    private function checkIfPublished($dateStart, $dateEnd)
-    {
-        if (!$dateStart && !$dateEnd) {
-            return true;
-        }
-
-        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
-        $currentDate = $currentDate->getTimestamp();
-        if ($dateStart && $dateEnd) {
-            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
-            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-
-            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
-            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
-                return true;
-            }
-        }
-
-        return $this->checkExpiration($dateStart, $dateEnd, $currentDate);
-    }
-
-    private function checkExpiration($dateStart, $dateEnd, $currentDate)
-    {
-        if ($dateStart && !$dateEnd) {
-            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
-            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($startDate->getTimestamp() <= $currentDate) {
-                return true;
-            }
-        }
-
-        if ($dateEnd && !$dateStart) {
-            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
-            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($endDate->getTimestamp() >=$currentDate) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
