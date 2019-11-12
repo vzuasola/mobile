@@ -17,24 +17,34 @@ class FooterComponent implements ComponentWidgetInterface
     private $views;
 
     /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $configs;
+
+    /**
      *
      */
     public static function create($container)
     {
         return new static(
             $container->get('menu_fetcher'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $views)
-    {
+    public function __construct(
+        $menus,
+        $views,
+        $configs
+    ) {
         $this->menus = $menus;
         $this->views = $views;
-    }
+        $this->configs = $configs;
+}
 
 
     /**
@@ -66,6 +76,12 @@ class FooterComponent implements ComponentWidgetInterface
             $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
+        }
+
+        try {
+            $data['entrypage_config'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
+        } catch (\Exception $e) {
+            $data['entrypage_config'] = [];
         }
 
         $data['copyright'] = 'Copyright';

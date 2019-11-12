@@ -2,7 +2,7 @@
     display: block;
     width: 100%;
     height: auto;
-    padding: 0.5rem 0;
+    padding: 1rem 0 0.5rem;
     list-style: none;
 
     &-accordion {
@@ -124,7 +124,7 @@
     &-title {
         font-weight: 600;
         text-align: center;
-        padding: 1rem 0 0.5rem;
+        padding-top: 0.7rem;
         margin: 0;
     }
 

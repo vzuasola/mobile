@@ -1,10 +1,12 @@
 {% if sponsors %}
 <ul class="sponsors clearfix">
+    {% if entrypage_config.parnerts_and_sponsor_title_text %}
+    <p class="sponsors-title">{{ entrypage_config.parnerts_and_sponsor_title_text }}</p>
+    {% endif %}
     {% for sponsor in sponsors %}
     {% if sponsor.field_mobile_sponsor_row_enable[0].value %}
     {% set rowClass = sponsor.field_mobile_row[0].value == 0 ? 'sponsors-lists col-12' :
     ((sponsor.field_mobile_row[0].value == 1) ? 'sponsors-lists col-6' : 'sponsors-lists col-4' )%}
-
     <li class="{{ rowClass }}">
         {% for icon in sponsor.field_sponsors_row %}
         {% if icon.field_mobile_sponsor_enable[0].value %}

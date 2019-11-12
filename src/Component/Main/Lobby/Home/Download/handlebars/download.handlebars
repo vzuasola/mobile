@@ -1,5 +1,7 @@
 {{#condition downloadData.downloads_menu.length ">" 0}}
-<p class="download-title">{{ DownloadApptext }}</p>
+{{#if DownloadApptext}}
+    <p class="download-title">{{ DownloadApptext }}</p>
+{{/if}}
 <ul class="app-download clearfix">
     {{#each downloadData.downloads_menu}}
         {{#condition @index "<" 4}}
