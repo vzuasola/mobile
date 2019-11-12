@@ -10,6 +10,11 @@
                 data-router-refresh="main"
                 target="{{ this.attributes.target }}"
                 >
+                    {{#if this.attributes.menuTag}}
+                        <p class="app-download-list-new-tag">
+                            {{{ this.attributes.menuTag }}}
+                        </p>
+                    {{/if}}
                     <svg viewBox="0 0 20 20">
                         <use xlink:href="#{{ this.attributes.svg }}" />
                     </svg>
@@ -33,6 +38,11 @@
                     target="{{ this.attributes.target }}"
                     data-router="true"
                     data-router-refresh="main">
+                        {{#if this.attributes.menuTag}}
+                            <p class="app-download-list-new-tag">
+                                {{{ this.attributes.menuTag }}}
+                            </p>
+                        {{/if}}
                         <svg viewBox="0 0 20 20">
                             <use xlink:href="#{{ this.attributes.svg }}" />
                         </svg>
