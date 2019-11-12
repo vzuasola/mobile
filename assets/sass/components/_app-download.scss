@@ -1,6 +1,5 @@
 .app-download {
     display: block;
-    margin: 0;
     width: 100%;
     height: auto;
     padding: 0.5rem 0;
@@ -19,6 +18,7 @@
         padding: 0;
         float: left;
         display: inline-block;
+        z-index: 11;
 
         a {
             color: $white;
@@ -70,7 +70,7 @@
     &-title {
         font-weight: 600;
         text-align: center;
-        padding: 0.5rem 0;
+        padding: 1rem 0 0.5rem;
         margin: 0;
     }
 
@@ -83,7 +83,7 @@
     .ckeditor-wrapper {
         dt {
             position: absolute;
-            bottom: -3.5rem;
+            bottom: -2rem;
             @include translateX(-50%);
             left: 50%;
             padding: 1rem 5rem 1rem 2.5rem;
