@@ -260,7 +260,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 Object.assign(promises, response);
                 if (typeof response.games["all-games"] === "object"
                     && Object.keys(response.games["all-games"]).length > 0) {
-                    gamesList["all-games"] = response.games["all-games"];
+                    gamesList["all-games"] = Object.assign(gamesList["all-games"], response.games["all-games"]);
                 }
             }
         }
