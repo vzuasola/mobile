@@ -6,7 +6,7 @@
         height: auto;
         padding: 0;
         list-style: none;
-        background: $dark-red;
+        background: $red;
 
         // List element
         &-item {
@@ -27,7 +27,7 @@
             &:nth-child(16) a,
             &:nth-child(19) a {
                 border-left: none;
-                border-right: 0.1rem solid $fire-red;
+                border-right: 0.1rem solid $red;
             }
 
             &:nth-child(2) a,
@@ -38,7 +38,7 @@
             &:nth-child(13) a,
             &:nth-child(14) a,
             &:nth-child(17) a {
-                border-right: 0.1rem solid $fire-red;
+                border-right: 0.1rem solid $red;
             }
 
             &:nth-child(3) a,
@@ -51,7 +51,7 @@
             }
 
             &:last-child a {
-                border-right: 0.1rem solid $fire-red;
+                border-right: 0.1rem solid $red;
             }
         }
 
@@ -79,10 +79,11 @@
             height: 100%;
             text-align: center;
             padding: 0.75rem 0;
-            border-bottom: 0.1rem solid $fire-red;
+            border-bottom: 0.1rem solid $red;
+            background: $dark-red;
         }
 
-        // Lable/text
+        // Label/text
         &-label {
             display: block;
             color: $white;
