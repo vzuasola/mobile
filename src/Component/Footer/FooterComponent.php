@@ -44,7 +44,7 @@ class FooterComponent implements ComponentWidgetInterface
         $this->menus = $menus;
         $this->views = $views;
         $this->configs = $configs;
-}
+    }
 
     /**
      * Defines the template path

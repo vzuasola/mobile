@@ -82,8 +82,8 @@ class FooterComponentController
             foreach ($footerMenu as $key => $link) {
                 if ($footerMenu[$key]['attributes']['class'] === 'footer-home'
                 ) {
-                    $footerMenu[$key]['uri'] = $this->asset->generateAssetUri
-                    ($this->currentLanguage . '/', $link['uri']);
+                    $footerMenu[$key]['uri'] = $this->asset->generateAssetUri(
+                    $this->currentLanguage . '/', $link['uri']);
                 }
 
                 if (($this->idDomain->isLangSelectorHidden()) &&
