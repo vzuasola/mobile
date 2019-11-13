@@ -80,7 +80,7 @@ class FooterComponentController
     {
         if ($footerMenu) {
             foreach ($footerMenu as $key => $link) {
-                if ($footerMenu[$key]['attributes']['class'] === 'footer-home') {
+                if ($footerMenu[$key]['uri'] === '') {
                         $footerMenu[$key]['uri'] = $this->asset->generateAssetUri(
                             $this->currentLanguage . '/',
                             $link['uri']
