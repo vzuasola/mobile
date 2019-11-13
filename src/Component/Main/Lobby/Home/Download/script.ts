@@ -71,7 +71,7 @@ export class DownloadComponent implements ComponentInterface {
             ? "col-3" : "col-3"),
             allApptext: data.entrypage_config.all_apps_text,
             viewLesstext: data.entrypage_config.view_less_text,
-            DownloadApptext: data.entrypage_config.download_app_text,
+            downloadApptext: data.entrypage_config.download_app_text,
         });
 
         download.innerHTML = template;
