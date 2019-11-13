@@ -107,9 +107,8 @@
     .mobile-menu-header {
         position: relative;
         margin: 0;
-        padding: $container-gutter-xs;
         background: $red;
-        height: 6rem;
+        height: 5rem;
 
         &-username {
             font-size: 1.6rem;
@@ -134,20 +133,18 @@
         }
 
         .logo {
-            display: inline-block;
             margin: 0;
+            width: 100%;
+            height: 100%;
+            padding-top: 1rem;
         }
-    }
-
-    .mobile-menu-header.header-logo {
-        text-align: center;
     }
 
     // close button
     .menu-content-button {
         width: 3.5rem;
         position: absolute;
-        height: 6rem;
+        height: 5rem;
         top: 0;
         right: 0;
         outline: none;
@@ -155,23 +152,15 @@
         cursor: pointer;
 
         &-text {
-                width: 1.9rem;
-                height: 1.9rem;
-                margin-top: 2.2rem;
+                width: 2rem;
+                margin: 1.5rem 0 0 0.8rem;
                 outline: none;
                 border: 0;
                 cursor: pointer;
-                background: #900000;
+                background: $red;
 
                 path {
-                    fill: #af0000;
-                }
-                rect {
-                    fill: #900000;
-                    width: 100%;
-                    height: 100%;
-                    rx: 10.81;
-                    ry: 10.81;
+                    fill: $white;
                 }
             }
     }
