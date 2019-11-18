@@ -27,20 +27,6 @@
     }
 }
 
-// Tablet
-@include media(">=tablet") {
-
-        a,
-        span {
-            width: 14.6rem;
-            margin-right: 0;
-
-            .sc &,
-            .ch & {
-                width: 16.6rem;
-            }
-        }
-}
 /*SODA CASINO*/
 .mobile-soda-casino {
     .mobile-menu-header {

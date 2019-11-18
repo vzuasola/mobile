@@ -34,10 +34,6 @@
                 max-width: 9.5rem;
             }
 
-            .pl & {
-                font-size: 1rem;
-            }
-
             .id & {
                 max-width: 7rem;
                 margin-top: 0.6rem;
@@ -66,7 +62,15 @@
                 max-width: 15.5rem;
             }
     }
+
+    &-pl {
+        .btn {
+            font-size: 1rem;
+
+        }
+    }
 }
+
 
 // SODA CASINO
 .header-mobile-soda-casino {
