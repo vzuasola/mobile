@@ -65,6 +65,9 @@ class ALSIntegrationModuleController
             $cookies = $cookies . $alsConfig['als_cookie_url_post'] ?? '';
         }
 
+        Cookies::remove('X_DEVICE_VIEW', [
+            'path' => '/'
+        ]);
         $this->setCookie($cookies, $isLogin);
 
         $data['redirect'] = $this->generateLobby($url, $enableDomain);
