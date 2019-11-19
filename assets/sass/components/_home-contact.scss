@@ -5,3 +5,11 @@
     height: 10rem;
     background: $dark-red;
 }
+
+// tablet-desktop
+@include media(">=tablet") {
+    .home-contact {
+        height: 13rem;
+    }
+}
+
