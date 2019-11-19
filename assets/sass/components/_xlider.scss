@@ -162,6 +162,20 @@
     }
 }
 
+// tablet-desktop
+@include media(">=tablet", "portrait") {
+    .xlide-item {
+        height: 24rem;
+    }
+}
+
+@include media(">=tablet", "landscape") {
+    .xlide-item {
+        height: 15rem;
+    }
+}
+
+
 /*SODA CASINO*/
 .mobile-soda-casino {
     .xlider {
