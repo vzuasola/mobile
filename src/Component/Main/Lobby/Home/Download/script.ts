@@ -38,7 +38,7 @@ export class DownloadComponent implements ComponentInterface {
     }
 
     private accordion(element) {
-        const accordion = new Accordion(element);
+        const accordion = new Accordion(element, { openByDefault: 0});
     }
 
     private getDownloads() {

@@ -14,7 +14,8 @@ export default function accordion(element, options) {
 
     // Default options
     var defaults = {
-        collapsible: false
+        collapsible: false,
+        openByDefault: null // item index to  be opened by default
     };
 
     // create accordion functionality if the required elements exist is available.
@@ -38,7 +39,7 @@ export default function accordion(element, options) {
                 dt = accordion.querySelectorAll('dt'),
                 dd = accordion.querySelectorAll('dd');
 
-            utility.forEach(dt, function (item) {
+            utility.forEach(dt, function (item, i) {
                 var wrap = document.createElement("div"),
                     nextSibling = utility.nextElementSibling(item),
                     divs = [item, nextSibling],
@@ -69,8 +70,8 @@ export default function accordion(element, options) {
             });
 
             // Set active accordion for <dt> with class "active" on doc ready
-            utility.forEach(dt, function (item) {
-                if (utility.hasClass(item, "active")) {
+            utility.forEach(dt, function (item, i) {
+                if (utility.hasClass(item, "active") || options.openByDefault === i) {
                     setActive(item);
                 }
             });
