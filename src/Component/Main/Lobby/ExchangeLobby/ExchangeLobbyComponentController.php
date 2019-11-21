@@ -41,7 +41,7 @@ class ExchangeLobbyComponentController
         $url
     ) {
         $this->playerSession = $playerSession;
-        $this->views = $views->withProduct(self::PRODUCT)->setLanguage('in');
+        $this->views = $views->withProduct(self::PRODUCT);
         $this->rest = $rest;
         $this->configs = $configs;
         $this->asset = $asset;
