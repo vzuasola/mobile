@@ -25,10 +25,10 @@ export class ContactUsComponent implements ComponentInterface {
         this.getContactUs();
     }
 
-    // private equalizeContactUsHeight() {
-    //     const equalDownload = new EqualHeight(".download-box");
-    //     equalDownload.init();
-    // }
+    private equalizeContactUsHeight() {
+        const equalDownload = new EqualHeight(".contact-box");
+        equalDownload.init();
+    }
 
     private getContactUs() {
         xhr({
@@ -37,7 +37,7 @@ export class ContactUsComponent implements ComponentInterface {
         }).then((response) => {
             this.contactUsData = response;
             this.generateContactUsMarkup(this.contactUsData);
-            // this.equalizeContactUsHeight();
+            this.equalizeContactUsHeight();
         });
     }
 
@@ -50,7 +50,11 @@ export class ContactUsComponent implements ComponentInterface {
         const template = contactUsTemplate({
             contactUsData: data,
             contactUstext: data.entrypage_config.contact_us_home_text,
-            // Add Here
+            menuClass: data.contact_menu.length === 4 ? "col-3"
+            : ((data.contact_menu.length === 3)
+            ? "home-contact-col-3 push" : data.contact_menu.length === 2
+            ? "home-contact-col-2" : data.contact_menu.length === 1
+            ? "home-contact-full-width" : "home-contact-more"),
         });
 
         contactUs.innerHTML = template;
