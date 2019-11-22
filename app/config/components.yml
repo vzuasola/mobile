@@ -62,6 +62,10 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\Home\Download\DownloadComponent
     parent: lobby_content
 
+  home_contactus:
+    class: App\MobileEntry\Component\Main\Lobby\Home\ContactUs\ContactUsComponent
+    parent: lobby_content
+
   games_lobby:
     class: App\MobileEntry\Component\Main\Lobby\GamesLobby\GamesLobbyComponent
     parent: lobby
