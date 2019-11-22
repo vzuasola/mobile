@@ -7,4 +7,18 @@ import {Redirectable} from "../scripts/redirectable";
 export class ALSIntegrationModule extends Redirectable implements ModuleInterface {
     protected code = "als";
     protected module = "als_integration";
+
+    constructor() {
+        super();
+        this.init();
+    }
+
+    init() {
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            if (data.response.matrix) {
+                window.location.href = "/sports-df";
+            }
+        });
+
+    }
 }
