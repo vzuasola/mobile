@@ -103,7 +103,8 @@ class ALSIntegrationModuleController
      * @param string $lang
      * @return string
      */
-    private function playerMatrixLobby($url, $lang) {
+    private function playerMatrixLobby($url, $lang)
+    {
         if ($this->playerSession->getDetails()['isPlayerCreatedByAgent'] &&
             in_array($lang, ['es', 'pt'])
         ) {
