@@ -144,16 +144,19 @@ export abstract class Redirectable implements ModuleInterface {
 
     protected doRequest(src) {
         this.loader.show();
-
+        const lang = ComponentManager.getAttribute("language");
         xhr({
             url: Router.generateModuleRoute(this.module, "integrate"),
             type: "json",
             method: "post",
+            data: {
+                language: lang,
+            },
         }).then((response) => {
             if (typeof response.redirect !== "undefined") {
                 if (!this.isSupportedLanguage(src)) {
                     response.redirect = response.redirect.replace(
-                        "\/" + ComponentManager.getAttribute("language") + "\/",
+                        "\/" + lang + "\/",
                         "/" + this.getRedirectLanguage(src) + "/");
                 }
 

@@ -15,6 +15,7 @@ class PlayerMatrix implements ResponseMiddlewareInterface
     public function __construct($container)
     {
         $this->playerSession = $container->get('player_session');
+        $this->lang = $container->get('lang');
     }
 
     /**
@@ -30,7 +31,7 @@ class PlayerMatrix implements ResponseMiddlewareInterface
                 !isset($params['component-data-widget']) &&
                 strpos($path, '/api') !== 0
             ) {
-                $response = $response->withRedirect('/sports-df');
+                $response = $response->withRedirect('/'. $this->lang .'/sports-df');
             }
         } catch (\Exception $e) {
             // Do nothing
