@@ -3,8 +3,7 @@
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 0;
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
+    padding: 0;
     background: $light-gray;
 
     &-lists {
@@ -16,7 +15,7 @@
 
         ul {
             display: inline-block;
-            padding: 0;
+            padding: 0 0.5rem;
 
             li {
                 display: inline-block;
