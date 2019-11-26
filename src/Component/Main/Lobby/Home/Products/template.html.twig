@@ -1,3 +1,23 @@
+<div class="infobar">
+    <div class="infobar-news">
+        <svg viewBox="0 0 20 20">
+            <use xlink:href="#infobar-news" />
+        </svg>
+        <p>News</p>
+    </div>
+    <div class="infobar-marquee">
+        <div class="infobar-marquee-content">
+            <ul class="list-inline">
+                <li>1. You spin me right round, baby. Like a record, baby.</li>
+                <li>2. You spin me right round, baby. Like a record, baby.</li>
+                <li>3. You spin me right round, baby. Like a record, baby.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<span class="hidden">
+    {% include '@app/web/images/svg/infobar-icons.svg' ignore missing %}
+</span>
 {% if product_tiles %}
 <div class="home-display">
     <ul class="icon-thumbnail clearfix">
