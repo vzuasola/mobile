@@ -19,13 +19,16 @@ export abstract class Redirectable implements ModuleInterface {
 
     private element;
     private isLogin: boolean;
+    private matrix: boolean;
 
     constructor() {
         this.loader = new Loader(document.body, true);
     }
 
-    onLoad(attachments: {authenticated: boolean}) {
+    onLoad(attachments: {authenticated: boolean, matrix: boolean}) {
+
         this.isLogin = attachments.authenticated;
+        this.matrix = attachments.matrix;
 
         // whenever an element tagged as an integration has been clicked, it will do
         // the integration specific behavior for that product
@@ -143,6 +146,9 @@ export abstract class Redirectable implements ModuleInterface {
     }
 
     protected doRequest(src) {
+        if (this.matrix && Router.route() !== "/sports-df") {
+            return;
+        }
         this.loader.show();
         const lang = ComponentManager.getAttribute("language");
         xhr({
@@ -216,6 +222,9 @@ export abstract class Redirectable implements ModuleInterface {
     }
 
     protected doRedirectAfterLogin(src) {
+        if (this.matrix) {
+            return;
+        }
         let redirect = utility.getParameterByName("re");
         if (!redirect) {
             redirect = "/";
@@ -235,6 +244,5 @@ export abstract class Redirectable implements ModuleInterface {
                 }
             });
         }
-
     }
 }

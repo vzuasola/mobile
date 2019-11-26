@@ -1,13 +1,13 @@
 <?php
 
-namespace App\MobileEntry\Module\ProductIntegration\LiveDealer;
+namespace App\MobileEntry\Module\ProductIntegration;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 
 /**
  *
  */
-class LiveDealerIntegrationModuleScripts implements ComponentAttachmentInterface
+class ProductIntegrationModuleScripts implements ComponentAttachmentInterface
 {
     /**
      * @var App\Player\PlayerSession
