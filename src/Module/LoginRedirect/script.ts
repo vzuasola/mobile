@@ -9,13 +9,15 @@ export class LoginRedirectModule implements ModuleInterface {
     private loader: Loader;
     private element;
     private isLogin: boolean;
+    private matrix: boolean;
 
     constructor() {
         this.loader = new Loader(document.body, true);
     }
 
-    onLoad(attachments: {authenticated: boolean}) {
+    onLoad(attachments: {authenticated: boolean, matrix: boolean}) {
         this.isLogin = attachments.authenticated;
+        this.matrix = attachments.matrix;
 
         ComponentManager.subscribe("click", (event, src) => {
             if (!this.isLogin) {
@@ -53,23 +55,25 @@ export class LoginRedirectModule implements ModuleInterface {
     }
 
     private doRequest(url) {
-        xhr({
-            url: Router.generateModuleRoute("login_redirect", "process"),
-            type: "json",
-            method: "post",
-            data: {
-                url,
-            },
-        }).then((response) => {
-            if (typeof response.url !== "undefined") {
-                if (utility.isExternal(response.url)) {
-                    window.location.href = response.url;
-                } else {
-                    Router.navigate(response.url, ["header", "main"]);
+        if (!this.matrix) {
+            xhr({
+                url: Router.generateModuleRoute("login_redirect", "process"),
+                type: "json",
+                method: "post",
+                data: {
+                    url,
+                },
+            }).then((response) => {
+                if (typeof response.url !== "undefined") {
+                    if (utility.isExternal(response.url)) {
+                        window.location.href = response.url;
+                    } else {
+                        Router.navigate(response.url, ["header", "main"]);
+                    }
                 }
-            }
-        }).fail((error, message) => {
-            // do something
-        });
+            }).fail((error, message) => {
+                // do something
+            });
+        }
     }
 }
