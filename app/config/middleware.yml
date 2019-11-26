@@ -18,7 +18,7 @@ middlewares:
     headers: App\Middleware\Response\Headers
     lazy_token: App\Middleware\Response\LazyToken
     clean_parameters: App\MobileEntry\Middleware\CleanParameters
-    player_matrix: App\MobileEntry\Middleware\PlayerMatrix
+    # player_matrix: App\MobileEntry\Middleware\PlayerMatrix
     # profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
 
   cache:

@@ -105,7 +105,8 @@ class ALSIntegrationModuleController
      */
     private function playerMatrixLobby($url, $lang)
     {
-        if ($this->playerSession->getDetails()['isPlayerCreatedByAgent'] &&
+        $matrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
+        if ($matrix &&
             in_array($lang, ['es', 'pt'])
         ) {
             $url = str_replace('/m/' . $lang, '/m/en', $url);
