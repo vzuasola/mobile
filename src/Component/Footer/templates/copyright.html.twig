@@ -17,25 +17,6 @@
 	pt: 'Copyright',
 } %}
 
-{% set dafabet = {
-	en: 'Dafabet',
-	eu: 'Dafabet',
-	sc: 'Dafabet',
-	ch: 'Dafabet',
-	th: 'Dafabet',
-	vn: 'Dafabet',
-	id: 'Dafabet',
-	jp: 'Dafabet',
-	kr: 'Dafabet',
-	in: 'Dafabet',
-	hi: 'दाफाबेट',
-	te: 'డాఫాబెట్',
-	gr: 'Dafabet',
-	pl: 'Dafabet',
-	es: 'Dafabet',
-	pt: 'Dafabet',
-} %}
-
 {% set all_rights_reserved = {
 	en: 'All Rights Reserved',
 	eu: 'All Rights Reserved',
@@ -56,6 +37,6 @@
 } %}
 
 <div class="copyright clear">
-    <p class="container text-center">{{ copy[app.lang] }} &copy; {{ now | date('Y') }} | {{ dafabet[app.lang]}} | {{ all_rights_reserved[app.lang] }}</p>
+    <p class="container text-center">{{ copy[app.lang] }} &copy; {{ now | date('Y') }} | Dafabet | {{ all_rights_reserved[app.lang] }}</p>
 </div>
 

@@ -70,7 +70,11 @@ class ALSIntegrationModuleController
         ]);
         $this->setCookie($cookies, $isLogin);
 
-        $data['redirect'] = $this->generateLobby($url, $enableDomain);
+        $url = $this->generateLobby($url, $enableDomain);
+
+        $postData = $request->getParsedBody();
+
+        $data['redirect']  = $this->playerMatrixLobby($url, $postData['language']);
 
         return $this->rest->output($response, $data);
     }
@@ -87,6 +91,25 @@ class ALSIntegrationModuleController
             if ($domain !== $hostname) {
                 $url = str_replace($domain, $hostname, $url);
             }
+        }
+
+        return $url;
+    }
+
+    /**
+     * Update the language to EN if language is ES/PT and is created by agent
+     *
+     * @param string $url
+     * @param string $lang
+     * @return string
+     */
+    private function playerMatrixLobby($url, $lang)
+    {
+        $matrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
+        if ($matrix &&
+            in_array($lang, ['es', 'pt'])
+        ) {
+            $url = str_replace('/m/' . $lang, '/m/en', $url);
         }
 
         return $url;

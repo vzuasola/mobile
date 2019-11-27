@@ -39,6 +39,7 @@ class OWSportsIntegrationModuleScripts implements ComponentAttachmentInterface
     {
         return [
             'authenticated' => $this->playerSession->isLogin(),
+            'matrix' => $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false,
         ];
     }
 }
