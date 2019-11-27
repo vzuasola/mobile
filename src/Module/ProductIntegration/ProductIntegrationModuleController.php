@@ -9,6 +9,8 @@ class ProductIntegrationModuleController
     private $parser;
 
     private $rest;
+
+    private $playerSession;
     /**
      *
      */
@@ -16,7 +18,8 @@ class ProductIntegrationModuleController
     {
         return new static(
             $container->get('token_parser'),
-            $container->get('rest')
+            $container->get('rest'),
+            $container->get('player_session')
         );
     }
 
@@ -25,15 +28,21 @@ class ProductIntegrationModuleController
      */
     public function __construct(
         $parser,
-        $rest
+        $rest,
+        $playerSession
     ) {
         $this->parser = $parser;
         $this->rest = $rest;
+        $this->playerSession = $playerSession;
     }
 
     public function process($request, $response)
     {
         $data = [];
+
+        if ($this->playerSession->getDetails()['isPlayerCreatedByAgent']) {
+            return $this->rest->output($response, $data);
+        }
 
         try {
             $requestData = $request->getParsedBody();
