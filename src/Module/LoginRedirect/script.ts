@@ -59,25 +59,27 @@ export class LoginRedirectModule implements ModuleInterface {
     }
 
     private doRequest(url) {
-        if (!this.matrix) {
-            xhr({
-                url: Router.generateModuleRoute("login_redirect", "process"),
-                type: "json",
-                method: "post",
-                data: {
-                    url,
-                },
-            }).then((response) => {
-                if (typeof response.url !== "undefined") {
-                    if (utility.isExternal(response.url)) {
-                        window.location.href = response.url;
-                    } else {
-                        Router.navigate(response.url, ["header", "main"]);
-                    }
-                }
-            }).fail((error, message) => {
-                // do something
-            });
+
+        if (this.matrix) {
+            return;
         }
+        xhr({
+            url: Router.generateModuleRoute("login_redirect", "process"),
+            type: "json",
+            method: "post",
+            data: {
+                url,
+            },
+        }).then((response) => {
+            if (typeof response.url !== "undefined") {
+                if (utility.isExternal(response.url)) {
+                    window.location.href = response.url;
+                } else {
+                    Router.navigate(response.url, ["header", "main"]);
+                }
+            }
+        }).fail((error, message) => {
+            // do something
+        });
     }
 }
