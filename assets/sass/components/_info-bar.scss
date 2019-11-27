@@ -6,8 +6,8 @@
 
     &-news {
         float: left;
-        height: 100%;
-        width: 20%;
+        height: 98%;
+        width: 9rem;
         position: absolute;
         z-index: 11;
         background: $dark-gray;
@@ -32,10 +32,11 @@
         position: relative;
 
         &-content {
-            width: 200%;
+            width: 135%;
             display: flex;
             animation: marquee 20s linear infinite forwards;
             z-index: 10;
+            cursor: pointer;
     
             ul {
                 @extend .clearfix;
@@ -43,15 +44,28 @@
                 margin: 0 auto;
                 padding: 0;
                 display: flex;
+                // width: auto;
+
+                // white-space: nowrap;
+                // overflow-x: auto;
+                // -webkit-overflow-scrolling: touch;
+                // -ms-overflow-style: -ms-autohiding-scrollbar;
+                // -ms-overflow-style: none;
+                // scrollbar-width: none;
     
                 li {
                     float: left;
                     margin: 0 1rem;
                 }
             }
+
+            ul::-webkit-scrollbar {
+                display: none;
+            }
         }
 
-        &-content:hover {
+        &-content:hover,
+        &-content:active {
             animation-play-state: paused
         }
     }
@@ -66,12 +80,20 @@
     }
 }
 
+@include media(">=tablet") {
+    .infobar {
+        &-news {
+            width: 12rem;
+        }
+    }
+}
+
 @keyframes marquee {
     0% {
         transform: translateX(25%);
     }
 
     100% {
-        transform: translateX(-100%);
+        transform: translateX(-125%);
     }
 }
