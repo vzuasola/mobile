@@ -3,6 +3,9 @@
     line-height: 3.5rem;
     height: 3.5rem;
     position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 
     &-news {
         float: left;
@@ -24,50 +27,64 @@
     }
 
     &-marquee {
-        margin: 0 auto;
+        float: left;
         width: 100%;
+        animation: marquee 5s linear infinite;
+        cursor: pointer;
+        z-index: 10;
+        padding-left: 9rem;
+
         white-space: nowrap;
-        overflow: hidden;
-        box-sizing: border-box;
-        position: relative;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
 
         &-content {
             width: 135%;
-            display: flex;
-            animation: marquee 20s linear infinite forwards;
-            z-index: 10;
-            cursor: pointer;
-    
-            ul {
-                @extend .clearfix;
-                list-style-type: none;
-                margin: 0 auto;
-                padding: 0;
-                display: flex;
-                // width: auto;
+            list-style: none;
+            margin: 0;
+            padding: 0;
 
-                // white-space: nowrap;
-                // overflow-x: auto;
-                // -webkit-overflow-scrolling: touch;
-                // -ms-overflow-style: -ms-autohiding-scrollbar;
-                // -ms-overflow-style: none;
-                // scrollbar-width: none;
-    
-                li {
-                    float: left;
-                    margin: 0 1rem;
+            white-space: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+
+            li {
+                float: left;
+
+                ul {
+                    @extend .clearfix;
+                    list-style-type: none;
+                    padding: 0;
+                    margin: 0;
+                    display: flex;
+                    height: 3.5rem;
+
+                    li {
+                        float: left;
+                        margin: 0 1rem;
+
+                        p {
+                            margin: 0;
+                            padding: 0;
+                        }
+                    }
                 }
             }
-
-            ul::-webkit-scrollbar {
-                display: none;
-            }
         }
+    }
 
-        &-content:hover,
-        &-content:active {
-            animation-play-state: paused
-        }
+    &-marquee::-webkit-scrollbar {
+        display: none;
+    }
+
+    &-marquee:hover {
+        animation-play-state: paused
     }
 
     // Icons
@@ -84,6 +101,10 @@
     .infobar {
         &-news {
             width: 12rem;
+        }
+
+        &-marquee {
+            padding-left: 12rem;
         }
     }
 }

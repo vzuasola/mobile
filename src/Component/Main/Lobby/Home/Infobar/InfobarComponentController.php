@@ -91,10 +91,9 @@ class InfobarComponentController
             $infobarList = [];
             $isLogin = $this->playerSession->isLogin();
             foreach ($data as $infobarItem) {
-                $infobarData = [];
                 $infobarData['field_body'] = $infobarItem['field_body'][0]['value'] ?? '';
+                $infobarList[] = $infobarData;
             }
-            $infobarList[] = $infobarData;
         } catch (\Exception $e) {
             $infobarList = [];
         }

@@ -1,15 +1,21 @@
-<div class="infobar-news">
-    <svg viewBox="0 0 20 20">
-        <use xlink:href="#infobar-news" />
-    </svg>
-    <p>News</p>
-</div>
-<div class="infobar-marquee">
-    <div class="infobar-marquee-content">
-        {{#each InfobarData.infobar}}
-        <ul class="list-inline">
-            <li>{{{ this.field_body }}}</li>
+{{#if InfobarData.infobar}}
+<ul class="infobar">
+    <li class="infobar-news">
+        <svg viewBox="0 0 20 20">
+            <use xlink:href="#infobar-news" />
+        </svg>
+        <p>News</p>
+    </li>
+    <li class="infobar-marquee">
+        <ul class="infobar-marquee-content">
+            {{#each InfobarData.infobar}}
+            <li class="list-inline">
+                <ul>
+                    <li>{{{ this.field_body }}}</li>
+                </ul>
+            </li>
+            {{/each}}
         </ul>
-        {{/each}}
-    </div>
-</div>
+    </li>
+</ul>
+{{/if}}
