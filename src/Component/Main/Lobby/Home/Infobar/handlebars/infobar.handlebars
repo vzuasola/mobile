@@ -1,0 +1,15 @@
+<div class="infobar-news">
+    <svg viewBox="0 0 20 20">
+        <use xlink:href="#infobar-news" />
+    </svg>
+    <p>News</p>
+</div>
+<div class="infobar-marquee">
+    <div class="infobar-marquee-content">
+        {{#each InfobarData.infobar}}
+        <ul class="list-inline">
+            <li>{{{ this.field_body }}}</li>
+        </ul>
+        {{/each}}
+    </div>
+</div>
