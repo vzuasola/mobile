@@ -40,7 +40,8 @@ class ProductIntegrationModuleController
     {
         $data = [];
 
-        if ($this->playerSession->getDetails()['isPlayerCreatedByAgent']) {
+        $matrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
+        if ($matrix) {
             return $this->rest->output($response, $data);
         }
 
