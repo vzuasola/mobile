@@ -143,6 +143,10 @@ export abstract class Redirectable implements ModuleInterface {
                 }
             }
         });
+
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            this.matrix = data.response.matrix;
+        });
     }
 
     protected doRequest(src) {

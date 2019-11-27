@@ -46,6 +46,10 @@ export class LoginRedirectModule implements ModuleInterface {
         ComponentManager.subscribe("session.logout", (event) => {
             this.isLogin = false;
         });
+
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            this.matrix = data.response.matrix;
+        });
     }
 
     private doRedirectAfterLogin(src) {
