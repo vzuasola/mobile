@@ -81,8 +81,6 @@ class ArcadeLobbyComponent implements ComponentWidgetInterface
             $dataFilters = [];
         }
 
-
-
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'search_tab' => $arCadeconfigs['search_tab_title'] ?? 'Search',
@@ -93,6 +91,7 @@ class ArcadeLobbyComponent implements ComponentWidgetInterface
             'filter_title_lightbox' => $searchConfig['filter_title_lightbox'] ?? "",
             'games_filter_submit' => $searchConfig['games_filter_submit'] ?? "Submit",
             'games_filter_cancel' => $searchConfig['games_filter_cancel'] ?? "Cancel",
+            'games_filter_hide' => $searchConfig['games_filter_hide'] ?? false,
             'filters' => $dataFilters ?? [],
             'parent_filters' => $parentFilters ?? [],
 

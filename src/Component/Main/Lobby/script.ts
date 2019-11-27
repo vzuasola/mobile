@@ -79,7 +79,7 @@ export class LobbyComponent implements ComponentInterface {
         const product = ComponentManager.getAttribute("product");
         if (this.productDirectIntegration && this.productDirectIntegration.hasOwnProperty(product)) {
             const productCode = this.productDirectIntegration[product];
-            if (productCode && this.productAlias[productCode].includes(Router.route().substring(1))) {
+            if (productCode) {
                 ComponentManager.broadcast("integrate.product", {srcElement: element, productCode});
             }
         }
