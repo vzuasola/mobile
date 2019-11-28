@@ -1,0 +1,120 @@
+.infobar {
+    background: $dark-gray;
+    line-height: 3.5rem;
+    height: 3.5rem;
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &-news {
+        float: left;
+        height: 98%;
+        width: 9rem;
+        position: absolute;
+        z-index: 11;
+        background: $dark-gray;
+        padding: 0 0 0 2%;
+
+        p {
+            display: inline-block;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: $yellow;
+            text-transform: uppercase;
+            margin: 0;
+        }
+    }
+
+    &-marquee {
+        float: left;
+        width: 100%;
+        animation: marquee 10s linear infinite;
+        cursor: pointer;
+        z-index: 10;
+        padding-left: 9rem;
+
+        white-space: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &-content {
+            width: 135%;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            white-space: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+
+            li {
+                float: left;
+
+                ul {
+                    @extend .clearfix;
+                    list-style-type: none;
+                    padding: 0;
+                    margin: 0;
+                    display: flex;
+                    height: 3.5rem;
+
+                    li {
+                        float: left;
+                        margin: 0 1rem;
+
+                        p {
+                            margin: 0;
+                            padding: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &-marquee::-webkit-scrollbar {
+        display: none;
+    }
+
+    &-marquee:hover {
+        animation-play-state: paused
+    }
+
+    // Icons
+    svg {
+        display: inline-block;
+        vertical-align: text-bottom;
+        width: 2rem;
+        fill: $yellow;
+        @include rotate(345);
+    }
+}
+
+@include media(">=tablet") {
+    .infobar {
+        &-news {
+            width: 12rem;
+        }
+
+        &-marquee {
+            padding-left: 12rem;
+        }
+    }
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(25%);
+    }
+
+    100% {
+        transform: translateX(-125%);
+    }
+}

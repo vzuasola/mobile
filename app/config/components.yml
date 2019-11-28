@@ -54,6 +54,10 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\Home\HomeComponent
     parent: lobby
 
+  home_infobar:
+    class: App\MobileEntry\Component\Main\Lobby\Home\Infobar\InfobarComponent
+    parent: lobby_content
+
   home_products:
     class: App\MobileEntry\Component\Main\Lobby\Home\Products\ProductsComponent
     parent: lobby_content
