@@ -100,5 +100,4 @@ class InfobarComponentController
 
         return $infobarList;
     }
-
 }
