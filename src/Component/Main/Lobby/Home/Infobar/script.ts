@@ -46,5 +46,4 @@ export class InfobarComponent implements ComponentInterface {
 
         Infobar.innerHTML = template;
     }
-
 }
