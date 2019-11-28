@@ -27,46 +27,37 @@
     }
 
     &-marquee {
-        float: left;
-        width: 100%;
-        animation: marquee 10s linear infinite;
+        height: 3.5rem;
         cursor: pointer;
         z-index: 10;
         padding-left: 9rem;
-
+        
         white-space: nowrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         -ms-overflow-style: -ms-autohiding-scrollbar;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-
+        
         &-content {
-            width: 135%;
-            list-style: none;
+            float: left;
+            list-style-type: none;
             margin: 0;
             padding: 0;
-
-            white-space: nowrap;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            -ms-overflow-style: -ms-autohiding-scrollbar;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            display: inline-block;
+            height: 3.5rem;
+            animation: marquee 10s linear infinite;
 
             li {
-                float: left;
+                display: inline-block;
 
                 ul {
-                    @extend .clearfix;
+                    float: left;
                     list-style-type: none;
-                    padding: 0;
                     margin: 0;
-                    display: flex;
-                    height: 3.5rem;
+                    padding: 0;
+                    display: inline-block;
 
                     li {
-                        float: left;
+                        display: inline-block;
                         margin: 0 1rem;
 
                         p {
@@ -77,14 +68,13 @@
                 }
             }
         }
-    }
 
+        &-content:hover {
+            animation-play-state: paused
+        }
+    }
     &-marquee::-webkit-scrollbar {
         display: none;
-    }
-
-    &-marquee:hover {
-        animation-play-state: paused
     }
 
     // Icons
