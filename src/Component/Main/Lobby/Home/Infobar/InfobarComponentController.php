@@ -23,10 +23,6 @@ class InfobarComponentController
 
     private $rest;
 
-    private $asset;
-
-    private $url;
-
     /**
      *
      */
@@ -36,9 +32,7 @@ class InfobarComponentController
             $container->get('config_fetcher'),
             $container->get('views_fetcher'),
             $container->get('player_session'),
-            $container->get('rest'),
-            $container->get('asset'),
-            $container->get('uri')
+            $container->get('rest')
         );
     }
 
@@ -49,16 +43,12 @@ class InfobarComponentController
         $configs,
         $views,
         $playerSession,
-        $rest,
-        $asset,
-        $url
+        $rest
     ) {
         $this->configs = $configs;
         $this->views = $views;
         $this->playerSession = $playerSession;
         $this->rest = $rest;
-        $this->asset = $asset;
-        $this->url = $url;
     }
 
     /**
@@ -91,7 +81,17 @@ class InfobarComponentController
             $infobarList = [];
             $isLogin = $this->playerSession->isLogin();
             foreach ($data as $infobarItem) {
-                $infobarData['field_body'] = $infobarItem['field_body'][0]['value'] ?? '';
+                $infobarData = [];
+
+                $enableInfobar = $infobarItem['field_infobar_enable'][0]['value'] ?? 0;
+
+                // selectively choose fields based on login state
+                if ($isLogin && $enableInfobar) {
+                    $infobarData['field_body'] = $infobarItem['field_post_body'][0]['value'];
+                } elseif (!$isLogin && $enableInfobar) {
+                    $infobarData['field_body'] = $infobarItem['field_body'][0]['value'];
+                }
+
                 $infobarList[] = $infobarData;
             }
         } catch (\Exception $e) {
