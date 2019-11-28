@@ -39,9 +39,28 @@ export class InfobarComponent implements ComponentInterface {
      *
      */
     private generateInfobarMarkup(data) {
+        const translation = {
+            en: "News",
+            eu: "News",
+            sc: "公告",
+            ch: "公告",
+            th: "ข่าว",
+            vn: "",
+            id: "info",
+            jp: "News",
+            kr: "공지",
+            in: "News",
+            gr: "News",
+            pl: "News",
+            es: "News",
+            pt: "News",
+        };
+
+        const language = ComponentManager.getAttribute("language");
         const Infobar: HTMLElement = this.element.querySelector("#home-infobar");
         const template = infobarTemplate({
             InfobarData: data,
+            newsInfobarText: translation[language],
         });
 
         Infobar.innerHTML = template;

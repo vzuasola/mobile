@@ -40,6 +40,17 @@
     }
 }
 
+// tablet-desktop
+@include media(">=tablet") {
+    .sponsors {
+        &-lists.col-12 {
+            ul {
+                padding: 0 5%;
+            }
+        }
+    }
+}
+
 .mobile-soda-casino {
     .sponsors {
         &-lists {
