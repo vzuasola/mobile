@@ -9,9 +9,7 @@
 
     &-news {
         float: left;
-        height: 98%;
-        width: 9rem;
-        position: absolute;
+        width: 20%;
         z-index: 11;
         background: $dark-gray;
         padding: 0 0 0 2%;
@@ -30,8 +28,7 @@
         height: 3.5rem;
         cursor: pointer;
         z-index: 10;
-        padding-left: 9rem;
-        
+        width: 80%;
         white-space: nowrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -44,27 +41,23 @@
             padding: 0;
             display: inline-block;
             height: 3.5rem;
-            animation: marquee 10s linear infinite;
+            animation: marquee 10s linear infinite forwards;
 
             li {
                 display: inline-block;
 
-                ul {
-                    float: left;
-                    list-style-type: none;
+                p {
                     margin: 0;
                     padding: 0;
                     display: inline-block;
+                }
 
-                    li {
-                        display: inline-block;
+                .pipe {
                         margin: 0 1rem;
+                }
 
-                        p {
-                            margin: 0;
-                            padding: 0;
-                        }
-                    }
+                .pipe:last-child {
+                    display: none;
                 }
             }
         }

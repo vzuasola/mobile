@@ -8,13 +8,11 @@
     </li>
     <li class="infobar-marquee">
         <ul class="infobar-marquee-content">
-            {{#each InfobarData.infobar}}
             <li class="list-inline">
-                <ul>
-                    <li>{{{ this.field_body }}}</li>
-                </ul>
-            </li>
+            {{#each InfobarData.infobar}}
+                {{{ this.field_body }}} {{#condition this.field_body.length ">" 1 }}<span class="pipe"> | </span>{{/condition}}
             {{/each}}
+            </li>
         </ul>
     </li>
 </ul>
