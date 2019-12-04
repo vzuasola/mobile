@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\Main\ContactUs;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
+use App\MobileEntry\Form\ContactUsForm;
 
 class ContactUsComponent implements ComponentWidgetInterface
 {
@@ -14,7 +15,7 @@ class ContactUsComponent implements ComponentWidgetInterface
     /**
      * user Fetcher Object
      */
-    private $userFetcher;
+    private $formManager;
 
     /**
      *
@@ -34,7 +35,7 @@ class ContactUsComponent implements ComponentWidgetInterface
     public function __construct($formManager, $configFetcher, $userFetcher)
     {
         $this->formManager = $formManager;
-        $this->configFetcher = $configFetcher->withProduct('account');
+        $this->configFetcher = $configFetcher;
         $this->userFetcher = $userFetcher;
     }
 
@@ -51,6 +52,15 @@ class ContactUsComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        return [];
+        $contactUsForm = $this->formManager->getForm(ContactUsForm::class);
+        // $config = $this->configFetcher->getConfigById('my_account_change_password');
+        // $successMessage = $config['change_password_mobile_success_message']['value'] ?? '';
+        // $fialedMessage = $config['change_password_mobile_failed_message']['value'] ?? '';
+
+        return [
+            'contactUsForm' => $contactUsForm->createView(),
+            // 'successMessage' => $successMessage,
+            // 'fialedMessage' => $fialedMessage
+        ];
     }
 }
