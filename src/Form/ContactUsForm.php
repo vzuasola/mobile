@@ -194,7 +194,7 @@ class ContactUsForm extends FormBase implements FormInterface
     private function alterFormAttributes($definition)
     {
         foreach ($definition as $key => $field) {
-            if (
+            if(
                 isset($definition[$key]['options']['placeholder']) && (strpos($field['type'], 'TextType') !== false ||
                     strpos($field['type'], 'TextAreaType') !== false)
             ) {
@@ -202,7 +202,7 @@ class ContactUsForm extends FormBase implements FormInterface
                 unset($definition[$key]['options']['placeholder']);
             }
 
-            if (isset($definition[$key]['options']['annotation'])) {
+            if(isset($definition[$key]['options']['annotation'])) {
                 $definition[$key]['options']['attr']['annotation'] = $definition[$key]['options']['annotation'];
                 unset($definition[$key]['options']['annotation']);
             }
