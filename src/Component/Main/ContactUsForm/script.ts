@@ -11,7 +11,7 @@ import {annotation} from "@app/assets/script/components/form-annotation";
 /**
  *
  */
-export class ContactUsComponent implements ComponentInterface {
+export class ContactUsFormComponent implements ComponentInterface {
     private element: HTMLElement;
 
     onLoad(element: HTMLElement, attachments: {}) {
