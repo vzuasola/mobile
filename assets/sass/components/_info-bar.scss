@@ -44,27 +44,15 @@
             padding: 0;
             display: inline-block;
             height: 3.5rem;
-            animation: marquee 10s linear infinite;
+            animation: marquee 20s linear infinite;
 
             li {
                 display: inline-block;
 
-                ul {
-                    float: left;
-                    list-style-type: none;
+                p {
                     margin: 0;
                     padding: 0;
                     display: inline-block;
-
-                    li {
-                        display: inline-block;
-                        margin: 0 1rem;
-
-                        p {
-                            margin: 0;
-                            padding: 0;
-                        }
-                    }
                 }
             }
         }
