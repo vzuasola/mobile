@@ -99,9 +99,8 @@ class InfobarComponentController
                     if (!$isLogin && ($showBoth || !$loginState)) {
                         $infobarData['field_body'] = $infobarItem['field_body'][0]['value'];
                     }
+                    $infobarList[] = $infobarData;
                 }
-
-                $infobarList[] = $infobarData;
             }
         } catch (\Exception $e) {
             $infobarList = [];
