@@ -136,6 +136,11 @@ components:
     headers:
       Cache-Control: no-cache, no-store, must-revalidate
 
+  contact_us:
+    class: App\MobileEntry\Component\Main\ContactUs\ContactUsComponent
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
   profile:
     class: App\MobileEntry\Component\Main\MyAccount\Profile\ProfileComponent
     parent: my_account
