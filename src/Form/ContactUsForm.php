@@ -194,15 +194,15 @@ class ContactUsForm extends FormBase implements FormInterface
     private function alterFormAttributes($definition)
     {
         foreach ($definition as $key => $field) {
-            if(
-                isset($definition[$key]['options']['placeholder']) && (strpos($field['type'], 'TextType') !== false ||
-                    strpos($field['type'], 'TextAreaType') !== false)
+            if (isset($definition[$key]['options']['placeholder']) &&
+                (strpos($field['type'], 'TextType') !== false ||
+                strpos($field['type'], 'TextAreaType') !== false)
             ) {
                 $definition[$key]['options']['attr']['placeholder'] = $definition[$key]['options']['placeholder'];
                 unset($definition[$key]['options']['placeholder']);
             }
 
-            if(isset($definition[$key]['options']['annotation'])) {
+            if (isset($definition[$key]['options']['annotation'])) {
                 $definition[$key]['options']['attr']['annotation'] = $definition[$key]['options']['annotation'];
                 unset($definition[$key]['options']['annotation']);
             }
