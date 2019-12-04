@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\ContactUs;
+namespace App\MobileEntry\Component\Main\ContactUsForm;
 
 use App\Player\Player;
 use App\Fetcher\Integration\Exception\ServerDownException;
@@ -8,7 +8,7 @@ use App\Fetcher\Integration\Exception\ServerDownException;
 /**
  *
  */
-class ContactUsComponentController
+class ContactUsFormComponentController
 {
     /**
      * Rest Object.

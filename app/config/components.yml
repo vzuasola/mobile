@@ -137,7 +137,7 @@ components:
       Cache-Control: no-cache, no-store, must-revalidate
 
   contact_us:
-    class: App\MobileEntry\Component\Main\ContactUs\ContactUsComponent
+    class: App\MobileEntry\Component\Main\ContactUsForm\ContactUsFormComponent
     headers:
       Cache-Control: no-cache, no-store, must-revalidate
 

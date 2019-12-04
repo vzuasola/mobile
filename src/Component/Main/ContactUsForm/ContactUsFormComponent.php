@@ -1,11 +1,11 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\ContactUs;
+namespace App\MobileEntry\Component\Main\ContactUsForm;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\MobileEntry\Form\ContactUsForm;
 
-class ContactUsComponent implements ComponentWidgetInterface
+class ContactUsFormComponent implements ComponentWidgetInterface
 {
     /**
      * Config Fetcher object.
@@ -44,7 +44,7 @@ class ContactUsComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Main/ContactUs/template.html.twig';
+        return '@component/Main/ContactUsForm/template.html.twig';
     }
 
     /**
