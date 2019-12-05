@@ -41,7 +41,6 @@
             padding: 0;
             display: inline-block;
             height: 3.5rem;
-            animation: marquee 10s linear infinite forwards;
 
             li {
                 display: inline-block;
@@ -61,15 +60,8 @@
                 }
             }
         }
-
-        &-content:hover {
-            animation-play-state: paused;
-        }
-
-        &-content:active {
-            animation-play-state: running;
-        }
     }
+
     &-marquee::-webkit-scrollbar {
         display: none;
     }
