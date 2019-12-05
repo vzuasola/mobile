@@ -55,7 +55,6 @@ export class InfobarComponent implements ComponentInterface {
 
     private listenInfobarTouch() {
         ComponentManager.subscribe(utility.eventType(), (event, src, data) => {
-            console.log(event);
             const infoBarEl: HTMLElement = this.element.querySelector(".infobar-marquee-content li");
             if (infoBarEl.style.animationPlayState === "running") {
                 infoBarEl.style.animationPlayState = "paused";
