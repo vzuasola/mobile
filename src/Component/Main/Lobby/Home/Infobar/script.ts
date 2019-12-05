@@ -50,8 +50,15 @@ export class InfobarComponent implements ComponentInterface {
     }
 
     private calculateSpeed(percentWidth, infoBarItemsWidth) {
-        const speed = infoBarItemsWidth / percentWidth * 5;
-        return speed;
+        const minWidth = 360;
+        const timeMultiplier = Math.ceil((window.screen.width / minWidth) * 5);
+        return infoBarItemsWidth / percentWidth * timeMultiplier;
+    }
+
+    private listenChangeOrientation() {
+        window.addEventListener("resize", () => {
+            this.activateMarquee();
+        });
     }
 
     private listenInfobarTouch() {
@@ -99,5 +106,6 @@ export class InfobarComponent implements ComponentInterface {
         Infobar.innerHTML = template;
         this.activateMarquee();
         this.listenInfobarTouch();
+        this.listenChangeOrientation();
     }
 }
