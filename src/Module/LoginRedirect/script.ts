@@ -9,13 +9,15 @@ export class LoginRedirectModule implements ModuleInterface {
     private loader: Loader;
     private element;
     private isLogin: boolean;
+    private matrix: boolean;
 
     constructor() {
         this.loader = new Loader(document.body, true);
     }
 
-    onLoad(attachments: {authenticated: boolean}) {
+    onLoad(attachments: {authenticated: boolean, matrix: boolean}) {
         this.isLogin = attachments.authenticated;
+        this.matrix = attachments.matrix;
 
         ComponentManager.subscribe("click", (event, src) => {
             if (!this.isLogin) {
@@ -44,6 +46,10 @@ export class LoginRedirectModule implements ModuleInterface {
         ComponentManager.subscribe("session.logout", (event) => {
             this.isLogin = false;
         });
+
+        ComponentManager.subscribe("session.login", (event, src, data) => {
+            this.matrix = data.response.matrix;
+        });
     }
 
     private doRedirectAfterLogin(src) {
@@ -53,6 +59,10 @@ export class LoginRedirectModule implements ModuleInterface {
     }
 
     private doRequest(url) {
+
+        if (this.matrix) {
+            return;
+        }
         xhr({
             url: Router.generateModuleRoute("login_redirect", "process"),
             type: "json",

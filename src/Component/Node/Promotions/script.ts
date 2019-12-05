@@ -1,6 +1,6 @@
 import * as utility from "@core/assets/js/components/utility";
 
-import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 /**
  *
@@ -8,10 +8,12 @@ import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 export class PromotionsNodeComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {countdown: string}) {
        this.getCountdown(element, attachments.countdown);
+       this.componentFinish(element);
     }
 
     onReload(element: HTMLElement, attachments: {countdown: string}) {
         this.getCountdown(element, attachments.countdown);
+        this.componentFinish(element);
     }
 
     private getCountdown(element, countdownFormat) {
@@ -38,5 +40,13 @@ export class PromotionsNodeComponent implements ComponentInterface {
                 }
             }
         }
+    }
+
+    private componentFinish(element) {
+        ComponentManager.broadcast("token.parse", {
+            element,
+            method: "parseLink",
+            selector: "[href*=ticket\\.token]",
+        });
     }
 }

@@ -126,8 +126,7 @@ export class FooterComponent implements ComponentInterface {
             if (data.footer_menu.hasOwnProperty(menu)) {
                 const element = data.footer_menu[menu];
                 if (element.attributes.class.match("language-trigger") &&
-                    (product === "mobile-casino-gold" || product === "mobile-exchange" ||
-                    product === "mobile-soda-casino")) {
+                    (product === "mobile-casino-gold" || product === "mobile-soda-casino")) {
                     continue;
                 }
                 menus.push(element);

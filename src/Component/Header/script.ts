@@ -20,6 +20,7 @@ export class HeaderComponent implements ComponentInterface {
         this.attachments = attachments;
         this.attachProduct();
         this.refreshBalance();
+        this.componentFinish();
         this.getLogo();
 
         Router.on(RouterClass.afterNavigate, (event) => {
@@ -32,10 +33,12 @@ export class HeaderComponent implements ComponentInterface {
                 utility.removeClass(loader, "hidden");
 
                 this.refreshBalance();
+                this.componentFinish();
             } else {
                 this.attachProduct();
             }
             this.refreshHeader();
+            this.componentFinish();
         });
     }
 
@@ -45,6 +48,15 @@ export class HeaderComponent implements ComponentInterface {
         this.attachProduct();
         this.refreshBalance();
         this.getLogo();
+        this.componentFinish();
+    }
+
+    private componentFinish() {
+        ComponentManager.broadcast("token.parse", {
+            element: this.element,
+            method: "parseLink",
+            selector: "[href*=ticket\\.token]",
+        });
     }
 
     private refreshBalance() {
@@ -157,6 +169,7 @@ export class HeaderComponent implements ComponentInterface {
                 product: ComponentManager.getAttribute("product"),
                 language: ComponentManager.getAttribute("language"),
                 style: ComponentManager.getAttribute("product"),
+                route: ComponentManager.getAttribute("route"),
             },
         }).then((response) => {
             this.logoData = response;

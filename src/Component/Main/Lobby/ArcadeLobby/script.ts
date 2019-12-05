@@ -71,6 +71,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnLoad(this.element, this.attachments);
         this.gamesFilter.handleOnLoad(this.element, this.attachments, false);
+        this.componentFinish();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -109,6 +110,15 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, this.attachments);
         this.gamesFilter.handleOnReLoad(this.element, this.attachments, false);
+        this.componentFinish();
+    }
+
+    private componentFinish() {
+        ComponentManager.broadcast("token.parse", {
+            element: this.element,
+            method: "parseLink",
+            selector: "[href*=ticket\\.token]",
+        });
     }
 
     /**
@@ -248,8 +258,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             if (responses.hasOwnProperty("pager" + page)) {
                 const response = responses["pager" + page];
                 Object.assign(promises, response);
-                if (typeof response.games["all-games"] !== "undefined") {
-                    gamesList["all-games"] = response.games["all-games"];
+                if (typeof response.games["all-games"] === "object"
+                    && Object.keys(response.games["all-games"]).length > 0) {
+                    gamesList["all-games"] = Object.assign(gamesList["all-games"], response.games["all-games"]);
                 }
             }
         }

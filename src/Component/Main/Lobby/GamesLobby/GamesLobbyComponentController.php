@@ -5,6 +5,7 @@ namespace App\MobileEntry\Component\Main\Lobby\GamesLobby;
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\Async\Async;
 use App\Async\DefinitionCollection;
+use App\MobileEntry\Services\PublishingOptions\PublishingOptions;
 
 class GamesLobbyComponentController
 {
@@ -88,7 +89,7 @@ class GamesLobbyComponentController
         if (!$item->isHit()) {
             $data = $this->generatePageLobbyData($page);
 
-            if (isset($data['all-games']) && !empty($data['all-games'])) {
+            if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
                 $item->set([
                     'body' => $data,
                 ]);
@@ -301,9 +302,13 @@ class GamesLobbyComponentController
     {
         $gamesList = [];
         foreach ($games as $game) {
-            $special = ($categoryId === $this::RECOMMENDED_GAMES);
-
-            $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($game, $special);
+            $publishOn = $game['publish_on'][0]['value'] ?? '';
+            $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
+            $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
+            if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
+                $special = ($categoryId === $this::RECOMMENDED_GAMES);
+                $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($game, $special);
+            }
         }
         return $gamesList;
     }
@@ -403,7 +408,7 @@ class GamesLobbyComponentController
     {
         $categoryList = [];
         foreach ($categories as $category) {
-            $isPublished = $this->checkIfPublished(
+            $isPublished = PublishingOptions::checkDuration(
                 $category['field_publish_date'],
                 $category['field_unpublish_date']
             );
@@ -424,44 +429,6 @@ class GamesLobbyComponentController
             }
         }
         return $categoryList;
-    }
-
-    private function checkIfPublished($dateStart, $dateEnd)
-    {
-        if (!$dateStart && !$dateEnd) {
-            return true;
-        }
-
-        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
-        $currentDate = $currentDate->getTimestamp();
-        if ($dateStart && $dateEnd) {
-            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
-            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-
-            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
-            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
-                return true;
-            }
-        }
-
-        if ($dateStart && !$dateEnd) {
-            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
-            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($startDate->getTimestamp() <= $currentDate) {
-                return true;
-            }
-        }
-
-        if ($dateEnd && !$dateStart) {
-            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
-            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            if ($endDate->getTimestamp() >=$currentDate) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private function getFavoriteGamesList($favGames)

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\MobileEntry\Module\ProductIntegration\LiveDealer;
+namespace App\MobileEntry\Module\TokenParser;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 
 /**
  *
  */
-class LiveDealerIntegrationModuleScripts implements ComponentAttachmentInterface
+class TokenParserModuleScripts implements ComponentAttachmentInterface
 {
     /**
      * @var App\Player\PlayerSession
@@ -37,9 +37,20 @@ class LiveDealerIntegrationModuleScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        return [
-            'authenticated' => $this->playerSession->isLogin(),
-            'matrix' => $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false,
-        ];
+        $data = [];
+
+        try {
+            $data['authenticated'] = $this->playerSession->isLogin();
+        } catch (\Exception $e) {
+            $data['authenticated'] = false;
+        }
+
+        try {
+            $data['token'] = $this->playerSession->getToken();
+        } catch (\Exception $e) {
+            $data['token'] = false;
+        }
+
+        return $data;
     }
 }

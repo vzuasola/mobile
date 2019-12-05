@@ -50,3 +50,17 @@
         }
     }
 }
+
+// Tablet
+@include media(">=tablet") {
+    /*SODA CASINO*/
+    .mobile-soda-casino {
+        .header-mobile-soda-casino {
+            .logo {
+                img {
+                    width: 70%;
+                }
+            }
+        }
+    }
+}

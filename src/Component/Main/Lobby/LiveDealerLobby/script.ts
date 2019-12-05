@@ -62,6 +62,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.listenClickLauncherTab();
         this.listenToLaunchGameLoader();
         this.listenToScroll();
+        this.componentFinish();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -94,6 +95,15 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 this.highlightMenu();
                 this.setLobby();
             });
+        });
+        this.componentFinish();
+    }
+
+    private componentFinish() {
+        ComponentManager.broadcast("token.parse", {
+            element: this.element,
+            method: "parseLink",
+            selector: "[href*=ticket\\.token]",
         });
     }
 
