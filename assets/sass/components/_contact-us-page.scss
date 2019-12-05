@@ -1,0 +1,132 @@
+// Contact Us Innerpage
+#contact-us {
+    background: $dark-gray;
+    padding: 1.5rem 0 0.5rem 0;
+
+    .contact-us-form {
+        padding: 0 10%;
+
+        .form-item {
+            margin-bottom: 1rem;
+        }
+
+        .ContactUsForm_product,
+        .ContactUsForm_subject {
+            position: relative;
+
+            .ContactUsForm_product:after,
+            .ContactUsForm_subject:after {
+                display: table;
+                line-height: 0;
+                content: "";
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                width: 1.5rem;
+                height: 1.5rem;
+                transform: rotate(135deg);
+                border: 0;
+                border-width: 0.4rem 0.4rem 0 0;
+                border-style: solid;
+                border-color: $black;
+            }
+        }
+
+        // Hide label
+        .form-label {
+            display: none;
+        }
+
+        // Show label (Add 'show-label' class to form tag)
+        &.show-label .form-label {
+            display: block;
+            margin: 0;
+            padding: 3px 0 0;
+            color: #515151;
+            font-size: 1.25rem;
+        }
+
+        .form-field {
+            position: relative;
+            padding: 0.1rem 0;
+
+            &-element {
+                width: 100%;
+                padding: 1.2rem;
+                border: 0;
+                background: $white;
+                border-radius: 0.3rem;
+                color: $black;
+
+                &:focus {
+                    border-color: $light-gray;
+                }
+            }
+
+            select {
+                height: auto;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                text-indent: 1px;
+                text-overflow: '';
+            }
+
+            textarea {
+                min-height: 15rem;
+            }
+        }
+
+        .has-error,
+        .has-success {
+            .form-field-element {
+                padding-right: 3rem;
+            }
+        }
+
+        .has-error {
+            .form-field-element {
+                border-bottom: 0.1rem solid $red;
+            }
+        }
+
+        // Error message
+        .error-message,
+        .has-error .form-help-block {
+            display: block;
+            margin: -0.6rem 0 1rem;
+            color: $fire-red;
+            font-style: italic;
+        }
+
+        // Server side specific error message
+        .error-message {
+            margin: -0.5rem 0 0;
+            padding-bottom: 0.5rem;
+            color: $red;
+        }
+
+        // Required indicator
+        .required-field {
+            margin-left: 0.3rem;
+        }
+
+        // Submit field
+        .btn {
+            width: 100%;
+            font-size: 2rem;
+            padding: 0.8rem 0;
+        }
+
+        // Blurb top
+        .blurb-top {
+            margin-bottom: 2rem;
+            padding: 0 2.5rem;
+            text-align: center;
+        }
+
+        // Blurb bottom
+        .blurb-bottom {
+            margin-bottom: 2rem;
+        }
+    }
+}
