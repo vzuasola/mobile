@@ -36,15 +36,16 @@ export class InfobarComponent implements ComponentInterface {
 
     private activateMarquee() {
         const infoBarEl: HTMLElement = this.element.querySelector(".infobar-marquee-content li");
-        const infoBarContainer: HTMLElement = this.element.querySelector(".infobar");
-        const infoBarItemsWidth = infoBarEl.offsetWidth;
-        const infoBar = infoBarContainer.offsetWidth;
-        const percentWidth = infoBar * 0.75;
+        if (infoBarEl) {
+            const infoBarContainer: HTMLElement = this.element.querySelector(".infobar");
+            const infoBarItemsWidth = infoBarEl.offsetWidth;
+            const infoBar = infoBarContainer.offsetWidth;
+            const percentWidth = infoBar * 0.75;
 
-        if (infoBarItemsWidth > percentWidth) {
-            infoBarEl.style.animation = "marquee linear infinite forwards";
-            infoBarEl.style.animationDuration = this.calculateSpeed(percentWidth, infoBarItemsWidth) + "s";
-
+            if (infoBarItemsWidth > percentWidth) {
+                infoBarEl.style.animation = "marquee linear infinite forwards";
+                infoBarEl.style.animationDuration = this.calculateSpeed(percentWidth, infoBarItemsWidth) + "s";
+            }
         }
     }
 
@@ -56,10 +57,12 @@ export class InfobarComponent implements ComponentInterface {
     private listenInfobarTouch() {
         ComponentManager.subscribe(utility.eventType(), (event, src, data) => {
             const infoBarEl: HTMLElement = this.element.querySelector(".infobar-marquee-content li");
-            if (infoBarEl.style.animationPlayState === "running") {
-                infoBarEl.style.animationPlayState = "paused";
-            } else {
-                infoBarEl.style.animationPlayState = "running";
+            if (infoBarEl) {
+                if (infoBarEl.style.animationPlayState === "running") {
+                    infoBarEl.style.animationPlayState = "paused";
+                } else {
+                    infoBarEl.style.animationPlayState = "running";
+                }
             }
         });
     }

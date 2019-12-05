@@ -82,12 +82,8 @@ class InfobarComponentController
             $isLogin = $this->playerSession->isLogin();
 
             foreach ($data as $infobarItem) {
-                $infobarData = [];
-
                 $showBoth = count($infobarItem['field_log_in_state']) > 1;
-
                 $loginState = $infobarItem['field_log_in_state'][0]['value'] ?? 0;
-
                 $enableInfobar = $infobarItem['field_infobar_enable'][0]['value'] ?? 0;
 
                 // selectively choose fields based on login state
