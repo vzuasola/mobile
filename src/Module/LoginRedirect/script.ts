@@ -59,10 +59,6 @@ export class LoginRedirectModule implements ModuleInterface {
     }
 
     private doRequest(url) {
-
-        if (this.matrix) {
-            return;
-        }
         xhr({
             url: Router.generateModuleRoute("login_redirect", "process"),
             type: "json",
