@@ -7,72 +7,37 @@ import * as iconUnCheckedTemplate from "@app/templates/handlebars/icon-unchecked
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 import EqualHeight from "@app/assets/script/components/equal-height";
 import {annotation} from "@app/assets/script/components/form-annotation";
+import {ContactUsForm} from "./scripts/contact-us";
 
 /**
  *
  */
 export class ContactUsFormComponent implements ComponentInterface {
     private element: HTMLElement;
+    private contactus: any;
 
     onLoad(element: HTMLElement, attachments: {}) {
-        // this.init(element);
+        this.activateFormAnnotation(element);
+        this.activateContactUs(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
-        // this.init(element);
-    }
-
-    private init(element) {
-        this.element = element;
-        this.broadcastLogoutLink(element);
-        this.equalizeActionButtonHeight();
-
-        new Tab();
         this.activateFormAnnotation(element);
-
-        // Checkbox
-        new Marker({
-            parent: ".MyProfileForm_preference_markup",
-            iconDefault: iconUnCheckedTemplate(),
-            iconActive: iconCheckedTemplate(),
-        });
-
-        // Radio
-        new Marker({
-            parent: "#MyProfileForm_gender",
-        });
+        this.activateContactUs(element, attachments);
     }
 
     private activateFormAnnotation(element) {
         annotation(element);
     }
 
-    private broadcastLogoutLink(element) {
-        let route = ComponentManager.getAttribute("route");
-        if (route === "/my-account") {
-            ComponentManager.broadcast("menu.logout.hide", {
-                selector: ".quicklinks-logout",
-            });
-        }
-
-        ComponentManager.subscribe("menu.ready", () => {
-            route = ComponentManager.getAttribute("route");
-            if (route === "/my-account") {
-                ComponentManager.broadcast("menu.logout.hide", {
-                    selector: ".quicklinks-logout",
-                });
-            }
-        });
-
-        Router.on(RouterClass.afterNavigate, (event) => {
-            ComponentManager.broadcast("menu.logout.show", {
-                selector: ".quicklinks-logout",
-            });
-        });
+    /**
+     * Activate Reset Password
+     */
+    private activateContactUs(element, attachments) {
+        this.contactus = new ContactUsForm(
+            element,
+            attachments);
+        this.contactus.init();
     }
 
-    private equalizeActionButtonHeight() {
-        const equalize = new EqualHeight("#MyProfileForm_submit, #MyProfileForm_button_cancel");
-        equalize.init();
-    }
 }
