@@ -7,7 +7,7 @@
         <li class="home-contact-list  {{ ../this.menuClass}}">
             <a href="{{ this.uri }}"
                 class="{{ this.attributes.class }} {{ this.attributes.svg }} {{this.attributes.device}} contact-box"
-                data-router="true" data-router-refresh="main" target="{{ this.attributes.target }}">
+                {{#if this.attributes.dataRouter}}{{else}} data-router="true" {{/if}} data-router-refresh="main" target="{{ this.attributes.target }}">
 
                 <svg viewBox="0 0 20 20">
                     <use xlink:href="#{{ this.attributes.svg }}" />
