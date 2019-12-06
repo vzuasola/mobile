@@ -75,4 +75,36 @@ export class ContactUsFormComponent implements ComponentInterface {
         const equalize = new EqualHeight("#MyProfileForm_submit, #MyProfileForm_button_cancel");
         equalize.init();
     }
+
+    private countrySelection() {
+        const countrySelect = document.getElementById("contactcountry") as HTMLSelectElement;
+        const buttonWrapper = document.getElementById("contact-button-wrapper");
+
+        if (countrySelect && buttonWrapper) {
+            utility.addEventListener(countrySelect, "change", (event, src) => {
+                const selectedValue = countrySelect.options[countrySelect.selectedIndex].value;
+                const pattern = new RegExp(",");
+                let match = false;
+
+                match = pattern.test(selectedValue);
+
+                if (selectedValue && match) {
+                    const split = selectedValue.split(",");
+                    // const split1 = split[0];
+                    // const split2 = split[1];
+                    const split3 = split[2];
+
+                    if (split3) {
+                        buttonWrapper.innerHTML = "";
+                    } else {
+                        buttonWrapper.innerHTML = "";
+                    }
+                } else if (selectedValue) {
+                    buttonWrapper.innerHTML = "";
+                } else {
+                    buttonWrapper.innerHTML = "";
+                }
+            });
+        }
+    }
 }
