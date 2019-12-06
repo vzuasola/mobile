@@ -1,10 +1,10 @@
 // Contact Us Innerpage
-#contact-us {
+.contact-us {
+    padding: 5%;
     background: $dark-gray;
-    padding: 1.5rem 0 0.5rem 0;
 
     .contact-us-form {
-        padding: 0 10%;
+        padding: 5%;
 
         .form-item {
             margin-bottom: 1rem;
@@ -32,20 +32,6 @@
             }
         }
 
-        // Hide label
-        .form-label {
-            display: none;
-        }
-
-        // Show label (Add 'show-label' class to form tag)
-        &.show-label .form-label {
-            display: block;
-            margin: 0;
-            padding: 3px 0 0;
-            color: #515151;
-            font-size: 1.25rem;
-        }
-
         .form-field {
             position: relative;
             padding: 0.1rem 0;
@@ -67,7 +53,7 @@
                 height: auto;
                 -webkit-appearance: none;
                 -moz-appearance: none;
-                text-indent: 1px;
+                text-indent: 0.1rem;
                 text-overflow: '';
             }
 
@@ -75,58 +61,179 @@
                 min-height: 15rem;
             }
         }
+    }
 
-        .has-error,
-        .has-success {
-            .form-field-element {
-                padding-right: 3rem;
+    // contact us header
+    &-header {
+        position: relative;
+        border-radius: 0.5rem;
+        position: relative;
+        width: 100%;
+        padding: 1rem 1rem 0rem;
+        margin-bottom: 1rem;
+        background: $dark-red;
+
+        h2 {
+            font-size: 1.6rem;
+            color: $white;
+            margin: 0;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0 10rem 0 0;
+            padding-bottom: 0.2rem;
+        }
+
+        img {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 10rem;
+            height: 10rem;
+            margin-right: 1rem;
+        }
+    }
+
+    // contact us customer support
+    &-support {
+        list-style-type: none;
+        display: block;
+        padding: 0;
+        margin: 0;
+
+        &-content {
+            border-radius: 0.5rem;
+            border: 0.1rem solid $white;
+            margin-bottom: 1rem;
+
+            .title {
+                width: 100%;
+                padding: 1rem;
+                margin: 0;
+                border-bottom: 0.1rem solid $white;
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+                background: $dark-red;
             }
-        }
 
-        .has-error {
-            .form-field-element {
-                border-bottom: 0.1rem solid $red;
+            .item {
+                list-style-type: none;
+                margin: 1rem 0;
+                padding: 0;
+                text-align: center;
+
+                li {
+                    display: inline-block;
+                    border: 0;
+                    vertical-align: middle;
+                    padding: 0;
+
+                    svg {
+                        fill: $white;
+                        width: 3rem;
+                        vertical-align: top;
+                    }
+
+                    a {
+                        color: $white;
+                        display: block;
+                        margin-top: 0.5rem;
+                    }
+                }
+
+                li.col-12 {
+                    a {
+                        color: $white;
+                        display: inline-block;
+                    }
+
+                    p {
+                        display: inline-block;
+                        padding: 0;
+                        margin: 0;
+                        width: 50%;
+                        text-align: left;
+                    }
+                }
+
+                .contactcountry {
+                    margin: 0 5%;
+                    position: relative;
+                    display: block;
+                }
+
+                #contactcountry {
+                    display: block;
+                    width: 100%;
+                    height: auto;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    text-indent: 0.1rem;
+                    text-overflow: '';
+                    padding: 1.2rem;
+                    border: 0;
+                    background: $white;
+                    border-radius: 0.3rem;
+                    color: $black;
+                }
+
+                .contactcountry:after {
+                    display: table;
+                    line-height: 0;
+                    content: "";
+                    position: absolute;
+                    top: 1rem;
+                    right: 1rem;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    transform: rotate(135deg);
+                    border: 0;
+                    border-width: 0.4rem 0.4rem 0 0;
+                    border-style: solid;
+                    border-color: $black;
+                }
+
+                #contact-button-wrapper {
+                    .btn {
+                        margin-top: 1rem;
+                        border-radius: 0.2rem;
+                        @include gradient($background-color: $light-gray, $background-top: $lightest-gray, $background-bottom: $light-gray);
+                        position: relative;
+                        width: 90%;
+                        height: 4rem;
+                        margin-bottom: 1rem;
+                        padding-left: 3.5rem;
+                        border: 0.1rem solid $light-gray;
+                        color: #000;
+                        text-align: center;
+                    }
+
+                    .btn:after {
+                        content: "";
+                        position: absolute;
+                        width: 0.1rem;
+                        height: 100%;
+                        top: 0;
+                        left: 3.5rem;
+                        border-left: 0.1rem solid #878787;
+                    }
+
+                    span {
+                        display: block;
+                    }
+
+                    svg {
+                        position: absolute;
+                        left: 0.5rem;
+                        top: 0.5rem;
+                        fill: $black;
+                        @include rotate(380deg);
+                        width: 2.5rem;
+                    }
+                }
             }
-        }
-
-        // Error message
-        .error-message,
-        .has-error .form-help-block {
-            display: block;
-            margin: -0.6rem 0 1rem;
-            color: $fire-red;
-            font-style: italic;
-        }
-
-        // Server side specific error message
-        .error-message {
-            margin: -0.5rem 0 0;
-            padding-bottom: 0.5rem;
-            color: $red;
-        }
-
-        // Required indicator
-        .required-field {
-            margin-left: 0.3rem;
-        }
-
-        // Submit field
-        .btn {
-            width: 100%;
-            font-size: 2rem;
-            padding: 0.8rem 0;
-        }
-
-        // Blurb top
-        .blurb-top {
-            margin-bottom: 2rem;
-            padding: 0 2.5rem;
-            text-align: center;
-        }
-
-        // Blurb bottom
-        .blurb-bottom {
-            margin-bottom: 2rem;
         }
     }
 }
