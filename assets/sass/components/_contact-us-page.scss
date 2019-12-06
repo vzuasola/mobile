@@ -14,6 +14,13 @@
         .ContactUsForm_subject {
             position: relative;
 
+            // Validation icons
+            .icon {
+                &-validation {
+                    right: 4rem;
+                }
+            }
+
             .ContactUsForm_product:after,
             .ContactUsForm_subject:after {
                 display: table;
@@ -59,6 +66,27 @@
 
             textarea {
                 min-height: 15rem;
+            }
+        }
+
+        // Error message
+        .error-message,
+        .has-error .form-help-block {
+            margin: 0;
+        }
+
+        // Server side specific error message
+        .error-message {
+            margin: -0.5rem 0 0;
+            padding-bottom: 0.5rem;
+            color: $red;
+        }
+
+        // Validation icons
+        .icon {
+            &-validation {
+                top: 1rem;
+                right: 1rem;
             }
         }
     }
