@@ -89,13 +89,12 @@ class InfobarComponentController
                 // selectively choose fields based on login state
                 if ($enableInfobar) {
                     if ($isLogin && ($showBoth || $loginState)) {
-                        $infobarData['field_body'] = $infobarItem['field_post_body'][0]['value'];
+                        $infobarList[]['field_body'] = $infobarItem['field_post_body'][0]['value'];
                     }
 
                     if (!$isLogin && ($showBoth || !$loginState)) {
-                        $infobarData['field_body'] = $infobarItem['field_body'][0]['value'];
+                        $infobarList[]['field_body'] = $infobarItem['field_body'][0]['value'];
                     }
-                    $infobarList[] = $infobarData;
                 }
             }
         } catch (\Exception $e) {
