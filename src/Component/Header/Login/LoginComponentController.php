@@ -65,7 +65,7 @@ class LoginComponentController
                 $data['success'] = $this->playerSession->login($username, $password, $options);
                 $data['hash'] = md5($this->playerSession->getToken());
                 $data['token'] = $this->playerSession->getToken();
-                $data['matrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'];
+                $data['matrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
             } catch (\Exception $e) {
                 if ($e instanceof AccountLockedException) {
                     $response = $response->withStatus(403);

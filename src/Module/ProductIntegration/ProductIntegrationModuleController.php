@@ -40,11 +40,6 @@ class ProductIntegrationModuleController
     {
         $data = [];
 
-        $matrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
-        if ($matrix) {
-            return $this->rest->output($response, $data);
-        }
-
         try {
             $requestData = $request->getParsedBody();
             $url = $requestData['url'] . "?{credentials.params}&re=" . $requestData['url'];

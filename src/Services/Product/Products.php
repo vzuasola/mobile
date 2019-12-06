@@ -121,4 +121,12 @@ class Products
             'sda',
         ],
     ];
+
+    const PLAYER_MATRIX_PRODUCT_MAPPING = [
+        'mobile-sports' => 'sports-df',
+        'mobile-exchange' => 'sports-df',
+        'mobile-casino' => 'live-dealer',
+        'mobile-casino-gold' => 'live-dealer',
+        'mobile-soda-casino' => 'live-dealer',
+    ];
 }
