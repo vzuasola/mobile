@@ -16,10 +16,12 @@ export class ContactUsFormComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {}) {
         // this.init(element);
+        this.countrySelection();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         // this.init(element);
+        this.countrySelection();
     }
 
     private init(element) {
@@ -79,6 +81,7 @@ export class ContactUsFormComponent implements ComponentInterface {
     private countrySelection() {
         const countrySelect = document.getElementById("contactcountry") as HTMLSelectElement;
         const buttonWrapper = document.getElementById("contact-button-wrapper");
+        const svgPhone = "<svg viewbox = '0 0 20 20'><use xlink: href ='#phone'></use></svg>";
 
         if (countrySelect && buttonWrapper) {
             utility.addEventListener(countrySelect, "change", (event, src) => {
@@ -90,17 +93,25 @@ export class ContactUsFormComponent implements ComponentInterface {
 
                 if (selectedValue && match) {
                     const split = selectedValue.split(",");
-                    // const split1 = split[0];
-                    // const split2 = split[1];
+                    const split1 = split[0];
+                    const split2 = split[1];
                     const split3 = split[2];
 
                     if (split3) {
-                        buttonWrapper.innerHTML = "";
+                        buttonWrapper.innerHTML = "<a href='tel:" + split1 + "' class='btn phone three clearfix'>" +
+                            svgPhone + split1 + "</a> <span>or</span> <a href='tel:" +
+                            split2 + "' class='btn phone three clearfix'>" + svgPhone + split2 +
+                            "</a> <span>or</span> <a href='tel:" +
+                            split3 + "' class='btn phone three clearfix'>" +
+                            svgPhone + split3 + "</a>";
                     } else {
-                        buttonWrapper.innerHTML = "";
+                        buttonWrapper.innerHTML = "<a href='tel: " + split1 + "' class='btn phone clearfix'>" +
+                            svgPhone + split1 + "</a> <span>or</span> <a href='tel:" + split2 +
+                            "' class='btn phone clearfix'>" + svgPhone + split2 + "</a>";
                     }
                 } else if (selectedValue) {
-                    buttonWrapper.innerHTML = "";
+                    buttonWrapper.innerHTML = "<a href='tel: " + selectedValue + "' class='btn phone clearfix'>" +
+                        svgPhone + selectedValue + "</a>";
                 } else {
                     buttonWrapper.innerHTML = "";
                 }
