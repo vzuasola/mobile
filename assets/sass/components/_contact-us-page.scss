@@ -75,13 +75,6 @@
             margin: 0;
         }
 
-        // Server side specific error message
-        .error-message {
-            margin: -0.5rem 0 0;
-            padding-bottom: 0.5rem;
-            color: $red;
-        }
-
         // Validation icons
         .icon {
             &-validation {
