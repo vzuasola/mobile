@@ -1,6 +1,6 @@
 // Contact Us Innerpage
 .contact-us {
-    padding: 5%;
+    padding: 0 5%;
     background: $dark-gray;
 
     .contact-us-form {
@@ -83,17 +83,22 @@
             }
         }
     }
+}
 
-    // contact us header
+// contact us header
+.contact-us-tabs {
+    background: $dark-gray;
+     padding: 5% 5% 0;
+
     &-header {
         position: relative;
         border-radius: 0.5rem;
         position: relative;
         width: 100%;
-        padding: 1rem 1rem 0rem;
+        padding: 1rem;
         margin-bottom: 1rem;
         background: $dark-red;
-
+    
         h2 {
             font-size: 1.6rem;
             color: $white;
@@ -151,32 +156,32 @@
                     vertical-align: middle;
                     padding: 0;
 
-                    svg {
-                        fill: $white;
-                        width: 3rem;
-                        vertical-align: top;
-                    }
-
                     a {
                         color: $white;
                         display: block;
                         margin-top: 0.5rem;
+
+                        svg {
+                            fill: $white;
+                            width: 3rem;
+                            vertical-align: middle;
+                        }
                     }
                 }
 
                 li.col-12 {
                     a {
                         color: $white;
-                        display: inline-block;
+                        display: block;
+
+                        p {
+                            display: inline-block;
+                            vertical-align: middle;
+                            padding: 0;
+                            margin: 0;
+                        }
                     }
 
-                    p {
-                        display: inline-block;
-                        padding: 0;
-                        margin: 0;
-                        width: 50%;
-                        text-align: left;
-                    }
                 }
 
                 .contactcountry {
