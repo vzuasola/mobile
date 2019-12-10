@@ -420,6 +420,4 @@ class ContactUsFormComponentController
 
         return $contactTabsList;
     }
-
-
 }
