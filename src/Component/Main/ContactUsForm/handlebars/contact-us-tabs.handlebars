@@ -7,96 +7,9 @@
 
 <ul class="contact-us-tabs-support clearfix">
     {{#each contactUsTabsData.contactTabs}}
-    <li class="contact-us-tabs-support-content">
+    <li class="contact-us-tabs-support-content {{ field_tab_class }}">
         <p class="title">{{ field_title }}</p>
-        <ul class="item clearfix">
-            <li class="item-lists col-12">
-                <a href="#">
-                <svg viewBox="0 0 20 20">
-                    <use xlink:href="#contact-{{ field_tab_class }}" />
-                </svg>
-                {{{ field_tab_content }}}
-                </a>
-            </li>
-        </ul>
+        {{{ field_tab_content }}}
     </li>
     {{/each}}
-    {{!-- <li class="contact-us-tabs-support-content">
-        <p class="title">Email</p>
-        <ul class="item clearfix">
-            <li class="item-lists col-12">
-                <svg viewBox="0 0 20 20">
-                    <use xlink:href="#product-owsports" />
-                </svg>
-                <a href="#">ensupport@dafabet.com</a>
-            </li>
-        </ul>
-    </li>
-    <li class="contact-us-tabs-support-content">
-        <p class="title">Social</p>
-        <ul class="item clearfix">
-            <li class="item-lists col-4">
-                <svg viewBox="0 0 20 20">
-                    <use xlink:href="#product-owsports" />
-                </svg>
-                <a href="#">dafabetMY1</a>
-            </li>
-            <li class="item-lists col-4">
-                <svg viewBox="0 0 20 20">
-                    <use xlink:href="#product-owsports" />
-                </svg>
-                <a href="#">@dafabetasia</a>
-            </li>
-            <li class="item-lists col-4">
-                <svg viewBox="0 0 20 20">
-                    <use xlink:href="#product-owsports" />
-                </svg>
-                <a href="#">+639178003652</a>
-            </li>
-        </ul>
-    </li>
-    <li class="contact-us-tabs-support-content">
-        <p class="title">Phone</p>
-        <ul class="item clearfix">
-            <li class="item-lists col-12">
-                <svg viewBox="0 0 20 20">
-                    <use xlink:href="#product-owsports" />
-                </svg>
-                <p><span>International Toll Free</span>
-                    Select your country to display the numbers to call
-                </p>
-                <span class="contactcountry">
-                    <select id="contactcountry">
-                        <option selected="selected" value="">Choose Your Country</option>
-                        <option value="4008 428777">China</option>
-                        <option value="00080-0100-7166">India</option>
-                        <option value="001 800-7423-2274">Japan</option>
-                        <option value="070-8015-9487">Korea</option>
-                        <option value="1800819318">Malaysia</option>
-                        <option value="12032618,02444582168,12280880">Vietnam</option>
-                        <option value="001-800-852-6099">Thailand</option>
-                        <option value="7-800-7423-2274">Russia</option>
-                        <option value="">--------------------</option>
-                        <option value="0011 800-7423-2274">Australia</option>
-                        <option value="00 800-7423-2274">Austria</option>
-                        <option value="+880 800-7423-2274">Bangladesh</option>
-                        <option value="+55 800-7423-2274">Brazil</option>
-                        <option value="011 800-7423-2274">Canada</option>
-                        <option value="00 800-7423-2274">Cyprus</option>
-                        <option value="+420 800-7423-2274">Czech</option>
-                        <option value="00 800-7423-2274">Germany</option>
-                        <option value="011 800-7423-2274">Hawaii</option>
-                        <option value="+39 800-7423-2274">Italy</option>
-                        <option value="+353 800-7423-2274">Ireland</option>
-                        <option value="00 800-7423-2274">Netherlands</option>
-                        <option value="00 800-7423-2274">New Zealand</option>
-                        <option value="095 800-7423-2274">Norway</option>
-                        <option value="+421 800-7423-2274">Slovakia</option>
-                        <option value="00 800-7423-2274">UK</option>
-                    </select>
-                </span>
-                <span id="contact-button-wrapper"></span>
-            </li>
-        </ul>
-    </li> --}}
 </ul>

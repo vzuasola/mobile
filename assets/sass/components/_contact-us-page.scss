@@ -160,26 +160,21 @@
                         color: $white;
                         display: block;
                         margin-top: 0.5rem;
+                    }
 
-                        svg {
-                            fill: $white;
-                            width: 3rem;
-                            vertical-align: middle;
-                        }
+                    svg {
+                        fill: $white;
+                        width: 3rem;
+                        vertical-align: middle;
                     }
                 }
 
                 li.col-12 {
-                    a {
-                        color: $white;
-                        display: block;
-
-                        p {
-                            display: inline-block;
-                            vertical-align: middle;
-                            padding: 0;
-                            margin: 0;
-                        }
+                    p, a {
+                        display: inline-block;
+                        vertical-align: middle;
+                        padding: 0;
+                        margin: 0 0.5rem;
                     }
 
                 }
@@ -223,17 +218,17 @@
 
                 #contact-button-wrapper {
                     .btn {
-                        margin-top: 1rem;
                         border-radius: 0.2rem;
                         @include gradient($background-color: $light-gray, $background-top: $lightest-gray, $background-bottom: $light-gray);
                         position: relative;
                         width: 90%;
                         height: 4rem;
-                        margin-bottom: 1rem;
-                        padding-left: 3.5rem;
+                        margin: 1rem 0 1rem;
+                        padding: 0.7rem 3.5rem 0;
                         border: 0.1rem solid $light-gray;
                         color: #000;
                         text-align: center;
+                        display: inline-block;
                     }
 
                     .btn:after {
@@ -258,6 +253,17 @@
                         @include rotate(380deg);
                         width: 2.5rem;
                     }
+                }
+            }
+        }
+
+        .phone {
+            li.col-12 {
+                p {
+                    width: 75%;
+                    text-align: left;
+                    margin-bottom: 0.5rem;
+                    vertical-align: top;
                 }
             }
         }

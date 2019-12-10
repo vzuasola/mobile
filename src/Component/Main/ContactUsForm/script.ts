@@ -50,7 +50,7 @@ export class ContactUsFormComponent implements ComponentInterface {
     private countrySelection() {
         const countrySelect = document.getElementById("contactcountry") as HTMLSelectElement;
         const buttonWrapper = document.getElementById("contact-button-wrapper");
-        const svgPhone = "<svg viewbox = '0 0 20 20'><use xlink: href ='#phone'></use></svg>";
+        const svgPhone = "<svg viewbox = '0 0 20 20'><use xlink: href ='#contact-phone'></use></svg>";
 
         if (countrySelect && buttonWrapper) {
             utility.addEventListener(countrySelect, "change", (event, src) => {
