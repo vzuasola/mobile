@@ -86,7 +86,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.listenToScroll();
         this.listenToSwipe();
         this.listenOnSearch();
-        this.updateLoginLayout();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -118,7 +117,6 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             this.listenToCategory();
             this.listenToScroll();
             this.listenOnSearch();
-            this.updateLoginLayout();
         }
         this.response = null;
         this.element = element;
@@ -955,7 +953,13 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private updateHeader() {
         if (this.checkEvent("menu.ready")) {
             ComponentManager.subscribe("menu.ready", (event, target, data) => {
-            ComponentManager.broadcast("menu.update.router.component", { element: ".quicklinks-home", val: "header" });
+                ComponentManager.broadcast("menu.update.router.component", {
+                    element: ".quicklinks-home", val: `header", "menu`,
+                });
+
+                ComponentManager.broadcast("menu.update.logo.component", {
+                    element: "#header-logo-link", val: `header", "menu`,
+                });
             });
         }
     }
@@ -970,15 +974,5 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
 
         this.events[key] = key;
         return true;
-    }
-
-    private updateLoginLayout() {
-        ComponentManager.subscribe("login.update.layout.component", (event, src, data) => {
-            const product = ComponentManager.getAttribute("product");
-            const loginModal: HTMLElement = document.getElementById("login-lightbox");
-            setTimeout(() => {
-              utility.removeClass(loginModal, product + "-modal");
-            }, 300);
-        });
     }
 }

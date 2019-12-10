@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\Main\Lobby\LiveDealerLobby;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
+use App\MobileEntry\Services\PublishingOptions\PublishingOptions;
 
 class LiveDealerLobbyComponentController
 {
@@ -83,11 +84,16 @@ class LiveDealerLobbyComponentController
             $gamesList = [];
             $games = $this->views->getViewById('games_list');
             foreach ($games as $game) {
-                $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
-                if (!$isPreview && $preview_mode) {
-                    continue;
+                $publishOn = $game['publish_on'][0]['value'] ?? '';
+                $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
+                $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
+                if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
+                    $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
+                    if (!$isPreview && $preview_mode) {
+                        continue;
+                    }
+                    $gamesList[] = $this->getGameDefinition($game);
                 }
-                $gamesList[] = $this->getGameDefinition($game);
             }
         } catch (\Exception $e) {
             $gamesList = [];

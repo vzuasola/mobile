@@ -232,6 +232,10 @@
             }
         }
 
+        .active {
+            color: $yellow;
+        }
+
         li:first-child a {
             border-left: none;
         }

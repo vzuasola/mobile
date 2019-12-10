@@ -135,7 +135,20 @@ routes:
         components:
             main: lobby
         headers:
-            Cache-Control: public, max-age=300
+            Cache-Control: no-cache, no-store, must-revalidate
+        page_cache:
+            enabled: true
+            expires: 1800
+        attributes:
+            product: mobile-sports-df
+
+    /{id:sports-df|dffootball|dfsoccer|dfgoal|dfcup|dfmatch168}/*.*:
+        method: GET
+        action: App\MobileEntry\Controller\HomeController:view
+        components:
+            main: lobby
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
         page_cache:
             enabled: true
             expires: 1800

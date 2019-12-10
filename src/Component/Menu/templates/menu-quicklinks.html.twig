@@ -13,7 +13,7 @@
             'quicklinks-settings' in menu.attributes.class) %}
             {% else %}
             <li class="icon-thumbnail-item icon-thumbnail-quicklinks">
-                <a href="{{ url(menu.uri) }}" class="icon-thumbnail-link menu-item-internal {{ menu.attributes.class }}"
+                <a href="{{ url(menu.alias) }}" class="icon-thumbnail-link menu-item-internal {{ menu.attributes.class }}"
                 target="{{ menu.attributes.target }}"
                 data-router="true"
                 data-router-refresh='["main", "tab_navigation"]'

@@ -39,6 +39,10 @@ components:
     class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
     parent: node
 
+  node_basic_page:
+    class: App\MobileEntry\Component\Node\BasicPage\BasicPageComponent
+    parent: node
+
   node_inner_page:
     class: App\MobileEntry\Component\Node\InnerPage\InnerPageComponent
     parent: node
