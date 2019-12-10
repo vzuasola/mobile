@@ -11,6 +11,11 @@ use App\Fetcher\Integration\Exception\ServerDownException;
 class ContactUsFormComponentController
 {
     /**
+     * @var App\Fetcher\Drupal\ConfigFetcher
+     */
+    private $configs;
+
+    /**
      * Rest Object.
      */
     private $rest;
@@ -46,11 +51,17 @@ class ContactUsFormComponentController
     private $session;
 
     /**
+     * @var App\Fetcher\Drupal\Views
+     */
+    private $views;
+
+    /**
      *
      */
     public static function create($container)
     {
         return new static(
+            $container->get('config_fetcher'),
             $container->get('rest'),
             $container->get('change_password'),
             $container->get('sms_verification'),
@@ -58,7 +69,8 @@ class ContactUsFormComponentController
             $container->get('user_fetcher'),
             $container->get('receive_news'),
             $container->get('player_session'),
-            $container->get('session')
+            $container->get('session'),
+            $container->get('views_fetcher')
         );
     }
 
@@ -66,6 +78,7 @@ class ContactUsFormComponentController
      * Public constructor
      */
     public function __construct(
+        $configs,
         $rest,
         $changePass,
         $sms,
@@ -73,8 +86,10 @@ class ContactUsFormComponentController
         $userFetcher,
         $receiveNews,
         $playerSession,
-        $session
+        $session,
+        $views
     ) {
+        $this->configs = $configs;
         $this->rest = $rest;
         $this->changePassword = $changePass;
         $this->sms = $sms;
@@ -83,6 +98,7 @@ class ContactUsFormComponentController
         $this->subscription = $receiveNews;
         $this->playerSession = $playerSession;
         $this->session = $session;
+        $this->views = $views;
     }
 
     /**
@@ -360,5 +376,48 @@ class ContactUsFormComponentController
             'success' => true,
             'status' => 'success'
         ]);
+    }
+
+    /**
+     * Defines the data to be passed to the twig template
+     *
+     * @return array
+     */
+    public function contactUsTabs($request, $response)
+    {
+        try {
+            $views = $this->views;
+            $contactTabs = $views->getViewById('contact_tabs');
+            $data['contactTabs'] = $this->processContactTabs($contactTabs);
+        } catch (\Exception $e) {
+            $data['contactTabs'] = [];
+        }
+
+        try {
+            $data['contact_blurb'] = $this->configs->getConfig('contact_us_config.contact_us_configuration');
+        } catch (\Exception $e) {
+            $data['contact_blurb'] = [];
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    private function processContactTabs($data)
+    {
+        try {
+            $contactTabsList = [];
+            foreach ($data as $contactTabsItem) {
+                $contactTabsData = [];
+                $contactTabsData['field_title'] = $contactTabsItem['field_title'];
+                $contactTabsData['field_tab_content'] = $contactTabsItem['field_tab_content'];
+                $contactTabsData['field_tab_class'] = $contactTabsItem['field_tab_class'];
+
+                $contactTabsList[] = $contactTabsData;
+            }
+        } catch (\Exception $e) {
+            $contactTabsList = [];
+        }
+
+        return $contactTabsList;
     }
 }

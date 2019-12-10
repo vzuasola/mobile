@@ -1,13 +1,15 @@
 import * as utility from "@core/assets/js/components/utility";
-import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import Tab from "@app/assets/script/components/tab";
-import {Marker} from "@app/assets/script/components/marker";
-import * as iconCheckedTemplate from "@app/templates/handlebars/icon-checked.handlebars";
-import * as iconUnCheckedTemplate from "@app/templates/handlebars/icon-unchecked.handlebars";
-import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
-import EqualHeight from "@app/assets/script/components/equal-height";
+import * as Handlebars from "handlebars/runtime";
+
+import * as xhr from "@core/assets/js/vendor/reqwest";
+
+import * as contactUsTabsTemplate from "./handlebars/contact-us-tabs.handlebars";
+import { Router } from "@plugins/ComponentWidget/asset/router";
+
 import {annotation} from "@app/assets/script/components/form-annotation";
 import {ContactUsForm} from "./scripts/contact-us";
+
+import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 /**
  *
@@ -15,17 +17,20 @@ import {ContactUsForm} from "./scripts/contact-us";
 export class ContactUsFormComponent implements ComponentInterface {
     private element: HTMLElement;
     private contactus: any;
+    private contactUsTabsData: any;
 
     onLoad(element: HTMLElement, attachments: {}) {
+        this.element = element;
         this.activateFormAnnotation(element);
         this.activateContactUs(element, attachments);
-        this.countrySelection();
+        this.getContactUsTabs();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+        this.element = element;
         this.activateFormAnnotation(element);
         this.activateContactUs(element, attachments);
-        this.countrySelection();
+        this.getContactUsTabs();
     }
 
     private activateFormAnnotation(element) {
@@ -45,7 +50,7 @@ export class ContactUsFormComponent implements ComponentInterface {
     private countrySelection() {
         const countrySelect = document.getElementById("contactcountry") as HTMLSelectElement;
         const buttonWrapper = document.getElementById("contact-button-wrapper");
-        const svgPhone = "<svg viewbox = '0 0 20 20'><use xlink: href ='#phone'></use></svg>";
+        const svgPhone = "<svg viewbox = '0 0 20 20'><use xlink: href ='#contact-phone'></use></svg>";
 
         if (countrySelect && buttonWrapper) {
             utility.addEventListener(countrySelect, "change", (event, src) => {
@@ -82,4 +87,30 @@ export class ContactUsFormComponent implements ComponentInterface {
             });
         }
     }
+
+    private getContactUsTabs() {
+        xhr({
+            url: Router.generateRoute("contact_us", "contactUsTabs"),
+            type: "json",
+        }).then((response) => {
+            this.contactUsTabsData = response;
+            this.generateContactUsTabsMarkup(this.contactUsTabsData);
+            this.countrySelection();
+        });
+    }
+
+    /**
+     * Set the contact us tabs in the template
+     *
+     */
+    private generateContactUsTabsMarkup(data) {
+        const contactUsTabs: HTMLElement = this.element.querySelector("#contact-us-tabs");
+        const template = contactUsTabsTemplate({
+            contactUsTabsData: data,
+            contactBlurbTitle: data.contact_blurb.page_title,
+            contactBlurbContent: data.contact_blurb.body_content.value,
+        });
+        contactUsTabs.innerHTML = template;
+    }
+
 }
