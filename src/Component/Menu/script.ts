@@ -227,7 +227,8 @@ export class MenuComponent implements ComponentInterface {
 
             if (data.disabled_links) {
                 this.partnerMatrixHideLinks(data.disabled_links);
-                utility.addClass(this.element.querySelector(".btn-cashier"), "btn-full");
+                const btnCashier: HTMLElement = this.element.querySelector(".btn-cashier");
+                btnCashier.style.width = "90%";
             }
         });
     }
