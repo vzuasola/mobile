@@ -102,7 +102,6 @@ class ContactUsFormComponentController
         }
 
         if (isset($formData['subject'])) {
-
             // prepare Form Data
             $explode = array_pad(explode('|', $formData['subject']), 3, null);
             list($product, $to, $subject) = $explode;
