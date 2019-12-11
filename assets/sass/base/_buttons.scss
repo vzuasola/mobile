@@ -122,11 +122,6 @@ a.btn {
 .btn-small {
     @include button-size($btn-small-padding-vertical, $btn-small-padding-horizontal, $btn-small-font-size, $btn-small-font-weight, $btn-small-line-height, $btn-small-border-radius);
 }
-
-.btn-full {
-    width: 90% !important;
-}
-
 // Block button
 // --------------------------------------------------
 
