@@ -30,6 +30,9 @@ class PartnerMatrixModuleScripts implements ComponentAttachmentInterface
             'quicklinks-contact',
             'quicklinks-change-password'
         ],
+        'mobile-menu-footer|href' => [
+            'dafabetaffiliates.com'
+        ]
     ];
 
     /**
@@ -62,8 +65,7 @@ class PartnerMatrixModuleScripts implements ComponentAttachmentInterface
     {
         return [
             'authenticated' => $this->playerSession->isLogin(),
-            // 'matrix' => $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false,
-            'matrix' => true,
+            'matrix' => $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false,
             'pm_disabled_products' => PartnerMatrixModuleScripts::PM_DISABLED_PRODUCTS,
             'pm_disabled_links' => PartnerMatrixModuleScripts::PM_DISABLED_LINKS,
         ];
