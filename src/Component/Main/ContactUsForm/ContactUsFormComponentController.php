@@ -184,7 +184,8 @@ class ContactUsFormComponentController
         try {
             $data['contact_blurb'] = $this->configs->getConfig('contact_us_config.contact_us_configuration');
             $data['contact_blurb']['file_image_page_image'] = $this->asset->generateAssetUri(
-                $data['contact_blurb']['file_image_page_image'], ['product' => 'mobile-entrypage']
+                $data['contact_blurb']['file_image_page_image'],
+                ['product' => 'mobile-entrypage']
             );
         } catch (\Exception $e) {
             $data['contact_blurb'] = [];
