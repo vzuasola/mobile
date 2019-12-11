@@ -2,6 +2,9 @@
     <div class="contact-us-tabs-header">
         <h2>{{ contactBlurbTitle }}</h2>
         {{{ contactBlurbContent }}}
+        {{#if contactImage }}
+            <img src="{{ contactImage }}" alt="{{ this.contactBlurbTitle }}"/>
+        {{/if}}
     </div>
 {{/if}}
 

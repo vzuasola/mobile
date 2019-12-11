@@ -3,6 +3,13 @@
     padding: 0 5%;
     background: $dark-gray;
 
+    p {
+        font-weight: 600;
+        text-align: center;
+        font-size: 1.6rem;
+        margin: 2rem 0;
+    }
+
     .contact-us-form {
         padding: 5%;
 
@@ -93,7 +100,6 @@
     &-header {
         position: relative;
         border-radius: 0.5rem;
-        position: relative;
         width: 100%;
         padding: 1rem;
         margin-bottom: 1rem;

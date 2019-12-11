@@ -109,6 +109,7 @@ export class ContactUsFormComponent implements ComponentInterface {
             contactUsTabsData: data,
             contactBlurbTitle: data.contact_blurb.page_title,
             contactBlurbContent: data.contact_blurb.body_content.value,
+            contactImage: data.contact_blurb.file_image_page_image,
         });
         contactUsTabs.innerHTML = template;
     }

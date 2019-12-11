@@ -45,6 +45,10 @@ class ContactUsFormComponentController
 
     private $lang;
 
+    private $asset;
+
+    private $url;
+
     /**
      *
      */
@@ -58,7 +62,9 @@ class ContactUsFormComponentController
             $container->get('session'),
             $container->get('views_fetcher'),
             $container->get('mail_fetcher'),
-            $container->get('lang')
+            $container->get('lang'),
+            $container->get('asset'),
+            $container->get('uri')
         );
     }
 
@@ -73,7 +79,9 @@ class ContactUsFormComponentController
         $session,
         $views,
         $mail,
-        $lang
+        $lang,
+        $asset,
+        $url
     ) {
         $this->configs = $configs;
         $this->rest = $rest;
@@ -83,6 +91,8 @@ class ContactUsFormComponentController
         $this->views = $views;
         $this->mail = $mail;
         $this->lang = $lang;
+        $this->asset = $asset;
+        $this->url = $url;
     }
 
     /**
