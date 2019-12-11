@@ -46,6 +46,7 @@ export class MenuComponent implements ComponentInterface {
 
         this.listenAnnouncementCount();
         this.listenHighlightMenu();
+        this.listenToPartnerMatrixFilter();
         this.updateMenuRouter();
         this.updateLogoRouter();
 
@@ -208,6 +209,46 @@ export class MenuComponent implements ComponentInterface {
                 }
             }
         });
+    }
+
+    private listenToPartnerMatrixFilter() {
+        ComponentManager.subscribe("post.login.partner.matrix.filter", (event, target, data) => {
+            console.log("listen to partner matrix");
+            if (data.disabled_products) {
+                const products = this.element.querySelectorAll(".menu-display-product li a");
+                for (const productMenu in products) {
+                    if (products.hasOwnProperty(productMenu)) {
+                        const instanceID = products[productMenu].getAttribute("data-product-instance-id");
+                        if (data.disabled_products.indexOf(instanceID) > -1) {
+                            utility.addClass(products[productMenu], "hidden");
+                        }
+                    }
+                }
+            }
+
+            if (data.disabled_links) {
+                this.partnerMatrixHideLinks(data.disabled_links);
+                utility.addClass(this.element.querySelector(".btn-cashier"), "btn-full");
+            }
+        });
+    }
+
+    private partnerMatrixHideLinks(disabledLinks) {
+        for (const linkContainer in disabledLinks) {
+            if (disabledLinks.hasOwnProperty(linkContainer)) {
+                const linkContainerArr = linkContainer.split("|");
+                const links = this.element.querySelectorAll("." + linkContainerArr[0] + " a");
+                for (const link in links) {
+                    if (links.hasOwnProperty(link)) {
+                        const search = links[link].getAttribute(linkContainerArr[1]);
+                        const pattern = new RegExp(disabledLinks[linkContainer].join("|")).test(search);
+                        if (pattern) {
+                            utility.addClass(links[link], "hidden");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private listenHighlightMenu() {

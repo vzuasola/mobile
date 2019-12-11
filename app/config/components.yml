@@ -313,3 +313,6 @@ modules:
 
   soda_casino_integration:
     class: App\MobileEntry\Module\ProductIntegration\SodaCasino\SodaCasinoIntegrationModule
+
+  partner_matrix:
+    class: App\MobileEntry\Module\PartnerMatrix\PartnerMatrixModule
