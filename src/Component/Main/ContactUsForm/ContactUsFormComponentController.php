@@ -2,6 +2,7 @@
 
 namespace App\MobileEntry\Component\Main\ContactUsForm;
 
+use App\Utils\IP;
 use App\Player\Player;
 use App\Fetcher\Integration\Exception\ServerDownException;
 
@@ -21,24 +22,9 @@ class ContactUsFormComponentController
     private $rest;
 
     /**
-     * Change Password Fetcher Object.
-     */
-    private $changePassword;
-
-    /**
-     * sms Object
-     */
-    private $sms;
-
-    /**
      * User Fetcher Object
      */
     private $userFetcher;
-
-    /**
-     * Receive News Object.
-     */
-    private $subscription;
 
     /**
      * Player Session Object.
@@ -55,6 +41,10 @@ class ContactUsFormComponentController
      */
     private $views;
 
+    private $mail;
+
+    private $lang;
+
     /**
      *
      */
@@ -63,14 +53,12 @@ class ContactUsFormComponentController
         return new static(
             $container->get('config_fetcher'),
             $container->get('rest'),
-            $container->get('change_password'),
-            $container->get('sms_verification'),
-            $container->get('config_fetcher'),
             $container->get('user_fetcher'),
-            $container->get('receive_news'),
             $container->get('player_session'),
             $container->get('session'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('mail_fetcher'),
+            $container->get('lang')
         );
     }
 
@@ -80,302 +68,92 @@ class ContactUsFormComponentController
     public function __construct(
         $configs,
         $rest,
-        $changePass,
-        $sms,
-        $configFetcher,
         $userFetcher,
-        $receiveNews,
         $playerSession,
         $session,
-        $views
+        $views,
+        $mail,
+        $lang
     ) {
         $this->configs = $configs;
         $this->rest = $rest;
-        $this->changePassword = $changePass;
-        $this->sms = $sms;
-        $this->configFetcher = $configFetcher->withProduct('account');
         $this->userFetcher = $userFetcher;
-        $this->subscription = $receiveNews;
         $this->playerSession = $playerSession;
         $this->session = $session;
         $this->views = $views;
+        $this->mail = $mail;
+        $this->lang = $lang;
     }
 
     /**
-     * Ajax - change password request
+     * Contact us submit handler
      */
-    public function changepassword($request, $response)
+    public function submit($request, $response)
     {
-        $currentPassword = $request->getParam('current_password');
-        $newPassword = $request->getParam('new_password');
+        $formData = $request->getParam('form');
+        $data = [];
+        $postData = [];
 
         try {
-            $this->changePassword->changePlayerPassword($currentPassword, $newPassword);
-            $status = 'CHANGE_PASSWORD_SUCCESS';
+            $configData = $this->configs
+                ->getConfig('contact_us_config.contact_us_configuration');
         } catch (\Exception $e) {
-            $error = $e->getResponse()->getBody()->getContents();
-            $error = json_decode($error, true);
-
-            $status = 'INTERNAL_ERROR';
-            if ($error['responseCode'] == "INT013") {
-                $status = 'CHANGE_PASSWORD_FAILED';
-            }
+            $configData['from_email'] = 'no-reply@dafabet.com';
         }
 
-        return $this->rest->output($response, [
-            'status' => $status,
-        ]);
-    }
+        if (isset($formData['subject'])) {
+            // prepare Form Data
+            $explode = array_pad(explode('|', $formData['subject']), 3, null);
+            list($product, $to, $subject) = $explode;
 
-    /**
-     * Send Verification Code
-     */
-    public function sendverificationcode($request, $response)
-    {
-        $subTypeId = $request->getParsedBody()['data'] ?? null;
+            $postData = [
+                'langcode' => $this->lang,
+                'module' => 'contact_us_config',
+                'key' => 'contact_us',
+                'to' => $to,
+                'from' => $configData['from_email']
+            ];
+            $postData['params'] = [
+                'firstname' => $formData['first_name'],
+                'lastname' => $formData['last_name'],
+                'username' => $formData['username'],
+                'email' => $formData['email'],
+                'product' => $product,
+                'subject' => $subject,
+                'body' => $formData['message'],
+                'date' => time(),
+                'ip' => IP::getIpAddress()
+            ];
+        }
 
         try {
-            $smsVerificationStatus = $this->sms->sendSmsVerificationCode($subTypeId);
-        } catch (ServerDownException $e) {
-            $status = 'ERROR_MID_DOWN';
-            $config = $this->configFetcher->getConfigById('my_account_header');
-
-            return $this->rest->output($response, [
-                'response_code' => $status,
-                'message' => $config['error_mid_down'] ?? "",
-            ]);
+            // send Mail to API and Drupal
+            $mailRequest = $this->mail->sendMail($postData);
+            $requestBody = json_decode($mailRequest->getBody()->getContents(), true);
         } catch (\Exception $e) {
-            return $response->withStatus(500);
-        }
-
-        if ($smsVerificationStatus) {
-            switch ($smsVerificationStatus) {
-                case 'INT019':
-                    $smsVerificationStatus = 'SMS_VERIFICATION_SUCCESS';
-                    break;
-                case 'INT020':
-                    $smsVerificationStatus = 'SMS_VERIFICATION_FAILED';
-                    break;
-                case 'INT001':
-                    $smsVerificationStatus = 'INTERNAL_ERROR';
-                    break;
-                default:
-                    $smsVerificationStatus = '';
+            // set exception api error
+            $error = json_decode($e->getResponse()->getBody()->getContents(), true);
+            if (isset($error['responseCode'])) {
+                $data['success'] = false;
+                $data['message'] = $error['responseMessage'];
             }
         }
 
-        $message = $this->getErrorMessage($smsVerificationStatus);
+        if (isset($requestBody['responseCode'])) {
+            // redirect to success page
+            if (isset($requestBody['body']['success'])) {
+                $data['success'] = true;
+                $data['message'] = $configData['success_message']['value'];
+            }
 
-        return $this->rest->output($response, [
-            'response_code' => $smsVerificationStatus,
-            'message' => $message
-        ]);
-    }
-
-    public function submitverificationcode($request, $response)
-    {
-        $data = $request->getParsedBody()['data'] ?? null;
-
-        try {
-            $smsVerificationStatus = $this->sms->submitSmsVerificationCode($data);
-        } catch (\Exception $e) {
-            return $response->withStatus(500);
-        }
-
-        if ($smsVerificationStatus) {
-            switch ($smsVerificationStatus) {
-                case 'INT021':
-                    $smsVerificationStatus = 'SMS_VERIFICATION_SUBMIT_SUCCESS';
-                    break;
-                case 'INT022':
-                    $smsVerificationStatus = 'SMS_VERIFICATION_SUBMIT_FAILED';
-                    break;
-                case 'INT001':
-                    $smsVerificationStatus = 'INTERNAL_ERROR';
-                    break;
-                default:
-                    $smsVerificationStatus = '';
+            // set flood/email error message
+            if (isset($requestBody['body']['error'])) {
+                $data['success'] = false;
+                $data['message'] = $requestBody['body']['error'];
             }
         }
 
-        $message = $this->getErrorMessage($smsVerificationStatus);
-
-        return $this->rest->output($response, [
-            'response_code' => $smsVerificationStatus,
-            'message' => $message
-        ]);
-    }
-
-    public function checksmsstatus($request, $response)
-    {
-        $subTypeId = $request->getParsedBody()['subtypeId'] ?? null;
-
-        try {
-            $smsStatus = $this->sms->checkSmsStatus($subTypeId);
-        } catch (\Exception $e) {
-            return $response->withStatus(500);
-        }
-
-        if ($smsStatus) {
-            switch ($smsStatus) {
-                case 'INT023':
-                    $smsStatus = 'CHECK_SMS_STATUS_VERIFIED';
-                    break;
-                case 'INT024':
-                    $smsStatus = 'CHECK_SMS_STATUS_NOT_VERIFIED';
-                    break;
-                case 'INT025':
-                    $smsStatus = 'CHECK_SMS_STATUS_FAILED';
-                    break;
-                case 'INT001':
-                    $smsStatus = 'INTERNAL_ERROR';
-                    break;
-                default:
-                    $smsStatus = '';
-                    break;
-            }
-        }
-
-        $message = $this->getErrorMessage($smsStatus);
-
-        return $this->rest->output($response, [
-            'response_code' => $smsStatus,
-            'message' => $message
-        ]);
-    }
-
-    /**
-     * Error Message List fetcher from drupal
-     */
-    private function getErrorMessage($status)
-    {
-        $smsVerification = $this->configFetcher->getConfigById('my_account_sms_verification');
-        $smsVerificationErrorMessage = $smsVerification['verification_code_response'];
-        $smsVerificationErrorMessages = explode(PHP_EOL, $smsVerificationErrorMessage);
-        $smsVerificationErrorMessageList = array();
-
-        foreach ($smsVerificationErrorMessages as $value) {
-            list($newKey, $newValue) = explode('|', rtrim($value));
-            $smsVerificationErrorMessageList[$newKey] = explode(PHP_EOL, $newValue);
-        }
-
-        foreach ($smsVerificationErrorMessageList as $key => $value) {
-            if ($key == $status) {
-                $message = $value[0];
-            }
-        }
-
-        return $message;
-    }
-
-    /**
-     * Ajax - update profile request
-     */
-    public function updateprofile($request, $response)
-    {
-        $defaultValues = $this->userFetcher->getPlayerDetails();
-        $profileFormValues = $request->getParsedBody();
-
-        $receiveNews = false;
-        $mobile1 = null;
-
-        $mobileNumber = $defaultValues['mobileNumbers']['Home']['number'] ?? "";
-        $mobileNumberVerified = $defaultValues['mobileNumbers']['Home']['verified'] ?? false;
-
-        if (isset($profileFormValues['mobile']) &&
-            !$mobileNumberVerified &&
-            strpos($profileFormValues['mobile'], "*") === false) {
-            $mobileNumber = $profileFormValues['mobile'];
-        }
-
-        if ((isset($profileFormValues['mobile1']) ?? $profileFormValues['mobile1'])) {
-            $mobile1 = $profileFormValues['mobile1'];
-            if (strpos($profileFormValues['mobile1'], "*") !== false) {
-                $mobile1 = $defaultValues['mobileNumbers']['Mobile 1']['number'] ?? "";
-            }
-        }
-
-        if ($profileFormValues['receive_news'] === 'true') {
-            $receiveNews = true;
-        }
-
-        $playerDetails = [
-            'username' => $defaultValues['username'],
-            'firstname' => $profileFormValues['firstName'],
-            'lastname' => $profileFormValues['lastName'],
-            'birthdate' => "/Date(" . $profileFormValues['birthdate'] . ")/",
-            'email' => $defaultValues['email'],
-            'countryid' => $defaultValues['countryId'],
-            'gender' => $profileFormValues['gender'],
-            'language' => $profileFormValues['language'],
-            'mobile' => $mobileNumber,
-            'mobile1' => $mobile1,
-            'address' => $profileFormValues['address'],
-            'city' => $profileFormValues['city'],
-            'postalcode' => $profileFormValues['postal_code'],
-        ];
-
-        try {
-            $this->userFetcher->setPlayerDetails($playerDetails);
-            $this->subscription->setSubscription($receiveNews);
-        } catch (\Exception $e) {
-            $error = $e->getResponse()->getBody()->getContents();
-            $error = json_decode($error, true);
-
-            $status = 'server_error';
-            if ($error['responseCode'] == "INT029") {
-                $status = 'failed';
-            }
-
-            return $this->rest->output($response, [
-                'success' => false,
-                'status' => $status,
-            ]);
-        }
-
-        $this->session->delete(Player::CACHE_KEY);
-
-        return $this->rest->output($response, [
-            'success' => true,
-            'status' => 'success'
-        ]);
-    }
-
-    /**
-     * Ajax - verify password request
-     */
-    public function verifypassword($request, $response)
-    {
-        $requestBody = $request->getParsedBody();
-        $password = $requestBody['password'] ?? null;
-        $username = $requestBody['username'] ?? null;
-
-        try {
-            $this->playerSession->validateSessionPassword($username, $password);
-        } catch (ServerDownException $e) {
-            return $this->rest->output($response, [
-                'success' => false,
-                'status' => 'ERROR_MID_DOWN'
-            ]);
-        } catch (\Exception $e) {
-            $error = $e->getResponse()->getBody()->getContents();
-            $error = json_decode($error, true);
-
-            $status = 'server_error';
-            if ($error['responseCode'] == "INT027") {
-                $status = 'failed';
-            }
-
-            return $this->rest->output($response, [
-                'success' => false,
-                'status' => $status,
-            ]);
-        }
-
-        return $this->rest->output($response, [
-            'success' => true,
-            'status' => 'success'
-        ]);
+        return $this->rest->output($response, $data);
     }
 
     /**

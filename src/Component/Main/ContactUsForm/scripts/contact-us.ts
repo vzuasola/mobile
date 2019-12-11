@@ -25,8 +25,6 @@ export class ContactUsForm extends FormBase {
 
         if (this.form) {
             this.validator = this.validateForm(this.form);
-            console.log(this.form);
-            console.log(this.validator);
             this.bindEvent();
         }
     }
@@ -35,10 +33,50 @@ export class ContactUsForm extends FormBase {
         // Listen form on submit
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
+
+            const data = this.getFormFieldsValue();
             if (!this.validator.hasError) {
-                console.log("submitting");
+                xhr({
+                    url: Router.generateRoute("contact_us", "submit"),
+                    type: "json",
+                    method: "post",
+                    data: {
+                        form: data,
+                    },
+                }).then((response) => {
+                    if (response.success) {
+                        // this.form.hide();
+                        this.element.querySelector(".contact-us").innerHTML = response.message;
+                    }
+                });
             }
         });
+    }
+
+    private getFormFieldsValue() {
+        const data = {};
+        const formFields = this.form.querySelectorAll(".form-field");
+        for (const fieldKey in formFields) {
+            if (formFields.hasOwnProperty(fieldKey)) {
+                const field = formFields[fieldKey];
+                if (field.querySelector("input")) {
+                    const id = field.querySelector("input").getAttribute("id");
+                    data[id.replace("ContactUsForm_", "")] = this.form[id].value;
+                }
+
+                if (field.querySelector("select")) {
+                    const id = field.querySelector("select").getAttribute("id");
+                    data[id.replace("ContactUsForm_", "")] = this.form[id].value;
+                }
+
+                if (field.querySelector("textarea")) {
+                    const id = field.querySelector("textarea").getAttribute("id");
+                    data[id.replace("ContactUsForm_", "")] = this.form[id].value;
+                }
+            }
+        }
+
+        return data;
     }
 
 }
