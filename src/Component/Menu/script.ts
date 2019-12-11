@@ -228,7 +228,9 @@ export class MenuComponent implements ComponentInterface {
             if (data.disabled_links) {
                 this.partnerMatrixHideLinks(data.disabled_links);
                 const btnCashier: HTMLElement = this.element.querySelector(".btn-cashier");
-                btnCashier.style.width = "90%";
+                if (btnCashier) {
+                    btnCashier.style.width = "90%";
+                }
             }
         });
     }

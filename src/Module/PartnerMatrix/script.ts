@@ -21,10 +21,13 @@ export class PartnerMatrixModule implements ModuleInterface {
 
         ComponentManager.subscribe("session.login", (event, target, data) => {
             this.isLogin = true;
+            this.matrix = data.response.matrix;
+            this.broadcastPartnerMatrixFilter();
         });
 
         ComponentManager.subscribe("session.logout", (event, target, data) => {
             this.isLogin = false;
+            this.matrix = false;
         });
 
         ComponentManager.subscribe("menu.ready", (event, target, data) => {
