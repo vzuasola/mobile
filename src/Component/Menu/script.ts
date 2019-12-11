@@ -213,7 +213,6 @@ export class MenuComponent implements ComponentInterface {
 
     private listenToPartnerMatrixFilter() {
         ComponentManager.subscribe("post.login.partner.matrix.filter", (event, target, data) => {
-            console.log("listen to partner matrix");
             if (data.disabled_products) {
                 const products = this.element.querySelectorAll(".menu-display-product li a");
                 for (const productMenu in products) {
