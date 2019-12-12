@@ -175,6 +175,16 @@
                     }
                 }
 
+                li:nth-child(2),
+                li:nth-child(3) {
+                    width: 49%;
+                    display: inline-block;
+                }
+
+                li:nth-child(3) {
+                    float: right;
+                }
+
                 li.col-12 {
                     p, a {
                         display: inline-block;
