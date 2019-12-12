@@ -228,9 +228,8 @@
                         @include gradient($background-color: $light-gray, $background-top: $lightest-gray, $background-bottom: $light-gray);
                         position: relative;
                         width: 90%;
-                        height: 4rem;
                         margin: 1rem 0 1rem;
-                        padding: 0.7rem 3.5rem 0;
+                        padding: 0.7rem 3.5rem;
                         border: 0.1rem solid $light-gray;
                         color: #000;
                         text-align: center;
