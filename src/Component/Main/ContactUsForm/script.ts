@@ -105,13 +105,38 @@ export class ContactUsFormComponent implements ComponentInterface {
      */
     private generateContactUsTabsMarkup(data) {
         const contactUsTabs: HTMLElement = this.element.querySelector("#contact-us-tabs");
+        data = this.processContact(data);
         const template = contactUsTabsTemplate({
             contactUsTabsData: data,
             contactBlurbTitle: data.contact_blurb.page_title,
             contactBlurbContent: data.contact_blurb.body_content.value,
             contactImage: data.contact_blurb.file_image_page_image,
         });
+
         contactUsTabs.innerHTML = template;
+    }
+
+    private processContact(data) {
+        const contact = [];
+
+        for (const tab of data.contactTabs) {
+            if (this.contactsVisibility() && tab.field_device.toLowerCase().indexOf("ios") > -1) {
+                contact.push(tab);
+            }
+
+            if (!this.contactsVisibility() && tab.field_device.toLowerCase().indexOf("android") > -1) {
+                contact.push(tab);
+            }
+        }
+
+        data.contactTabs = contact;
+        return data;
+    }
+
+    private contactsVisibility() {
+        const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+        return ios;
     }
 
 }

@@ -203,6 +203,7 @@ class ContactUsFormComponentController
                 $contactTabsData['field_title'] = $contactTabsItem['field_title'];
                 $contactTabsData['field_tab_content'] = $contactTabsItem['field_tab_content'];
                 $contactTabsData['field_tab_class'] = $contactTabsItem['field_tab_class'];
+                $contactTabsData['field_device'] = $contactTabsItem['field_device'];
 
                 $contactTabsList[] = $contactTabsData;
             }
