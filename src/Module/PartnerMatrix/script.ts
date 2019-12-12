@@ -7,17 +7,26 @@ export class PartnerMatrixModule implements ModuleInterface {
     private matrix: boolean;
     private productsDisabled: any[];
     private linksDisabled: any[];
+    private pathsDisabled: any[];
 
     onLoad(attachments: {
         authenticated: boolean,
         matrix: boolean,
         pm_disabled_products: any[],
         pm_disabled_links: any[],
+        pm_disabled_paths: any[],
     }) {
         this.isLogin = attachments.authenticated;
         this.matrix = attachments.matrix;
         this.productsDisabled = attachments.pm_disabled_products;
         this.linksDisabled = attachments.pm_disabled_links;
+        this.pathsDisabled = attachments.pm_disabled_paths;
+
+        this.redirectToPageUnavailable();
+
+        Router.on(RouterClass.afterNavigate, (event) => {
+            this.redirectToPageUnavailable();
+        });
 
         ComponentManager.subscribe("session.login", (event, target, data) => {
             this.isLogin = true;
@@ -37,6 +46,13 @@ export class PartnerMatrixModule implements ModuleInterface {
         ComponentManager.subscribe("home.products.ready", (event, target, data) => {
             this.broadcastPartnerMatrixFilter();
         });
+    }
+
+    private redirectToPageUnavailable() {
+        const pattern = new RegExp(this.pathsDisabled.join("|")).test(Router.route().toLowerCase());
+        if (this.isLogin && this.matrix && pattern) {
+            window.location.href = "/" + ComponentManager.getAttribute("language") + "/page-unavailable";
+        }
     }
 
     private broadcastPartnerMatrixFilter() {
