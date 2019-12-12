@@ -111,19 +111,6 @@ export class MenuComponent implements ComponentInterface {
         const menu = new Menu(element);
         menu.activate();
         this.menuReady();
-        this.menuListenOnClick();
-    }
-
-    private menuListenOnClick() {
-        ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.hasClass(src, "lgc", true);
-            if (el) {
-                event.preventDefault();
-                Redirector.redirect(el.getAttribute("href"), false, {
-                    target: el.getAttribute("target"),
-                });
-            }
-        });
     }
 
     private updateMenuRouter() {
