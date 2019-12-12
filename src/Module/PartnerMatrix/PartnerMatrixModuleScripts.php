@@ -16,7 +16,7 @@ class PartnerMatrixModuleScripts implements ComponentAttachmentInterface
         'casino',
         'virtual-sports'
     ];
-    
+
     const PARTNER_MATRIX_DISABLED_PATH = [
         '^/promotions',
         '^/my-account',
