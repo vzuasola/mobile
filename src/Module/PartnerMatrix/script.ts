@@ -32,6 +32,7 @@ export class PartnerMatrixModule implements ModuleInterface {
             this.isLogin = true;
             this.matrix = data.response.matrix;
             this.broadcastPartnerMatrixFilter();
+            this.redirectToPageUnavailable();
         });
 
         ComponentManager.subscribe("session.logout", (event, target, data) => {
