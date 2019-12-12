@@ -10,9 +10,11 @@
 
 <ul class="contact-us-tabs-support clearfix">
     {{#each contactUsTabsData.contactTabs}}
-    <li class="contact-us-tabs-support-content {{ field_tab_class }}">
-        <p class="title">{{ field_title }}</p>
-        {{{ field_tab_content }}}
-    </li>
+        {{#if this.field_device}}
+        <li class="contact-us-tabs-support-content {{ field_tab_class }}">
+            <p class="title">{{ field_title }}</p>
+            {{{ field_tab_content }}}
+        </li>
+        {{/if}}
     {{/each}}
 </ul>
