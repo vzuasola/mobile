@@ -18,6 +18,9 @@ export class ProductsComponent implements ComponentInterface {
     }
 
     onReload(element: HTMLElement, attachments: {}) {
+        if (!this.element) {
+            this.listenToPartnerMatrixFilter();
+        }
         this.element = element;
         this.equalizeProductHeight();
         this.componentFinish();
