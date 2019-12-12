@@ -120,7 +120,7 @@ export class ContactUsFormComponent implements ComponentInterface {
         const contact = [];
 
         for (const tab of data.contactTabs) {
-            if (this.contactsVisibility() && tab.field_device.toLowerCase().indexOf("android") > -1) {
+            if (this.contactsVisibility() && tab.field_device.toLowerCase().indexOf("ios") > -1) {
                 contact.push(tab);
             }
 
