@@ -2,7 +2,7 @@
 <ul class="app-download clearfix">
     {{#each downloadData.downloads_menu}}
         {{#condition @index "<" 3}}
-            <li class="app-download-list {{ ../this.menuClass}}">
+            <li class="app-download-list {{ this.attributes.partnerMatrixPlayer }} {{ ../this.menuClass}}">
                 <a href="{{ this.uri }}"
                 class="{{ this.attributes.class }} {{ this.attributes.svg }} {{this.attributes.device}} download-box"
                 data-router="true"

@@ -23,6 +23,11 @@ class DownloadComponentController
     private $url;
 
     /**
+     * @var App\Player\PlayerSession
+     */
+    private $playerSession;
+
+    /**
      *
      */
     public static function create($container)
@@ -32,7 +37,8 @@ class DownloadComponentController
             $container->get('config_fetcher'),
             $container->get('product_resolver'),
             $container->get('rest'),
-            $container->get('uri')
+            $container->get('uri'),
+            $container->get('player_session')
         );
     }
 
@@ -44,12 +50,14 @@ class DownloadComponentController
         $configs,
         $product,
         $rest,
-        $url
+        $url,
+        $playerSession
     ) {
         $this->configs = $configs->withProduct($product->getProduct());
         $this->menus = $menus->withProduct($product->getProduct());
         $this->rest = $rest;
         $this->url = $url;
+        $this->playerSession = $playerSession;
     }
 
     /**
@@ -64,12 +72,14 @@ class DownloadComponentController
         } catch (\Exception $e) {
             $data['downloads_menu'] = [];
         }
-
+        
         try {
             $data['all_apps_text'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
         } catch (\Exception $e) {
             $data['all_apps_text'] = [];
         }
+        
+        $data['partnerMatrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
 
         return $this->rest->output($response, $data);
     }

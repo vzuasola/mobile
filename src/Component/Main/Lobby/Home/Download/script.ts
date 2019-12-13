@@ -61,6 +61,7 @@ export class DownloadComponent implements ComponentInterface {
     private generateDownloadMarkup(data) {
         const download: HTMLElement = this.element.querySelector("#downloads");
         data = this.procesMenu(data);
+        // data = this.filterDownloads(data);
         const template = downloadTemplate({
             downloadData: data,
             menuClass: data.downloads_menu.length === 2 ? "app-download-two" : ((data.downloads_menu.length === 1)
@@ -78,19 +79,25 @@ export class DownloadComponent implements ComponentInterface {
         for (const menu in data.downloads_menu) {
             if (data.downloads_menu.hasOwnProperty(menu)) {
                 const downloadData = data.downloads_menu[menu];
-                if (!downloadData.attributes.device) {
-                    utility.addClass(download, "download-background");
-                    menus.push(downloadData);
-                }
+                const playerMatrix = (data.partnerMatrix === true &&
+                    downloadData.attributes.partnerMatrixPlayer === "partner-matrix-app")
+                    || data.partnerMatrix === false;
 
-                if (this.downloadsVisibility() && downloadData.attributes.device === "ios") {
-                    utility.addClass(download, "download-background");
-                    menus.push(downloadData);
-                }
+                if (playerMatrix) {
+                    if (!downloadData.attributes.device) {
+                        utility.addClass(download, "download-background");
+                        menus.push(downloadData);
+                    }
 
-                if (!this.downloadsVisibility() && downloadData.attributes.device === "android") {
-                    utility.addClass(download, "download-background");
-                    menus.push(downloadData);
+                    if (this.downloadsVisibility() && downloadData.attributes.device === "ios") {
+                        utility.addClass(download, "download-background");
+                        menus.push(downloadData);
+                    }
+
+                    if (!this.downloadsVisibility() && downloadData.attributes.device === "android") {
+                        utility.addClass(download, "download-background");
+                        menus.push(downloadData);
+                    }
                 }
             }
         }
