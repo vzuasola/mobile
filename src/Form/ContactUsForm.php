@@ -103,6 +103,7 @@ class ContactUsForm extends FormBase implements FormInterface
             $subjectChoices = $this->parseSubject($definition['subject']['options']['choices']);
             unset($definition['subject']['options']['choices']);
             $definition['subject']['options']['choices'] = $subjectChoices;
+            $definition['subject']['options']['attr']['disabled'] = "disabled";
         }
 
         $definition['submit']['options']['attr']['class'] = "btn btn-yellow";
