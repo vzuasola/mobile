@@ -4,11 +4,18 @@ namespace App\MobileEntry\Module\GameIntegration\RubyPlay;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 
+use App\Drupal\Config;
+
 class RubyPlayModuleController
 {
     use ProviderTrait;
 
     const KEY = 'ruby_play';
+
+    /**
+     * Header name of geoip
+     */
+    const GEOIP_HEADER = 'x-custom-lb-geoip-country';
 
     private $rest;
 
@@ -62,7 +69,8 @@ class RubyPlayModuleController
                     ]
                 ]);
                 if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
+                    $url = $this->overrideGameUrl($request, $responseData['url']);
+                    $data['gameurl'] = $url ?? $responseData['url'];
                 }
             } catch (\Exception $e) {
                 $data = [];
@@ -70,5 +78,32 @@ class RubyPlayModuleController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    /**
+     *
+     */
+    private function overrideGameUrl($request, $baseUrl)
+    {
+        try {
+            // Get domain override config
+            $config = $this->config->getConfig('webcomposer_config.icore_games_integration');
+            $configGeoIp = Config::parse($config[self::KEY . '_geoip_domain_override'] ?? '');
+            // Get GEOIP
+            $geoip = $request->getHeaderLine(self::GEOIP_HEADER);
+
+            if (isset($configGeoIp[$geoip]) && $overrideDomain = parse_url($configGeoIp[$geoip])) {
+                $parsedUrl = parse_url($baseUrl);
+                $parsedUrl['host'] = $overrideDomain['host'];
+                $newUrl = http_build_url($parsedUrl);
+
+                return (false === $newUrl) ? $baseUrl : $newUrl;
+            }
+        } catch (\Exception $e) {
+            // Do nothing
+        }
+
+        // If eveything fails, return the original game URL
+        return $baseUrl;
     }
 }
