@@ -57,7 +57,9 @@ export class ProductsComponent implements ComponentInterface {
             }
 
             // remove promotions tile
-            this.element.querySelector("li.product-promotions").remove();
+            if (this.element.querySelector("li.product-promotions")) {
+                this.element.querySelector("li.product-promotions").remove();
+            }
         });
     }
 }
