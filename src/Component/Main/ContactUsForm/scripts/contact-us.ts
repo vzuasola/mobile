@@ -25,7 +25,40 @@ export class ContactUsForm extends FormBase {
 
         if (this.form) {
             this.validator = this.validateForm(this.form);
+            this.productChange();
             this.bindEvent();
+        }
+    }
+
+    private productChange() {
+        const product = this.form.querySelector("#ContactUsForm_product");
+        const subject: any = this.form.querySelector("#ContactUsForm_subject");
+        utility.listen(product, "change", (e, src) => {
+            const productValue = this.form.ContactUsForm_product.value;
+            this.resetSubject();
+            if (productValue) {
+                subject.removeAttribute("disabled");
+                for (const options of subject.options) {
+                    if (options.parentNode.getAttribute("label") &&
+                        options.parentNode.getAttribute("label") !== productValue) {
+                        utility.addClass(options.parentNode, "hidden");
+                    }
+                }
+            }
+        });
+    }
+
+    private resetSubject() {
+        const subject: any = this.form.querySelector("#ContactUsForm_subject");
+        if (this.form.querySelector(".ContactUsForm_subject .icon-validation")) {
+            this.form.querySelector(".ContactUsForm_subject .icon-validation").remove();
+        }
+        subject.setAttribute("disabled", "disabled");
+        subject.selectedIndex = 0;
+        for (const options of subject.options) {
+            if (options.parentNode.getAttribute("label")) {
+                utility.removeClass(options.parentNode, "hidden");
+            }
         }
     }
 
