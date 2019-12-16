@@ -93,6 +93,14 @@
                 right: 1rem;
             }
         }
+
+        select[disabled] {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            cursor: not-allowed;
+            background: #ebebe4;
+            color: $gray;
+        }
     }
 }
 
