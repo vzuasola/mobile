@@ -61,7 +61,6 @@ export class DownloadComponent implements ComponentInterface {
     private generateDownloadMarkup(data) {
         const download: HTMLElement = this.element.querySelector("#downloads");
         data = this.procesMenu(data);
-        // data = this.filterDownloads(data);
         const template = downloadTemplate({
             downloadData: data,
             menuClass: data.downloads_menu.length === 2 ? "app-download-two" : ((data.downloads_menu.length === 1)
