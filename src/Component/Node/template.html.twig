@@ -10,3 +10,6 @@
 {% if (type == "lottery_page" or type == "exchange_page") %}
     {{ widget('node_inner_page', {'node': node}) }}
 {% endif %}
+{% if (type == "blank_page") %}
+{{ widget('node_blank_page', {'node': node}) }}
+{% endif %}
