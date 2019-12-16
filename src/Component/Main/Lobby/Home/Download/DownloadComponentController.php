@@ -72,13 +72,13 @@ class DownloadComponentController
         } catch (\Exception $e) {
             $data['downloads_menu'] = [];
         }
-        
+
         try {
             $data['all_apps_text'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
         } catch (\Exception $e) {
             $data['all_apps_text'] = [];
         }
-        
+
         $data['partnerMatrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
 
         return $this->rest->output($response, $data);
