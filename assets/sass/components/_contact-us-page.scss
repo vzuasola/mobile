@@ -94,7 +94,10 @@
             }
         }
 
-        select[disabled] {
+        select[disabled],
+        select[readonly],
+        input[readonly],
+        input[disabled] {
             -webkit-box-shadow: none;
             box-shadow: none;
             cursor: not-allowed;
