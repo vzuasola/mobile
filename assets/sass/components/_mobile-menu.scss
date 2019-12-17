@@ -84,14 +84,14 @@
     &,
     &-header,
     &-internal-header {
-        color: $white;
+        color: #ccc;
     }
 
     // Internal menu heading
     &-internal-header {
         margin: 0 3% 5%;
         border-bottom: 0.1rem solid $gray;
-        color: $gray;
+        color: #ccc;
         text-align: center;
         height: 0.8rem;
         
@@ -173,7 +173,10 @@
 
     // Body
     .mobile-menu-body {
-        padding: 3% 0;
+        position: relative;
+        padding-top: 3%;
+        display: table;
+        height: 92%;
     }
 
     // Menu button
@@ -203,13 +206,12 @@
 
     // Footer
     .mobile-menu-footer {
-        position: absolute;
-        bottom: 0;
         margin: 0 0 0.5rem;
         width: 100%;
         padding: 0;
         text-align: center;
         list-style-type: none;
+        display: table-footer-group;
 
         li {
             display: inline;
@@ -220,7 +222,7 @@
             line-height: 1.1rem;
             padding: 0 0.1rem 0 0.4rem;
             border-left: 0.1rem solid $gray;
-            color: $gray;
+            color: #ccc;
             font-size: 1rem;
             transition: color .3s;
 
@@ -235,6 +237,14 @@
 
         li:first-child a {
             border-left: none;
+        }
+    }
+}
+
+@include media(">=tablet") {
+    .mobile-menu {
+        .mobile-menu-body {
+            height: 94%;
         }
     }
 }
