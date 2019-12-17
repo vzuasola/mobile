@@ -188,24 +188,26 @@
         }
 
         a {
-            width: 47.7%;
-            margin: 0 0 1.5% 0;
+            width: 46.7%;
+            margin: 0 1% 2.5% 1%;
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
-            border: 0.1rem solid $gray;
+            border: 0.1rem solid $dark-gray;
             text-transform: none;
             font-size: 1.2rem;
             font-weight: 600;
             border-radius: 0.3rem;
+            color: $red;
         }
     }
 
     // Footer
     .mobile-menu-footer {
-        padding-left: 0;
-        margin: 0 3% 0 3%;
-        padding-top: 0.2rem;
-        border-top: 0.1rem solid $gray;
+        position: absolute;
+        bottom: 0;
+        margin: 0 0 0.5rem;
+        width: 100%;
+        padding: 0;
         text-align: center;
         list-style-type: none;
 
