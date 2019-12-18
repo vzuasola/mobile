@@ -104,6 +104,16 @@
             background: #ebebe4;
             color: $gray;
         }
+
+        optgroup {
+            color: transparent;
+            font-size: 1px;
+        }
+
+        optgroup option {
+            color: $black;
+            font-size: 1.4rem;
+        }
     }
 }
 
@@ -119,7 +129,7 @@
         padding: 1rem;
         margin-bottom: 1rem;
         background: $dark-red;
-    
+
         h2 {
             font-size: 1.6rem;
             color: $white;
