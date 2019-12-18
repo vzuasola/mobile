@@ -41,15 +41,13 @@
 }
 
 .mobile-menu-overlay {
-    display: none;
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     z-index: 1000;
-    background: $black;
-    background: rgba(0,0,0,0.5);
+    visibility: hidden;
 }
 
 .menu-open {
@@ -61,7 +59,10 @@
     }
 
     .mobile-menu-overlay {
-        display: block;
+        visibility: inherit;
+        z-index: 1001;
+        transition: 0.9s ease-out;
+        background: rgba(0, 0, 0, 0.5);
     }
 
     .mobile-menu {
@@ -176,7 +177,7 @@
         position: relative;
         padding-top: 3%;
         display: table;
-        height: 92%;
+        height: 91%;
     }
 
     // Menu button
