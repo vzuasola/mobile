@@ -447,8 +447,6 @@ export class Login {
         const passwordMaskIcon = this.element.querySelector("#password-mask-svg");
         const passwordunMaskIcon = this.element.querySelector("#password-unmask-svg");
         const passwordStyle = this.element.querySelector("#login-field-password");
-        userIcon.setAttribute("xlink:href", "#user-login");
-        passwordIcon.setAttribute("xlink:href", "#user-password");
         passwordMaskIcon.setAttribute("xlink:href", "#password-mask");
         passwordunMaskIcon.setAttribute("xlink:href", "#password-unmask");
         utility.removeClass(passwordStyle, "login-field-password");
