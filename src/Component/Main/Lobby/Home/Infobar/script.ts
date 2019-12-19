@@ -94,6 +94,8 @@ export class InfobarComponent implements ComponentInterface {
             pl: "News",
             es: "News",
             pt: "News",
+            hi: "समाचार",
+            te: "న్యూస్",
         };
 
         const language = ComponentManager.getAttribute("language");
