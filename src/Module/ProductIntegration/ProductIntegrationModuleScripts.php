@@ -41,6 +41,8 @@ class ProductIntegrationModuleScripts implements ComponentAttachmentInterface
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'productMapping' => Products::PLAYER_MATRIX_PRODUCT_MAPPING,
+            'productAlias' => Products::PRODUCT_ALIAS,
+            'productCodeMapping' => Products::PRODUCTCODE_MAPPING,
             'matrix' => $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false,
         ];
     }
