@@ -3,6 +3,7 @@
     #game-container {
         padding-top: 0;
         padding-bottom: 0;
+        height: 100%;
     }
     .providers-tab-list {
     background: $cat-tab-bg;
@@ -164,6 +165,41 @@
             &-list:first-child+li+li {
                 border-top: 0;
             }
+        }
+    }
+}
+
+// mobile
+@include media("<tablet") {
+    .mobile-arcade {
+        #game-container {
+            min-height: 40vh;
+        }
+    }
+}
+
+// 
+@include media(">=tablet") {
+    .mobile-arcade {
+        #game-container {
+            min-height: 52vh;
+        }
+    }
+}
+
+// tablet-desktop
+@include media(">=tablet") {
+    .mobile-arcade {
+        #game-container {
+            min-height: 52vh;
+        }
+    }
+}
+
+@include media(">=desktop") {
+    .mobile-arcade {
+        #game-container {
+            min-height: 39vh;
         }
     }
 }
