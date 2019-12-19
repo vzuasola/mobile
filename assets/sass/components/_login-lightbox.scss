@@ -1,37 +1,36 @@
 .login {
     // Content
+    .modal-overlay {
+        opacity: 0.5;
+    }
+
+    .login-remember-username {
+        display: block;
+        text-align: left;
+        margin: 1rem 0 2rem;
+    }
+
     &-content {
-        padding: 4rem 5rem;
+        padding: 4rem 6rem;
         border-radius: 0.5rem;
-        background: $red;
+        background: url($login-lightbox-background) no-repeat top center;
 
-        img {
-            margin-bottom: 1.5rem;
-
-            a {
-                width: 100%;
-                height: 100%;
-
-                img {
-                    position: static;
-                    vertical-align: middle;
-                }
-            }
+        #login-logo {
+            margin: 1.8rem auto 1.5rem;
         }
     }
 
     .modal-close-button {
-        width: 1.9rem;
-        height: 1.9rem;
-        right: 1rem;
+        top: 0.5rem;
+        right: 2.5rem;
+        width: 2rem;
+        height: 2rem;
         border: 0;
-        background: #900000;
+        cursor: pointer;
 
         path {
-            fill: #af0000;
-        }
-        rect {
-            fill: #900000;
+            fill: $white;
+            cursor: pointer;
         }
     }
 
@@ -49,24 +48,43 @@
         position: relative;
 
         input {
-            padding: 1rem 1rem 1rem 3.8rem;
+            padding: 0.6rem;
             border: none;
-            border-radius: 0.1rem;
-            background: $white;
+            background-color: transparent;
+            border-bottom: 0.2rem solid $white;
+            outline: none;
+            color: $white;
+            text-shadow: none;
+        }
+
+        input::placeholder {
+            color: $white;
+        }
+
+        @-webkit-keyframes autofill {
+            to {
+                color: $white;
+                background: transparent;
+            }
+        }
+
+        input:-webkit-autofill {
+            -webkit-animation-name: autofill;
+            -webkit-animation-fill-mode: both;
         }
 
         .invalid::placeholder {
-            color: $red;
+            color: $white;
         }
 
         .invalid {
-            background: #faffbd;
+            background-color: transparent;
         }
 
         .invalid ~ .login-field-icon,
         .invalid ~ span .password-icon-mask,
         .invalid ~ span .password-icon-unmask {
-            fill: $red;
+            fill: $white;
         }
 
         &-icon {
@@ -74,7 +92,7 @@
             top: 0.8rem;
             left: 1rem;
             width: 2rem;
-            fill: $disabled-text-gray;
+            fill: $white;
         }
     }
 
@@ -83,8 +101,11 @@
         margin-top: 0.5rem;
     }
 
-    .login-submit {
-        font-size: 2.4rem !important;
+    .login-submit,
+    .btn-join {
+        font-size: 1.6rem;
+        border-radius: 0.3rem;
+        color: $dark-red;
     }
 
 
@@ -194,7 +215,7 @@
         background-color: transparent;
     }
 
-    .login-remember-username, 
+    .login-remember-username,
     .login-help-link,
     .mb-10 {
         font-weight: normal;

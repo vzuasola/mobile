@@ -7,15 +7,9 @@
                 {# <p class="login-notification">Account details incorrect - please check</p> #}
                 <div class="login-field mb-20">
                     <input type="text" class="login-field-username input-block-level" name="username" placeholder="{{ username_placeholder }}">
-                    <svg class="login-field-icon" viewBox="0 210 24 25.087">
-                        <use xlink:href="#user-login" id="user-login-svg"/>
-                    </svg>
                 </div>
                 <div class="login-field">
                     <input type="password" class="login-field-password input-block-level password-mask-enabled" name="password" placeholder="{{ password_placeholder }}">
-                    <svg class="login-field-icon" viewBox="0 240 24 29.247" id="login-field-password">
-                        <use xlink:href="#user-password" id="user-password-svg"/>
-                    </svg>
                     {% set passwordClass = true ? " password-mask-enabled" : "" %}
                     <span class="hidden password-mask-icon mask">
                         <svg class="password-icon-mask" viewBox="0 150 24 19.128">
@@ -27,7 +21,7 @@
                     </span>
                 </div>
                 <p class="login-error"></p>
-                <label class="login-remember-username block mt-10 mb-15 text-left">
+                <label class="login-remember-username">
                     <input type="checkbox" name="remember"> {{ mobile_remember }}
                 </label>
                 <input type="submit" value="{{ login_bottom_label }}" class="btn btn-gray login-submit input-block-level mb-10">
