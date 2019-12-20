@@ -331,15 +331,13 @@ class MyAccountComponentController
     public function verifypassword($request, $response)
     {
         $requestBody = $request->getParsedBody();
-        $password = $requestBody['password'] ?? null;
-        $username = $requestBody['username'] ?? null;
         $playerDetails = $this->userFetcher->getPlayerDetails();
+        $password = $requestBody['password'] ?? null;
+        $username = $playerDetails['username'];
         $success = false;
         $status = "failed";
 
-        if ($this->playerSession->isLogin() &&
-            $playerDetails['username'] === $username
-        ) {
+        if ($this->playerSession->isLogin()) {
             try {
                 $this->playerSession->validateSessionPassword($username, $password);
                 $success = true;
