@@ -66,7 +66,7 @@ class FooterComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
-            $data['sponsors'] = $this->views->getViewById('mobile_sponsor_list');
+            $data['sponsors'] = $this->views->getViewById('mobile_sponsor_list_v2');
         } catch (\Exception $e) {
             $data['sponsors'] = [];
         }
