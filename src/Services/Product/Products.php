@@ -129,4 +129,18 @@ class Products
         'mobile-casino-gold' => 'live-dealer',
         'mobile-soda-casino' => 'live-dealer',
     ];
+
+    const PRODUCTCODE_MAPPING = [
+        'games' => 'mobile-games',
+        'casino' => 'mobile-casino',
+        'casino-gold' => 'mobile-casino-gold',
+        'live-dealer' => 'mobile-live-dealer',
+        'lottery' => 'mobile-lottery',
+        'exchange' => 'mobile-exchange',
+        'arcade' => 'mobile-arcade',
+        'soda-casino' => 'mobile-soda-casino',
+        'virtual-sports' => 'mobile-virtuals',
+        'sports' => 'mobile-sports',
+        'sports-df' => 'mobile-sports-df'
+    ];
 }
