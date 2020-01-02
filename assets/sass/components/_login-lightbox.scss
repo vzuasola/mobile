@@ -93,6 +93,7 @@
             left: 1rem;
             width: 2rem;
             fill: $white;
+            visibility: hidden;
         }
     }
 
@@ -160,6 +161,7 @@
                 left: 0rem;
                 width: 2.6rem;
                 fill: $white;
+                visibility: visible;
             }
 
             .login-field-password {
@@ -222,15 +224,10 @@
     }
 
     .modal-close-button {
+        top: 1rem;
+        right: 1rem;
         width: 2.5rem;
         height: 2.5rem;
-        background: transparent;
-        path {
-            fill: $white;
-        }
-        rect {
-            fill: transparent;
-        }
     }
 }
 
