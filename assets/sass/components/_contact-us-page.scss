@@ -1,0 +1,335 @@
+// Contact Us Innerpage
+.contact-us {
+    padding: 0 5%;
+    background: $dark-gray;
+
+    p {
+        font-weight: 600;
+        text-align: center;
+        font-size: 1.6rem;
+        margin: 2rem 0;
+    }
+
+    .contact-us-form {
+        padding: 5%;
+
+        .form-item {
+            margin-bottom: 1rem;
+        }
+
+        .ContactUsForm_middle_name {
+            display: none;
+        }
+
+        .ContactUsForm_product,
+        .ContactUsForm_subject {
+            position: relative;
+
+            // Validation icons
+            .icon {
+                &-validation {
+                    right: 4rem;
+                }
+            }
+
+            .ContactUsForm_product:after,
+            .ContactUsForm_subject:after {
+                display: table;
+                line-height: 0;
+                content: "";
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                width: 1.5rem;
+                height: 1.5rem;
+                transform: rotate(135deg);
+                border: 0;
+                border-width: 0.4rem 0.4rem 0 0;
+                border-style: solid;
+                border-color: $black;
+            }
+        }
+
+        .form-field {
+            position: relative;
+            padding: 0.1rem 0;
+
+            &-element {
+                width: 100%;
+                padding: 1.2rem;
+                border: 0;
+                background: $white;
+                border-radius: 0.3rem;
+                color: $black;
+
+                &:focus {
+                    border-color: $light-gray;
+                }
+            }
+
+            select {
+                height: auto;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                text-indent: 0.1rem;
+                text-overflow: '';
+            }
+
+            textarea {
+                min-height: 15rem;
+            }
+        }
+
+        // Error message
+        .error-message,
+        .has-error .form-help-block {
+            margin: 0;
+        }
+
+        // Validation icons
+        .icon {
+            &-validation {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+
+        select[disabled],
+        select[readonly],
+        input[readonly],
+        input[disabled] {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            cursor: not-allowed;
+            background: #ebebe4;
+            color: $gray;
+        }
+
+        optgroup {
+            color: transparent;
+            font-size: 1px;
+        }
+
+        optgroup option {
+            color: $black;
+            font-size: 1.4rem;
+        }
+    }
+}
+
+// contact us header
+.contact-us-tabs {
+    background: $dark-gray;
+     padding: 5% 5% 0;
+
+    &-header {
+        position: relative;
+        border-radius: 0.5rem;
+        width: 100%;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: $dark-red;
+
+        h2 {
+            font-size: 1.6rem;
+            color: $white;
+            margin: 0;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0 10rem 0 0;
+            padding-bottom: 0.2rem;
+        }
+
+        img {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 10rem;
+            height: 10rem;
+            margin-right: 1rem;
+        }
+    }
+
+    // contact us customer support
+    &-support {
+        list-style-type: none;
+        display: block;
+        padding: 0;
+        margin: 0;
+
+        &-content {
+            border-radius: 0.5rem;
+            border: 0.1rem solid $white;
+            margin-bottom: 1rem;
+
+            .title {
+                width: 100%;
+                padding: 1rem;
+                margin: 0;
+                border-bottom: 0.1rem solid $white;
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+                background: $dark-red;
+            }
+
+            .item {
+                list-style-type: none;
+                margin: 1rem 0;
+                padding: 0;
+                text-align: center;
+
+                li {
+                    display: inline-block;
+                    border: 0;
+                    vertical-align: middle;
+                    padding: 0;
+
+                    a {
+                        color: $white;
+                        display: block;
+                        margin-top: 0.5rem;
+                    }
+
+                    svg {
+                        fill: $white;
+                        width: 3rem;
+                        vertical-align: middle;
+                    }
+                }
+
+                li.col-12 {
+                    p, a {
+                        display: inline-block;
+                        vertical-align: middle;
+                        padding: 0;
+                        margin: 0 0.5rem;
+                    }
+
+                }
+
+                .contactcountry {
+                    margin: 0 5%;
+                    position: relative;
+                    display: block;
+                }
+
+                #contactcountry {
+                    display: block;
+                    width: 100%;
+                    height: auto;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    text-indent: 0.1rem;
+                    text-overflow: '';
+                    padding: 1.2rem;
+                    border: 0;
+                    background: $white;
+                    border-radius: 0.3rem;
+                    color: $black;
+                }
+
+                .contactcountry:after {
+                    display: table;
+                    line-height: 0;
+                    content: "";
+                    position: absolute;
+                    top: 1rem;
+                    right: 1rem;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    transform: rotate(135deg);
+                    border: 0;
+                    border-width: 0.4rem 0.4rem 0 0;
+                    border-style: solid;
+                    border-color: $black;
+                }
+
+                #contact-button-wrapper {
+                    .btn {
+                        border-radius: 0.2rem;
+                        @include gradient($background-color: $light-gray, $background-top: $lightest-gray, $background-bottom: $light-gray);
+                        position: relative;
+                        width: 90%;
+                        margin: 1rem 0 1rem;
+                        padding: 0.7rem 3.5rem;
+                        border: 0.1rem solid $light-gray;
+                        color: #000;
+                        text-align: center;
+                        display: inline-block;
+                    }
+
+                    .btn:after {
+                        content: "";
+                        position: absolute;
+                        width: 0.1rem;
+                        height: 100%;
+                        top: 0;
+                        left: 3.5rem;
+                        border-left: 0.1rem solid #878787;
+                    }
+
+                    span {
+                        display: block;
+                    }
+
+                    svg {
+                        position: absolute;
+                        left: 0.5rem;
+                        top: 0.5rem;
+                        fill: $black;
+                        @include rotate(380deg);
+                        width: 2.5rem;
+                    }
+                }
+            }
+        }
+
+        .phone {
+            li.col-12 {
+                p {
+                    width: 75%;
+                    text-align: left;
+                    margin-bottom: 0.5rem;
+                    vertical-align: top;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-aspect-ratio: 13 / 9) and (orientation: landscape) {
+    .contact-us-tabs {
+        &-support {
+            &-content:nth-child(1),
+            &-content:nth-child(2) {
+                width: 49%;
+                display: inline-block;
+            }
+
+            &-content:nth-child(2) {
+                float: right;
+            }
+        }
+    }
+}
+
+@include media(">=tablet") {
+    .contact-us-tabs {
+        &-support {
+
+            &-content:nth-child(1),
+            &-content:nth-child(2) {
+                width: 49%;
+                display: inline-block;
+            }
+
+            &-content:nth-child(2) {
+                float: right;
+            }
+        }
+    }
+}
+

@@ -230,7 +230,8 @@ export class PASModule implements ModuleInterface, GameInterface {
                         if (key !== "dafabetgames") {
                             iapiLoginUsernameExternalToken(this.username.toUpperCase(), this.token, 1, language);
                         } else {
-                            iapiLogin(this.username.toUpperCase(), this.token + "@" + this.playerId, 1, language);
+                            iapiLogin(this.username.toUpperCase(), this.token + "@" + this.playerId + "@mobile",
+                                1, language);
                         }
                     }
                 });

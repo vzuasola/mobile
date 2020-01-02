@@ -43,6 +43,10 @@ components:
     class: App\MobileEntry\Component\Node\BasicPage\BasicPageComponent
     parent: node
 
+  node_blank_page:
+    class: App\MobileEntry\Component\Node\BlankPage\BlankPageComponent
+    parent: node
+
   node_inner_page:
     class: App\MobileEntry\Component\Node\InnerPage\InnerPageComponent
     parent: node
@@ -141,6 +145,11 @@ components:
 
   my_account:
     class: App\MobileEntry\Component\Main\MyAccount\MyAccountComponent
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  contact_us:
+    class: App\MobileEntry\Component\Main\ContactUsForm\ContactUsFormComponent
     headers:
       Cache-Control: no-cache, no-store, must-revalidate
 
@@ -316,3 +325,6 @@ modules:
 
   soda_casino_integration:
     class: App\MobileEntry\Module\ProductIntegration\SodaCasino\SodaCasinoIntegrationModule
+
+  partner_matrix:
+    class: App\MobileEntry\Module\PartnerMatrix\PartnerMatrixModule
