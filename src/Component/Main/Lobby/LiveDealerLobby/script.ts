@@ -54,6 +54,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             this.generateLobby(() => {
                 this.highlightMenu();
                 this.setLobby();
+                this.componentFinish();
             });
         });
         this.listenHashChange();
@@ -62,7 +63,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.listenClickLauncherTab();
         this.listenToLaunchGameLoader();
         this.listenToScroll();
-        this.componentFinish();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -94,9 +94,9 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             this.generateLobby(() => {
                 this.highlightMenu();
                 this.setLobby();
+                this.componentFinish();
             });
         });
-        this.componentFinish();
     }
 
     private componentFinish() {

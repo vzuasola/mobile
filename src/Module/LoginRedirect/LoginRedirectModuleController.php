@@ -32,10 +32,6 @@ class LoginRedirectModuleController
     {
         $data = [];
         $body = $request->getParsedBody();
-        $matrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
-        if ($matrix) {
-            return $this->rest->output($response, $data);
-        }
 
         try {
             if (isset($body['url'])) {
