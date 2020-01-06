@@ -13,6 +13,7 @@ import { FormBase, resetForm } from "@app/assets/script/components/form-base";
 export class ContactUsForm extends FormBase {
     private form: HTMLFormElement;
     private validator: any;
+    private subjectOptions: any;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -22,7 +23,7 @@ export class ContactUsForm extends FormBase {
 
     init() {
         this.form = this.element.querySelector(".contact-us-form");
-
+        this.subjectOptions = this.form.querySelectorAll("optgroup");
         if (this.form) {
             this.validator = this.validateForm(this.form);
             this.productChange();
@@ -38,10 +39,14 @@ export class ContactUsForm extends FormBase {
             this.resetSubject();
             if (productValue) {
                 subject.removeAttribute("disabled");
-                for (const options of subject.options) {
-                    if (options.parentNode.getAttribute("label") &&
-                        options.parentNode.getAttribute("label") !== productValue) {
-                        utility.addClass(options.parentNode, "hidden");
+                for (const optgroup of this.subjectOptions) {
+                    if (optgroup.getAttribute("label") === productValue) {
+                        const options = optgroup.querySelectorAll("option");
+                        let ctr = 1;
+                        for (const option of options) {
+                            subject.options[ctr] = new Option(option.innerHTML, option.getAttribute("value"));
+                            ctr++;
+                        }
                     }
                 }
             }
@@ -55,10 +60,10 @@ export class ContactUsForm extends FormBase {
         }
         subject.setAttribute("disabled", "disabled");
         subject.selectedIndex = 0;
-        for (const options of subject.options) {
-            if (options.parentNode.getAttribute("label")) {
-                utility.removeClass(options.parentNode, "hidden");
-            }
+
+        const optgroup = subject.querySelectorAll("optgroup");
+        for (const group of optgroup) {
+            group.remove();
         }
     }
 

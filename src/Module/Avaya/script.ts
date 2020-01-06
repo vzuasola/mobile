@@ -121,7 +121,8 @@ export class AvayaModule implements ModuleInterface {
                 }
 
                 this.avayaLink = updatedUrl;
-                if (DafaConnect.isDafaconnect()) {
+                const params = utility.getParameters(window.location.href);
+                if (DafaConnect.isDafaconnect() || params.clientflag) {
                     window.open(updatedUrl);
                     return;
                 }
