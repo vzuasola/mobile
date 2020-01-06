@@ -572,7 +572,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenOnLogin() {
         ComponentManager.subscribe("session.login", (event, src, data) => {
-            this.refreshResponse();
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
+                this.refreshResponse();
+            }
         });
     }
 
@@ -581,7 +583,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenOnLogout() {
         ComponentManager.subscribe("session.logout", (event, src, data) => {
-            this.refreshResponse();
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
+                this.refreshResponse();
+            }
         });
     }
 
@@ -590,7 +594,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenOnResize() {
         window.addEventListener("resize", () => {
-            this.gameCategories.setActiveCategory(this.gameCategories.getActiveCategory());
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
+                this.gameCategories.setActiveCategory(this.gameCategories.getActiveCategory());
+            }
         });
     }
 
@@ -599,7 +605,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenOnSearch() {
         ComponentManager.subscribe("games.search.success", (event, src, data) => {
-           this.populateGames(data.activeCategory, data.games);
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
+                this.populateGames(data.activeCategory, data.games);
+            }
         });
     }
 
@@ -608,18 +616,20 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenOnFilter() {
         ComponentManager.subscribe("games.filter.success", (event: Event, src, data) => {
-            this.gamesSearch.activateSearchTab();
-            if (data.filteredGames && data.filteredGames.length) {
-                this.gamesSearch.clearSearchBlurbLobby();
-                this.populateGames(data.activeCategory, data.filteredGames);
-            } else {
-                const recommendedGames = this.groupedGames["recommended-games"];
-                let recommended: boolean = false;
-                if (recommendedGames) {
-                    recommended = true;
-                    this.populateGames(this.gameCategories.getActiveCategory(), recommendedGames);
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
+                this.gamesSearch.activateSearchTab();
+                if (data.filteredGames && data.filteredGames.length) {
+                    this.gamesSearch.clearSearchBlurbLobby();
+                    this.populateGames(data.activeCategory, data.filteredGames);
+                } else {
+                    const recommendedGames = this.groupedGames["recommended-games"];
+                    let recommended: boolean = false;
+                    if (recommendedGames) {
+                        recommended = true;
+                        this.populateGames(this.gameCategories.getActiveCategory(), recommendedGames);
+                    }
+                    this.updateBlurbForFilter(recommended);
                 }
-                this.updateBlurbForFilter(recommended);
             }
         });
     }
@@ -629,10 +639,12 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private listenOnCloseFilter() {
         ComponentManager.subscribe("games.reload", (event: Event, src, data) => {
-            ComponentManager.broadcast("category.change");
-            const activeCategory = this.gameCategories.getActiveCategory();
-            this.gameCategories.setActiveCategory(activeCategory);
-            this.populateGames(activeCategory);
+            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
+                ComponentManager.broadcast("category.change");
+                const activeCategory = this.gameCategories.getActiveCategory();
+                this.gameCategories.setActiveCategory(activeCategory);
+                this.populateGames(activeCategory);
+            }
         });
     }
 
