@@ -28,6 +28,6 @@ export class NodeComponent implements ComponentInterface {
     }
 
     private accordion(element) {
-        const accordion = new Accordion(element);
+        const accordion = new Accordion(element, { openByDefault: 0 });
     }
 }

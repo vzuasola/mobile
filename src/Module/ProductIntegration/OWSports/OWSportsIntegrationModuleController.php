@@ -74,6 +74,11 @@ class OWSportsIntegrationModuleController
             $data['redirect'] = $this->getPreLoginLink($host, $owParams, $ismartPrelogin, $isEncoded);
         }
 
+        $matrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
+        if ($matrix) {
+            unset($data['redirect']);
+        }
+
 
         return $this->rest->output($response, $data);
     }
