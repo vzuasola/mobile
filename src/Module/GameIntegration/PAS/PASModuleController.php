@@ -143,6 +143,9 @@ class PASModuleController
                 // Check if game is blocked (dafabetgames only)
                 if ($productKey === 'mobile-games') {
                     $playtechGameCode = $this->getGameUrlParams($requestData);
+                    if (!$playtechGameCode) {
+                        throw new \Exception("Blocked");
+                    }
                 }
 
                 $url = $this->parser->processTokens(
@@ -193,10 +196,11 @@ class PASModuleController
                 'options' => $options
             ]);
 
-            var_dump($responseData);
             if ($responseData['url']) {
                 $params = [];
-                return parse_str(parse_url($responseData['url'])['query'], $params);
+                parse_str(parse_url($responseData['url'])['query'], $params);
+
+                return $params['ExtGameId'];
             }
         } catch (\Exception $e) {
             return [];
