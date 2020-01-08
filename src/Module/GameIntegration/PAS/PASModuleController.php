@@ -37,6 +37,8 @@ class PASModuleController
 
     private $playerSession;
 
+    private $provider;
+
     /**
      *
      */
@@ -48,7 +50,8 @@ class PASModuleController
             $container->get('token_parser'),
             $container->get('config_fetcher'),
             $container->get('player'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('game_provider_fetcher')
         );
     }
 
@@ -61,7 +64,8 @@ class PASModuleController
         $parser,
         $config,
         $player,
-        $playerSession
+        $playerSession,
+        $provider
     ) {
         $this->rest = $rest;
         $this->paymentAccount = $paymentAccount;
@@ -69,6 +73,7 @@ class PASModuleController
         $this->config = $config->withProduct('mobile-casino');
         $this->player = $player;
         $this->playerSession = $playerSession;
+        $this->provider = $provider;
     }
 
     public function updateToken($request, $response)
@@ -133,6 +138,13 @@ class PASModuleController
                 $productKey = $requestData['productMap'];
                 $casino = self::CASINO_MAP[$productKey];
 
+                $playtechGameCode = $requestData['options']['code'];
+
+                // Check if game is blocked (dafabetgames only)
+                if ($productKey === 'mobile-games') {
+                    $playtechGameCode = $this->getGameUrlParams($requestData);
+                }
+
                 $url = $this->parser->processTokens(
                     $iapiConfigs[$casino][$requestData['options']['platform'] . '_client_url']
                 );
@@ -143,7 +155,7 @@ class PASModuleController
 
                 $replacements = [
                     $this->playerSession->getUsername(),
-                    $requestData['options']['code'],
+                    $playtechGameCode,
                     $requestData['language'],
                     $requestData['lang'],
                 ];
@@ -164,6 +176,31 @@ class PASModuleController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    private function getGameUrlParams($requestData)
+    {
+        try {
+            // Setup params
+            $options['languageCode'] = $requestData['language'];
+            $options['playMode']  = 1;
+            $gameId = $requestData['options']['code'];
+            if (!is_numeric($gameId)) {
+                $options['gameName'] = $gameId;
+            }
+
+            $responseData = $this->provider->getGameUrlById('icore_pt', $gameId, [
+                'options' => $options
+            ]);
+
+            var_dump($responseData);
+            if ($responseData['url']) {
+                $params = [];
+                return parse_str(parse_url($responseData['url'])['query'], $params);
+            }
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     /**
