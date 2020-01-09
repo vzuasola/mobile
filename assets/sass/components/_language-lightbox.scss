@@ -63,9 +63,8 @@
             grid-template-columns: 2.5rem 75%;
         }
         
-        // active/hover state
-        &.active a,
-        a:hover {
+        // active state
+        &.active a {
             border: 0.1rem solid $yellow;
             color: $yellow;
         }
