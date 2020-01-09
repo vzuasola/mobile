@@ -81,6 +81,4 @@ export class ContactUsComponent implements ComponentInterface {
         data.contact_menu = contacts;
         return data;
     }
-
-
 }
