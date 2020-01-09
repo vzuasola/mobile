@@ -47,6 +47,7 @@ export class ContactUsComponent implements ComponentInterface {
      */
     private generateContactUsMarkup(data) {
         const contactUs: HTMLElement = this.element.querySelector("#home-contact");
+        data = this.procesMenu(data);
         const template = contactUsTemplate({
             contactUsData: data,
             contactUstext: data.entrypage_config.contact_us_home_text,
@@ -59,5 +60,27 @@ export class ContactUsComponent implements ComponentInterface {
 
         contactUs.innerHTML = template;
     }
+
+    private procesMenu(data) {
+        const contacts = [];
+        for (const contact in data.contact_menu) {
+            if (data.contact_menu.hasOwnProperty(contact)) {
+                const contactUsData = data.contact_menu[contact];
+                const playerMatrix = (data.partnerMatrix === true &&
+                    contactUsData.attributes.partnerMatrixPlayer === "partner-matrix-app")
+                    || data.partnerMatrix === false;
+
+                if (playerMatrix) {
+                    if (!contactUsData.attributes.device) {
+                        contacts.push(contactUsData);
+                    }
+                }
+            }
+        }
+
+        data.contact_menu = contacts;
+        return data;
+    }
+
 
 }

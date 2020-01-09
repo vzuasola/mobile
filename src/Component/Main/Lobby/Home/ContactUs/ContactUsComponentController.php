@@ -23,6 +23,11 @@ class ContactUsComponentController
     private $url;
 
     /**
+     * @var App\Player\PlayerSession
+     */
+    private $playerSession;
+
+    /**
      *
      */
     public static function create($container)
@@ -32,7 +37,8 @@ class ContactUsComponentController
             $container->get('config_fetcher'),
             $container->get('product_resolver'),
             $container->get('rest'),
-            $container->get('uri')
+            $container->get('uri'),
+            $container->get('player_session')
         );
     }
 
@@ -44,12 +50,14 @@ class ContactUsComponentController
         $configs,
         $product,
         $rest,
-        $url
+        $url,
+        $playerSession
     ) {
         $this->configs = $configs->withProduct($product->getProduct());
         $this->menus = $menus->withProduct($product->getProduct());
         $this->rest = $rest;
         $this->url = $url;
+        $this->playerSession = $playerSession;
     }
 
     /**
@@ -70,6 +78,8 @@ class ContactUsComponentController
         } catch (\Exception $e) {
             $data['entrypage_config'] = [];
         }
+
+        $data['partnerMatrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
 
         return $this->rest->output($response, $data);
     }
