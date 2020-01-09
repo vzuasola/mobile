@@ -1,0 +1,11 @@
+<div id="contact-us-tabs" class="contact-us-tabs clearfix">
+</div>
+<div id="contact-us" class="contact-us clearfix">
+    {% form_theme contactUsForm '@base/form/standard.html.twig' %}
+    {{ form_start(contactUsForm, {'attr': {'class': 'pure-form contact-us-form'}}) }}
+    {{ form_end(contactUsForm) }}
+</div>
+<span class="hidden">
+    {% include '@app/web/images/svg/rounded.svg' ignore missing %}
+    {% include '@app/web/images/svg/contacts/contact-icons.svg' ignore missing %}
+</span>

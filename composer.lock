@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc0842ce3091dbae92050a72ca46e522",
+    "content-hash": "0a8c7a5a45f7eb80c261dad8f80e4b5f",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -205,6 +205,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
@@ -3188,11 +3189,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.172.0",
+            "version": "dev-working",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "f7e8bc1df8b208e2168dc36839bde5a3768fa525"
+                "reference": "487fb4232342b104b12a916595d8115883fe23b1"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3243,7 +3244,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2019-11-04T11:08:03+00:00"
+            "time": "2019-12-13T06:36:17+00:00"
         },
         {
             "name": "willdurand/negotiation",

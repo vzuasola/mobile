@@ -150,9 +150,6 @@ export abstract class Redirectable implements ModuleInterface {
     }
 
     protected doRequest(src) {
-        if (this.matrix && Router.route() !== "/sports-df") {
-            return;
-        }
         this.loader.show();
         const lang = ComponentManager.getAttribute("language");
         xhr({
@@ -226,9 +223,6 @@ export abstract class Redirectable implements ModuleInterface {
     }
 
     protected doRedirectAfterLogin(src) {
-        if (this.matrix) {
-            return;
-        }
         let redirect = utility.getParameterByName("re");
         if (!redirect) {
             redirect = "/";

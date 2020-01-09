@@ -121,7 +121,8 @@ export class AvayaModule implements ModuleInterface {
                 }
 
                 this.avayaLink = updatedUrl;
-                if (DafaConnect.isDafaconnect()) {
+                const params = utility.getParameters(window.location.href);
+                if (DafaConnect.isDafaconnect() || params.clientflag) {
                     window.open(updatedUrl);
                     return;
                 }
@@ -173,12 +174,12 @@ export class AvayaModule implements ModuleInterface {
 
             target = utility.getParameterByName("target", target.href);
             target = target || this.openBehavior;
-
+            const params = utility.getParameters(window.location.href);
             if (target === "_self") {
                 this.windowObject = window;
             } else if (target === "_blank") {
                 this.windowObject = window.open("", "_blank");
-            } else if (DafaConnect.isDafaconnect()) {
+            } else if (DafaConnect.isDafaconnect() || params.clientflag) {
                 this.windowObject = window;
             } else {
                 // Popup

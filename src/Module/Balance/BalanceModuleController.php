@@ -24,6 +24,11 @@ class BalanceModuleController
         'soda_casino' => 13,
     ];
 
+    const PARTNER_MATRIX_BEHAVIORS = [
+        'shared_wallet' => 5,
+        'als' => 6,
+    ];
+
     const PRODUCT_MAPPING = [
         'mobile-entrypage' => 0,
         'mobile-games' => 5,
@@ -107,6 +112,7 @@ class BalanceModuleController
             try {
                 $currency = $this->user->getPlayerDetails()['currency'];
                 $countryCode = $this->user->getPlayerDetails()['countryCode'];
+                $matrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
             } catch (\Exception $e) {
                 // Do nothing
             }
@@ -123,6 +129,11 @@ class BalanceModuleController
                 if (strtolower($currency) !== "inr") {
                     unset($ids['exchange']);
                 }
+
+                if ($matrix) {
+                    $ids = self::PARTNER_MATRIX_BEHAVIORS;
+                }
+
                 $balances = $this->balance->getBalanceByProductIds(
                     ['ids' => $ids]
                 )['balance'];

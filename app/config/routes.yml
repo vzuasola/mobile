@@ -66,6 +66,14 @@ routes:
         headers:
             Cache-Control: no-cache, no-store, must-revalidate
 
+    /contact-us:
+        method: GET
+        action: App\MobileEntry\Controller\ContactUsController:view
+        components:
+          main: contact_us
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
     /my-account:
         method: GET
         action: App\MobileEntry\Controller\MyAccountController:view

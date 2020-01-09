@@ -33,6 +33,9 @@ class NodeController extends BaseController
         $data['title'] = $node['title'][0]['value'];
         $data['node'] = $node;
 
+        if ($node['type'][0]['target_id'] == 'blank_page') {
+            return $this->widgets->render($response, '@site/blank.html.twig', $data);
+        }
         return $this->widgets->render($response, '@site/node.html.twig', $data);
     }
 
