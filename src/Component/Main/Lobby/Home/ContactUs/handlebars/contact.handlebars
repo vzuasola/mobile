@@ -1,7 +1,8 @@
-{{#if contactUstext}}
-<p class="home-contact-title">{{ contactUstext }}</p>
-{{/if}}
+{{#if contactUsData.contact_menu}}
 <div class="home-contact-main">
+    {{#if contactUstext}}
+    <p class="home-contact-title">{{ contactUstext }}</p>
+    {{/if}}
     <ul class="home-contact-items clearfix">
         {{#each contactUsData.contact_menu}}
         <li class="home-contact-list  {{ ../this.menuClass}}">
@@ -18,3 +19,4 @@
         {{/each}}
     </ul>
 </div>
+{{/if}}
