@@ -60,25 +60,6 @@ class LanguageComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $data = [];
-
-        $data['currentLanguage'] = $this->currentLanguage;
-
-        try {
-            $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
-        } catch (\Exception $e) {
-            $footerConfigs = [];
-        }
-
-        $data['mobile_language_select'] = $footerConfigs['mobile_language_select'] ?? 'Select Language';
-
-        try {
-            $data['language'] = $this->language->getLanguages();
-            unset($data['language']['default']);
-        } catch (\Exception $e) {
-            $data['language'] = [];
-        }
-
-        return $data;
+        return [];
     }
 }
