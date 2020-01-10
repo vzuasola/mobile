@@ -14,17 +14,38 @@ import {Modal} from "@app/assets/script/components/modal";
  *
  */
 export class LanguageComponent implements ComponentInterface {
+    private isLogin: boolean;
+    private matrix: boolean;
     private product: string;
     private element: HTMLElement;
     private attachments: any;
     private languageData: any;
-    onLoad(element: HTMLElement, attachments: {currentLanguage: string}) {
+
+    onLoad(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        matrix: boolean,
+        currentLanguage: string,
+    }) {
+        this.isLogin = attachments.authenticated;
+        this.matrix = attachments.matrix;
         this.element = element;
         this.attachments = attachments;
         this.getLanguage();
 
         Router.on(RouterClass.afterNavigate, (event) => {
             this.refreshLanguage();
+        });
+
+        ComponentManager.subscribe("session.login", (event, target, data) => {
+            this.isLogin = true;
+            this.matrix = data.response.matrix;
+            this.getLanguage();
+        });
+
+        ComponentManager.subscribe("session.logout", (event, target, data) => {
+            this.isLogin = false;
+            this.matrix = false;
+            this.getLanguage();
         });
     }
 
@@ -87,7 +108,7 @@ export class LanguageComponent implements ComponentInterface {
             type: "json",
         }).then((response) => {
             this.languageData = response;
-            this.generateDownloadMarkup(this.languageData);
+            this.generateLanguageMarkup(this.languageData);
             this.product = ComponentManager.getAttribute("product");
             this.generateLanguageUrl(this.element, this.attachments.currentLanguage);
             this.bindLanguageLightbox();
@@ -95,10 +116,10 @@ export class LanguageComponent implements ComponentInterface {
     }
 
     /**
-     * Set the download in the template
+     * Set the language in the template
      *
      */
-    private generateDownloadMarkup(data) {
+    private generateLanguageMarkup(data) {
         const language: HTMLElement = this.element.querySelector("#language");
 
         let languageList = {
@@ -111,8 +132,17 @@ export class LanguageComponent implements ComponentInterface {
         for (const langKey in data.language) {
             if (data.language.hasOwnProperty(langKey)) {
                 const lang = data.language[langKey];
-                if (!lang.hide) {
-                    langListArray.push(lang);
+
+                if (this.isLogin && this.matrix) {
+                    if (!lang.hide && lang.id !== "es" && lang.id !== "pt-br") {
+                        langListArray.push(lang);
+                    }
+                }
+
+                if (!this.isLogin && !this.matrix) {
+                    if (!lang.hide) {
+                        langListArray.push(lang);
+                    }
                 }
             }
         }
