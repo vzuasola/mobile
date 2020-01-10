@@ -39,13 +39,13 @@ export class LanguageComponent implements ComponentInterface {
         ComponentManager.subscribe("session.login", (event, target, data) => {
             this.isLogin = true;
             this.matrix = data.response.matrix;
-            this.getLanguage();
+            this.processLanguage();
         });
 
         ComponentManager.subscribe("session.logout", (event, target, data) => {
             this.isLogin = false;
             this.matrix = false;
-            this.getLanguage();
+            this.processLanguage();
         });
     }
 
@@ -108,11 +108,15 @@ export class LanguageComponent implements ComponentInterface {
             type: "json",
         }).then((response) => {
             this.languageData = response;
-            this.generateLanguageMarkup(this.languageData);
-            this.product = ComponentManager.getAttribute("product");
-            this.generateLanguageUrl(this.element, this.attachments.currentLanguage);
-            this.bindLanguageLightbox();
+            this.processLanguage();
         });
+    }
+
+    private processLanguage() {
+        this.generateLanguageMarkup(this.languageData);
+        this.product = ComponentManager.getAttribute("product");
+        this.generateLanguageUrl(this.element, this.attachments.currentLanguage);
+        this.bindLanguageLightbox();
     }
 
     /**
@@ -133,14 +137,9 @@ export class LanguageComponent implements ComponentInterface {
             if (data.language.hasOwnProperty(langKey)) {
                 const lang = data.language[langKey];
 
-                if (this.isLogin && this.matrix) {
-                    if (!lang.hide && lang.id !== "es" && lang.id !== "pt-br") {
-                        langListArray.push(lang);
-                    }
-                }
-
-                if (!this.isLogin && !this.matrix) {
-                    if (!lang.hide) {
+                if (!lang.hide) {
+                    if ((this.isLogin && this.matrix && lang.id !== "es" && lang.id !== "pt-br")
+                        || !this.isLogin || (this.isLogin && !this.matrix)) {
                         langListArray.push(lang);
                     }
                 }
