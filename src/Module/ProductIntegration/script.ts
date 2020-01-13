@@ -34,8 +34,7 @@ export class ProductIntegrationModule implements ModuleInterface {
             window.location.href = url;
         }
 
-        if ((product === "mobile-arcade" || product === "mobile-games")
-            && (ComponentManager.getAttribute("language") === "es"
+        if ((this.attachments.matrix) && (ComponentManager.getAttribute("language") === "es"
             || ComponentManager.getAttribute("language") === "pt")) {
             const url = "/en" + Router.route();
 
