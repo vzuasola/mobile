@@ -1,0 +1,20 @@
+<div class="modal-body">
+    {{#if languageTitle}}
+    <h3>{{ languageTitle }}</h3>
+    {{/if}}
+    <ul class="menu">
+        {{#each languageData}}
+        <li class="col-6">
+            <ul>
+            {{#each this}}
+                <li class="{{ this.id }} {{#condition this.prefix "===" ../../currentLanguage }}active{{/condition}}">
+                    <a href="#" class="language-link" data-lang="{{ this.prefix }}">
+                        {{ this.name }}
+                    </a>
+                </li>
+            {{/each}}
+            </ul>
+        </li>
+        {{/each}}
+    </ul>
+</div>

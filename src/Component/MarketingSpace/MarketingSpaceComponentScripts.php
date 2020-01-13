@@ -37,12 +37,6 @@ class MarketingSpaceComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        try {
-            $configs = $this->views->getViewById('marketing_space');
-        } catch (\Exception $e) {
-            $configs = [];
-        }
-
-        return $configs;
+        return [];
     }
 }
