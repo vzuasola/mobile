@@ -70,6 +70,12 @@ export class ProductIntegrationModule implements ModuleInterface {
                     + this.attachments.productMapping[product];
                 window.location.href = url;
             }
+
+            if ((data.response.matrix) && (ComponentManager.getAttribute("language") === "es"
+                || ComponentManager.getAttribute("language") === "pt")) {
+                const url = "/en" + Router.route();
+                window.location.href = url;
+            }
         });
     }
 }
