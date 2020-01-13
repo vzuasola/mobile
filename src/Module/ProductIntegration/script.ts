@@ -33,6 +33,15 @@ export class ProductIntegrationModule implements ModuleInterface {
             // Redirect to als on load if player matrix
             window.location.href = url;
         }
+
+        if ((product === "mobile-arcade" || product === "mobile-games")
+            && (ComponentManager.getAttribute("language") === "es"
+            || ComponentManager.getAttribute("language") === "pt")) {
+            const url = "/en" + Router.route();
+
+            // Redirect to als on load if player matrix
+            window.location.href = url;
+        }
     }
 
     private getProductFromParam() {
