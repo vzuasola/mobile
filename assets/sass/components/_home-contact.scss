@@ -2,13 +2,5 @@
     position: relative;
     display: block;
     width: 100%;
-    height: 10rem;
     background: $dark-red;
-}
-
-@include media(">=tablet") {
-// tablet-desktop
-.home-contact {
-    height: 13rem;
-    }
 }
