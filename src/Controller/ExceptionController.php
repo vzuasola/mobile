@@ -4,21 +4,47 @@ namespace App\MobileEntry\Controller;
 
 use App\Async\Async;
 use App\BaseController;
+use App\MobileEntry\Services\Product\Products;
+use Slim\Exception\NotFoundException;
 
 class ExceptionController extends BaseController
 {
     /**
      *
      */
-    public function exceptionNotFound($request, $response)
+    public function exceptionNotFound($request, $response, $args = [])
     {
-        $data['title'] = '404';
+        $path = $request->getUri()->getPath();
+        $path = trim($path, '/');
 
-        return $this->widgets->render($response, '@site/page.html.twig', $data, [
-            'components_override' => [
-                'main' => 'access_denied',
-            ],
-        ]);
+        $product = $this->get('product_resolver')->getProduct();
+        $alias = str_replace("mobile-", "", $product);
+        if (isset($args['id']) && in_array($args['id'], Products::PRODUCT_ALIAS[$alias])) {
+            $path = $args['params'];
+        }
+
+        try {
+            if ($path === 'page-not-found') {
+                throw new NotFoundException($request, $response);
+            }
+            $node = $this->get('node_fetcher')->withProduct($product)->getNodeByAlias($path);
+        } catch (\Exception $e) {
+            $data['title'] = '404';
+
+            return $this->widgets->render($response, '@site/page.html.twig', $data, [
+                'components_override' => [
+                    'main' => 'access_denied',
+                ],
+            ]);
+        }
+
+        $data['title'] = $node['title'][0]['value'];
+        $data['node'] = $node;
+
+        if ($node['type'][0]['target_id'] == 'blank_page') {
+            return $this->widgets->render($response, '@site/blank.html.twig', $data);
+        }
+        return $this->widgets->render($response, '@site/node.html.twig', $data);
     }
 
     /**

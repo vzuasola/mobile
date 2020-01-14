@@ -1,0 +1,29 @@
+// Page not Found default styles
+.page-not-found {
+    text-align: center;
+
+    &-content {
+        margin: 16em auto 16em auto;
+
+        h1 {
+            padding-top: 30%;
+            text-align: center;
+            color: $orange;
+            font-weight: normal;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            border: 0;
+        }
+
+        img {
+            width: 100%;
+            background-size: auto 100%;
+            padding-top: 15%;
+        }
+
+        a {
+            color: $orange;
+            text-decoration: underline;
+        }
+    }
+}
