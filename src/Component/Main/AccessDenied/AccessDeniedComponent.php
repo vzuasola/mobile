@@ -85,7 +85,6 @@ class AccessDeniedComponent implements ComponentWidgetInterface
             $data['is_match'] = ltrim($this->request->getUri()->getPath(), '/soda/') === 'page-not-found';
         }
 
-        d($data);
         return $data;
     }
 }

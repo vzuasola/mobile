@@ -60,6 +60,7 @@ class BasicPageComponent implements ComponentWidgetInterface
             }, $body);
 
             $data['node']['body'][0]['value'] = $body;
+
         } catch (\Exception $e) {
             $data['node'] = [];
         }

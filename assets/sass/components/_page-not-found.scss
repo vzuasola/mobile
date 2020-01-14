@@ -6,13 +6,12 @@
         margin: 16em auto 16em auto;
 
         h1 {
-            padding-top: 30%;
-            text-align: center;
+            font-size: 15rem;
+            font-weight: 100;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
             color: $orange;
-            font-weight: normal;
-            font-size: 1.6rem;
-            text-transform: uppercase;
-            border: 0;
+            display: block;
         }
 
         img {
