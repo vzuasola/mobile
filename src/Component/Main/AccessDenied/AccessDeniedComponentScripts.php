@@ -63,8 +63,10 @@ class AccessDeniedComponentScripts implements ComponentAttachmentInterface
     }
 
     private function getAliasInUrl() {
-        $url = str_replace('/' . $this->lang . '/', '', $this->request->getUri()->getPath());
-        $exploded = explode('/', $url);
+        $urlPath = str_replace(
+            '/' . $this->lang . '/', '', $this->request->getUri()->getPath()
+        );
+        $exploded = explode('/', $urlPath);
         return (in_array($exploded[1], Products::PRODUCT_ALIAS['soda-casino'])) ? $exploded[1] : '';
     }
 }
