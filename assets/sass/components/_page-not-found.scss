@@ -3,17 +3,6 @@
     text-align: center;
 
     &-content {
-        margin: 16em auto 16em auto;
-
-        h1 {
-            font-size: 15rem;
-            font-weight: 100;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-            color: $orange;
-            display: block;
-        }
-
         img {
             width: 100%;
             background-size: auto 100%;
@@ -23,6 +12,41 @@
         a {
             color: $orange;
             text-decoration: underline;
+        }
+    }
+
+    &-static {
+        text-align: center;
+
+    &-content {
+        margin: 16em auto 16em auto;
+
+            h1 {
+                font-size: 15rem;
+                font-weight: 100;
+                margin-top: 0.5em;
+                margin-bottom: 0.5em;
+                color: $orange;
+                display: block;
+            }
+        }
+    }
+
+}
+
+// mobile casino soda content background
+.mobile-soda-casino.page-not-found {
+    background: $soda-dark-blue;
+    min-height: 71vh;
+    height: 100%;
+}
+
+@include media("<tablet", "landscape") {
+    .page-not-found {
+        &-content {
+            img {
+                padding-top: 5%;
+            }
         }
     }
 }
