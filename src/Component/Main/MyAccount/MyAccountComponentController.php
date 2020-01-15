@@ -331,34 +331,32 @@ class MyAccountComponentController
     public function verifypassword($request, $response)
     {
         $requestBody = $request->getParsedBody();
+        $playerDetails = $this->userFetcher->getPlayerDetails();
         $password = $requestBody['password'] ?? null;
-        $username = $requestBody['username'] ?? null;
+        $username = $playerDetails['username'];
+        $success = false;
+        $status = "failed";
 
-        try {
-            $this->playerSession->validateSessionPassword($username, $password);
-        } catch (ServerDownException $e) {
-            return $this->rest->output($response, [
-                'success' => false,
-                'status' => 'ERROR_MID_DOWN'
-            ]);
-        } catch (\Exception $e) {
-            $error = $e->getResponse()->getBody()->getContents();
-            $error = json_decode($error, true);
-
-            $status = 'server_error';
-            if ($error['responseCode'] == "INT027") {
-                $status = 'failed';
+        if ($this->playerSession->isLogin()) {
+            try {
+                $this->playerSession->validateSessionPassword($username, $password);
+                $success = true;
+                $status = 'success';
+            } catch (ServerDownException $e) {
+                $status = 'ERROR_MID_DOWN';
+            } catch (\Exception $e) {
+                $error = $e->getResponse()->getBody()->getContents();
+                $error = json_decode($error, true);
+                $status = 'server_error';
+                if ($error['responseCode'] == "INT027") {
+                    $status = 'failed';
+                }
             }
-
-            return $this->rest->output($response, [
-                'success' => false,
-                'status' => $status,
-            ]);
         }
 
         return $this->rest->output($response, [
-            'success' => true,
-            'status' => 'success'
+            'success' => $success,
+            'status' => $status
         ]);
     }
 }

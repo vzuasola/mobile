@@ -120,7 +120,6 @@ export class VerifyPassword extends FormBase {
             method: "post",
             data: {
                 password: this.password.value,
-                username: usernameField.value,
             },
         })
             .then((resp) => {
