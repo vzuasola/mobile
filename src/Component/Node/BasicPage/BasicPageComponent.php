@@ -58,7 +58,6 @@ class BasicPageComponent implements ComponentWidgetInterface
                     ['product' => 'mobile-entrypage']
                 ) . "\"";
             }, $body);
-
             $data['node']['body'][0]['value'] = $body;
         } catch (\Exception $e) {
             $data['node'] = [];
