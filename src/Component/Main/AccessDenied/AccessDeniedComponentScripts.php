@@ -39,7 +39,7 @@ class AccessDeniedComponentScripts implements ComponentAttachmentInterface
         $request,
         $resolver,
         $lang
-    ){
+    ) {
         $this->url = $url;
         $this->request = $request;
         $this->resolver = $resolver;

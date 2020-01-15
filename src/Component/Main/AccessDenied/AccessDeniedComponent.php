@@ -39,7 +39,7 @@ class AccessDeniedComponent implements ComponentWidgetInterface
         $resolver,
         $parser,
         $asset
-    ){
+    ) {
         $this->url = $url;
         $this->request = $request;
         $this->resolver = $resolver;
