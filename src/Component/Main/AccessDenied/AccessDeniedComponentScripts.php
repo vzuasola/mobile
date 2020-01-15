@@ -62,7 +62,8 @@ class AccessDeniedComponentScripts implements ComponentAttachmentInterface
         return $data;
     }
 
-    private function getAliasInUrl() {
+    private function getAliasInUrl()
+    {
         $urlPath = str_replace(
             '/' . $this->lang . '/',
             '',
