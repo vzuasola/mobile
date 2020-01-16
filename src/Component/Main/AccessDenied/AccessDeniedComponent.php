@@ -76,7 +76,6 @@ class AccessDeniedComponent implements ComponentWidgetInterface
 
             $data['node']['body'][0]['value'] = $body;
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
             $data['node'] = [];
         }
 
