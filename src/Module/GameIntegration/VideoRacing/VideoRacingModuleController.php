@@ -79,7 +79,7 @@ class VideoRacingModuleController
                 $data['gameurl'] = $responseData['LobbyUrl'];
             }
         } catch (\Exception $e) {
-            $data = [];
+            $data['currency'] = true;
         }
 
         return $data;
@@ -102,7 +102,7 @@ class VideoRacingModuleController
                 $data['gameurl'] = $responseData['url'];
             }
         } catch (\Exception $e) {
-            $data = [];
+            $data['currency'] = true;
         }
 
         return $data;

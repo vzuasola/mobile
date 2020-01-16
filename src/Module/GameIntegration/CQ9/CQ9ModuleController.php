@@ -65,6 +65,7 @@ class CQ9ModuleController
                     $data['gameurl'] = $responseData['url'];
                 }
             } catch (\Exception $e) {
+                $data['currency'] = true;
                 $data = [];
             }
         }
