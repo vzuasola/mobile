@@ -64,21 +64,6 @@ class AccessDeniedComponent implements ComponentWidgetInterface
      */
     public function getData($options = [])
     {
-        try {
-            $data['node'] = $options['node'];
-            $body = $this->parser->processTokens($options['node']['body'][0]['value']);
-            $body = preg_replace_callback('/src="([^"]*)"/i', function ($imageSrc) {
-                return "src=\"" . $this->asset->generateAssetUri(
-                    $imageSrc[1],
-                    ['product' => $this->resolver->getProduct()]
-                ) . "\"";
-            }, $body);
-
-            $data['node']['body'][0]['value'] = $body;
-        } catch (\Exception $e) {
-            $data['node'] = [];
-        }
-
         $data['is_match'] = ltrim($this->request->getUri()->getPath(), '/') === 'page-not-found';
         if ($this->resolver->getProduct() === 'mobile-soda-casino') {
             $data['is_match'] = ltrim($this->request->getUri()->getPath(), '/soda/') === 'page-not-found';
