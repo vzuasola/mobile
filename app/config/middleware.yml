@@ -15,6 +15,7 @@ middlewares:
     token: App\Middleware\Response\Token
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponse
     page_cache: App\MobileEntry\Middleware\ResponseCache
+    xframes: App\MobileEntry\Middleware\XFrames
     headers: App\Middleware\Response\Headers
     lazy_token: App\Middleware\Response\LazyToken
     clean_parameters: App\MobileEntry\Middleware\CleanParameters
@@ -22,6 +23,7 @@ middlewares:
     # profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
 
   cache:
+    xframes: App\MobileEntry\Middleware\XFrames
     bootstrap: App\Middleware\Cache\Bootstrap
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponseCache
     headers: App\Middleware\Response\Headers
