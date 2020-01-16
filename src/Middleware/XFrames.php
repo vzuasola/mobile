@@ -21,12 +21,7 @@ class XFrames implements ResponseMiddlewareInterface
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->request = $container->get('router_request');
-        $this->router = $container->get('route_manager');
         $this->product = $container->get('product_resolver')->getProduct();
-
-        // route configuration
-        $this->route = $this->router->getRouteConfiguration($this->request);
     }
 
     /**
