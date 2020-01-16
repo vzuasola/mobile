@@ -73,7 +73,7 @@ class EzugiGamingModuleController
                 $data['gameurl'] = $responseData;
             }
         } catch (\Exception $e) {
-            $data = [];
+            $data['currency'] = true;
         }
 
         return $data;

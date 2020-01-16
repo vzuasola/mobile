@@ -159,7 +159,7 @@ class PASModuleController
 
                 $data['gameurl'] = $url;
             } catch (\Exception $e) {
-                $data = [];
+                $data['currency'] = true;
             }
         }
 
