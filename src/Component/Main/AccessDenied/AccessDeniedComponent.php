@@ -70,7 +70,7 @@ class AccessDeniedComponent implements ComponentWidgetInterface
             $body = preg_replace_callback('/src="([^"]*)"/i', function ($imageSrc) {
                 return "src=\"" . $this->asset->generateAssetUri(
                     $imageSrc[1],
-                    ['product' => 'mobile-entrypage']
+                    ['product' => $this->resolver->getProduct()]
                 ) . "\"";
             }, $body);
 
