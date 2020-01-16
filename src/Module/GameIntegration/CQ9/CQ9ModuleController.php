@@ -66,7 +66,6 @@ class CQ9ModuleController
                 }
             } catch (\Exception $e) {
                 $data['currency'] = true;
-                $data = [];
             }
         }
 

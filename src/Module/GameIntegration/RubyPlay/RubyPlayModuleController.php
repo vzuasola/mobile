@@ -74,7 +74,6 @@ class RubyPlayModuleController
                 }
             } catch (\Exception $e) {
                 $data['currency'] = true;
-                $data = [];
             }
         }
 

@@ -64,7 +64,6 @@ class PGSoftModuleController
                 }
             } catch (\Exception $e) {
                 $data['currency'] = true;
-                $data = [];
             }
         }
 

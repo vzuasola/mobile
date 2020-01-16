@@ -65,7 +65,6 @@ class FlowGamingModuleController
                 }
             } catch (\Exception $e) {
                 $data['currency'] = true;
-                $data = [];
             }
         }
 
