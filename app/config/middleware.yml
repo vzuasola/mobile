@@ -11,11 +11,11 @@ middlewares:
     session: App\Middleware\Request\Session
 
   response:
+    xframes: App\MobileEntry\Middleware\XFrames
     ucp: App\MobileEntry\Middleware\UnsupportedCurrency
     token: App\Middleware\Response\Token
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponse
     page_cache: App\MobileEntry\Middleware\ResponseCache
-    xframes: App\MobileEntry\Middleware\XFrames
     headers: App\Middleware\Response\Headers
     lazy_token: App\Middleware\Response\LazyToken
     clean_parameters: App\MobileEntry\Middleware\CleanParameters
