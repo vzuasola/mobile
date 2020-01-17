@@ -83,7 +83,7 @@ class SkywindModuleController
                 $data['gameurl'] = $responseData;
             }
         } catch (\Exception $e) {
-            $data = [];
+            $data['currency'] = true;
         }
 
         return $data;
@@ -104,7 +104,7 @@ class SkywindModuleController
                 $data['gameurl'] = $responseData['url'];
             }
         } catch (\Exception $e) {
-            $data = [];
+            $data['currency'] = true;
         }
 
         return $data;

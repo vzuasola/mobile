@@ -79,7 +79,7 @@ class EBetModuleController
                 $data['gameurl'] = $responseData;
             }
         } catch (\Exception $e) {
-            $data = [];
+            $data['currency'] = true;
         }
 
         return $data;
@@ -100,7 +100,7 @@ class EBetModuleController
                 $data['gameurl'] = $responseData['url'];
             }
         } catch (\Exception $e) {
-            $data = [];
+            $data['currency'] = true;
         }
 
         return $data;

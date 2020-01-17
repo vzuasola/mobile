@@ -15,6 +15,8 @@ class BasicPageComponent implements ComponentWidgetInterface
 
     private $asset;
 
+    private $resolver;
+
     /**
      *
      */
@@ -23,6 +25,7 @@ class BasicPageComponent implements ComponentWidgetInterface
         return new static(
             $container->get('player_session'),
             $container->get('token_parser'),
+            $container->get('product_resolver'),
             $container->get('asset')
         );
     }
@@ -30,10 +33,11 @@ class BasicPageComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $parser, $asset)
+    public function __construct($playerSession, $parser, $resolver, $asset)
     {
         $this->playerSession = $playerSession;
         $this->parser = $parser;
+        $this->resolver = $resolver;
         $this->asset = $asset;
     }
     /**
@@ -53,9 +57,13 @@ class BasicPageComponent implements ComponentWidgetInterface
             $data['node'] = $options['node'];
             $body = $this->parser->processTokens($options['node']['body'][0]['value']);
             $body = preg_replace_callback('/src="([^"]*)"/i', function ($imageSrc) {
+                $product = 'mobile-entrypage';
+                if ($this->resolver->getProduct() === 'mobile-soda-casino') {
+                    $product = $this->resolver->getProduct();
+                }
                 return "src=\"" . $this->asset->generateAssetUri(
                     $imageSrc[1],
-                    ['product' => 'mobile-entrypage']
+                    ['product' => $product]
                 ) . "\"";
             }, $body);
             $data['node']['body'][0]['value'] = $body;

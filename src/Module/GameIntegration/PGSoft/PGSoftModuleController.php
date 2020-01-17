@@ -63,7 +63,7 @@ class PGSoftModuleController
                     $data['gameurl'] = $responseData['url'];
                 }
             } catch (\Exception $e) {
-                $data = [];
+                $data['currency'] = true;
             }
         }
 
