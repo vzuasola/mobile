@@ -1,5 +1,5 @@
 // Page not Found default styles
-.page-empty-title {
+.page-not-found {
     text-align: center;
 
     &-content {
@@ -35,15 +35,14 @@
 }
 
 // mobile casino soda content background
-.mobile-soda-casino.page-not-found,
-.mobile-soda-casino.maintenance {
+.mobile-soda-casino.page-not-found {
     background: $soda-dark-blue;
     min-height: 71vh;
     height: 100%;
 }
 
 @include media("<tablet", "landscape") {
-    .page-empty-title {
+    .page-not-found {
         &-content {
             img {
                 padding-top: 5%;
