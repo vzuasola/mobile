@@ -42,6 +42,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     private gameLink: string;
     private productMenu: string = "product-soda-casino";
     private events: {} = {};
+    private maintenance: boolean;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -62,6 +63,7 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             soda_configs: any,
             product: any[],
             infinite_scroll: boolean,
+            maintenance: boolean,
         }) {
         this.response = null;
         this.element = element;
@@ -72,6 +74,8 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
+        this.maintenance = attachments.maintenance;
+        this.checkMaintenance();
         this.updateHeader();
         this.listenChangeCategory();
         this.listenHashChange();
@@ -105,8 +109,11 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
             soda_configs: any,
             product: any[],
             infinite_scroll: boolean,
+            maintenance: boolean,
         }) {
         this.isLogin = attachments.authenticated;
+        this.maintenance = attachments.maintenance;
+        this.checkMaintenance();
         if (!this.element) {
             this.updateHeader();
             this.listenChangeCategory();
@@ -156,6 +163,14 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
         }
 
         return 1;
+    }
+
+    private checkMaintenance() {
+        const route = ComponentManager.getAttribute("route");
+
+        if (this.maintenance) {
+            window.location.href = route + "/maintenance";
+        }
     }
 
     /**

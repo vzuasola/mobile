@@ -1,4 +1,4 @@
-{% if node.alias.0.value  != "/page-not-found" %}
+{% if node.alias.0.value != "/page-not-found" and node.alias.0.value != "/maintenance" %}
 <div class="page-title">
     <h1 class="page-title-text">{{ node.title.0.value }}</h1>
     <a href="javascript:history.go(-1)" class="page-title-back-button">
@@ -10,8 +10,8 @@
 {% endif %}
 
 <div class="node-basic-page {{ app.product_resolver.getProduct }} {{ node.alias.0.value|trim('/') }}">
-    {% if node.alias.0.value  == "/page-not-found" %}
-    <div class="page-not-found-content">
+    {% if node.alias.0.value == "/page-not-found" or node.alias.0.value == "/maintenance" %}
+    <div class="page-empty-title-content">
         {{ node.body.0.value|raw }}
     </div>
     {% else %}
