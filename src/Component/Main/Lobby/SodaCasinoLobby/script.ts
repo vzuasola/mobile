@@ -166,8 +166,10 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
     }
 
     private checkMaintenance() {
+        const route = ComponentManager.getAttribute("route");
+
         if (this.maintenance) {
-            window.location.href = "soda/maintenance";
+            window.location.href = route + "/maintenance";
         }
     }
 
