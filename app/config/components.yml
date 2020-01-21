@@ -300,6 +300,9 @@ modules:
   ky_gaming_integration:
     class: App\MobileEntry\Module\GameIntegration\KYGaming\KYGamingModule
 
+  lottoland_integration:
+    class: App\MobileEntry\Module\GameIntegration\Lottoland\LottolandModule
+
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 
