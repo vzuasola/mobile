@@ -51,6 +51,9 @@ components:
     class: App\MobileEntry\Component\Node\InnerPage\InnerPageComponent
     parent: node
 
+  game_window:
+    class: App\MobileEntry\Component\Main\GameWindow\GameWindowComponent
+
   lobby:
     class: App\MobileEntry\Component\Main\Lobby\LobbyComponent
 
