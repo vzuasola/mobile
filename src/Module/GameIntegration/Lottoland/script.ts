@@ -26,7 +26,6 @@ export class LottolandModule implements ModuleInterface, GameInterface {
         this.languages = attachments.languages;
         this.script = attachments.script;
 
-        console.log(this.script);
         this.messageLightbox = new ProviderMessageLightbox();
     }
 
