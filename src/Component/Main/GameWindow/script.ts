@@ -26,20 +26,7 @@ export class GameWindowComponent implements ComponentInterface {
             product_direct_integration: any,
         },
     ) {
-        this.isLogin = attachments.authenticated;
-        this.productAlias = attachments.product_alias;
-        this.productDirectIntegration = attachments.product_direct_integration;
-
-        ComponentManager.subscribe("session.prelogin", (event, src, data) => {
-            this.isLogin = true;
-        });
-
-        ComponentManager.subscribe("session.logout", (event) => {
-            this.isLogin = false;
-        });
-        this.listenCasinoGoldRedirect();
-        this.doLoginProcess(element);
-        this.integrateProduct(element);
+        this.attachScript();
     }
 
     onReload(
@@ -50,44 +37,12 @@ export class GameWindowComponent implements ComponentInterface {
             product_direct_integration: any,
         },
     ) {
-        this.isLogin = attachments.authenticated;
-        this.productAlias = attachments.product_alias;
-        this.productDirectIntegration = attachments.product_direct_integration;
-        this.doLoginProcess(element);
-        this.integrateProduct(element);
+        this.attachScript();
     }
 
-    private doLoginProcess(element) {
-        if (Router.route() === "/login") {
-            const product = utility.getParameterByName("product") ? utility.getParameterByName("product")
-                : "mobile-entrypage";
-            let productCode = product;
-            for (const originalProduct in this.productAlias) {
-                if (this.productAlias.hasOwnProperty(originalProduct)) {
-                    const aliases = this.productAlias[originalProduct];
-                    if (aliases.includes(product)) {
-                        productCode = originalProduct;
-                    }
-                }
-            }
-
-            ComponentManager.broadcast("direct.login", {srcElement: element, productCode});
-        }
-    }
-
-    private integrateProduct(element) {
-        const product = ComponentManager.getAttribute("product");
-        if (this.productDirectIntegration && this.productDirectIntegration.hasOwnProperty(product)) {
-            const productCode = this.productDirectIntegration[product];
-            if (productCode) {
-                ComponentManager.broadcast("integrate.product", {srcElement: element, productCode});
-            }
-        }
-    }
-
-    private listenCasinoGoldRedirect() {
-        ComponentManager.subscribe("redirect.postlogin.casino-gold", (event, src, data) => {
-           data.loader.hide();
-        });
+    private attachScript() {
+        const script = document.createElement("script");
+        script.src = "https://jscdn.lttlapp.com/sdk/sdk.v1.js";
+        document.body.appendChild(script);
     }
 }
