@@ -415,10 +415,7 @@ routes:
         components:
             main: game_window
         headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
+            Cache-Control: no-cache, no-store, must-revalidate
         attributes:
             product: mobile-lottery
 
