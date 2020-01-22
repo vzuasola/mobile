@@ -3,7 +3,6 @@
 namespace App\MobileEntry\Module\GameIntegration\Lottoland;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
-use App\Utils\Host;
 
 class LottolandModuleController
 {
@@ -76,8 +75,9 @@ class LottolandModuleController
 
             if ($responseData) {
                 $parsedUrl = parse_url($responseData);
-                $hostname = Host::getDomain();
-                $parsedUrl['host'] = 'm.' . $hostname . '/' . $this->lang .
+                $uri = $request->getUri();
+                $parsedUrl['scheme'] = $uri->getScheme();
+                $parsedUrl['host'] = $uri->getHost() . '/' . $this->lang .
                 '/keno/launch/lottoland';
 
                 $newUrl = http_build_url($parsedUrl);
