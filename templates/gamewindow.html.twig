@@ -14,7 +14,10 @@
 
 {% block header %}
 {{ widget('meta') }}
-{{ widget('header') }}
+<div class="game-window-wrapper">
+    {{ include('@component/Header/templates/logo-image.html.twig') }}
+    {{ widget('header') }}
+</div>
 {% endblock header %}
 
 {% block body %}
