@@ -1,9 +1,26 @@
+.game-window-wrapper {
+    position: relative;
+
+    img {
+        position: absolute;
+        top: 1.5rem;
+        left: 0.5rem;
+        width: 13rem;
+        height: 3.1rem;
+        z-index: 1;
+    }
+
+    #header-logo {
+        display: none;
+        visibility: hidden;
+    }
+}
+
 header {
     position: relative;
 
     .header-dafabet {
         position: relative;
-        padding: 0 2rem;
         height: 6rem;
         width: 100%;
         background-color: #af0000;
