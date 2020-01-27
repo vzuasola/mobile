@@ -47,7 +47,8 @@ class AccessDeniedComponentController
         $asset,
         $url
     ) {
-        $this->configs = $configs->withProduct($product->getProduct());
+        $this->configs = $configs;
+        $this->product = $product;
         $this->rest = $rest;
         $this->parser = $parser;
         $this->asset = $asset;
@@ -67,8 +68,8 @@ class AccessDeniedComponentController
             $body = $this->parser->processTokens($config['page_not_found_content_' . $product]['value']);
             $body = preg_replace_callback('/src="([^"]*)"/i', function ($imageSrc) {
                 $productID = 'mobile-entrypage';
-                if ($this->resolver->getProduct() === 'mobile-soda-casino') {
-                    $productID = $this->resolver->getProduct();
+                if ($this->product->getProduct() === 'mobile-soda-casino') {
+                    $productID = $this->product->getProduct();
                 }
                 return "src=\"" . $this->asset->generateAssetUri(
                     $imageSrc[1],
