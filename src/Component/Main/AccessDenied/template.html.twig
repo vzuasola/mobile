@@ -7,10 +7,4 @@
     </style>
 {% endif %}
 
-<div class="page-not-found-static container">
-    <div class="page-not-found-static-content">
-        <h1>
-            404
-        </h1>
-        <p>The page you are looking for does not exist</p>
-</div>
+<div class="page-not-found {{ app.product_resolver.getProduct }}" id="page-not-found"></div>
