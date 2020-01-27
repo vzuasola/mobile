@@ -74,8 +74,7 @@ class AccessDeniedComponentController
 
             $data = [
                 'title' => $config['page_not_found_title_' . $product] ?? '404',
-                'content' => $config['page_not_found_content_' . $product]['value']
-                ?? 'The page you are looking for does not exist'
+                'content' => $body ?? 'The page you are looking for does not exist'
             ];
         } catch (\Exception $e) {
             $data = [];
