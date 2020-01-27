@@ -12,10 +12,6 @@ class AccessDeniedComponent implements ComponentWidgetInterface
 
     private $resolver;
 
-    private $parser;
-
-    private $asset;
-
     /**
      *
      */
@@ -24,9 +20,7 @@ class AccessDeniedComponent implements ComponentWidgetInterface
         return new static(
             $container->get('uri'),
             $container->get('router_request'),
-            $container->get('product_resolver'),
-            $container->get('token_parser'),
-            $container->get('asset')
+            $container->get('product_resolver')
         );
     }
 
@@ -36,15 +30,11 @@ class AccessDeniedComponent implements ComponentWidgetInterface
     public function __construct(
         $url,
         $request,
-        $resolver,
-        $parser,
-        $asset
+        $resolver
     ) {
         $this->url = $url;
         $this->request = $request;
         $this->resolver = $resolver;
-        $this->parser = $parser;
-        $this->asset = $asset;
     }
 
     /**
