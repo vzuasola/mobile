@@ -66,9 +66,13 @@ class AccessDeniedComponentController
             $product = $request->getParam('product') ? $request->getParam('product') : 'mobile-entrypage';
             $body = $this->parser->processTokens($config['page_not_found_content_' . $product]['value']);
             $body = preg_replace_callback('/src="([^"]*)"/i', function ($imageSrc) {
+                $productID = 'mobile-entrypage';
+                if ($this->resolver->getProduct() === 'mobile-soda-casino') {
+                    $productID = $this->resolver->getProduct();
+                }
                 return "src=\"" . $this->asset->generateAssetUri(
                     $imageSrc[1],
-                    ['product' => 'mobile-entrypage']
+                    ['product' => $productID]
                 ) . "\"";
             }, $body);
 
