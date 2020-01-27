@@ -124,6 +124,9 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'countryId' => $apiValues['countryId'],
             'mobile_number_1' => $apiValues['mobileNumbers']['Home']['number'],
             'mobile_number_2' => (($mobile1Value === '') || ($mobile1Value === null)) ? '' : $mobile1Value,
+            'hidden_sms_2' => (($mobile1Value === '') || ($mobile1Value === null)),
+            'mobile_number_1_masked' => $this->contactNumberMasking($apiValues['mobileNumbers']['Home']['number']),
+            'mobile_number_2_masked' => (($mobile1Value === '') || ($mobile1Value === null)) ? '' : $this->contactNumberMasking($mobile1Value),
             'sms_1_verified' => $apiValues['mobileNumbers']['Home']['verified'] ?? null,
             'sms_2_verified' => $apiValues['mobileNumbers']['Mobile 1']['verified'] ?? null,
             'gender' => $apiValues['gender'],
@@ -133,5 +136,16 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'receive_news' => $receiveNews,
             'birthdate' => $apiValues['dateOfBirth']
         ];
+    }
+
+    /**
+     * Contact number masking callback
+     *
+     * @param string $contact for email masking
+     * @return string converted masking string
+     */
+    private function contactNumberMasking($contact)
+    {
+        return str_pad(substr($contact, -4), strlen($contact), '*', STR_PAD_LEFT);
     }
 }
