@@ -126,7 +126,8 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
             'mobile_number_2' => (($mobile1Value === '') || ($mobile1Value === null)) ? '' : $mobile1Value,
             'hidden_sms_2' => (($mobile1Value === '') || ($mobile1Value === null)),
             'mobile_number_1_masked' => $this->contactNumberMasking($apiValues['mobileNumbers']['Home']['number']),
-            'mobile_number_2_masked' => (($mobile1Value === '') || ($mobile1Value === null)) ? '' : $this->contactNumberMasking($mobile1Value),
+            'mobile_number_2_masked' => (($mobile1Value === '') || ($mobile1Value === null)) ? 
+                '' : $this->contactNumberMasking($mobile1Value),
             'sms_1_verified' => $apiValues['mobileNumbers']['Home']['verified'] ?? null,
             'sms_2_verified' => $apiValues['mobileNumbers']['Mobile 1']['verified'] ?? null,
             'gender' => $apiValues['gender'],
