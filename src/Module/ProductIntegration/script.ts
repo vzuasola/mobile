@@ -33,6 +33,14 @@ export class ProductIntegrationModule implements ModuleInterface {
             // Redirect to als on load if player matrix
             window.location.href = url;
         }
+
+        if ((this.attachments.matrix) && (ComponentManager.getAttribute("language") === "es"
+            || ComponentManager.getAttribute("language") === "pt")) {
+            const url = "/en" + Router.route();
+
+            // Redirect to als on load if player matrix
+            window.location.href = url;
+        }
     }
 
     private getProductFromParam() {
@@ -60,6 +68,12 @@ export class ProductIntegrationModule implements ModuleInterface {
             ) {
                 const url = "/" + ComponentManager.getAttribute("language") + "/"
                     + this.attachments.productMapping[product];
+                window.location.href = url;
+            }
+
+            if ((data.response.matrix) && (ComponentManager.getAttribute("language") === "es"
+                || ComponentManager.getAttribute("language") === "pt")) {
+                const url = "/en" + Router.route();
                 window.location.href = url;
             }
         });

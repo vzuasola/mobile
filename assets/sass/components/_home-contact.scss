@@ -1,16 +1,6 @@
 .home-contact {
     position: relative;
-    margin-bottom: 1rem;
     display: block;
     width: 100%;
-    height: 10rem;
     background: $dark-red;
 }
-
-// tablet-desktop
-@include media(">=tablet") {
-    .home-contact {
-        height: 13rem;
-    }
-}
-

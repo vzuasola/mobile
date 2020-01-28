@@ -1,32 +1,5 @@
 <div id="language-lightbox" class="modal language language-lightbox">
-    <div class="modal-content language-content">
-        <div class="modal-body">
-            <h3>{{ mobile_language_select }}</h3>
-            <ul class="menu">
-                {% set odd = language|length  % 2 ? true : false %}
-                {% set limit = odd ? language|length / 2 + 0.5 : language|length / 2 %}
-                {% for key,lang in language %}
-                    {% set isActive = lang.prefix == currentLanguage ? "active" : "" %}
-                    {# Opening Container #}
-                    {%if loop.index == 1 or loop.index == limit + 1 %}
-                    <li class="col-6">
-                        <ul>
-                    {% endif %}
-                    {% if lang.hide != true %}
-                        <li class="{{ lang.id }} {{ isActive }}">
-                            <a href="#" class="language-link" data-lang="{{ lang.prefix }}">
-                            {{ lang.name }}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {# Closing Container #}
-                    {%if loop.index == limit or loop.index == language|length %}
-                        </ul>
-                    </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
-        {% include '@app/web/images/svg/closed.svg' %}
+    <div class="modal-content language-content" id="language">
     </div>
+    {% include '@app/web/images/svg/closed.svg' %}
 </div>
