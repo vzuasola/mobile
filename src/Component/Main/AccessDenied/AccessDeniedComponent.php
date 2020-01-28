@@ -54,11 +54,6 @@ class AccessDeniedComponent implements ComponentWidgetInterface
      */
     public function getData($options = [])
     {
-        $data['is_match'] = ltrim($this->request->getUri()->getPath(), '/') === 'page-not-found';
-        if ($this->resolver->getProduct() === 'mobile-soda-casino') {
-            $data['is_match'] = ltrim($this->request->getUri()->getPath(), '/soda/') === 'page-not-found';
-        }
-
-        return $data;
+        return [];
     }
 }
