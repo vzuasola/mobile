@@ -145,6 +145,9 @@ class BalanceModuleController
                 // We'll remove the OW Sports bonus, since it's already part of the "realmoney" balance
                 unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['oneworks']]);
 
+                // the same with oneworks
+                unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['soda_casino']]);
+
                 // We'll remove the Esports bonus, since it's already part of the "realmoney" balance
                 unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['esports']]);
 
@@ -194,7 +197,7 @@ class BalanceModuleController
     }
 
     private function manageBalance(
-        $balances,
+        &$balances,
         $balanceMap,
         $currency,
         $currencyMap,
@@ -226,6 +229,7 @@ class BalanceModuleController
                 [
                     'ids' => [
                         self::SPECIAL_BALANCE_BEHAVIORS['oneworks'],
+                        self::SPECIAL_BALANCE_BEHAVIORS['soda_casino'],
                         self::SPECIAL_BALANCE_BEHAVIORS['als'],
                         self::SPECIAL_BALANCE_BEHAVIORS['esports']
                     ]

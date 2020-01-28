@@ -34,6 +34,7 @@ import {EzugiGamingModule} from "@app/src/Module/GameIntegration/EzugiGaming/scr
 import {VideoRacingModule} from "@app/src/Module/GameIntegration/VideoRacing/script";
 import {FunGamingModule} from "@app/src/Module/GameIntegration/FunGaming/script";
 import {KYGamingModule} from "@app/src/Module/GameIntegration/KYGaming/script";
+import {LottolandModule} from "@app/src/Module/GameIntegration/Lottoland/script";
 import {LoginRedirectModule} from "@app/src/Module/LoginRedirect/script";
 import {ProductIntegrationModule} from "@app/src/Module/ProductIntegration/script";
 import {GenericIntegrationModule} from "@app/src/Module/ProductIntegration/Generic/script";
@@ -81,6 +82,7 @@ ComponentManager.setModules({
     videoracing_integration: new VideoRacingModule(),
     fun_gaming_integration: new FunGamingModule(),
     ky_gaming_integration: new KYGamingModule(),
+    lottoland_integration: new LottolandModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
     generic_integration: new GenericIntegrationModule(),

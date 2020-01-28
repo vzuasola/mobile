@@ -73,7 +73,7 @@ class RubyPlayModuleController
                     $data['gameurl'] = $url ?? $responseData['url'];
                 }
             } catch (\Exception $e) {
-                $data = [];
+                $data['currency'] = true;
             }
         }
 

@@ -46,6 +46,7 @@ export class GameIntegrationModule implements ModuleInterface {
         const videoRacing: any = ComponentManager.getModuleInstance("videoracing_integration");
         const funGaming: any = ComponentManager.getModuleInstance("fun_gaming_integration");
         const kyGaming: any = ComponentManager.getModuleInstance("ky_gaming_integration");
+        const lottoland: any = ComponentManager.getModuleInstance("lottoland_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
@@ -74,6 +75,7 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("video_racing", videoRacing);
         this.gameLauncher.setProvider("fun_gaming", funGaming);
         this.gameLauncher.setProvider("ky_gaming", kyGaming);
+        this.gameLauncher.setProvider("lottoland", lottoland);
 
         setTimeout(() => {
             this.gameLauncher.init();

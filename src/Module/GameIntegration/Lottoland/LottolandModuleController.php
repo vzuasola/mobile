@@ -1,22 +1,24 @@
 <?php
 
-namespace App\MobileEntry\Module\GameIntegration\AllBet;
+namespace App\MobileEntry\Module\GameIntegration\Lottoland;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 
-class AllBetModuleController
+class LottolandModuleController
 {
     use ProviderTrait;
 
-    const KEY = 'allbet';
+    const KEY = 'lottoland';
 
     private $rest;
 
-    private $allbet;
+    private $lottland;
 
     private $config;
 
     private $player;
+
+    private $lang;
 
     /**
      *
@@ -27,19 +29,21 @@ class AllBetModuleController
             $container->get('rest'),
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
-            $container->get('player')
+            $container->get('player'),
+            $container->get('lang')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $allbet, $config, $player)
+    public function __construct($rest, $lottland, $config, $player, $lang)
     {
         $this->rest = $rest;
-        $this->allbet = $allbet;
-        $this->config = $config->withProduct('mobile-live-dealer');
+        $this->lottland = $lottland;
+        $this->config = $config->withProduct('mobile-lottery');
         $this->player = $player;
+        $this->lang = $lang;
     }
 
     /**
@@ -51,25 +55,33 @@ class AllBetModuleController
         $data['currency'] = false;
 
         if ($this->checkCurrency($request)) {
-            $data = $this->getGameLobby($request, $response);
+            $data = $this->getGameUrl($request);
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function getGameLobby($request, $response)
+    private function getGameUrl($request)
     {
         $data['currency'] = true;
         $requestData = $request->getParsedBody();
 
         try {
-            $responseData = $this->allbet->getLobby('icore_ab', [
+            $responseData = $this->lottland->getLobby('icore_lottoland', [
                 'options' => [
                     'languageCode' => $requestData['langCode'],
                 ]
             ]);
+
             if ($responseData) {
-                $data['gameurl'] = $responseData;
+                $parsedUrl = parse_url($responseData);
+                $uri = $request->getUri();
+                $parsedUrl['scheme'] = $uri->getScheme();
+                $parsedUrl['host'] = $uri->getHost() . '/' . $this->lang .
+                '/keno/launch/lottoland';
+
+                $newUrl = http_build_url($parsedUrl);
+                $data['gameurl'] = $newUrl;
             }
         } catch (\Exception $e) {
             $data['currency'] = true;
