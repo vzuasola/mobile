@@ -209,10 +209,6 @@ export class Profile extends FormBase {
     }
 
     private hasChanges() {
-        if (this.newValues.mobile.includes("*") || this.newValues.mobile1.includes("*")) {
-            return false;
-        }
-
         return !this.isEquivalent(this.getUserData(), this.newValues);
     }
 
@@ -274,7 +270,11 @@ export class Profile extends FormBase {
             // If values of same property are not equal,
             // objects are not equivalent
             if (a[propName] !== b[propName]) {
-                return false;
+                if ((propName === "mobile" || propName === "mobile1") && b[propName].includes("*")) {
+                    continue;
+                } else {
+                    return false;
+                }
             }
         }
 
@@ -292,8 +292,12 @@ export class Profile extends FormBase {
 
         for (const propName of aProps) {
             if (a[propName] !== b[propName]) {
-                old[propName] = a[propName];
-                modified[propName] = b[propName];
+                if ((propName === "mobile" || propName === "mobile1") && b[propName].includes("*")) {
+                    continue;
+                } else {
+                    old[propName] = a[propName];
+                    modified[propName] = b[propName];
+                }
             }
         }
 
