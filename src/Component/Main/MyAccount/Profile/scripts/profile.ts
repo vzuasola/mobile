@@ -209,10 +209,6 @@ export class Profile extends FormBase {
     }
 
     private hasChanges() {
-        // if (this.newValues.mobile.includes("*") || this.newValues.mobile1.includes("*")) {
-        //     return false;
-        // }
-
         return !this.isEquivalent(this.getUserData(), this.newValues);
     }
 
