@@ -51,6 +51,9 @@ components:
     class: App\MobileEntry\Component\Node\InnerPage\InnerPageComponent
     parent: node
 
+  game_window:
+    class: App\MobileEntry\Component\Main\GameWindow\GameWindowComponent
+
   lobby:
     class: App\MobileEntry\Component\Main\Lobby\LobbyComponent
 
@@ -304,6 +307,9 @@ modules:
 
   ky_gaming_integration:
     class: App\MobileEntry\Module\GameIntegration\KYGaming\KYGamingModule
+
+  lottoland_integration:
+    class: App\MobileEntry\Module\GameIntegration\Lottoland\LottolandModule
 
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule

@@ -1,0 +1,33 @@
+{% extends '@site/base.html.twig' %}
+
+{% block seo %}
+    {{ widget('seo') }}
+{% endblock %}
+
+{% block marketing %}
+    {{ widget('marketing') }}
+{% endblock %}
+
+{% block css %}
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+{{ widget('meta') }}
+<div class="game-window-wrapper">
+    {{ include('@component/Header/templates/logo-image.html.twig') }}
+    {{ widget('header') }}
+</div>
+{% endblock header %}
+
+{% block body %}
+    {% block main %}
+    {{ widget('main') }}
+    {% endblock main %}
+{% endblock body %}
+
+
+{% block script %}
+    {{ parent() }}
+    <script src="{{ asset('js/app.js') }}"></script>
+{% endblock %}

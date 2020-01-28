@@ -1,3 +1,21 @@
+.game-window-wrapper {
+    position: relative;
+
+    img {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        width: 13rem;
+        height: 3.1rem;
+        z-index: 1;
+    }
+
+    #header-logo {
+        display: none;
+        visibility: hidden;
+    }
+}
+
 header {
     position: relative;
 
@@ -20,6 +38,7 @@ header {
         right: 1rem;
         top: 1.8rem;
     }
+
     /*SODA CASINO*/
     .header-mobile-soda-casino {
         top: 0px;
