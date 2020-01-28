@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a8c7a5a45f7eb80c261dad8f80e4b5f",
+    "content-hash": "83d5cac11c8d1a5647f9b161a1d466fb",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -775,6 +775,7 @@
                 }
             ],
             "description": "Support package for TLDDatabase and TLDExtract",
+            "abandoned": true,
             "time": "2016-06-18T12:28:04+00:00"
         },
         {
@@ -2975,11 +2976,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-working",
+            "version": "dev-release-v1.179.1",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "487fb4232342b104b12a916595d8115883fe23b1"
+                "reference": "44e5ad7e52d434ee9592de68dc99dfb1dc10b59a"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3030,7 +3031,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2019-12-13T06:36:17+00:00"
+            "time": "2020-01-28T05:18:28+00:00"
         },
         {
             "name": "willdurand/negotiation",
