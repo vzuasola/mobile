@@ -51,25 +51,6 @@ class AccessDeniedComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        $data['url'] = $this->url->generateUri('page-not-found', []);
-        $data['isMatch'] = ltrim($this->request->getUri()->getPath(), '/') === 'page-not-found';
-        if ($this->resolver->getProduct() === 'mobile-soda-casino') {
-            $alias = $this->getAliasInUrl();
-            $data['url'] = $this->url->generateUri($alias . '/page-not-found', []);
-            $data['isMatch'] = ltrim($this->request->getUri()->getPath(), '/'. $alias .'/') === 'page-not-found';
-        }
-
-        return $data;
-    }
-
-    private function getAliasInUrl()
-    {
-        $urlPath = str_replace(
-            '/' . $this->lang . '/',
-            '',
-            $this->request->getUri()->getPath()
-        );
-        $exploded = explode('/', $urlPath);
-        return (in_array($exploded[1], Products::PRODUCT_ALIAS['soda-casino'])) ? $exploded[1] : '';
+        return [];
     }
 }
