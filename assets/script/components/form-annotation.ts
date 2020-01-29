@@ -12,7 +12,7 @@ export const annotation = (element: HTMLElement) => {
                 !elem.hasAttribute("data-annotation-average"))
             ) {
                     const annotationElem = document.querySelector(".form-annotation");
-                    if (annotationElem !== null) {
+                    if (annotationElem) {
                         annotationElem.parentNode.removeChild(annotationElem);
                     }
                     const span = document.createElement("span");
