@@ -11,7 +11,7 @@ export const annotation = (element: HTMLElement) => {
                 (!elem.hasAttribute("data-annotation-weak") ||
                 !elem.hasAttribute("data-annotation-average"))
             ) {
-                    const annotationElem = elem.querySelector(".form-annotation");
+                    const annotationElem = element.querySelector(".form-annotation");
                     if (annotationElem) {
                         annotationElem.parentNode.removeChild(annotationElem);
                     }
@@ -23,7 +23,7 @@ export const annotation = (element: HTMLElement) => {
 
                     if (elem.hasAttribute("data-parent-annotation")) {
                         let elemParent = elem.getAttribute("data-parent-annotation");
-                        elemParent = document.querySelector(elemParent);
+                        elemParent = element.querySelector(elemParent);
 
                         if (elemParent !== null) {
                             span.className = "form-annotation transfer-form-annotation";
@@ -44,7 +44,7 @@ export const annotation = (element: HTMLElement) => {
                 }
 
                 if (elem.hasAttribute("data-parent-annotation")) {
-                    const elemParent = document.querySelector(elem.getAttribute("data-parent-annotation"));
+                    const elemParent = element.querySelector(elem.getAttribute("data-parent-annotation"));
                     const parentAnnotation = utility.findSibling(elemParent, ".form-annotation");
 
                     if (parentAnnotation) {
