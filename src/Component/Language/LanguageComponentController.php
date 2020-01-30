@@ -84,7 +84,7 @@ class LanguageComponentController
         }
 
         $data['mobile_india_language_select'] = $entrypageConfigs['mobile_language_select'] ?? 'Select your Language';
-        $data['mobile_india_language_description'] = $entrypageConfigs['mobile_language_description_select'] ?? 'Language Description';
+        $data['mobile_india_language_description'] = $entrypageConfigs['mobile_language_description_select'] ?? '';
 
         $data['mobile_language_select'] = $footerConfigs['mobile_language_select'] ?? 'Select Language';
 
