@@ -164,11 +164,18 @@
 
 // India Language Selector
 #india-language-lightbox {
+    .modal-content {
+        background: $red;
+        padding: 0;
+        border: 0;
+        border-radius: 1rem;
+    }
+
     .modal-body {
-        margin: 1.6rem 0;
+        margin: 1.6rem 1rem;
 
         h3 {
-            color: $dark-gray;
+            color: $yellow;
             margin: 0rem 1rem 1rem;
             padding: 0;
             font-size: 1.6rem;
@@ -176,7 +183,46 @@
         }
 
         p {
-            color: $dark-gray;
+            color: $white;
+        }
+
+        // Dropdown
+        ul {
+            margin: 0;
+            padding: 0;
+            text-align: left;
+            list-style-type: none;
+            columns: 3;
+            -webkit-columns: 3;
+
+            li {
+                padding: 0;
+
+                a {
+                    position: relative;
+                    display: block;
+                    background: $yellow;
+                    color: $gray;
+                    border: 0.1rem solid $yellow;
+                    border-radius: 0.4rem;
+                    cursor: pointer;
+                    text-align: center;
+                    padding: 0.5rem;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        svg {
+            border: 0;
+
+            rect {
+                fill: $dark-red;
+            }
+
+            path {
+                fill: $red;
+            }
         }
     }
 }
