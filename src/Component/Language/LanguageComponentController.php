@@ -77,6 +77,15 @@ class LanguageComponentController
             $footerConfigs = [];
         }
 
+        try {
+            $entrypageConfigs = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
+        } catch (\Exception $e) {
+            $entrypageConfigs = [];
+        }
+
+        $data['mobile_india_language_select'] = $entrypageConfigs['mobile_language_select'] ?? 'Select your Language';
+        $data['mobile_india_language_description'] = $entrypageConfigs['mobile_language_description_select'] ?? 'Language Description';
+
         $data['mobile_language_select'] = $footerConfigs['mobile_language_select'] ?? 'Select Language';
 
         try {

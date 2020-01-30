@@ -4,6 +4,7 @@ import * as Handlebars from "handlebars/runtime";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as languageTemplate from "./handlebars/language.handlebars";
+import * as indiaLanguageSelectorTemplate from "./handlebars/india-language-selector.handlebars";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
@@ -56,7 +57,7 @@ export class LanguageComponent implements ComponentInterface {
     }
 
     private generateLanguageUrl(element, currentLanguage) {
-        const wrapper = element.querySelector("#language-lightbox");
+        const wrapper = element.querySelector("#india-language-lightbox");
 
         if (wrapper) {
             utility.listen(wrapper, "click", (event, src) => {
@@ -71,7 +72,7 @@ export class LanguageComponent implements ComponentInterface {
                         .href
                         .replace(regexp, hostname + "/" + selectedLang + "$1");
 
-                    Modal.close("#language-lightbox");
+                    Modal.close("#india-language-lightbox");
                     ComponentManager.broadcast("language.change");
                     Router.navigate(
                         redirectionUrl,
@@ -89,7 +90,7 @@ export class LanguageComponent implements ComponentInterface {
         ComponentManager.subscribe("click", (event, src) => {
             if (src && utility.hasClass(src, "language-trigger", true)) {
                 event.preventDefault();
-                Modal.open("#language-lightbox");
+                Modal.open("#india-language-lightbox");
             }
         });
     }
@@ -152,11 +153,15 @@ export class LanguageComponent implements ComponentInterface {
             right: langListArray,
         };
 
-        const template = languageTemplate({
+        const template = indiaLanguageSelectorTemplate({
             languageData: languageList,
             languageTitle: data.mobile_language_select,
+            languageIndiaTitle: data.mobile_india_language_select,
+            languageIndiaDescription: data.mobile_india_language_description,
             currentLanguage: data.currentLanguage,
         });
+
+        console.log(data);
 
         language.innerHTML = template;
     }
