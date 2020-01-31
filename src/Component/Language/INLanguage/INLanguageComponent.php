@@ -50,7 +50,7 @@ class INLanguageComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Language/template.html.twig';
+        return '@component/Language/INLanguage/template.html.twig';
     }
 
     /**
