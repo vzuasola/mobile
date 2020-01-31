@@ -1,10 +1,10 @@
 <?php
 
-namespace App\MobileEntry\Component\Language;
+namespace App\MobileEntry\Component\Language\INLanguage;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
-class LanguageComponentController
+class INLanguageComponentController
 {
     /**
      * @var App\Fetcher\Drupal\ConfigFetcher

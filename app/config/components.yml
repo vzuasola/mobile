@@ -111,6 +111,10 @@ components:
   language:
     class: App\MobileEntry\Component\Language\LanguageComponent
 
+  in_language:
+    class: App\MobileEntry\Component\Language\INLanguage\INLanguageComponent
+    parent: language
+
   push_notification:
     class: App\MobileEntry\Component\PushNotification\PushNotificationComponent
 
