@@ -11,16 +11,18 @@ use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 class PushNotificationComponentScripts implements ComponentAttachmentInterface
 {
     const REGLANG = [
-        'en-US' => 'en',
-        'en-GB' => 'eu',
-        'zh-TW' => 'sc',
-        'zh-CN' => 'ch',
+        'en-us' => 'en',
+        'en-gb' => 'eu',
+        'zh-tw' => 'sc',
+        'zh-cn' => 'ch',
         'th' => 'th',
         'vi' => 'vn',
         'id' => 'id',
         'ja' => 'jp',
-        'ko-KR' => 'kr',
-        'hi' => 'in',
+        'ko-kr' => 'kr',
+        'en-in' => 'in',
+        'te' => 'te',
+        'hi' => 'hi',
         'ru' => 'en',
         'el' => 'gr',
         'pl' => 'pl',
@@ -63,13 +65,13 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
     private function getPlayerLanguage()
     {
         $regLang = self::REGLANG;
-        $language = $regLang['en-US'];
+        $language = $regLang['en-us'];
 
         if ($this->playerSession->isLogin()) {
             $locale = (string) $this->playerLocale->getLocale();
 
             if (!empty($regLang) && $locale) {
-                $language = $regLang[$locale];
+                $language = $regLang[strtolower($locale)];
             }
         }
 
