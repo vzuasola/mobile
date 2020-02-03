@@ -103,11 +103,39 @@ export class INLanguageComponent implements ComponentInterface {
                         },
                         type: "json",
                     }).then((response) => {
-                        console.log(response);
+                        if (response.status === "success") {
+                            this.savePreference(src);
+                            Modal.close("#india-language-lightbox");
+                        }
                     });
                 }
             });
         }
+    }
+
+    private savePreference(src) {
+        xhr({
+            url: Router.generateRoute("in_language", "preference"),
+            method: "post",
+            type: "json",
+        }).then((response) => {
+            if (response.status === "success") {
+                const selectedLang = src.getAttribute("data-lang-prefix");
+                const currentLanguage = ComponentManager.getAttribute("language");
+                const hostname = window.location.hostname;
+                const regexp = new RegExp(hostname + "\/" + currentLanguage + "(\/?.*)$", "i");
+                const redirectionUrl = window.location
+                    .href
+                    .replace(regexp, hostname + "/" + selectedLang + "$1");
+                Router.navigate(
+                    redirectionUrl,
+                    ["*"],
+                    {
+                        language: selectedLang,
+                    },
+                );
+            }
+        });
     }
 
     /**

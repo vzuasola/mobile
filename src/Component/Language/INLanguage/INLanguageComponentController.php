@@ -27,6 +27,8 @@ class INLanguageComponentController
 
     private $session;
 
+    private $preferences;
+
     /**
      *
      */
@@ -38,7 +40,8 @@ class INLanguageComponentController
             $container->get('player_session'),
             $container->get('language_fetcher'),
             $container->get('user_fetcher'),
-            $container->get('session')
+            $container->get('session'),
+            $container->get('preferences_fetcher')
         );
     }
 
@@ -51,7 +54,8 @@ class INLanguageComponentController
         $playerSession,
         $language,
         $user,
-        $session
+        $session,
+        $preferences
     ) {
         $this->configs = $configs;
         $this->rest = $rest;
@@ -59,6 +63,8 @@ class INLanguageComponentController
         $this->language = $language;
         $this->user = $user;
         $this->session = $session;
+        $this->preferences = $preferences;
+
     }
 
 
@@ -134,7 +140,7 @@ class INLanguageComponentController
                 $this->session->delete(Player::CACHE_KEY);
             }
 
-
+            $data['status'] = $status;
         } catch (\Exception $e) {
             $data['status'] = "failed";
         }
@@ -144,6 +150,12 @@ class INLanguageComponentController
 
     public function preference($request, $response)
     {
-
+        try {
+            $res = $this->preferences->savePreference('dafabet.language.popup.geoip', false);
+            $data['status'] = 'success';
+        } catch (\Exception $e) {
+            $data['status'] = 'failed';
+        }
+        return $this->rest->output($response, $data);
     }
 }
