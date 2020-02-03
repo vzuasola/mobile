@@ -62,7 +62,7 @@ class INLanguageComponentScripts implements ComponentAttachmentInterface
             'currentLanguage' => $this->currentLanguage,
             'authenticated' => $this->playerSession->isLogin(),
             'matrix' => $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false,
-            'indiaIP' => $this->ip->getGeoIpCountry() !== '' ? $this->ip->getGeoIpCountry() : true,
+            'indiaIP' => $this->ip->getGeoIpCountry() !== '' ? $this->ip->getGeoIpCountry() : false,
             'inShowModal' => $inModal,
         ];
     }

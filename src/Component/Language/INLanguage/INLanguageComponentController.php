@@ -64,7 +64,6 @@ class INLanguageComponentController
         $this->user = $user;
         $this->session = $session;
         $this->preferences = $preferences;
-
     }
 
 
