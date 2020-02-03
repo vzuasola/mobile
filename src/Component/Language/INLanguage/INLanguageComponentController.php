@@ -2,8 +2,6 @@
 
 namespace App\MobileEntry\Component\Language\INLanguage;
 
-use App\Plugins\ComponentWidget\ComponentWidgetInterface;
-
 class INLanguageComponentController
 {
     /**
