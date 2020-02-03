@@ -61,6 +61,7 @@ export class INLanguageComponent implements ComponentInterface {
         const template = indiaLanguageSelectorTemplate({
             languageIndiaTitle: data.mobile_india_language_select,
             languageIndiaDescription: data.mobile_india_language_description,
+            languageSVG: data.mobile_language_svg_class,
         });
 
         language.innerHTML = template;

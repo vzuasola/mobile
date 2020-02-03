@@ -50,6 +50,7 @@ class INLanguageComponentController
             $entrypageConfigs = [];
         }
 
+        $data['mobile_language_svg_class'] = $entrypageConfigs['mobile_language_svg_class'] ?? 'in-language';
         $data['mobile_india_language_select'] = $entrypageConfigs['mobile_language_select'] ?? 'Select your Language';
         $data['mobile_india_language_description'] =
             $entrypageConfigs['mobile_language_description_select'] ?? '';

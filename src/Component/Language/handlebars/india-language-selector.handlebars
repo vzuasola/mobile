@@ -1,4 +1,10 @@
 <div class="modal-body">
+    {{#if languageSVG}}
+    <svg class="in-language" viewBox="0 0 20 20">
+        <use xlink:href="#{{ languageSVG }}" />
+    </svg>
+    {{/if}}
+
     {{#if languageIndiaTitle}}
     <h3>{{ languageIndiaTitle }}</h3>
     {{/if}}
