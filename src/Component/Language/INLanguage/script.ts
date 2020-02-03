@@ -27,9 +27,12 @@ export class INLanguageComponent implements ComponentInterface {
     }) {
         this.element = element;
         this.attachments = attachments;
-
+        this.attachINModalListeners();
+        this.listenOnModalClosed();
         ComponentManager.subscribe("session.login", (event, target, data) => {
-            this.playerLanguage();
+            if (this.attachments.indiaIP) {
+                this.playerLanguage();
+            }
         });
     }
 
@@ -42,7 +45,12 @@ export class INLanguageComponent implements ComponentInterface {
         this.element = element;
         this.attachments = attachments;
 
-        if (attachments.inShowModal && attachments.authenticated && attachments.indiaIP) {
+        if (!this.element) {
+            this.attachINModalListeners();
+            this.listenOnModalClosed();
+        }
+
+        if (this.attachments.inShowModal && this.attachments.authenticated && this.attachments.indiaIP) {
             this.getLanguage();
         }
     }
@@ -83,7 +91,6 @@ export class INLanguageComponent implements ComponentInterface {
 
     private processLanguage() {
         this.generateLanguageMarkup(this.languageData);
-        this.attachINModalListeners();
         Modal.open("#india-language-lightbox");
     }
 
@@ -113,13 +120,21 @@ export class INLanguageComponent implements ComponentInterface {
         }
     }
 
+    private listenOnModalClosed() {
+        ComponentManager.subscribe("modal.closed", (event, src, data) => {
+            if (data.selector === "#india-language-lightbox") {
+                this.savePreference(null);
+            }
+        });
+    }
+
     private savePreference(src) {
         xhr({
             url: Router.generateRoute("in_language", "preference"),
             method: "post",
             type: "json",
         }).then((response) => {
-            if (response.status === "success") {
+            if (response.status === "success" && src) {
                 const selectedLang = src.getAttribute("data-lang-prefix");
                 const currentLanguage = ComponentManager.getAttribute("language");
                 const hostname = window.location.hostname;
