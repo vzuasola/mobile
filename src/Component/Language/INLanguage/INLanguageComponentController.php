@@ -4,6 +4,12 @@ namespace App\MobileEntry\Component\Language\INLanguage;
 
 class INLanguageComponentController
 {
+    const INDIA_LANGUAGES = [
+        'en-in' => 'in',
+        'te' => 'te',
+        'hi' => 'hi',
+    ];
+
     /**
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
@@ -11,6 +17,9 @@ class INLanguageComponentController
 
     private $rest;
 
+    private $playerSession;
+
+    private $language;
 
     /**
      *
@@ -19,7 +28,9 @@ class INLanguageComponentController
     {
         return new static(
             $container->get('config_fetcher'),
-            $container->get('rest')
+            $container->get('rest'),
+            $container->get('player_session'),
+            $container->get('language_fetcher')
         );
     }
 
@@ -28,10 +39,14 @@ class INLanguageComponentController
      */
     public function __construct(
         $configs,
-        $rest
+        $rest,
+        $playerSession,
+        $language
     ) {
         $this->configs = $configs;
         $this->rest = $rest;
+        $this->playerSession = $playerSession;
+        $this->language = $language;
     }
 
 
@@ -54,6 +69,20 @@ class INLanguageComponentController
         $data['mobile_india_language_select'] = $entrypageConfigs['mobile_language_select'] ?? 'Select your Language';
         $data['mobile_india_language_description'] =
             $entrypageConfigs['mobile_language_description_select'] ?? '';
+
+        return $this->rest->output($response, $data);
+    }
+
+    public function details($request, $response)
+    {
+        $data = [];
+
+        try {
+            $iCoreLang = strtolower($this->playerSession->getDetails()['locale']);
+            $data['language'] = $this->language->getLanguages()[$iCoreLang]['prefix'] ?? 'in';
+        } catch (\Exception $e) {
+            $data = [];
+        }
 
         return $this->rest->output($response, $data);
     }

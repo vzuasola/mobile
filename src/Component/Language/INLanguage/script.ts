@@ -27,6 +27,7 @@ export class INLanguageComponent implements ComponentInterface {
         this.attachments = attachments;
 
         ComponentManager.subscribe("session.login", (event, target, data) => {
+            this.playerLanguage();
             this.getLanguage();
         });
     }
@@ -34,6 +35,15 @@ export class INLanguageComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {currentLanguage: string}) {
         this.element = element;
         this.attachments = attachments;
+    }
+
+    private playerLanguage() {
+        xhr({
+            url: Router.generateRoute("in_language", "details"),
+            type: "json",
+        }).then((response) => {
+            console.log(response);
+        });
     }
 
     private getLanguage() {
