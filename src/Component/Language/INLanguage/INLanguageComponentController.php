@@ -2,12 +2,14 @@
 
 namespace App\MobileEntry\Component\Language\INLanguage;
 
+use App\Player\Player;
+
 class INLanguageComponentController
 {
     const INDIA_LANGUAGES = [
         'en-in' => 'in',
         'te' => 'te',
-        'hi' => 'hi',
+        'in' => 'hi',
     ];
 
     /**
@@ -21,6 +23,10 @@ class INLanguageComponentController
 
     private $language;
 
+    private $user;
+
+    private $session;
+
     /**
      *
      */
@@ -30,7 +36,9 @@ class INLanguageComponentController
             $container->get('config_fetcher'),
             $container->get('rest'),
             $container->get('player_session'),
-            $container->get('language_fetcher')
+            $container->get('language_fetcher'),
+            $container->get('user_fetcher'),
+            $container->get('session')
         );
     }
 
@@ -41,12 +49,16 @@ class INLanguageComponentController
         $configs,
         $rest,
         $playerSession,
-        $language
+        $language,
+        $user,
+        $session
     ) {
         $this->configs = $configs;
         $this->rest = $rest;
         $this->playerSession = $playerSession;
         $this->language = $language;
+        $this->user = $user;
+        $this->session = $session;
     }
 
 
@@ -85,5 +97,53 @@ class INLanguageComponentController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    public function update($request, $response)
+    {
+        try {
+            $data = [];
+            $requestData = $request->getParsedBody();
+            $defaultValues = $this->playerSession->getDetails();
+            $lang = $requestData['language'];
+
+            $playerDetails = [
+                'username' => $defaultValues['username'],
+                'firstname' => $defaultValues['firstName'],
+                'lastname' => $defaultValues['lastName'],
+                'birthdate' => "/Date(" . $defaultValues['dateOfBirth'] . ")/",
+                'email' => $defaultValues['email'],
+                'countryid' => $defaultValues['countryId'],
+                'gender' => $defaultValues['gender'],
+                'language' => $lang,
+                'mobile' => $defaultValues['mobileNumbers']['Home']['number'] ?? "",
+                'mobile1' => $defaultValues['mobileNumbers']['Mobile 1']['number'] ?? "",
+                'address' => $defaultValues['address'],
+                'city' => $defaultValues['city'],
+                'postalcode' => $defaultValues['postalCode'],
+            ];
+
+            $res = $this->user->setPlayerDetails($playerDetails);
+
+            $status = 'success';
+            if ($res === "INT029") {
+                $status = "failed";
+            }
+
+            if ($status === 'success') {
+                $this->session->delete(Player::CACHE_KEY);
+            }
+
+
+        } catch (\Exception $e) {
+            $data['status'] = "failed";
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    public function preference($request, $response)
+    {
+
     }
 }

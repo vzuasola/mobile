@@ -22,19 +22,29 @@ export class INLanguageComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {
         authenticated: boolean,
         currentLanguage: string,
+        inShowModal: any,
+        indiaIP: any,
     }) {
         this.element = element;
         this.attachments = attachments;
 
         ComponentManager.subscribe("session.login", (event, target, data) => {
             this.playerLanguage();
-            this.getLanguage();
         });
     }
 
-    onReload(element: HTMLElement, attachments: {currentLanguage: string}) {
+    onReload(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        currentLanguage: string,
+        inShowModal: boolean,
+        indiaIP: boolean,
+    }) {
         this.element = element;
         this.attachments = attachments;
+
+        if (attachments.inShowModal && attachments.authenticated && attachments.indiaIP) {
+            this.getLanguage();
+        }
     }
 
     private playerLanguage() {
@@ -42,7 +52,22 @@ export class INLanguageComponent implements ComponentInterface {
             url: Router.generateRoute("in_language", "details"),
             type: "json",
         }).then((response) => {
-            console.log(response);
+            if (response.language) {
+                // Replacing the current language to the language selected by user from the Langauge Selector.
+                const currentLanguage = ComponentManager.getAttribute("language");
+                const hostname = window.location.hostname;
+                const regexp = new RegExp(hostname + "\/" + currentLanguage + "(\/?.*)$", "i");
+                const redirectionUrl = window.location
+                    .href
+                    .replace(regexp, hostname + "/" + response.language + "$1");
+                Router.navigate(
+                    redirectionUrl,
+                    ["*"],
+                    {
+                        language: response.language,
+                    },
+                );
+            }
         });
     }
 
@@ -58,7 +83,31 @@ export class INLanguageComponent implements ComponentInterface {
 
     private processLanguage() {
         this.generateLanguageMarkup(this.languageData);
+        this.attachINModalListeners();
         Modal.open("#india-language-lightbox");
+    }
+
+    private attachINModalListeners() {
+        const wrapper = this.element.querySelector("#india-language-lightbox");
+
+        if (wrapper) {
+            utility.listen(wrapper, "click", (event, src) => {
+                if (utility.hasClass(src, "in-language-link")) {
+                    event.preventDefault();
+                    const lang = src.getAttribute("data-lang");
+                    xhr({
+                        url: Router.generateRoute("in_language", "update"),
+                        method: "post",
+                        data: {
+                            language: lang,
+                        },
+                        type: "json",
+                    }).then((response) => {
+                        console.log(response);
+                    });
+                }
+            });
+        }
     }
 
     /**
