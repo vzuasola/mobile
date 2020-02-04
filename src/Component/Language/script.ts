@@ -5,10 +5,10 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as languageTemplate from "./handlebars/language.handlebars";
 
-import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
+import { ComponentInterface, ComponentManager } from "@plugins/ComponentWidget/asset/component";
+import { Router, RouterClass } from "@plugins/ComponentWidget/asset/router";
 
-import {Modal} from "@app/assets/script/components/modal";
+import { Modal } from "@app/assets/script/components/modal";
 
 /**
  *
@@ -49,7 +49,7 @@ export class LanguageComponent implements ComponentInterface {
         });
     }
 
-    onReload(element: HTMLElement, attachments: {currentLanguage: string}) {
+    onReload(element: HTMLElement, attachments: { currentLanguage: string }) {
         this.element = element;
         this.attachments = attachments;
         this.getLanguage();
