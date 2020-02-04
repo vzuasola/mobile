@@ -164,6 +164,7 @@ export class INLanguageComponent implements ComponentInterface {
             languageIndiaTitle: data.mobile_india_language_select,
             languageIndiaDescription: data.mobile_india_language_description,
             languageSVG: data.mobile_language_svg_class,
+            langData: data.langData,
         });
 
         language.innerHTML = template;

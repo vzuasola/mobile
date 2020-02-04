@@ -75,6 +75,7 @@ class INLanguageComponentController
     public function language($request, $response)
     {
         $data = [];
+        $langData = [];
 
         try {
             $entrypageConfigs = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
@@ -84,8 +85,23 @@ class INLanguageComponentController
 
         $data['mobile_language_svg_class'] = $entrypageConfigs['mobile_language_svg_class'] ?? 'in-language';
         $data['mobile_india_language_select'] = $entrypageConfigs['mobile_language_select'] ?? 'Select your Language';
-        $data['mobile_india_language_description'] =
-            $entrypageConfigs['mobile_language_description_select'] ?? '';
+        $data['mobile_india_language_description'] = $entrypageConfigs['mobile_language_description_select'] ?? '';
+
+        if (isset($entrypageConfigs['mobile_language_code'])) {
+            // prepare Form Data
+            $row = explode(PHP_EOL, $entrypageConfigs['mobile_language_code']);
+            foreach ($row as $rows) {
+                $lang = explode('|', trim($rows));
+
+                list($dataLang, $dataLangPrefix, $language) = $lang;
+                $langData[] = [
+                    'icoreLang' => $dataLang,
+                    'langPrefix' => $dataLangPrefix,
+                    'langText' => $language
+                ];
+            }
+            $data['langData'] = $langData;
+        }
 
         return $this->rest->output($response, $data);
     }

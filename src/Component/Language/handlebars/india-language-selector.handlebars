@@ -12,22 +12,13 @@
     {{{ languageIndiaDescription.value }}}
     {{/if}}
     <ul class="menu">
-        {{!-- {{#each languageData}}
-        <li class="col-6">
-            <ul>
-            {{#each this}}
-                <li class="{{ this.id }} {{#condition this.prefix "===" ../../currentLanguage }}active{{/condition}}">
-                    <a href="#" class="language-link" data-lang="{{ this.prefix }}">
-                        {{ this.name }}
-                    </a>
-                </li>
-            {{/each}}
-            </ul>
+        {{#each langData}}
+        <li>
+            <a href="#" class="in-language-link" data-lang="{{ this.icoreLang }}" data-lang-prefix="{{ this.langPrefix }}">
+                {{ this.langText }}
+            </a>
         </li>
-        {{/each}} --}}
-        <li><a class="in-language-link" data-lang="en-IN" data-lang-prefix="in" href="#">English</a></li>
-        <li><a class="in-language-link" data-lang="hi" data-lang-prefix="hi" href="#">हिन्दी</a></li>
-        <li><a class="in-language-link" data-lang="te" data-lang-prefix="te" href="#">తెలుగు</a></li>
+        {{/each}}
     </ul>
     <svg data-name="closed" viewBox="0 0 70.24 70.24" class="in-lang-close modal-close modal-close-button">
         <rect class="modal-close" />
