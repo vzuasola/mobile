@@ -45,10 +45,8 @@ export class INLanguageComponent implements ComponentInterface {
         this.element = element;
         this.attachments = attachments;
 
-        if (!this.element) {
-            this.attachINModalListeners();
-            this.listenOnModalClosed();
-        }
+        this.attachINModalListeners();
+        this.listenOnModalClosed();
 
         if (this.attachments.inShowModal && this.attachments.authenticated && this.attachments.indiaIP) {
             this.getLanguage();
