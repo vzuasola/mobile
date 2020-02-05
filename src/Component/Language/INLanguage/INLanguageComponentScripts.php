@@ -54,6 +54,9 @@ class INLanguageComponentScripts implements ComponentAttachmentInterface
             if ($this->playerSession->isLogin()) {
                 $inModal = $this->preference->getPreferences()['dafabet.language.popup.geoip'] ?? true;
             }
+
+            $countryCode = $this->ip->getGeoIpCountry();
+            $indiaIP = strtolower($countryCode) === 'in' ? true : false;
         } catch (\Exception $e) {
             $inModal = false;
         }
@@ -62,7 +65,7 @@ class INLanguageComponentScripts implements ComponentAttachmentInterface
             'currentLanguage' => $this->currentLanguage,
             'authenticated' => $this->playerSession->isLogin(),
             'matrix' => $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false,
-            'indiaIP' => strtolower($this->ip->getGeoIpCountry()) === 'in' ? true : false,
+            'indiaIP' => $indiaIP,
             'inShowModal' => $inModal,
         ];
     }
