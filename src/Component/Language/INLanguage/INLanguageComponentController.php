@@ -7,9 +7,22 @@ use App\Player\Player;
 class INLanguageComponentController
 {
     const INDIA_LANGUAGES = [
+        'en-us' => 'en',
+        'en-gb' => 'eu',
+        'zh-tw' => 'sc',
+        'zh-cn' => 'ch',
+        'th' => 'th',
+        'vi' => 'vn',
+        'id' => 'id',
+        'ja' => 'jp',
+        'ko-kr' => 'kr',
         'en-in' => 'in',
         'te' => 'te',
-        'in' => 'hi',
+        'hi' => 'hi',
+        'ru' => 'en',
+        'el' => 'gr',
+        'pl' => 'pl',
+        'af' => 'en'
     ];
 
     /**
@@ -112,7 +125,7 @@ class INLanguageComponentController
 
         try {
             $iCoreLang = strtolower($this->playerSession->getDetails()['locale']);
-            $data['language'] = $this->language->getLanguages()[$iCoreLang]['prefix'] ?? 'in';
+            $data['language'] = $this->language->getLanguages()[$iCoreLang]['prefix'] ?? 'en';
         } catch (\Exception $e) {
             $data = [];
         }

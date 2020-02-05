@@ -140,13 +140,15 @@ export class INLanguageComponent implements ComponentInterface {
                 const redirectionUrl = window.location
                     .href
                     .replace(regexp, hostname + "/" + selectedLang + "$1");
-                Router.navigate(
-                    redirectionUrl,
-                    ["*"],
-                    {
-                        language: selectedLang,
-                    },
-                );
+                if (currentLanguage !== selectedLang) {
+                    Router.navigate(
+                        redirectionUrl,
+                        ["*"],
+                        {
+                            language: selectedLang,
+                        },
+                    );
+                }
             }
         });
     }
