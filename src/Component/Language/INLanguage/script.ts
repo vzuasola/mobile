@@ -5,10 +5,10 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as indiaLanguageSelectorTemplate from "../handlebars/india-language-selector.handlebars";
 
-import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
+import { ComponentInterface, ComponentManager } from "@plugins/ComponentWidget/asset/component";
+import { Router, RouterClass } from "@plugins/ComponentWidget/asset/router";
 
-import {Modal} from "@app/assets/script/components/modal";
+import { Modal } from "@app/assets/script/components/modal";
 
 /**
  *
@@ -19,11 +19,12 @@ export class INLanguageComponent implements ComponentInterface {
     private attachments: any;
     private languageData: any;
 
+    private country: string;
+
     onLoad(element: HTMLElement, attachments: {
         authenticated: boolean,
         currentLanguage: string,
         inShowModal: any,
-        country: any,
     }) {
         this.element = element;
         this.attachments = attachments;
@@ -38,7 +39,6 @@ export class INLanguageComponent implements ComponentInterface {
         authenticated: boolean,
         currentLanguage: string,
         inShowModal: boolean,
-        country: any,
     }) {
         this.element = element;
         this.attachments = attachments;
@@ -46,7 +46,7 @@ export class INLanguageComponent implements ComponentInterface {
         this.attachINModalListeners();
         this.listenOnModalClosed();
 
-        if (this.attachments.inShowModal && this.attachments.authenticated && this.attachments.country === "IN") {
+        if (this.attachments.inShowModal && this.attachments.authenticated && this.country === "IN") {
             this.getLanguage();
         }
     }
@@ -56,7 +56,9 @@ export class INLanguageComponent implements ComponentInterface {
             url: Router.generateRoute("in_language", "details"),
             type: "json",
         }).then((response) => {
+            this.country = "";
             if (response.language && response.country === "IN") {
+                this.country = response.country;
                 // Replacing the current language to the language selected by user from the Langauge Selector.
                 const currentLanguage = ComponentManager.getAttribute("language");
                 const hostname = window.location.hostname;
