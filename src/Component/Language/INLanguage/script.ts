@@ -23,14 +23,14 @@ export class INLanguageComponent implements ComponentInterface {
         authenticated: boolean,
         currentLanguage: string,
         inShowModal: any,
-        indiaIP: any,
+        country: any,
     }) {
         this.element = element;
         this.attachments = attachments;
         this.attachINModalListeners();
         this.listenOnModalClosed();
         ComponentManager.subscribe("session.login", (event, target, data) => {
-            if (this.attachments.indiaIP) {
+            if (this.attachments.country === "IN") {
                 this.playerLanguage();
             }
         });
@@ -40,7 +40,7 @@ export class INLanguageComponent implements ComponentInterface {
         authenticated: boolean,
         currentLanguage: string,
         inShowModal: boolean,
-        indiaIP: boolean,
+        country: any,
     }) {
         this.element = element;
         this.attachments = attachments;
@@ -48,7 +48,7 @@ export class INLanguageComponent implements ComponentInterface {
         this.attachINModalListeners();
         this.listenOnModalClosed();
 
-        if (this.attachments.inShowModal && this.attachments.authenticated && this.attachments.indiaIP) {
+        if (this.attachments.inShowModal && this.attachments.authenticated && this.attachments.country === "IN") {
             this.getLanguage();
         }
     }
