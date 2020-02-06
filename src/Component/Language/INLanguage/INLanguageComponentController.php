@@ -125,7 +125,7 @@ class INLanguageComponentController
 
         try {
             $iCoreLang = strtolower($this->playerSession->getDetails()['locale']);
-            $data['language'] = $this->language->getLanguages()[$iCoreLang]['prefix'] ?? 'en';
+            $data['language'] = $this::INDIA_LANGUAGES[$iCoreLang] ?? 'en';
         } catch (\Exception $e) {
             $data = [];
         }
