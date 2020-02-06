@@ -28,7 +28,6 @@ class INLanguageComponentScripts implements ComponentAttachmentInterface
         return new static(
             $container->get('lang'),
             $container->get('player_session'),
-            $container->get('id_domain'),
             $container->get('preferences_fetcher')
         );
     }
@@ -36,11 +35,10 @@ class INLanguageComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($currentLanguage, $playerSession, $ip, $preference)
+    public function __construct($currentLanguage, $playerSession, $preference)
     {
         $this->currentLanguage = $currentLanguage;
         $this->playerSession = $playerSession;
-        $this->ip = $ip;
         $this->preference = $preference;
     }
 
@@ -54,8 +52,6 @@ class INLanguageComponentScripts implements ComponentAttachmentInterface
             if ($this->playerSession->isLogin()) {
                 $inModal = $this->preference->getPreferences()['dafabet.language.popup.geoip'] ?? true;
             }
-
-            $countryCode = $this->ip->getGeoIpCountry();
         } catch (\Exception $e) {
             $inModal = false;
         }
@@ -65,7 +61,6 @@ class INLanguageComponentScripts implements ComponentAttachmentInterface
             'authenticated' => $this->playerSession->isLogin(),
             'matrix' => $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false,
             'inShowModal' => $inModal,
-            'country' => $countryCode,
         ];
     }
 }

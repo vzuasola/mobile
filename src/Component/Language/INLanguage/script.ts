@@ -30,9 +30,7 @@ export class INLanguageComponent implements ComponentInterface {
         this.attachINModalListeners();
         this.listenOnModalClosed();
         ComponentManager.subscribe("session.login", (event, target, data) => {
-            if (this.attachments.country === "IN") {
-                this.playerLanguage();
-            }
+            this.playerLanguage();
         });
     }
 
@@ -58,7 +56,7 @@ export class INLanguageComponent implements ComponentInterface {
             url: Router.generateRoute("in_language", "details"),
             type: "json",
         }).then((response) => {
-            if (response.language) {
+            if (response.language && response.country === "IN") {
                 // Replacing the current language to the language selected by user from the Langauge Selector.
                 const currentLanguage = ComponentManager.getAttribute("language");
                 const hostname = window.location.hostname;

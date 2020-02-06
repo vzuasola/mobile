@@ -42,6 +42,8 @@ class INLanguageComponentController
 
     private $preferences;
 
+    private $ip;
+
     /**
      *
      */
@@ -54,7 +56,8 @@ class INLanguageComponentController
             $container->get('language_fetcher'),
             $container->get('user_fetcher'),
             $container->get('session'),
-            $container->get('preferences_fetcher')
+            $container->get('preferences_fetcher'),
+            $container->get('id_domain')
         );
     }
 
@@ -68,7 +71,8 @@ class INLanguageComponentController
         $language,
         $user,
         $session,
-        $preferences
+        $preferences,
+        $ip
     ) {
         $this->configs = $configs;
         $this->rest = $rest;
@@ -77,6 +81,7 @@ class INLanguageComponentController
         $this->user = $user;
         $this->session = $session;
         $this->preferences = $preferences;
+        $this->ip = $ip;
     }
 
 
@@ -125,6 +130,7 @@ class INLanguageComponentController
 
         try {
             $iCoreLang = strtolower($this->playerSession->getDetails()['locale']);
+            $data['country'] = $countryCode = $this->ip->getGeoIpCountry();
             $data['language'] = $this::INDIA_LANGUAGES[$iCoreLang] ?? 'en';
         } catch (\Exception $e) {
             $data = [];
