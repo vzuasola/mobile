@@ -130,7 +130,7 @@ class INLanguageComponentController
 
         try {
             $iCoreLang = strtolower($this->playerSession->getDetails()['locale']);
-            $data['country'] = $countryCode = $this->ip->getGeoIpCountry();
+            $data['country'] = $this->ip->getGeoIpCountry();
             $data['language'] = $this::INDIA_LANGUAGES[$iCoreLang] ?? 'en';
         } catch (\Exception $e) {
             $data = [];
