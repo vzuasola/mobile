@@ -90,6 +90,8 @@ export class INLanguageComponent implements ComponentInterface {
     private processLanguage() {
         this.generateLanguageMarkup(this.languageData);
         Modal.open("#india-language-lightbox");
+        this.savePreference(null);
+        ComponentManager.broadcast("INLanguage.modal.open");
     }
 
     private attachINModalListeners() {
@@ -109,6 +111,7 @@ export class INLanguageComponent implements ComponentInterface {
                         type: "json",
                     }).then((response) => {
                         if (response.status === "success") {
+                            ComponentManager.broadcast("INLanguage.modal.submit", { data: src });
                             this.savePreference(src);
                             Modal.close("#india-language-lightbox");
                         }
@@ -122,6 +125,7 @@ export class INLanguageComponent implements ComponentInterface {
         ComponentManager.subscribe("modal.closed", (event, src, data) => {
             if (data.selector === "#india-language-lightbox") {
                 this.savePreference(null);
+                ComponentManager.broadcast("INLanguage.modal.close");
             }
         });
     }
