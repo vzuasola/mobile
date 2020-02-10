@@ -47,20 +47,9 @@ class INLanguageComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        try {
-            $inModal = false;
-            if ($this->playerSession->isLogin()) {
-                $inModal = $this->preference->getPreferences()['dafabet.language.popup.geoip'] ?? true;
-            }
-        } catch (\Exception $e) {
-            $inModal = false;
-        }
-
         return [
             'currentLanguage' => $this->currentLanguage,
             'authenticated' => $this->playerSession->isLogin(),
-            'matrix' => $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false,
-            'inShowModal' => $inModal,
         ];
     }
 }

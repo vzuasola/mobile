@@ -20,11 +20,11 @@ export class INLanguageComponent implements ComponentInterface {
     private languageData: any;
 
     private country: string;
+    private inShowModal: boolean;
 
     onLoad(element: HTMLElement, attachments: {
         authenticated: boolean,
         currentLanguage: string,
-        inShowModal: any,
     }) {
         this.element = element;
         this.attachments = attachments;
@@ -38,17 +38,31 @@ export class INLanguageComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {
         authenticated: boolean,
         currentLanguage: string,
-        inShowModal: boolean,
     }) {
         this.element = element;
         this.attachments = attachments;
 
-        this.attachINModalListeners();
-        this.listenOnModalClosed();
-
-        if (this.attachments.inShowModal && this.attachments.authenticated && this.country === "IN") {
-            this.getLanguage();
+        if (this.attachments.authenticated && this.country === "IN") {
+            this.checkPreference();
+            if (this.inShowModal) {
+                this.attachINModalListeners();
+                this.listenOnModalClosed();
+                this.getLanguage();
+            }
         }
+    }
+
+    private checkPreference() {
+        xhr({
+            url: Router.generateRoute("in_language", "checkpreference"),
+            type: "json",
+        }).then((response) => {
+            this.inShowModal = false;
+            if (response) {
+                console.log(response);
+                this.inShowModal = response.inModal;
+            }
+        });
     }
 
     private playerLanguage() {
