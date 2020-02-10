@@ -182,6 +182,22 @@ class INLanguageComponentController
         return $this->rest->output($response, $data);
     }
 
+    public function checkpreference($request, $response)
+    {
+        $data = [];
+        try {
+            $data['inModal'] = false;
+            if ($this->playerSession->isLogin()) {
+                $data['pref'] = $this->preferences->getPreferences();
+                $data['inModal'] = $this->preferences->getPreferences()['dafabet.language.popup.geoip'] ?? true;
+            }
+        } catch (\Exception $e) {
+            $data['inModal'] = false;
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
     public function preference($request, $response)
     {
         try {
