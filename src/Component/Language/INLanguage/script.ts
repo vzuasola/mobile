@@ -43,24 +43,28 @@ export class INLanguageComponent implements ComponentInterface {
         this.attachments = attachments;
 
         if (this.attachments.authenticated && this.country === "IN") {
-            this.checkPreference();
-            if (this.inShowModal) {
-                this.attachINModalListeners();
-                this.listenOnModalClosed();
-                this.getLanguage();
-            }
+            this.checkPreference(() => {
+                if (this.inShowModal) {
+                    this.attachINModalListeners();
+                    this.listenOnModalClosed();
+                    this.getLanguage();
+                }
+            });
         }
     }
 
-    private checkPreference() {
+    private checkPreference(callback) {
         xhr({
             url: Router.generateRoute("in_language", "checkpreference"),
             type: "json",
         }).then((response) => {
             this.inShowModal = false;
             if (response) {
-                console.log(response);
                 this.inShowModal = response.inModal;
+
+                if (callback && response.inModal) {
+                    callback();
+                }
             }
         });
     }
