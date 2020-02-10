@@ -103,8 +103,11 @@ export class LanguageComponent implements ComponentInterface {
     }
 
     private getLanguage() {
+        const product = ComponentManager.getAttribute("product");
+        const url = Router.generateRoute("language", "language");
+        const uri = utility.addQueryParam(url, "product", product);
         xhr({
-            url: Router.generateRoute("language", "language"),
+            url: uri,
             type: "json",
         }).then((response) => {
             this.languageData = response;
