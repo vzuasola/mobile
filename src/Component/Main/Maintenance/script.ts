@@ -3,7 +3,7 @@ import * as Handlebars from "handlebars/runtime";
 
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
-import * as accessDeniedTemplate from "./handlebars/accessdenied.handlebars";
+import * as maintenanceTemplate from "./handlebars/maintenance.handlebars";
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
@@ -11,43 +11,45 @@ import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/ass
 /**
  *
  */
-export class AccessDeniedComponent implements ComponentInterface {
+export class MaintenanceComponent implements ComponentInterface {
     private element: HTMLElement;
-    private accessDeniedData: any;
+    private maintenanceData: any;
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getAccessDenied();
-    }
+        this.getMaintenance();
+     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getAccessDenied();
+        this.getMaintenance();
     }
 
-    private getAccessDenied() {
+    private getMaintenance() {
         const product = ComponentManager.getAttribute("product");
         const productUrl = utility.addQueryParam(Router.generateRoute(
-            "access_denied", "accessDenied"), "product", product);
+            "maintenance", "maintenance"), "product", product);
         xhr({
             url: productUrl,
             type: "json",
         }).then((response) => {
-            this.accessDeniedData = response;
-            this.generateAccessDeniedMarkup(this.accessDeniedData);
+            this.maintenanceData = response;
+            this.generateMaintenanceMarkup(this.maintenanceData);
         });
     }
 
     /**
-     * Set the accessdenied in the template
+     * Set the maintenance in the template
      *
      */
-    private generateAccessDeniedMarkup(data) {
-        const accessDenied: HTMLElement = this.element.querySelector("#page-not-found");
-        const template = accessDeniedTemplate({
+    private generateMaintenanceMarkup(data) {
+        const maintenance: HTMLElement = this.element.querySelector("#maintenance");
+        const template = maintenanceTemplate({
             data,
         });
 
-        accessDenied.innerHTML = template;
+        console.log(data);
+
+        maintenance.innerHTML = template;
     }
 }

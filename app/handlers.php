@@ -85,3 +85,11 @@ $container['event_unsupported_currency'] = function ($c) {
         return $controller->unsupportedCurrency($request, $response);
     };
 };
+
+$container['event_site_maintenance'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        $response = $response->withStatus(200);
+        return $c['resolver']['App\Controller\MaintenancePageController']
+            ->getMaintenanceConfig($request, $response);
+    };
+};
