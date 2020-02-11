@@ -3,6 +3,9 @@ components:
   access_denied:
     class: App\MobileEntry\Component\Main\AccessDenied\AccessDeniedComponent
 
+  maintenance:
+    class: App\MobileEntry\Component\Main\Maintenance\MaintenanceComponent
+
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
 
