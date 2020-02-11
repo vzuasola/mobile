@@ -143,7 +143,6 @@ class PromotionsComponentController
 
         $promotionData = [];
         $promotionProducts = $this->getPromotionProducts($filters, $language);
-        
         foreach ($filters as $filter) {
             $id = $filter['field_product_filter_id'][0]['value'];
 
