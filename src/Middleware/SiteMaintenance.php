@@ -61,10 +61,7 @@ class SiteMaintenance implements ResponseMiddlewareInterface
                     'field_publish_date' => $this->configs['maintenance_publish_date_' . $product_key],
                     'field_unpublish_date' => $this->configs['maintenance_unpublish_date_' . $product_key],
                 ];
-                if (
-                    in_array($product, $products) &&
-                    $this->isPublished($dates)
-                ) {
+                if (in_array($product, $products) && $this->isPublished($dates)) {
                     // Remove processed body stream that came from controller
                     $stream = fopen('php://memory', 'r+');
                     fwrite($stream, '');
