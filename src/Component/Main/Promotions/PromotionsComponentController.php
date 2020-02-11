@@ -8,6 +8,19 @@ namespace App\MobileEntry\Component\Main\Promotions;
 class PromotionsComponentController
 {
     const TIMEOUT = 1800;
+    const LATAM = [
+        'mx' => 'es-mx',
+        'cl' => 'es-cl',
+        'ar' => 'es-ar',
+        'pe' => 'es-pe'
+    ];
+
+    const LATAM_CURRENCY = [
+        'mxn' => 'mx',
+        'clp' => 'cl',
+        'pen' => 'pe',
+        'ars' => 'ar'
+    ];
 
     /**
      * @var App\Player\PlayerSession
@@ -34,6 +47,8 @@ class PromotionsComponentController
     private $asset;
     private $cacher;
     private $currentLanguage;
+    private $idDomain;
+    private $user;
 
     /**
      *
@@ -49,7 +64,9 @@ class PromotionsComponentController
             $container->get('uri'),
             $container->get('asset'),
             $container->get('redis_cache_adapter'),
-            $container->get('lang')
+            $container->get('lang'),
+            $container->get('id_domain'),
+            $container->get('user_fetcher')
         );
     }
 
@@ -65,7 +82,9 @@ class PromotionsComponentController
         $url,
         $asset,
         $cacher,
-        $currentLanguage
+        $currentLanguage,
+        $idDomain,
+        $user
     ) {
         $this->playerSession = $playerSession;
         $this->views = $views;
@@ -76,6 +95,8 @@ class PromotionsComponentController
         $this->asset = $asset;
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
+        $this->idDomain = $idDomain;
+        $this->user = $user;
     }
 
     /**
@@ -85,9 +106,25 @@ class PromotionsComponentController
     {
         $isLogin = $this->playerSession->isLogin();
         $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
+        $language = $this->currentLanguage;
+        try {
+            $countryCode = $this->user->getPlayerDetails()['countryCode'];
+            $currency = $this->user->getPlayerDetails()['currency'];
+        } catch (\Exception $e) {
+            // Do nothing
+        }
+
+        $userIPCountry = ($isLogin) ? strtolower($countryCode) : strtolower($this->idDomain->getGeoIpCountry());
+        if ($isLogin && array_key_exists(strtolower($currency), $this::LATAM)) {
+            $userIPCountry = $this::LATAM_CURRENCY[strtolower($currency)];
+        }
+
+        if (array_key_exists($userIPCountry, $this::LATAM)) {
+            $language = $this::LATAM[$userIPCountry];
+        }
 
         try {
-            $filters = $this->getFilters();
+            $filters = $this->getFilters($language);
         } catch (\Exception $e) {
             $filters = [];
         }
@@ -99,14 +136,14 @@ class PromotionsComponentController
         }
 
         try {
-            $featured = $this->views->getViewById('featured_promotions');
+            $featured = $this->views->withLanguage($language)->getViewById('featured_promotions');
         } catch (\Exception $e) {
             $featured = [];
         }
 
         $promotionData = [];
-        $promotionProducts = $this->getPromotionProducts($filters);
-
+        $promotionProducts = $this->getPromotionProducts($filters, $language);
+        
         foreach ($filters as $filter) {
             $id = $filter['field_product_filter_id'][0]['value'];
 
@@ -139,12 +176,12 @@ class PromotionsComponentController
     /**
      *
      */
-    private function getFilters()
+    private function getFilters($language)
     {
-        $item = $this->cacher->getItem('views.promotion-filter.'. $this->currentLanguage);
+        $item = $this->cacher->getItem('views.promotion-filter.'. $language);
 
         if (!$item->isHit()) {
-            $data = $this->views->getViewById('promotion-filter');
+            $data = $this->views->withLanguage($language)->getViewById('promotion-filter');
 
             $item->set([
                 'body' => $data,
@@ -164,19 +201,19 @@ class PromotionsComponentController
     /**
      *
      */
-    private function getPromotionProducts($filters)
+    private function getPromotionProducts($filters, $language)
     {
         $promotions = [];
 
-        $item = $this->cacher->getItem('views.promotion-products.'. $this->currentLanguage);
-
+        $item = $this->cacher->getItem('views.promotion-products.'. $language);
+        $viewsLang = $this->views->withLanguage($language);
         if (!$item->isHit()) {
             foreach ($filters as $filter) {
                 $id = $filter['tid'][0]['value'];
 
                 if ($id !== 'featured') {
-                    $promotions[$id] = $this->views->getViewById('promotions', [
-                        'filter_product_category_id' => $filter['tid'][0]['value'],
+                    $promotions[$id] = $viewsLang->getViewById('promotions', [
+                        'filter_product_category_id' => $filter['tid'][0]['value']
                     ]);
                 }
             }
