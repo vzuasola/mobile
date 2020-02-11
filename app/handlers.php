@@ -85,3 +85,12 @@ $container['event_unsupported_currency'] = function ($c) {
         return $controller->unsupportedCurrency($request, $response);
     };
 };
+
+
+$container['event_site_maintenance'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        $controller = $c['resolver']['App\MobileEntry\Controller\MaintenanceController'];
+
+        return $controller->maintenance($request, $response);
+    };
+};

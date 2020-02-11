@@ -26,7 +26,7 @@ class SodaCasinoController extends BaseController
 
         $data['title'] = $config["lobby_page_title"] ?? 'Soda Casino';
 
-        return ($this->checkMaintenance($response)) ? $this->checkMaintenance($response) :
-            $this->widgets->render($response, '@site/page.html.twig', $data);
+        return $this->widgets->render($response, '@site/page.html.twig', $data);
+            // $this->widgets->render($response, '@site/page.html.twig', $data);
     }
 }
