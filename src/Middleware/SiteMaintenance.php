@@ -36,7 +36,6 @@ class SiteMaintenance implements ResponseMiddlewareInterface
         $this->request = $container->get('router_request');
         $this->router = $container->get('route_manager');
         $this->handler = $container->get('handler');
-        $this->playerSession = $container->get('player_session');
         $this->product = $container->get('product_resolver')->getProduct();
         $this->configFetcher = $container->get('config_fetcher')->withProduct($this->product);
         $this->configs = $container->get('config_fetcher')->getGeneralConfigById('webcomposer_site_maintenance');
