@@ -64,8 +64,8 @@ class MaintenanceComponentController
     {
         try {
             $config = $this->configs->getConfig('webcomposer_config.webcomposer_site_maintenance');
-            $product = $request->getParam('product') ? $request->getParam('product') : 'mobile-entrypage';
-            $body = $this->parser->processTokens($config['maintenance_content_' . $product]['value']);
+            $productList = $request->getParam('product') ? $request->getParam('product') : 'mobile-entrypage';
+            $body = $this->parser->processTokens($config['maintenance_content_' . $productList]['value']);
             $body = preg_replace_callback('/src="([^"]*)"/i', function ($imageSrc) {
                 return "src=\"" . $this->asset->generateAssetUri(
                     $imageSrc[1],
@@ -74,7 +74,7 @@ class MaintenanceComponentController
             }, $body);
 
             $data = [
-                'title' => $config['maintenance_title_' . $product] ?? 'Maintenance',
+                'title' => $config['maintenance_title_' . $productList] ?? 'Maintenance',
                 'content' => $body ?? 'Maintenance in progress'
             ];
         } catch (\Exception $e) {
