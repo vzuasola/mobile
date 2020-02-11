@@ -2,15 +2,10 @@
 
 namespace App\MobileEntry\Controller;
 
-use App\MobileEntry\Controller\ProductControllerTrait;
-
 use App\BaseController;
 
 class SodaCasinoController extends BaseController
 {
-
-    use ProductControllerTrait;
-
     /**
      *
      */
