@@ -1,6 +1,7 @@
 <?php
 
 namespace App\MobileEntry\Component\Main\Promotions;
+use App\MobileEntry\Services\Product\Products;
 
 /**
  *
@@ -8,6 +9,7 @@ namespace App\MobileEntry\Component\Main\Promotions;
 class PromotionsComponentController
 {
     const TIMEOUT = 1800;
+    const LATAM_LANG_DEFAULT = 'es';
     const LATAM = [
         'mx' => 'es-mx',
         'cl' => 'es-cl',
@@ -134,18 +136,20 @@ class PromotionsComponentController
         } catch (\Exception $e) {
             $promoConfigs = [];
         }
-
-        try {
-            $featured = $this->views->withLanguage($language)->getViewById('featured_promotions');
-        } catch (\Exception $e) {
-            $featured = [];
+        $promotionData = [];
+        $filterData = [];
+        $featured = $this->getFeatured($language);
+        $promotionProducts = $this->getPromotionProducts($filters, $language);
+        if (array_key_exists($userIPCountry, $this::LATAM)
+            && count($featured) <= 0
+            && count($promotionProducts) <= 0) {
+            $featured = $this->getFeatured($this::LATAM_LANG_DEFAULT);
+            $filters = $this->getFilters($this::LATAM_LANG_DEFAULT);
+            $promotionProducts = $this->getPromotionProducts($filters, $this::LATAM_LANG_DEFAULT);
         }
 
-        $promotionData = [];
-        $promotionProducts = $this->getPromotionProducts($filters, $language);
         foreach ($filters as $filter) {
             $id = $filter['field_product_filter_id'][0]['value'];
-
             if ($id === 'featured') {
                 $featured = $this->createPromotions($featured, $promoConfigs, $isLogin, $isProvisioned, 'featured');
 
@@ -155,13 +159,13 @@ class PromotionsComponentController
                 }
             } else {
                 $tid = $filter['tid'][0]['value'];
+                if (isset($promotionProducts[$tid])) {
+                    $promoList = $this->createPromotions($promotionProducts[$tid], $promoConfigs, $isLogin, $isProvisioned);
 
-                $promotions = $promotionProducts[$tid];
-                $promoList = $this->createPromotions($promotions, $promoConfigs, $isLogin, $isProvisioned);
-
-                if (count($promoList)) {
-                    $promotionData[$id] = $promoList;
-                    $filterData[] = $this->createFilter($filter);
+                    if (count($promoList)) {
+                        $promotionData[$id] = $promoList;
+                        $filterData[] = $this->createFilter($filter);
+                    }
                 }
             }
         }
@@ -170,6 +174,17 @@ class PromotionsComponentController
         $data['filters'] = $filterData;
 
         return $this->rest->output($response, $data);
+    }
+
+    private function getFeatured($language) {
+        $featured = [];
+        try {
+            $featured = $this->views->withLanguage($language)->getViewById('featured_promotions');
+        } catch (\Exception $e) {
+            $featured = [];
+        }
+
+        return $featured;
     }
 
     /**
@@ -214,6 +229,10 @@ class PromotionsComponentController
                     $promotions[$id] = $viewsLang->getViewById('promotions', [
                         'filter_product_category_id' => $filter['tid'][0]['value']
                     ]);
+
+                    if (count($promotions[$id]) === 0) {
+                        unset($promotions[$id]);
+                    }
                 }
             }
 
