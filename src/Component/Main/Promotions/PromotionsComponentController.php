@@ -1,7 +1,6 @@
 <?php
 
 namespace App\MobileEntry\Component\Main\Promotions;
-use App\MobileEntry\Services\Product\Products;
 
 /**
  *
@@ -160,7 +159,12 @@ class PromotionsComponentController
             } else {
                 $tid = $filter['tid'][0]['value'];
                 if (isset($promotionProducts[$tid])) {
-                    $promoList = $this->createPromotions($promotionProducts[$tid], $promoConfigs, $isLogin, $isProvisioned);
+                    $promoList = $this->createPromotions(
+                        $promotionProducts[$tid],
+                        $promoConfigs,
+                        $isLogin,
+                        $isProvisioned
+                    );
 
                     if (count($promoList)) {
                         $promotionData[$id] = $promoList;
@@ -176,7 +180,8 @@ class PromotionsComponentController
         return $this->rest->output($response, $data);
     }
 
-    private function getFeatured($language) {
+    private function getFeatured($language)
+    {
         $featured = [];
         try {
             $featured = $this->views->withLanguage($language)->getViewById('featured_promotions');
