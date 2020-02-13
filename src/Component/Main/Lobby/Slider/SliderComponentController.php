@@ -104,41 +104,26 @@ class SliderComponentController
     {
         try {
             $data['product'] = [];
-            $isLogin = $this->playerSession->isLogin();
-            $language = $this->currentLanguage;
+            $product = $params['product'] ?? 'mobile-entrypage';
+            $language = $this->getLatamLang($product);
             $params = $request->getQueryParams();
-            $userIPCountry = strtolower($this->idDomain->getGeoIpCountry());
-            if (isset($params['product']) && $params['product'] != 'mobile-entrypage') {
-                $product = $params['product'];
+            if ($product != 'mobile-entrypage') {
                 $this->configs = $this->configs->withProduct($product);
                 $this->viewsFetcher = $this->viewsFetcher->withProduct($product);
                 $data['product'] = ['product' => $product];
-            } else {
-                if ($isLogin) {
-                    try {
-                        $countryCode = $this->user->getPlayerDetails()['countryCode'];
-                        $currency = $this->user->getPlayerDetails()['currency'];
-                        $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM))
-                            ? $this::LATAM_CURRENCY[strtolower($currency)] : $countryCode;
-                    } catch (\Exception $e) {
-                        // Do nothing
-                    }
-                }
-
-                if (array_key_exists($userIPCountry, $this::LATAM)) {
-                    $language = $this::LATAM[$userIPCountry];
-                }
-            }
+            } 
         } catch (\Exception $e) {
             $data['product'] = [];
         }
 
         try {
             $sliders = $this->viewsFetcher->withLanguage($language)->getViewById('webcomposer_slider_v2');
-            if ($params['product'] === 'mobile-entrypage'
-                && array_key_exists($userIPCountry, $this::LATAM)
+            if ($product === 'mobile-entrypage'
+                && $language !== $this->currentLanguage
                 && count($sliders) <= 0) {
-            $sliders = $this->viewsFetcher->withLanguage($this::LATAM_LANG_DEFAULT)->getViewById('webcomposer_slider_v2');
+            $sliders = $this->viewsFetcher
+                ->withLanguage($this::LATAM_LANG_DEFAULT)
+                ->getViewById('webcomposer_slider_v2');
         }
             $data['slides'] = $this->processSlides($sliders, $data['product']);
         } catch (\Exception $e) {
@@ -160,6 +145,33 @@ class SliderComponentController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    private function getLatamLang($product)
+    {
+        if ($product === 'mobile-entrypage'
+            && $this->currentLanguage === $this::LATAM_LANG_DEFAULT) {
+            $userIPCountry = strtolower($this->idDomain->getGeoIpCountry());
+            $language = $this->currentLanguage;
+            if ($this->playerSession->isLogin()) {
+                try {
+                    $countryCode = $this->user->getPlayerDetails()['countryCode'];
+                    $currency = $this->user->getPlayerDetails()['currency'];
+                    $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM))
+                        ? $this::LATAM_CURRENCY[strtolower($currency)] : $countryCode;
+                } catch (\Exception $e) {
+                    // Do nothing
+                }
+            }
+
+            if (array_key_exists($userIPCountry, $this::LATAM)) {
+                $language = $this::LATAM[$userIPCountry];
+            }
+
+            return $language;
+        }
+
+        return $this->currentLanguage;
     }
 
     private function processSlides($data, $options)

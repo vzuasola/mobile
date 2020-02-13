@@ -105,25 +105,9 @@ class PromotionsComponentController
      */
     public function promotions($request, $response)
     {
-        $isLogin = $this->playerSession->isLogin();
         $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
-        $language = $this->currentLanguage;
-        $userIPCountry = strtolower($this->idDomain->getGeoIpCountry());
-        if ($isLogin) {
-            try {
-                $countryCode = $this->user->getPlayerDetails()['countryCode'];
-                $currency = $this->user->getPlayerDetails()['currency'];
-                $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM))
-                            ? $this::LATAM_CURRENCY[strtolower($currency)] : $countryCode;
-            } catch (\Exception $e) {
-                // Do nothing
-            }
-        }
-
-        if (array_key_exists($userIPCountry, $this::LATAM)) {
-            $language = $this::LATAM[$userIPCountry];
-        }
-
+        $isLogin = $this->playerSession->isLogin();
+        $language = $this->getLatamLang();
         try {
             $filters = $this->getFilters($language);
         } catch (\Exception $e) {
@@ -139,7 +123,8 @@ class PromotionsComponentController
         $filterData = [];
         $featured = $this->getFeatured($language);
         $promotionProducts = $this->getPromotionProducts($filters, $language);
-        if (array_key_exists($userIPCountry, $this::LATAM)
+
+        if ($language !== $this->currentLanguage
             && count($featured) <= 0
             && count($promotionProducts) <= 0) {
             $featured = $this->getFeatured($this::LATAM_LANG_DEFAULT);
@@ -178,6 +163,32 @@ class PromotionsComponentController
         $data['filters'] = $filterData;
 
         return $this->rest->output($response, $data);
+    }
+
+    private function getLatamLang()
+    {
+        $language = $this->currentLanguage;
+        if ($this->currentLanguage === $this::LATAM_LANG_DEFAULT) {
+            $userIPCountry = strtolower($this->idDomain->getGeoIpCountry());
+            if ($this->playerSession->isLogin()) {
+                try {
+                    $countryCode = $this->user->getPlayerDetails()['countryCode'];
+                    $currency = $this->user->getPlayerDetails()['currency'];
+                    $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM))
+                        ? $this::LATAM_CURRENCY[strtolower($currency)] : $countryCode;
+                } catch (\Exception $e) {
+                    // Do nothing
+                }
+            }
+
+            if (array_key_exists($userIPCountry, $this::LATAM)) {
+                $language = $this::LATAM[$userIPCountry];
+            }
+
+            return $language;
+        }
+
+        return $language;
     }
 
     private function getFeatured($language)
