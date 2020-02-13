@@ -171,7 +171,6 @@ tct_o:
     - python -u automation/run.py --stage deploy-tct
   when: manual
   dependencies:
-    - dev
     - create package
   artifacts:
     paths:
