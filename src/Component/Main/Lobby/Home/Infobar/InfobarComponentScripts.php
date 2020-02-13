@@ -37,12 +37,6 @@ class InfobarComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        try {
-            $configs['data'] = $this->views->getViewById('info_bar');
-        } catch (\Exception $e) {
-            $configs = [];
-        }
-
-        return $configs;
+        return [];
     }
 }
