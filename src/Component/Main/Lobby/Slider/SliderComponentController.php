@@ -157,7 +157,7 @@ class SliderComponentController
                     $countryCode = $this->user->getPlayerDetails()['countryCode'];
                     $currency = $this->user->getPlayerDetails()['currency'];
                     $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM))
-                            ? $this::LATAM_CURRENCY[strtolower($currency)] : $countryCode;
+                            ? $this::LATAM_CURRENCY[strtolower($currency)] : strtolower($countryCode);
                 } catch (\Exception $e) {
                     // Do nothing
                 }

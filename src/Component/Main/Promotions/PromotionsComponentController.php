@@ -161,6 +161,7 @@ class PromotionsComponentController
 
         $data['promotions'] = $promotionData;
         $data['filters'] = $filterData;
+        $data['lang'] = $language;
 
         return $this->rest->output($response, $data);
     }
@@ -175,7 +176,7 @@ class PromotionsComponentController
                     $countryCode = $this->user->getPlayerDetails()['countryCode'];
                     $currency = $this->user->getPlayerDetails()['currency'];
                     $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM))
-                        ? $this::LATAM_CURRENCY[strtolower($currency)] : $countryCode;
+                        ? $this::LATAM_CURRENCY[strtolower($currency)] : strtolower($countryCode);
                 } catch (\Exception $e) {
                     // Do nothing
                 }
@@ -234,7 +235,6 @@ class PromotionsComponentController
     private function getPromotionProducts($filters, $language)
     {
         $promotions = [];
-
         $item = $this->cacher->getItem('views.promotion-products.'. $language);
         $viewsLang = $this->views->withLanguage($language);
         if (!$item->isHit()) {
