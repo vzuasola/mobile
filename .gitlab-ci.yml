@@ -20,6 +20,12 @@ stages:
   - staging-signoff
   - deploy-production
 
+before_script:
+  - export PACKAGE_VERSION="$CI_COMMIT_REF_NAME.$CI_PIPELINE_ID"
+  - export DEPLOY_STATUS_URL="$DEPLOY_URL/lastBuild/api/json"
+  - export DEPLOY_RESULT_URL="$DEPLOY_URL/lastBuild/logText/progressiveText?start=0"
+  - export GITLAB_EMAIL="$GITLAB_USER_EMAIL"
+
 static code analysis:
   stage: tests
   script:
@@ -70,73 +76,20 @@ create package:
   tags:
     - devrunner
 
-dev:
-  stage: deploy-dev
-  environment:
-    name: development
-  script:
-    - python -u automation/run.py --stage deploy-development
-  when: manual
-  dependencies:
-    - create package
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-
-.selenium tests development:
-  stage: integration-tests-development
-  script:
-    - python -u automation/run.py --stage integration-tests-development
-  when: manual
-  dependencies:
-    - dev
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-
-.jmeter development:
-  stage: performance-tests-development
-  script:
-    - python -u automation/run.py --stage performance-tests-dev
-  when: manual
-  dependencies:
-    - dev
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  tags:
-    - jmeter
-
-lighthouse development:
-  stage: integration-tests-development
-  when: manual
-  script:
-    - python -u automation/run.py --stage lighthouse
-  artifacts:
-    when: always
-    paths:
-      - automation/deployed/*.html
-    expire_in: 1 month
-  tags:
-    - devrunner
-
 qa1:
   stage: deploy-test
   environment:
     name: testing
+  variables:
+    env: tst
   script:
-    - python -u automation/run.py --stage deploy-testing
+    - export DEPLOY_TOKEN DEPLOY_URL
+    - bash automation/jenkins_deploy.sh
   when: manual
   dependencies:
-    - dev
     - create package
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
+  tags:
+    - ipvg-stg-02
 
 .selenium tests qa1:
   stage: integration-tests-test
@@ -192,12 +145,17 @@ tct:
   stage: deploy-test
   environment:
     name: tct
+  variables:
+    env: tct
   script:
-    - python -u automation/run.py --stage deploy-tct
+    - export DEPLOY_TOKEN DEPLOY_URL
+    - bash automation/jenkins_deploy.sh
   when: manual
   dependencies:
-    - dev
     - create package
+  tags:
+    - ipvg-stg-02
+
   artifacts:
     paths:
       - automation/deployed/*.jsonl
@@ -281,20 +239,16 @@ uat:
   stage: deploy-staging
   environment:
     name: uat
+  variables:
+    env: uat
   script:
-    - python -u automation/run.py --stage deploy-uat
+    - export DEPLOY_TOKEN DEPLOY_URL
+    - bash automation/jenkins_deploy.sh
   when: manual
   dependencies:
     - testing signoff
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
   tags:
-    - stgrunner
-  only:
-    - /^release-.*$/
-    - tags
+    - ipvg-stg-02
 
 .selenium tests uat:
   stage: integration-tests-staging
@@ -345,20 +299,16 @@ staging:
   stage: deploy-staging
   environment:
     name: staging
+  variables:
+    env: stg
   script:
-    - python -u automation/run.py --stage deploy-staging
+    - export DEPLOY_TOKEN DEPLOY_URL
+    - bash automation/jenkins_deploy.sh
   when: manual
   dependencies:
     - testing signoff
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
   tags:
-    - stgrunner
-  only:
-    - /^release-.*$/
-    - tags
+    - ipvg-stg-02
 
 staging_o:
   stage: deploy-staging
