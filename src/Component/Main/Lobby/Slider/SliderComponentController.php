@@ -104,9 +104,9 @@ class SliderComponentController
     {
         try {
             $data['product'] = [];
+            $params = $request->getQueryParams();
             $product = $params['product'] ?? 'mobile-entrypage';
             $language = $this->getLatamLang($product);
-            $params = $request->getQueryParams();
             if ($product != 'mobile-entrypage') {
                 $this->configs = $this->configs->withProduct($product);
                 $this->viewsFetcher = $this->viewsFetcher->withProduct($product);
