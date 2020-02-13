@@ -161,16 +161,15 @@ class PromotionsComponentController
 
         $data['promotions'] = $promotionData;
         $data['filters'] = $filterData;
-        $data['lang'] = $language;
 
         return $this->rest->output($response, $data);
     }
 
     private function getLatamLang()
     {
-        $language = $this->currentLanguage;
         if ($this->currentLanguage === $this::LATAM_LANG_DEFAULT) {
             $userIPCountry = strtolower($this->idDomain->getGeoIpCountry());
+            $language = $this->currentLanguage;
             if ($this->playerSession->isLogin()) {
                 try {
                     $countryCode = $this->user->getPlayerDetails()['countryCode'];
@@ -189,7 +188,7 @@ class PromotionsComponentController
             return $language;
         }
 
-        return $language;
+        return $this->currentLanguage;
     }
 
     private function getFeatured($language)
