@@ -108,16 +108,16 @@ class PromotionsComponentController
         $isLogin = $this->playerSession->isLogin();
         $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
         $language = $this->currentLanguage;
-        try {
-            $countryCode = $this->user->getPlayerDetails()['countryCode'];
-            $currency = $this->user->getPlayerDetails()['currency'];
-        } catch (\Exception $e) {
-            // Do nothing
-        }
-
-        $userIPCountry = ($isLogin) ? strtolower($countryCode) : strtolower($this->idDomain->getGeoIpCountry());
-        if ($isLogin && array_key_exists(strtolower($currency), $this::LATAM)) {
-            $userIPCountry = $this::LATAM_CURRENCY[strtolower($currency)];
+        $userIPCountry = strtolower($this->idDomain->getGeoIpCountry());
+        if ($isLogin) {
+            try {
+                $countryCode = $this->user->getPlayerDetails()['countryCode'];
+                $currency = $this->user->getPlayerDetails()['currency'];
+                $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM))
+                            ? $this::LATAM_CURRENCY[strtolower($currency)] : $countryCode;
+            } catch (\Exception $e) {
+                // Do nothing
+            }
         }
 
         if (array_key_exists($userIPCountry, $this::LATAM)) {
