@@ -6,6 +6,20 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class SliderComponentController
 {
+    const LATAM_LANG_DEFAULT = 'es';
+    const LATAM = [
+        'mx' => 'es-mx',
+        'cl' => 'es-cl',
+        'ar' => 'es-ar',
+        'pe' => 'es-pe'
+    ];
+
+    const LATAM_CURRENCY = [
+        'mxn' => 'mx',
+        'clp' => 'cl',
+        'pen' => 'pe',
+        'ars' => 'ar'
+    ];
      /**
      * @var App\Fetcher\Drupal\ViewsFetcher
      */
@@ -29,6 +43,12 @@ class SliderComponentController
 
     private $url;
 
+    private $currentLanguage;
+
+    private $idDomain;
+
+    private $user;
+
     /**
      *
      */
@@ -41,7 +61,10 @@ class SliderComponentController
             $container->get('player_session'),
             $container->get('rest'),
             $container->get('asset'),
-            $container->get('uri')
+            $container->get('uri'),
+            $container->get('lang'),
+            $container->get('id_domain'),
+            $container->get('user_fetcher')
         );
     }
 
@@ -55,7 +78,10 @@ class SliderComponentController
         $playerSession,
         $rest,
         $asset,
-        $url
+        $url,
+        $currentLanguage,
+        $idDomain,
+        $user
     ) {
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
@@ -64,6 +90,9 @@ class SliderComponentController
         $this->rest = $rest;
         $this->asset = $asset;
         $this->url = $url;
+        $this->currentLanguage = $currentLanguage;
+        $this->idDomain = $idDomain;
+        $this->user = $user;
     }
 
     /**
@@ -75,9 +104,10 @@ class SliderComponentController
     {
         try {
             $data['product'] = [];
+            $product = $params['product'] ?? 'mobile-entrypage';
+            $language = $this->getLatamLang($product);
             $params = $request->getQueryParams();
-            if (isset($params['product']) && $params['product'] != 'mobile-entrypage') {
-                $product = $params['product'];
+            if ($product != 'mobile-entrypage') {
                 $this->configs = $this->configs->withProduct($product);
                 $this->viewsFetcher = $this->viewsFetcher->withProduct($product);
                 $data['product'] = ['product' => $product];
@@ -87,7 +117,13 @@ class SliderComponentController
         }
 
         try {
-            $sliders = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
+            $sliders = $this->viewsFetcher->withLanguage($language)->getViewById('webcomposer_slider_v2');
+            if ($product === 'mobile-entrypage'
+                && $language !== $this->currentLanguage
+                && count($sliders) <= 0) {
+                $sliders = $this->viewsFetcher->withLanguage($this::LATAM_LANG_DEFAULT)
+                    ->getViewById('webcomposer_slider_v2');
+            }
             $data['slides'] = $this->processSlides($sliders, $data['product']);
         } catch (\Exception $e) {
             $data['slides'] = [];
@@ -108,6 +144,33 @@ class SliderComponentController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    private function getLatamLang($product)
+    {
+        if ($product === 'mobile-entrypage' &&
+            $this->currentLanguage === $this::LATAM_LANG_DEFAULT) {
+            $userIPCountry = strtolower($this->idDomain->getGeoIpCountry());
+            $language = $this->currentLanguage;
+            if ($this->playerSession->isLogin()) {
+                try {
+                    $countryCode = $this->user->getPlayerDetails()['countryCode'];
+                    $currency = $this->user->getPlayerDetails()['currency'];
+                    $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM))
+                            ? $this::LATAM_CURRENCY[strtolower($currency)] : $countryCode;
+                } catch (\Exception $e) {
+                    // Do nothing
+                }
+            }
+
+            if (array_key_exists($userIPCountry, $this::LATAM)) {
+                $language = $this::LATAM[$userIPCountry];
+            }
+
+            return $language;
+        }
+
+        return $this->currentLanguage;
     }
 
     private function processSlides($data, $options)
