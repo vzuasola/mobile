@@ -121,7 +121,7 @@ class SliderComponentController
             if ($product === 'mobile-entrypage'
                 && $language !== $this->currentLanguage
                 && count($sliders) <= 0) {
-            $sliders = $this->viewsFetcher->withLanguage($this::LATAM_LANG_DEFAULT)
+                $sliders = $this->viewsFetcher->withLanguage($this::LATAM_LANG_DEFAULT)
                     ->getViewById('webcomposer_slider_v2');
             }
             $data['slides'] = $this->processSlides($sliders, $data['product']);
