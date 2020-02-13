@@ -111,7 +111,7 @@ class SliderComponentController
                 $this->configs = $this->configs->withProduct($product);
                 $this->viewsFetcher = $this->viewsFetcher->withProduct($product);
                 $data['product'] = ['product' => $product];
-            } 
+            }
         } catch (\Exception $e) {
             $data['product'] = [];
         }
@@ -122,8 +122,8 @@ class SliderComponentController
                 && $language !== $this->currentLanguage
                 && count($sliders) <= 0) {
             $sliders = $this->viewsFetcher->withLanguage($this::LATAM_LANG_DEFAULT)
-                ->getViewById('webcomposer_slider_v2');
-        }
+                    ->getViewById('webcomposer_slider_v2');
+            }
             $data['slides'] = $this->processSlides($sliders, $data['product']);
         } catch (\Exception $e) {
             $data['slides'] = [];
@@ -148,26 +148,26 @@ class SliderComponentController
 
     private function getLatamLang($product)
     {
-        if ($product === 'mobile-entrypage'
-        && $this->currentLanguage === $this::LATAM_LANG_DEFAULT) {
+        if ($product === 'mobile-entrypage' &&
+            $this->currentLanguage === $this::LATAM_LANG_DEFAULT) {
             $userIPCountry = strtolower($this->idDomain->getGeoIpCountry());
             $language = $this->currentLanguage;
             if ($this->playerSession->isLogin()) {
-            try {
-                $countryCode = $this->user->getPlayerDetails()['countryCode'];
-                $currency = $this->user->getPlayerDetails()['currency'];
-                $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM))
-                    ? $this::LATAM_CURRENCY[strtolower($currency)] : $countryCode;
-            } catch (\Exception $e) {
-                // Do nothing
+                try {
+                    $countryCode = $this->user->getPlayerDetails()['countryCode'];
+                    $currency = $this->user->getPlayerDetails()['currency'];
+                    $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM))
+                            ? $this::LATAM_CURRENCY[strtolower($currency)] : $countryCode;
+                } catch (\Exception $e) {
+                    // Do nothing
+                }
             }
-        }
 
-        if (array_key_exists($userIPCountry, $this::LATAM)) {
-            $language = $this::LATAM[$userIPCountry];
-        }
+            if (array_key_exists($userIPCountry, $this::LATAM)) {
+                $language = $this::LATAM[$userIPCountry];
+            }
 
-        return $language;
+            return $language;
         }
 
         return $this->currentLanguage;
