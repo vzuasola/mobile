@@ -118,13 +118,14 @@ class SliderComponentController
 
         try {
             $sliders = $this->viewsFetcher->withLanguage($language)->getViewById('webcomposer_slider_v2');
+            $data['slides'] = $this->processSlides($sliders, $data['product']);
             if ($product === 'mobile-entrypage'
                 && $language !== $this->currentLanguage
-                && count($sliders) <= 0) {
+                && !$this->hasActiveSlide($data['slides'])) {
                 $sliders = $this->viewsFetcher->withLanguage($this::LATAM_LANG_DEFAULT)
                     ->getViewById('webcomposer_slider_v2');
+                $data['slides'] = $this->processSlides($sliders, $data['product']);
             }
-            $data['slides'] = $this->processSlides($sliders, $data['product']);
         } catch (\Exception $e) {
             $data['slides'] = [];
         }
@@ -301,5 +302,15 @@ class SliderComponentController
         }
 
         return false;
+    }
+
+    private function hasActiveSlide($slides) {
+        $publishedSlides = array_filter($slides, function ($slide) {
+            if ($slide['published']) {
+                return $slide;
+            }
+        });
+
+        return count($publishedSlides) > 0;
     }
 }
