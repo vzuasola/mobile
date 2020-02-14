@@ -304,7 +304,8 @@ class SliderComponentController
         return false;
     }
 
-    private function hasActiveSlide($slides) {
+    private function hasActiveSlide($slides)
+    {
         $publishedSlides = array_filter($slides, function ($slide) {
             if ($slide['published']) {
                 return $slide;
