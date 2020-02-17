@@ -18,38 +18,46 @@ export class INLanguageComponent implements ComponentInterface {
     private element: HTMLElement;
     private attachments: any;
     private languageData: any;
-
     private country: string;
     private inShowModal: boolean;
 
     onLoad(element: HTMLElement, attachments: {
+        langEnabled: boolean;
         authenticated: boolean,
         currentLanguage: string,
+
     }) {
         this.element = element;
         this.attachments = attachments;
-        this.attachINModalListeners();
-        this.listenOnModalClosed();
-        ComponentManager.subscribe("session.login", (event, target, data) => {
-            this.playerLanguage();
-        });
+
+        if (this.attachments.langEnabled) {
+            this.attachINModalListeners();
+            this.listenOnModalClosed();
+            ComponentManager.subscribe("session.login", (event, target, data) => {
+                this.playerLanguage();
+            });
+        }
     }
 
     onReload(element: HTMLElement, attachments: {
+        langEnabled: boolean;
         authenticated: boolean,
         currentLanguage: string,
+
     }) {
         this.element = element;
         this.attachments = attachments;
 
-        if (this.attachments.authenticated && this.country === "IN") {
-            this.checkPreference(() => {
-                if (this.inShowModal) {
-                    this.attachINModalListeners();
-                    this.listenOnModalClosed();
-                    this.getLanguage();
-                }
-            });
+        if (this.attachments.langEnabled) {
+            if (this.attachments.authenticated && this.country === "IN") {
+                this.checkPreference(() => {
+                    if (this.inShowModal) {
+                        this.attachINModalListeners();
+                        this.listenOnModalClosed();
+                        this.getLanguage();
+                    }
+                });
+            }
         }
     }
 
@@ -181,7 +189,6 @@ export class INLanguageComponent implements ComponentInterface {
      */
     private generateLanguageMarkup(data) {
         const language: HTMLElement = this.element.querySelector("#language");
-
         const template = indiaLanguageSelectorTemplate({
             languageIndiaTitle: data.mobile_india_language_select,
             languageIndiaDescription: data.mobile_india_language_description,
