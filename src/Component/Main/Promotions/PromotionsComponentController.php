@@ -107,7 +107,8 @@ class PromotionsComponentController
     {
         $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
         $isLogin = $this->playerSession->isLogin();
-        $language = $this->getLatamLang();
+        $languageParam = $request->getQueryParams();
+        $language = $languageParam['language'] ?? 'en';
         try {
             $filters = $this->getFilters($language);
         } catch (\Exception $e) {
@@ -165,7 +166,7 @@ class PromotionsComponentController
         return $this->rest->output($response, $data);
     }
 
-    private function getLatamLang()
+    public function getLatamLang($request, $response)
     {
         if ($this->currentLanguage === $this::LATAM_LANG_DEFAULT) {
             $userIPCountry = strtolower($this->idDomain->getGeoIpCountry());
@@ -185,10 +186,10 @@ class PromotionsComponentController
                 $language = $this::LATAM[$userIPCountry];
             }
 
-            return $language;
+            return $this->rest->output($response, ['language' => $language]);
         }
 
-        return $this->currentLanguage;
+        return $this->rest->output($response, ['language' => $this->currentLanguage]);
     }
 
     private function getFeatured($language)
