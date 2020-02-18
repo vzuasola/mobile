@@ -419,7 +419,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             type: "getFavorites",
         };
         req["games-collection"] = {
-            type: "getGamesCollection",
+            type: "collection",
         };
 
         return req;

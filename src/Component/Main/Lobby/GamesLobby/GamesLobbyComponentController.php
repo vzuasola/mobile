@@ -152,7 +152,7 @@ class GamesLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
-    public function getGamesCollection($request, $response)
+    public function collection($request, $response)
     {
         $data = [];
         try {
@@ -160,15 +160,7 @@ class GamesLobbyComponentController
 
             if ($gamesCollections) {
                 foreach ($gamesCollections as $gamesCollection) {
-                    if (isset($gamesCollection['field_type'][0]['name'][0]['value'])
-                        && isset($gamesCollection['field_games'])) {
-                        foreach ($gamesCollection['field_games'] as $games) {
-                            if ($games['field_game_code'][0]['value']) {
-                                $data[$gamesCollection['field_type'][0]['name'][0]['value']][] =
-                                    'id:' . $games['field_game_code'][0]['value'];
-                            }
-                        }
-                    }
+                    $data[$gamesCollection['field_type']][] = 'id:' . $gamesCollection['field_game_code'];
                 }
             }
         } catch (\Exception $e) {
