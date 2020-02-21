@@ -19,6 +19,7 @@ import {CasinoLobbyComponent} from "@app/src/Component/Main/Lobby/CasinoLobby/sc
 import {LotteryLobbyComponent} from "@app/src/Component/Main/Lobby/LotteryLobby/script";
 import {ExchangeLobbyComponent} from "@app/src/Component/Main/Lobby/ExchangeLobby/script";
 import {SodaCasinoLobbyComponent} from "@app/src/Component/Main/Lobby/SodaCasinoLobby/script";
+import {GameWindowComponent} from "@app/src/Component/Main/GameWindow/script";
 import {LobbyComponent} from "@app/src/Component/Main/Lobby/script";
 import {MarketingComponent} from "@app/src/Component/Marketing/script";
 import {MarketingSpaceComponent} from "@app/src/Component/MarketingSpace/script";
@@ -59,6 +60,7 @@ ComponentManager.setComponents({
     announcement: new AnnouncementComponent(),
     push_notification: new PushNotificationComponent(),
     seo: new SEOComponent(),
+    game_window: new GameWindowComponent(),
     lobby: new LobbyComponent(),
     lobby_slider: new LobbySliderComponent(),
     home_products: new ProductsComponent(),

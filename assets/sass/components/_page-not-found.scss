@@ -1,0 +1,73 @@
+// Page not Found default styles
+.page-not-found {
+    min-height: 70vh;
+    height: 100%;
+    text-align: center;
+    background: $dark-gray;
+
+    &-content {
+        padding: 15% 0 5% 0;
+
+        h1 {
+            color: $yellow;
+        }
+
+        img {
+            width: 100%;
+            background-size: auto 100%;
+        }
+
+        a {
+            color: $yellow;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        ul {
+            padding: 10% 0 0 0;
+            columns: 2;
+            -webkit-columns: 2;
+            line-height: 2.5rem;
+            list-style: none
+        }
+    }
+}
+
+// mobile casino soda content background
+.mobile-soda-casino.page-not-found {
+    background: $soda-dark-blue;
+    color: #fec270;
+
+    h3 {
+        color: #fec270;
+    }
+
+    .mobile-soda-casino-btn {
+        border-radius: 4rem;
+        background: transparent;
+        text-decoration: none;
+        margin-left: 2%;
+        width: 46%;
+    }
+
+    .mobile-soda-casino-btn.left {
+        border: 1px solid #ea5868;
+        color: #ea5868;
+        text-decoration: none;
+        margin-left: 2%;
+        width: 46%;
+    }
+
+    .mobile-soda-casino-btn.right {
+        border: 1px solid #fec270;
+        color: #fec270;
+    }
+}
+
+@include media("<tablet", "landscape") {
+    .page-not-found {
+        &-content {
+            padding-top: 5%;
+        }
+    }
+}

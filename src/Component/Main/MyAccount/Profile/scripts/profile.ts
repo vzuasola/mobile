@@ -148,10 +148,10 @@ export class Profile extends FormBase {
                 : languageField.value,
             mobile: (this.attachments.user.sms_1_verified
                         || (this.mobiles.mobile === this.form.MyProfileForm_mobile_number_1.value))
-                ? this.attachments.user.mobile_number_1
+                ? this.attachments.user.mobile_number_1_masked
                 : this.form.MyProfileForm_mobile_number_1.value,
             mobile1: (this.mobiles.mobile1 === this.form.MyProfileForm_mobile_number_2.value)
-                ? this.attachments.user.mobile_number_2
+                ? this.attachments.user.mobile_number_2_masked
                 : this.form.MyProfileForm_mobile_number_2.value,
             address: this.form.MyProfileForm_address.value,
             city: this.form.MyProfileForm_city.value,
@@ -270,7 +270,11 @@ export class Profile extends FormBase {
             // If values of same property are not equal,
             // objects are not equivalent
             if (a[propName] !== b[propName]) {
-                return false;
+                if ((propName === "mobile" || propName === "mobile1") && b[propName].includes("*")) {
+                    continue;
+                } else {
+                    return false;
+                }
             }
         }
 
@@ -288,8 +292,12 @@ export class Profile extends FormBase {
 
         for (const propName of aProps) {
             if (a[propName] !== b[propName]) {
-                old[propName] = a[propName];
-                modified[propName] = b[propName];
+                if ((propName === "mobile" || propName === "mobile1") && b[propName].includes("*")) {
+                    continue;
+                } else {
+                    old[propName] = a[propName];
+                    modified[propName] = b[propName];
+                }
             }
         }
 

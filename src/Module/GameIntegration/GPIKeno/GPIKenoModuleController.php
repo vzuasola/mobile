@@ -90,7 +90,7 @@ class GPIKenoModuleController
 
             $data['gameurl'] = $gameUri;
         } catch (\Exception $e) {
-            $data = [];
+            $data['currency'] = true;
         }
 
         return $data;

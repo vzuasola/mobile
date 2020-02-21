@@ -242,10 +242,32 @@ export class MenuComponent implements ComponentInterface {
 
     private listenHighlightMenu() {
         ComponentManager.subscribe("menu.highlight", (event, target, data) => {
-            const menu = this.element.querySelector("a." + data.menu);
-            const activeClass = menu.getAttribute("data-router-active-link-class");
-            if (menu && !utility.hasClass(menu, activeClass)) {
-                utility.addClass(menu, activeClass);
+            const links = this.element.querySelectorAll("a." + data.menu);
+            const category = utility.getHash(window.location.href);
+            let hasCategory = false;
+            let parentMenu: any;
+            for (const link in links) {
+                if (links.hasOwnProperty(link)) {
+                    const activeClass = links[link].getAttribute("data-router-active-link-class");
+                    const menuLink = links[link].getAttribute("href");
+                    const menuCategory = utility.getHash(menuLink);
+                    // reset menu state
+                    utility.removeClass(links[link], activeClass);
+                    if (category !== window.location.href &&
+                        category === menuCategory) {
+                        utility.addClass(links[link], activeClass);
+                        hasCategory = true;
+                    }
+
+                    if (menuCategory === menuLink) {
+                        parentMenu = links[link];
+                    }
+                }
+            }
+
+            // if no category detected, highlight parent menu
+            if (parentMenu && !hasCategory) {
+                utility.addClass(parentMenu, parentMenu.getAttribute("data-router-active-link-class"));
             }
         });
     }

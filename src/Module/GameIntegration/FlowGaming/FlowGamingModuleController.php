@@ -53,18 +53,19 @@ class FlowGamingModuleController
             $data['currency'] = true;
             $requestData = $request->getParsedBody();
             $params = explode('|', $requestData['gameCode']);
-
+            $platformCode = $params[1] ?? 'NETENT_CAS';
             try {
                 $responseData = $this->flowGaming->getGameUrlById('icore_flg', $params[0], [
                     'options' => [
                         'languageCode' => $requestData['langCode'],
+                        'platformCode' => $platformCode
                     ]
                 ]);
                 if ($responseData['url']) {
                     $data['gameurl'] = $responseData['url'];
                 }
             } catch (\Exception $e) {
-                $data = [];
+                $data['currency'] = true;
             }
         }
 

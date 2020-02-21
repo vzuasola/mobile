@@ -7,7 +7,10 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 class AccessDeniedComponent implements ComponentWidgetInterface
 {
     private $url;
+
     private $request;
+
+    private $resolver;
 
     /**
      *
@@ -16,17 +19,22 @@ class AccessDeniedComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('uri'),
-            $container->get('router_request')
+            $container->get('router_request'),
+            $container->get('product_resolver')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($url, $request)
-    {
+    public function __construct(
+        $url,
+        $request,
+        $resolver
+    ) {
         $this->url = $url;
         $this->request = $request;
+        $this->resolver = $resolver;
     }
 
     /**
@@ -34,7 +42,7 @@ class AccessDeniedComponent implements ComponentWidgetInterface
      *
      * @return string
      */
-    public function getTemplate()
+    public function getTemplate($options = [])
     {
         return '@component/Main/AccessDenied/template.html.twig';
     }
@@ -44,10 +52,8 @@ class AccessDeniedComponent implements ComponentWidgetInterface
      *
      * @return array
      */
-    public function getData()
+    public function getData($options = [])
     {
-        $data['is_match'] = trim($this->request->getUri()->getPath(), '/') === 'page-not-found';
-
-        return $data;
+        return [];
     }
 }

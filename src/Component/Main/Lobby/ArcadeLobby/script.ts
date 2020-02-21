@@ -430,6 +430,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                     window.location.hash = activeCategory;
                 }
                 ComponentManager.broadcast("category.change");
+                this.highlightMenu();
             }
         });
     }

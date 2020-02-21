@@ -98,6 +98,10 @@
         }
     }
 
+    ul::-webkit-scrollbar {
+        display: none;
+    }
+
     .icon-thumbnail-new-tag {
         position: absolute;
         top: 0rem;
