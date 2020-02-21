@@ -1,0 +1,19 @@
+{{#if InfobarData.infobar}}
+<ul class="infobar">
+    <li class="infobar-news">
+        <svg viewBox="0 0 20 20">
+            <use xlink:href="#infobar-news" />
+        </svg>
+        <p>{{ this.newsInfobarText }}</p>
+    </li>
+    <li class="infobar-marquee">
+        <ul class="infobar-marquee-content">
+            <li class="list-inline">
+            {{#each InfobarData.infobar}}
+                {{{ this.field_body }}} {{#condition this.field_body.length ">" 1 }}<span class="pipe"> | </span>{{/condition}}
+            {{/each}}
+            </li>
+        </ul>
+    </li>
+</ul>
+{{/if}}

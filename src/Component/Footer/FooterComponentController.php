@@ -13,9 +13,13 @@ class FooterComponentController
 
     private $rest;
 
+    private $asset;
+
     private $idDomain;
 
     private $product;
+
+    private $currentLanguage;
 
     /**
      *
@@ -25,8 +29,10 @@ class FooterComponentController
         return new static(
             $container->get('menu_fetcher'),
             $container->get('rest'),
+            $container->get('asset'),
             $container->get('id_domain'),
-            $container->get('product_resolver')
+            $container->get('product_resolver'),
+            $container->get('lang')
         );
     }
 
@@ -36,13 +42,17 @@ class FooterComponentController
     public function __construct(
         $menus,
         $rest,
+        $asset,
         $idDomain,
-        $product
+        $product,
+        $currentLanguage
     ) {
         $this->menus = $menus;
         $this->rest = $rest;
+        $this->asset = $asset;
         $this->idDomain = $idDomain;
         $this->product = $product;
+        $this->currentLanguage = $currentLanguage;
     }
 
     /**
@@ -70,6 +80,13 @@ class FooterComponentController
     {
         if ($footerMenu) {
             foreach ($footerMenu as $key => $link) {
+                if ($footerMenu[$key]['uri'] === '') {
+                        $footerMenu[$key]['uri'] = $this->asset->generateAssetUri(
+                            $this->currentLanguage . '/',
+                            $link['uri']
+                        );
+                }
+
                 if (($this->idDomain->isLangSelectorHidden()) &&
                     strpos($link['attributes']['class'], 'language-trigger') !== false
                 ) {

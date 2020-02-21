@@ -6,6 +6,7 @@
         height: auto;
         padding: 0;
         list-style: none;
+        background: $red;
 
         // List element
         &-item {
@@ -14,8 +15,7 @@
             display: inline-block;
 
             svg {
-                width: 6.2rem;
-                height: 7.6rem;
+                width: 3rem;
                 fill: $yellow;
             }
 
@@ -27,8 +27,9 @@
             &:nth-child(16) a,
             &:nth-child(19) a {
                 border-left: none;
-                border-right: 0.1rem solid $darker-red;
+                border-right: 0.1rem solid $red;
             }
+
             &:nth-child(2) a,
             &:nth-child(5) a,
             &:nth-child(8) a,
@@ -37,8 +38,9 @@
             &:nth-child(13) a,
             &:nth-child(14) a,
             &:nth-child(17) a {
-                border-right: 0.1rem solid $darker-red;
+                border-right: 0.1rem solid $red;
             }
+
             &:nth-child(3) a,
             &:nth-child(6) a,
             &:nth-child(9) a,
@@ -47,8 +49,9 @@
             &:nth-child(18) a {
                 border-right: none;
             }
+
             &:last-child a {
-                border-right: 0.1rem solid $darker-red;
+                border-right: 0.1rem solid $red;
             }
         }
 
@@ -58,7 +61,12 @@
 
         .product-games {
             svg {
-                width: 8.2rem;
+                width: 4.2rem;
+                margin-bottom: -0.67rem;
+            }
+
+            .icon-thumbnail-label {
+                margin-top: -0.67rem;
             }
 
         }
@@ -70,12 +78,12 @@
             width: 100%;
             height: 100%;
             text-align: center;
-            padding: 1rem;
-            border-bottom: 0.1rem solid $darker-red;
-            border-top: 0.1rem solid $fire-red;
+            padding: 0.75rem 0;
+            border-bottom: 0.1rem solid $red;
+            background: $dark-red;
         }
 
-        // Lable/text
+        // Label/text
         &-label {
             display: block;
             color: $white;
@@ -84,14 +92,14 @@
         // New tag
         &-new-tag {
             position: absolute;
-            top: 0.5rem;
-            right: 0.6rem;
-            display: block;
+            top: 0.8rem;
+            right: 1.8rem;
             padding: 0.2rem 0.5rem;
             background: #ff0000;
             color: white;
-            font-size: 1.2rem;
-            border-radius: 0.2rem;
+            font-size: 1rem;
+            line-height: normal;
+            margin: 0;
         }
     }
 }

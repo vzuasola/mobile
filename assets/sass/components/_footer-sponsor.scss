@@ -1,82 +1,42 @@
 // Main Club sponsor
 .sponsors {
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 0;
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
+    background: $light-gray;
 
     &-lists {
-        padding: 0;
-        margin-top: 1rem;
-        overflow: hidden;
-        text-align: center;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 0;
+        padding: 1rem 2rem;
         list-style-type: none;
-        border-bottom: 0.1rem solid $dark-red;
+        text-align: center;
 
-        ul {
+        li {
+            margin: 0 2%;
+            overflow: hidden;
             display: inline-block;
-            padding: 0;
 
-            li {
-                display: inline-block;
+            svg {
+                width: 6rem;
+                display: block;
+                margin: 0 auto;
+                fill: #313131;
+            }
+        }
+        
+        .dafabet-master {
+            margin-top: -2rem;
 
-                a {
-                    color: $white;
-                }
-
-                img {
-                    height: 5.5rem;
-                }
+            svg {
+                width: 9rem;
             }
         }
     }
 
-    &-title,
-    &-desc {
-        font-size: 1.4rem;
-        padding: 0 1.5rem 1.5rem 1.5rem;
+    &-title {
+        font-weight: 600;
+        text-align: center;
+        padding: 0.7rem 0 0;
         margin: 0;
-    }
-
-    .col-4 + &-lists.col-4:nth-last-child(3),
-    .col-6 + &-lists.col-4:nth-last-child(3),
-    .col-12 + &-lists.col-4:nth-last-child(3),
-    &-lists.col-4:nth-last-child(2),
-    &-lists.col-6:nth-last-child(2),
-    &-lists:last-child {
-        border-bottom: none;
-    }
-
-    .col-4 + &-lists.col-4:nth-child(3),
-    .col-6 + &-lists.col-6:nth-last-child(2) {
-        border-bottom: 0.1rem solid $dark-red;
-    }
-}
-
-.mobile-soda-casino {
-    .sponsors {
-        &-lists {
-            border-bottom: 0.2rem solid #000000;
-            color: #000000;
-        }
-
-        .col-4 + &-lists.col-4:nth-last-child(3),
-        .col-6 + &-lists.col-4:nth-last-child(3),
-        .col-12 + &-lists.col-4:nth-last-child(3),
-        &-lists.col-4:nth-last-child(2),
-        &-lists.col-6:nth-last-child(2),
-        &-lists:last-child {
-            border-bottom: $soda-gray;
-        }
-
-        .col-4 + &-lists.col-4:nth-child(3),
-        .col-6 + &-lists.col-6:nth-last-child(2) {
-            border-bottom: $soda-gray;
-        }
-
-        .col-4 + .sponsors-lists.col-4:nth-child(3) {
-            border-bottom: 0.2rem solid #000000;
-        }
+        color: $dark-gray;
     }
 }

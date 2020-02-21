@@ -6,7 +6,6 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as footerTemplate from "./handlebars/menu.handlebars";
 
 import {DafaConnect} from "@app/assets/script/dafa-connect";
-import EqualHeight from "@app/assets/script/components/equal-height";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
@@ -23,7 +22,6 @@ export class FooterComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getFooter();
-        this.equalizeSponsorHeight();
 
         Router.on(RouterClass.afterNavigate, (event) => {
             this.refreshFooter();
@@ -33,12 +31,6 @@ export class FooterComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getFooter();
-        this.equalizeSponsorHeight();
-    }
-
-    private equalizeSponsorHeight() {
-        const equalSponsor = new EqualHeight(".sponsors-lists");
-        equalSponsor.init();
     }
 
     private getOriginalUrl() {
