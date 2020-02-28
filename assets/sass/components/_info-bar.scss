@@ -77,6 +77,15 @@
     }
 }
 
+.infobar-es,
+.infobar-pt {
+    li {
+        p {
+            font-size: 1.2rem;
+        }
+    }
+}
+
 @include media(">=tablet") {
     .infobar {
         &-news {
