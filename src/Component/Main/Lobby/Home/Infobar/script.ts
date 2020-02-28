@@ -85,15 +85,15 @@ export class InfobarComponent implements ComponentInterface {
             sc: "公告",
             ch: "公告",
             th: "ข่าว",
-            vn: "",
+            vn: "Tin Tức",
             id: "info",
-            jp: "News",
+            jp: "最新情報",
             kr: "공지",
             in: "News",
-            gr: "News",
+            gr: "Νea",
             pl: "News",
-            es: "News",
-            pt: "News",
+            es: "Noticias",
+            pt: "Noticias",
             hi: "समाचार",
             te: "న్యూస్",
         };
@@ -103,6 +103,7 @@ export class InfobarComponent implements ComponentInterface {
         const template = infobarTemplate({
             InfobarData: data,
             newsInfobarText: translation[language],
+            language: ComponentManager.getAttribute("language"),
         });
 
         Infobar.innerHTML = template;
