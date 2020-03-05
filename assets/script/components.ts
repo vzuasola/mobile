@@ -8,7 +8,9 @@ import {MetaComponent} from "@app/src/Component/Meta/script";
 import {LoginComponent} from "@app/src/Component/Header/Login/script";
 import {PromotionsComponent} from "@app/src/Component/Main/Promotions/script";
 import {TabNavigationComponent} from "@app/src/Component/TabNavigation/script";
+import {InfobarComponent} from "@app/src/Component/Main/Lobby/Home/Infobar/script";
 import {DownloadComponent} from "@app/src/Component/Main/Lobby/Home/Download/script";
+import {ContactUsComponent} from "@app/src/Component/Main/Lobby/Home/ContactUs/script";
 import {AnnouncementComponent} from "@app/src/Component/Announcement/script";
 import {PushNotificationComponent} from "@app/src/Component/PushNotification/script";
 import {SEOComponent} from "@app/src/Component/SEO/script";
@@ -56,7 +58,9 @@ ComponentManager.setComponents({
     header_login: new LoginComponent(),
     promotions: new PromotionsComponent(),
     tab_navigation: new TabNavigationComponent(),
+    home_infobar: new InfobarComponent(),
     home_download: new DownloadComponent(),
+    home_contactus: new ContactUsComponent(),
     announcement: new AnnouncementComponent(),
     push_notification: new PushNotificationComponent(),
     seo: new SEOComponent(),

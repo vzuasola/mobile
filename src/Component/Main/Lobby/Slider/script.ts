@@ -3,6 +3,8 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as sliderTemplate from "./handlebars/slider.handlebars";
+import * as ribbonTemplate from "./handlebars/ribbon.handlebars";
+import * as Handlebars from "handlebars/runtime";
 
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
@@ -17,6 +19,16 @@ export class LobbySliderComponent implements ComponentInterface {
     private sliderData: any;
     private providers: any;
     private gamesTile: any;
+
+    constructor() {
+        Handlebars.registerHelper("replaceRibbon", (markup) => {
+            const ribbon = ribbonTemplate({
+                data: markup,
+            });
+            return markup.banner_blurb.replace("{ribbon}", ribbon);
+        });
+    }
+
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getSliders();
@@ -38,8 +50,17 @@ export class LobbySliderComponent implements ComponentInterface {
                 selector: "#main-slider",
                 loop: true,
                 duration: 300,
-                controls: true,
-                onChange: this.onChangeHandler,
+                controls: false,
+                onInit: () => {
+                    setTimeout(() => {
+                        sliderObj.addIndicators();
+                        sliderObj.updateIndicators();
+                    }, 10);
+                },
+                onChange: (slide, $this) => {
+                    this.onChangeHandler(slide, $this);
+                    sliderObj.updateIndicators();
+                },
             });
             setTimeout(() => {
                 utility.addClass(slider.querySelectorAll(".xlide-item")[1].parentElement, "fade");

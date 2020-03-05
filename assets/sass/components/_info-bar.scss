@@ -1,0 +1,109 @@
+.infobar {
+    background: $dark-gray;
+    line-height: 3.5rem;
+    height: 3.5rem;
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &-news {
+        float: left;
+        width: 25%;
+        height: 3.5rem;
+        z-index: 11;
+        background: $dark-gray;
+        padding: 0 0 0 2%;
+
+        p {
+            display: inline-block;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: $yellow;
+            text-transform: uppercase;
+            margin: 0;
+        }
+    }
+
+    &-marquee {
+        height: 3.5rem;
+        cursor: pointer;
+        z-index: 10;
+        width: 75%;
+        white-space: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        
+        &-content {
+            float: left;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+            height: 3.5rem;
+
+            li {
+                display: inline-block;
+
+                p {
+                    margin: 0;
+                    padding: 0;
+                    display: inline-block;
+                }
+
+                .pipe {
+                        margin: 0 1rem;
+                }
+
+                .pipe:last-child {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &-marquee::-webkit-scrollbar {
+        display: none;
+    }
+
+    // Icons
+    svg {
+        display: inline-block;
+        vertical-align: text-bottom;
+        width: 2rem;
+        fill: $yellow;
+        @include rotate(345);
+    }
+}
+
+.infobar-es,
+.infobar-pt {
+    li {
+        p {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+@include media(">=tablet") {
+    .infobar {
+        &-news {
+            width: 12rem;
+        }
+
+        &-marquee {
+            padding-left: 12rem;
+        }
+    }
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(25%);
+    }
+
+    100% {
+        transform: translateX(-125%);
+    }
+}

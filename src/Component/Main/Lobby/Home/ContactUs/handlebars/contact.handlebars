@@ -1,0 +1,22 @@
+{{#if contactUsData.contact_menu}}
+{{#if contactUstext}}
+<p class="home-contact-title">{{ contactUstext }}</p>
+{{/if}}
+<div class="home-contact-main">
+    <ul class="home-contact-items clearfix">
+        {{#each contactUsData.contact_menu}}
+        <li class="home-contact-list  {{ ../this.menuClass}}">
+            <a href="{{ this.uri }}"
+                class="{{ this.attributes.class }} {{ this.attributes.svg }} {{this.attributes.device}} contact-box"
+                {{#if this.attributes.dataRouter}}{{else}} data-router="true" {{/if}} data-router-refresh="main" target="{{ this.attributes.target }}">
+
+                <svg viewBox="0 0 20 20">
+                    <use xlink:href="#{{ this.attributes.svg }}" />
+                </svg>
+                <span>{{ this.title }}</span>
+            </a>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+{{/if}}

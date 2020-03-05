@@ -1,29 +1,28 @@
 {% if sponsors %}
-<ul class="sponsors clearfix">
-    {% for sponsor in sponsors %}
-    {% if sponsor.field_mobile_sponsor_row_enable[0].value %}
-    {% set rowClass = sponsor.field_mobile_row[0].value == 0 ? 'sponsors-lists col-12' :
-    ((sponsor.field_mobile_row[0].value == 1) ? 'sponsors-lists col-6' : 'sponsors-lists col-4' )%}
-
-    <li class="{{ rowClass }}">
-        {% for icon in sponsor.field_sponsors_row %}
-        {% if icon.field_mobile_sponsor_enable[0].value %}
-        <ul class="{{ fullClass }} mb-10">
-            <li>
-                <a href="{{ url(icon.field_mobile_sponsor_image_link[0].uri) }}" target="{{ icon.field_mobile_sponsor_link_target[0].value }}">
-                    <img src="{{ asset(icon.field_mobile_sponsor_image[0].url) }}" alt="{{ icon.field_mobile_sponsor_image.alt }}">
-                    {% if icon.field_sponsors_column_title[0].value %}
-                    <p cla="sponsors-title">{{ icon.field_sponsors_column_title[0].value }}</p>
-                    {% endif %}
-                </a>
-            </li>
-        </ul>
-        {% endif %}
-        {% endfor %}
-        <p class="sponsors-desc">{{ sponsor.field_sponsors_row_title[0].value }}</p>
-    </li>
-
+<div class="sponsors clearfix">
+    {% if entrypage_config.parnerts_and_sponsor_title_text %}
+    <p class="sponsors-title">{{ entrypage_config.parnerts_and_sponsor_title_text }}</p>
     {% endif %}
-    {% endfor %}
-</ul>
+    <ul class="sponsors-lists">
+        {% for sponsor in sponsors %}
+            {% if sponsor.field_sponsor_enable[0].value %}
+            <li class="{{ sponsor.field_sponsor_svg_class[0].value }}">
+                {% if sponsor.field_sponsor_svg_class[0].value %}
+                {% if sponsor.field_sponsor_link[0].uri %}
+                <a href="{{ url(sponsor.field_sponsor_link[0].uri) }}" target="{{ sponsor.field_link_target[0].value }}">
+                {% endif %}
+                <svg viewBox="0 0 20 20">
+                    <use xlink:href="#sponsor-{{ sponsor.field_sponsor_svg_class[0].value }}" />
+                </svg>
+                <span class="hidden">{{ sponsor.field_title[0].value }}</span>
+                </a>
+                {% endif %}
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
 {% endif %}
+<span class="hidden">
+    {% include '@app/web/images/svg/sponsors/sponsors-icons.svg' ignore missing %}
+</span>
