@@ -16,9 +16,10 @@
             a {
                 position: relative;
                 float: left;
-                border: 0.1rem solid $gray;
+                border: 0.1rem solid #999;
+                border-radius: 0.3rem;
                 line-height: 1em;
-                color: $white;
+                color: #ccc;
                 text-align: center;
                 transition: border-color .3s, color .3s;
             }
@@ -41,12 +42,24 @@
             .icon-balloon-counter,
             .icon-thumbnail-new-tag {
                 position: absolute;
+                background: $yellow;
+                color: $dark-gray;
+                font-weight: 700;
+            }
+
+            .icon-thumbnail-new-tag {
                 top: 0.5rem;
                 right: 0.5rem;
-                padding: 0.3rem 0.5rem;
-                background: #ff0000;
-                color: $white;
+                padding: 0.2rem 0.2rem 0 0.3rem;
+                font-size: 0.8rem;
+            }
+
+            .icon-balloon-counter {
+                top: 1.2rem;
+                left: 4.5rem;
+                border-radius: 1rem;
                 font-size: 1rem;
+                padding: 0.2rem 0.3rem;
             }
         }
     }
@@ -57,9 +70,9 @@
 
         .icon-thumbnail-item {
             a {
-                width: 31.333333333333333%;
-                margin: 0 0 1.5% 1.5%;
-                font-size: 1.2rem;
+                width: 29.333333333333333%;
+                margin: 0 1% 3.5% 2.5%;
+                font-size: 1rem;
                 text-transform: uppercase;
                 padding-bottom: 0.5rem;
             }
@@ -97,8 +110,8 @@
     &-internal {
         .icon-thumbnail-item {
             a {
-                width: 23%;
-                margin: 0 0 1.5% 1.5%;
+                width: 22%;
+                margin: 0 0 2.5% 2.5%;
                 font-size: 0.8rem;
                 padding-bottom: 0.2rem;
             }
@@ -160,6 +173,13 @@
             .announcement-trigger {
                 svg {
                     margin-left: 2.3rem;
+                }
+            }
+
+            .quicklinks-announcement,
+            .announcement-trigger {
+                svg {
+                    @include rotate(335);
                 }
             }
 

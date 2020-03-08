@@ -3,32 +3,37 @@
 .mobile-menu-icon {
     width: 5.5rem;
     position: absolute;
-    height: 6rem;
+    height: 5rem;
     top: 0;
     left: 0;
     outline: none;
     border: 0;
     cursor: pointer;
-    z-index: 1;
+    z-index: 301;
 }
 
 .mobile-menu-burger-icon {
     position: absolute;
-    top: 2.1rem;
+    top: 2rem;
     left: 0;
-    width: 2.5rem;
+    width: 1.7rem;
     margin-left: 1.5rem;
     outline: none;
     border: 0;
     cursor: pointer;
     z-index: 0;
     fill: $white;
+
+    use {
+        cursor: pointer;
+        z-index: 1;
+    }
 }
 
 .mobile-menu-indicator {
     position: absolute;
-    top: 1.8rem;
-    left: 3.8rem;
+    top: 1.5rem;
+    left: 2.8rem;
     width: 0.8rem;
     height: 0.8rem;
     border-radius: 1.7rem;
@@ -36,15 +41,13 @@
 }
 
 .mobile-menu-overlay {
-    display: none;
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     z-index: 1000;
-    background: $black;
-    background: rgba(0,0,0,0.5);
+    visibility: hidden;
 }
 
 .menu-open {
@@ -56,7 +59,10 @@
     }
 
     .mobile-menu-overlay {
-        display: block;
+        visibility: inherit;
+        z-index: 1001;
+        transition: 0.9s ease-out;
+        background: rgba(0, 0, 0, 0.5);
     }
 
     .mobile-menu {
@@ -79,14 +85,14 @@
     &,
     &-header,
     &-internal-header {
-        color: $white;
+        color: #ccc;
     }
 
     // Internal menu heading
     &-internal-header {
         margin: 0 3% 5%;
         border-bottom: 0.1rem solid $gray;
-        color: $gray;
+        color: #ccc;
         text-align: center;
         height: 0.8rem;
         
@@ -107,9 +113,9 @@
     .mobile-menu-header {
         position: relative;
         margin: 0;
-        padding: $container-gutter-xs;
+        padding: 1rem;
         background: $red;
-        height: 6rem;
+        height: 5rem;
 
         &-username {
             font-size: 1.6rem;
@@ -134,20 +140,18 @@
         }
 
         .logo {
-            display: inline-block;
             margin: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
         }
-    }
-
-    .mobile-menu-header.header-logo {
-        text-align: center;
     }
 
     // close button
     .menu-content-button {
         width: 3.5rem;
         position: absolute;
-        height: 6rem;
+        height: 5rem;
         top: 0;
         right: 0;
         outline: none;
@@ -155,30 +159,26 @@
         cursor: pointer;
 
         &-text {
-                width: 1.9rem;
-                height: 1.9rem;
-                margin-top: 2.2rem;
+                width: 2rem;
+                margin: 1.5rem 0 0 0.8rem;
                 outline: none;
                 border: 0;
                 cursor: pointer;
-                background: #900000;
+                background: $red;
 
                 path {
-                    fill: #af0000;
-                }
-                rect {
-                    fill: #900000;
-                    width: 100%;
-                    height: 100%;
-                    rx: 10.81;
-                    ry: 10.81;
+                    fill: $white;
                 }
             }
     }
 
     // Body
     .mobile-menu-body {
-        padding: 3% 0;
+        position: relative;
+        padding-top: 3%;
+        display: table;
+        height: 91%;
+        width: 100%;
     }
 
     // Menu button
@@ -193,26 +193,27 @@
         }
 
         a {
-            width: 47.7%;
-            margin: 0 0 1.5% 0;
+            width: 46.7%;
+            margin: 0 1% 2.5% 1%;
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
-            border: 0.1rem solid $gray;
+            border: 0.1rem solid $dark-gray;
             text-transform: none;
             font-size: 1.2rem;
             font-weight: 600;
             border-radius: 0.3rem;
+            color: $red;
         }
     }
 
     // Footer
     .mobile-menu-footer {
-        padding-left: 0;
-        margin: 0 3% 0 3%;
-        padding-top: 0.2rem;
-        border-top: 0.1rem solid $gray;
+        margin: 0 0 0.5rem;
+        width: 100%;
+        padding: 0;
         text-align: center;
         list-style-type: none;
+        display: table-footer-group;
 
         li {
             display: inline;
@@ -223,7 +224,7 @@
             line-height: 1.1rem;
             padding: 0 0.1rem 0 0.4rem;
             border-left: 0.1rem solid $gray;
-            color: $gray;
+            color: #ccc;
             font-size: 1rem;
             transition: color .3s;
 
@@ -238,6 +239,14 @@
 
         li:first-child a {
             border-left: none;
+        }
+    }
+}
+
+@include media(">=tablet") {
+    .mobile-menu {
+        .mobile-menu-body {
+            height: 94%;
         }
     }
 }

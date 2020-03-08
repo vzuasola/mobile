@@ -12,6 +12,7 @@ middlewares:
 
   response:
     site_maintenance: App\MobileEntry\Middleware\SiteMaintenance
+    xframes: App\MobileEntry\Middleware\XFrames
     ucp: App\MobileEntry\Middleware\UnsupportedCurrency
     token: App\Middleware\Response\Token
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponse
@@ -23,6 +24,7 @@ middlewares:
     # profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
 
   cache:
+    xframes: App\MobileEntry\Middleware\XFrames
     bootstrap: App\Middleware\Cache\Bootstrap
     components: App\Plugins\ComponentWidget\Middlewares\ComponentWidgetResponseCache
     headers: App\Middleware\Response\Headers

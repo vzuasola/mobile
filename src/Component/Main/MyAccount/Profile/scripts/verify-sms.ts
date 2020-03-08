@@ -131,7 +131,7 @@ export class SmsVerification extends FormBase {
         }
 
         // check if mobile number 2 is empty on icore
-        if (this.attachments.user.mobile_number_2 === "") {
+        if (this.attachments.user.hidden_sms_2) {
             // add new mobile number link
             this.mobile1Item.appendChild(this.addNewMobile);
             utility.removeClass(this.addNewMobile, "hidden");

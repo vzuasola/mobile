@@ -19,6 +19,7 @@ $base-balance-loader: "../../core/core/assets/images/loader.gif";
 $base-404-error-page: "../../core/core/assets/images/404/sprite_404.png";
 $unsupported-currency: "../images/unsupported-currency.png";
 $unsupported-currency-gold: "../images/unsupported-currency-gold.png";
+$login-lightbox-background: "../images/mobile-login-bg-min.jpg";
 
 // $base-sprite:  "";
 // $sprite-responsive:  "";
@@ -54,7 +55,7 @@ $darker-red:    #560202;
 $white:         #fff;
 $black:         #000;
 $lightest-gray: #e6e7e8;
-$light-gray:    #d3d3d3;
+$light-gray:    #d9d9d9;
 $gray:          #5e5e5e;
 $dark-gray:     #373737;
 $light-gold:    #ffd27e;
@@ -77,7 +78,7 @@ $success-text-color:  #0b840b;
 $alert-text-color:    #c09853;
 
 // Body
-$background-color: $red;
+$background-color: $dark-red;
 
 // Miscellaneous ----------------------------------------
 $default-element-margin-bottom: 1.5rem; // h1, h2, h3, h4, h5, h6, p, ul, ol, table, dl, form, menu

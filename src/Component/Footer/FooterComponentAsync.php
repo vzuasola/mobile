@@ -43,7 +43,7 @@ class FooterComponentAsync implements AsyncComponentInterface
     public function getDefinitions()
     {
         return [
-            $this->views->getViewById('mobile_sponsor_list'),
+            $this->views->getViewById('mobile_sponsor_list_v2'),
             $this->menus->getMultilingualMenu('mobile-footer'),
         ];
     }

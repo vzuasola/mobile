@@ -3,8 +3,8 @@
 
     img {
         position: absolute;
-        top: 1.5rem;
-        left: 0.5rem;
+        top: 1rem;
+        left: 1rem;
         width: 13rem;
         height: 3.1rem;
         z-index: 1;
@@ -21,7 +21,7 @@ header {
 
     .header-dafabet {
         position: relative;
-        height: 6rem;
+        height: 5rem;
         width: 100%;
         background-color: #af0000;
         color: $white;
@@ -38,6 +38,7 @@ header {
         right: 1rem;
         top: 1.8rem;
     }
+
     /*SODA CASINO*/
     .header-mobile-soda-casino {
         top: 0px;
