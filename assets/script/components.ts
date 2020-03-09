@@ -31,7 +31,7 @@ import {ProductsComponent} from "@app/src/Component/Main/Lobby/Home/Products/scr
 import {NodeComponent} from "@app/src/Component/Node/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
-import {INLanguageComponent} from "@app/src/Component/Language/INLanguage/script";
+// import {INLanguageComponent} from "@app/src/Component/Language/INLanguage/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
 import {CantLoginComponent} from "@app/src/Component/Main/CantLogin/script";
 import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script";
@@ -81,7 +81,7 @@ ComponentManager.setComponents({
     node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
-    in_language: new INLanguageComponent(),
+    // in_language: new INLanguageComponent(),
     marketing: new MarketingComponent(),
     marketing_space: new MarketingSpaceComponent(),
     profiler: new ProfilerComponent(),
