@@ -180,7 +180,6 @@ class SliderComponentController
             $sliders = [];
             foreach ($data as $slide) {
                 $slider = [];
-
                 $dateStart = $slide['field_publish_date'][0]['value'] ?? '';
                 $dateEnd = $slide['field_unpublish_date'][0]['value'] ?? '';
                 $slider['published'] = $this->checkIfPublished(
@@ -189,11 +188,14 @@ class SliderComponentController
                 );
 
                 $showBoth = count($slide['field_log_in_state']) > 1;
-
                 $loginState = $slide['field_log_in_state'][0]['value'] ?? 0;
 
                 if (!$showBoth && $loginState != $this->playerSession->isLogin()) {
                     $slider['published'] = false;
+                }
+
+                if (($loginState || $showBoth) && $this->playerSession->isLogin() && $slider['published']) {
+                    $slider['published'] = $this->checkUserAvailability($slide['field_user_availability']);
                 }
 
                 $ribbonLabel = $slide['field_ribbon_product_label']['0']['value'] ?? false;
@@ -263,6 +265,21 @@ class SliderComponentController
         }
 
         return $sliders;
+    }
+
+    private function checkUserAvailability($slideUserAvail) {
+        $userAvailArray = array_column($slideUserAvail, 'value');
+        $userAvailArray = count($userAvailArray) >= 1 ? $userAvailArray : ['regular_user'];
+        $userAvailability = $slideUserAvail[0]['value'] ?? 'regular_user';
+        $available = true;
+        $partnerMatrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
+        if ($partnerMatrix && !in_array('partner_matrix', $userAvailArray)) {
+            $available = false;
+        } else if (!$partnerMatrix && count($userAvailArray) == 1 && $userAvailability == 'partner_matrix') {
+            $available = false;
+        }
+
+        return $available;
     }
 
     private function checkIfPublished($dateStart, $dateEnd)
