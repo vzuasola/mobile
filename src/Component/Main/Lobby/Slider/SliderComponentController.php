@@ -267,7 +267,8 @@ class SliderComponentController
         return $sliders;
     }
 
-    private function checkUserAvailability($slideUserAvail) {
+    private function checkUserAvailability($slideUserAvail)
+    {
         $userAvailArray = array_column($slideUserAvail, 'value');
         $userAvailArray = count($userAvailArray) >= 1 ? $userAvailArray : ['regular_user'];
         $userAvailability = $slideUserAvail[0]['value'] ?? 'regular_user';
@@ -275,7 +276,7 @@ class SliderComponentController
         $partnerMatrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
         if ($partnerMatrix && !in_array('partner_matrix', $userAvailArray)) {
             $available = false;
-        } else if (!$partnerMatrix && count($userAvailArray) == 1 && $userAvailability == 'partner_matrix') {
+        } elseif (!$partnerMatrix && count($userAvailArray) == 1 && $userAvailability == 'partner_matrix') {
             $available = false;
         }
 
