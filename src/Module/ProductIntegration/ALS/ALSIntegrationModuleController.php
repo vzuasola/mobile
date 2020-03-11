@@ -52,6 +52,12 @@ class ALSIntegrationModuleController
         }
 
         try {
+            $maintenanceConfigs = $this->config->getConfig('webcomposer_config.webcomposer_site_maintenance');
+        } catch (\Exception $e) {
+            $maintenanceConfigs = [];
+        }
+
+        try {
             $alsConfig = $this->config->getConfig('mobile_als.als_configuration');
         } catch (\Exception $e) {
             $alsConfig = [];
@@ -76,7 +82,29 @@ class ALSIntegrationModuleController
 
         $data['redirect']  = $this->playerMatrixLobby($url, $postData['language']);
 
+        $products = explode("\r\n", $maintenanceConfigs['product_list']);
+        $dates = [
+            'field_publish_date' => $maintenanceConfigs['maintenance_publish_date_mobile-sports-df'],
+            'field_unpublish_date' => $maintenanceConfigs['maintenance_unpublish_date_mobile-sports-df'],
+        ];
+
+        if ((in_array('mobile-sports-df', $products) && $this->isPublished($dates))) {
+            $data['redirect'] = '/sports-df';
+        }
+
         return $this->rest->output($response, $data);
+    }
+
+    private function isPublished($data)
+    {
+        if (empty($data['field_publish_date']) && empty($data['field_unpublish_date'])) {
+            return false;
+        } elseif ($data['field_unpublish_date']) {
+            return $data['field_publish_date'] <= strtotime(date('m/d/Y H:i:s')) &&
+                $data['field_unpublish_date'] >= strtotime(date('m/d/Y H:i:s'));
+        } else {
+            return $data['field_publish_date'] <= strtotime(date('m/d/Y H:i:s'));
+        }
     }
 
     /**

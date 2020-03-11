@@ -48,8 +48,6 @@ export class MaintenanceComponent implements ComponentInterface {
             data,
         });
 
-        console.log(data);
-
         maintenance.innerHTML = template;
     }
 }
