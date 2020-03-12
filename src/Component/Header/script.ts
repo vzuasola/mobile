@@ -81,16 +81,6 @@ export class HeaderComponent implements ComponentInterface {
                                     totalBalance += response.balances[response.map[product]];
                                 }
 
-                                if (typeof response.bonuses[response.map[product]] !== "undefined") {
-                                    balanceFlag = true;
-                                    totalBalance += response.bonuses[response.map[product]];
-                                }
-
-                                if (typeof response.reserveBalances[response.map[product]] !== "undefined") {
-                                    balanceFlag = true;
-                                    totalBalance += response.reserveBalances[response.map[product]];
-                                }
-
                                 balance.innerHTML = this.formatBalance(Number(totalBalance).toFixed(2));
                                 if (!balanceFlag) {
                                     balance.innerHTML = response.err_message;
