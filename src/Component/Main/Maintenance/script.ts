@@ -35,6 +35,7 @@ export class MaintenanceComponent implements ComponentInterface {
         }).then((response) => {
             this.maintenanceData = response;
             this.generateMaintenanceMarkup(this.maintenanceData);
+            this.highlightMenu();
         });
     }
 
@@ -49,5 +50,15 @@ export class MaintenanceComponent implements ComponentInterface {
         });
 
         maintenance.innerHTML = template;
+    }
+
+    /**
+     * Helper function that sends event to menu component to
+     * highlight arcade menu tile
+     */
+    private highlightMenu() {
+        let product = ComponentManager.getAttribute("product");
+        product = product.replace("mobile-", "product-");
+        ComponentManager.broadcast("menu.highlight", { menu: product });
     }
 }
