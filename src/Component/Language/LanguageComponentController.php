@@ -78,6 +78,9 @@ class LanguageComponentController
 
         try {
             $product = $request->getParam('product') ?? 'mobile-entrypage';
+            if ($product === 'mobile-sports-df' || $product === 'mobile-sports') {
+                $product = 'mobile-entrypage';
+            }
             $languageFetcher = $this->language->withProduct($product);
             $data['language'] = $languageFetcher->getLanguages();
             unset($data['language']['default']);
