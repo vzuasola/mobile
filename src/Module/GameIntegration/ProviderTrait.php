@@ -62,6 +62,8 @@ trait ProviderTrait
             if (isset($params['product'])) {
                 $productConfig = $this->config->withProduct($params['product']);
             }
+            // TODO <Patric> - Add here the checking of supported currency if the game is under a subprovider
+            ddd($params);
             $config =  $productConfig->getConfig('webcomposer_config.icore_games_integration');
             $currencies = explode("\r\n", $config[self::KEY . '_currency']);
             $playerCurrency = $this->player->getCurrency();

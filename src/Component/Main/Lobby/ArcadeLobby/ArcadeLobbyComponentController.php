@@ -2,9 +2,7 @@
 
 namespace App\MobileEntry\Component\Main\Lobby\ArcadeLobby;
 
-use App\Plugins\ComponentWidget\ComponentWidgetInterface;
-use App\Async\Async;
-use App\Async\DefinitionCollection;
+use App\Player\PlayerSession;
 use App\MobileEntry\Services\PublishingOptions\PublishingOptions;
 
 class ArcadeLobbyComponentController
@@ -46,6 +44,8 @@ class ArcadeLobbyComponentController
 
     private $favorite;
 
+    private $playerDetails;
+
     /**
      *
      */
@@ -73,7 +73,7 @@ class ArcadeLobbyComponentController
         $product,
         $configs,
         $viewsFetcher,
-        $playerSession,
+        PlayerSession $playerSession,
         $rest,
         $asset,
         $url,
@@ -103,13 +103,20 @@ class ArcadeLobbyComponentController
         $query = $request->getQueryParams();
         $isPreview = $query['pvw'] ?? false;
         $previewKey = $isPreview ? "preview" : "no-preview";
+        $this->playerDetails = $this->playerSession->getDetails();
+        $playerCurrency = $this->playerDetails['currency'] ?? '';
 
         $page = null;
         if (isset($query['page'])) {
             $page = $query['page'];
         }
 
-        $item = $this->cacher->getItem('views.arcade-lobby-data.' . $page . $this->currentLanguage . "-" . $previewKey);
+        $item = $this->cacher->getItem('views.arcade-lobby-data.'
+            . $page
+            . $this->currentLanguage
+            . "-" . $previewKey
+            . ($playerCurrency ? "-$playerCurrency" : ''));
+
         if (!$item->isHit()) {
             $data = $this->generatePageLobbyData($page, $isPreview);
             if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
@@ -117,9 +124,10 @@ class ArcadeLobbyComponentController
                     'body' => $data,
                 ]);
 
-                $this->cacher->save($item, [
-                    'expires' => self::TIMEOUT,
-                ]);
+                  // TODO: <Patric> - Uncomment me on merge review
+//                $this->cacher->save($item, [
+//                    'expires' => self::TIMEOUT,
+//                ]);
             }
         } else {
             $body = $item->get();
@@ -315,7 +323,7 @@ class ArcadeLobbyComponentController
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $processedGame = $this->processGame($game, $special);
                 $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
-                if (!$isPreview && $preview_mode) {
+                if (!$isPreview && $preview_mode || !count($processedGame)) {
                     continue;
                 }
                 if (count($processedGame['categories'])) {
@@ -333,6 +341,17 @@ class ArcadeLobbyComponentController
     {
         try {
             $processGame = [];
+            $subprovider = $game['field_games_subprovider'][0] ?? [];
+            $subProviderCurrency = (isset($subprovider['field_supported_currencies'][0]['value']))
+                ? preg_split("/\r\n|\n|\r/", $subprovider['field_supported_currencies'][0]['value'])
+                : [];
+
+            // If the game has a subprovider currency restriction, verify if the user met the restriction
+            if(count($subProviderCurrency) && $this->playerDetails) {
+                if(!in_array($this->playerDetails['currency'], $subProviderCurrency)) {
+                    throw new \Exception('Player does not meet the currency restriction');
+                }
+            }
 
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
@@ -368,7 +387,7 @@ class ArcadeLobbyComponentController
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";
-            $processGame['game_subprovider'] = $game['field_games_subprovider'][0]['name'][0]['value'] ?? "";
+            $processGame['game_subprovider'] = $subprovider['name'][0]['value'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
