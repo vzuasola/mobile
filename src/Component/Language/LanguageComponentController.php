@@ -2,8 +2,6 @@
 
 namespace App\MobileEntry\Component\Language;
 
-use App\Plugins\ComponentWidget\ComponentWidgetInterface;
-
 class LanguageComponentController
 {
     /**
@@ -68,7 +66,6 @@ class LanguageComponentController
     public function language($request, $response)
     {
         $data = [];
-
         $data['currentLanguage'] = $this->currentLanguage;
 
         try {
@@ -80,7 +77,12 @@ class LanguageComponentController
         $data['mobile_language_select'] = $footerConfigs['mobile_language_select'] ?? 'Select Language';
 
         try {
-            $data['language'] = $this->language->getLanguages();
+            $product = $request->getParam('product') ?? 'mobile-entrypage';
+            if ($product === 'mobile-sports-df' || $product === 'mobile-sports') {
+                $product = 'mobile-entrypage';
+            }
+            $languageFetcher = $this->language->withProduct($product);
+            $data['language'] = $languageFetcher->getLanguages();
             unset($data['language']['default']);
         } catch (\Exception $e) {
             $data['language'] = [];

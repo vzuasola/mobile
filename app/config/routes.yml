@@ -284,7 +284,7 @@ routes:
             enabled: true
             expires: 1800
 
-    /api/plugins/component/route/games_lobby/getGamesCollection:
+    /api/plugins/component/route/games_lobby/collection:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
         headers:

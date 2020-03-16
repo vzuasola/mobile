@@ -11,6 +11,7 @@ middlewares:
     session: App\Middleware\Request\Session
 
   response:
+    site_maintenance: App\MobileEntry\Middleware\SiteMaintenance
     xframes: App\MobileEntry\Middleware\XFrames
     ucp: App\MobileEntry\Middleware\UnsupportedCurrency
     token: App\Middleware\Response\Token

@@ -51,6 +51,7 @@ class Modal {
                 this.close(selector);
 
                 event.preventDefault();
+                ComponentManager.broadcast("modal.closed", { element, selector });
                 ComponentManager.broadcast("login.update.layout.component", { element: "#login-lightbox" });
             }
         });

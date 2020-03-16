@@ -43,6 +43,7 @@ class LanguageComponentAsync implements AsyncComponentInterface
     {
         return [
             $this->configs->getConfig('webcomposer_config.footer_configuration'),
+            $this->configs->getConfig('mobile_entrypage.entrypage_configuration'),
             $this->languages->getLanguages(),
         ];
     }

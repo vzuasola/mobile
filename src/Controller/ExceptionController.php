@@ -24,9 +24,6 @@ class ExceptionController extends BaseController
         }
 
         try {
-            if ($path === 'page-not-found') {
-                throw new NotFoundException($request, $response);
-            }
             $node = $this->get('node_fetcher')->withProduct($product)->getNodeByAlias($path);
         } catch (\Exception $e) {
             $data['title'] = '404';

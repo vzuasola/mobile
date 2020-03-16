@@ -143,47 +143,45 @@ export class LotteryLobbyComponent implements ComponentInterface {
      */
     private listenToLaunchGameLoader() {
         ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            // Pop up loader with all data
-            const prop = {
-                width: 360,
-                height: 720,
-                scrollbars: 1,
-                scrollable: 1,
-                resizable: 1,
-            };
+            if (ComponentManager.getAttribute("product") === "mobile-lottery") {
+                // Pop up loader with all data
+                const prop = {
+                    width: 360,
+                    height: 720,
+                    scrollbars: 1,
+                    scrollable: 1,
+                    resizable: 1,
+                };
 
-            let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-            const source = utility.getParameterByName("source");
+                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
+                const source = utility.getParameterByName("source");
 
-            for (const key in data.options) {
-                if (data.options.hasOwnProperty(key)) {
-                    const param = data.options[key];
-                    url = utility.addQueryParam(url, key, param);
+                for (const key in data.options) {
+                    if (data.options.hasOwnProperty(key)) {
+                        const param = data.options[key];
+                        url = utility.addQueryParam(url, key, param);
+                    }
+                }
+
+                url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+                url = utility.addQueryParam(url, "loaderFlag", "true");
+                if (data.options.target === "popup" || data.options.target === "_blank") {
+                    this.windowObject = PopupWindow(url, "gameWindow", prop);
+                }
+
+                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
+                    return;
+                }
+
+                // handle redirects if we are on a PWA standalone
+                if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                    source === "pwa" || data.options.target === "_self" || data.options.target === "_top" &&
+                    (data.options.target !== "popup" || data.options.target !== "_blank")
+                ) {
+                    window.location.href = url;
+                    return;
                 }
             }
-
-            url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
-            url = utility.addQueryParam(url, "loaderFlag", "true");
-            if (data.options.target === "popup") {
-                this.windowObject = PopupWindow(url, "gameWindow", prop);
-            }
-
-            if (!this.windowObject && data.options.target === "popup") {
-                return;
-            }
-
-            // handle redirects if we are on a PWA standalone
-            if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                source === "pwa" ||
-                data.options.target !== "popup"
-            ) {
-                window.location.href = url;
-                return;
-            }
-
-            this.windowObject = PopupWindow("", "gameWindow", prop);
-
-            this.updatePopupWindow(url);
         });
     }
 
