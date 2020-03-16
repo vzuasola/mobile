@@ -304,7 +304,7 @@ def get_version():
     if 'CI_COMMIT_REF_NAME' not in os.environ:
         msg = '{0} is not defined in your environment'.format('CI_COMMIT_REF_NAME')
         raise PipelineError(msg)
-    branch_name = os.environ['CI_COMMIT_REF_NAME'].replace('release-v', '')
+    branch_name = os.environ['CI_COMMIT_REF_NAME']
     logger.debug(branch_name)
     os.environ['VERSION'] = branch_name
 
