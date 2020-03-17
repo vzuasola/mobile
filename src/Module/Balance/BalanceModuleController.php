@@ -20,7 +20,7 @@ class BalanceModuleController
         'opus_live_dealer' => 8,
         // 'opus_keno' => 9,
         'exchange' => 10,
-        'esports' => 11,
+        // 'esports' => 11,
         'soda_casino' => 13,
     ];
 

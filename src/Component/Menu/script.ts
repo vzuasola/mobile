@@ -259,7 +259,9 @@ export class MenuComponent implements ComponentInterface {
                         hasCategory = true;
                     }
 
-                    if (menuCategory === menuLink) {
+                    if (menuCategory === menuLink
+                        || (menuLink === "#" && utility.hasClass(links[link], data.menu))
+                    ) {
                         parentMenu = links[link];
                     }
                 }

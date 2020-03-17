@@ -1,6 +1,7 @@
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 
 import {AccessDeniedComponent} from "@app/src/Component/Main/AccessDenied/script";
+import {MaintenanceComponent} from "@app/src/Component/Main/Maintenance/script";
 import {HeaderComponent} from "@app/src/Component/Header/script";
 import {BacktotopComponent} from "@app/src/Component/Backtotop/script";
 import {MenuComponent} from "@app/src/Component/Menu/script";
@@ -30,6 +31,7 @@ import {ProductsComponent} from "@app/src/Component/Main/Lobby/Home/Products/scr
 import {NodeComponent} from "@app/src/Component/Node/script";
 import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
+// import {INLanguageComponent} from "@app/src/Component/Language/INLanguage/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
 import {CantLoginComponent} from "@app/src/Component/Main/CantLogin/script";
 import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script";
@@ -51,6 +53,7 @@ import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedC
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
+    maintenance: new MaintenanceComponent(),
     header: new HeaderComponent(),
     backtotop: new BacktotopComponent(),
     menu: new MenuComponent(),
@@ -78,6 +81,7 @@ ComponentManager.setComponents({
     node: new NodeComponent(),
     casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
+    // in_language: new INLanguageComponent(),
     marketing: new MarketingComponent(),
     marketing_space: new MarketingSpaceComponent(),
     profiler: new ProfilerComponent(),

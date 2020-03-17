@@ -10,6 +10,7 @@ import * as promotionFilterTemplate from "./handlebars/promotion-filter.handleba
 import Dropdown from "@app/assets/script/components/dropdown";
 
 import {Router} from "@plugins/ComponentWidget/asset/router";
+import SyncEvents from "@core/assets/js/components/utils/sync-events";
 
 /**
  *
@@ -17,6 +18,8 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 export class PromotionsComponent implements ComponentInterface {
     private promotions;
     private element;
+    private sync: SyncEvents = new SyncEvents();
+    private language;
 
     constructor() {
         Handlebars.registerHelper("equals", function(value, compare, options) {
@@ -113,20 +116,48 @@ export class PromotionsComponent implements ComponentInterface {
 
     private doRequest(callback, errorCallback?) {
         if (typeof this.promotions === "undefined" ) {
-            xhr({
-                url: Router.generateRoute("promotions", "promotions"),
-                type: "json",
-            }).then((response) => {
-                this.promotionLoader();
-                this.promotions = response;
+            const promises = [];
+            const promiseLatamLanguage = () => {
+                return new Promise((promiseLatamResolve, promiseLatamReject) => {
+                    this.language = ComponentManager.getAttribute("language");
+                    if (this.language === "es") {
+                        xhr({
+                            url: Router.generateRoute("promotions", "getLatamLang"),
+                            type: "json",
+                        }).then((response) => {
+                           this.language = response.language;
+                           promiseLatamResolve();
+                        });
+                    } else {
+                        promiseLatamResolve();
+                    }
+                });
+            };
+            promises.push(promiseLatamLanguage);
+            const promisePromotions = () => {
+                return new Promise((promisePromotionsResolve, promisePromotionsReject) => {
+                    xhr({
+                        url: Router.generateRoute("promotions", "promotions"),
+                        type: "json",
+                        data: {
+                            language: this.language,
+                        },
+                    }).then((response) => {
+                        this.promotionLoader();
+                        this.promotions = response;
+                        callback(response);
+                    }).fail((error, message) => {
+                        if (errorCallback) {
+                            this.promotionLoader();
+                            errorCallback(error, message);
+                        }
+                    });
 
-                callback(response);
-            }).fail((error, message) => {
-                if (errorCallback) {
-                    this.promotionLoader();
-                    errorCallback(error, message);
-                }
-            });
+                    promisePromotionsResolve();
+                });
+            };
+            promises.push(promisePromotions);
+            this.sync.executeWithArgs(promises, []);
         } else {
             this.promotionLoader();
             callback(this.promotions);

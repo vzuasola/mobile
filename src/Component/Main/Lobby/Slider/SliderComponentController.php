@@ -6,6 +6,20 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class SliderComponentController
 {
+    const LATAM_LANG_DEFAULT = 'es';
+    const LATAM = [
+        'mx' => 'es-mx',
+        'cl' => 'es-cl',
+        'ar' => 'es-ar',
+        'pe' => 'es-pe'
+    ];
+
+    const LATAM_CURRENCY = [
+        'mxn' => 'mx',
+        'clp' => 'cl',
+        'pen' => 'pe',
+        'ars' => 'ar'
+    ];
      /**
      * @var App\Fetcher\Drupal\ViewsFetcher
      */
@@ -29,6 +43,12 @@ class SliderComponentController
 
     private $url;
 
+    private $currentLanguage;
+
+    private $idDomain;
+
+    private $user;
+
     /**
      *
      */
@@ -41,7 +61,10 @@ class SliderComponentController
             $container->get('player_session'),
             $container->get('rest'),
             $container->get('asset'),
-            $container->get('uri')
+            $container->get('uri'),
+            $container->get('lang'),
+            $container->get('id_domain'),
+            $container->get('user_fetcher')
         );
     }
 
@@ -55,7 +78,10 @@ class SliderComponentController
         $playerSession,
         $rest,
         $asset,
-        $url
+        $url,
+        $currentLanguage,
+        $idDomain,
+        $user
     ) {
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
@@ -64,6 +90,9 @@ class SliderComponentController
         $this->rest = $rest;
         $this->asset = $asset;
         $this->url = $url;
+        $this->currentLanguage = $currentLanguage;
+        $this->idDomain = $idDomain;
+        $this->user = $user;
     }
 
     /**
@@ -76,8 +105,9 @@ class SliderComponentController
         try {
             $data['product'] = [];
             $params = $request->getQueryParams();
-            if (isset($params['product']) && $params['product'] != 'mobile-entrypage') {
-                $product = $params['product'];
+            $product = $params['product'] ?? 'mobile-entrypage';
+            $language = $this->getLatamLang($product);
+            if ($product != 'mobile-entrypage') {
                 $this->configs = $this->configs->withProduct($product);
                 $this->viewsFetcher = $this->viewsFetcher->withProduct($product);
                 $data['product'] = ['product' => $product];
@@ -87,8 +117,15 @@ class SliderComponentController
         }
 
         try {
-            $sliders = $this->viewsFetcher->getViewById('webcomposer_slider_v2');
+            $sliders = $this->viewsFetcher->withLanguage($language)->getViewById('webcomposer_slider_v2');
             $data['slides'] = $this->processSlides($sliders, $data['product']);
+            if ($product === 'mobile-entrypage'
+                && $language !== $this->currentLanguage
+                && !$this->hasActiveSlide($data['slides'])) {
+                $sliders = $this->viewsFetcher->withLanguage($this::LATAM_LANG_DEFAULT)
+                    ->getViewById('webcomposer_slider_v2');
+                $data['slides'] = $this->processSlides($sliders, $data['product']);
+            }
         } catch (\Exception $e) {
             $data['slides'] = [];
         }
@@ -110,13 +147,39 @@ class SliderComponentController
         return $this->rest->output($response, $data);
     }
 
+    private function getLatamLang($product)
+    {
+        if ($product === 'mobile-entrypage' &&
+            $this->currentLanguage === $this::LATAM_LANG_DEFAULT) {
+            $userIPCountry = strtolower($this->idDomain->getGeoIpCountry());
+            $language = $this->currentLanguage;
+            if ($this->playerSession->isLogin()) {
+                try {
+                    $countryCode = $this->user->getPlayerDetails()['countryCode'];
+                    $currency = $this->user->getPlayerDetails()['currency'];
+                    $userIPCountry = (array_key_exists(strtolower($currency), $this::LATAM_CURRENCY))
+                            ? $this::LATAM_CURRENCY[strtolower($currency)] : strtolower($countryCode);
+                } catch (\Exception $e) {
+                    // Do nothing
+                }
+            }
+
+            if (array_key_exists($userIPCountry, $this::LATAM)) {
+                $language = $this::LATAM[$userIPCountry];
+            }
+
+            return $language;
+        }
+
+        return $this->currentLanguage;
+    }
+
     private function processSlides($data, $options)
     {
         try {
             $sliders = [];
             foreach ($data as $slide) {
                 $slider = [];
-
                 $dateStart = $slide['field_publish_date'][0]['value'] ?? '';
                 $dateEnd = $slide['field_unpublish_date'][0]['value'] ?? '';
                 $slider['published'] = $this->checkIfPublished(
@@ -125,11 +188,14 @@ class SliderComponentController
                 );
 
                 $showBoth = count($slide['field_log_in_state']) > 1;
-
                 $loginState = $slide['field_log_in_state'][0]['value'] ?? 0;
 
                 if (!$showBoth && $loginState != $this->playerSession->isLogin()) {
                     $slider['published'] = false;
+                }
+
+                if (($loginState || $showBoth) && $this->playerSession->isLogin() && $slider['published']) {
+                    $slider['published'] = $this->checkUserAvailability($slide['field_user_availability']);
                 }
 
                 $ribbonLabel = $slide['field_ribbon_product_label']['0']['value'] ?? false;
@@ -201,6 +267,22 @@ class SliderComponentController
         return $sliders;
     }
 
+    private function checkUserAvailability($slideUserAvail)
+    {
+        $userAvailArray = array_column($slideUserAvail, 'value');
+        $userAvailArray = count($userAvailArray) >= 1 ? $userAvailArray : ['regular_user', 'partner_matrix'];
+        $userAvailability = $slideUserAvail[0]['value'] ?? 'regular_user';
+        $available = true;
+        $partnerMatrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
+        if ($partnerMatrix && !in_array('partner_matrix', $userAvailArray)) {
+            $available = false;
+        } elseif (!$partnerMatrix && count($userAvailArray) == 1 && $userAvailability == 'partner_matrix') {
+            $available = false;
+        }
+
+        return $available;
+    }
+
     private function checkIfPublished($dateStart, $dateEnd)
     {
         if (!$dateStart && !$dateEnd) {
@@ -238,5 +320,16 @@ class SliderComponentController
         }
 
         return false;
+    }
+
+    private function hasActiveSlide($slides)
+    {
+        $publishedSlides = array_filter($slides, function ($slide) {
+            if ($slide['published']) {
+                return $slide;
+            }
+        });
+
+        return count($publishedSlides) > 0;
     }
 }
