@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Module\GameIntegration\FlowGaming;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
+use App\Fetcher\Drupal\ViewsFetcher;
 
 class FlowGamingModuleController
 {
@@ -19,6 +20,11 @@ class FlowGamingModuleController
     private $player;
 
     /**
+     * @var ViewsFetcher $viewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -27,19 +33,21 @@ class FlowGamingModuleController
             $container->get('rest'),
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
-            $container->get('player')
+            $container->get('player'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $flowGaming, $config, $player)
+    public function __construct($rest, $flowGaming, $config, $player, $viewsFetcher)
     {
         $this->rest = $rest;
         $this->flowGaming = $flowGaming;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
     }
 
     /**

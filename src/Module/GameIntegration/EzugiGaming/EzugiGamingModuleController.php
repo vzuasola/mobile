@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Module\GameIntegration\EzugiGaming;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
+use App\Fetcher\Drupal\ViewsFetcher;
 
 class EzugiGamingModuleController
 {
@@ -19,6 +20,11 @@ class EzugiGamingModuleController
     private $player;
 
     /**
+     * @var ViewsFetcher $viewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -27,19 +33,21 @@ class EzugiGamingModuleController
             $container->get('rest'),
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
-            $container->get('player')
+            $container->get('player'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $ezugi, $config, $player)
+    public function __construct($rest, $ezugi, $config, $player, $viewsFetcher)
     {
         $this->rest = $rest;
         $this->ezugi = $ezugi;
         $this->config = $config->withProduct('mobile-live-dealer');
         $this->player = $player;
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-live-dealer');
     }
 
     /**

@@ -69,6 +69,7 @@ export class LottolandModule implements ModuleInterface, GameInterface {
                 data: {
                     product,
                     gameCode: options.code,
+                    subprovider: options.subprovider || undefined,
                     langCode,
                     playMode: true,
                     lobby: options.lobby,
