@@ -59,14 +59,31 @@ trait ProviderTrait
         try {
             $params = $request->getParsedBody();
             $productConfig = $this->config;
+            $viewsFetcher = $this->viewsFetcher;
+            $playerCurrency = $this->player->getCurrency();
+            $subProvider = $params['subprovider'] ?? false;
+
+            //Set Product
             if (isset($params['product'])) {
                 $productConfig = $this->config->withProduct($params['product']);
+                $viewsFetcher = $this->viewsFetcher->withProduct($params['product']);
             }
-            // TODO <Patric> - Add here the checking of supported currency if the game is under a subprovider
-            ddd($params);
+
+
+            if ($subProvider) {
+                $supportedCurrency = $viewsFetcher->getViewById('games_subproviders',
+                        ['name' => $subProvider])[0]['supported_currency'] ?? '';
+                // If the game has a subprovider currency restriction, verify if the user met the restriction
+                if($supportedCurrency) {
+                    return (in_array($playerCurrency,
+                        preg_split("/\r\n|\n|\r/", $supportedCurrency)
+                    ));
+                }
+            }
+
             $config =  $productConfig->getConfig('webcomposer_config.icore_games_integration');
             $currencies = explode("\r\n", $config[self::KEY . '_currency']);
-            $playerCurrency = $this->player->getCurrency();
+
             if (in_array($playerCurrency, $currencies)) {
                 return true;
             }
