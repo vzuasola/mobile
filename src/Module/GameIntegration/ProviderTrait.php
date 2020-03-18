@@ -71,13 +71,17 @@ trait ProviderTrait
 
 
             if ($subProvider) {
-                $supportedCurrency = $viewsFetcher->getViewById('games_subproviders',
-                        ['name' => $subProvider])[0]['supported_currency'] ?? '';
+                $supportedCurrency = $viewsFetcher->getViewById(
+                    'games_subproviders',
+                    ['name' => $subProvider]
+                )[0]['supported_currency'] ?? '';
+
                 // If the game has a subprovider currency restriction, verify if the user met the restriction
-                if($supportedCurrency) {
-                    return (in_array($playerCurrency,
+                if ($supportedCurrency) {
+                    return in_array(
+                        $playerCurrency,
                         preg_split("/\r\n|\n|\r/", $supportedCurrency)
-                    ));
+                    );
                 }
             }
 

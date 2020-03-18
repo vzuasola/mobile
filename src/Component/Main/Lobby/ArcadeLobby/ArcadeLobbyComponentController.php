@@ -126,7 +126,7 @@ class ArcadeLobbyComponentController
 
                  $this->cacher->save($item, [
                     'expires' => self::TIMEOUT,
-                ]);
+                 ]);
             }
         } else {
             $body = $item->get();
