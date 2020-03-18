@@ -548,10 +548,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
                 url = utility.addQueryParam(url, "loaderFlag", "true");
                 if (data.options.target === "popup" || data.options.target === "_blank") {
-                    console.log(url);
-                    console.log(url);
-                    console.log(url);
-                    console.log(url);
                     window.open(url);
                     return;
                 }
