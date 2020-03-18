@@ -124,10 +124,9 @@ class ArcadeLobbyComponentController
                     'body' => $data,
                 ]);
 
-                  // TODO: <Patric> - Uncomment me on merge review
-//                $this->cacher->save($item, [
-//                    'expires' => self::TIMEOUT,
-//                ]);
+                 $this->cacher->save($item, [
+                    'expires' => self::TIMEOUT,
+                ]);
             }
         } else {
             $body = $item->get();
