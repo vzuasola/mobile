@@ -93,7 +93,6 @@ class LiveDealerLobbyComponentController
                 $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
                 $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
                 if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
-                    if ($this->configs->withProduct(self::PRODUCT))
                     $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
                     if (!$this->checkSupportedCurrency($game)) {
                         continue;
@@ -195,7 +194,8 @@ class LiveDealerLobbyComponentController
         return $providersList;
     }
 
-    private function checkSupportedCurrency($game) {
+    private function checkSupportedCurrency($game)
+    {
         $playerDetails = $this->playerSession->getDetails();
         $playerCurrency = $playerDetails['currency'] ?? '';
         $provider = $game['field_game_provider'][0]['value'] ?? '';
@@ -221,7 +221,7 @@ class LiveDealerLobbyComponentController
         }
 
         if ($playerDetails &&
-            !in_array($playerCurrency , $currencies)) {
+            !in_array($playerCurrency, $currencies)) {
             return false;
         }
 
