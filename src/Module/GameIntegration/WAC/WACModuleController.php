@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Module\GameIntegration\WAC;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
+use App\Fetcher\Drupal\ViewsFetcher;
 
 class WACModuleController
 {
@@ -19,6 +20,11 @@ class WACModuleController
     private $player;
 
     /**
+     * @var ViewsFetcher $viewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -27,19 +33,21 @@ class WACModuleController
             $container->get('rest'),
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
-            $container->get('player')
+            $container->get('player'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $wac, $config, $player)
+    public function __construct($rest, $wac, $config, $player, $viewsFetcher)
     {
         $this->rest = $rest;
         $this->wac = $wac;
         $this->config = $config->withProduct('mobile-live-dealer');
         $this->player = $player;
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-live-dealer');
     }
 
     /**
