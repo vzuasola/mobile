@@ -65,6 +65,7 @@ export class VideoRacingModule implements ModuleInterface, GameInterface {
                 data: {
                     product,
                     gameCode: options.code,
+                    subprovider: options.subprovider || undefined,
                     langCode,
                 },
             }).then((response) => {
