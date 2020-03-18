@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Module\GameIntegration\MicroGaming;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
+use App\Fetcher\Drupal\ViewsFetcher;
 
 class MicroGamingModuleController
 {
@@ -19,6 +20,11 @@ class MicroGamingModuleController
     private $player;
 
     /**
+     * @var ViewsFetcher $viewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -27,19 +33,21 @@ class MicroGamingModuleController
             $container->get('rest'),
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
-            $container->get('player')
+            $container->get('player'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $microGaming, $config, $player)
+    public function __construct($rest, $microGaming, $config, $player, $viewsFetcher)
     {
         $this->rest = $rest;
         $this->microGaming = $microGaming;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
     }
 
     /**
