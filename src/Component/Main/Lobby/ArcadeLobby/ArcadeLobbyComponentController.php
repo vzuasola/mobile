@@ -46,6 +46,8 @@ class ArcadeLobbyComponentController
 
     private $playerDetails;
 
+    private $providersCurrency = [];
+
     /**
      *
      */
@@ -251,6 +253,20 @@ class ArcadeLobbyComponentController
     {
         $data = [];
         try {
+            $icoreConfig = $this->configs->getConfig('webcomposer_config.icore_games_integration');
+            $this->providersCurrency = array_filter($icoreConfig, function ($config) {
+                $length = strlen('_currency');
+                if ($length == 0) {
+                    return true;
+                }
+
+                return (substr($config, -$length) === '_currency');
+            }, ARRAY_FILTER_USE_KEY);
+        } catch (\Exception $e) {
+            $this->providersCurrency = [];
+        }
+
+        try {
             $gamesProviders = $this->viewsFetcher->getViewById('games_providers');
         } catch (\Exception $e) {
             $gamesProviders = [];
@@ -341,14 +357,22 @@ class ArcadeLobbyComponentController
         try {
             $processGame = [];
             $subprovider = $game['field_games_subprovider'][0] ?? [];
+            $provider = $game['field_game_provider'][0]['value'] ?? "";
             $subProviderCurrency = (isset($subprovider['field_supported_currencies'][0]['value']))
                 ? preg_split("/\r\n|\n|\r/", $subprovider['field_supported_currencies'][0]['value'])
                 : [];
+            $providerCurrency = ($this->providersCurrency[$provider . "_currency"])
+                ? preg_split("/\r\n|\n|\r/", $this->providersCurrency[$provider . "_currency"])
+                : [];
 
-            // If the game has a subprovider currency restriction, verify if the user met the restriction
-            if (count($subProviderCurrency) && $this->playerDetails
-                && !in_array($this->playerDetails['currency'], $subProviderCurrency)) {
-                throw new \Exception('Player does not meet the currency restriction');
+            if ($this->playerDetails) {
+                // If the game has a subprovider currency restriction, verify if the user met the restriction
+                if (count($subProviderCurrency)) {
+                    $this->verifyCurrency($subProviderCurrency);
+                } // else verify if the player met the provider currency restriction
+                else {
+                    $this->verifyCurrency($providerCurrency);
+                }
             }
 
             if (isset($game['field_game_ribbon'][0])) {
@@ -543,5 +567,15 @@ class ArcadeLobbyComponentController
         }
 
         return $response;
+    }
+
+    /**
+     * Checks the game if it supports the players currency
+     */
+    private function verifyCurrency($currencyList)
+    {
+        if (!in_array($this->playerDetails['currency'], $currencyList)) {
+            throw new \Exception('Player does not meet the currency restriction');
+        }
     }
 }
