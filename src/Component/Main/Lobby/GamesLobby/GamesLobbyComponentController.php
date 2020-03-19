@@ -84,7 +84,12 @@ class GamesLobbyComponentController
         if (isset($query['page'])) {
             $page = $query['page'];
         }
-        $item = $this->cacher->getItem('views.games-lobby-data.' . $page . $this->currentLanguage);
+        $playerDetails = $this->playerSession->getDetails();
+        $playerCurrency = $playerDetails['currency'] ?? '';
+        $item = $this->cacher->getItem('views.games-lobby-data.'
+            . $page
+            . $this->currentLanguage
+            . "-" . $playerCurrency);
 
         if (!$item->isHit()) {
             $data = $this->generatePageLobbyData($page);
@@ -299,7 +304,10 @@ class GamesLobbyComponentController
             $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
             if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
-                $gamesList['id:' . $game['field_game_code'][0]['value']] = $this->processGame($game, $special);
+                $processGame = $this->processGame($game, $special);
+                if (!empty($processGame)) {
+                    $gamesList['id:' . $game['field_game_code'][0]['value']] = $processGame;
+                }
             }
         }
         return $gamesList;
@@ -311,6 +319,9 @@ class GamesLobbyComponentController
     private function processGame($game, $special = false)
     {
         try {
+            if (!$this->checkSupportedCurrency($game)) {
+                throw new \Exception('Player does not meet the currency restriction');
+            }
             $processGame = [];
             $size = $game['field_games_list_thumbnail_size'][0]['value'];
             $processGame['size'] = ($special) ? 'size-small' : $size;
@@ -391,6 +402,45 @@ class GamesLobbyComponentController
         } catch (\Exception $e) {
             return [];
         }
+    }
+
+    private function checkSupportedCurrency($game)
+    {
+        $playerDetails = $this->playerSession->getDetails();
+        $playerCurrency = $playerDetails['currency'] ?? '';
+        $provider = $game['field_game_provider'][0]['value'] ?? '';
+
+        if ($playerDetails) {
+            $subprovider = $game['field_games_subprovider'][0] ?? [];
+            $subProviderCurrency = (isset($subprovider['field_supported_currencies'][0]['value']))
+                ? preg_split("/\r\n|\n|\r/", $subprovider['field_supported_currencies'][0]['value'])
+                : [];
+
+            if (count($subProviderCurrency)) {
+                return !in_array($playerCurrency, $subProviderCurrency) ? false : true;
+            } else {
+                switch ($provider) {
+                    case 'pas':
+                        $config =  $this->configs
+                            ->withProduct('mobile-games')
+                            ->getConfig('webcomposer_config.icore_playtech_provider');
+                        $currencies = explode("\r\n", ($config['dafabetgames_currency'] ?? ''));
+                        break;
+                    default:
+                        $providerConfig =  $this->configs
+                            ->withProduct('mobile-games')
+                            ->getConfig('webcomposer_config.icore_games_integration');
+                        $currencies = explode("\r\n", ($providerConfig[$provider . '_currency'] ?? ''));
+                        break;
+                }
+
+                if (!in_array($playerCurrency, $currencies)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
