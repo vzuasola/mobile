@@ -433,7 +433,7 @@ class GamesLobbyComponentController
                         $currencies = explode("\r\n", ($providerConfig[$provider . '_currency'] ?? ''));
                         break;
                 }
-        
+
                 if (!in_array($playerCurrency, $currencies)) {
                     return false;
                 }
