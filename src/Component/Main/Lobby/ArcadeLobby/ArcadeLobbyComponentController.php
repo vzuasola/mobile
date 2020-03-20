@@ -13,6 +13,10 @@ class ArcadeLobbyComponentController
     const ALL_GAMES = 'all-games';
     const RECENTLY_PLAYED_GAMES = 'recently-played';
     const FAVORITE_GAMES = 'favorites';
+    const PROVIDER_MAP = [
+        'pg_soft' => 'pgsoft'
+    ];
+
      /**
      * @var App\Fetcher\Drupal\ViewsFetcher
      */
@@ -357,7 +361,7 @@ class ArcadeLobbyComponentController
         try {
             $processGame = [];
             $subprovider = $game['field_games_subprovider'][0] ?? [];
-            $provider = $game['field_game_provider'][0]['value'] ?? "";
+            $provider = $this->parseProvider($game['field_game_provider'][0]['value'] ?? "");
             $subProviderCurrency = (isset($subprovider['field_supported_currencies'][0]['value']))
                 ? preg_split("/\r\n|\n|\r/", $subprovider['field_supported_currencies'][0]['value'])
                 : [];
@@ -577,5 +581,13 @@ class ArcadeLobbyComponentController
         if (!in_array($this->playerDetails['currency'], $currencyList)) {
             throw new \Exception('Player does not meet the currency restriction');
         }
+    }
+
+    /**
+     * Gets the provider mapping
+     */
+    private function parseProvider($provider)
+    {
+        return self::PROVIDER_MAP[$provider] ?? $provider;
     }
 }

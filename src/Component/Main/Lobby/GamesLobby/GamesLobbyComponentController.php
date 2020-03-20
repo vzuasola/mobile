@@ -15,6 +15,9 @@ class GamesLobbyComponentController
     const ALL_GAMES = 'all-games';
     const RECENTLY_PLAYED_GAMES = 'recently-played';
     const FAVORITE_GAMES = 'favorites';
+    const PROVIDER_MAP = [
+        'pg_soft' => 'pgsoft'
+    ];
 
     private $playerSession;
     private $views;
@@ -408,7 +411,7 @@ class GamesLobbyComponentController
     {
         $playerDetails = $this->playerSession->getDetails();
         $playerCurrency = $playerDetails['currency'] ?? '';
-        $provider = $game['field_game_provider'][0]['value'] ?? '';
+        $provider = $this->parseProvider($game['field_game_provider'][0]['value'] ?? "");
 
         if ($playerDetails) {
             $subprovider = $game['field_games_subprovider'][0] ?? [];
@@ -587,5 +590,13 @@ class GamesLobbyComponentController
     public static function sortRecentGames($game1, $game2)
     {
         return ($game1['timestamp'] > $game2['timestamp']) ? -1 : 1;
+    }
+
+    /**
+     * Gets the provider mapping
+     */
+    private function parseProvider($provider)
+    {
+        return self::PROVIDER_MAP[$provider] ?? $provider;
     }
 }
