@@ -382,7 +382,7 @@ class GamesLobbyComponentController
 
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
-            $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";
+            $processGame['game_provider'] = $this->parseProvider($game['field_game_provider'][0]['value'] ?? "");
             $processGame['game_subprovider'] = $game['field_games_subprovider'][0]['name'][0]['value'] ?? "";
             $processGame['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
