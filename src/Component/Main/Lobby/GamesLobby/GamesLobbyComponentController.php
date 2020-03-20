@@ -595,7 +595,8 @@ class GamesLobbyComponentController
     /**
      * Gets the provider mapping
      */
-    private function parseProvider($provider) {
+    private function parseProvider($provider)
+    {
         return self::PROVIDER_MAP[$provider] ?? $provider;
     }
 }
