@@ -10,6 +10,7 @@ import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 
 export class PGSoftModule implements ModuleInterface, GameInterface {
     private key: string = "pg_soft";
+    private keyArray: string[] = ["pg_soft", "pgsoft"];
     private moduleName: string = "pgsoft_integration";
     private currencies: any;
     private languages: any;
@@ -39,7 +40,8 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
     }
 
     launch(options) {
-        if (options.provider === this.key) {
+        if (options.provider === this.key
+            || this.keyArray.indexOf(options.provider) !== -1) {
             const lang = Router.getLanguage();
             let langCode = "en";
             if (typeof this.languages[lang] !== "undefined") {
