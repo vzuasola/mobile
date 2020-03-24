@@ -14,6 +14,10 @@
         padding: 4rem 6rem;
         border-radius: 0.5rem;
         background: url($login-lightbox-background) no-repeat top center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
 
         #login-logo {
             margin: 1.8rem auto 1.5rem;
