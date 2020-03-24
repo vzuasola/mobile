@@ -19,6 +19,62 @@
 // Basic Page : About etc
 .node-basic-page {
     padding: 1.5rem 0 0.5rem 0;
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+
+    }
+
+    .tooltip .tooltip-text {
+        visibility: hidden;
+        width: 60vw;
+        background-color: $light-gray;
+        color: $black;
+        text-align: center;
+        padding: 1.5rem;
+        border-radius: 1rem;
+
+        position: absolute;
+        z-index: 1;
+    }
+
+    .tooltip:hover .tooltip-text {
+        visibility: visible;
+    }
+
+    .tooltip-active-text {
+        background-color: $yellow;
+        color: $red;
+    }
+
+    // top
+    .tooltip-top {
+        width: 60vw;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -6.0rem;
+    }
+
+    // right
+    .tooltip-right {
+        top: -1.5rem;
+        left: 105%;
+    }
+
+    // bottom
+    .tooltip-bottom {
+        width: 60vw;
+        top: 100%;
+        left: 50%;
+        margin-left: -6.0rem;
+    }
+
+    // left
+    .tooltip-left {
+        top: -1.5rem;
+        right: 105%;
+    }
 }
 
 .mobile-soda-casino.maintenance {
