@@ -84,7 +84,7 @@ export class InfobarComponent implements ComponentInterface {
             eu: "News",
             sc: "公告",
             ch: "公告",
-            th: "ข่าว",
+            th: "ข่าวสำคัญ",
             vn: "Tin Tức",
             id: "info",
             jp: "最新情報",
