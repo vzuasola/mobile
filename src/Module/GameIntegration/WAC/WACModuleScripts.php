@@ -37,7 +37,7 @@ class WACModuleScripts implements ComponentAttachmentInterface
     public function __construct($playerSession, $config, $lang)
     {
         $this->playerSession = $playerSession;
-        $this->config = $config->withProduct('mobile-live-dealer');
+        $this->config = $config->withProduct('mobile-arcade');
         $this->lang = $lang;
     }
 
