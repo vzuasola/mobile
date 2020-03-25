@@ -421,7 +421,7 @@ production:
     - python -u automation/run.py --stage deploy-production
   when: manual
   dependencies:
-   - staging signoff
+   - staging
   artifacts:
     paths:
       - automation/deployed/*.jsonl
