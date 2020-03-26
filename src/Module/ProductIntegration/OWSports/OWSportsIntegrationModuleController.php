@@ -82,8 +82,8 @@ class OWSportsIntegrationModuleController
 
         $products = explode("\r\n", $maintenanceConfigs['product_list']);
         $dates = [
-            'field_publish_date' => $maintenanceConfigs['maintenance_publish_date_mobile-sports'],
-            'field_unpublish_date' => $maintenanceConfigs['maintenance_unpublish_date_mobile-sports'],
+            'field_publish_date' => $maintenanceConfigs['maintenance_publish_date_mobile-sports'] ?? '',
+            'field_unpublish_date' => $maintenanceConfigs['maintenance_unpublish_date_mobile-sports'] ?? '',
         ];
 
         if ((in_array('mobile-sports', $products) && $this->isPublished($dates))) {
