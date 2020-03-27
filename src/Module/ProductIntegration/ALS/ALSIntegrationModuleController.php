@@ -84,8 +84,8 @@ class ALSIntegrationModuleController
 
         $products = explode("\r\n", $maintenanceConfigs['product_list']);
         $dates = [
-            'field_publish_date' => $maintenanceConfigs['maintenance_publish_date_mobile-sports-df'],
-            'field_unpublish_date' => $maintenanceConfigs['maintenance_unpublish_date_mobile-sports-df'],
+            'field_publish_date' => $maintenanceConfigs['maintenance_publish_date_mobile-sports-df'] ?? '',
+            'field_unpublish_date' => $maintenanceConfigs['maintenance_unpublish_date_mobile-sports-df'] ?? '',
         ];
 
         if ((in_array('mobile-sports-df', $products) && $this->isPublished($dates))) {
