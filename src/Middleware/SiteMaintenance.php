@@ -59,8 +59,8 @@ class SiteMaintenance implements ResponseMiddlewareInterface
                 $product_key = str_replace(' ', '', $product_key);
 
                 $dates = [
-                    'field_publish_date' => $this->configs['maintenance_publish_date_' . $product_key],
-                    'field_unpublish_date' => $this->configs['maintenance_unpublish_date_' . $product_key],
+                    'field_publish_date' => $this->configs['maintenance_publish_date_' . $product_key] ?? '',
+                    'field_unpublish_date' => $this->configs['maintenance_unpublish_date_' . $product_key] ?? '',
                 ];
 
                 if (in_array($product, $products) && $this->isPublished($dates)) {
