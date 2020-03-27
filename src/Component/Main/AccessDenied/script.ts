@@ -7,19 +7,13 @@ import * as accessDeniedTemplate from "./handlebars/accessdenied.handlebars";
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Loader} from "@app/assets/script/components/loader";
 
 /**
  *
  */
 export class AccessDeniedComponent implements ComponentInterface {
-    private loader: Loader;
     private element: HTMLElement;
     private accessDeniedData: any;
-
-    constructor() {
-        this.loader = new Loader(document.body, true);
-    }
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;

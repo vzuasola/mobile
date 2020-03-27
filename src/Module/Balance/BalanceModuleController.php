@@ -20,7 +20,7 @@ class BalanceModuleController
         'opus_live_dealer' => 8,
         // 'opus_keno' => 9,
         'exchange' => 10,
-        'esports' => 11,
+        // 'esports' => 11,
         'soda_casino' => 13,
     ];
 
@@ -149,7 +149,7 @@ class BalanceModuleController
                 unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['soda_casino']]);
 
                 // We'll remove the Esports bonus, since it's already part of the "realmoney" balance
-                unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['esports']]);
+                // unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['esports']]);
 
                 $sumBalances = $this->manageBalance(
                     $balances,
@@ -231,7 +231,7 @@ class BalanceModuleController
                         self::SPECIAL_BALANCE_BEHAVIORS['oneworks'],
                         self::SPECIAL_BALANCE_BEHAVIORS['soda_casino'],
                         self::SPECIAL_BALANCE_BEHAVIORS['als'],
-                        self::SPECIAL_BALANCE_BEHAVIORS['esports']
+                        // self::SPECIAL_BALANCE_BEHAVIORS['esports']
                     ]
                 ]
             )['balance'];

@@ -34,6 +34,7 @@ class ResponseCache extends Base
         $page = $this->request->getQueryParam('page');
         $pvw = $this->request->getQueryParam('pvw');
         $lobbyProduct = $this->request->getQueryParam('lobbyProduct');
+        $language = $this->request->getQueryParam('language');
 
         if ($widget) {
             $params['component-data-widget'] = $widget;
@@ -49,6 +50,10 @@ class ResponseCache extends Base
 
         if ($lobbyProduct) {
             $params['lobbyProduct'] = $lobbyProduct;
+        }
+
+        if ($language) {
+            $params['language'] = $language;
         }
 
         if (count($params)) {

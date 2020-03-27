@@ -49,6 +49,12 @@ class OWSportsIntegrationModuleController
             $owsportsConfig = [];
         }
 
+        try {
+            $maintenanceConfigs = $this->config->getConfig('webcomposer_config.webcomposer_site_maintenance');
+        } catch (\Exception $e) {
+            $maintenanceConfigs = [];
+        }
+
         if ($isLogin) {
             $userAgent = $request->getHeader('user-agent')[0] ?? '';
 
@@ -74,6 +80,16 @@ class OWSportsIntegrationModuleController
             $data['redirect'] = $this->getPreLoginLink($host, $owParams, $ismartPrelogin, $isEncoded);
         }
 
+        $products = explode("\r\n", $maintenanceConfigs['product_list']);
+        $dates = [
+            'field_publish_date' => $maintenanceConfigs['maintenance_publish_date_mobile-sports'] ?? '',
+            'field_unpublish_date' => $maintenanceConfigs['maintenance_unpublish_date_mobile-sports'] ?? '',
+        ];
+
+        if ((in_array('mobile-sports', $products) && $this->isPublished($dates))) {
+            $data['redirect'] = '/sports';
+        }
+
         $matrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
         if ($matrix) {
             unset($data['redirect']);
@@ -81,6 +97,18 @@ class OWSportsIntegrationModuleController
 
 
         return $this->rest->output($response, $data);
+    }
+
+    private function isPublished($data)
+    {
+        if (empty($data['field_publish_date']) && empty($data['field_unpublish_date'])) {
+            return false;
+        } elseif ($data['field_unpublish_date']) {
+            return $data['field_publish_date'] <= strtotime(date('m/d/Y H:i:s')) &&
+                $data['field_unpublish_date'] >= strtotime(date('m/d/Y H:i:s'));
+        } else {
+            return $data['field_publish_date'] <= strtotime(date('m/d/Y H:i:s'));
+        }
     }
 
     /**
