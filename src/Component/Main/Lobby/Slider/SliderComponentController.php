@@ -198,7 +198,7 @@ class SliderComponentController
 
                 if (($loginState || $showBoth) && $this->playerSession->isLogin() && $slider['published']) {
                     $slider['published'] = $this->checkUserAvailability(
-                        $slide['field_user_availability'],
+                        $slide['field_user_availability'] ?? [],
                         $currencies
                     );
                 }
