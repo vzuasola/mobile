@@ -237,10 +237,6 @@
                 width: 33.33333%;
             }
 
-            // small + small + large
-            .game-tiles.col-4 +
-            .game-tiles.col-4 ~
-            .game-tiles.col-4.col-8.large-override,
             // small + large + large
             .game-tiles.col-4 +
             .game-tiles.col-4.col-8.large-override +
