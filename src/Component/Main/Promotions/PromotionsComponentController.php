@@ -105,8 +105,11 @@ class PromotionsComponentController
      */
     public function promotions($request, $response)
     {
-        $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
         $isLogin = $this->playerSession->isLogin();
+        $isProvisioned = false;
+        if ($isLogin) {
+            $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
+        }
         $languageParam = $request->getQueryParams();
         $language = $languageParam['language'] ?? 'en';
         try {
@@ -190,6 +193,37 @@ class PromotionsComponentController
         }
 
         return $this->rest->output($response, ['language' => $this->currentLanguage]);
+    }
+
+    public function archive($request, $response) {
+        $languageParam = $request->getQueryParams();
+        $language = $languageParam['language'] ?? 'en';
+        $archived = [];
+        try {
+            $archived = $this->views->withLanguage($language)->getViewById('promotions_archive');
+        } catch (\Exception $e) {
+            $archived = [];
+        }
+
+        try {
+            $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
+        } catch (\Exception $e) {
+            $promoConfigs = [];
+        }
+
+        $isProvisioned = false;
+        if ($this->playerSession->isLogin()) {
+            $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
+        } 
+
+        $archived = $this->createPromotions(
+            $archived,
+            $promoConfigs,
+            $this->playerSession->isLogin(),
+            $isProvisioned
+        );
+
+        return $this->rest->output($response, ['promotions' =>  $archived]);
     }
 
     private function getFeatured($language)
