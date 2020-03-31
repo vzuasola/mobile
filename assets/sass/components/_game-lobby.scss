@@ -186,7 +186,6 @@
 
 // Landspace
 @media (orientation: landscape) {
-    .mobile-lottery,
     .mobile-exchange {
         #game-container {
             .game-tiles.col-4.small-override {
@@ -240,7 +239,9 @@
             // small + large + large
             .game-tiles.col-4 +
             .game-tiles.col-4.col-8.large-override +
-            .game-tiles.col-4.col-8.large-override {
+            .game-tiles.col-4.col-8.large-override,
+            .game-tiles.col-4.col-8.large-override:first-child,
+            .game-tiles.col-8:first-child {
                 width: 100%;
             }
         }
