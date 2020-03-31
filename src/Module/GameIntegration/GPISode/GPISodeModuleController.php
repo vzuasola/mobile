@@ -4,6 +4,7 @@ namespace App\MobileEntry\Module\GameIntegration\GPISode;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Drupal\Config;
+use App\Fetcher\Drupal\ViewsFetcher;
 
 class GPISodeModuleController
 {
@@ -22,6 +23,11 @@ class GPISodeModuleController
     private $playerSession;
 
     /**
+     * @var ViewsFetcher $viewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -31,20 +37,22 @@ class GPISodeModuleController
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $gpi, $config, $player, $playerSession)
+    public function __construct($rest, $gpi, $config, $player, $playerSession, $viewsFetcher)
     {
         $this->rest = $rest;
         $this->gpi = $gpi;
         $this->config = $config->withProduct('mobile-lottery');
         $this->player = $player;
         $this->playerSession = $playerSession;
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-lottery');
     }
 
     /**

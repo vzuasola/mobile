@@ -583,7 +583,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      * Refresh category on logout
      */
     private listenOnLogout() {
-        ComponentManager.subscribe("session.logout", (event, src, data) => {
+        ComponentManager.subscribe("session.logout.finished", (event, src, data) => {
             if (ComponentManager.getAttribute("product") === "mobile-arcade") {
                 this.refreshResponse();
             }
