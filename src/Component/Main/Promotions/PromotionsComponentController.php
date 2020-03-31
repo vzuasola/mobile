@@ -195,7 +195,8 @@ class PromotionsComponentController
         return $this->rest->output($response, ['language' => $this->currentLanguage]);
     }
 
-    public function archive($request, $response) {
+    public function archive($request, $response)
+    {
         $languageParam = $request->getQueryParams();
         $language = $languageParam['language'] ?? 'en';
         $archived = [];
@@ -214,7 +215,7 @@ class PromotionsComponentController
         $isProvisioned = false;
         if ($this->playerSession->isLogin()) {
             $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
-        } 
+        }
 
         $archived = $this->createPromotions(
             $archived,
