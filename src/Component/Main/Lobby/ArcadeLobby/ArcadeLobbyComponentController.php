@@ -250,6 +250,23 @@ class ArcadeLobbyComponentController
         return $data;
     }
 
+    private function getCurrencyConfig($gameConfig) {
+        try {
+            $currencies = array_filter($gameConfig, function ($config) {
+                $length = strlen('_currency');
+                if ($length == 0) {
+                    return true;
+                }
+
+                return (substr($config, -$length) === '_currency');
+            }, ARRAY_FILTER_USE_KEY);
+
+            $this->providersCurrency = array_merge($this->providersCurrency, $currencies);
+        } catch (\Exception $e) {
+            $this->providersCurrency = [];
+        }
+    }
+
     /**
      * Gets data from drupal
      */
@@ -258,14 +275,10 @@ class ArcadeLobbyComponentController
         $data = [];
         try {
             $icoreConfig = $this->configs->getConfig('webcomposer_config.icore_games_integration');
-            $this->providersCurrency = array_filter($icoreConfig, function ($config) {
-                $length = strlen('_currency');
-                if ($length == 0) {
-                    return true;
-                }
+            $this->getCurrencyConfig($icoreConfig);
 
-                return (substr($config, -$length) === '_currency');
-            }, ARRAY_FILTER_USE_KEY);
+            $gpiConfig =  $this->configs->getConfig('webcomposer_config.games_gpi_provider');
+            $this->getCurrencyConfig($gpiConfig);
         } catch (\Exception $e) {
             $this->providersCurrency = [];
         }
