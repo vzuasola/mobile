@@ -250,7 +250,8 @@ class ArcadeLobbyComponentController
         return $data;
     }
 
-    private function getCurrencyConfig($gameConfig) {
+    private function getCurrencyConfig($gameConfig)
+    {
         try {
             $currencies = array_filter($gameConfig, function ($config) {
                 $length = strlen('_currency');
