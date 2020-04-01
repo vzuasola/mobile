@@ -63,7 +63,7 @@ class GPIArcadeModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($request)) {
             $data = $this->getGameLobby($request);
         }
 
@@ -106,12 +106,31 @@ class GPIArcadeModuleController
         return $data;
     }
 
-    private function checkCurrency()
+    private function checkCurrency($request)
     {
         try {
+            $params = $request->getParsedBody();
+            $subProvider = $params['subprovider'] ?? false;
+            $playerCurrency = $this->player->getCurrency();
+
+            if ($subProvider) {
+                $supportedCurrency = $this->viewsFetcher->getViewById(
+                    'games_subproviders',
+                    ['name' => $subProvider]
+                )[0]['supported_currency'] ?? '';
+
+                // If the game has a subprovider currency restriction, verify if the user met the restriction
+                if ($supportedCurrency) {
+                    return in_array(
+                        $playerCurrency,
+                        preg_split("/\r\n|\n|\r/", $supportedCurrency)
+                    );
+                }
+            }
+
             $currencyConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
             $currencies = explode("\r\n", $currencyConfig['gpi_arcade_currency']);
-            $playerCurrency = $this->player->getCurrency();
+
 
             if (in_array($playerCurrency, $currencies)) {
                 return true;
