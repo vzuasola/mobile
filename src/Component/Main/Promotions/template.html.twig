@@ -30,6 +30,18 @@
     <div class="promotions-body promotions-no-available hidden">
         <p>{{ no_available_promotions }}</p>
     </div>
+    <span class="archive-btn-container">
+        <a href="#archive" class="btn btn-yellow btn-small btn-archive">
+            {{ btn_archive_title }}
+        </a>
+    </span>
+
+    <div class="promotions-archive hidden">
+    </div>
+
+     <div class="promotions-archive-no-available hidden" id="archive">
+        <p>{{ no_archive_promotions }}</p>
+    </div>
 
     {% include '@component/Main/Promotions/templates/loader.html.twig' %}
 </div>

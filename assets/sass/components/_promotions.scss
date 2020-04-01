@@ -14,7 +14,7 @@
         }
     }
 }
-.promotions-body {
+.promotions-body, .promotions-archive {
     background: $dark-red;
 
     &-banner {
@@ -119,7 +119,7 @@
     }
 }
 
-.promotions-no-available {
+.promotions-no-available, .promotions-archive-no-available {
     p {
         text-align: center;
         padding: 2rem 0;
@@ -250,5 +250,35 @@
     a:hover {
         border-color: transparent;
         border-radius: 0;
+    }
+}
+
+.archive-btn-container {
+    margin: 1rem auto;
+    text-align: center;
+    display: block;
+
+    a,
+    a:hover {
+        text-transform: capitalize;
+        color: $red;
+    }
+}
+
+.promotions-archive {
+    img {
+        filter: grayscale(100%);
+    }
+
+    .promotions-content {
+        background: $gray;
+
+        h2 {
+            color: $white;
+        }
+
+        .text-yellow {
+            color: $white;
+        }
     }
 }
