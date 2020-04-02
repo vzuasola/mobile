@@ -26,6 +26,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
     private events: {};
     private productMenu: string = "product-lottery";
     private providers: any;
+    private isLobbyLoaded: boolean = false;
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -59,6 +60,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
         this.listenClickGameTile();
         this.listenToLaunchGameLoader();
         this.highlightQuickNavMenu();
+        this.listenOnChangeOrientation();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -93,6 +95,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
         });
         this.listenToLaunchGameLoader();
         this.highlightQuickNavMenu();
+        this.listenOnChangeOrientation();
     }
 
     private lotteryXhrRequest(method: string, callback) {
@@ -111,6 +114,7 @@ export class LotteryLobbyComponent implements ComponentInterface {
      */
     private setLobby() {
         this.populateGames();
+        this.isLobbyLoaded = true;
     }
 
     /**
@@ -183,6 +187,21 @@ export class LotteryLobbyComponent implements ComponentInterface {
                 }
             }
         });
+    }
+
+    /**
+     * Event listener for window resize
+     */
+    private listenOnChangeOrientation() {
+        if (this.checkEvent("changeorientation")) {
+            utility.listen(window, "resize", (event, src: any) => {
+                if (ComponentManager.getAttribute("product") === "mobile-lottery") {
+                    if (ComponentManager.getAttribute("product") === "mobile-lottery" && this.isLobbyLoaded) {
+                        this.setLobby();
+                    }
+                }
+            });
+        }
     }
 
     /**

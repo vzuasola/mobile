@@ -1,6 +1,8 @@
 <ul class="game-lottery-lobby-container clearfix">
 {{#each games}}
-    <li class="game-tiles lottery-game-tile {{this.size}} {{this.overridesize}}">
+    <li
+    class="game-tiles lottery-game-tile {{#if ../isPortrait }}{{this.portrait_size}}{{else}}{{this.landscape_size}}{{/if}}"
+    >
         <a class="game-listing-item "
         {{#if ../isLogin}}
         data-game-launch="true"
