@@ -224,7 +224,7 @@ class PromotionsComponentController
             $isProvisioned
         );
 
-        return $this->rest->output($response, ['promotions' =>  $archived]);
+        return $this->rest->output($response, ['promotions' =>  array_slice($archived, 0, 3)]);
     }
 
     private function getFeatured($language)
