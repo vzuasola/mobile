@@ -65,14 +65,13 @@ export class PromotionsComponent implements ComponentInterface {
     }
 
     onReload(element: HTMLElement, attachments: {filterLabel: string, countdown: string}) {
-        if (!this.element) {
-            this.listenChangeDropdown(attachments.countdown);
-            this.listenClickArchiveBtn(attachments.countdown);
-        }
+        this.element = element;
         this.promotions = undefined;
         this.archivePromotions = undefined;
-        this.element = element;
+
         this.init(attachments.filterLabel, attachments.countdown);
+        this.listenChangeDropdown(attachments.countdown);
+        this.listenClickArchiveBtn(attachments.countdown);
     }
 
     init(filterLabel, countdownFormat) {
