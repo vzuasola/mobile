@@ -5,6 +5,7 @@ namespace App\MobileEntry\Module\GameIntegration\RubyPlay;
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 
 use App\Drupal\Config;
+use App\Fetcher\Drupal\ViewsFetcher;
 
 class RubyPlayModuleController
 {
@@ -26,6 +27,11 @@ class RubyPlayModuleController
     private $player;
 
     /**
+     * @var ViewsFetcher $viewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -34,19 +40,21 @@ class RubyPlayModuleController
             $container->get('rest'),
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
-            $container->get('player')
+            $container->get('player'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $rubyPlay, $config, $player)
+    public function __construct($rest, $rubyPlay, $config, $player, $viewsFetcher)
     {
         $this->rest = $rest;
         $this->rubyPlay = $rubyPlay;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
     }
 
     /**

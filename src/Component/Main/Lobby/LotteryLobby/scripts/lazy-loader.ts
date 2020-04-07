@@ -33,6 +33,7 @@ export class LazyLoader {
         const template = gameTemplate({
             games: batch[this.startBatch],
             isLogin: this.authenticated,
+            isPortrait: window.innerHeight > window.innerWidth,
         });
 
         if (gameContainer) {
@@ -60,6 +61,7 @@ export class LazyLoader {
                 const template = gameTemplate({
                     games: batch[this.currentBatch],
                     isLogin: this.authenticated,
+                    isPortrait: window.innerHeight > window.innerWidth,
                 });
                 this.showItems(template, gameLoader, gameContainer);
             }

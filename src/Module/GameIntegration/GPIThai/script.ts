@@ -66,6 +66,7 @@ export class GPIThaiModule implements ModuleInterface, GameInterface {
                 data: {
                     product,
                     gameCode: options.code,
+                    subprovider: options.subprovider || undefined,
                     langCode,
                     playMode: true,
                 },

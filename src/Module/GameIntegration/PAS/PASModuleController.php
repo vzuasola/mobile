@@ -4,6 +4,7 @@ namespace App\MobileEntry\Module\GameIntegration\PAS;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Drupal\Config;
+use App\Fetcher\Drupal\ViewsFetcher;
 
 class PASModuleController
 {
@@ -40,6 +41,11 @@ class PASModuleController
     private $provider;
 
     /**
+     * @var ViewsFetcher $viewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -51,7 +57,8 @@ class PASModuleController
             $container->get('config_fetcher'),
             $container->get('player'),
             $container->get('player_session'),
-            $container->get('game_provider_fetcher')
+            $container->get('game_provider_fetcher'),
+            $container->get('views_fetcher')
         );
     }
 
@@ -65,7 +72,8 @@ class PASModuleController
         $config,
         $player,
         $playerSession,
-        $provider
+        $provider,
+        $viewsFetcher
     ) {
         $this->rest = $rest;
         $this->paymentAccount = $paymentAccount;
@@ -74,6 +82,7 @@ class PASModuleController
         $this->player = $player;
         $this->playerSession = $playerSession;
         $this->provider = $provider;
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-casino');
     }
 
     public function updateToken($request, $response)

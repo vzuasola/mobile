@@ -67,6 +67,7 @@ export class WACModule implements ModuleInterface, GameInterface {
                     product,
                     langCode,
                     gameCode: options.code,
+                    subprovider: options.subprovider || undefined,
                     lobby: options.lobby,
                 },
             }).then((response) => {
