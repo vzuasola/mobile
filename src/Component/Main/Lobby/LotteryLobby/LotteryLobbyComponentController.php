@@ -95,34 +95,42 @@ class LotteryLobbyComponentController
     private function getGameDefinition($game)
     {
         try {
+            $sizePortrait = [
+                'small' => 'col-4',
+                'large' => 'col-12'
+            ];
+
+            $sizeLandscape = [
+                'small' => 'col-4',
+                'large' => 'col-8',
+                'full' => 'col-12'
+            ];
             $definition = [];
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
-                $definition['ribbon']['name'] = $ribbon['field_ribbon_label'][0]['value'];
+                $definition['ribbon']['name'] = $ribbon['field_ribbon_label'][0]['value'] ?? '';
                 $definition['ribbon']['background'] = $ribbon['field_ribbon_background_color'][0]['color'];
                 $definition['ribbon']['color'] = $ribbon['field_ribbon_text_color'][0]['color'];
             }
             $size = $game['field_game_thumbnail_size'][0]['value'];
-            $definition['size'] = $size == 'small' ? 'col-4' : 'col-8';
             $imgUrl = $this->asset->generateAssetUri(
                 $game["field_game_thumbnail_$size"][0]['url'],
                 ['product' => self::PRODUCT]
             );
             $definition['image'] = [
-                'alt' => $game["field_game_thumbnail_small"][0]['alt'],
+                'alt' => $game["field_game_thumbnail_small"][0]['alt'] ?? '',
                 'url' => $imgUrl
             ];
             $definition['img_landscape'] = $imgUrl;
             $landscapesize = $game['field_game_landscape_size'][0]['value'];
+            $landscapesize = ($landscapesize === 'full') ? 'large' : $landscapesize;
+            $definition['img_landscape'] = $this->asset->generateAssetUri(
+                $game["field_game_thumbnail_$landscapesize"][0]['url'],
+                ['product' => self::PRODUCT]
+            );
 
-            if ($size != $landscapesize) {
-                $overrideSize = ($landscapesize == 'small') ? 'col-4 small-override' : 'col-8 large-override';
-                $definition['img_landscape'] = $this->asset->generateAssetUri(
-                    $game["field_game_thumbnail_$landscapesize"][0]['url'],
-                    ['product' => self::PRODUCT]
-                );
-            }
-            $definition['overridesize'] = isset($overrideSize) ? $overrideSize : '';
+            $definition['portrait_size'] = $sizePortrait[$size];
+            $definition['landscape_size'] = $sizeLandscape[$game['field_game_landscape_size'][0]['value']];
             $definition['title'] = $game['title'][0]['value'] ?? '';
             $definition['game_provider'] = $game['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
             $definition['target'] = $game['field_target'][0]['value'] ?? '';
