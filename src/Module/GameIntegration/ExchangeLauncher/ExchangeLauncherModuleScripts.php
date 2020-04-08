@@ -19,6 +19,10 @@ class ExchangeLauncherModuleScripts implements ComponentAttachmentInterface
 
     const KEY = 'exchange_launcher';
 
+    const SUPPORTED_LANGUAGE = [
+        'en', 'in', 'te', 'hi'
+    ];
+
     /**
      *
      */
@@ -46,13 +50,16 @@ class ExchangeLauncherModuleScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
+        $data = [];
         try {
-            $exchangeConfig =  $this->config->getGeneralConfigById('games_exchange_provider');
+            if (in_array($this->lang, $this::SUPPORTED_LANGUAGE)) {
+                $exchangeConfig =  $this->config->getConfig('webcomposer_config.games_exchange_provider');
 
-            $data = [
-                'currencies' => explode(PHP_EOL, $exchangeConfig['currency']),
-                'languages' => Config::parse($exchangeConfig['languages'] ?? ''),
-            ];
+                $data = [
+                    'currencies' => explode(PHP_EOL, $exchangeConfig['currency']),
+                    'languages' => Config::parse($exchangeConfig['languages'] ?? ''),
+                ];
+            }
         } catch (\Exception $e) {
             $data = [];
         }
