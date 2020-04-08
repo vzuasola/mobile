@@ -45,11 +45,15 @@ export class Menu {
 
     private openMenu() {
         utility.addClass(this.element, "menu-open");
+        setTimeout(() => {
+            utility.removeClass(this.element.querySelector(".close-svg"),  "hidden");
+        }, 100);
         this.createOverlay();
     }
 
     private closeMenu() {
         utility.removeClass(this.element, "menu-open");
+        utility.addClass(this.element.querySelector(".close-svg"),  "hidden");
     }
 
     private createOverlay() {
