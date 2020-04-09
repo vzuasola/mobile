@@ -23,6 +23,9 @@
                         data-game-maintenance="true"
                     {{/if}}
                     data-game-provider="{{this.game_provider}}"
+                    {{#if this.game_subprovider }}
+                        data-game-subprovider="{{this.game_subprovider}}"
+                    {{/if}}
                     data-game-code="{{this.game_code}}"
                     data-game-platform="{{this.game_platform}}"
                     data-game-title="{{this.title}}"
@@ -71,6 +74,9 @@
                                 data-game-maintenance="true"
                             {{/if}}
                             data-game-provider="{{this.game_provider}}"
+                            {{#if this.game_subprovider }}
+                                data-game-subprovider="{{this.game_subprovider}}"
+                            {{/if}}
                             data-game-code="{{this.game_code}}"
                             data-game-platform="{{this.game_platform}}"
                             data-game-title="{{this.title}}"
