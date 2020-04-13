@@ -4,7 +4,7 @@
     #game-search-result {
         .game-listing {
             padding: 0 1% 1.75% 1%;
-        }   
+        }
     }
 
     .game-container {
@@ -25,13 +25,14 @@
         background: #001F51;
     }
 
-    .sponsors-list {    
+    .sponsors-list {
         background: #001F51;
     }
 }
 
 .mobile-lottery,
 .mobile-exchange {
+
     .lottery-lobby-tile-container,
     .exchange-lobby-tile-container {
         padding-top: 1%;
@@ -51,7 +52,7 @@
             .small-image {
                 width: 50%;
             }
-        
+
             .large-image {
                 width: 100%;
             }
@@ -61,17 +62,17 @@
                     padding: 0;
                     display: block;
                     float: none;
-        
+
                     img {
                         height: 15rem;
                     }
                 }
-        
+
                 a {
                     float: none;
                     display: block;
                 }
-        
+
                 .label-game-title {
                     font-weight: 400;
                     width: 98%;
@@ -79,7 +80,7 @@
                 }
             }
         }
-    }    
+    }
 
     .lottery-tile-maintenance,
     .exchange-tile-maintenance {
@@ -137,9 +138,11 @@
 
 // Portrait
 @media (orientation: portrait) {
+
     .mobile-lottery,
     .mobile-exchange {
         #game-container {
+
             .game-tiles.large-override,
             .game-tiles.col-4.large-override,
             .game-tiles.col-4,
@@ -154,6 +157,7 @@
         }
 
         .col-4 {
+
             .lottery-tile-maintenance:after,
             .exchange-tile-maintenance:after {
                 position: absolute;
@@ -168,6 +172,7 @@
         }
 
         .col-12 {
+
             .lottery-tile-maintenance:after,
             .exchange-tile-maintenance:after {
                 position: absolute;
@@ -185,6 +190,7 @@
 
 // Landspace
 @media (orientation: landscape) {
+
     .mobile-lottery,
     .mobile-exchange {
         #game-container {

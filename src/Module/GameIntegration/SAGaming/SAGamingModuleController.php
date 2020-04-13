@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Module\GameIntegration\SAGaming;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
+use App\Fetcher\Drupal\ViewsFetcher;
 
 class SAGamingModuleController
 {
@@ -19,6 +20,11 @@ class SAGamingModuleController
     private $player;
 
     /**
+     * @var ViewsFetcher $viewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -27,19 +33,21 @@ class SAGamingModuleController
             $container->get('rest'),
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
-            $container->get('player')
+            $container->get('player'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $saGaming, $config, $player)
+    public function __construct($rest, $saGaming, $config, $player, $viewsFetcher)
     {
         $this->rest = $rest;
         $this->saGaming = $saGaming;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
     }
 
     /**

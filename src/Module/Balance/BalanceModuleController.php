@@ -134,22 +134,9 @@ class BalanceModuleController
                     $ids = self::PARTNER_MATRIX_BEHAVIORS;
                 }
 
-                $balances = $this->balance->getBalanceByProductIds(
+                $balances = $this->balance->getBalanceByWalletIds(
                     ['ids' => $ids]
                 )['balance'];
-
-                $bonuses = $this->balance->getBonusBalanceByProductIds(
-                    ['ids' => $ids]
-                )['balance'];
-
-                // We'll remove the OW Sports bonus, since it's already part of the "realmoney" balance
-                unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['oneworks']]);
-
-                // the same with oneworks
-                unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['soda_casino']]);
-
-                // We'll remove the Esports bonus, since it's already part of the "realmoney" balance
-                // unset($bonuses[self::SPECIAL_BALANCE_BEHAVIORS['esports']]);
 
                 $sumBalances = $this->manageBalance(
                     $balances,
@@ -162,27 +149,9 @@ class BalanceModuleController
                     'balance'
                 );
 
-                $sumBalance = $sumBalances['balances'];
-
-                $sumBonuses = $this->manageBalance(
-                    $bonuses,
-                    $balanceMap,
-                    $currency,
-                    $currencyMap,
-                    $territory,
-                    $territoriesMap,
-                    $countryCode,
-                    'bonus'
-                );
-
-                $sumBonus = $sumBonuses['balances'];
-                $totalBalance = $sumBalance + $sumBonus;
-
+                $totalBalance = $sumBalances['total_balance'];
                 $data['map'] = self::PRODUCT_MAPPING;
-                $data['balances'] = $balances;
-                $data['reserveBalances'] = $sumBalances['reserveBalances'] ?? 0;
-                $data['nonWithdrawableBalances'] = $sumBalances['nonWithdrawableBalances'] ?? 0;
-                $data['bonuses'] = $bonuses;
+                $data['balances'] = $sumBalances['balances'];
                 $data['balance'] = number_format($totalBalance, 2, '.', ',');
                 $data['format'] = $this->totalBalanceFormat($currency);
                 $data['currency'] = $this->currency->getTranslation($currency);
@@ -212,43 +181,13 @@ class BalanceModuleController
         $balances = $this->currencyFilter($currency, $currencyMap, $balances);
         $balances = $this->territoryFilter($territoriesMap, $territory, $balances, $countryCode);
 
-        if ($type == 'balance') {
-            $reserveBalance = [];
-            $nonWithdrawableBalance = [];
-
-            if (isset($balances[self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']])) {
-                $reserveBalance = $this->balance->getReservedBalanceByProductIds(
-                    [
-                    'ids' => [self::SPECIAL_BALANCE_BEHAVIORS['shared_wallet']],
-                    ]
-                )['balance'];
-                $balancesArr['reserveBalances'] = $reserveBalance;
-            }
-
-            $nonWithdrawableBalance = $this->balance->getNonWithdrawableBalanceByProductIds(
-                [
-                    'ids' => [
-                        self::SPECIAL_BALANCE_BEHAVIORS['oneworks'],
-                        self::SPECIAL_BALANCE_BEHAVIORS['soda_casino'],
-                        self::SPECIAL_BALANCE_BEHAVIORS['als'],
-                        // self::SPECIAL_BALANCE_BEHAVIORS['esports']
-                    ]
-                ]
-            )['balance'];
-            $balancesArr['nonWithdrawableBalances'] = $nonWithdrawableBalance;
-
-            foreach ($balances as $key => $value) {
-                if (isset($reserveBalance[$key])) {
-                    $balances[$key] += $reserveBalance[$key];
-                }
-
-                if (isset($nonWithdrawableBalance[$key])) {
-                    $balances[$key] += $nonWithdrawableBalance[$key];
-                }
-            }
+        $balancesArr['total_balance'] = 0;
+        foreach ($balances as $key => $value) {
+            // Get the wallet types to be computed
+            $types = array_intersect_key($value, array_flip(BalanceDefinition::WALLET_TYPE_MAPPING[$key]));
+            $balancesArr['balances'][$key] = array_sum(array_values($types));
+            $balancesArr['total_balance'] = $balancesArr['total_balance'] + $balancesArr['balances'][$key];
         }
-
-        $balancesArr['balances'] = array_sum($balances);
 
         return $balancesArr;
     }

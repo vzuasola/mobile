@@ -55,7 +55,7 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("skywind", skywind);
         this.gameLauncher.setProvider("flow_gaming", flowGaming);
         this.gameLauncher.setProvider("sa_gaming", saGaming);
-        this.gameLauncher.setProvider("pg_soft", pgSoft);
+        this.gameLauncher.setProvider("pgsoft", pgSoft);
         this.gameLauncher.setProvider("asia_gaming", asiaGaming);
         this.gameLauncher.setProvider("gold_deluxe", goldDeluxe);
         this.gameLauncher.setProvider("ruby_play", rubyPlay);

@@ -54,7 +54,12 @@ class LiveDealerLobbyComponentController
         $params = $request->getQueryParams();
         $isPreview = $params['pvw'] ?? false;
         $previewKey = $isPreview ? "preview" : "no-preview";
-        $item = $this->cacher->getItem('views.live-dealer-lobby-data.' . $this->currentLanguage ."-". $previewKey);
+        $playerDetails = $this->playerSession->getDetails();
+        $playerCurrency = $playerDetails['currency'] ?? '';
+        $item = $this->cacher->getItem('views.live-dealer-lobby-data.'
+            . $this->currentLanguage
+            . "-". $previewKey
+            . "-" . $playerCurrency);
 
         if (!$item->isHit()) {
             $data = $this->getGamesList($isPreview);
@@ -89,6 +94,9 @@ class LiveDealerLobbyComponentController
                 $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
                 if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                     $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
+                    if (!$this->checkSupportedCurrency($game)) {
+                        continue;
+                    }
                     if (!$isPreview && $preview_mode) {
                         continue;
                     }
@@ -184,6 +192,40 @@ class LiveDealerLobbyComponentController
             $providersList = [];
         }
         return $providersList;
+    }
+
+    private function checkSupportedCurrency($game)
+    {
+        $playerDetails = $this->playerSession->getDetails();
+        $playerCurrency = $playerDetails['currency'] ?? '';
+        $provider = $game['field_game_provider'][0]['value'] ?? '';
+        switch ($provider) {
+            case 'gpi':
+                $config =  $this->configs
+                    ->withProduct(self::PRODUCT)
+                    ->getConfig('webcomposer_config.games_gpi_provider');
+                $currencies = explode("\r\n", ($config['gpi_live_dealer_currency'] ?? ''));
+                break;
+            case 'pas':
+                $config =  $this->configs
+                    ->withProduct(self::PRODUCT)
+                    ->getConfig('webcomposer_config.icore_playtech_provider');
+                $currencies = explode("\r\n", ($config['dafabetgames_currency'] ?? ''));
+                break;
+            default:
+                $providerConfig =  $this->configs
+                    ->withProduct(self::PRODUCT)
+                    ->getConfig('webcomposer_config.icore_games_integration');
+                $currencies = explode("\r\n", ($providerConfig[$provider . '_currency'] ?? ''));
+                break;
+        }
+
+        if ($playerDetails &&
+            !in_array($playerCurrency, $currencies)) {
+            return false;
+        }
+
+        return true;
     }
 
     private function checkIfMaintenance($dateStart, $dateEnd)

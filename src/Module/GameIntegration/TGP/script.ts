@@ -66,6 +66,7 @@ export class TGPModule implements ModuleInterface, GameInterface {
                 data: {
                     product,
                     langCode,
+                    subprovider: options.subprovider || undefined,
                 },
             }).then((response) => {
                 if (response.gameurl) {

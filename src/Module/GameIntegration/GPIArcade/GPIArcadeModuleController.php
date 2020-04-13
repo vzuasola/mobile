@@ -4,6 +4,7 @@ namespace App\MobileEntry\Module\GameIntegration\GPIArcade;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Drupal\Config;
+use App\Fetcher\Drupal\ViewsFetcher;
 
 class GPIArcadeModuleController
 {
@@ -22,6 +23,11 @@ class GPIArcadeModuleController
     private $playerSession;
 
     /**
+     * @var ViewsFetcher $viewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -31,20 +37,22 @@ class GPIArcadeModuleController
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $gpi, $config, $player, $playerSession)
+    public function __construct($rest, $gpi, $config, $player, $playerSession, $viewsFetcher)
     {
         $this->rest = $rest;
         $this->gpi = $gpi;
         $this->config = $config->withProduct('mobile-arcade');
         $this->player = $player;
         $this->playerSession = $playerSession;
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-arcade');
     }
 
     /**
@@ -55,7 +63,7 @@ class GPIArcadeModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
-        if ($this->checkCurrency()) {
+        if ($this->checkCurrency($request)) {
             $data = $this->getGameLobby($request);
         }
 
@@ -98,12 +106,31 @@ class GPIArcadeModuleController
         return $data;
     }
 
-    private function checkCurrency()
+    private function checkCurrency($request)
     {
         try {
+            $params = $request->getParsedBody();
+            $subProvider = $params['subprovider'] ?? false;
+            $playerCurrency = $this->player->getCurrency();
+
+            if ($subProvider) {
+                $supportedCurrency = $this->viewsFetcher->getViewById(
+                    'games_subproviders',
+                    ['name' => $subProvider]
+                )[0]['supported_currency'] ?? '';
+
+                // If the game has a subprovider currency restriction, verify if the user met the restriction
+                if ($supportedCurrency) {
+                    return in_array(
+                        $playerCurrency,
+                        preg_split("/\r\n|\n|\r/", $supportedCurrency)
+                    );
+                }
+            }
+
             $currencyConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
             $currencies = explode("\r\n", $currencyConfig['gpi_arcade_currency']);
-            $playerCurrency = $this->player->getCurrency();
+
 
             if (in_array($playerCurrency, $currencies)) {
                 return true;

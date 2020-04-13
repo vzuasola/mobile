@@ -180,6 +180,8 @@ class SliderComponentController
             $sliders = [];
             foreach ($data as $slide) {
                 $slider = [];
+                $currencies = isset($slide['field_currency'][0]['value'])
+                    ? explode("\r\n", $slide['field_currency'][0]['value']) : [];
                 $dateStart = $slide['field_publish_date'][0]['value'] ?? '';
                 $dateEnd = $slide['field_unpublish_date'][0]['value'] ?? '';
                 $slider['published'] = $this->checkIfPublished(
@@ -195,7 +197,10 @@ class SliderComponentController
                 }
 
                 if (($loginState || $showBoth) && $this->playerSession->isLogin() && $slider['published']) {
-                    $slider['published'] = $this->checkUserAvailability($slide['field_user_availability']);
+                    $slider['published'] = $this->checkUserAvailability(
+                        $slide['field_user_availability'] ?? [],
+                        $currencies
+                    );
                 }
 
                 $ribbonLabel = $slide['field_ribbon_product_label']['0']['value'] ?? false;
@@ -267,17 +272,22 @@ class SliderComponentController
         return $sliders;
     }
 
-    private function checkUserAvailability($slideUserAvail)
+    private function checkUserAvailability($slideUserAvail, $slideCurrency)
     {
         $userAvailArray = array_column($slideUserAvail, 'value');
         $userAvailArray = count($userAvailArray) >= 1 ? $userAvailArray : ['regular_user', 'partner_matrix'];
         $userAvailability = $slideUserAvail[0]['value'] ?? 'regular_user';
         $available = true;
         $partnerMatrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
+        $playerCurrency =$this->playerSession->getDetails()['currency'] ?? '';
         if ($partnerMatrix && !in_array('partner_matrix', $userAvailArray)) {
             $available = false;
         } elseif (!$partnerMatrix && count($userAvailArray) == 1 && $userAvailability == 'partner_matrix') {
             $available = false;
+        }
+
+        if ($available && count($slideCurrency)) {
+            $available = in_array($playerCurrency, $slideCurrency);
         }
 
         return $available;
