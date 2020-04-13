@@ -35,7 +35,6 @@ class ExchangeLauncherModuleController
     {
         return new static(
             $container->get('rest'),
-            $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
             $container->get('player_session'),
@@ -46,10 +45,9 @@ class ExchangeLauncherModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $exchange, $config, $player, $playerSession, $viewsFetcher)
+    public function __construct($rest, $config, $player, $playerSession, $viewsFetcher)
     {
         $this->rest = $rest;
-        $this->exchange = $exchange;
         $this->config = $config->withProduct('mobile-exchange');
         $this->player = $player;
         $this->playerSession = $playerSession;

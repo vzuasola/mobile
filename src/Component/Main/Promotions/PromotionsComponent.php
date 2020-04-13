@@ -61,7 +61,9 @@ class PromotionsComponent implements ComponentWidgetInterface
         $data['title'] = $promoConfigs['title'] ?? 'Promotions';
         $data['filter_label'] = $promoConfigs['filter_label'] ?? 'Filter';
         $data['no_available_promotions'] = $promoConfigs['no_available_msg'] ?? '';
-
+        $data['no_archive_promotions'] = $promoConfigs['no_archive_msg'] ?? '';
+        $data['btn_archive_title'] = $promoConfigs['btn_archive_title']
+            ?? 'View Past Promotions';
         return $data;
     }
 }

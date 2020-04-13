@@ -17,6 +17,7 @@ import SyncEvents from "@core/assets/js/components/utils/sync-events";
  */
 export class PromotionsComponent implements ComponentInterface {
     private promotions;
+    private archivePromotions;
     private element;
     private sync: SyncEvents = new SyncEvents();
     private language;
@@ -57,17 +58,20 @@ export class PromotionsComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {filterLabel: string, countdown: string}) {
         this.element = element;
         this.promotions = undefined;
+        this.archivePromotions = undefined;
         this.init(attachments.filterLabel, attachments.countdown);
         this.listenChangeDropdown(attachments.countdown);
+        this.listenClickArchiveBtn(attachments.countdown);
     }
 
     onReload(element: HTMLElement, attachments: {filterLabel: string, countdown: string}) {
         this.element = element;
         this.promotions = undefined;
+        this.archivePromotions = undefined;
 
         this.init(attachments.filterLabel, attachments.countdown);
         this.listenChangeDropdown(attachments.countdown);
-
+        this.listenClickArchiveBtn(attachments.countdown);
     }
 
     init(filterLabel, countdownFormat) {
@@ -162,6 +166,69 @@ export class PromotionsComponent implements ComponentInterface {
             this.promotionLoader();
             callback(this.promotions);
         }
+    }
+
+    private doRequestArchive(callback, errorCallback?) {
+        if (typeof this.archivePromotions === "undefined" ) {
+            xhr({
+                url: Router.generateRoute("promotions", "archive"),
+                type: "json",
+                data: {
+                    language: this.language,
+                },
+            }).then((response) => {
+                this.archivePromotions = response;
+                callback(response);
+            }).fail((error, message) => {
+                if (errorCallback) {
+                    errorCallback(error, message);
+                }
+            });
+        } else {
+            callback(this.archivePromotions);
+        }
+    }
+
+    private listenClickArchiveBtn(countdownFormat) {
+        utility.listen(this.element, "click", (event, src) => {
+            const archiveContainer = this.element.querySelector(".promotions-archive");
+            const archiveMsgContainer = this.element.querySelector(".promotions-archive-no-available");
+            if (utility.hasClass(src, "btn-archive")) {
+                if (utility.hasClass(archiveContainer, "hidden") &&
+                    utility.hasClass(archiveMsgContainer, "hidden")
+                ) {
+                    this.doRequestArchive((response) => {
+                        if (response && typeof response !== "undefined"
+                            && response.promotions.length) {
+                            this.resetError(
+                                ".promotions-archive",
+                                ".promotions-archive-no-available",
+                            );
+                            const template = promotionTemplate({
+                                promotions: response.promotions,
+                                countdownText: countdownFormat,
+                            });
+
+                            this.element.querySelector(".promotions-archive").innerHTML = template;
+                            return;
+                        } else {
+                            this.handleError(
+                                ".promotions-archive",
+                                ".promotions-archive-no-available",
+                            );
+                        }
+                    }, () => {
+                        this.handleError(
+                            ".promotions-archive",
+                            ".promotions-archive-no-available",
+                        );
+                    });
+                } else {
+                    utility.addClass(archiveContainer, "hidden");
+                    utility.addClass(archiveMsgContainer, "hidden");
+                }
+            }
+        });
     }
 
     private listenChangeDropdown(countdownFormat) {
@@ -274,13 +341,19 @@ export class PromotionsComponent implements ComponentInterface {
         this.activateDropdown();
     }
 
-    private handleError() {
-        utility.addClass(this.element.querySelector(".promotions-body"), "hidden");
-        utility.removeClass(this.element.querySelector(".promotions-no-available"), "hidden");
+    private handleError(
+        promoContainer = ".promotions-body",
+        promoErrorContainer = ".promotions-no-available",
+    ) {
+        utility.addClass(this.element.querySelector(promoContainer), "hidden");
+        utility.removeClass(this.element.querySelector(promoErrorContainer), "hidden");
     }
 
-    private resetError() {
-        utility.removeClass(this.element.querySelector(".promotions-body"), "hidden");
-        utility.addClass(this.element.querySelector(".promotions-no-available"), "hidden");
+    private resetError(
+        promoContainer = ".promotions-body",
+        promoErrorContainer = ".promotions-no-available",
+    ) {
+        utility.removeClass(this.element.querySelector(promoContainer), "hidden");
+        utility.addClass(this.element.querySelector(promoErrorContainer), "hidden");
     }
 }

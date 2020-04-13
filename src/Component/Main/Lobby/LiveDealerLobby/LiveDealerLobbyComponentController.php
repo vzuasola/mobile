@@ -115,6 +115,7 @@ class LiveDealerLobbyComponentController
     private function getGameDefinition($game)
     {
         try {
+            $subprovider = $game['field_games_subprovider'][0] ?? [];
             $definition = [];
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
@@ -144,6 +145,7 @@ class LiveDealerLobbyComponentController
             $definition['title'] = $game['title'][0]['value'] ?? "";
             $definition['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $definition['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";
+            $definition['game_subprovider'] = $subprovider['name'][0]['value'] ?? "";
             $definition['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
             $definition['lobby_tab'] = $game['field_lobby_tab'][0]['field_alias'][0]['value'] ?? "";
             $definition['target'] = $game['field_target'][0]['value'] ?? "popup";
@@ -197,35 +199,42 @@ class LiveDealerLobbyComponentController
     private function checkSupportedCurrency($game)
     {
         $playerDetails = $this->playerSession->getDetails();
+        if (!$playerDetails) {
+            return true; // Display the game, nothing to compare here
+        }
         $playerCurrency = $playerDetails['currency'] ?? '';
         $provider = $game['field_game_provider'][0]['value'] ?? '';
+        $subprovider = $game['field_games_subprovider'][0] ?? [];
+        $subProviderCurrency = (isset($subprovider['field_supported_currencies'][0]['value']))
+          ? preg_split("/\r\n|\n|\r/", $subprovider['field_supported_currencies'][0]['value'])
+          : [];
+
         switch ($provider) {
             case 'gpi':
-                $config =  $this->configs
-                    ->withProduct(self::PRODUCT)
-                    ->getConfig('webcomposer_config.games_gpi_provider');
+                $config = $this->configs
+                  ->withProduct(self::PRODUCT)
+                  ->getConfig('webcomposer_config.games_gpi_provider');
                 $currencies = explode("\r\n", ($config['gpi_live_dealer_currency'] ?? ''));
                 break;
             case 'pas':
-                $config =  $this->configs
-                    ->withProduct(self::PRODUCT)
-                    ->getConfig('webcomposer_config.icore_playtech_provider');
+                $config = $this->configs
+                  ->withProduct(self::PRODUCT)
+                  ->getConfig('webcomposer_config.icore_playtech_provider');
                 $currencies = explode("\r\n", ($config['dafabetgames_currency'] ?? ''));
                 break;
             default:
-                $providerConfig =  $this->configs
-                    ->withProduct(self::PRODUCT)
-                    ->getConfig('webcomposer_config.icore_games_integration');
+                $providerConfig = $this->configs
+                  ->withProduct(self::PRODUCT)
+                  ->getConfig('webcomposer_config.icore_games_integration');
                 $currencies = explode("\r\n", ($providerConfig[$provider . '_currency'] ?? ''));
                 break;
         }
-
-        if ($playerDetails &&
-            !in_array($playerCurrency, $currencies)) {
-            return false;
+        // If the game has a subprovider currency restriction, verify if the user met the restriction
+        if (count($subProviderCurrency)) {
+            return in_array($playerCurrency, $subProviderCurrency);
+        } else { // else verify if the player met the provider currency restriction of provider
+            return in_array($playerCurrency, $currencies);
         }
-
-        return true;
     }
 
     private function checkIfMaintenance($dateStart, $dateEnd)
