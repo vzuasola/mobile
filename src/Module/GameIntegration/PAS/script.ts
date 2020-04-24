@@ -36,7 +36,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private languages: any;
     private windowObject: any;
     private gameLink: string;
-
+    private currentScriptKey: string;
     private store: Storage = new Storage();
     private sync: SyncEvents = new SyncEvents();
 
@@ -193,7 +193,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             if (this.futurama || this.futuramaGold) {
                 const key = this.getKeyByProduct(product);
 
-                this.attachPTScript(() => {
+                this.attachPTScript(key, () => {
                     iapiConf = this.iapiConfs[key];
 
                     // Get Login if not login, login, then launch
@@ -663,17 +663,18 @@ export class PASModule implements ModuleInterface, GameInterface {
         }
     }
 
-    private attachPTScript(callback?: any) {
-        const product = ComponentManager.getAttribute("product");
-        const key = this.getKeyByProduct(product);
+    private attachPTScript(key, callback?: any) {
         const pasScriptTag = document.querySelector("script.pt");
-        if (!pasScriptTag) {
-            this.createPTScript(key, callback);
-        }
 
-        if (pasScriptTag) {
-            pasScriptTag.remove();
-            this.createPTScript(key, callback);
+        if (this.currentScriptKey !== key || this.currentScriptKey !== null) {
+            if (!pasScriptTag) {
+                this.createPTScript(key, callback);
+            }
+
+            if (pasScriptTag) {
+                pasScriptTag.remove();
+                this.createPTScript(key, callback);
+            }
         }
     }
 
@@ -684,7 +685,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         pasScript.setAttribute("src", this.asset[key]);
         pasScript.setAttribute("class", "pt");
         head.appendChild(pasScript);
-
+        this.currentScriptKey = key;
         if (callback) {
             pasScript.addEventListener("load", () => {
                 callback();
