@@ -667,14 +667,11 @@ export class PASModule implements ModuleInterface, GameInterface {
         const pasScriptTag = document.querySelector("script.pt");
 
         if (this.currentScriptKey !== key || this.currentScriptKey !== null) {
-            if (!pasScriptTag) {
-                this.createPTScript(key, callback);
-            }
-
             if (pasScriptTag) {
                 pasScriptTag.remove();
-                this.createPTScript(key, callback);
             }
+
+            this.createPTScript(key, callback);
         }
     }
 
