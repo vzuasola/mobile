@@ -26,7 +26,7 @@ import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 export class PASModule implements ModuleInterface, GameInterface {
     private key: string = "pas";
     private moduleName: string = "pas_integration";
-
+    private asset: any;
     private futurama: boolean;
     private futuramaGold: boolean;
     private username: string;
@@ -36,7 +36,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private languages: any;
     private windowObject: any;
     private gameLink: string;
-
+    private currentScriptKey: string;
     private store: Storage = new Storage();
     private sync: SyncEvents = new SyncEvents();
 
@@ -58,6 +58,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     private messageLightbox: ProviderMessageLightbox;
 
     onLoad(attachments: {
+        asset: any,
         futurama: boolean,
         futuramaGold: boolean,
         authenticated: boolean,
@@ -73,6 +74,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         languages: any,
         pasErrorConfig: any,
     }) {
+        this.asset = attachments.asset;
         this.futurama = attachments.futurama;
         this.futuramaGold = attachments.futuramaGold;
         this.isSessionAlive = attachments.authenticated;
@@ -189,54 +191,35 @@ export class PASModule implements ModuleInterface, GameInterface {
             const language = this.getLanguageMap(lang);
 
             if (this.futurama || this.futuramaGold) {
+                const key = this.getKeyByProduct(product);
 
-                let key = "dafa888";
+                this.attachPTScript(key, () => {
+                    iapiConf = this.iapiConfs[key];
 
-                if (product === "mobile-casino-gold" && this.futuramaGold) {
-                    key = "dafagold";
-                }
+                    // Get Login if not login, login, then launch
+                    // Before login, check if there are cookies on PTs end
+                    iapiSetCallout("GetLoggedInPlayer", (GetLoggedInPlayeResponse) => {
+                        // Set the callback for the PAS login
+                        iapiSetCallout("Login", this.onLogin(this.username.toUpperCase(), () => {
+                            this.pasLaunch(options);
+                            return;
+                        }));
 
-                if (DafaConnect.isDafaconnect()) {
-                    key = "dafaconnect";
-                }
-
-                if (product === "mobile-games" || product === "mobile-live-dealer") {
-                    key = "dafabetgames";
-                }
-
-                if (product === "mobile-soda-casino"
-                    || options.currentProduct === "mobile-soda-casino") {
-                    key = "soda";
-                    if (DafaConnect.isDafaconnect()) {
-                        key = "sodaconnect";
-                    }
-                }
-
-                iapiConf = this.iapiConfs[key];
-
-                // Get Login if not login, login, then launch
-                // Before login, check if there are cookies on PTs end
-                iapiSetCallout("GetLoggedInPlayer", (GetLoggedInPlayeResponse) => {
-                    // Set the callback for the PAS login
-                    iapiSetCallout("Login", this.onLogin(this.username.toUpperCase(), () => {
-                        this.pasLaunch(options);
-                        return;
-                    }));
-
-                    if (this.verifyGetLoggedIn(GetLoggedInPlayeResponse)) {
-                        this.pasLaunch(options);
-                        return;
-                    } else {
-                        if (key !== "dafabetgames") {
-                            iapiLoginUsernameExternalToken(this.username.toUpperCase(), this.token, 1, language);
+                        if (this.verifyGetLoggedIn(GetLoggedInPlayeResponse)) {
+                            this.pasLaunch(options);
+                            return;
                         } else {
-                            iapiLogin(this.username.toUpperCase(), this.token + "@" + this.playerId + "@mobile",
-                                1, language);
+                            if (key !== "dafabetgames") {
+                                iapiLoginUsernameExternalToken(this.username.toUpperCase(), this.token, 1, language);
+                            } else {
+                                iapiLogin(this.username.toUpperCase(), this.token + "@" + this.playerId + "@mobile",
+                                    1, language);
+                            }
                         }
-                    }
-                });
+                    });
 
-                this.doCheckSession();
+                    this.doCheckSession();
+                });
             }
 
             if (!this.futurama || (!this.futuramaGold && product === "mobile-casino-gold")) {
@@ -678,5 +661,56 @@ export class PASModule implements ModuleInterface, GameInterface {
                 this.windowObject.focus();
             }
         }
+    }
+
+    private attachPTScript(key, callback?: any) {
+        const pasScriptTag = document.querySelector("script.pt");
+
+        if (this.currentScriptKey !== key || this.currentScriptKey !== null) {
+            if (pasScriptTag) {
+                pasScriptTag.remove();
+            }
+
+            this.createPTScript(key, callback);
+        }
+    }
+
+    private createPTScript(key, callback?: any) {
+        const pasScript = document.createElement("script");
+        const head = document.getElementsByTagName("head").item(0);
+        pasScript.setAttribute("type", "text/javascript");
+        pasScript.setAttribute("src", this.asset[key]);
+        pasScript.setAttribute("class", "pt");
+        head.appendChild(pasScript);
+        this.currentScriptKey = key;
+        if (callback) {
+            pasScript.addEventListener("load", () => {
+                callback();
+            });
+        }
+    }
+
+    private getKeyByProduct(product) {
+        let key = "dafa888";
+        if (product === "mobile-casino-gold" && this.futuramaGold) {
+            key = "dafagold";
+        }
+
+        if (DafaConnect.isDafaconnect()) {
+            key = "dafaconnect";
+        }
+
+        if (product === "mobile-games" || product === "mobile-live-dealer") {
+            key = "dafabetgames";
+        }
+
+        if (product === "mobile-soda-casino") {
+            key = "soda";
+            if (DafaConnect.isDafaconnect()) {
+                key = "sodaconnect";
+            }
+        }
+
+        return key;
     }
 }
