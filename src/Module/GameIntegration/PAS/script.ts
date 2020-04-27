@@ -685,7 +685,10 @@ export class PASModule implements ModuleInterface, GameInterface {
         this.currentScriptKey = key;
         if (callback) {
             pasScript.addEventListener("load", () => {
-                callback();
+                ComponentManager.broadcast("pt.load");
+                setTimeout(() => {
+                    callback();
+                }, 200);
             });
         }
     }
