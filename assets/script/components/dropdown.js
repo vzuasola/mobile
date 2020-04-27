@@ -86,7 +86,7 @@ Dropdown.prototype.eventTriggered = function () {
 
         // PreventDefault when target is the dropdown button/link
         utility.forEach($this.dropdownButtons, function (triggerElem) {
-            if (target === triggerElem || target.parentNode === triggerElem) {
+            if (target === triggerElem || target.parentNode === triggerElem || target.parentNode.parentNode === triggerElem) {
                 utility.preventDefault(e);
             }
         });
@@ -128,7 +128,7 @@ Dropdown.prototype.setActive = function (target) {
         if (buttonElem.nextElementSibling || utility.nextElementSibling(buttonElem)) {
 
             // check if target is the dropdown trigger or any element inside the dropdown trigger
-            if (target === buttonElem || target.parentNode === buttonElem) {
+            if (target === buttonElem || target.parentNode === buttonElem || target.parentNode.parentNode === buttonElem) {
 
                 // Toggle dropdown when clicking dropdown button/link
                 if (isCollapse) {
