@@ -13,7 +13,7 @@ export class  ProductLanguage {
             "pt",
             "es",
             "lo",
-            "bu"
+            "bu",
         ],
         "sports" : [
             "en",
