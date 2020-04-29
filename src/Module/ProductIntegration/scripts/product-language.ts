@@ -12,6 +12,8 @@ export class  ProductLanguage {
             "te",
             "pt",
             "es",
+            "lo",
+            "bu"
         ],
         "sports" : [
             "en",
@@ -54,6 +56,9 @@ export class  ProductLanguage {
             "vn",
             "id",
             "kr",
+            "bu",
+            "lo",
+            "km",
         ],
         "live-dealer" : [
             "en",
@@ -65,6 +70,9 @@ export class  ProductLanguage {
             "in",
             "hi",
             "te",
+            "bu",
+            "lo",
+            "km",
         ],
         "games" : [
             "en",
@@ -78,6 +86,9 @@ export class  ProductLanguage {
             "kr",
             "pt",
             "es",
+            "bu",
+            "lo",
+            "km",
         ],
         "exchange" : [
             "in",
@@ -96,6 +107,9 @@ export class  ProductLanguage {
             "kr",
             "pt",
             "es",
+            "bu",
+            "lo",
+            "km",
         ],
         "virtual-sports" : [
             "en",
