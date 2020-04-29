@@ -21,7 +21,7 @@
                     {{ total_balance_label }} <span class="mobile-menu-amount"></span>
                 </p>
             </div>
-            <span class="menu-content-button close-svg">
+            <span class="menu-content-button close-svg hidden">
                 {% include '@app/web/images/svg/menu/closed.svg' %}
             </span>
         {% else %}
@@ -29,7 +29,7 @@
                 {% block logoSection %}
                     {{ include('@component/Header/templates/logo.html.twig') }}
                 {% endblock %}
-                <span class="menu-content-button close-svg">
+                <span class="menu-content-button close-svg hidden">
                     {% include '@app/web/images/svg/menu/closed.svg' %}
                 </span>
             </div>
