@@ -141,6 +141,10 @@ class LiveDealerLobbyComponentController
                         ['product' => self::PRODUCT]
                     )
             ];
+            $useGameLobby = "true";
+            if (isset($game['field_game_lobby'][0])) {
+                $useGameLobby = $game['field_game_lobby'][0]['value'] ? "true" : "false";
+            }
 
             $definition['title'] = $game['title'][0]['value'] ?? "";
             $definition['game_code'] = $game['field_game_code'][0]['value'] ?? "";
@@ -152,6 +156,7 @@ class LiveDealerLobbyComponentController
             $definition['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
             $definition['use_game_loader'] = (isset($game['field_use_game_loader'][0]['value'])
                 && $game['field_use_game_loader'][0]['value']) ? "true" : "false";
+            $definition['use_game_lobby'] = $useGameLobby;
             $definition['sort_weight'] = $game['field_lobby_tab'][0]['field_draggable_views']['lobby_tab']['weight']
                 ?? 0;
 
