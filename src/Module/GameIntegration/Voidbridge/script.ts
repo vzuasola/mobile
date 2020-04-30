@@ -67,6 +67,7 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                     product,
                     gameCode: options.code,
                     subprovider: options.subprovider || undefined,
+                    lobby: options.lobby || undefined,
                     langCode,
                     userAgent: navigator.userAgent,
                 },

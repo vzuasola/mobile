@@ -57,27 +57,71 @@ class VoidbridgeModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
+
         if ($this->checkCurrency($request)) {
-            $data['currency'] = true;
             $requestData = $request->getParsedBody();
-            $params = explode('|', $requestData['gameCode']);
-            try {
-                $responseData = $this->voidbridge->getGameUrlById('icore_vb', $params[0], [
-                    'options' => [
-                        'languageCode' => $requestData['langCode'],
-                        'userAgent' => $requestData['userAgent'],
-                        'providerProduct' => $params[1] ?? null,
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
-                }
-            } catch (\Exception $e) {
-                $data['currency'] = true;
+
+            if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
+              $requestData['lobby'] === "false"
+            ) {
+                $data = $this->getGameUrl($requestData);
+            }
+            if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
+              $requestData['lobby'] === "true"
+            ) {
+                $data = $this->getGameLobby($requestData);
             }
         }
 
-
         return $this->rest->output($response, $data);
+    }
+
+    private function getGameUrl($requestData)
+    {
+        $data['currency'] = true;
+        $params = explode('|', $requestData['gameCode']);
+        try {
+            $responseData = $this->voidbridge->getGameUrlById('icore_vb', $params[0], [
+              'options' => [
+                'languageCode' => $requestData['langCode'],
+                'userAgent' => $requestData['userAgent'],
+                'providerProduct' => $params[1] ?? null,
+              ]
+            ]);
+            if ($responseData['url']) {
+                $data['gameurl'] = $responseData['url'];
+            }
+        } catch (\Exception $e) {
+            $data['currency'] = true;
+        }
+
+        return $data;
+    }
+
+    private function getGameLobby($requestData)
+    {
+        $data['currency'] = true;
+        $params = explode('|', $requestData['gameCode']);
+        $options = [
+          'options' => [
+            'lobbyCode' => $params[0] ?? $requestData['gameCode'],
+            'providerProduct' => $params[1] ?? null,
+            'languageCode' => $requestData['langCode'],
+            'userAgent' => $requestData['userAgent'],
+            'view' => $requestData['view'] ?? null,
+          ]
+        ];
+
+        try {
+            $responseData = $this->voidbridge->getLobby('icore_vb', $options);
+
+            if ($responseData) {
+                $data['gameurl'] = $responseData;
+            }
+        } catch (\Exception $e) {
+            $data['currency'] = true;
+        }
+
+        return $data;
     }
 }
