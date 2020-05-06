@@ -229,6 +229,9 @@ class SliderComponentController
 
                 if (!empty($options) && $options['product'] === 'mobile-live-dealer') {
                     $slider['lobby'] = true;
+                    if (isset($slide['field_game_lobby'][0])) {
+                        $slider['lobby'] = $slide['field_game_lobby'][0]['value'] ? true : false;
+                    }
                 }
 
                 $sliderUrl = $slide['field_banner_link'][0]['uri'] ?? '';
