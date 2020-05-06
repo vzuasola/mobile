@@ -30,6 +30,8 @@ export class  ProductLanguage {
             "te",
             "gr",
             "pl",
+            "bu",
+            "km",
         ],
         "sports-df" : [
             "en",
@@ -48,6 +50,9 @@ export class  ProductLanguage {
             "pl",
             "pt",
             "es",
+            "bu",
+            "lo",
+            "km",
         ],
         "lottery" : [
             "en",
