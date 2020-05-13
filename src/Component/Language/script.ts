@@ -32,6 +32,10 @@ export class LanguageComponent implements ComponentInterface {
         this.attachments = attachments;
         this.getLanguage();
 
+        Router.on(RouterClass.afterNavigate, (event) => {
+            this.refreshLanguage();
+        });
+
         ComponentManager.subscribe("session.login", (event, target, data) => {
             this.isLogin = true;
             this.matrix = data.response.matrix;
@@ -86,6 +90,14 @@ export class LanguageComponent implements ComponentInterface {
                 Modal.open("#language-lightbox");
             }
         });
+    }
+
+    private refreshLanguage() {
+        const product = ComponentManager.getAttribute("product");
+        if (this.product !== product) {
+            this.product = product;
+            ComponentManager.refreshComponent("language");
+        }
     }
 
     private getLanguage() {
