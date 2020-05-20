@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Module\GameIntegration\PAS;
 
 use App\Plugins\ComponentWidget\ComponentIncludesInterface;
+use App\Drupal\Config;
 
 class PASModuleIncludes implements ComponentIncludesInterface
 {
@@ -36,7 +37,15 @@ class PASModuleIncludes implements ComponentIncludesInterface
             $ptConfig = [];
         }
 
-        $scripts[] = $ptConfig['javascript_assets'] ?? null;
+        $scripts = $ptConfig['javascript_assets'] ?? null;
+        if ($scripts) {
+            $scripts = Config::parse($scripts);
+            foreach ($scripts as $skey => $script) {
+                $scripts[$skey] = $script;
+            }
+        }
+
+        // $scripts[] = $script ?? null;
 
         return $scripts;
     }

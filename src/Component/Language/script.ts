@@ -39,13 +39,11 @@ export class LanguageComponent implements ComponentInterface {
         ComponentManager.subscribe("session.login", (event, target, data) => {
             this.isLogin = true;
             this.matrix = data.response.matrix;
-            this.processLanguage();
         });
 
         ComponentManager.subscribe("session.logout", (event, target, data) => {
             this.isLogin = false;
             this.matrix = false;
-            this.processLanguage();
         });
     }
 
@@ -135,16 +133,18 @@ export class LanguageComponent implements ComponentInterface {
         };
 
         const langListArray = [];
+        const latam: any = ["es", "pt-br"];
 
         for (const langKey in data.language) {
             if (data.language.hasOwnProperty(langKey)) {
                 const lang = data.language[langKey];
 
+                if (this.matrix && latam.includes(lang.id)) {
+                    continue;
+                }
+
                 if (!lang.hide) {
-                    if ((this.isLogin && this.matrix && lang.id !== "es" && lang.id !== "pt-br")
-                        || !this.isLogin || (this.isLogin && !this.matrix)) {
-                        langListArray.push(lang);
-                    }
+                    langListArray.push(lang);
                 }
             }
         }

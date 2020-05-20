@@ -68,11 +68,20 @@ class PASModuleScripts implements ComponentAttachmentInterface
                     $iapiConfigs[$key] = json_decode($config, true);
                 }
             }
+
+            $scripts = $ptConfig['javascript_assets'] ?? null;
+            if ($scripts) {
+                $scripts = Config::parse($scripts);
+                foreach ($scripts as $skey => $script) {
+                    $scripts[$skey] = $script;
+                }
+            }
         } catch (\Exception $e) {
             $ptConfig = [];
         }
 
         return [
+            'asset' => $scripts,
             'futurama' => $ptConfig['futurama_switch'] ?? false,
             'futuramaGold' => $ptConfig['futurama_gold_switch'] ?? false,
             'authenticated' => $this->playerSession->isLogin(),
