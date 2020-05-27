@@ -66,45 +66,9 @@ class OneGameModuleController
             ) {
                 $data = $this->getGameUrl($requestData);
             }
-            if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
-                $requestData['lobby'] === "true"
-            ) {
-                $data = $this->getGameLobby($requestData);
-            }
         }
 
         return $this->rest->output($response, $data);
-    }
-
-    /**
-     * Get Lobby URL
-     */
-    private function getGameLobby($requestData)
-    {
-        $data['currency'] = true;
-        $params = explode('|', $requestData['gameCode']);
-
-        if (!empty($params)) {
-            $options['gameCode'] = $params;
-        }
-
-        $options = [
-            'options' => [
-                'languageCode' => $requestData['langCode'],
-            ]
-        ];
-
-        try {
-            $responseData = $this->oneGame->getLobby('icore_onegame', $options);
-
-            if ($responseData) {
-                $data['gameurl'] = $responseData;
-            }
-        } catch (\Exception $e) {
-            $data['currency'] = true;
-        }
-
-        return $data;
     }
 
     /**
