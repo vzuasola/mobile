@@ -1,0 +1,123 @@
+<?php
+
+namespace App\MobileEntry\Module\GameIntegration\OneGame;
+
+use App\MobileEntry\Module\GameIntegration\ProviderTrait;
+use App\Fetcher\Drupal\ViewsFetcher;
+
+class OneGameModuleController
+{
+    use ProviderTrait;
+
+    const KEY = 'onegame';
+
+    private $rest;
+
+    private $OneGame;
+
+    private $config;
+
+    private $player;
+
+    /**
+     * @var ViewsFetcher $viewsFetcher
+     */
+    private $viewsFetcher;
+
+    /**
+     *
+     */
+    public static function create($container)
+    {
+        return new static(
+            $container->get('rest'),
+            $container->get('game_provider_fetcher'),
+            $container->get('config_fetcher'),
+            $container->get('player'),
+            $container->get('views_fetcher')
+        );
+    }
+
+    /**
+     * Public constructor
+     */
+    public function __construct($rest, $OneGame, $config, $player, $viewsFetcher)
+    {
+        $this->rest = $rest;
+        $this->OneGame = $OneGame;
+        $this->config = $config->withProduct('mobile-games');
+        $this->player = $player;
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
+    }
+
+    public function fetchResource($request, $response, $args)
+    {
+        $resource = $args['resource'] ?? '';
+        if ('lobby' === $resource) {
+            return $this->getGameLobby($request, $response);
+        } elseif ('url' === $resource) {
+            return $this->getGameUrl($request, $response, $args);
+        } else {
+            throw new NotFoundException($request, $response);
+        }
+    }
+
+    /**
+     * Get Lobby URL
+     */
+    public function getGameLobby($request, $response)
+    {
+        $data['gameurl'] = false;
+        $data['currency'] = false;
+        if ($this->checkCurrency($request)) {
+            $data['currency'] = true;
+            $requestData = $request->getParsedBody();
+            $params = explode('|', $requestData['gameCode']);
+            try {
+                $responseData = $this->OneGame->getGameUrlById('icore_onegame', $params[0], [
+                    'options' => [
+                        'languageCode' => $requestData['langCode']
+                    ]
+                ]);
+                if ($responseData) {
+                    $data['gameurl'] = $responseData;
+                }
+            } catch (\Exception $e) {
+                $data['currency'] = true;
+            }
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    /**
+     * Get Game URL
+     */
+    public function getGameUrl($request, $response, $args)
+    {
+        $data['gameurl'] = false;
+        $data['currency'] = false;
+        if ($this->checkCurrency($request)) {
+            $data['currency'] = true;
+            $requestData = $request->getParsedBody();
+            $params = explode('|', $requestData['gameCode']);
+            $providerProduct = $params[1] ?? null;
+            try {
+                $responseData = $this->OneGame->getGameUrlById('icore_onegame', $params[0], [
+                    'options' => [
+                        'languageCode' => $requestData['langCode'],
+                        'providerProduct' => $providerProduct
+                    ]
+                ]);
+                if ($responseData) {
+                    $data['gameurl'] = $responseData['url'];
+                }
+            } catch (\Exception $e) {
+                $data['currency'] = true;
+            }
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+}
