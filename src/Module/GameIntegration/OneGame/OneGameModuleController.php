@@ -119,5 +119,4 @@ class OneGameModuleController
 
         return $this->rest->output($response, $data);
     }
-
 }
