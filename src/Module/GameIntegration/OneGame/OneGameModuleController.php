@@ -13,7 +13,7 @@ class OneGameModuleController
 
     private $rest;
 
-    private $OneGame;
+    private $oneGame;
 
     private $config;
 
@@ -41,10 +41,10 @@ class OneGameModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $OneGame, $config, $player, $viewsFetcher)
+    public function __construct($rest, $oneGame, $config, $player, $viewsFetcher)
     {
         $this->rest = $rest;
-        $this->OneGame = $OneGame;
+        $this->oneGame = $oneGame;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
@@ -74,7 +74,7 @@ class OneGameModuleController
             $requestData = $request->getParsedBody();
             $params = explode('|', $requestData['gameCode']);
             try {
-                $responseData = $this->OneGame->getGameUrlById('icore_onegame', $params[0], [
+                $responseData = $this->oneGame->getGameUrlById('icore_onegame', $params[0], [
                     'options' => [
                         'languageCode' => $requestData['langCode']
                     ]
@@ -103,7 +103,7 @@ class OneGameModuleController
             $params = explode('|', $requestData['gameCode']);
             $providerProduct = $params[1] ?? null;
             try {
-                $responseData = $this->OneGame->getGameUrlById('icore_onegame', $params[0], [
+                $responseData = $this->oneGame->getGameUrlById('icore_onegame', $params[0], [
                     'options' => [
                         'languageCode' => $requestData['langCode'],
                         'providerProduct' => $providerProduct
