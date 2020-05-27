@@ -93,7 +93,7 @@ class OneGameModuleController
     /**
      * Get Game URL
      */
-    public function getGameUrl($request, $response, $args)
+    public function getGameUrl($request, $response)
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
