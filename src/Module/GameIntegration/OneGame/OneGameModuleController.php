@@ -76,7 +76,7 @@ class OneGameModuleController
     {
         $data['currency'] = true;
         $params = explode('|', $requestData['gameCode']);
-        $providerProduct = $params[1] ?? null;
+        $providerProduct = $params[1] ?? 'games';
         try {
             $responseData = $this->oneGame->getGameUrlById('icore_onegame', $params[0], [
                 'options' => [
