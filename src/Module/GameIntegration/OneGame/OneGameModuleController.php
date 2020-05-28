@@ -61,12 +61,12 @@ class OneGameModuleController
             $data['currency'] = true;
             $requestData = $request->getParsedBody();
             $params = explode('|', $requestData['gameCode']);
-            $platformCode = $params[1] ?? null;
+            $providerProduct = $params[1] ?? null;
             try {
                 $responseData = $this->oneGame->getGameUrlById('icore_onegame', $params[0], [
                     'options' => [
                         'languageCode' => $requestData['langCode'],
-                        'platformCode' => $platformCode
+                        'providerProduct' => $providerProduct
                     ]
                 ]);
                 if ($responseData['url']) {
