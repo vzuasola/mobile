@@ -40,7 +40,7 @@ export class OneGameModule implements ModuleInterface, GameInterface {
 
     launch(options) {
         if (options.provider === this.key) {
-            const lang = document.body.getAttribute("data-language");
+            const lang = Router.getLanguage();
             let langCode = "en";
 
             if (typeof this.languages[lang] !== "undefined") {

@@ -61,9 +61,7 @@ class OneGameModuleController
         if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
 
-            if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
-                $requestData['lobby'] === "false"
-            ) {
+            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
                 $data = $this->getGameUrl($requestData);
             }
         }
@@ -78,11 +76,12 @@ class OneGameModuleController
     {
         $data['currency'] = true;
         $params = explode('|', $requestData['gameCode']);
+        $providerProduct = $params[1] ?? 'games';
         try {
             $responseData = $this->oneGame->getGameUrlById('icore_onegame', $params[0], [
                 'options' => [
                     'languageCode' => $requestData['langCode'],
-                    'providerProduct' => $params[1] ?? null,
+                    'providerProduct' => $providerProduct
                 ]
             ]);
             if ($responseData['url']) {
