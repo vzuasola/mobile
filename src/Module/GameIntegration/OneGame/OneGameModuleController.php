@@ -57,26 +57,40 @@ class OneGameModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
+
         if ($this->checkCurrency($request)) {
-            $data['currency'] = true;
             $requestData = $request->getParsedBody();
-            $params = explode('|', $requestData['gameCode']);
-            $providerProduct = $params[1] ?? null;
-            try {
-                $responseData = $this->oneGame->getGameUrlById('icore_onegame', $params[0], [
-                    'options' => [
-                        'languageCode' => $requestData['langCode'],
-                        'providerProduct' => $providerProduct
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
-                }
-            } catch (\Exception $e) {
-                $data['currency'] = true;
+
+            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
+                $data = $this->getGameUrl($requestData);
             }
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    /**
+     * Get Game URL
+     */
+    private function getGameUrl($requestData)
+    {
+        $data['currency'] = true;
+        $params = explode('|', $requestData['gameCode']);
+        $providerProduct = $params[1] ?? null;
+        try {
+            $responseData = $this->oneGame->getGameUrlById('icore_onegame', $params[0], [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                    'providerProduct' => $providerProduct
+                ]
+            ]);
+            if ($responseData['url']) {
+                $data['gameurl'] = $responseData['url'];
+            }
+        } catch (\Exception $e) {
+            $data['currency'] = true;
+        }
+
+        return $data;
     }
 }
