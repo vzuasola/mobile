@@ -1,6 +1,6 @@
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as utility from "@core/assets/js/components/utility";
-import PopupWindow from "@core/assets/js/components/utils/popup";
+import PopupWindow from "@app/assets/script/components/popup";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
@@ -40,7 +40,7 @@ export class OneGameModule implements ModuleInterface, GameInterface {
 
     launch(options) {
         if (options.provider === this.key) {
-            const lang = Router.getLanguage();
+            const lang = document.body.getAttribute("data-language");
             let langCode = "en";
 
             if (typeof this.languages[lang] !== "undefined") {
@@ -132,17 +132,13 @@ export class OneGameModule implements ModuleInterface, GameInterface {
             ) {
                 this.windowObject.focus();
             } else {
-                setTimeout(() => {
-                    this.gameLink = url;
-                    this.windowObject.location.href = url;
-                }, 500);
+                this.gameLink = url;
+                this.windowObject.location.href = url;
             }
         } catch (e) {
             if (url !== this.gameLink) {
-                setTimeout(() => {
-                    this.gameLink = url;
-                    this.windowObject.location.href = url;
-                }, 500);
+                this.gameLink = url;
+                this.windowObject.location.href = url;
             }
 
             if (this.windowObject) {
