@@ -25,6 +25,7 @@ export class GameIntegrationModule implements ModuleInterface {
         const solidgaming: any = ComponentManager.getModuleInstance("solidgaming_integration");
         const cq9: any = ComponentManager.getModuleInstance("cq9_integration");
         const flowGaming: any = ComponentManager.getModuleInstance("flowgaming_integration");
+        const oneGame: any = ComponentManager.getModuleInstance("onegame_integration");
         const saGaming: any = ComponentManager.getModuleInstance("sagaming_integration");
         const pgSoft: any = ComponentManager.getModuleInstance("pgsoft_integration");
         const asiaGaming: any = ComponentManager.getModuleInstance("asiagaming_integration");
@@ -54,6 +55,7 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("voidbridge", voidbridge);
         this.gameLauncher.setProvider("skywind", skywind);
         this.gameLauncher.setProvider("flow_gaming", flowGaming);
+        this.gameLauncher.setProvider("onegame", oneGame);
         this.gameLauncher.setProvider("sa_gaming", saGaming);
         this.gameLauncher.setProvider("pgsoft", pgSoft);
         this.gameLauncher.setProvider("asia_gaming", asiaGaming);
