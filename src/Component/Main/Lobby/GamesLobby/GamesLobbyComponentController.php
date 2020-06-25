@@ -302,16 +302,14 @@ class GamesLobbyComponentController
     {
         $gamesList = [];
         foreach ($games as $game) {
-            $publishOn = $game['publish_on'] ?? $game['publish_on'] ?? '';
-            $unpublishOn = $game['unpublish_on'] ?? $game['unpublish_on'] ?? '';
-            $status = (!$publishOn && !$unpublishOn)
-                ? ($game['status'] ?? $game['status'])
-                : true;
+            $publishOn = $game['publish_on'] ?? '';
+            $unpublishOn = $game['unpublish_on'] ?? '';
+            $status = (!$publishOn && !$unpublishOn) && ($game['status'] == "True");
             if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $processGame = $this->processGame($game, $special);
                 if (!empty($processGame)) {
-                    $gameCode = $game['field_game_code'] ?? $game['field_game_code'];
+                    $gameCode = $game['field_game_code'] ?? '';
                     $gamesList['id:' . $gameCode] = $processGame;
                 }
             }
