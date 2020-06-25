@@ -313,7 +313,9 @@ export class GamesFilter {
                     const gameFilter = gameFilters;
 
                     for (const checkValue of filter) {
-                        if (gameFilter.indexOf(checkValue) !== -1) {
+                        const cleanValue = checkValue.replace (/(^")|("$)/g, "");
+                        if (gameFilter.indexOf(checkValue) !== -1
+                            || gameFilter.indexOf(cleanValue) !== -1) {
                             trueCtr++;
                             break;
                         }

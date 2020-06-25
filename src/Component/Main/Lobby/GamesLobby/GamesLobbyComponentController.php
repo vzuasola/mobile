@@ -399,7 +399,7 @@ class GamesLobbyComponentController
         $provider = $this->parseProvider($game['field_game_provider'] ?? "");
 
         if ($playerDetails) {
-            $subProviderCurrency = (isset($game['field_supported_currencies']))
+            $subProviderCurrency = (!empty($game['field_supported_currencies']))
                 ? preg_split("/\r\n|\n|\r/", $game['field_supported_currencies'])
                 : [];
 
