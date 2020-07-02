@@ -17,7 +17,8 @@ trait ProviderTrait
             if (isset($params['product'])) {
                 $productConfig = $this->config->withProduct($params['product']);
             }
-
+            // Call get currency to check if we have a player session
+            $this->player->getCurrency();
             $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
             $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
             $data['provider'] = $providerMapping[self::KEY];
@@ -26,7 +27,11 @@ trait ProviderTrait
             $data['button'] = $config['unsupported_currencies_button'] ?? '';
             $data['status'] = true;
         } catch (\Exception $e) {
-            $data['status'] = false;
+            $loginConfig = $productConfig->getConfig('webcomposer_config.login_timeout');
+            $data['title'] = $loginConfig['login_timeout_title'] ?? 'Session Expired';
+            $data['message'] = $loginConfig['login_timeout_message']['value'] ?? "<p>Please login again.</p>";
+            $data['button'] = $loginConfig['login_timeout_button'] ?? 'ok';
+            $data['status'] = true;
         }
 
         return $this->rest->output($response, $data);
