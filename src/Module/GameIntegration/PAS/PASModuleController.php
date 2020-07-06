@@ -220,34 +220,6 @@ class PASModuleController
      * Override trait
      *
      */
-    public function unsupported($request, $response)
-    {
-        try {
-            $params = $request->getParsedBody();
-
-            $productConfig = $this->config;
-            if (isset($params['product'])) {
-                $productConfig = $this->config->withProduct($params['product']);
-            }
-            $config =  $productConfig->getConfig('webcomposer_config.unsupported_currency');
-            $providerMapping = Config::parse($config['game_provider_mapping'] ?? '');
-            $data['provider'] = $providerMapping[self::KEY];
-            $data['title'] = $config['unsupported_currencies_title'] ?? '';
-            $data['message'] =
-                $config['unsupported_currencies_message']['value'] ?? '';
-            $data['button'] = $config['unsupported_currencies_button'] ?? '';
-            $data['status'] = true;
-        } catch (\Exception $e) {
-            $data['status'] = false;
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
-    /**
-     * Override trait
-     *
-     */
     private function checkCurrency($request)
     {
         try {

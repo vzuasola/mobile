@@ -15,6 +15,13 @@
 	pl: 'Copyright',
 	es: 'Copyright',
 	pt: 'Copyright',
+	lo: 'ລິຂະສິດ',
+	bu: 'Copyright',
+	km: 'Copyright',
+} %}
+
+{% set iam = {
+	lo: 'ຂ້າພະເຈົ້າ',
 } %}
 
 {% set all_rights_reserved = {
@@ -34,9 +41,12 @@
 	pl: 'Wszystkie prawa zastrzeżone',
 	es: 'Todos los Derechos Reservados',
 	pt: 'Todos os Direitos Reservados',
+	lo: 'ຂ້າພະເຈົ້າລິຂະສິດ:',
+	bu: 'All Rights Reserved',
+	km: 'All Rights Reserved',
 } %}
 
 <div class="copyright clear">
-    <p class="container text-center">{{ copy[app.lang] }} &copy; {{ now | date('Y') }} | Dafabet | {{ all_rights_reserved[app.lang] }}</p>
+    <p class="container text-center">{{ copy[app.lang] }} &copy; {{ now | date('Y') }} {{ iam[app.lang] }} | Dafabet | {{ all_rights_reserved[app.lang] }}</p>
 </div>
 

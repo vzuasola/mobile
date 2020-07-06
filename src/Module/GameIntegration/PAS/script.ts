@@ -189,7 +189,14 @@ export class PASModule implements ModuleInterface, GameInterface {
             // remap language
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
-
+            // If there is no playerId attachment, this means that there is no session available.
+            if (!this.playerId) {
+                this.messageLightbox.showMessage(
+                    this.moduleName,
+                    "unsupported",
+                    options,
+                );
+            }
             if (this.futurama || this.futuramaGold) {
                 const key = this.getKeyByProduct(product);
 
