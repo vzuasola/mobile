@@ -81,8 +81,8 @@ class FooterComponentController
         if ($footerMenu) {
             foreach ($footerMenu as $key => $link) {
                 if ($footerMenu[$key]['uri'] === '') {
-                        $footerMenu[$key]['uri'] = $this->asset->generateAssetUri(
-                            $this->currentLanguage . '/',
+                        $footerMenu[$key]['uri'] = ('/' .
+                            $this->currentLanguage . '/' .
                             $link['uri']
                         );
                 }
