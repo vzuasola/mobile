@@ -311,16 +311,26 @@ export class PASModule implements ModuleInterface, GameInterface {
             (this.futuramaGold && product === "mobile-casino-gold")) &&
             this.pasLoginResponse.errorCode !== 0) {
             // Do Error mapping modal
-            this.pasErrorMessage();
+            this.pasErrorMessage(options);
         }
     }
 
-    private pasErrorMessage() {
+    private pasErrorMessage(options) {
         const errorMap = this.pasErrorConfig.errorMap;
         let body = errorMap.all;
 
         if (errorMap[this.pasLoginResponse.errorCode]) {
             body = errorMap[this.pasLoginResponse.errorCode];
+        }
+
+        if (this.pasLoginResponse.errorCode === 2
+            && !errorMap[this.pasLoginResponse.errorCode]
+            && this.playerId) {
+            this.messageLightbox.showMessage(
+                this.moduleName,
+                "unsupported",
+                options,
+            );
         }
 
         const template = uclTemplate({
