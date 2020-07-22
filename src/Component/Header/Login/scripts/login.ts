@@ -54,6 +54,7 @@ export class Login {
     }
 
     handleOnReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+        this.isLogin = attachments.authenticated;
         this.element = element;
 
         this.activateLogin(element);
