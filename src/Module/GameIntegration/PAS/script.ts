@@ -331,6 +331,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                 "unsupported",
                 options,
             );
+            return;
         }
 
         const template = uclTemplate({
