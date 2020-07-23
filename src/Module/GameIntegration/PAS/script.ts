@@ -343,7 +343,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
         const categoriesEl = document.querySelector("#unsupported-lightbox");
 
-        if (categoriesEl) {
+        if (categoriesEl && !utility.hasClass(categoriesEl,  "modal-active")) {
             categoriesEl.innerHTML = template;
             Modal.open("#unsupported-lightbox");
         }
