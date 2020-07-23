@@ -242,6 +242,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private pasLaunch(options) {
         let product = ComponentManager.getAttribute("product");
+        let hasPromise;
         if (!this.futurama ||
             (!this.futuramaGold && product === "mobile-casino-gold") ||
             this.pasLoginResponse.errorCode === 0 ||
@@ -273,7 +274,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             const configProduct = options.hasOwnProperty("currentProduct") ? options.currentProduct
                 : ComponentManager.getAttribute("product");
 
-            xhr({
+            hasPromise = xhr({
                 url: Router.generateModuleRoute(this.moduleName, "launch"),
                 type: "json",
                 method: "post",
@@ -323,11 +324,17 @@ export class PASModule implements ModuleInterface, GameInterface {
             (this.futuramaGold && product === "mobile-casino-gold")) &&
             this.pasLoginResponse.errorCode !== 0) {
             // Do Error mapping modal
-            this.pasErrorMessage(options);
+            if (hasPromise) {
+                hasPromise.then(() => {
+                    this.pasErrorMessage();
+                });
+            } else {
+                this.pasErrorMessage();
+            }
         }
     }
 
-    private pasErrorMessage(options) {
+    private pasErrorMessage() {
         const errorMap = this.pasErrorConfig.errorMap;
         let body = errorMap.all;
 
