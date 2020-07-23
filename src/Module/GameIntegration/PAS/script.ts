@@ -244,7 +244,8 @@ export class PASModule implements ModuleInterface, GameInterface {
         let product = ComponentManager.getAttribute("product");
         if (!this.futurama ||
             (!this.futuramaGold && product === "mobile-casino-gold") ||
-            this.pasLoginResponse.errorCode === 0) {
+            this.pasLoginResponse.errorCode === 0 ||
+            this.pasLoginResponse.errorCode === 2) {
             if (options.currentProduct) {
                 product = options.currentProduct;
             }
@@ -285,21 +286,32 @@ export class PASModule implements ModuleInterface, GameInterface {
                     productMap: product,
                 },
             }).then((response) => {
-                if (response.gameurl) {
-                    if (options.loader === "true") {
-                        window.location.href = response.gameurl;
-                    } else {
-                        this.launchGame(options.target);
-                        this.updatePopupWindow(response.gameurl);
+                if (this.pasLoginResponse.errorCode === 2) {
+                    if (!response.currency && !response.gameurl) {
+                        this.messageLightbox.showMessage(
+                            this.moduleName,
+                            "unsupported",
+                            options,
+                        );
                     }
-                }
-                options.currency = this.currency;
-                if (!response.currency) {
-                    this.messageLightbox.showMessage(
-                        this.moduleName,
-                        "unsupported",
-                        options,
-                    );
+                    return;
+                } else {
+                    if (response.gameurl) {
+                        if (options.loader === "true") {
+                            window.location.href = response.gameurl;
+                        } else {
+                            this.launchGame(options.target);
+                            this.updatePopupWindow(response.gameurl);
+                        }
+                    }
+                    options.currency = this.currency;
+                    if (!response.currency) {
+                        this.messageLightbox.showMessage(
+                            this.moduleName,
+                            "unsupported",
+                            options,
+                        );
+                    }
                 }
             }).fail((error, message) => {
                 // Do nothing
@@ -321,17 +333,6 @@ export class PASModule implements ModuleInterface, GameInterface {
 
         if (errorMap[this.pasLoginResponse.errorCode]) {
             body = errorMap[this.pasLoginResponse.errorCode];
-        }
-
-        if (this.pasLoginResponse.errorCode === 2
-            && !errorMap[this.pasLoginResponse.errorCode]
-            && this.playerId) {
-            this.messageLightbox.showMessage(
-                this.moduleName,
-                "unsupported",
-                options,
-            );
-            return;
         }
 
         const template = uclTemplate({
