@@ -81,7 +81,8 @@ class FooterComponentController
         if ($footerMenu) {
             foreach ($footerMenu as $key => $link) {
                 if ($footerMenu[$key]['uri'] === '') {
-                        $footerMenu[$key]['uri'] = $link['uri'] ?? '/' . $this->currentLanguage;
+                        $footerMenu[$key]['uri'] =  (isset($link['uri']) &&
+                            !empty($link['uri'])) ? $link['uri'] : '/' .  $this->currentLanguage;
                 }
 
                 if (($this->idDomain->isLangSelectorHidden()) &&
