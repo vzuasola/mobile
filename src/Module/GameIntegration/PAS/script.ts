@@ -325,7 +325,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             // Do Error mapping modal
             setTimeout(() => {
                 this.pasErrorMessage();
-            }, 3000 * 2);  // Sleep for 2 seconds
+            }, 1000 * 3);  // Sleep for 3 seconds
         }
     }
 
