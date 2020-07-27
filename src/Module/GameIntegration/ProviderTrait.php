@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Module\GameIntegration;
 
 use App\Drupal\Config;
+use App\Player\PlayerInvalidException;
 
 /**
  * Trait for providers
@@ -26,13 +27,15 @@ trait ProviderTrait
             $data['message'] = $config['unsupported_currencies_message']['value'] ?? '';
             $data['button'] = $config['unsupported_currencies_button'] ?? '';
             $data['status'] = true;
-        } catch (\Exception $e) {
+        } catch (PlayerInvalidException $e) {
             $productConfig = $this->config->withProduct('mobile-entrypage');
             $loginConfig = $productConfig->getConfig('webcomposer_config.login_timeout');
             $data['title'] = $loginConfig['login_timeout_title'] ?? 'Session Expired';
             $data['message'] = $loginConfig['login_timeout_message']['value'] ?? "<p>Please login again.</p>";
             $data['button'] = $loginConfig['login_timeout_button'] ?? 'ok';
             $data['status'] = true;
+        } catch (\Exception $e) {
+            $data['status'] = false;
         }
 
         return $this->rest->output($response, $data);
