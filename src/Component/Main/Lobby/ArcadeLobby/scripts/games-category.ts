@@ -152,6 +152,14 @@ export class GamesCategory {
         }
     }
 
+    getCategoryNameByAlias(alias) {
+        if (this.filteredCategoryObj.hasOwnProperty(alias)) {
+            return this.filteredCategoryObj[alias].name;
+        }
+
+        return alias;
+    }
+
     /**
      * Filter categories
      */
