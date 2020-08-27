@@ -101,9 +101,9 @@ export class GraphyteClickStream {
             event_ccy: this.currency,
             event_country: this.country,
             event_location: category,
-            event_location_index: parseInt(srcEl.getAttribute("data-game-sort"), 2) + 1,
+            event_location_index: parseInt(srcEl.getAttribute("data-game-sort"), 10) + 1,
         };
-        graphyte.track("GAME_PLAY", eventInfo, [], []);
+        // graphyte.track("GAME_PLAY", eventInfo, [], []);
     }
 
     private graphytePageView(category, title, url) {
