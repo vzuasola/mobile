@@ -27,9 +27,16 @@ export class DownloadComponent implements ComponentInterface {
     }
 
     private downloadsVisibility() {
-        const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-        return ios;
+        return [
+            "iPad Simulator",
+            "iPhone Simulator",
+            "iPod Simulator",
+            "iPad",
+            "iPhone",
+            "iPod",
+        ].indexOf(navigator.platform) !== -1
+        // iPad on iOS 13 detection
+        || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
     }
 
     private equalizeDownloadHeight() {
