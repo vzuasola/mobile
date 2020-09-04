@@ -65,11 +65,15 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
             $pager = [];
         }
 
-        return [
-            'authenticated' => $this->playerSession->isLogin(),
+        $user = [
             'playerId' =>  $this->playerSession->getDetails()['playerId'] ?? '',
             'currency' =>  $this->playerSession->getDetails()['currency'] ?? '',
-            'country' => $this->request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '',
+            'country' => $this->request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '', 
+        ];
+
+        return [
+            'authenticated' => $this->playerSession->isLogin(),
+            'user' => $user,
             'product' => $this->getProductIntegration(),
             'pagerConfig' => $pager ?? [],
             'configs' => $arcadeConfigs,
