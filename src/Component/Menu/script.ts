@@ -156,10 +156,9 @@ export class MenuComponent implements ComponentInterface {
     private reloadBalance() {
         ComponentManager.broadcast("balance.return", {
             success: (response) => {
-                if (this.isLogin && typeof response.balance !== "undefined") {
-                    const headerBalance = this.element.querySelector(".mobile-menu-amount");
+                const headerBalance = this.element.querySelector(".mobile-menu-amount");
+                if (this.isLogin && headerBalance && typeof response.balance !== "undefined") {
                     let formatedBalance: string;
-
                     formatedBalance = response.format;
                     if (formatedBalance) {
                         formatedBalance = formatedBalance.replace("{currency}", response.currency);
