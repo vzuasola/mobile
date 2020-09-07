@@ -1,5 +1,3 @@
-import * as Promise from "promise-polyfill";
-
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import PopupWindow from "@app/assets/script/components/popup";
@@ -178,7 +176,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         // not implemented
     }
 
-    launch(options) {
+    async launch(options) {
         let product = ComponentManager.getAttribute("product");
         if (options.currentProduct) {
             product = options.currentProduct;
@@ -189,7 +187,14 @@ export class PASModule implements ModuleInterface, GameInterface {
             // remap language
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
-
+            // If there is no playerId attachment, this means that there is no session available.
+            if (!this.playerId) {
+                this.messageLightbox.showMessage(
+                    this.moduleName,
+                    "unsupported",
+                    options,
+                );
+            }
             if (this.futurama || this.futuramaGold) {
                 const key = this.getKeyByProduct(product);
 
@@ -198,15 +203,17 @@ export class PASModule implements ModuleInterface, GameInterface {
 
                     // Get Login if not login, login, then launch
                     // Before login, check if there are cookies on PTs end
-                    iapiSetCallout("GetLoggedInPlayer", (GetLoggedInPlayeResponse) => {
+                    iapiSetCallout("GetLoggedInPlayer", async (GetLoggedInPlayeResponse) => {
                         // Set the callback for the PAS login
-                        iapiSetCallout("Login", this.onLogin(this.username.toUpperCase(), () => {
-                            this.pasLaunch(options);
+                        iapiSetCallout("Login", this.onLogin(this.username.toUpperCase(), async () => {
+                            await this.pasLaunch(options);
+                            this.pasErrorMessage(options);
                             return;
                         }));
 
                         if (this.verifyGetLoggedIn(GetLoggedInPlayeResponse)) {
-                            this.pasLaunch(options);
+                            await this.pasLaunch(options);
+                            this.pasErrorMessage(options);
                             return;
                         } else {
                             if (key !== "dafabetgames") {
@@ -223,7 +230,8 @@ export class PASModule implements ModuleInterface, GameInterface {
             }
 
             if (!this.futurama || (!this.futuramaGold && product === "mobile-casino-gold")) {
-                this.pasLaunch(options);
+                await this.pasLaunch(options);
+                this.pasErrorMessage(options);
             }
 
         }
@@ -233,100 +241,116 @@ export class PASModule implements ModuleInterface, GameInterface {
         this.doLogout();
     }
 
-    private pasLaunch(options) {
+    private getProduct(options) {
         let product = ComponentManager.getAttribute("product");
-        if (!this.futurama ||
-            (!this.futuramaGold && product === "mobile-casino-gold") ||
-            this.pasLoginResponse.errorCode === 0) {
-            if (options.currentProduct) {
-                product = options.currentProduct;
+        if (options.currentProduct) {
+            product = options.currentProduct;
+        }
+        if (DafaConnect.isDafaconnect()) {
+            if (product === "mobile-soda-casino") {
+                product = "sodaconnect";
+            } else {
+                product = "dafaconnect";
             }
-
-            if (DafaConnect.isDafaconnect()) {
-                if (product === "mobile-soda-casino") {
-                    product = "sodaconnect";
-                } else {
-                    product = "dafaconnect";
-                }
-            }
-
-            if (options.maintenance === "true") {
-                this.messageLightbox.showMessage(
-                    this.moduleName,
-                    "maintenance",
-                    options,
-                );
-                return;
-            }
-
-            // remap language
-            const lang = Router.getLanguage();
-            const language = this.getLanguageMap(lang);
-            const configProduct = options.hasOwnProperty("currentProduct") ? options.currentProduct
-                : ComponentManager.getAttribute("product");
-
-            xhr({
-                url: Router.generateModuleRoute(this.moduleName, "launch"),
-                type: "json",
-                method: "post",
-                data: {
-                    product: configProduct,
-                    lang,
-                    language,
-                    options,
-                    currency: this.currency,
-                    productMap: product,
-                },
-            }).then((response) => {
-                if (response.gameurl) {
-                    if (options.loader === "true") {
-                        window.location.href = response.gameurl;
-                    } else {
-                        this.launchGame(options.target);
-                        this.updatePopupWindow(response.gameurl);
-                    }
-                }
-                options.currency = this.currency;
-                if (!response.currency) {
-                    this.messageLightbox.showMessage(
-                        this.moduleName,
-                        "unsupported",
-                        options,
-                    );
-                }
-            }).fail((error, message) => {
-                // Do nothing
-            });
-
         }
 
-        if (((this.futurama && product !== "mobile-casino-gold") ||
-            (this.futuramaGold && product === "mobile-casino-gold")) &&
-            this.pasLoginResponse.errorCode !== 0) {
-            // Do Error mapping modal
-            this.pasErrorMessage();
-        }
+        return product;
     }
 
-    private pasErrorMessage() {
-        const errorMap = this.pasErrorConfig.errorMap;
-        let body = errorMap.all;
+    private pasLaunch(options) {
+        return new Promise(async (resolve) => {
+            const product = this.getProduct(options);
+            if (!this.futurama ||
+                (!this.futuramaGold && product === "mobile-casino-gold") ||
+                this.pasLoginResponse.errorCode === 0 ||
+                this.pasLoginResponse.errorCode === 2) {
+                if (options.maintenance === "true") {
+                    await this.messageLightbox.showMessage(
+                        this.moduleName,
+                        "maintenance",
+                        options,
+                    );
+                    resolve();
+                }
 
-        if (errorMap[this.pasLoginResponse.errorCode]) {
-            body = errorMap[this.pasLoginResponse.errorCode];
-        }
+                // remap language
+                const lang = Router.getLanguage();
+                const language = this.getLanguageMap(lang);
+                const configProduct = options.hasOwnProperty("currentProduct") ? options.currentProduct
+                    : ComponentManager.getAttribute("product");
 
-        const template = uclTemplate({
-            title: this.pasErrorConfig.errorTitle,
-            message: "<p>" + body + "</p>",
-            button: this.pasErrorConfig.errorButton,
+                xhr({
+                    url: Router.generateModuleRoute(this.moduleName, "launch"),
+                    type: "json",
+                    method: "post",
+                    data: {
+                        product: configProduct,
+                        lang,
+                        language,
+                        options,
+                        currency: this.currency,
+                        productMap: product,
+                    },
+                }).then(async (response) => {
+                    if (this.pasLoginResponse.errorCode === 2 && !response.currency && !response.gameurl) {
+                        await this.messageLightbox.showMessage(
+                            this.moduleName,
+                            "unsupported",
+                            options,
+                        );
+                        resolve();
+                    } else {
+                        if (response.gameurl && this.pasLoginResponse.errorCode === 0) {
+                            if (options.loader === "true") {
+                                window.location.href = response.gameurl;
+                            } else {
+                                this.launchGame(options.target);
+                                this.updatePopupWindow(response.gameurl);
+                            }
+                        }
+                        options.currency = this.currency;
+                        if (!response.currency) {
+                            await this.messageLightbox.showMessage(
+                                this.moduleName,
+                                "unsupported",
+                                options,
+                            );
+                        }
+                    }
+                    resolve();
+                }).fail((error, message) => {
+                    // Do nothing
+                    resolve();
+                });
+            }
         });
+    }
 
-        const categoriesEl = document.querySelector("#unsupported-lightbox");
+    private pasErrorMessage(options) {
+        const product = this.getProduct(options);
+        if ((((this.futurama && product !== "mobile-casino-gold") ||
+            (this.futuramaGold && product === "mobile-casino-gold")) &&
+            this.pasLoginResponse.errorCode !== 0)) {
+            // Do Error mapping modal
+            const errorMap = this.pasErrorConfig.errorMap;
+            let body = errorMap.all;
 
-        if (categoriesEl) {
-            categoriesEl.innerHTML = template;
-            Modal.open("#unsupported-lightbox");
+            if (errorMap[this.pasLoginResponse.errorCode]) {
+                body = errorMap[this.pasLoginResponse.errorCode];
+            }
+
+            const template = uclTemplate({
+                title: this.pasErrorConfig.errorTitle,
+                message: "<p>" + body + "</p>",
+                button: this.pasErrorConfig.errorButton,
+            });
+
+            const categoriesEl = document.querySelector("#unsupported-lightbox");
+
+            if (categoriesEl && !utility.hasClass(categoriesEl,  "modal-active")) {
+                categoriesEl.innerHTML = template;
+                Modal.open("#unsupported-lightbox");
+            }
         }
     }
 
