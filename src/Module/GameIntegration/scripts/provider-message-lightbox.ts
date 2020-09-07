@@ -19,7 +19,7 @@ export class ProviderMessageLightbox {
         if (currency) {
             postData.currency = currency;
         }
-        xhr({
+        return xhr({
             url: Router.generateModuleRoute(moduleName, method),
             type: "json",
             method: "post",

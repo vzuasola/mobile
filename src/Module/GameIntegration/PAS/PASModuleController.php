@@ -224,7 +224,10 @@ class PASModuleController
     {
         try {
             $params = $request->getParsedBody();
-            $playerCurrency = $params['currency'];
+            $playerCurrency = $this->player->getCurrency();
+            if ($params['currency']) {
+                $playerCurrency = $params['currency'];
+            }
             $productConfig = $this->config;
             if (isset($params['product'])) {
                 $productConfig = $this->config->withProduct($params['product']);
@@ -232,9 +235,6 @@ class PASModuleController
 
             $config =  $productConfig->getConfig('webcomposer_config.icore_playtech_provider');
             $currencies = explode("\r\n", $config['dafabetgames_currency']);
-            if (!$playerCurrency) {
-                $playerCurrency = $this->player->getCurrency();
-            }
 
             if (in_array($playerCurrency, $currencies)) {
                 return true;

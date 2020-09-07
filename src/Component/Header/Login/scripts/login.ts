@@ -54,6 +54,10 @@ export class Login {
     }
 
     handleOnReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+        if (this.isLogin && !attachments.authenticated) {
+            ComponentManager.broadcast("session.logout");
+        }
+        this.isLogin = attachments.authenticated;
         this.element = element;
 
         this.activateLogin(element);
