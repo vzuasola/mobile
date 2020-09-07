@@ -49,6 +49,7 @@ import {ArcadeIntegrationModule} from "@app/src/Module/ProductIntegration/Arcade
 import {LotteryIntegrationModule} from "@app/src/Module/ProductIntegration/Lottery/script";
 import {SodaCasinoIntegrationModule} from "@app/src/Module/ProductIntegration/SodaCasino/script";
 import {PartnerMatrixModule} from "@app/src/Module/PartnerMatrix/script";
+import {JSystemModule} from "@app/src/Module/GameIntegration/JSystem/script";
 
 ComponentManager.setModules({
     avaya: new AvayaModule(),
@@ -80,6 +81,7 @@ ComponentManager.setModules({
     tgp_integration: new TGPModule(),
     allbet_integration: new AllBetModule(),
     wac_integration: new WACModule(),
+    jsystem_integration: new JSystemModule(),
     ezugi_gaming_integration: new EzugiGamingModule(),
     videoracing_integration: new VideoRacingModule(),
     fun_gaming_integration: new FunGamingModule(),

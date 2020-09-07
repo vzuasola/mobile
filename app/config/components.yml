@@ -306,6 +306,9 @@ modules:
   wac_integration:
     class: App\MobileEntry\Module\GameIntegration\WAC\WACModule
 
+  jsystem_integration:
+    class: App\MobileEntry\Module\GameIntegration\JSystem\JSystemModule
+
   ezugi_gaming_integration:
     class: App\MobileEntry\Module\GameIntegration\EzugiGaming\EzugiGamingModule
 
