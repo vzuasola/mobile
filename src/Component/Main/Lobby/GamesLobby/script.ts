@@ -24,6 +24,7 @@ import {Marker} from "@app/assets/script/components/marker";
 import EqualHeight from "@app/assets/script/components/equal-height";
 
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
+import {GraphyteClickStream} from "@app/assets/script/components/graphyte/graphyte-clickstream";
 import { ProviderDrawer } from "./scripts/provider-drawer";
 import PopupWindow from "@app/assets/script/components/popup";
 /**
@@ -38,6 +39,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private gamesSearch: GamesSearch;
     private gamesFilter: GamesFilter;
     private gamesCollectionSort: GamesCollectionSorting;
+    private graphyteAi: GraphyteClickStream;
     private currentPage: number;
     private pager: number;
     private load: boolean;
@@ -47,6 +49,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private state: boolean;
     private windowObject: any;
     private gameLink: string;
+    private gameCategories: any;
     private productMenu: string = "product-games";
 
     constructor() {
@@ -77,6 +80,10 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.pager = 0;
         this.load = true;
+        /* tslint:disable:no-string-literal */
+        const enableClickStream = (this.attachments.configs.hasOwnProperty("enable_clickstream")) ?
+        this.attachments.configs["enable_clickstream"] : false;
+        /* tslint:disable:no-string-literal */
         this.listenChangeCategory();
         this.listenHashChange();
         this.listenClickGameTile();
@@ -98,6 +105,14 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
         this.gamesFilter.handleOnLoad(this.element, attachments);
+        if (enableClickStream) {
+            this.graphyteAi = new GraphyteClickStream(
+                ComponentManager.getAttribute("product"),
+                document.title,
+                window.location.href,
+            );
+            this.graphyteAi.handleOnLoad(this.element, this.attachments);
+        }
         this.listenOnCloseFilter();
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
@@ -119,6 +134,10 @@ export class GamesLobbyComponent implements ComponentInterface {
             pagerConfig: any[],
             infinite_scroll: boolean,
         }) {
+        /* tslint:disable:no-string-literal */
+        const enableClickStream = (attachments.configs.hasOwnProperty("enable_clickstream")) ?
+        attachments.configs["enable_clickstream"] : false;
+        /* tslint:disable:no-string-literal */
         if (!this.element) {
             this.listenChangeCategory();
             this.listenHashChange();
@@ -131,6 +150,14 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.listenOnFilter();
             this.listenOnCloseFilter();
             this.listenToLaunchGameLoader();
+            if (enableClickStream) {
+                this.graphyteAi = new GraphyteClickStream(
+                    ComponentManager.getAttribute("product"),
+                    document.title,
+                    window.location.href,
+                );
+                this.graphyteAi.handleOnReLoad(element, attachments);
+            }
         }
         this.response = null;
         this.element = element;
@@ -451,6 +478,10 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
         this.setCategories(this.response.categories, key);
         this.setGames(this.response.games[key], key);
+        ComponentManager.broadcast("clickstream.category.change",  {
+            category: this.getCategoryName(key),
+            product: ComponentManager.getAttribute("product"),
+        });
     }
 
     /**
@@ -496,6 +527,14 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
 
         return key;
+    }
+
+    private getCategoryName(activeCategory) {
+        if (this.gameCategories.hasOwnProperty(activeCategory)) {
+            return this.gameCategories[activeCategory].name;
+        }
+
+        return activeCategory;
     }
 
     /**
@@ -553,6 +592,10 @@ export class GamesLobbyComponent implements ComponentInterface {
                 this.filterFlag = "general";
                 window.location.hash = "";
                 ComponentManager.broadcast("category.change");
+                ComponentManager.broadcast("clickstream.category.change",  {
+                    category: this.getCategoryName(key),
+                    product: ComponentManager.getAttribute("product"),
+                });
             }
         });
     }
@@ -574,7 +617,6 @@ export class GamesLobbyComponent implements ComponentInterface {
                 }
 
                 const categoriesEl = document.querySelector("#game-categories");
-                const activeLink = categoriesEl.querySelector(".category-tab .active a");
 
                 this.clearCategoriesActive(categoriesEl);
 
@@ -594,7 +636,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                         if (!sidebar) {
                             utility.addClass(active.parentElement, "active");
                         }
-                }
+                    }
                 }
 
                 this.setGames(this.response.games[key], key);
@@ -657,8 +699,16 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private listenGameLaunch() {
         ComponentManager.subscribe("game.launch", (event, src, data) => {
-            const el = utility.hasClass(data.src, "game-list", true);
-            if (el) {
+            if (ComponentManager.getAttribute("product") === "mobile-games") {
+                const el = utility.hasClass(data.src, "game-list", true);
+                const first = this.response.categories[0].field_games_alias;
+                const activeCategory = this.getActiveCategory(this.response.games, first);
+                ComponentManager.broadcast("clickstream.game.launch", {
+                    srcEl: data.src,
+                    category: this.getCategoryName(activeCategory),
+                    product: ComponentManager.getAttribute("product"),
+                });
+                if (el) {
                 const gameCode = el.getAttribute("data-game-code");
                 xhr({
                     url: Router.generateRoute("games_lobby", "recent"),
@@ -678,6 +728,8 @@ export class GamesLobbyComponent implements ComponentInterface {
                 }).fail((error, message) => {
                     console.log(error);
                 });
+
+                }
             }
         });
     }
@@ -1069,12 +1121,19 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
     private filterCategories(categories, gamesList) {
         const filteredCategory: any = [];
+        const gameCategories: any = [];
         for (const category of categories) {
             if (gamesList.hasOwnProperty(category.field_games_alias)
                 && gamesList[category.field_games_alias].length) {
                 filteredCategory.push(category);
+
+                if (!gameCategories.hasOwnProperty(category.field_games_alias)) {
+                    gameCategories[category.field_games_alias] = category;
+                }
             }
         }
+
+        this.gameCategories = gameCategories;
 
         return filteredCategory;
     }

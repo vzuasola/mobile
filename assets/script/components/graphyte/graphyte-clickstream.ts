@@ -88,7 +88,7 @@ export class GraphyteClickStream {
      */
     private listenOnCategoryChange() {
         ComponentManager.subscribe("clickstream.category.change", (event, src, data) => {
-            if (this.isLogin) {
+            if (this.isLogin && this.product === data.product) {
                 this.graphytePageView(data.category);
             }
         });
@@ -100,7 +100,7 @@ export class GraphyteClickStream {
      */
     private listenOnGameLaunch() {
         ComponentManager.subscribe("clickstream.game.launch", (event, src, data) => {
-            if (this.isLogin) {
+            if (this.isLogin && this.product === data.product) {
                 this.graphyteTrack(data.srcEl, data.category);
             }
         });
