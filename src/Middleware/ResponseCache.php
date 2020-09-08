@@ -34,6 +34,10 @@ class ResponseCache extends Base
         $page = $this->request->getQueryParam('page');
         $pvw = $this->request->getQueryParam('pvw');
         $lobbyProduct = $this->request->getQueryParam('lobbyProduct');
+        $isMaintenance = $request->getAttribute('is_maintenance', false);
+        if ($isMaintenance) {
+            $params['maintenance'] = true;
+        }
         $language = $this->request->getQueryParam('language');
 
         if ($widget) {
