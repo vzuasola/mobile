@@ -4,8 +4,10 @@ import * as Handlebars from "handlebars/runtime";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as downloadTemplate from "./handlebars/download.handlebars";
+import * as downloadlightboxTemplate from "./handlebars/downloadLightbox.handlebars";
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
+import {Modal} from "@app/assets/script/components/modal";
 import EqualHeight from "@app/assets/script/components/equal-height";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import Accordion from "@app/assets/script/components/accordion";
@@ -58,6 +60,8 @@ export class DownloadComponent implements ComponentInterface {
             this.equalizeDownloadHeight();
             this.accordion(this.element);
             this.swapText();
+            // POC
+            this.generateDownloadLightboxMarkup(this.downloadData);
         });
     }
 
@@ -118,6 +122,8 @@ export class DownloadComponent implements ComponentInterface {
             }
         }
 
+        this.bindDownloadLightbox();
+
         data.downloads_menu = menus;
         return data;
     }
@@ -132,6 +138,29 @@ export class DownloadComponent implements ComponentInterface {
                 } else {
                     element.innerText = element.getAttribute("data-text-original");
                 }
+            }
+        });
+    }
+
+// POC
+    private generateDownloadLightboxMarkup(data) {
+        const downloadLightbox: HTMLElement = this.element.querySelector("#download-lightbox");
+        data = this.procesMenu(data);
+        const templateLightbox = downloadlightboxTemplate({
+            downloadData: data,
+        });
+
+        console.log(data);
+
+        downloadLightbox.innerHTML = templateLightbox;
+    }
+
+    private bindDownloadLightbox() {
+        ComponentManager.subscribe("click", (event, src) => {
+            if (src && utility.hasClass(src, "download-trigger", true)) {
+                event.preventDefault();
+                Modal.open("#download-lightbox");
+                this.equalizeDownloadHeight();
             }
         });
     }
