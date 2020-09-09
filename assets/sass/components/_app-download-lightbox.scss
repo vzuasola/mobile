@@ -10,6 +10,7 @@
         border: 0;
         border-radius: 0.5rem;
         margin-bottom: 0.8rem;
+        overflow: hidden;
     }
 
     .modal-overlay {
@@ -48,7 +49,7 @@
     }
 }
 
-.modal-active {
+.download-lightbox.modal-active {
     img {
         -webkit-user-select: none;
         -moz-user-select: none;

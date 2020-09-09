@@ -145,12 +145,20 @@ export class DownloadComponent implements ComponentInterface {
 // POC
     private generateDownloadLightboxMarkup(data) {
         const downloadLightbox: HTMLElement = this.element.querySelector("#download-lightbox");
-        data = this.procesMenu(data);
         const templateLightbox = downloadlightboxTemplate({
             downloadData: data,
+            downloadLighboxImage: data.entrypage_config.file_image_page_image,
+            // Download App
+            downloadAppTitle: data.entrypage_config.download_app_title,
+            downloadDesc: data.entrypage_config.mobile_download_description_select.value,
+            downloadlinkTitle: data.entrypage_config.download_app_link_title,
+            downloadlink: data.entrypage_config.download_app_link,
+            // Launch App
+            launchAppTitle: data.entrypage_config.launch_app_title,
+            launchDesc: data.entrypage_config.mobile_launch_description_select.value,
+            launchlinkTitle: data.entrypage_config.launch_app_link_title,
+            launchlink: data.entrypage_config.launch_app_link,
         });
-
-        console.log(data);
 
         downloadLightbox.innerHTML = templateLightbox;
     }

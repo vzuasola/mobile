@@ -1,26 +1,36 @@
+{{#if downloadData.entrypage_config}}
 <div class="modal-content download-lightbox-content">
     <div class="modal-body download-lightbox-body">
-        <img src="/images/img_1.jpg" alt="Mobile gambling with Dafabet">
-            <div class="col-6 download-lightbox-item">
+        {{#if downloadLighboxImage }}
+        <img src="{{ downloadLighboxImage }}" alt="{{downloadAppTitle}}" />
+        {{/if}}
+            <div class="col-6 download-lightbox-item {{ ../this.downloadClass}}">
                 <div class="download-lightbox-details download-box">
-                <p class="download-lightbox-title">GET MORE OUT OF OW SPORTS</p>
-                    <p>Download the app and enjoy world-class sports betting anytme, anywhere!
-                    </p>
+                    {{#if this.downloadAppTitle}}
+                    <p class="download-lightbox-title">{{ downloadAppTitle }}</p>
+                    {{/if}}
+                    {{{ downloadDesc }}}
                 </div>
-                    <a href="#" class="btn btn-yellow btn-small download-lightbox-btn">
-                        Download the App
-                    </a>
+                {{#if this.downloadlink}}
+                <a href="{{ downloadlink }}" class="btn btn-yellow btn-small download-lightbox-btn">
+                    {{ downloadlinkTitle }}
+                </a>
+                {{/if}}
             </div>
 
             <div class="col-6 download-lightbox-item">
                 <div class="download-lightbox-details download-box">
-                <p class="download-lightbox-title">BET ON THE LATEST SPORTS ODDS</p>
-                    <p>Already installed the app? Bet now on the latest sports odds!
-                    </p>
+                {{#if this.launchAppTitle}}
+                <p class="download-lightbox-title">{{ this.launchAppTitle }}</p>
+                {{/if}}
+                    {{{ launchDesc }}}
                 </div>
-                    <a href="#" class="btn btn-yellow btn-small download-lightbox-btn">
-                        Launch the App
-                    </a>
+                {{#if this.launchlink}}
+                <a href="{{ launchlink }}" class="btn btn-yellow btn-small download-lightbox-btn">
+                    {{ launchlinkTitle }}
+                </a>
+                {{/if}}
             </div>
     </div>
 </div>
+{{/if}}
