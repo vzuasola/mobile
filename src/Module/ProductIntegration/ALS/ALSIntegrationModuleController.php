@@ -92,7 +92,7 @@ class ALSIntegrationModuleController
         try {
             $productsUMConfig = explode("\r\n", $maintenanceConfigs['product_list']);
             $language = $request->getParsedBody()['language'] ?? 'en';
-            $productCode = $this->getProductFromRequest($request) ?? 'sports';
+            $productCode = $this->getProductFromRequest($request) ?? 'sports-df';
             $product = Products::PRODUCTCODE_MAPPING[$productCode];
             parse_str(parse_url($request->getHeader('referer')[0] ?? '')['query'] ?? "", $params);
 
