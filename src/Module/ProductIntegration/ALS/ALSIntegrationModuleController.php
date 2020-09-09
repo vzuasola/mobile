@@ -53,12 +53,6 @@ class ALSIntegrationModuleController
         }
 
         try {
-            $maintenanceConfigs = $this->config->getConfig('webcomposer_config.webcomposer_site_maintenance');
-        } catch (\Exception $e) {
-            $maintenanceConfigs = [];
-        }
-
-        try {
             $alsConfig = $this->config->getConfig('mobile_als.als_configuration');
         } catch (\Exception $e) {
             $alsConfig = [];
@@ -82,7 +76,7 @@ class ALSIntegrationModuleController
         $postData = $request->getParsedBody();
 
         $data['redirect']  = $this->playerMatrixLobby($url, $postData['language']);
-        $this->maintenance($request, $data['redirect']);
+        $this->maintenance($request, $data);
 
         return $this->rest->output($response, $data);
     }
