@@ -8,12 +8,13 @@ use Psr\Http\Message\ResponseInterface;
 
 use Slim\Http\Body;
 use App\Plugins\Middleware\ResponseMiddlewareInterface;
-use App\Drupal\Config;
+use App\Plugins\Middleware\RequestMiddlewareInterface;
+use App\MobileEntry\Services\Product\Products;
 
 /**
  *
  */
-class SiteMaintenance implements ResponseMiddlewareInterface
+class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareInterface
 {
     const PRODUCTS = [
         'mobile-games',
@@ -29,21 +30,48 @@ class SiteMaintenance implements ResponseMiddlewareInterface
     ];
 
     /**
+     * @var $product string
+     */
+    private $product;
+
+    /**
      * Public constructor
      *
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->request = $container->get('router_request');
-        $this->router = $container->get('route_manager');
         $this->handler = $container->get('handler');
-        $this->product = $container->get('product_resolver')->getProduct();
-        $this->configFetcher = $container->get('config_fetcher')->withProduct($this->product);
         $this->configs = $container->get('config_fetcher')->getGeneralConfigById('webcomposer_site_maintenance');
+    }
 
-        // route configuration
-        $this->route = $this->router->getRouteConfiguration($this->request);
+    public function boot(RequestInterface &$request)
+    {
+        // placeholder
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handleRequest(RequestInterface &$request, ResponseInterface &$response)
+    {
+        try {
+            $this->getProduct($request);
+            if (in_array($this->product, self::PRODUCTS)) {
+                $products = explode("\r\n", $this->configs['product_list']);
+
+                $dates = [
+                    'field_publish_date' => $this->configs['maintenance_publish_date_' . $this->product] ?? '',
+                    'field_unpublish_date' => $this->configs['maintenance_unpublish_date_' . $this->product] ?? '',
+                ];
+
+                if (in_array($this->product, $products) && $this->isPublished($dates)) {
+                    $request = $request->withAttribute('is_maintenance', true);
+                }
+            }
+        } catch (\Exception $e) {
+            // Do nothing
+        }
     }
 
     /**
@@ -52,30 +80,38 @@ class SiteMaintenance implements ResponseMiddlewareInterface
     public function handleResponse(RequestInterface &$request, ResponseInterface &$response)
     {
         try {
-            if (in_array($this->product, self::PRODUCTS)) {
-                $products = explode("\r\n", $this->configs['product_list']);
-                $product = $this->product;
-                $product_key = strtolower($product);
-                $product_key = str_replace(' ', '', $product_key);
+            if ($response->getStatusCode() === 200 && $request->getAttribute('is_maintenance', false) === true) {
+                $request = $request->withAttribute('is_maintenance', true);
 
-                $dates = [
-                    'field_publish_date' => $this->configs['maintenance_publish_date_' . $product_key] ?? '',
-                    'field_unpublish_date' => $this->configs['maintenance_unpublish_date_' . $product_key] ?? '',
-                ];
-
-                if (in_array($product, $products) && $this->isPublished($dates)) {
-                    // Remove processed body stream that came from controller
-                    $stream = fopen('php://memory', 'r+');
-                    fwrite($stream, '');
-                    $response = $response->withBody(new Body($stream));
-                    // Call event
-                    $event = $this->handler->getEvent('site_maintenance');
-                    $response = $event($request, $response);
-                }
+                // Remove processed body stream that came from controller
+                $stream = fopen('php://memory', 'r+');
+                fwrite($stream, '');
+                $response = $response->withBody(new Body($stream));
+                // Call event
+                $event = $this->handler->getEvent('site_maintenance');
+                $response = $event($request, $response);
             }
         } catch (\Exception $e) {
             // Do nothing
         }
+    }
+
+    private function getProduct($request)
+    {
+        $currentProduct = "mobile-entrypage";
+        $path = $request->getUri()->getPath();
+        $path = explode('/', $path);
+
+        $productAliases = Products::PRODUCT_ALIAS;
+        if (isset($path[2])) {
+            array_walk($productAliases, function ($aliases, $product) use (&$currentProduct, $path) {
+                if (in_array(strtolower($path[2]), $aliases)) {
+                    $currentProduct = Products::PRODUCTCODE_MAPPING[$product];
+                }
+            });
+        }
+
+        $this->product = str_replace(' ', '', strtolower($currentProduct));
     }
 
     private function isPublished($data)
