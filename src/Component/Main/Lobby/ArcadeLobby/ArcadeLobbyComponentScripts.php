@@ -68,7 +68,7 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
         $user = [
             'playerId' =>  $this->playerSession->getDetails()['playerId'] ?? '',
             'currency' =>  $this->playerSession->getDetails()['currency'] ?? '',
-            'country' => $this->request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '',
+            'country' => $this->request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '', 
         ];
 
         return [
