@@ -2,6 +2,7 @@
 
 namespace App\MobileEntry\Middleware;
 
+use App\Fetcher\Integration\PreferencesFetcher;
 use App\MobileEntry\Services\Accounts\Accounts;
 use App\Player\PlayerSession;
 use Interop\Container\ContainerInterface;
@@ -47,6 +48,11 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
     private $paymentAccount;
 
     /**
+     * @var $preference PreferencesFetcher
+     */
+    private $preference;
+
+    /**
      * Public constructor
      *
      * @param ContainerInterface $container
@@ -57,6 +63,7 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
         $this->configs = $container->get('config_fetcher')->getGeneralConfigById('webcomposer_site_maintenance');
         $this->playerSession = $container->get('player_session');
         $this->paymentAccount = $container->get('accounts_service');
+        $this->preference = $container->get('preferences_fetcher');
     }
 
     public function boot(RequestInterface &$request)
@@ -85,8 +92,11 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
                         return;
                     }
 
+                    $preferences = $this->preference->getPreferences($this->playerSession->getUsername());
                     //do nothing, if the player is NON casino-gold account
-                    if (!$this->paymentAccount->hasAccount('casino-gold')) {
+                    //OR, if the player preferred the CLASSIC casino
+                    if (!$this->paymentAccount->hasAccount('casino-gold')
+                        || ($preferences['casino.preferred'] ?? 'casino') === 'casino') {
                         return;
                     }
 
