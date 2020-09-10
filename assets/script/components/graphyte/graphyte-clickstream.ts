@@ -5,11 +5,8 @@ declare let graphyte: any;
  *
  */
 export class GraphyteClickStream {
-    private products: any = [
-        "mobile-arcade",
-        "mobile-games",
-    ];
     private isLogin: boolean = false;
+    private isIdentify: boolean = false;
     private attachments;
     private element: any;
     private title: string;
@@ -33,25 +30,37 @@ export class GraphyteClickStream {
         this.attachments = attachments;
         this.isLogin = this.attachments.authenticated;
         this.user = this.attachments.user;
-        this.listenOnLogin();
-        this.listenOnLogout();
         this.listenOnCategoryChange();
         this.listenOnGameLaunch();
+        this.listenOnLogin();
+        this.listenOnLogout();
+        this.sendIdentify();
     }
 
-    handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    handleOnReLoad(element: HTMLElement, attachments: {}) {
         if (!this.element) {
             GraphyteLib();
-            this.listenOnLogin();
-            this.listenOnLogout();
             this.listenOnCategoryChange();
             this.listenOnGameLaunch();
+            this.listenOnLogin();
+            this.listenOnLogout();
         }
         this.element = element;
         this.attachments = attachments;
         this.attachments = attachments;
         this.isLogin = this.attachments.authenticated;
         this.user = this.attachments.user;
+        this.sendIdentify();
+    }
+
+    /**
+     * Trigger sending of identify event to graphyte only once
+     */
+    private sendIdentify() {
+        if (this.isLogin && this.isIdentify) {
+            this.graphyteIdentify(this.user.playerId);
+            this.isIdentify = false;
+        }
     }
 
     /**
@@ -59,10 +68,8 @@ export class GraphyteClickStream {
      */
     private listenOnLogin() {
         ComponentManager.subscribe("session.login", (event, src, data) => {
-            if (this.products.includes(ComponentManager.getAttribute("product"))) {
-                this.graphyteIdentify(this.user.playerId);
-            }
             this.isLogin = true;
+            this.isIdentify = true;
         });
     }
 
@@ -72,6 +79,7 @@ export class GraphyteClickStream {
     private listenOnLogout() {
         ComponentManager.subscribe("session.logout.finished", (event, src, data) => {
             this.isLogin = false;
+            this.isIdentify = false;
         });
     }
 
@@ -114,8 +122,6 @@ export class GraphyteClickStream {
      */
     private graphyteTrack(srcEl, category) {
         const event = new Date();
-        const eventIndex = srcEl.getAttribute("data-game-sort")
-            ? srcEl.getAttribute("data-game-sort") : 0;
         const eventInfo: any = {
             event_name: "GAME_PLAY",
             event_type: "gaming",
@@ -129,7 +135,7 @@ export class GraphyteClickStream {
             event_ccy: this.user.currency,
             event_country: this.user.country,
             event_location: category,
-            event_location_index: parseInt(eventIndex, 10) + 1,
+            event_location_index: parseInt(srcEl.getAttribute("data-game-sort"), 10) + 1,
         };
         graphyte.track("GAME_PLAY", eventInfo, [], []);
     }
