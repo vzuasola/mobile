@@ -59,10 +59,11 @@ export class GraphyteClickStream {
      */
     private listenOnLogin() {
         ComponentManager.subscribe("session.login", (event, src, data) => {
+            this.isLogin = true;
+            this.user = data.response.user;
             if (this.products.includes(ComponentManager.getAttribute("product"))) {
                 this.graphyteIdentify(this.user.playerId);
             }
-            this.isLogin = true;
         });
     }
 
@@ -92,6 +93,12 @@ export class GraphyteClickStream {
      */
     private listenOnGameLaunch() {
         ComponentManager.subscribe("clickstream.game.launch", (event, src, data) => {
+            // game launch via slider or on prelogin
+            if (!this.isLogin && typeof data.response.user === "object"
+                && data.response.user.playerId !== "undefined") {
+                this.isLogin = true;
+                this.user = data.response.user;
+            }
             if (this.isLogin && this.product === data.product) {
                 this.graphyteTrack(data.srcEl, data.category);
             }

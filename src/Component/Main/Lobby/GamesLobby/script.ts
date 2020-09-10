@@ -707,6 +707,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     srcEl: data.src,
                     category: this.getCategoryName(activeCategory),
                     product: ComponentManager.getAttribute("product"),
+                    response: data.response,
                 });
                 if (el) {
                 const gameCode = el.getAttribute("data-game-code");

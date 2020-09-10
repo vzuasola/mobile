@@ -42,7 +42,7 @@ class GameLauncher {
         });
 
         ComponentManager.subscribe("session.login", (event, src, data) => {
-            this.onLogin(event, data.src);
+            this.onLogin(event, data);
         });
 
         ComponentManager.subscribe("session.logout", (event, src, data) => {
@@ -155,9 +155,9 @@ class GameLauncher {
     /**
      *
      */
-    private onLogin(e, src) {
+    private onLogin(e, data) {
         let loader = false;
-        const el = utility.find(src, (element) => {
+        const el = utility.find(data.src, (element) => {
             if (element.getAttribute("data-game-loader") === "true") {
                 loader = true;
                 return true;
@@ -172,6 +172,7 @@ class GameLauncher {
             const options = this.getOptionsByElement(el);
             ComponentManager.broadcast("game.launch", {
                 src: el,
+                response: data.response,
             });
             if (!loader) {
                 e.preventDefault();

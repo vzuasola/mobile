@@ -558,12 +558,13 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 const el = utility.hasClass(data.src, "game-list", true);
                 if (el) {
                     const gameCode = el.getAttribute("data-game-code");
-                    const category = el.getAttribute("data-game-category");
+                    const category = this.gameCategories.getActiveCategory();
                     this.setRecentlyPlayedGame(gameCode);
                     ComponentManager.broadcast("clickstream.game.launch", {
                         srcEl: data.src,
                         category: this.gameCategories.getCategoryNameByAlias(category),
                         product: ComponentManager.getAttribute("product"),
+                        response: data.response,
                     });
                 }
             }
