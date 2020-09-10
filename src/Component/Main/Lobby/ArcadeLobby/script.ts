@@ -38,6 +38,11 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.gamesCollectionSort = new GamesCollectionSorting();
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
+        this.graphyteAi = new GraphyteClickStream(
+            ComponentManager.getAttribute("product"),
+            document.title,
+            window.location.href,
+        );
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -51,7 +56,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.attachments = attachments;
         /* tslint:disable:no-string-literal */
         const enableClickStream = (this.attachments.configs.hasOwnProperty("enable_clickstream")) ?
-            this.attachments.configs["enable_clickstream"] : false;
+        this.attachments.configs["enable_clickstream"] : false;
         /* tslint:disable:no-string-literal */
         this.gameCategories = new GamesCategory(
             this.attachments,
@@ -78,11 +83,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.gamesSearch.handleOnLoad(this.element, this.attachments);
         this.gamesFilter.handleOnLoad(this.element, this.attachments, false);
         if (enableClickStream) {
-            this.graphyteAi = new GraphyteClickStream(
-                ComponentManager.getAttribute("product"),
-                document.title,
-                window.location.href,
-            );
             this.graphyteAi.handleOnLoad(this.element, this.attachments);
         }
 
@@ -95,10 +95,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         configs: any[],
     }) {
-        /* tslint:disable:no-string-literal */
-        const enableClickStream = (attachments.configs.hasOwnProperty("enable_clickstream")) ?
-            attachments.configs["enable_clickstream"] : false;
-        /* tslint:disable:no-string-literal */
         if (!this.element) {
             this.listenHashChange();
             this.listenProviderMoreEvent();
@@ -113,18 +109,14 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenOnSearch();
             this.listenOnFilter();
             this.listenOnCloseFilter();
-            if (enableClickStream) {
-                this.graphyteAi = new GraphyteClickStream(
-                    ComponentManager.getAttribute("product"),
-                    document.title,
-                    window.location.href,
-                );
-                this.graphyteAi.handleOnReLoad(element, attachments);
-            }
         }
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
+        /* tslint:disable:no-string-literal */
+        const enableClickStream = (this.attachments.configs.hasOwnProperty("enable_clickstream")) ?
+        this.attachments.configs["enable_clickstream"] : false;
+        /* tslint:disable:no-string-literal */
         this.gameCategories = new GamesCategory(
             this.attachments,
         );
@@ -137,6 +129,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, this.attachments);
         this.gamesFilter.handleOnReLoad(this.element, this.attachments, false);
+        if (enableClickStream) {
+            this.graphyteAi.handleOnReLoad(this.element, this.attachments);
+        }
 
         this.componentFinish();
     }
@@ -163,7 +158,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     /**
      * Populate lobby with the response from cms
      */
-    private setLobby(isCatChange = true) {
+    private setLobby() {
         // group games by category
         const groupedGames = this.groupGamesByCategory();
         this.groupedGames = this.sortGamesByGamesCollection(groupedGames);
@@ -175,13 +170,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.populateGames(activeCategory);
         this.gamesSearch.setGamesList(this.groupedGames, this.response, activeCategory);
         this.gamesFilter.setGamesList({games: this.groupedGames});
-
-        if (isCatChange) {
-            ComponentManager.broadcast("clickstream.category.change",  {
-                category: this.gameCategories.getCategoryNameByAlias(activeCategory),
-                product: ComponentManager.getAttribute("product"),
-            });
-        }
     }
 
     /**
@@ -353,6 +341,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             activeCategory,
             enableLazyLoad,
         );
+
+        ComponentManager.broadcast("clickstream.category.change",  {
+            category: this.gameCategories.getCategoryNameByAlias(activeCategory),
+        });
     }
 
     /**
@@ -465,10 +457,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                     window.location.hash = activeCategory;
                 }
                 ComponentManager.broadcast("category.change");
-                ComponentManager.broadcast("clickstream.category.change",  {
-                    category: this.gameCategories.getCategoryNameByAlias(activeCategory),
-                    product: ComponentManager.getAttribute("product"),
-                });
                 this.highlightMenu();
             }
         });
@@ -567,7 +555,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                     ComponentManager.broadcast("clickstream.game.launch", {
                         srcEl: data.src,
                         category: this.gameCategories.getCategoryNameByAlias(category),
-                        product: ComponentManager.getAttribute("product"),
                     });
                 }
             }
@@ -713,7 +700,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private refreshResponse() {
         this.response = undefined;
         this.generateLobby(() => {
-            this.setLobby(false);
+            this.setLobby();
         });
     }
 
