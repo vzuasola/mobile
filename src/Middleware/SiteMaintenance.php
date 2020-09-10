@@ -2,6 +2,8 @@
 
 namespace App\MobileEntry\Middleware;
 
+use App\MobileEntry\Services\Accounts\Accounts;
+use App\Player\PlayerSession;
 use Interop\Container\ContainerInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -35,6 +37,16 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
     private $product;
 
     /**
+     * @var $playerSession PlayerSession
+     */
+    private $playerSession;
+
+    /**
+     * @var $paymentAccount Accounts
+     */
+    private $paymentAccount;
+
+    /**
      * Public constructor
      *
      * @param ContainerInterface $container
@@ -43,6 +55,8 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
     {
         $this->handler = $container->get('handler');
         $this->configs = $container->get('config_fetcher')->getGeneralConfigById('webcomposer_site_maintenance');
+        $this->playerSession = $container->get('player_session');
+        $this->paymentAccount = $container->get('accounts_service');
     }
 
     public function boot(RequestInterface &$request)
@@ -64,6 +78,20 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
                     'field_publish_date' => $this->configs['maintenance_publish_date_' . $this->product] ?? '',
                     'field_unpublish_date' => $this->configs['maintenance_unpublish_date_' . $this->product] ?? '',
                 ];
+                // If the player tried to access casino-gold
+                if ($this->product === "mobile-casino-gold") {
+                    //do nothing, if no active session, let the pre-login process of casino gold take place
+                    if (!$this->playerSession->isLogin()) {
+                        return;
+                    }
+
+                    //do nothing, if the player is NON casino-gold account
+                    if (!$this->paymentAccount->hasAccount('casino-gold')) {
+                        return;
+                    }
+
+                    // else, proceed with the maintenance process
+                }
 
                 if (in_array($this->product, $products) && $this->isPublished($dates)) {
                     $request = $request->withAttribute('is_maintenance', true);
