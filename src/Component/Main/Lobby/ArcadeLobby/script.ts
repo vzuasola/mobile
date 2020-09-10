@@ -49,8 +49,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
+        /* tslint:disable:no-string-literal */
         const enableClickStream = (this.attachments.configs.hasOwnProperty("enable_clickstream")) ?
-            this.attachments.configs.enable_clickstream : false;
+            this.attachments.configs["enable_clickstream"] : false;
+        /* tslint:disable:no-string-literal */
         this.gameCategories = new GamesCategory(
             this.attachments,
         );
@@ -91,10 +93,12 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         authenticated: boolean,
         product: any[],
         pagerConfig: any[],
-        configs,
+        configs: any[],
     }) {
+        /* tslint:disable:no-string-literal */
         const enableClickStream = (attachments.configs.hasOwnProperty("enable_clickstream")) ?
-            attachments.configs.enable_clickstream : false;
+            attachments.configs["enable_clickstream"] : false;
+        /* tslint:disable:no-string-literal */
         if (!this.element) {
             this.listenHashChange();
             this.listenProviderMoreEvent();
