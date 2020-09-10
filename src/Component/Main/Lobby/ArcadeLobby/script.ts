@@ -11,7 +11,6 @@ import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "@app/assets/script/components/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
-import {GraphyteClickStream} from "@app/assets/script/components/graphyte/graphyte-clickstream";
 
 import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
 import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
@@ -30,7 +29,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private gamesCollectionSort: GamesCollectionSorting;
     private gamesSearch: GamesSearch;
     private gamesFilter: GamesFilter;
-    private graphyteAi: GraphyteClickStream;
     private productMenu: string = "product-arcade";
 
     constructor() {
@@ -38,7 +36,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.gamesCollectionSort = new GamesCollectionSorting();
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
-        this.graphyteAi = new GraphyteClickStream();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -74,7 +71,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnLoad(this.element, this.attachments);
         this.gamesFilter.handleOnLoad(this.element, this.attachments, false);
-        this.graphyteAi.handleOnLoad(this.element, this.attachments);
         this.componentFinish();
     }
 
@@ -114,7 +110,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, this.attachments);
         this.gamesFilter.handleOnReLoad(this.element, this.attachments, false);
-        this.graphyteAi.handleOnReLoad(this.element, this.attachments);
         this.componentFinish();
     }
 
@@ -435,11 +430,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                     window.location.hash = activeCategory;
                 }
                 ComponentManager.broadcast("category.change");
-                ComponentManager.broadcast("clickstream.category.change",  {
-                    category: this.gameCategories.getCategoryNameByAlias(activeCategory),
-                    title: document.title,
-                    url: window.location.href,
-                });
                 this.highlightMenu();
             }
         });
@@ -533,12 +523,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 const el = utility.hasClass(data.src, "game-list", true);
                 if (el) {
                     const gameCode = el.getAttribute("data-game-code");
-                    const category = el.getAttribute("data-game-category");
                     this.setRecentlyPlayedGame(gameCode);
-                    ComponentManager.broadcast("clickstream.game.launch", {
-                        srcEl: data.src,
-                        category: this.gameCategories.getCategoryNameByAlias(category),
-                    });
                 }
             }
         });
@@ -659,11 +644,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 ComponentManager.broadcast("category.change");
                 const activeCategory = this.gameCategories.getActiveCategory();
                 this.gameCategories.setActiveCategory(activeCategory);
-                ComponentManager.broadcast("clickstream.category.change",  {
-                    category: this.gameCategories.getCategoryNameByAlias(activeCategory),
-                    title: document.title,
-                    url: window.location.href,
-                });
                 this.populateGames(activeCategory);
             }
         });

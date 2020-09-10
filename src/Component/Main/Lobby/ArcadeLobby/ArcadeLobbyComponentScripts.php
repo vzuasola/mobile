@@ -14,7 +14,6 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
     private $playerSession;
     private $product;
     private $views;
-    private $request;
 
     /**
      *
@@ -25,21 +24,19 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
             $container->get('player_session'),
             $container->get('config_fetcher'),
             $container->get('product_resolver'),
-            $container->get('views_fetcher'),
-            $container->get('request')
+            $container->get('views_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $configs, $product, $views, $request)
+    public function __construct($playerSession, $configs, $product, $views)
     {
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
         $this->views = $views->withProduct($product->getProduct());
-        $this->request = $request;
     }
 
     /**
@@ -67,9 +64,6 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
 
         return [
             'authenticated' => $this->playerSession->isLogin(),
-            'playerId' =>  $this->playerSession->getDetails()['playerId'] ?? '',
-            'currency' =>  $this->playerSession->getDetails()['currency'] ?? '',
-            'country' => $this->request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '',
             'product' => $this->getProductIntegration(),
             'pagerConfig' => $pager ?? [],
             'configs' => $arcadeConfigs,
