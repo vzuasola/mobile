@@ -38,7 +38,6 @@ export class LazyLoader {
             configs: this.configs,
             isAllGames: activeTab === "all-games",
             favorites: favoritesList,
-            activeTab: this.activeTab,
         });
 
         if (gameContainer) {
@@ -69,7 +68,6 @@ export class LazyLoader {
                     configs: this.configs,
                     isAllGames: this.activeTab === "all-games",
                     favorites: this.favorites,
-                    activeTab: this.activeTab,
                 });
                 this.showItems(template, gameLoader, gameContainer);
             }

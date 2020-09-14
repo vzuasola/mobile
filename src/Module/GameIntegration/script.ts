@@ -43,7 +43,6 @@ export class GameIntegrationModule implements ModuleInterface {
         const tgp: any = ComponentManager.getModuleInstance("tgp_integration");
         const allbet: any = ComponentManager.getModuleInstance("allbet_integration");
         const wac: any = ComponentManager.getModuleInstance("wac_integration");
-        const jsystem: any = ComponentManager.getModuleInstance("jsystem_integration");
         const ezugiGaming: any = ComponentManager.getModuleInstance("ezugi_gaming_integration");
         const videoRacing: any = ComponentManager.getModuleInstance("videoracing_integration");
         const funGaming: any = ComponentManager.getModuleInstance("fun_gaming_integration");
@@ -74,7 +73,6 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("tgp", tgp);
         this.gameLauncher.setProvider("allbet", allbet);
         this.gameLauncher.setProvider("wac", wac);
-        this.gameLauncher.setProvider("jsystem", jsystem);
         this.gameLauncher.setProvider("ezugi_gaming", ezugiGaming);
         this.gameLauncher.setProvider("video_racing", videoRacing);
         this.gameLauncher.setProvider("fun_gaming", funGaming);

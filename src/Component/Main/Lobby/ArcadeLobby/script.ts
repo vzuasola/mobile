@@ -11,7 +11,6 @@ import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "@app/assets/script/components/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
-import {GraphyteClickStream} from "@app/assets/script/components/graphyte/graphyte-clickstream";
 
 import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
 import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
@@ -30,7 +29,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private gamesCollectionSort: GamesCollectionSorting;
     private gamesSearch: GamesSearch;
     private gamesFilter: GamesFilter;
-    private graphyteAi: GraphyteClickStream;
     private productMenu: string = "product-arcade";
 
     constructor() {
@@ -38,11 +36,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.gamesCollectionSort = new GamesCollectionSorting();
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
-        this.graphyteAi = new GraphyteClickStream(
-            ComponentManager.getAttribute("product"),
-            document.title,
-            window.location.href,
-        );
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -54,10 +47,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
-        /* tslint:disable:no-string-literal */
-        const enableClickStream = (this.attachments.configs.hasOwnProperty("enable_clickstream")) ?
-        this.attachments.configs["enable_clickstream"] : false;
-        /* tslint:disable:no-string-literal */
         this.gameCategories = new GamesCategory(
             this.attachments,
         );
@@ -82,10 +71,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnLoad(this.element, this.attachments);
         this.gamesFilter.handleOnLoad(this.element, this.attachments, false);
-        if (enableClickStream) {
-            this.graphyteAi.handleOnLoad(this.element, this.attachments);
-        }
-
         this.componentFinish();
     }
 
@@ -113,13 +98,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
-        /* tslint:disable:no-string-literal */
-        const enableClickStream = (this.attachments.configs.hasOwnProperty("enable_clickstream")) ?
-        this.attachments.configs["enable_clickstream"] : false;
-        /* tslint:disable:no-string-literal */
         this.gameCategories = new GamesCategory(
             this.attachments,
-        );
+            );
 
         this.generateLobby(() => {
             this.highlightMenu();
@@ -129,10 +110,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, this.attachments);
         this.gamesFilter.handleOnReLoad(this.element, this.attachments, false);
-        if (enableClickStream) {
-            this.graphyteAi.handleOnReLoad(this.element, this.attachments);
-        }
-
         this.componentFinish();
     }
 
@@ -341,10 +318,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             activeCategory,
             enableLazyLoad,
         );
-
-        ComponentManager.broadcast("clickstream.category.change",  {
-            category: this.gameCategories.getCategoryNameByAlias(activeCategory),
-        });
     }
 
     /**
@@ -550,12 +523,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 const el = utility.hasClass(data.src, "game-list", true);
                 if (el) {
                     const gameCode = el.getAttribute("data-game-code");
-                    const category = el.getAttribute("data-game-category");
                     this.setRecentlyPlayedGame(gameCode);
-                    ComponentManager.broadcast("clickstream.game.launch", {
-                        srcEl: data.src,
-                        category: this.gameCategories.getCategoryNameByAlias(category),
-                    });
                 }
             }
         });

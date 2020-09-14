@@ -2,6 +2,8 @@
 
 namespace App\MobileEntry\Module\ProductIntegration\OWSports;
 
+use App\MobileEntry\Services\Product\Products;
+
 class OWSportsIntegrationModuleController
 {
     private $playerSession;
@@ -80,15 +82,7 @@ class OWSportsIntegrationModuleController
             $data['redirect'] = $this->getPreLoginLink($host, $owParams, $ismartPrelogin, $isEncoded);
         }
 
-        $products = explode("\r\n", $maintenanceConfigs['product_list']);
-        $dates = [
-            'field_publish_date' => $maintenanceConfigs['maintenance_publish_date_mobile-sports'] ?? '',
-            'field_unpublish_date' => $maintenanceConfigs['maintenance_unpublish_date_mobile-sports'] ?? '',
-        ];
-
-        if ((in_array('mobile-sports', $products) && $this->isPublished($dates))) {
-            $data['redirect'] = '/sports';
-        }
+        $this->maintenance($request, $data);
 
         $matrix = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
         if ($matrix) {
@@ -97,6 +91,50 @@ class OWSportsIntegrationModuleController
 
 
         return $this->rest->output($response, $data);
+    }
+
+    private function maintenance($request, &$data)
+    {
+        try {
+            $maintenanceConfigs = $this->config->getConfig('webcomposer_config.webcomposer_site_maintenance');
+        } catch (\Exception $e) {
+            $maintenanceConfigs = [];
+        }
+
+        try {
+            $productsUMConfig = explode("\r\n", $maintenanceConfigs['product_list']);
+            $language = $request->getParsedBody()['language'] ?? 'en';
+            $productCode = $this->getProductFromRequest($request) ?? 'sports';
+            $product = Products::PRODUCTCODE_MAPPING[$productCode];
+            parse_str(parse_url($request->getHeader('referer')[0] ?? '')['query'] ?? "", $params);
+
+            $dates = [
+                'field_publish_date' => $maintenanceConfigs["maintenance_publish_date_$product"] ?? '',
+                'field_unpublish_date' => $maintenanceConfigs["maintenance_unpublish_date_$product"] ?? '',
+            ];
+
+            if (in_array($product, $productsUMConfig) && $this->isPublished($dates)) {
+                $path =  $params['product'] ?? $productCode;
+                $data['redirect'] = "/$language/". $path;
+            }
+        } catch (\Exception $e) {
+            //placeholder
+        }
+    }
+
+    private function getProductFromRequest($request)
+    {
+        parse_str(parse_url($request->getHeader('referer')[0] ?? '')['query'] ?? "", $params);
+        $findProduct = $request->getParsedBody()['product'] ?? $params['product'] ?? false;
+        if (!$findProduct) {
+            return;
+        }
+        $productAliases = Products::PRODUCT_ALIAS;
+        foreach ($productAliases as $product => $productAlias) {
+            if (in_array(strtolower($findProduct), $productAlias)) {
+                return $product;
+            }
+        }
     }
 
     private function isPublished($data)
