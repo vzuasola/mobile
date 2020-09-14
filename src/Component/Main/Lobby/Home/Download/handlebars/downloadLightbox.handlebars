@@ -4,6 +4,7 @@
         {{#if downloadLighboxImage }}
         <img src="{{ downloadLighboxImage }}" alt="{{downloadAppTitle}}" />
         {{/if}}
+        <div class="half-width">
             <div class="col-6 download-lightbox-item {{ ../this.downloadClass}}">
                 <div class="download-lightbox-details download-box">
                     {{#if this.downloadAppTitle}}
@@ -25,12 +26,26 @@
                 {{/if}}
                     {{{ launchDesc }}}
                 </div>
-                {{#if this.launchlink}}
-                <a href="{{ launchlink }}" class="btn btn-yellow btn-small download-lightbox-btn">
+                {{#if this.launchLink}}
+                <a href="#" class="btn-launch btn btn-yellow btn-small download-lightbox-btn">
                     {{ launchlinkTitle }}
                 </a>
                 {{/if}}
             </div>
+        </div>
+
+        <div class="full-width hidden">
+            <div class="col-12 download-lightbox-item">
+                <div class="download-lightbox-details download-box">
+                    {{{ launchDescVerify }}}
+                </div>
+                {{#if this.launchIt}}
+                <a href="{{ launchLink }}" class="btn btn-yellow btn-small download-lightbox-btn">
+                    {{ launchIt }}
+                </a>
+                {{/if}}
+            </div>
+        </div>
     </div>
 </div>
 {{/if}}

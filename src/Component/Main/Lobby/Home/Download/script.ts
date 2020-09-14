@@ -157,10 +157,13 @@ export class DownloadComponent implements ComponentInterface {
             launchAppTitle: data.entrypage_config.launch_app_title,
             launchDesc: data.entrypage_config.mobile_launch_description_select.value,
             launchlinkTitle: data.entrypage_config.launch_app_link_title,
-            launchlink: data.entrypage_config.launch_app_link,
+            launchLink: data.entrypage_config.launch_app_link,
+            launchIt: data.entrypage_config.launch_app_launch_it,
+            launchDescVerify: data.entrypage_config.mobile_launch_verify_description_select,
         });
 
         downloadLightbox.innerHTML = templateLightbox;
+        this.downloadLaunch(this.element);
     }
 
     private bindDownloadLightbox() {
@@ -171,5 +174,13 @@ export class DownloadComponent implements ComponentInterface {
                 this.equalizeDownloadHeight();
             }
         });
+    }
+
+    private downloadLaunch(element) {
+        utility.delegate(element, ".btn-launch", "click", (event, src) => {
+            event.preventDefault();
+            utility.removeClass(this.element.querySelector(".full-width"), "hidden");
+            utility.addClass(this.element.querySelector(".half-width"), "hidden");
+        }, true);
     }
 }
