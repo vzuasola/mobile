@@ -159,7 +159,7 @@ export class DownloadComponent implements ComponentInterface {
             launchlinkTitle: data.entrypage_config.launch_app_link_title,
             launchLink: data.entrypage_config.launch_app_link,
             launchIt: data.entrypage_config.launch_app_launch_it,
-            launchDescVerify: data.entrypage_config.mobile_launch_verify_description_select,
+            launchDescVerify: data.entrypage_config.mobile_launch_verify_description_select.value,
         });
 
         downloadLightbox.innerHTML = templateLightbox;
