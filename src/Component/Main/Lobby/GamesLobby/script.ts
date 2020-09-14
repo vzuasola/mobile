@@ -57,6 +57,9 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
         this.gamesCollectionSort = new GamesCollectionSorting();
+        Handlebars.registerHelper("inc", (value, incrementVal, options) => {
+            return parseInt(value, 10) + incrementVal;
+        });
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -550,6 +553,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             isLogin: this.isLogin,
             isRecommended: isRecommend,
             isAllGames: activeCategory === "all-games",
+            offset: page,
         });
 
         if (this.currentPage > page) {
@@ -945,6 +949,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                         favorites: this.response.favorite_list,
                         isLogin: this.isLogin,
                         isAllGames: hash === "all-games",
+                        offset: this.currentPage * 12,
 
                     });
                     const loader = gameLoader.querySelector(".mobile-game-loader");

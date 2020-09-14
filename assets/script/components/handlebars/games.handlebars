@@ -15,7 +15,9 @@
         data-game-filters="[ {{this.filters }} ]"
         data-recommended-game="{{../../isRecommended}}"
         data-game-lobby="false"
-        data-game-sort={{@index}}
+        {{#if ../../offset}}
+        data-game-sort={{inc ../../offset @index}}
+        {{/if}}
         {{#if this.game_subprovider }}
             data-game-subprovider="{{this.game_subprovider}}"
         {{/if}}

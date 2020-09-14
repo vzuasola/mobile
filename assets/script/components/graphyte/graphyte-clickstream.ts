@@ -123,6 +123,8 @@ export class GraphyteClickStream {
         const event = new Date();
         const eventIndex = srcEl.getAttribute("data-game-sort")
             ? srcEl.getAttribute("data-game-sort") : 0;
+        const eventLocation = srcEl.getAttribute("data-game-location")
+            ? srcEl.getAttribute("data-game-location") : category;
         const eventInfo: any = {
             event_name: "GAME_PLAY",
             event_type: "gaming",
@@ -135,7 +137,7 @@ export class GraphyteClickStream {
             event_language: ComponentManager.getAttribute("language"),
             event_ccy: this.user.currency,
             event_country: this.user.country,
-            event_location: category,
+            event_location: eventLocation,
             event_location_index: parseInt(eventIndex, 10) + 1,
         };
         graphyte.track("GAME_PLAY", eventInfo, [], []);
