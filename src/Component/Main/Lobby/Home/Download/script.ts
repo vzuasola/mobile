@@ -4,8 +4,10 @@ import * as Handlebars from "handlebars/runtime";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as downloadTemplate from "./handlebars/download.handlebars";
+import * as downloadlightboxTemplate from "./handlebars/downloadLightbox.handlebars";
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
+import {Modal} from "@app/assets/script/components/modal";
 import EqualHeight from "@app/assets/script/components/equal-height";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import Accordion from "@app/assets/script/components/accordion";
@@ -44,6 +46,11 @@ export class DownloadComponent implements ComponentInterface {
         equalDownload.init();
     }
 
+    private equalizeDownloadButton() {
+        const equalDownload = new EqualHeight(".download-box-btn");
+        equalDownload.init();
+    }
+
     private accordion(element) {
         const accordion = new Accordion(element, { openByDefault: 0});
     }
@@ -58,6 +65,7 @@ export class DownloadComponent implements ComponentInterface {
             this.equalizeDownloadHeight();
             this.accordion(this.element);
             this.swapText();
+            this.generateDownloadLightboxMarkup(this.downloadData);
         });
     }
 
@@ -107,16 +115,20 @@ export class DownloadComponent implements ComponentInterface {
 
                     if (this.downloadsVisibility() && downloadData.attributes.device === "ios") {
                         utility.addClass(download, "download-background");
+                        utility.addClass(this.element.querySelector("#download-lightbox"), "ios-device");
                         menus.push(downloadData);
                     }
 
                     if (!this.downloadsVisibility() && downloadData.attributes.device === "android") {
                         utility.addClass(download, "download-background");
+                        utility.addClass(this.element.querySelector("#download-lightbox"), "android-device");
                         menus.push(downloadData);
                     }
                 }
             }
         }
+
+        this.bindDownloadLightbox();
 
         data.downloads_menu = menus;
         return data;
@@ -134,5 +146,48 @@ export class DownloadComponent implements ComponentInterface {
                 }
             }
         });
+    }
+
+    private generateDownloadLightboxMarkup(data) {
+        const downloadLightbox: HTMLElement = this.element.querySelector("#download-lightbox");
+        const templateLightbox = downloadlightboxTemplate({
+            downloadData: data,
+            downloadLighboxImage: data.entrypage_config.file_image_page_image,
+            // Download App
+            downloadAppTitle: data.entrypage_config.download_app_title,
+            downloadDesc: data.entrypage_config.mobile_download_description_select.value,
+            downloadlinkTitle: data.entrypage_config.download_app_link_title,
+            downloadlink: data.entrypage_config.download_app_link,
+            downloadlinkIos: data.entrypage_config.download_app_link_ios,
+            // Launch App
+            launchAppTitle: data.entrypage_config.launch_app_title,
+            launchDesc: data.entrypage_config.mobile_launch_description_select.value,
+            launchlinkTitle: data.entrypage_config.launch_app_link_title,
+            launchDescVerify: data.entrypage_config.mobile_launch_verify_description_select.value,
+            launchIt: data.entrypage_config.launch_app_launch_it, // title Ok, Got it
+            launchLink: data.entrypage_config.launch_app_link,
+        });
+
+        downloadLightbox.innerHTML = templateLightbox;
+        this.downloadLaunch(this.element);
+    }
+
+    private bindDownloadLightbox() {
+        ComponentManager.subscribe("click", (event, src) => {
+            if (src && utility.hasClass(src, "download-trigger", true)) {
+                event.preventDefault();
+                Modal.open("#download-lightbox");
+                this.equalizeDownloadHeight();
+                this.equalizeDownloadButton();
+            }
+        });
+    }
+
+    private downloadLaunch(element) {
+        utility.delegate(element, ".btn-launch", "click", (event, src) => {
+            event.preventDefault();
+            utility.removeClass(this.element.querySelector(".full-width"), "hidden");
+            utility.addClass(this.element.querySelector(".half-width"), "hidden");
+        }, true);
     }
 }
