@@ -57,8 +57,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
         this.gamesCollectionSort = new GamesCollectionSorting();
-        Handlebars.registerHelper("inc", (value, incrementVal, options) => {
-            return parseInt(value, 10) + incrementVal;
+        Handlebars.registerHelper("getIndex", (offset, parentIndex, index, options) => {
+            return (parseInt(parentIndex, 10) * 3) + offset + index;
         });
     }
 
@@ -564,6 +564,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
                     isAllGames: activeCategory === "all-games",
+                    offset: this.currentPage * 12,
                 });
             }
         }
@@ -584,22 +585,24 @@ export class GamesLobbyComponent implements ComponentInterface {
      */
     private listenChangeCategory() {
         ComponentManager.subscribe("click", (event: Event, src) => {
-            const first = this.response.categories[0].field_games_alias;
-            const key = this.getActiveCategory(this.response.games, first);
-            const categoriesEl = document.querySelector("#game-categories");
+            if (ComponentManager.getAttribute("product") === "mobile-games") {
+                const first = this.response.categories[0].field_games_alias;
+                const key = this.getActiveCategory(this.response.games, first);
+                const categoriesEl = document.querySelector("#game-categories");
 
-            if (utility.hasClass(src, "game-category-item", true) &&
-                !utility.hasClass(src, "game-category-more", true) ||
-                utility.hasClass(src, "category-provider-menu", true)
-            ) {
-                this.currentPage = 0;
-                this.filterFlag = "general";
-                window.location.hash = "";
-                ComponentManager.broadcast("category.change");
-                ComponentManager.broadcast("clickstream.category.change",  {
-                    category: this.getCategoryName(key),
-                    product: ComponentManager.getAttribute("product"),
-                });
+                if (utility.hasClass(src, "game-category-item", true) &&
+                    !utility.hasClass(src, "game-category-more", true) ||
+                    utility.hasClass(src, "category-provider-menu", true)
+                ) {
+                    this.currentPage = 0;
+                    this.filterFlag = "general";
+                    window.location.hash = "";
+                    ComponentManager.broadcast("category.change");
+                    ComponentManager.broadcast("clickstream.category.change",  {
+                        category: this.getCategoryName(key),
+                        product: ComponentManager.getAttribute("product"),
+                    });
+                }
             }
         });
     }
@@ -950,8 +953,8 @@ export class GamesLobbyComponent implements ComponentInterface {
                         isLogin: this.isLogin,
                         isAllGames: hash === "all-games",
                         offset: this.currentPage * 12,
-
                     });
+
                     const loader = gameLoader.querySelector(".mobile-game-loader");
                     utility.removeClass(loader, "hidden");
                     this.load = false;
