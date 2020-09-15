@@ -46,15 +46,8 @@
                 <div class="download-lightbox-details download-box">
                     {{{ launchDescVerify }}}
                 </div>
-                {{!-- android --}}
                 {{#if this.launchLink}}
-                <a href="sasasportsuniversal://{{ launchLink }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-android">
-                    {{ launchIt }}
-                </a>
-                {{/if}}
-                {{!-- iOS --}}
-                {{#if this.launchLinkIos}}
-                <a href="sasasportsuniversal://{{ launchLinkIos }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-ios">
+                <a href="sasasportsuniversal://{{ launchLink }}" class="btn btn-yellow btn-small download-lightbox-btn">
                     {{ launchIt }}
                 </a>
                 {{/if}}

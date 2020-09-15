@@ -157,7 +157,6 @@ export class DownloadComponent implements ComponentInterface {
             downloadAppTitle: data.entrypage_config.download_app_title,
             downloadDesc: data.entrypage_config.mobile_download_description_select.value,
             downloadlinkTitle: data.entrypage_config.download_app_link_title,
-
             downloadlink: data.entrypage_config.download_app_link,
             downloadlinkIos: data.entrypage_config.download_app_link_ios,
             // Launch App
@@ -166,9 +165,7 @@ export class DownloadComponent implements ComponentInterface {
             launchlinkTitle: data.entrypage_config.launch_app_link_title,
             launchDescVerify: data.entrypage_config.mobile_launch_verify_description_select.value,
             launchIt: data.entrypage_config.launch_app_launch_it, // title Ok, Got it
-
             launchLink: data.entrypage_config.launch_app_link,
-            launchLinkIos: data.entrypage_config.launch_app_link_ios,
         });
 
         downloadLightbox.innerHTML = templateLightbox;
