@@ -564,7 +564,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
                     isAllGames: activeCategory === "all-games",
-                    offset: this.currentPage * 12,
+                    offset: ctr * 12,
                 });
             }
         }
@@ -586,14 +586,22 @@ export class GamesLobbyComponent implements ComponentInterface {
     private listenChangeCategory() {
         ComponentManager.subscribe("click", (event: Event, src) => {
             if (ComponentManager.getAttribute("product") === "mobile-games") {
-                const first = this.response.categories[0].field_games_alias;
-                const key = this.getActiveCategory(this.response.games, first);
-                const categoriesEl = document.querySelector("#game-categories");
+                let key: string;
+                const el = utility.hasClass(src, "game-category-item", true);
+                const elMore = utility.hasClass(src, "category-provider-menu", true);
+                if (el && !utility.hasClass(src, "game-category-more", true)
+                    || elMore) {
+                    if (el.querySelector(".category-tab")) {
+                        key = el.querySelector(".category-tab").getAttribute("data-category-filter-id");
+                    }
+                    if (elMore) {
+                        key = elMore.getAttribute("data-category-filter-id");
+                    }
 
-                if (utility.hasClass(src, "game-category-item", true) &&
-                    !utility.hasClass(src, "game-category-more", true) ||
-                    utility.hasClass(src, "category-provider-menu", true)
-                ) {
+                    if (key === "undefined") {
+                        const first = this.response.categories[0].field_games_alias;
+                        key = this.getActiveCategory(this.response.games, first);
+                    }
                     this.currentPage = 0;
                     this.filterFlag = "general";
                     window.location.hash = "";
