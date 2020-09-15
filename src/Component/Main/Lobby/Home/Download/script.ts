@@ -65,7 +65,6 @@ export class DownloadComponent implements ComponentInterface {
             this.equalizeDownloadHeight();
             this.accordion(this.element);
             this.swapText();
-        
             this.generateDownloadLightboxMarkup(this.downloadData);
         });
     }
