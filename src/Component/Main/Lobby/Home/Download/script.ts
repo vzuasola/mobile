@@ -46,6 +46,11 @@ export class DownloadComponent implements ComponentInterface {
         equalDownload.init();
     }
 
+    private equalizeDownloadButton() {
+        const equalDownload = new EqualHeight(".download-box-btn");
+        equalDownload.init();
+    }
+
     private accordion(element) {
         const accordion = new Accordion(element, { openByDefault: 0});
     }
@@ -172,6 +177,7 @@ export class DownloadComponent implements ComponentInterface {
                 event.preventDefault();
                 Modal.open("#download-lightbox");
                 this.equalizeDownloadHeight();
+                this.equalizeDownloadButton();
             }
         });
     }
