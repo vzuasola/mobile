@@ -65,7 +65,7 @@ export class DownloadComponent implements ComponentInterface {
             this.equalizeDownloadHeight();
             this.accordion(this.element);
             this.swapText();
-            // POC
+        
             this.generateDownloadLightboxMarkup(this.downloadData);
         });
     }
@@ -104,7 +104,6 @@ export class DownloadComponent implements ComponentInterface {
         for (const menu in data.downloads_menu) {
             if (data.downloads_menu.hasOwnProperty(menu)) {
                 const downloadData = data.downloads_menu[menu];
-                // const downloadLightboxData = data.entrypage_config;
                 const playerMatrix = (data.partnerMatrix === true &&
                     downloadData.attributes.partnerMatrixPlayer === "partner-matrix-app")
                     || data.partnerMatrix === false;
@@ -150,7 +149,6 @@ export class DownloadComponent implements ComponentInterface {
         });
     }
 
-// POC
     private generateDownloadLightboxMarkup(data) {
         const downloadLightbox: HTMLElement = this.element.querySelector("#download-lightbox");
         const templateLightbox = downloadlightboxTemplate({
