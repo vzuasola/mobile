@@ -65,6 +65,20 @@
     }
 }
 
+#download-lightbox.android-device {
+    .download-box-btn-ios {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+#download-lightbox.ios-device {
+    .download-box-btn-android {
+        display: none;
+        visibility: hidden;
+    }
+}
+
 /* Zoom in Keyframes */
 @-webkit-keyframes zoomin {
     0% {

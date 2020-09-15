@@ -104,6 +104,7 @@ export class DownloadComponent implements ComponentInterface {
         for (const menu in data.downloads_menu) {
             if (data.downloads_menu.hasOwnProperty(menu)) {
                 const downloadData = data.downloads_menu[menu];
+                // const downloadLightboxData = data.entrypage_config;
                 const playerMatrix = (data.partnerMatrix === true &&
                     downloadData.attributes.partnerMatrixPlayer === "partner-matrix-app")
                     || data.partnerMatrix === false;
@@ -116,11 +117,13 @@ export class DownloadComponent implements ComponentInterface {
 
                     if (this.downloadsVisibility() && downloadData.attributes.device === "ios") {
                         utility.addClass(download, "download-background");
+                        utility.addClass(this.element.querySelector("#download-lightbox"), "ios-device");
                         menus.push(downloadData);
                     }
 
                     if (!this.downloadsVisibility() && downloadData.attributes.device === "android") {
                         utility.addClass(download, "download-background");
+                        utility.addClass(this.element.querySelector("#download-lightbox"), "android-device");
                         menus.push(downloadData);
                     }
                 }
@@ -157,14 +160,18 @@ export class DownloadComponent implements ComponentInterface {
             downloadAppTitle: data.entrypage_config.download_app_title,
             downloadDesc: data.entrypage_config.mobile_download_description_select.value,
             downloadlinkTitle: data.entrypage_config.download_app_link_title,
+
             downloadlink: data.entrypage_config.download_app_link,
+            downloadlinkIos: data.entrypage_config.download_app_link_ios,
             // Launch App
             launchAppTitle: data.entrypage_config.launch_app_title,
             launchDesc: data.entrypage_config.mobile_launch_description_select.value,
             launchlinkTitle: data.entrypage_config.launch_app_link_title,
-            launchLink: data.entrypage_config.launch_app_link,
-            launchIt: data.entrypage_config.launch_app_launch_it,
             launchDescVerify: data.entrypage_config.mobile_launch_verify_description_select.value,
+            launchIt: data.entrypage_config.launch_app_launch_it, // title Ok, Got it
+
+            launchLink: data.entrypage_config.launch_app_link,
+            launchLinkIos: data.entrypage_config.launch_app_link_ios,
         });
 
         downloadLightbox.innerHTML = templateLightbox;

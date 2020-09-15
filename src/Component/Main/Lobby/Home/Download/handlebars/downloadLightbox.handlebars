@@ -12,8 +12,15 @@
                     {{/if}}
                     {{{ downloadDesc }}}
                 </div>
+                {{!-- android --}}
                 {{#if this.downloadlink}}
-                <a href="{{ downloadlink }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn">
+                <a href="{{ downloadlink }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-android">
+                    {{ downloadlinkTitle }}
+                </a>
+                {{/if}}
+                {{!-- iOS --}}
+                {{#if this.downloadlinkIos}}
+                <a href="{{ downloadlinkIos }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-ios">
                     {{ downloadlinkTitle }}
                 </a>
                 {{/if}}
@@ -26,7 +33,7 @@
                 {{/if}}
                     {{{ launchDesc }}}
                 </div>
-                {{#if this.launchLink}}
+                {{#if this.launchlinkTitle}}
                 <a href="#" class="btn-launch btn btn-yellow btn-small download-lightbox-btn download-box-btn">
                     {{ launchlinkTitle }}
                 </a>
@@ -39,8 +46,15 @@
                 <div class="download-lightbox-details download-box">
                     {{{ launchDescVerify }}}
                 </div>
-                {{#if this.launchIt}}
-                <a href="{{ launchLink }}" class="btn btn-yellow btn-small download-lightbox-btn">
+                {{!-- android --}}
+                {{#if this.launchLink}}
+                <a href="sasasportsuniversal://{{ launchLink }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-android">
+                    {{ launchIt }}
+                </a>
+                {{/if}}
+                {{!-- iOS --}}
+                {{#if this.launchLinkIos}}
+                <a href="sasasportsuniversal://{{ launchLinkIos }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-ios">
                     {{ launchIt }}
                 </a>
                 {{/if}}
