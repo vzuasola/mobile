@@ -152,6 +152,14 @@ export class GamesCategory {
         }
     }
 
+    getCategoryNameByAlias(alias) {
+        if (this.filteredCategoryObj.hasOwnProperty(alias)) {
+            return this.filteredCategoryObj[alias].name;
+        }
+
+        return alias;
+    }
+
     /**
      * Filter categories
      */
@@ -163,20 +171,20 @@ export class GamesCategory {
             if (category.hasOwnProperty("field_games_alias") &&
                 this.games.hasOwnProperty(category["field_games_alias"]) &&
                 this.games[category["field_games_alias"]].length) {
-                    filteredCategories.push(category);
-                    this.filteredCategoriesAlias.push(category["field_games_alias"]);
+                filteredCategories.push(category);
+                this.filteredCategoriesAlias.push(category["field_games_alias"]);
 
-                    if (!this.filteredCategoryObj.hasOwnProperty(category["field_games_alias"])) {
-                        this.filteredCategoryObj[category["field_games_alias"]] = [];
-                    }
+                if (!this.filteredCategoryObj.hasOwnProperty(category["field_games_alias"])) {
+                    this.filteredCategoryObj[category["field_games_alias"]] = [];
+                }
 
-                    if (typeof this.filteredCategoryObj[category["field_games_alias"]] !== "undefined") {
-                        this.filteredCategoryObj[category["field_games_alias"]] = category;
-                    }
+                if (typeof this.filteredCategoryObj[category["field_games_alias"]] !== "undefined") {
+                    this.filteredCategoryObj[category["field_games_alias"]] = category;
+                }
 
-                    if (category.field_games_is_sub_category === "1") {
-                        this.providers.push(category);
-                    }
+                if (category.field_games_is_sub_category === "1") {
+                    this.providers.push(category);
+                }
             }
             /* tslint:disable:no-string-literal */
         }
