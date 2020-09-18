@@ -1,6 +1,7 @@
 declare var navigator: any;
 
 import * as utility from "@core/assets/js/components/utility";
+import * as Handlebars from "handlebars/runtime";
 import {LazyLoader} from "./scripts/lazy-loader";
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
@@ -36,6 +37,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.gamesCollectionSort = new GamesCollectionSorting();
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
+        Handlebars.registerHelper("inc", (value, incrementVal, options) => {
+            return parseInt(value, 10) + incrementVal;
+        });
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -523,7 +527,14 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 const el = utility.hasClass(data.src, "game-list", true);
                 if (el) {
                     const gameCode = el.getAttribute("data-game-code");
+                    const category = this.gameCategories.getActiveCategory();
                     this.setRecentlyPlayedGame(gameCode);
+                    ComponentManager.broadcast("clickstream.game.launch", {
+                        srcEl: data.src,
+                        category: this.gameCategories.getCategoryNameByAlias(category),
+                        product: ComponentManager.getAttribute("product"),
+                        response: data.response,
+                    });
                 }
             }
         });
