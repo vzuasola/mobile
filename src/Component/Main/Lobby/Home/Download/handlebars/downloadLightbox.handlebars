@@ -14,13 +14,13 @@
                 </div>
                 {{!-- android --}}
                 {{#if this.downloadlink}}
-                <a href="{{ downloadlink }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-android">
+                <a href="{{ downloadlink }}" target="{{ downloadTargetlink }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-android">
                     {{ downloadlinkTitle }}
                 </a>
                 {{/if}}
                 {{!-- iOS --}}
                 {{#if this.downloadlinkIos}}
-                <a href="{{ downloadlinkIos }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-ios">
+                <a href="{{ downloadlinkIos }}" target="{{ downloadTargetlink }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-ios">
                     {{ downloadlinkTitle }}
                 </a>
                 {{/if}}
@@ -34,7 +34,7 @@
                     {{{ launchDesc }}}
                 </div>
                 {{#if this.launchlinkTitle}}
-                <a href="#" class="btn-launch btn btn-yellow btn-small download-lightbox-btn download-box-btn">
+                <a href="{{ launchLink }}" class="btn-launch btn btn-yellow btn-small download-lightbox-btn download-box-btn">
                     {{ launchlinkTitle }}
                 </a>
                 {{/if}}
