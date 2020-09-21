@@ -157,6 +157,7 @@ export class DownloadComponent implements ComponentInterface {
             downloadAppTitle: data.entrypage_config.download_app_title,
             downloadDesc: data.entrypage_config.mobile_download_description_select.value,
             downloadlinkTitle: data.entrypage_config.download_app_link_title,
+            downloadTargetlink: data.entrypage_config.link_target,
             downloadlink: data.entrypage_config.download_app_link,
             downloadlinkIos: data.entrypage_config.download_app_link_ios,
             // Launch App
