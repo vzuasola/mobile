@@ -185,9 +185,15 @@ export class DownloadComponent implements ComponentInterface {
 
     private downloadLaunch(element) {
         utility.delegate(element, ".btn-launch", "click", (event, src) => {
-            event.preventDefault();
-            utility.removeClass(this.element.querySelector(".full-width"), "hidden");
-            utility.addClass(this.element.querySelector(".half-width"), "hidden");
+            setTimeout(() => {
+                event.preventDefault();
+                utility.removeClass(this.element.querySelector(".full-width"), "hidden");
+                utility.addClass(this.element.querySelector(".half-width"), "hidden");
+            }, 200);
+
+            setTimeout(() => {
+                Modal.close("#download-lightbox");
+            }, 50000);
         }, true);
     }
 }
