@@ -1,0 +1,58 @@
+{{#if downloadData.entrypage_config}}
+<div class="modal-content download-lightbox-content">
+    <div class="modal-body download-lightbox-body">
+        {{#if downloadLighboxImage }}
+        <img src="{{ downloadLighboxImage }}" alt="{{downloadAppTitle}}" />
+        {{/if}}
+        <div class="half-width">
+            <div class="col-6 download-lightbox-item {{ ../this.downloadClass}}">
+                <div class="download-lightbox-details download-box">
+                    {{#if this.downloadAppTitle}}
+                    <p class="download-lightbox-title">{{ downloadAppTitle }}</p>
+                    {{/if}}
+                    {{{ downloadDesc }}}
+                </div>
+                {{!-- android --}}
+                {{#if this.downloadlink}}
+                <a href="{{ downloadlink }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-android">
+                    {{ downloadlinkTitle }}
+                </a>
+                {{/if}}
+                {{!-- iOS --}}
+                {{#if this.downloadlinkIos}}
+                <a href="{{ downloadlinkIos }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-ios">
+                    {{ downloadlinkTitle }}
+                </a>
+                {{/if}}
+            </div>
+
+            <div class="col-6 download-lightbox-item">
+                <div class="download-lightbox-details download-box">
+                {{#if this.launchAppTitle}}
+                <p class="download-lightbox-title">{{ this.launchAppTitle }}</p>
+                {{/if}}
+                    {{{ launchDesc }}}
+                </div>
+                {{#if this.launchlinkTitle}}
+                <a href="#" class="btn-launch btn btn-yellow btn-small download-lightbox-btn download-box-btn">
+                    {{ launchlinkTitle }}
+                </a>
+                {{/if}}
+            </div>
+        </div>
+
+        <div class="full-width hidden">
+            <div class="col-12 download-lightbox-item">
+                <div class="download-lightbox-details download-box">
+                    {{{ launchDescVerify }}}
+                </div>
+                {{#if this.launchLink}}
+                <a href="{{ launchLink }}" class="btn btn-yellow btn-small download-lightbox-btn">
+                    {{ launchIt }}
+                </a>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}
