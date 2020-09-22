@@ -1,6 +1,7 @@
 {{#each sliderData.slides}}
     {{#if this.published }}
         <div class="xlide-item">
+            {{incVar sortOrder}}
             <a
                 href="{{ this.banner_url }}"
                 target="{{ this.banner_target }}"
@@ -23,7 +24,7 @@
                 {{#if this.provider_maintenance }}
                     data-game-maintenance="true"
                 {{/if}}
-                data-game-sort="{{@index}}"
+                data-game-sort="{{getVar sortOrder}}"
                 data-game-location="sliders"
             >
             <picture>
