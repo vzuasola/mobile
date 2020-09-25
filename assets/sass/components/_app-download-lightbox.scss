@@ -1,0 +1,109 @@
+.download-lightbox {
+    // Content
+    &-content {
+        @include translate(0, 0%);
+        top: 25%;
+        width: 90%;
+        max-width: 100%;
+        background: $white;
+        padding: 1.5rem 0;
+        border: 0;
+        border-radius: 0.5rem;
+        margin-bottom: 0.8rem;
+        overflow: hidden;
+    }
+
+    .modal-overlay {
+        // Overlay
+        &:before {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 15;
+            display: block;
+            content: "";
+        }
+    }
+
+    &-title {
+        text-transform: uppercase;
+        color: $red;
+        font-size: 1.4rem;
+        font-weight: 700;
+        text-align: center;
+        padding-bottom: 1rem;
+        margin: 0;
+    }
+
+    p {
+        margin: 0;
+        padding-bottom: 1rem;
+    }
+
+    a {
+        color: $red;
+    }
+
+    &-details {
+        color: $dark-gray;
+        padding: 1rem 0;
+        margin: 0;
+    }
+}
+
+.download-lightbox.modal-active {
+    img {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-animation: zoomin 3s ease-in;
+        animation: zoomin 3s ease-in;
+        transition: all .2s ease-in-out;
+        overflow: hidden;
+    }
+}
+
+#download-lightbox.android-device {
+    .download-box-btn-ios {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+#download-lightbox.ios-device {
+    .download-box-btn-android {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+/* Zoom in Keyframes */
+@-webkit-keyframes zoomin {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes zoomin {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

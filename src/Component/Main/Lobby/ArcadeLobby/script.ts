@@ -1,6 +1,7 @@
 declare var navigator: any;
 
 import * as utility from "@core/assets/js/components/utility";
+import * as Handlebars from "handlebars/runtime";
 import {LazyLoader} from "./scripts/lazy-loader";
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
@@ -11,6 +12,7 @@ import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "@app/assets/script/components/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
+import {GraphyteClickStream} from "@app/assets/script/components/graphyte/graphyte-clickstream";
 
 import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
 import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
@@ -29,6 +31,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private gamesCollectionSort: GamesCollectionSorting;
     private gamesSearch: GamesSearch;
     private gamesFilter: GamesFilter;
+    private graphyteAi: GraphyteClickStream;
     private productMenu: string = "product-arcade";
 
     constructor() {
@@ -36,6 +39,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.gamesCollectionSort = new GamesCollectionSorting();
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
+        Handlebars.registerHelper("inc", (value, incrementVal, options) => {
+            return parseInt(value, 10) + incrementVal;
+        });
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -47,6 +53,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
+        const enableClickStream = (this.attachments.configs.hasOwnProperty("enable_clickstream")) ?
+            this.attachments.configs.enable_clickstream : false;
+
         this.gameCategories = new GamesCategory(
             this.attachments,
         );
@@ -71,6 +80,15 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.initMarker();
         this.gamesSearch.handleOnLoad(this.element, this.attachments);
         this.gamesFilter.handleOnLoad(this.element, this.attachments, false);
+        if (enableClickStream) {
+            this.graphyteAi = new GraphyteClickStream(
+                ComponentManager.getAttribute("product"),
+                document.title,
+                window.location.href,
+            );
+            this.graphyteAi.handleOnLoad(this.element, this.attachments);
+        }
+
         this.componentFinish();
     }
 
@@ -78,8 +96,11 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         authenticated: boolean,
         product: any[],
         pagerConfig: any[],
-        configs: any[],
+        configs,
     }) {
+        const enableClickStream = (attachments.configs.hasOwnProperty("enable_clickstream")) ?
+            attachments.configs.enable_clickstream : false;
+
         if (!this.element) {
             this.listenHashChange();
             this.listenProviderMoreEvent();
@@ -94,13 +115,22 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenOnSearch();
             this.listenOnFilter();
             this.listenOnCloseFilter();
+            if (enableClickStream) {
+                this.graphyteAi = new GraphyteClickStream(
+                    ComponentManager.getAttribute("product"),
+                    document.title,
+                    window.location.href,
+                );
+                this.graphyteAi.handleOnReLoad(element, attachments);
+            }
+
         }
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
         this.gameCategories = new GamesCategory(
             this.attachments,
-            );
+        );
 
         this.generateLobby(() => {
             this.highlightMenu();
@@ -135,7 +165,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     /**
      * Populate lobby with the response from cms
      */
-    private setLobby() {
+    private setLobby(isCatChange = true) {
         // group games by category
         const groupedGames = this.groupGamesByCategory();
         this.groupedGames = this.sortGamesByGamesCollection(groupedGames);
@@ -147,6 +177,14 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.populateGames(activeCategory);
         this.gamesSearch.setGamesList(this.groupedGames, this.response, activeCategory);
         this.gamesFilter.setGamesList({games: this.groupedGames});
+
+        if (isCatChange) {
+            ComponentManager.broadcast("clickstream.category.change",  {
+                category: this.gameCategories.getCategoryNameByAlias(activeCategory),
+                product: ComponentManager.getAttribute("product"),
+            });
+        }
+
     }
 
     /**
@@ -318,6 +356,11 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             activeCategory,
             enableLazyLoad,
         );
+
+        ComponentManager.broadcast("clickstream.category.change",  {
+            category: this.gameCategories.getCategoryNameByAlias(activeCategory),
+        });
+
     }
 
     /**
@@ -430,6 +473,11 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                     window.location.hash = activeCategory;
                 }
                 ComponentManager.broadcast("category.change");
+                ComponentManager.broadcast("clickstream.category.change",  {
+                    category: this.gameCategories.getCategoryNameByAlias(activeCategory),
+                    product: ComponentManager.getAttribute("product"),
+                });
+
                 this.highlightMenu();
             }
         });
@@ -523,7 +571,14 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 const el = utility.hasClass(data.src, "game-list", true);
                 if (el) {
                     const gameCode = el.getAttribute("data-game-code");
+                    const category = this.gameCategories.getActiveCategory();
                     this.setRecentlyPlayedGame(gameCode);
+                    ComponentManager.broadcast("clickstream.game.launch", {
+                        srcEl: data.src,
+                        category: this.gameCategories.getCategoryNameByAlias(category),
+                        product: ComponentManager.getAttribute("product"),
+                        response: data.response,
+                    });
                 }
             }
         });
@@ -668,7 +723,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private refreshResponse() {
         this.response = undefined;
         this.generateLobby(() => {
-            this.setLobby();
+            this.setLobby(false);
         });
     }
 

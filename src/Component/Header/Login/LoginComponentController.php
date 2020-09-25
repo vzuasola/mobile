@@ -66,6 +66,11 @@ class LoginComponentController
                 $data['hash'] = md5($this->playerSession->getToken());
                 $data['token'] = $this->playerSession->getToken();
                 $data['matrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
+                $data['user'] = [
+                    'playerId' =>  $this->playerSession->getDetails()['playerId'] ?? '',
+                    'currency' =>  $this->playerSession->getDetails()['currency'] ?? '',
+                    'country' => $request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '',
+                ];
             } catch (\Exception $e) {
                 if ($e instanceof AccountLockedException) {
                     $response = $response->withStatus(403);

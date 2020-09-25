@@ -38,6 +38,7 @@ export class LazyLoader {
             configs: this.configs,
             isAllGames: activeTab === "all-games",
             favorites: favoritesList,
+            offset: this.currentBatch,
         });
 
         if (gameContainer) {
@@ -68,6 +69,7 @@ export class LazyLoader {
                     configs: this.configs,
                     isAllGames: this.activeTab === "all-games",
                     favorites: this.favorites,
+                    offset: this.currentBatch * 12,
                 });
                 this.showItems(template, gameLoader, gameContainer);
             }

@@ -27,6 +27,19 @@ export class LobbySliderComponent implements ComponentInterface {
             });
             return markup.banner_blurb.replace("{ribbon}", ribbon);
         });
+
+        Handlebars.registerHelper("incVar", (varName, options) => {
+            if (typeof options.data.root[varName] === "undefined") {
+                options.data.root[varName] = 0;
+            } else {
+                options.data.root[varName] = options.data.root[varName] + 1;
+            }
+        });
+
+        Handlebars.registerHelper("getVar", (varName, options) => {
+            return typeof options.data.root[varName] !== "undefined" ?
+                options.data.root[varName] : "";
+        });
     }
 
     onLoad(element: HTMLElement, attachments: {}) {
