@@ -84,8 +84,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         if (enableClickStream) {
             this.graphyteAi = new GraphyteClickStream(
                 ComponentManager.getAttribute("product"),
-                document.title,
-                window.location.href,
             );
             this.graphyteAi.handleOnLoad(this.element, this.attachments);
         }
@@ -120,8 +118,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             if (enableClickStream) {
                 this.graphyteAi = new GraphyteClickStream(
                     ComponentManager.getAttribute("product"),
-                    document.title,
-                    window.location.href,
                 );
                 this.graphyteAi.handleOnReLoad(element, attachments);
             }
@@ -184,6 +180,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             ComponentManager.broadcast("clickstream.category.change",  {
                 category: this.gameCategories.getCategoryNameByAlias(activeCategory),
                 product: ComponentManager.getAttribute("product"),
+                title: document.title,
+                url: window.location.href,
             });
         }
 
@@ -361,6 +359,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
 
         ComponentManager.broadcast("clickstream.category.change",  {
             category: this.gameCategories.getCategoryNameByAlias(activeCategory),
+            title: document.title,
+            url: window.location.href,
         });
 
     }
@@ -478,6 +478,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 ComponentManager.broadcast("clickstream.category.change",  {
                     category: this.gameCategories.getCategoryNameByAlias(activeCategory),
                     product: ComponentManager.getAttribute("product"),
+                    title: document.title,
+                    url: window.location.href,
                 });
 
                 this.highlightMenu();
