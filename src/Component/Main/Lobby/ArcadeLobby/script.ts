@@ -49,6 +49,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         product: any[],
         pagerConfig: any[],
         configs: any[],
+        user,
     }) {
         this.response = undefined;
         this.element = element;
@@ -97,6 +98,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         product: any[],
         pagerConfig: any[],
         configs,
+        user,
     }) {
         const enableClickStream = (attachments.configs.hasOwnProperty("enable_clickstream")) ?
             attachments.configs.enable_clickstream : false;

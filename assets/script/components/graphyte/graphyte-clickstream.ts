@@ -27,8 +27,16 @@ export class GraphyteClickStream {
         this.product = product;
     }
 
-    handleOnLoad(element: HTMLElement, attachments: {} ) {
-        GraphyteLib();
+    handleOnLoad(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        user,
+        configs,
+    } ) {
+        GraphyteLib({
+            asset: attachments.configs.asset,
+            apiKey: attachments.configs.api_key,
+            brandKey: attachments.configs.brand_key,
+        });
         this.element = element;
         this.attachments = attachments;
         this.isLogin = this.attachments.authenticated;
@@ -39,9 +47,17 @@ export class GraphyteClickStream {
         this.listenOnGameLaunch();
     }
 
-    handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    handleOnReLoad(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        user,
+        configs,
+    }) {
         if (!this.element) {
-            GraphyteLib();
+            GraphyteLib({
+                asset: attachments.configs.asset,
+                apiKey: attachments.configs.api_key,
+                brandKey: attachments.configs.brand_key,
+            });
             this.listenOnLogin();
             this.listenOnLogout();
             this.listenOnCategoryChange();

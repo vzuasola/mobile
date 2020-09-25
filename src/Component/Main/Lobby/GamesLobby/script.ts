@@ -75,6 +75,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             configs: any[],
             pagerConfig: any[],
             infinite_scroll: boolean,
+            user,
         }) {
         this.response = null;
         this.element = element;
@@ -136,6 +137,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             configs: any[],
             pagerConfig: any[],
             infinite_scroll: boolean,
+            user,
         }) {
         /* tslint:disable:no-string-literal */
         const enableClickStream = (attachments.configs.hasOwnProperty("enable_clickstream")) ?
