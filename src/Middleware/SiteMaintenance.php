@@ -60,7 +60,7 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
     public function __construct(ContainerInterface $container)
     {
         $this->handler = $container->get('handler');
-        $this->configs = $container->get('config_fetcher')->getGeneralConfigById('webcomposer_site_maintenance');
+        $this->configs = $container->get('config_fetcher')->withProduct('mobile-entrypage');
         $this->playerSession = $container->get('player_session');
         $this->paymentAccount = $container->get('accounts_service');
         $this->preference = $container->get('preferences_fetcher');
@@ -79,11 +79,12 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
         try {
             $this->getProduct($request);
             if (in_array($this->product, self::PRODUCTS)) {
-                $products = explode("\r\n", $this->configs['product_list']);
+                $umConfig = $this->configs->getGeneralConfigById('webcomposer_site_maintenance');
+                $products = explode("\r\n", $umConfig['product_list']);
 
                 $dates = [
-                    'field_publish_date' => $this->configs['maintenance_publish_date_' . $this->product] ?? '',
-                    'field_unpublish_date' => $this->configs['maintenance_unpublish_date_' . $this->product] ?? '',
+                    'field_publish_date' => $umConfig['maintenance_publish_date_' . $this->product] ?? '',
+                    'field_unpublish_date' => $umConfig['maintenance_unpublish_date_' . $this->product] ?? '',
                 ];
                 // If the player tried to access casino-gold
                 if ($this->product === "mobile-casino-gold") {

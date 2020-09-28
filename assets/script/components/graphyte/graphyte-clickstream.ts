@@ -12,8 +12,6 @@ export class GraphyteClickStream {
     private isLogin: boolean = false;
     private attachments;
     private element: any;
-    private title: string;
-    private url: string;
     private product: string;
     private user: {
         playerId: string,
@@ -21,14 +19,20 @@ export class GraphyteClickStream {
         country: string,
     };
 
-    constructor(product, title, url) {
-        this.title = title;
-        this.url = url;
+    constructor(product) {
         this.product = product;
     }
 
-    handleOnLoad(element: HTMLElement, attachments: {} ) {
-        GraphyteLib();
+    handleOnLoad(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        user,
+        configs,
+    } ) {
+        GraphyteLib({
+            asset: attachments.configs.asset,
+            apiKey: attachments.configs.api_key,
+            brandKey: attachments.configs.brand_key,
+        });
         this.element = element;
         this.attachments = attachments;
         this.isLogin = this.attachments.authenticated;
@@ -39,9 +43,17 @@ export class GraphyteClickStream {
         this.listenOnGameLaunch();
     }
 
-    handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    handleOnReLoad(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        user,
+        configs,
+    }) {
         if (!this.element) {
-            GraphyteLib();
+            GraphyteLib({
+                asset: attachments.configs.asset,
+                apiKey: attachments.configs.api_key,
+                brandKey: attachments.configs.brand_key,
+            });
             this.listenOnLogin();
             this.listenOnLogout();
             this.listenOnCategoryChange();
@@ -82,7 +94,7 @@ export class GraphyteClickStream {
     private listenOnCategoryChange() {
         ComponentManager.subscribe("clickstream.category.change", (event, src, data) => {
             if (this.isLogin && this.product === data.product) {
-                this.graphytePageView(data.category);
+                this.graphytePageView(data.category, data.title, data.url);
             }
         });
 
@@ -147,13 +159,13 @@ export class GraphyteClickStream {
      * Sends data to graphyte for page view events
      * @param category
      */
-    private graphytePageView(category) {
+    private graphytePageView(category, title, url) {
         const event = new Date();
-        graphyte.page(category, this.title, {
+        graphyte.page(category, title, {
             event_name: "PAGE_VIEW",
             event_type: "browse",
             event_datetime: event.toISOString(),
-            event_info_1: this.url,
+            event_info_1: url,
             event_info_2: "",
             event_info_3: ComponentManager.getAttribute("language"),
             userId: this.user.playerId,
