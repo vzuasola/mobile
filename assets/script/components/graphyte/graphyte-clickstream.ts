@@ -29,9 +29,9 @@ export class GraphyteClickStream {
         configs,
     } ) {
         GraphyteLib({
-            asset: attachments.configs.asset,
-            apiKey: attachments.configs.api_key,
-            brandKey: attachments.configs.brand_key,
+            asset: attachments.configs.graphyte.clickStream.asset,
+            apiKey: attachments.configs.graphyte.apiKey,
+            brandKey: attachments.configs.graphyte.brandKey,
         });
         this.element = element;
         this.attachments = attachments;
@@ -50,9 +50,9 @@ export class GraphyteClickStream {
     }) {
         if (!this.element) {
             GraphyteLib({
-                asset: attachments.configs.asset,
-                apiKey: attachments.configs.api_key,
-                brandKey: attachments.configs.brand_key,
+                asset: attachments.configs.graphyte.click_stream_asset,
+                apiKey: attachments.configs.graphyte.api_key,
+                brandKey: attachments.configs.graphyte.brand_key,
             });
             this.listenOnLogin();
             this.listenOnLogout();
