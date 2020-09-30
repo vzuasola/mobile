@@ -63,8 +63,6 @@ export class GraphyteRecommends {
                 this.pagePromises.push(key);
             }
         }
-        console.log(requestsObj);
-
         return requestsObj;
     }
 
