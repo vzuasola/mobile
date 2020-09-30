@@ -70,7 +70,6 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
                     'categories' => $this->getCategories($graphyteConfigs),
                 ],
             ];
-
         } catch (\Exception $e) {
             $gtsGeneralConfig['graphyte'] = [];
         }

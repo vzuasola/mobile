@@ -80,7 +80,6 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
                     'categories' => $this->getCategories($graphyteConfigs),
                 ],
             ];
-
         } catch (\Exception $e) {
             $arcadeConfigs['graphyte'] = [];
         }
