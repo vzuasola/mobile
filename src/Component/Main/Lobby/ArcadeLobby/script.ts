@@ -35,6 +35,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private graphyteAi: GraphyteClickStream;
     private graphyteRecommends: GraphyteRecommends;
     private productMenu: string = "product-arcade";
+    private recommendationAlias: any = [];
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -438,7 +439,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.response["games"]["graphyte-recommended"].forEach((recommendedResponse, key) => {
                 const filterCategory = this.response.categories.find((cat) => parseInt(cat.tid, 10) === key);
                 if (filterCategory.hasOwnProperty("field_games_alias")) {
-                    gamesList[filterCategory.field_game_alias] = this.graphyteRecommends
+                    this.recommendationAlias.push(filterCategory.field_games_alias);
+                    gamesList[filterCategory.field_games_alias] = this.graphyteRecommends
                     .getRecommendedByCategory(recommendedResponse, allGames);
                 }
             });
@@ -454,6 +456,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private sortGamesByGamesCollection(gamesList) {
         const sortedGamesList: any = [];
         const exempFromSort: any = ["favorites", "recently-played", "recommended-games"];
+        if (this.recommendationAlias.length > 1) {
+            exempFromSort.concat(exempFromSort, this.recommendationAlias);
+        }
 
         for (const category of Object.keys(gamesList)) {
             if (gamesList.hasOwnProperty(category) && exempFromSort.indexOf(category) === -1) {

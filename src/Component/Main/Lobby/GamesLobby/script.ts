@@ -434,7 +434,7 @@ export class GamesLobbyComponent implements ComponentInterface {
 
                         // clone respone object
                         const newResponse = Object.assign({}, mergeResponse);
-                        console.log(newResponse.games);
+
                         newResponse.games = this.getCategoryGames(newResponse);
                         newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
                         newResponse.games = this.groupGamesByContainer(newResponse.games);
@@ -1091,18 +1091,18 @@ export class GamesLobbyComponent implements ComponentInterface {
         gamesList["favorites"] = response.games["favorites"];
         gamesList["recently-played"] = response.games["recently-played"];
         gamesList["all-games"] = response.games["all-games"];
-        // recommended games from graphyte
+        gamesList = this.doSortCategoryGames(response, gamesList);
+        // get recommended games from graphyte last, so that sort will not be changed by collection sort
         if (response["games"].hasOwnProperty("graphyte-recommended")) {
             response["games"]["graphyte-recommended"].forEach((recommendedResponse, key) => {
                 const filterCategory = response.categories.find((cat) => parseInt(cat.tid, 10) === key);
                 if (filterCategory.hasOwnProperty("field_games_alias")) {
-                    gamesList[filterCategory.field_game_alias] = this.graphyteRecommends
-                    .getRecommendedByCategory(recommendedResponse, allGames);
+                    gamesList[filterCategory.field_games_alias] = this.graphyteRecommends
+                        .getRecommendedByCategory(recommendedResponse, allGames);
                 }
             });
         }
         response.games = gamesList;
-        gamesList = this.doSortCategoryGames(response, gamesList);
         /* tslint:enable:no-string-literal */
 
         return gamesList;

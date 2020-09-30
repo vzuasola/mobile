@@ -9,6 +9,11 @@ export class GraphyteClickStream {
         "mobile-arcade",
         "mobile-games",
     ];
+
+    private productMapping = {
+        "mobile-arcade": "arcade",
+        "mobile-games": "games",
+    };
     private isLogin: boolean = false;
     private attachments;
     private element: any;
@@ -143,7 +148,7 @@ export class GraphyteClickStream {
             event_datetime: event.toISOString(),
             event_info_1: srcEl.getAttribute("data-game-code"),
             event_info_2: srcEl.getAttribute("data-game-title"),
-            event_info_3: this.product,
+            event_info_3: this.productMapping[this.product],
             userId: this.user.playerId,
             event_platform: "mobile",
             event_language: ComponentManager.getAttribute("language"),

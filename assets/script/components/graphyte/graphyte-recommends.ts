@@ -18,8 +18,6 @@ export class GraphyteRecommends {
     };
 
     constructor(attachments) {
-        console.log("init: recommends");
-        console.log(attachments);
         this.attachments = attachments;
         this.isLogin = this.attachments.authenticated;
         this.graphyteConfigs = this.attachments.configs.graphyte;
@@ -65,6 +63,7 @@ export class GraphyteRecommends {
                 this.pagePromises.push(key);
             }
         }
+        console.log(requestsObj);
 
         return requestsObj;
     }
@@ -74,15 +73,26 @@ export class GraphyteRecommends {
     }
 
     getRecommendedByCategory(recommendResponse, gamesList) {
-        const recommendedGames = [];
+        let recommendedGames = [];
         if (recommendResponse.recommendation.hasOwnProperty("result")) {
             recommendResponse.recommendation.result.forEach((resultItem, key) => {
                 if (gamesList.hasOwnProperty("id:" + resultItem.game.game_code)) {
+                    gamesList["id:" + resultItem.game.game_code].rank = resultItem.game.rank;
                     recommendedGames.push(gamesList["id:" + resultItem.game.game_code]);
                 }
             });
         }
-        console.log(recommendedGames);
+
+        if (recommendedGames.length > 0) {
+            recommendedGames = this.sortByRank(recommendedGames);
+        }
+        return recommendedGames;
+    }
+
+    private sortByRank(recommendedGames) {
+        recommendedGames.sort((a, b) => {
+            return a.rank - b.rank;
+        });
         return recommendedGames;
     }
 }
