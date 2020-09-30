@@ -291,7 +291,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         promises.push("fav");
         promises.push("games-collection");
         const recommendsPromises =  this.graphyteRecommends.getPagePromises();
-        if (recommendsPromises.length) {
+        if (typeof recommendsPromises !== "undefined" && recommendsPromises.length) {
             promises = promises.concat(recommendsPromises);
         }
         return promises;
@@ -305,6 +305,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         const promises: any = {
             games: {},
         };
+        const recommendResponses = [];
         const recommendsPromises = this.graphyteRecommends.getPagePromises();
         const gamesList = {
             "all-games": {},
@@ -338,7 +339,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 ? this.getGamesDefinition(responses["games-collection"]["recommended-games"], gamesList["all-games"])
                 : [];
         }
-        const recommendResponses = [];
+
         for (const recommendPromise of recommendsPromises) {
             if (responses.hasOwnProperty(recommendPromise)) {
                 if (!recommendResponses.hasOwnProperty(recommendPromise)) {
@@ -435,9 +436,11 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         // recommended games from graphyte
         if (this.response["games"].hasOwnProperty("graphyte-recommended")) {
             this.response["games"]["graphyte-recommended"].forEach((recommendedResponse, key) => {
-                const category = this.response.categories.filter((cat) => cat.tid === key);
-                gamesList["foryou"] = this.graphyteRecommends
+                const filterCategory = this.response.categories.find((cat) => parseInt(cat.tid, 10) === key);
+                if (filterCategory.hasOwnProperty("field_games_alias")) {
+                    gamesList[filterCategory.field_game_alias] = this.graphyteRecommends
                     .getRecommendedByCategory(recommendedResponse, allGames);
+                }
             });
         }
 

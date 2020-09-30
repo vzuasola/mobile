@@ -3,6 +3,10 @@ import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
  *
  */
 export class GraphyteRecommends {
+    private productMapping = {
+        "mobile-arcade": "arcade",
+        "mobile-games": "games",
+    };
     private graphyteConfigs;
     private isLogin: boolean = false;
     private attachments;
@@ -15,6 +19,7 @@ export class GraphyteRecommends {
 
     constructor(attachments) {
         console.log("init: recommends");
+        console.log(attachments);
         this.attachments = attachments;
         this.isLogin = this.attachments.authenticated;
         this.graphyteConfigs = this.attachments.configs.graphyte;
@@ -24,12 +29,13 @@ export class GraphyteRecommends {
     getRecommendsRequest() {
         const requestsObj = {};
         this.pagePromises = [];
-        if (this.graphyteConfigs.enabled &&
+        if (this.isLogin && this.graphyteConfigs.enabled &&
             this.graphyteConfigs.recommend.api && this.graphyteConfigs.recommend.categories) {
+            const productMap = this.productMapping[ComponentManager.getAttribute("product")];
             const data = JSON.stringify({
                 context: {
-                    product: ComponentManager.getAttribute("product"),
-                    category: ComponentManager.getAttribute("product"),
+                    product: productMap,
+                    category: productMap,
                     channel: "mobile",
                 },
                 userId: this.user.playerId,
@@ -76,6 +82,7 @@ export class GraphyteRecommends {
                 }
             });
         }
+        console.log(recommendedGames);
         return recommendedGames;
     }
 }
