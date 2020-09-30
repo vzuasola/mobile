@@ -2977,11 +2977,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-working",
+            "version": "dev-release-v1.199.2",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "4dfb6da20377ae4ef908301a04f411e71e928720"
+                "reference": "b900367abd03f7cd855b358bb0e5b42b934cbc6d"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",

@@ -10,10 +10,12 @@ use App\MobileEntry\Services\Product\Products;
  */
 class GamesLobbyComponentScripts implements ComponentAttachmentInterface
 {
+    const PRODUCT = 'games';
     private $configs;
     private $playerSession;
     private $product;
     private $views;
+    private $request;
 
     /**
      *
@@ -24,19 +26,21 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
             $container->get('player_session'),
             $container->get('config_fetcher'),
             $container->get('product_resolver'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('request')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $configs, $product, $views)
+    public function __construct($playerSession, $configs, $product, $views, $request)
     {
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
         $this->views = $views->withProduct($product->getProduct());
+        $this->request = $request;
     }
 
     /**
@@ -52,8 +56,33 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
             $config = [];
         }
 
+        try {
+            $graphyteConfigs = $this->configs->getConfig('webcomposer_graphyte.integration_config');
+            $gtsGeneralConfig['graphyte'] = [
+                'enabled' => (boolean) $graphyteConfigs['enable'],
+                'apiKey' => $graphyteConfigs['api_key'],
+                'brandKey' => $graphyteConfigs['brand_key'],
+                'clickStream' => [
+                    'asset' => $graphyteConfigs['click_stream_asset'],
+                ],
+                'recommend' => [
+                    'api' => $graphyteConfigs['recommend_api_domain'],
+                    'categories' => $this->getCategories($graphyteConfigs),
+                ],
+            ];
+        } catch (\Exception $e) {
+            $gtsGeneralConfig['graphyte'] = [];
+        }
+
+        $user = [
+            'playerId' =>  $this->playerSession->getDetails()['playerId'] ?? '',
+            'currency' =>  $this->playerSession->getDetails()['currency'] ?? '',
+            'country' => $this->request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '',
+        ];
+
         return [
             'authenticated' => $this->playerSession->isLogin(),
+            'user' => $user,
             'search_blurb' => $config['search_blurb'] ?? "",
             'search_no_result_msg' => $config['search_no_result_msg'] ?? "",
             'filter_no_result_msg' => $config['filter_no_result_msg'] ?? "",
@@ -66,6 +95,22 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
             'pagerConfig' => $pager ?? [],
             'infinite_scroll' => $gtsGeneralConfig['gts_lobby_infinite_scroll'] ?? true
         ];
+    }
+
+    private function getCategories($config)
+    {
+        $categoryData = [];
+        $categories = array_map('trim', explode(PHP_EOL, $config[self::PRODUCT . '_category_list'] ?? ''));
+        foreach ($categories as $category) {
+            $categoryKey = strtolower($category);
+            $categoryKey = str_replace(' ', '', $categoryKey);
+            $categoryData[] = [
+                'placementKey' => $config[self::PRODUCT . '_' . $categoryKey . '_placement_key'] ?? '',
+                'categoryId' => $config[self::PRODUCT . '_' . $categoryKey . '_category_id'] ?? '',
+            ];
+        }
+
+        return $categoryData;
     }
 
     private function getProductIntegration()

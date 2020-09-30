@@ -87,7 +87,7 @@ export class GamesCategory {
     getActiveCategory() {
         const hash = utility.getHash(window.location.href);
 
-        if (this.games.hasOwnProperty(hash)
+        if (typeof this.games !== "undefined" && this.games.hasOwnProperty(hash)
             && this.games[hash].length > 0) {
             return hash;
         }
