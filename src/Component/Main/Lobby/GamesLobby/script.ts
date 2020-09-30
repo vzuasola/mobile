@@ -140,8 +140,8 @@ export class GamesLobbyComponent implements ComponentInterface {
             infinite_scroll: boolean,
             user,
         }) {
-        const enableClickStream = (attachments.configs.graphyte.hasOwnProperty("enable")) ?
-            attachments.configs.graphyte.enable : false;
+        const enableClickStream = (attachments.configs.graphyte.hasOwnProperty("enabled")) ?
+            attachments.configs.graphyte.enabled : false;
         this.graphyteRecommends = new GraphyteRecommends(attachments);
         if (!this.element) {
             this.listenChangeCategory();

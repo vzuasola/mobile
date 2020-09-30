@@ -101,8 +101,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         configs,
         user,
     }) {
-        const enableClickStream = (attachments.configs.graphyte.hasOwnProperty("enable")) ?
-            attachments.configs.graphyte.enable : false;
+        const enableClickStream = (attachments.configs.graphyte.hasOwnProperty("enabled")) ?
+            attachments.configs.graphyte.enabled : false;
         this.graphyteRecommends = new GraphyteRecommends(attachments);
         if (!this.element) {
             this.listenHashChange();
