@@ -450,6 +450,9 @@ export class GamesLobbyComponent implements ComponentInterface {
                         }
                     });
                 }).fail((error, message) => {
+                    this.checkPromiseState(promises, id, () => {
+                        // placeholder;
+                    });
                     console.log(error);
                 });
             }

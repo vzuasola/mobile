@@ -230,6 +230,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                         }
                     });
                 }).fail((error, message) => {
+                    this.checkPromiseState(promises, id, () => {
+                        // placeholder;
+                    });
                     console.log(error);
                 });
             }
