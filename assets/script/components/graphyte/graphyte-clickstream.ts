@@ -100,7 +100,6 @@ export class GraphyteClickStream {
         ComponentManager.subscribe("clickstream.category.change", (event, src, data) => {
             if (this.isLogin && this.attachments.configs.graphyte.enabled
                     && this.product === data.product) {
-                console.log("page view");
                 this.graphytePageView(data.category, data.title, data.url);
             }
         });
