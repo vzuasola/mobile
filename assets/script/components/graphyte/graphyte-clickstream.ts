@@ -66,7 +66,6 @@ export class GraphyteClickStream {
         }
         this.element = element;
         this.attachments = attachments;
-        this.attachments = attachments;
         this.isLogin = this.attachments.authenticated;
         this.user = this.attachments.user;
     }
@@ -78,7 +77,8 @@ export class GraphyteClickStream {
         ComponentManager.subscribe("session.login", (event, src, data) => {
             this.isLogin = true;
             this.user = data.response.user;
-            if (this.products.includes(ComponentManager.getAttribute("product"))) {
+            if (this.products.includes(ComponentManager.getAttribute("product"))
+                && this.attachments.configs.graphyte.enabled) {
                 this.graphyteIdentify(this.user.playerId);
             }
         });
@@ -98,7 +98,9 @@ export class GraphyteClickStream {
      */
     private listenOnCategoryChange() {
         ComponentManager.subscribe("clickstream.category.change", (event, src, data) => {
-            if (this.isLogin && this.product === data.product) {
+            if (this.isLogin && this.attachments.configs.graphyte.enabled
+                    && this.product === data.product) {
+                console.log("page view");
                 this.graphytePageView(data.category, data.title, data.url);
             }
         });
@@ -116,7 +118,8 @@ export class GraphyteClickStream {
                 this.isLogin = true;
                 this.user = data.response.user;
             }
-            if (this.isLogin && this.product === data.product) {
+            if (this.isLogin && this.attachments.configs.graphyte.enabled
+                && this.product === data.product) {
                 this.graphyteTrack(data.srcEl, data.category);
             }
         });

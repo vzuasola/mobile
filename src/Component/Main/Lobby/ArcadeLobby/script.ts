@@ -126,6 +126,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             }
 
         }
+
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
@@ -438,7 +439,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         if (this.response["games"].hasOwnProperty("graphyte-recommended")) {
             this.response["games"]["graphyte-recommended"].forEach((recommendedResponse, key) => {
                 const filterCategory = this.response.categories.find((cat) => parseInt(cat.tid, 10) === key);
-                if (filterCategory.hasOwnProperty("field_games_alias")) {
+                if (typeof filterCategory !== "undefined" &&
+                    filterCategory.hasOwnProperty("field_games_alias")) {
                     this.recommendationAlias.push(filterCategory.field_games_alias);
                     gamesList[filterCategory.field_games_alias] = this.graphyteRecommends
                     .getRecommendedByCategory(recommendedResponse, allGames);
