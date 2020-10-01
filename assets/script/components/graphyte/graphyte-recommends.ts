@@ -72,7 +72,8 @@ export class GraphyteRecommends {
 
     getRecommendedByCategory(recommendResponse, gamesList) {
         let recommendedGames = [];
-        if (recommendResponse.recommendation.hasOwnProperty("result")) {
+        if (typeof recommendResponse !== "undefined" &&
+            recommendResponse.recommendation.hasOwnProperty("result")) {
             recommendResponse.recommendation.result.forEach((resultItem, key) => {
                 if (gamesList.hasOwnProperty("id:" + resultItem.game.game_code)) {
                     gamesList["id:" + resultItem.game.game_code].rank = resultItem.game.rank;
@@ -84,6 +85,7 @@ export class GraphyteRecommends {
         if (recommendedGames.length > 0) {
             recommendedGames = this.sortByRank(recommendedGames);
         }
+
         return recommendedGames;
     }
 

@@ -450,6 +450,9 @@ export class GamesLobbyComponent implements ComponentInterface {
                         }
                     });
                 }).fail((error, message) => {
+                    this.checkPromiseState(promises, id, () => {
+                        // placeholder;
+                    });
                     console.log(error);
                 });
             }
@@ -640,7 +643,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                         category: this.getCategoryName(key),
                         product: ComponentManager.getAttribute("product"),
                         title: document.title,
-                        url: window.location.href,
+                        url: window.location.href + key,
                     });
                 }
             }
@@ -1096,7 +1099,8 @@ export class GamesLobbyComponent implements ComponentInterface {
         if (response["games"].hasOwnProperty("graphyte-recommended")) {
             response["games"]["graphyte-recommended"].forEach((recommendedResponse, key) => {
                 const filterCategory = response.categories.find((cat) => parseInt(cat.tid, 10) === key);
-                if (filterCategory.hasOwnProperty("field_games_alias")) {
+                if (typeof filterCategory !== "undefined" &&
+                    filterCategory.hasOwnProperty("field_games_alias")) {
                     gamesList[filterCategory.field_games_alias] = this.graphyteRecommends
                         .getRecommendedByCategory(recommendedResponse, allGames);
                 }

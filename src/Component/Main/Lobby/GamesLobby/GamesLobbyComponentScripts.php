@@ -59,14 +59,16 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
         try {
             $graphyteConfigs = $this->configs->getConfig('webcomposer_graphyte.integration_config');
             $gtsGeneralConfig['graphyte'] = [
-                'enabled' => (boolean) $graphyteConfigs['enable'],
-                'apiKey' => $graphyteConfigs['api_key'],
-                'brandKey' => $graphyteConfigs['brand_key'],
+                'enabled' => (boolean) $graphyteConfigs['enable'] ?? false,
+                'apiKey' => $graphyteConfigs['api_key'] ?? 'DaxFZkNNmk9V9ZuxabrPbHnQMezOqV23forASSta',
+                'brandKey' => $graphyteConfigs['brand_key'] ?? 'b1b2cf32-31f8-4b68-8ee6-90399f9eeab0',
                 'clickStream' => [
-                    'asset' => $graphyteConfigs['click_stream_asset'],
+                    'asset' => $graphyteConfigs['click_stream_asset'] ??
+                        'https://cdn.graphyte.ai/graphyte-apac.min.js',
                 ],
                 'recommend' => [
-                    'api' => $graphyteConfigs['recommend_api_domain'],
+                    'api' => $graphyteConfigs['recommend_api_domain'] ??
+                        'https://api-apac.graphyte.ai/recommend/v1/placements/{placementKey}/recommendations',
                     'categories' => $this->getCategories($graphyteConfigs),
                 ],
             ];
