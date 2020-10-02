@@ -460,9 +460,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private sortGamesByGamesCollection(gamesList) {
         const sortedGamesList: any = [];
-        const exempFromSort: any = ["favorites", "recently-played", "recommended-games"];
-        if (this.recommendationAlias.length > 1) {
-            exempFromSort.concat(exempFromSort, this.recommendationAlias);
+        let exempFromSort: any = ["favorites", "recently-played", "recommended-games"];
+        if (this.recommendationAlias.length >= 1) {
+            exempFromSort = exempFromSort.concat(this.recommendationAlias);
         }
 
         for (const category of Object.keys(gamesList)) {
