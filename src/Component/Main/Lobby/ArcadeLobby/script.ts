@@ -13,6 +13,7 @@ import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "@app/assets/script/components/games-filter";
 import {Marker} from "@app/assets/script/components/marker";
 import {GraphyteClickStream} from "@app/assets/script/components/graphyte/graphyte-clickstream";
+import {GraphyteRecommends} from "@app/assets/script/components/graphyte/graphyte-recommends";
 
 import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
 import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
@@ -32,7 +33,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private gamesSearch: GamesSearch;
     private gamesFilter: GamesFilter;
     private graphyteAi: GraphyteClickStream;
+    private graphyteRecommends: GraphyteRecommends;
     private productMenu: string = "product-arcade";
+    private recommendationAlias: any = [];
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -54,8 +57,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
-        const enableClickStream = (this.attachments.configs.hasOwnProperty("enable_clickstream")) ?
-            this.attachments.configs.enable_clickstream : false;
+        this.graphyteRecommends = new GraphyteRecommends(this.attachments);
+        const enableClickStream = (this.attachments.configs.graphyte.hasOwnProperty("enabled")) ?
+            this.attachments.configs.graphyte.enabled : false;
 
         this.gameCategories = new GamesCategory(
             this.attachments,
@@ -87,7 +91,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             );
             this.graphyteAi.handleOnLoad(this.element, this.attachments);
         }
-
         this.componentFinish();
     }
 
@@ -98,9 +101,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         configs,
         user,
     }) {
-        const enableClickStream = (attachments.configs.hasOwnProperty("enable_clickstream")) ?
-            attachments.configs.enable_clickstream : false;
-
+        const enableClickStream = (attachments.configs.graphyte.hasOwnProperty("enabled")) ?
+            attachments.configs.graphyte.enabled : false;
+        this.graphyteRecommends = new GraphyteRecommends(attachments);
         if (!this.element) {
             this.listenHashChange();
             this.listenProviderMoreEvent();
@@ -123,6 +126,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             }
 
         }
+
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
@@ -191,8 +195,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      * Request games lobby to games lobby component controller lobby method
      */
     private doRequest(callback) {
-        const promises = this.getPagerPromises();
         const lobbyRequests = this.createRequest();
+        const promises = this.getPagerPromises();
         const pageResponse: {} = {};
         for (const id in lobbyRequests) {
             if (lobbyRequests.hasOwnProperty(id)) {
@@ -201,12 +205,20 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 if (currentRequest.hasOwnProperty("page")) {
                     uri = utility.addQueryParam(uri, "page", currentRequest.page.toString());
                 }
-                xhr({
+
+                let xhrProp = {
                     url: uri,
                     type: "json",
-                }).then((response) => {
-                    pageResponse[id] = response;
+                };
 
+                if (currentRequest.hasOwnProperty("overrideXhrProp")) {
+                    xhrProp = currentRequest.overrideXhrProp;
+                }
+
+                xhr(
+                    xhrProp,
+                ).then((response) => {
+                    pageResponse[id] = response;
                     this.checkPromiseState(promises, id, () => {
                         const mergeResponse = this.mergeResponsePromises(pageResponse);
 
@@ -218,6 +230,9 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                         }
                     });
                 }).fail((error, message) => {
+                    this.checkPromiseState(promises, id, () => {
+                        // placeholder;
+                    });
                     console.log(error);
                 });
             }
@@ -229,6 +244,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private createRequest() {
         const req: any = {};
+        const recommendsReq = this.graphyteRecommends.getRecommendsRequest();
         for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
             req["pager" + page] = {
                 type: "lobby",
@@ -246,6 +262,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             type: "getGamesCollection",
         };
 
+        if (Object.keys(recommendsReq).length) {
+            Object.assign(req, recommendsReq);
+        }
+
         return req;
     }
 
@@ -258,6 +278,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         if (index > -1) {
             list.splice(index, 1);
         }
+
         if (list.length === 0) {
             fn();
         }
@@ -267,13 +288,17 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      * Return array of xhr request
      */
     private getPagerPromises() {
-        const promises = [];
+        let promises = [];
         for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
             promises.push("pager" + page);
         }
         promises.push("recent");
         promises.push("fav");
         promises.push("games-collection");
+        const recommendsPromises =  this.graphyteRecommends.getPagePromises();
+        if (typeof recommendsPromises !== "undefined" && recommendsPromises.length) {
+            promises = promises.concat(recommendsPromises);
+        }
         return promises;
     }
 
@@ -285,7 +310,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         const promises: any = {
             games: {},
         };
-
+        const recommendResponses = [];
+        const recommendsPromises = this.graphyteRecommends.getPagePromises();
         const gamesList = {
             "all-games": {},
             "favorites": {},
@@ -318,6 +344,16 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 ? this.getGamesDefinition(responses["games-collection"]["recommended-games"], gamesList["all-games"])
                 : [];
         }
+
+        for (const recommendPromise of recommendsPromises) {
+            if (responses.hasOwnProperty(recommendPromise)) {
+                if (!recommendResponses.hasOwnProperty(recommendPromise)) {
+                    recommendResponses[recommendPromise] = responses[recommendPromise];
+                }
+            }
+        }
+
+        gamesList["graphyte-recommended"] = recommendResponses;
         promises.games = gamesList;
         return promises;
     }
@@ -401,6 +437,20 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         gamesList["recently-played"] = this.response["games"]["recently-played"];
         gamesList["favorites"] = this.response["games"]["favorites"];
         gamesList["recommended-games"] = this.response["games"]["recommended-games"];
+
+        // recommended games from graphyte
+        if (this.response["games"].hasOwnProperty("graphyte-recommended")) {
+            this.response["games"]["graphyte-recommended"].forEach((recommendedResponse, key) => {
+                const filterCategory = this.response.categories.find((cat) => parseInt(cat.tid, 10) === key);
+                if (typeof filterCategory !== "undefined" &&
+                    filterCategory.hasOwnProperty("field_games_alias")) {
+                    this.recommendationAlias.push(filterCategory.field_games_alias);
+                    gamesList[filterCategory.field_games_alias] = this.graphyteRecommends
+                    .getRecommendedByCategory(recommendedResponse, allGames);
+                }
+            });
+        }
+
         return gamesList;
     }
 
@@ -410,7 +460,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
      */
     private sortGamesByGamesCollection(gamesList) {
         const sortedGamesList: any = [];
-        const exempFromSort: any = ["favorites", "recently-played", "recommended-games"];
+        let exempFromSort: any = ["favorites", "recently-played", "recommended-games"];
+        if (this.recommendationAlias.length >= 1) {
+            exempFromSort = exempFromSort.concat(this.recommendationAlias);
+        }
 
         for (const category of Object.keys(gamesList)) {
             if (gamesList.hasOwnProperty(category) && exempFromSort.indexOf(category) === -1) {

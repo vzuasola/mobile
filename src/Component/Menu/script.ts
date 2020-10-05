@@ -117,13 +117,13 @@ export class MenuComponent implements ComponentInterface {
         ComponentManager.subscribe("menu.update.router.component", (event, src, data) => {
             const home = this.element.querySelector(data.element);
             const promotion = this.element.querySelector(".quicklinks-promotions");
-            home.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
-            promotion.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
+            home.setAttribute("data-router-refresh", `["main", "tab_navigation", "language", "${data.val}"]`);
+            promotion.setAttribute("data-router-refresh", `["main", "tab_navigation", "language", "${data.val}"]`);
             if (this.isLogin) {
                 const password = this.element.querySelector(".quicklinks-change-password");
                 const account = this.element.querySelector(".quicklinks-my-account");
-                password.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
-                account.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
+                password.setAttribute("data-router-refresh", `["main", "tab_navigation", "language", "${data.val}"]`);
+                account.setAttribute("data-router-refresh", `["main", "tab_navigation", "language", "${data.val}"]`);
             }
         });
     }
@@ -131,7 +131,7 @@ export class MenuComponent implements ComponentInterface {
     private updateLogoRouter() {
         ComponentManager.subscribe("menu.update.logo.component", (event, src, data) => {
             const logo = this.element.querySelector(data.element);
-            logo.setAttribute("data-router-refresh", `["main", "tab_navigation", "${data.val}"]`);
+            logo.setAttribute("data-router-refresh", `["main", "tab_navigation", "language", "${data.val}"]`);
         });
     }
 

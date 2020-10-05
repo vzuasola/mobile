@@ -18,6 +18,7 @@ import Accordion from "@app/assets/script/components/accordion";
 export class DownloadComponent implements ComponentInterface {
     private element: HTMLElement;
     private downloadData: any;
+    private timer;
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getDownloads();
@@ -192,9 +193,23 @@ export class DownloadComponent implements ComponentInterface {
                 utility.addClass(this.element.querySelector(".half-width"), "hidden");
             }, 200);
 
-            setTimeout(() => {
+            this.timer = setTimeout(() => {
                 Modal.close("#download-lightbox");
+                utility.removeClass(this.element.querySelector(".half-width"), "hidden");
+                utility.addClass(this.element.querySelector(".full-width"), "hidden");
             }, 50000);
         }, true);
+
+        utility.listen(element, "click", (event, src) => {
+            if (utility.hasClass(src, "modal-overlay") || utility.hasClass(src, "modal-close")) {
+                if (this.timer !== null) {
+                    clearTimeout(this.timer);
+                }
+                setTimeout(() => {
+                    utility.removeClass(this.element.querySelector(".half-width"), "hidden");
+                    utility.addClass(this.element.querySelector(".full-width"), "hidden");
+                }, 200);
+            }
+        });
     }
 }
