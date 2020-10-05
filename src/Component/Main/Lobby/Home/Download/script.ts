@@ -180,6 +180,7 @@ export class DownloadComponent implements ComponentInterface {
                 Modal.open("#download-lightbox");
                 this.equalizeDownloadHeight();
                 this.equalizeDownloadButton();
+                this.resetModalClosed(this.element);
             }
         });
     }
@@ -194,7 +195,20 @@ export class DownloadComponent implements ComponentInterface {
 
             setTimeout(() => {
                 Modal.close("#download-lightbox");
+                utility.removeClass(this.element.querySelector(".half-width"), "hidden");
+                utility.addClass(this.element.querySelector(".full-width"), "hidden");
             }, 50000);
         }, true);
+    }
+
+    private resetModalClosed(element) {
+        utility.listen(element, "click", (event, src) => {
+            if (utility.hasClass(src, "modal-overlay") || utility.hasClass(src, "modal-close")) {
+                setTimeout(() => {
+                    utility.removeClass(this.element.querySelector(".half-width"), "hidden");
+                    utility.addClass(this.element.querySelector(".full-width"), "hidden");
+                }, 200);
+            }
+        });
     }
 }
