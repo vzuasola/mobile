@@ -643,7 +643,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                         category: this.getCategoryName(key),
                         product: ComponentManager.getAttribute("product"),
                         title: document.title,
-                        url: window.location.href + key,
+                        url: location.href.split(location.search || location.hash || /[#]/)[0] + "#" + key,
                     });
                 }
             }
