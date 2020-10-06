@@ -10,6 +10,7 @@ use App\MobileEntry\Services\Product\Products;
  */
 class GamesLobbyComponentScripts implements ComponentAttachmentInterface
 {
+    const PRODUCT = 'games';
     private $configs;
     private $playerSession;
     private $product;
@@ -55,6 +56,26 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
             $config = [];
         }
 
+        try {
+            $graphyteConfigs = $this->configs->getConfig('webcomposer_graphyte.integration_config');
+            $gtsGeneralConfig['graphyte'] = [
+                'enabled' => (boolean) $graphyteConfigs['enable'] ?? false,
+                'apiKey' => $graphyteConfigs['api_key'] ?? 'DaxFZkNNmk9V9ZuxabrPbHnQMezOqV23forASSta',
+                'brandKey' => $graphyteConfigs['brand_key'] ?? 'b1b2cf32-31f8-4b68-8ee6-90399f9eeab0',
+                'clickStream' => [
+                    'asset' => $graphyteConfigs['click_stream_asset'] ??
+                        'https://cdn.graphyte.ai/graphyte-apac.min.js',
+                ],
+                'recommend' => [
+                    'api' => $graphyteConfigs['recommend_api_domain'] ??
+                        'https://api-apac.graphyte.ai/recommend/v1/placements/{placementKey}/recommendations',
+                    'categories' => $this->getCategories($graphyteConfigs),
+                ],
+            ];
+        } catch (\Exception $e) {
+            $gtsGeneralConfig['graphyte'] = [];
+        }
+
         $user = [
             'playerId' =>  $this->playerSession->getDetails()['playerId'] ?? '',
             'currency' =>  $this->playerSession->getDetails()['currency'] ?? '',
@@ -76,6 +97,22 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
             'pagerConfig' => $pager ?? [],
             'infinite_scroll' => $gtsGeneralConfig['gts_lobby_infinite_scroll'] ?? true
         ];
+    }
+
+    private function getCategories($config)
+    {
+        $categoryData = [];
+        $categories = array_map('trim', explode(PHP_EOL, $config[self::PRODUCT . '_category_list'] ?? ''));
+        foreach ($categories as $category) {
+            $categoryKey = strtolower($category);
+            $categoryKey = str_replace(' ', '', $categoryKey);
+            $categoryData[] = [
+                'placementKey' => $config[self::PRODUCT . '_' . $categoryKey . '_placement_key'] ?? '',
+                'categoryId' => $config[self::PRODUCT . '_' . $categoryKey . '_category_id'] ?? '',
+            ];
+        }
+
+        return $categoryData;
     }
 
     private function getProductIntegration()

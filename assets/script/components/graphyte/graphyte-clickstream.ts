@@ -9,6 +9,11 @@ export class GraphyteClickStream {
         "mobile-arcade",
         "mobile-games",
     ];
+
+    private productMapping = {
+        "mobile-arcade": "arcade",
+        "mobile-games": "games",
+    };
     private isLogin: boolean = false;
     private attachments;
     private element: any;
@@ -29,9 +34,9 @@ export class GraphyteClickStream {
         configs,
     } ) {
         GraphyteLib({
-            asset: attachments.configs.asset,
-            apiKey: attachments.configs.api_key,
-            brandKey: attachments.configs.brand_key,
+            asset: attachments.configs.graphyte.clickStream.asset,
+            apiKey: attachments.configs.graphyte.apiKey,
+            brandKey: attachments.configs.graphyte.brandKey,
         });
         this.element = element;
         this.attachments = attachments;
@@ -50,9 +55,9 @@ export class GraphyteClickStream {
     }) {
         if (!this.element) {
             GraphyteLib({
-                asset: attachments.configs.asset,
-                apiKey: attachments.configs.api_key,
-                brandKey: attachments.configs.brand_key,
+                asset: attachments.configs.graphyte.clickStream.asset,
+                apiKey: attachments.configs.graphyte.apiKey,
+                brandKey: attachments.configs.graphyte.brandKey,
             });
             this.listenOnLogin();
             this.listenOnLogout();
@@ -60,7 +65,6 @@ export class GraphyteClickStream {
             this.listenOnGameLaunch();
         }
         this.element = element;
-        this.attachments = attachments;
         this.attachments = attachments;
         this.isLogin = this.attachments.authenticated;
         this.user = this.attachments.user;
@@ -73,7 +77,8 @@ export class GraphyteClickStream {
         ComponentManager.subscribe("session.login", (event, src, data) => {
             this.isLogin = true;
             this.user = data.response.user;
-            if (this.products.includes(ComponentManager.getAttribute("product"))) {
+            if (this.products.includes(ComponentManager.getAttribute("product"))
+                && this.attachments.configs.graphyte.enabled) {
                 this.graphyteIdentify(this.user.playerId);
             }
         });
@@ -93,7 +98,8 @@ export class GraphyteClickStream {
      */
     private listenOnCategoryChange() {
         ComponentManager.subscribe("clickstream.category.change", (event, src, data) => {
-            if (this.isLogin && this.product === data.product) {
+            if (this.isLogin && this.attachments.configs.graphyte.enabled
+                    && this.product === data.product) {
                 this.graphytePageView(data.category, data.title, data.url);
             }
         });
@@ -111,7 +117,8 @@ export class GraphyteClickStream {
                 this.isLogin = true;
                 this.user = data.response.user;
             }
-            if (this.isLogin && this.product === data.product) {
+            if (this.isLogin && this.attachments.configs.graphyte.enabled
+                && this.product === data.product) {
                 this.graphyteTrack(data.srcEl, data.category);
             }
         });
@@ -143,7 +150,7 @@ export class GraphyteClickStream {
             event_datetime: event.toISOString(),
             event_info_1: srcEl.getAttribute("data-game-code"),
             event_info_2: srcEl.getAttribute("data-game-title"),
-            event_info_3: this.product,
+            event_info_3: this.productMapping[this.product],
             userId: this.user.playerId,
             event_platform: "mobile",
             event_language: ComponentManager.getAttribute("language"),
