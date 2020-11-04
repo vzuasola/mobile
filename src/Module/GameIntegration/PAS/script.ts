@@ -537,6 +537,12 @@ export class PASModule implements ModuleInterface, GameInterface {
                 const promise = () => {
                     return new Promise((resolve, reject) => {
                         setTimeout(() => {
+                            if (typeof(iapiConf) === "undefined") {
+                                // iapiConf is not defined,
+                                // it is possible that the player did not launch any PT game.
+                                // therefore, there is no reason for the player to logout on provider
+                                return;
+                            }
                             iapiConf = this.iapiConfs[key];
                             // Set the callback for the PAS login
                             iapiSetCallout("Logout", (response) => {
