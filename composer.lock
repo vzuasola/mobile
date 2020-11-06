@@ -2981,7 +2981,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "b900367abd03f7cd855b358bb0e5b42b934cbc6d"
+                "reference": "868a71ac059d28d4eecf2c2c2d07800397c10243"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
