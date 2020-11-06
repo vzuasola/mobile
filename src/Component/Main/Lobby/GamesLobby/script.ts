@@ -251,6 +251,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         if (index > -1) {
             list.splice(index, 1);
         }
+
         if (list.length === 0) {
             fn();
         }
@@ -430,32 +431,35 @@ export class GamesLobbyComponent implements ComponentInterface {
                     pageResponse[id] = response;
 
                     this.checkPromiseState(promises, id, () => {
-                        const mergeResponse = this.mergeResponsePromises(pageResponse);
-
-                        // clone respone object
-                        const newResponse = Object.assign({}, mergeResponse);
-
-                        newResponse.games = this.getCategoryGames(newResponse);
-                        newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
-                        newResponse.games = this.groupGamesByContainer(newResponse.games);
-                        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
-                        if (pageResponse.hasOwnProperty("fav")) {
-                            const key = "fav";
-                            const favoritesList = pageResponse[key];
-                            newResponse.favorite_list = this.getFavoritesList(favoritesList);
-                        }
-                        this.response = newResponse;
-                        if (callback) {
-                            callback();
-                        }
+                        this.setResponse(pageResponse, callback);
                     });
                 }).fail((error, message) => {
                     this.checkPromiseState(promises, id, () => {
-                        // placeholder;
+                        this.setResponse(pageResponse, callback);
                     });
-                    console.log(error);
                 });
             }
+        }
+    }
+
+    private setResponse(pageResponse, callback) {
+        const mergeResponse = this.mergeResponsePromises(pageResponse);
+
+        // clone respone object
+        const newResponse = Object.assign({}, mergeResponse);
+
+        newResponse.games = this.getCategoryGames(newResponse);
+        newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
+        newResponse.games = this.groupGamesByContainer(newResponse.games);
+        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
+        if (pageResponse.hasOwnProperty("fav")) {
+            const key = "fav";
+            const favoritesList = pageResponse[key];
+            newResponse.favorite_list = this.getFavoritesList(favoritesList);
+        }
+        this.response = newResponse;
+        if (callback) {
+            callback();
         }
     }
 
