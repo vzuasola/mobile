@@ -187,9 +187,7 @@ class ALSIntegrationModuleController
             }
         }
 
-        if ($isLogin) {
-            $this->dsbLogin();
-        } else {
+        if (!$isLogin) {
             $this->createCookie('destroy', 'extToken');
             $this->createCookie('destroy', 'extCurrency');
         }
@@ -217,35 +215,5 @@ class ALSIntegrationModuleController
         }
 
         Cookies::set($name, $value, $options);
-    }
-
-    /**
-     * Share session JWT via cookie
-     */
-    private function dsbLogin()
-    {
-        try {
-            $playerDetails = $this->playerSession->getDetails();
-            $token = $this->playerSession->getToken();
-        } catch (\Exception $e) {
-            $playerDetails = [];
-            $token = false;
-        }
-
-        if ($playerDetails && $token) {
-            $result = $this->cookieService->cut([
-                'username' => $playerDetails['username'],
-                'playerId' => $playerDetails['playerId'],
-                'sessionToken' => $token,
-            ]);
-
-            $options = [
-                'path' => '/',
-                'domain' => Host::getDomain(),
-            ];
-
-            Cookies::set('extToken', $result['jwt'], $options);
-            Cookies::set('extCurrency', $playerDetails['currency'], $options);
-        }
     }
 }
