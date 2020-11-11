@@ -33,9 +33,9 @@ class ALSRedirect implements ResponseMiddlewareInterface
     private $config;
 
     /**
-     * @var $product ProductResolver
+     * @var $productResolver ProductResolver
      */
-    private $product;
+    private $productResolver;
 
     /**
      * @var $alsConfig array
@@ -51,7 +51,7 @@ class ALSRedirect implements ResponseMiddlewareInterface
     {
         $this->lang = $container->get('lang');
         $this->config = $container->get('config_fetcher');
-        $this->product = $container->get('product_resolver');
+        $this->productResolver = $container->get('product_resolver');
         try {
             $this->alsConfig = $this->config->getConfig('mobile_als.als_configuration');
             $this->maintenanceConfig = $this->config->getConfig('webcomposer_config.webcomposer_site_maintenance');
@@ -87,7 +87,7 @@ class ALSRedirect implements ResponseMiddlewareInterface
      */
     private function isEligible()
     {
-        $product = $this->product->getProduct() ?? false;
+        $product = $this->productResolver->getProduct() ?? false;
 
         // If the product is not in the eligible product, return immediately
         if (!in_array($product, self::ELIGIBLE_PRODUCTS)) {
@@ -108,7 +108,7 @@ class ALSRedirect implements ResponseMiddlewareInterface
     private function buildQueryParams(RequestInterface $request)
     {
         try {
-            $product = str_replace('mobile-', '', $this->product->getProduct() ?? 'sports-df');
+            $product = str_replace('mobile-', '', $this->productResolver->getProduct() ?? 'sports-df');
             $queryParams = $request->getQueryParams() ?? [];
             $queryParams['redirect_product'] = $product;
 
@@ -125,7 +125,7 @@ class ALSRedirect implements ResponseMiddlewareInterface
     {
         try {
             $productsUMConfig = explode("\r\n", $this->maintenanceConfig['product_list']);
-            $product = $this->product->getProduct();
+            $product = $this->productResolver->getProduct();
             $dates = [
                 'field_publish_date' => $this->maintenanceConfig["maintenance_publish_date_$product"] ?? '',
                 'field_unpublish_date' => $this->maintenanceConfig["maintenance_unpublish_date_$product"] ?? '',
