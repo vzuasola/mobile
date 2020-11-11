@@ -144,9 +144,6 @@ routes:
             main: lobby
         headers:
             Cache-Control: no-cache, no-store, must-revalidate
-        page_cache:
-            enabled: true
-            expires: 1800
         attributes:
             product: mobile-sports-df
 
@@ -157,9 +154,6 @@ routes:
             main: lobby
         headers:
             Cache-Control: no-cache, no-store, must-revalidate
-        page_cache:
-            enabled: true
-            expires: 1800
         attributes:
             product: mobile-sports-df
 
