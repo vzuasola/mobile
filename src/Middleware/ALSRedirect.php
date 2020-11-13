@@ -67,7 +67,7 @@ class ALSRedirect implements ResponseMiddlewareInterface
     public function handleResponse(RequestInterface &$request, ResponseInterface &$response)
     {
         try {
-            if ($this->isEligible($request)) {
+            if ($this->isEligible()) {
                 // Get the redirect URL configured for this eligible ALS product
                 $queryParams = $this->buildQueryParams($request);
                 $redirect = "/$this->lang/api/plugins/module/route/als_integration/integrate?$queryParams";
@@ -85,19 +85,12 @@ class ALSRedirect implements ResponseMiddlewareInterface
      *
      * @return bool
      */
-    private function isEligible(RequestInterface $request)
+    private function isEligible()
     {
         $product = $this->productResolver->getProduct() ?? false;
 
         // If the product is not in the eligible product, return immediately
         if (!in_array($product, self::ELIGIBLE_PRODUCTS)) {
-            return false;
-        }
-
-        // If somehow the request has a data-widget-param this means that it was accessed via router
-        // Do not change the response of this request, and proceed with the normal operation
-        $isDataWidget = $request->getQueryParams()['component-data-widget'] ?? false;
-        if ($isDataWidget) {
             return false;
         }
 
