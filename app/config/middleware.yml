@@ -21,6 +21,7 @@ middlewares:
     headers: App\Middleware\Response\Headers
     lazy_token: App\Middleware\Response\LazyToken
     clean_parameters: App\MobileEntry\Middleware\CleanParameters
+    als_redirect: App\MobileEntry\Middleware\ALSRedirect
     # player_matrix: App\MobileEntry\Middleware\PlayerMatrix
     # profiler: App\MobileEntry\Component\Profiler\ProfilerMiddleware
 

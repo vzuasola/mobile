@@ -60,6 +60,7 @@ class ALSIntegrationModuleController
 
         $enableDomain = $alsConfig['als_enable_domain'] ?? false;
         $url = $alsConfig['als_url'] ?? '';
+        $this->generateLobby($url, $enableDomain);
         $cookies = $alsConfig['als_cookie_url_pre'] ?? '';
 
         if ($isLogin) {
@@ -71,12 +72,15 @@ class ALSIntegrationModuleController
         ]);
         $this->setCookie($cookies, $isLogin);
 
-        $url = $this->generateLobby($url, $enableDomain);
-
         $postData = $request->getParsedBody();
 
         $data['redirect']  = $this->playerMatrixLobby($url, $postData['language']);
         $this->maintenance($request, $data);
+
+        // If with query params redirect_product, this means that the referer is from middleware
+        if ($request->getQueryParams()['redirect_product'] ?? false) {
+            $response = $response->withRedirect($this->parser->processTokens($data['redirect']));
+        }
 
         return $this->rest->output($response, $data);
     }
@@ -113,7 +117,9 @@ class ALSIntegrationModuleController
     private function getProductFromRequest($request)
     {
         parse_str(parse_url($request->getHeader('referer')[0] ?? '')['query'] ?? "", $params);
-        $findProduct = $request->getParsedBody()['product'] ?? $params['product'] ?? false;
+        $findProduct = $request->getParsedBody()['product']
+            ?? $request->getQueryParams()['redirect_product']
+            ?? $params['product'] ?? false;
         if (!$findProduct) {
             return;
         }
@@ -140,7 +146,7 @@ class ALSIntegrationModuleController
     /**
      * Function to generate ALS domain base on the site domain
      */
-    private function generateLobby($url, $enableDomain)
+    private function generateLobby(&$url, $enableDomain)
     {
         if ($enableDomain) {
             $domain = Host::getDomainFromUri($url);
@@ -150,8 +156,6 @@ class ALSIntegrationModuleController
                 $url = str_replace($domain, $hostname, $url);
             }
         }
-
-        return $url;
     }
 
     /**
@@ -187,9 +191,7 @@ class ALSIntegrationModuleController
             }
         }
 
-        if ($isLogin) {
-            $this->dsbLogin();
-        } else {
+        if (!$isLogin) {
             $this->createCookie('destroy', 'extToken');
             $this->createCookie('destroy', 'extCurrency');
         }
@@ -217,35 +219,5 @@ class ALSIntegrationModuleController
         }
 
         Cookies::set($name, $value, $options);
-    }
-
-    /**
-     * Share session JWT via cookie
-     */
-    private function dsbLogin()
-    {
-        try {
-            $playerDetails = $this->playerSession->getDetails();
-            $token = $this->playerSession->getToken();
-        } catch (\Exception $e) {
-            $playerDetails = [];
-            $token = false;
-        }
-
-        if ($playerDetails && $token) {
-            $result = $this->cookieService->cut([
-                'username' => $playerDetails['username'],
-                'playerId' => $playerDetails['playerId'],
-                'sessionToken' => $token,
-            ]);
-
-            $options = [
-                'path' => '/',
-                'domain' => Host::getDomain(),
-            ];
-
-            Cookies::set('extToken', $result['jwt'], $options);
-            Cookies::set('extCurrency', $playerDetails['currency'], $options);
-        }
     }
 }

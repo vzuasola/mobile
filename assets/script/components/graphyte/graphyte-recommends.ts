@@ -72,7 +72,7 @@ export class GraphyteRecommends {
 
     getRecommendedByCategory(recommendResponse, gamesList) {
         let recommendedGames = [];
-        if (typeof recommendResponse !== "undefined" &&
+        if (typeof recommendResponse.recommendation !== "undefined" &&
             recommendResponse.recommendation.hasOwnProperty("result")) {
             recommendResponse.recommendation.result.forEach((resultItem, key) => {
                 if (gamesList.hasOwnProperty("id:" + resultItem.game.game_code)) {

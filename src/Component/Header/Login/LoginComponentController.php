@@ -2,8 +2,11 @@
 
 namespace App\MobileEntry\Component\Header\Login;
 
+use App\Cookies\Cookies;
 use App\Fetcher\Integration\Exception\AccountLockedException;
 use App\Fetcher\Integration\Exception\AccountSuspendedException;
+use App\MobileEntry\Services\CookieService\CookieService;
+use App\Utils\Host;
 
 /**
  *
@@ -13,6 +16,8 @@ class LoginComponentController
     private $rest;
     private $playerSession;
     private $product;
+    /** @var $cookieService CookieService */
+    private $cookieService;
 
     /**
      *
@@ -22,18 +27,20 @@ class LoginComponentController
         return new static(
             $container->get('rest'),
             $container->get('player_session'),
-            $container->get('settings')['product']
+            $container->get('settings')['product'],
+            $container->get('cookie_service')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $playerSession, $product)
+    public function __construct($rest, $playerSession, $product, $cookieService)
     {
         $this->rest = $rest;
         $this->playerSession = $playerSession;
         $this->product = $product;
+        $this->cookieService = $cookieService;
     }
 
     /**
@@ -71,6 +78,8 @@ class LoginComponentController
                     'currency' =>  $this->playerSession->getDetails()['currency'] ?? '',
                     'country' => $request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '',
                 ];
+                // Set the authentication cookies
+                $this->setAuthCookies();
             } catch (\Exception $e) {
                 if ($e instanceof AccountLockedException) {
                     $response = $response->withStatus(403);
@@ -116,5 +125,36 @@ class LoginComponentController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    private function setAuthCookies()
+    {
+        // Set DSB Cookies for Nextbet sports
+        $this->setDsbCookies();
+    }
+
+    /**
+     * Share session JWT via cookie
+     */
+    private function setDsbCookies()
+    {
+        try {
+            $playerDetails = $this->playerSession->getDetails();
+            $token = $this->playerSession->getToken();
+            $result = $this->cookieService->cut([
+                'username' => $playerDetails['username'],
+                'playerId' => $playerDetails['playerId'],
+                'sessionToken' => $token,
+            ]);
+            $options = [
+                'path' => '/',
+                'domain' => Host::getDomain(),
+            ];
+
+            Cookies::set('extToken', $result['jwt'], $options);
+            Cookies::set('extCurrency', $playerDetails['currency'], $options);
+        } catch (\Exception $e) {
+            // do nothing
+        }
     }
 }
