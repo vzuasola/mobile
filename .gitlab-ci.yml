@@ -410,15 +410,22 @@ production:
   stage: deploy-production
   environment:
     name: production
+  variables:
+    env: prd
   script:
-    - python -u automation/run.py --stage deploy-production
+    - DEPLOY_TOKEN=$DEPLOY_PRD_TOKEN
+    - DEPLOY_URL=$DEPLOY_PRD_URL
+    - export DEPLOY_TOKEN DEPLOY_URL
+    - export DEPLOY_STATUS_URL="$DEPLOY_URL/lastBuild/api/json"
+    - export DEPLOY_RESULT_URL="$DEPLOY_URL/lastBuild/logText/progressiveText?start=0"
+    - bash automation/jenkins_deploy.sh
   when: manual
   dependencies:
-   - staging
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
+    - create package
+    - staging
   only:
     - /^release-.*$/
     - tags
+    - /^jenkins/
+  tags:
+    - taiwan-prd-01
