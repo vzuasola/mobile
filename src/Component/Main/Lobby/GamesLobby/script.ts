@@ -251,6 +251,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         if (index > -1) {
             list.splice(index, 1);
         }
+
         if (list.length === 0) {
             fn();
         }
@@ -430,32 +431,35 @@ export class GamesLobbyComponent implements ComponentInterface {
                     pageResponse[id] = response;
 
                     this.checkPromiseState(promises, id, () => {
-                        const mergeResponse = this.mergeResponsePromises(pageResponse);
-
-                        // clone respone object
-                        const newResponse = Object.assign({}, mergeResponse);
-
-                        newResponse.games = this.getCategoryGames(newResponse);
-                        newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
-                        newResponse.games = this.groupGamesByContainer(newResponse.games);
-                        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
-                        if (pageResponse.hasOwnProperty("fav")) {
-                            const key = "fav";
-                            const favoritesList = pageResponse[key];
-                            newResponse.favorite_list = this.getFavoritesList(favoritesList);
-                        }
-                        this.response = newResponse;
-                        if (callback) {
-                            callback();
-                        }
+                        this.setResponse(pageResponse, callback);
                     });
                 }).fail((error, message) => {
                     this.checkPromiseState(promises, id, () => {
-                        // placeholder;
+                        this.setResponse(pageResponse, callback);
                     });
-                    console.log(error);
                 });
             }
+        }
+    }
+
+    private setResponse(pageResponse, callback) {
+        const mergeResponse = this.mergeResponsePromises(pageResponse);
+
+        // clone respone object
+        const newResponse = Object.assign({}, mergeResponse);
+
+        newResponse.games = this.getCategoryGames(newResponse);
+        newResponse.games["recommended-games"] = this.doSortRecommended(newResponse);
+        newResponse.games = this.groupGamesByContainer(newResponse.games);
+        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
+        if (pageResponse.hasOwnProperty("fav")) {
+            const key = "fav";
+            const favoritesList = pageResponse[key];
+            newResponse.favorite_list = this.getFavoritesList(favoritesList);
+        }
+        this.response = newResponse;
+        if (callback) {
+            callback();
         }
     }
 
@@ -967,47 +971,49 @@ export class GamesLobbyComponent implements ComponentInterface {
 
     private listenToScroll() {
         utility.addEventListener(window, "scroll", (event, src) => {
-            const gameLoader: HTMLElement = this.element.querySelector("#game-loader");
-            if (this.isSeen(gameLoader) && this.pager > 1 && this.pager - 1 > this.currentPage) {
-                const gamesEl = this.element.querySelector("#game-container");
-                if (gamesEl && gameLoader && this.load) {
-                    this.currentPage += 1;
-                    let hash = utility.getHash(window.location.href);
-                    if (!this.response.games[hash]) {
-                        const first = this.response.categories[0].field_games_alias;
-                        hash = this.getActiveCategory(this.response.games, first);
-                        const categoriesEl = document.querySelector("#game-categories");
-                        const activeLink = categoriesEl.querySelector(".category-tab .active a");
-                        if (activeLink) {
-                            hash = activeLink.getAttribute("data-category-filter-id");
+            if (ComponentManager.getAttribute("product") === "mobile-games") {
+                const gameLoader: HTMLElement = this.element.querySelector("#game-loader");
+                if (this.isSeen(gameLoader) && this.pager > 1 && this.pager - 1 > this.currentPage) {
+                    const gamesEl = this.element.querySelector("#game-container");
+                    if (gamesEl && gameLoader && this.load) {
+                        this.currentPage += 1;
+                        let hash = utility.getHash(window.location.href);
+                        if (!this.response.games[hash]) {
+                            const first = this.response.categories[0].field_games_alias;
+                            hash = this.getActiveCategory(this.response.games, first);
+                            const categoriesEl = document.querySelector("#game-categories");
+                            const activeLink = categoriesEl.querySelector(".category-tab .active a");
+                            if (activeLink) {
+                                hash = activeLink.getAttribute("data-category-filter-id");
+                            }
                         }
+                        let pager = this.getPagedContent(this.response.games[hash]);
+
+                        if (utility.hasClass(this.element.querySelector(".search-tab"), "active")
+                            || utility.hasClass(this.element.querySelector(".games-filter"), "active")
+                        ) {
+                            pager = this.getPagedContent(this.searchResults);
+                        }
+
+                        const template = gameTemplate({
+                            games: pager[this.currentPage],
+                            favorites: this.response.favorite_list,
+                            isLogin: this.isLogin,
+                            isAllGames: hash === "all-games",
+                            offset: this.currentPage * 12,
+                        });
+
+                        const loader = gameLoader.querySelector(".mobile-game-loader");
+                        utility.removeClass(loader, "hidden");
+                        this.load = false;
+                        setTimeout(() => {
+                            gameLoader.remove();
+                            gamesEl.innerHTML += template;
+                            this.load = true;
+                        }, 1000);
                     }
-                    let pager = this.getPagedContent(this.response.games[hash]);
 
-                    if (utility.hasClass(this.element.querySelector(".search-tab"), "active")
-                        || utility.hasClass(this.element.querySelector(".games-filter"), "active")
-                    ) {
-                        pager = this.getPagedContent(this.searchResults);
-                    }
-
-                    const template = gameTemplate({
-                        games: pager[this.currentPage],
-                        favorites: this.response.favorite_list,
-                        isLogin: this.isLogin,
-                        isAllGames: hash === "all-games",
-                        offset: this.currentPage * 12,
-                    });
-
-                    const loader = gameLoader.querySelector(".mobile-game-loader");
-                    utility.removeClass(loader, "hidden");
-                    this.load = false;
-                    setTimeout(() => {
-                        gameLoader.remove();
-                        gamesEl.innerHTML += template;
-                        this.load = true;
-                    }, 1000);
                 }
-
             }
         });
     }

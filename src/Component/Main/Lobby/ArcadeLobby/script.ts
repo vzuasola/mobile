@@ -220,22 +220,26 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                 ).then((response) => {
                     pageResponse[id] = response;
                     this.checkPromiseState(promises, id, () => {
-                        const mergeResponse = this.mergeResponsePromises(pageResponse);
-
-                        // clone respone object
-                        const newResponse = Object.assign({}, mergeResponse);
-                        this.response = newResponse;
-                        if (callback) {
-                            callback();
-                        }
+                        this.setResponse(pageResponse, callback);
                     });
                 }).fail((error, message) => {
                     this.checkPromiseState(promises, id, () => {
-                        // placeholder;
+                        this.setResponse(pageResponse, callback);
                     });
                     console.log(error);
                 });
             }
+        }
+    }
+
+    private setResponse(pageResponse, callback) {
+        const mergeResponse = this.mergeResponsePromises(pageResponse);
+
+        // clone respone object
+        const newResponse = Object.assign({}, mergeResponse);
+        this.response = newResponse;
+        if (callback) {
+            callback();
         }
     }
 

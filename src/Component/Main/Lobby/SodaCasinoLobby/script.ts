@@ -718,39 +718,41 @@ export class SodaCasinoLobbyComponent implements ComponentInterface {
 
     private listenToScroll() {
         utility.addEventListener(window, "scroll", (event, src) => {
-            const gameLoader: HTMLElement = this.element.querySelector("#game-loader");
-            if (this.isSeen(gameLoader) && this.pager > 1 && this.pager - 1 > this.currentPage) {
-                const gamesEl = this.element.querySelector("#game-container");
-                if (gamesEl && gameLoader && this.load) {
-                    this.currentPage += 1;
-                    let hash = utility.getHash(window.location.href);
-                    if (!this.response.games[hash]) {
-                        const categoriesEl = this.element.querySelector("#game-categories");
-                        const activeLink = categoriesEl.querySelector(".category-tab .active a");
-                        hash = activeLink.getAttribute("data-category-filter-id");
-                    }
-                    let pager = this.getPagedContent(this.response.games[hash]);
+            if (ComponentManager.getAttribute("product") === "mobile-soda-casino") {
+                const gameLoader: HTMLElement = this.element.querySelector("#game-loader");
+                if (this.isSeen(gameLoader) && this.pager > 1 && this.pager - 1 > this.currentPage) {
+                    const gamesEl = this.element.querySelector("#game-container");
+                    if (gamesEl && gameLoader && this.load) {
+                        this.currentPage += 1;
+                        let hash = utility.getHash(window.location.href);
+                        if (!this.response.games[hash]) {
+                            const categoriesEl = this.element.querySelector("#game-categories");
+                            const activeLink = categoriesEl.querySelector(".category-tab .active a");
+                            hash = activeLink.getAttribute("data-category-filter-id");
+                        }
+                        let pager = this.getPagedContent(this.response.games[hash]);
 
-                    if (utility.hasClass(this.element.querySelector(".search-tab"), "active")) {
-                        pager = this.getPagedContent(this.searchResults);
+                        if (utility.hasClass(this.element.querySelector(".search-tab"), "active")) {
+                            pager = this.getPagedContent(this.searchResults);
+                        }
+
+                        const template = gameTemplate({
+                            games: pager[this.currentPage],
+                            favorites: this.response.favorite_list,
+                            isLogin: this.isLogin,
+                            isAllGames: hash === "all-games",
+                        });
+                        const loader = gameLoader.querySelector(".mobile-game-loader");
+                        utility.removeClass(loader, "hidden");
+                        this.load = false;
+                        setTimeout(() => {
+                            gameLoader.remove();
+                            gamesEl.innerHTML += template;
+                            this.load = true;
+                        }, 1000);
                     }
 
-                    const template = gameTemplate({
-                        games: pager[this.currentPage],
-                        favorites: this.response.favorite_list,
-                        isLogin: this.isLogin,
-                        isAllGames: hash === "all-games",
-                    });
-                    const loader = gameLoader.querySelector(".mobile-game-loader");
-                    utility.removeClass(loader, "hidden");
-                    this.load = false;
-                    setTimeout(() => {
-                        gameLoader.remove();
-                        gamesEl.innerHTML += template;
-                        this.load = true;
-                    }, 1000);
                 }
-
             }
         });
     }
