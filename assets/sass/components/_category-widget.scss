@@ -1,0 +1,30 @@
+.mobile-games {
+    iframe#category-widget {
+        min-height: 320px;
+        width: 100%;
+        z-index: 2;
+        border: none;
+    }
+
+    #category-widget-container {
+        position: relative;
+        &.hidden {
+            display: none;
+        }
+
+        .sk-fading-circle {
+            height: 5rem;
+            width: 5rem;
+            &.mobile-game-loader {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: 0;
+                margin: auto;
+                height: 5rem;
+                width: 5rem;
+            }
+        }
+    }
+}
