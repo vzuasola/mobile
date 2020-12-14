@@ -553,7 +553,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             const activeLi = activeLink.parentElement;
             utility.addClass(activeLi, "active");
         }
-
+        this.bannerWidgets = {};
         for (const category of data) {
             if (category.banner_widget) {
                 this.bannerWidgets[category.field_games_alias] = category.banner_widget;
