@@ -11,7 +11,7 @@ export class Validation {
         name: "username",
         rules: {
             callback_user_required: [],
-            callback_check_mobile_format: [],
+            callback_check_username_format: [],
             callback_min_length: ["3"],
             callback_max_length: ["15"],
         },
@@ -65,6 +65,7 @@ export class Validation {
         );
 
         validator.registerCallback("user_required", (value, param, field) => {
+            value = value.trim();
             return (value !== null && value !== "");
         });
 
@@ -73,11 +74,18 @@ export class Validation {
         });
 
         validator.registerCallback("min_length", (value, param, field) => {
+            value = value.trim();
             return value.length >= param[0];
         });
 
         validator.registerCallback("max_length", (value, param, field) => {
+            value = value.trim();
             return value.length <= param[0];
+        });
+
+        validator.registerCallback("check_username_format", (value, param, field) => {
+            const pattern = /^\w+$/i;
+            return pattern.test(value.trim());
         });
 
         validator.registerCallback("check_mobile_format", (value, param, field) => {
@@ -90,6 +98,7 @@ export class Validation {
         validator.setMessage("min_length", attachments.error_messages.invalid_passname);
         validator.setMessage("max_length", attachments.error_messages.invalid_passname);
         validator.setMessage("check_mobile_format", attachments.error_messages.invalid_passname);
+        validator.setMessage("check_username_format", attachments.error_messages.invalid_passname);
     }
 
     /**
