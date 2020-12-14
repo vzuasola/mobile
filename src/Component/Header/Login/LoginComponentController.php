@@ -53,7 +53,7 @@ class LoginComponentController
 
 
         if (!empty($body['username']) && !empty($body['password'])) {
-            $username = $body['username'];
+            $username = trim($body['username']);
             $password = $body['password'];
 
             $options = [];
