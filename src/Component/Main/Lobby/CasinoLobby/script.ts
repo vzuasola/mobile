@@ -335,7 +335,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 });
             }
         }
-        console.log(pageResponse);
     }
 
     private createRequest() {
