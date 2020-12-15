@@ -28,6 +28,7 @@ class CasinoLobbyComponentController
     private $viewsAsync;
     private $cacher;
     private $currentLanguage;
+    private $pager = "";
 
     /**
      *
@@ -80,8 +81,10 @@ class CasinoLobbyComponentController
 
     public function lobby($request, $response)
     {
+        $query = $request->getQueryParams();
         $params = $request->getQueryParams();
         $product = $params['lobbyProduct'] ?? 'mobile-casino';
+        $this->pager = $query['page'] ?? null;
         $data = $this->getLobbyData($product);
 
         if (!isset($params['pvw'])) {
@@ -158,7 +161,7 @@ class CasinoLobbyComponentController
 
     private function getLobbyData($product)
     {
-        $cacheKey = 'views.'. $product .'-lobby-data.';
+        $cacheKey = "views.$product-lobby-data.$this->pager";
         $item = $this->cacher->getItem($cacheKey . $this->currentLanguage);
 
         if (!$item->isHit()) {
@@ -246,7 +249,10 @@ class CasinoLobbyComponentController
 
         try {
             $definitions['configs'] = $this->configAsync->getConfig('casino.casino_configuration');
-            $definitions['all-games'] = $this->viewsAsync->withProduct($product)->getViewById('games_list');
+            $definitions['all-games'] = $this->viewsAsync->withProduct($product)->getViewById('games_list',
+                [
+                    'page' => (string) $this->pager,
+                ]);
         } catch (\Exception $e) {
             $definitions = [];
         }

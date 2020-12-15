@@ -225,7 +225,10 @@ export class CasinoLobbyComponent implements ComponentInterface {
     }
 
     private getPagerPromises() {
-        const promises = ["allGames", "recent", "fav"];
+        const promises = ["recent", "fav"];
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            promises.push("pager" + page);
+        }
         return promises;
     }
 
@@ -233,7 +236,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
         const promises: any = {
             games: {},
         };
-        const requestKey = "allGames";
         const key = "all-games";
 
         const gamesList = {
@@ -241,15 +243,14 @@ export class CasinoLobbyComponent implements ComponentInterface {
             "favorites": {},
             "recently-played": {},
         };
-        if (responses.hasOwnProperty(requestKey)) {
-            const response = responses[requestKey];
-            Object.assign(promises, response);
-            if (typeof response.games["all-games"] !== "undefined") {
-                gamesList[key] = this.getGamesList(
-                    key,
-                    response.games[key],
-                    gamesList[key],
-                );
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            if (responses.hasOwnProperty("pager" + page)) {
+                const response = responses["pager" + page];
+                Object.assign(promises, response);
+                if (typeof response.games[key] === "object"
+                    && Object.keys(response.games[key]).length > 0) {
+                    gamesList[key] = Object.assign(gamesList[key], response.games[key]);
+                }
             }
         }
 
@@ -265,21 +266,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
         promises.games = gamesList;
 
         return promises;
-    }
-
-    private getGamesList(key, list, gamesList) {
-        for (const id in list) {
-            if (list.hasOwnProperty(id)) {
-                const game = list[id];
-                if (key !== "all-games") {
-                    gamesList[Object.keys(gamesList).length] = game;
-                }
-                if (!gamesList[id]) {
-                    gamesList[id] = game;
-                }
-            }
-        }
-        return gamesList;
     }
 
     private getGamesDefinition(gamesList, allGames) {
@@ -312,7 +298,10 @@ export class CasinoLobbyComponent implements ComponentInterface {
         for (const id in lobbyRequests) {
             if (lobbyRequests.hasOwnProperty(id)) {
                 const currentRequest = lobbyRequests[id];
-                const uri = Router.generateRoute("casino_lobby", currentRequest.type);
+                let uri = Router.generateRoute("casino_lobby", currentRequest.type);
+                if (currentRequest.hasOwnProperty("page")) {
+                    uri = utility.addQueryParam(uri, "page", currentRequest.page.toString());
+                }
                 xhr({
                     url: uri,
                     type: "json",
@@ -346,13 +335,17 @@ export class CasinoLobbyComponent implements ComponentInterface {
                 });
             }
         }
+        console.log(pageResponse);
     }
 
     private createRequest() {
         const req: any = {};
-        req.allGames = {
-            type: "lobby",
-        };
+        for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+            req["pager" + page] = {
+                type: "lobby",
+                page,
+            };
+        }
 
         req.recent = {
             type: "getRecentlyPlayed",
@@ -741,7 +734,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             if (product === "mobile-casino" || product === "mobile-casino-gold") {
                 const gameLoader: HTMLElement = this.element.querySelector("#game-loader");
                 if (this.isSeen(gameLoader) && this.pager > 1 && this.pager - 1 > this.currentPage) {
-                    const gamesEl = this.element.querySelector("#game-container");
+                    const gamesEl = document.getElementById("game-container");
                     if (gamesEl && gameLoader && this.load) {
                         this.currentPage += 1;
                         let hash = utility.getHash(window.location.href);
