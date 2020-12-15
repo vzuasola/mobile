@@ -249,10 +249,12 @@ class CasinoLobbyComponentController
 
         try {
             $definitions['configs'] = $this->configAsync->getConfig('casino.casino_configuration');
-            $definitions['all-games'] = $this->viewsAsync->withProduct($product)->getViewById('games_list',
+            $definitions['all-games'] = $this->viewsAsync->withProduct($product)->getViewById(
+                'games_list',
                 [
                     'page' => (string) $this->pager,
-                ]);
+                ]
+            );
         } catch (\Exception $e) {
             $definitions = [];
         }
