@@ -53,6 +53,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private gameLink: string;
     private gameCategories: any;
     private productMenu: string = "product-games";
+    private bannerWidgets: { [key: string]: string; } = {};
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -516,6 +517,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
         this.setCategories(this.response.categories, key);
         this.setGames(this.response.games[key], key);
+        this.setBannerWidget(key);
         ComponentManager.broadcast("clickstream.category.change",  {
             category: this.getCategoryName(key),
             product: ComponentManager.getAttribute("product"),
@@ -550,6 +552,12 @@ export class GamesLobbyComponent implements ComponentInterface {
             const activeLink = categoriesEl.querySelector(".category-" + activeCategory);
             const activeLi = activeLink.parentElement;
             utility.addClass(activeLi, "active");
+        }
+        this.bannerWidgets = {};
+        for (const category of data) {
+            if (category.banner_widget) {
+                this.bannerWidgets[category.field_games_alias] = category.banner_widget;
+            }
         }
 
         this.onLoadActiveMore();
@@ -649,6 +657,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                         title: document.title,
                         url: location.href.split(location.search || location.hash || /[#]/)[0] + "#" + key,
                     });
+                    this.setBannerWidget(key);
                 }
             }
         });
@@ -1281,6 +1290,18 @@ export class GamesLobbyComponent implements ComponentInterface {
             if (this.windowObject) {
                 this.windowObject.focus();
             }
+        }
+    }
+
+    private setBannerWidget(key) {
+        const iframeEl = document.querySelector("#category-widget");
+        const categoryWidget = document.querySelector("#category-widget-container");
+        utility.addClass(categoryWidget, "hidden");
+        iframeEl.setAttribute("src", "");
+
+        if (key in this.bannerWidgets) {
+            utility.removeClass(categoryWidget, "hidden");
+            iframeEl.setAttribute("src", this.bannerWidgets[key]);
         }
     }
 

@@ -470,10 +470,55 @@ class GamesLobbyComponentController
                         ['product' => 'mobile-games']
                     );
                 }
+                $this->setBannerWidget($category);
                 $categoryList[] = $category;
             }
         }
         return $categoryList;
+    }
+
+    private function setBannerWidget(&$category)
+    {
+        try {
+            $bannerWidget = $category['field_pre_login_banner_widget'] ?? false;
+            $langMap = [
+                "en" => ["l" => "en", "c" => "MYR"],
+                "sc" => ["l" => "zh-cn", "c" => "CNY"],
+                "th" => ["l" => "th", "c" => "THB"],
+                "kr" => ["l" => "ko", "c" => "KRW"],
+                "vn" => ["l" => "vi", "c" => "VND"],
+                "id" => ["l" => "id", "c" => "IDR"],
+                "in" => ["l" => "en", "c" => "INR"],
+                "te" => ["l" => "en", "c" => "INR"],
+                "hi" => ["l" => "en", "c" => "INR"],
+                "es" => ["l" => "es", "c" => "USD"],
+                "pt" => ["l" => "en", "c" => "BRL"],
+                "bu" => ["l" => "en", "c" => "MMK"],
+            ];
+            $currencyMap = [
+                "RMB" => "CNY"
+            ];
+            $bannerLanguage = $langMap[$this->currentLanguage]["l"] ?? "en";
+            $bannerCurrency = $langMap[$this->currentLanguage]["c"] ?? "MYR";
+
+            if ($playerDetails = $this->playerSession->getDetails()) {
+                $bannerWidget = $category['field_post_login_banner_widget'] ?? false;
+                $playerCurrency = $playerDetails['currency'] ?? "MYR";
+                $bannerCurrency = $currencyMap[strtoupper($playerCurrency)] ?? $playerCurrency;
+            }
+
+            if (!$bannerWidget) {
+                return;
+            }
+
+            $category['banner_widget'] = str_replace(
+                ['{bannerCurrency}', '{bannerLanguage}'],
+                [$bannerCurrency, $bannerLanguage],
+                $bannerWidget
+            );
+        } catch (\Throwable $exception) {
+            return;
+        }
     }
 
     private function getFavoriteGamesList($favGames)
