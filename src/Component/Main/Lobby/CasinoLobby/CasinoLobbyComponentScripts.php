@@ -36,7 +36,7 @@ class CasinoLobbyComponentScripts implements ComponentAttachmentInterface
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
-        $this->views = $views;
+        $this->views = $views->withProduct($product->getProduct());
     }
 
     /**
@@ -51,9 +51,16 @@ class CasinoLobbyComponentScripts implements ComponentAttachmentInterface
             $config = [];
         }
 
+        try {
+            $pager = $this->views->getViewById('games_list', ['pager' => 1]);
+        } catch (\Exception $e) {
+            $pager = [];
+        }
+
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'search_blurb' => $config['search_blurb'] ?? "",
+            'pagerConfig' => $pager ?? [],
             'search_no_result_msg' => $config['search_no_result_msg'] ?? "",
             'filter_no_result_msg' => $config['filter_no_result_msg'] ?? "",
             'msg_recommended_available' => $config['msg_recommended_available'] ?? "",
@@ -69,7 +76,7 @@ class CasinoLobbyComponentScripts implements ComponentAttachmentInterface
     {
         try {
             $result = [];
-            $products = $this->views->getViewById('products');
+            $products = $this->views->withProduct('mobile-entrypage')->getViewById('products');
 
             foreach ($products as $product) {
                 $instanceId = $product['field_product_instance_id'][0]['value'];
