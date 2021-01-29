@@ -53,7 +53,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private gameLink: string;
     private gameCategories: any;
     private productMenu: string = "product-games";
-    private bannerWidgets: { [key: string]: string; } = {};
+    private bannerWidgets: { [key: string]: { widget: string, link: string, target: string}; } = {};
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -556,7 +556,11 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.bannerWidgets = {};
         for (const category of data) {
             if (category.banner_widget) {
-                this.bannerWidgets[category.field_games_alias] = category.banner_widget;
+                this.bannerWidgets[category.field_games_alias] = {
+                    widget: category.banner_widget,
+                    link: category.banner_link,
+                    target: category.banner_target,
+                };
             }
         }
 
@@ -1295,13 +1299,19 @@ export class GamesLobbyComponent implements ComponentInterface {
 
     private setBannerWidget(key) {
         const iframeEl = document.querySelector("#category-widget");
+        const bannerLinkEl = document.querySelector("#category-banner-link");
         const categoryWidget = document.querySelector("#category-widget-container");
         utility.addClass(categoryWidget, "hidden");
         iframeEl.setAttribute("src", "");
 
         if (key in this.bannerWidgets) {
             utility.removeClass(categoryWidget, "hidden");
-            iframeEl.setAttribute("src", this.bannerWidgets[key]);
+            utility.removeAttributes(bannerLinkEl, ["target", "href"]);
+            iframeEl.setAttribute("src", this.bannerWidgets[key].widget);
+            if (this.bannerWidgets[key].widget && this.bannerWidgets[key].link) {
+                bannerLinkEl.setAttribute("href", this.bannerWidgets[key].link);
+                bannerLinkEl.setAttribute("target", this.bannerWidgets[key].target);
+            }
         }
     }
 

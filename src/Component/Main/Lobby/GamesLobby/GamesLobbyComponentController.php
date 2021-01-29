@@ -500,11 +500,15 @@ class GamesLobbyComponentController
             ];
             $bannerLanguage = $langMap[$this->currentLanguage]["l"] ?? "en";
             $bannerCurrency = $langMap[$this->currentLanguage]["c"] ?? "MYR";
+            $category['banner_link'] = $category['field_pre_login_link'] ?? '';
+            $category['banner_target'] = $category['field_pre_login_link_target'] ?? '';
 
             if ($playerDetails = $this->playerSession->getDetails()) {
                 $bannerWidget = $category['field_post_login_banner_widget'] ?? false;
                 $playerCurrency = $playerDetails['currency'] ?? "MYR";
                 $bannerCurrency = $currencyMap[strtoupper($playerCurrency)] ?? $playerCurrency;
+                $category['banner_link'] = $category['field_post_login_link'] ?? '';
+                $category['banner_target'] = $category['field_post_login_link_target'] ?? '';
             }
 
             if (!$bannerWidget) {
