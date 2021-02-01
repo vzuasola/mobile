@@ -502,6 +502,8 @@ class GamesLobbyComponentController
             $bannerCurrency = $langMap[$this->currentLanguage]["c"] ?? "MYR";
             $category['banner_link'] = $category['field_pre_login_link'] ?? '';
             $category['banner_target'] = $category['field_pre_login_link_target'] ?? '';
+            $category['banner_height'] = $category['field_pre_banner_height'] ?? '';
+            $category['banner_width'] = $category['field_pre_banner_width'] ?? '';
 
             if ($playerDetails = $this->playerSession->getDetails()) {
                 $bannerWidget = $category['field_post_login_banner_widget'] ?? false;
@@ -509,6 +511,8 @@ class GamesLobbyComponentController
                 $bannerCurrency = $currencyMap[strtoupper($playerCurrency)] ?? $playerCurrency;
                 $category['banner_link'] = $category['field_post_login_link'] ?? '';
                 $category['banner_target'] = $category['field_post_login_link_target'] ?? '';
+                $category['banner_height'] = $category['field_post_banner_height'] ?? '';
+                $category['banner_width'] = $category['field_post_banner_width'] ?? '';
             }
 
             if (!$bannerWidget) {
