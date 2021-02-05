@@ -36,7 +36,7 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
-        $this->views = $views;
+        $this->views = $views->withProduct($product->getProduct());
     }
 
     /**
@@ -51,14 +51,21 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
         }
 
         try {
-            $tabs = $this->views->withProduct($this->product->getProduct())->getViewById('lobby_tabs');
+            $tabs = $this->views->getViewById('lobby_tabs');
         } catch (\Exception $e) {
             $tabs = [];
+        }
+
+        try {
+            $pager = $this->views->getViewById('games_list', ['pager' => 1]);
+        } catch (\Exception $e) {
+            $pager = [];
         }
 
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'product' => $this->getProductIntegration(),
+            'pagerConfig' => $pager ?? [],
             'tabs' => $tabs,
             'configs' => $liveDealerGeneralConfig ?? [],
         ];
@@ -68,7 +75,7 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
     {
         try {
             $result = [];
-            $products = $this->views->getViewById('products');
+            $products = $this->views->withProduct('mobile-entrypage')->getViewById('products');
 
             foreach ($products as $product) {
                 $instanceId = $product['field_product_instance_id'][0]['value'];
