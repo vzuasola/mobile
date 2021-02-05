@@ -9,6 +9,9 @@ class LiveDealerLobbyComponentController
 {
     const PRODUCT = 'mobile-live-dealer';
     const TIMEOUT = 1800;
+
+    private $pager = "";
+
     /**
      *
      */
@@ -56,10 +59,12 @@ class LiveDealerLobbyComponentController
         $previewKey = $isPreview ? "preview" : "no-preview";
         $playerDetails = $this->playerSession->getDetails();
         $playerCurrency = $playerDetails['currency'] ?? '';
+        $this->pager = $params['page'] ?? null;
         $item = $this->cacher->getItem('views.live-dealer-lobby-data.'
             . $this->currentLanguage
             . "-". $previewKey
-            . "-" . $playerCurrency);
+            . "-" . $playerCurrency
+            . "-" . $this->pager);
 
         if (!$item->isHit()) {
             $data = $this->getGamesList($isPreview);
@@ -87,7 +92,7 @@ class LiveDealerLobbyComponentController
     {
         try {
             $gamesList = [];
-            $games = $this->views->getViewById('games_list');
+            $games = $this->views->getViewById('games_list', ['page' => (string) $this->pager]);
             foreach ($games as $game) {
                 $publishOn = $game['publish_on'][0]['value'] ?? '';
                 $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';

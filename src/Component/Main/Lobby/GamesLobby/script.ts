@@ -53,6 +53,8 @@ export class GamesLobbyComponent implements ComponentInterface {
     private gameLink: string;
     private gameCategories: any;
     private productMenu: string = "product-games";
+    private bannerWidgets: { [key: string]:
+            { widget: string, link: string, target: string, height: string, width: string}; } = {};
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -516,6 +518,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         }
         this.setCategories(this.response.categories, key);
         this.setGames(this.response.games[key], key);
+        this.setBannerWidget(key);
         ComponentManager.broadcast("clickstream.category.change",  {
             category: this.getCategoryName(key),
             product: ComponentManager.getAttribute("product"),
@@ -550,6 +553,18 @@ export class GamesLobbyComponent implements ComponentInterface {
             const activeLink = categoriesEl.querySelector(".category-" + activeCategory);
             const activeLi = activeLink.parentElement;
             utility.addClass(activeLi, "active");
+        }
+        this.bannerWidgets = {};
+        for (const category of data) {
+            if (category.banner_widget) {
+                this.bannerWidgets[category.field_games_alias] = {
+                    widget: category.banner_widget,
+                    link: category.banner_link,
+                    target: category.banner_target,
+                    height: category.banner_height,
+                    width: category.banner_width,
+                };
+            }
         }
 
         this.onLoadActiveMore();
@@ -649,6 +664,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                         title: document.title,
                         url: location.href.split(location.search || location.hash || /[#]/)[0] + "#" + key,
                     });
+                    this.setBannerWidget(key);
                 }
             }
         });
@@ -1280,6 +1296,32 @@ export class GamesLobbyComponent implements ComponentInterface {
 
             if (this.windowObject) {
                 this.windowObject.focus();
+            }
+        }
+    }
+
+    private setBannerWidget(key) {
+        const iframeEl: HTMLElement = document.querySelector("#category-widget");
+        const bannerLinkEl: HTMLElement = document.querySelector("#category-banner-link");
+        const categoryWidget: HTMLElement = document.querySelector("#category-widget-container");
+        utility.addClass(categoryWidget, "hidden");
+        iframeEl.setAttribute("src", "");
+        iframeEl.style["min-height"] = "";
+        iframeEl.style.width = "";
+
+        if (key in this.bannerWidgets) {
+            utility.removeClass(categoryWidget, "hidden");
+            utility.removeAttributes(bannerLinkEl, ["target", "href"]);
+            iframeEl.setAttribute("src", this.bannerWidgets[key].widget);
+            if (this.bannerWidgets[key].height) {
+                iframeEl.style["min-height"] = this.bannerWidgets[key].height;
+            }
+            if (this.bannerWidgets[key].width) {
+                iframeEl.style.width = this.bannerWidgets[key].width;
+            }
+            if (this.bannerWidgets[key].widget && this.bannerWidgets[key].link) {
+                bannerLinkEl.setAttribute("href", this.bannerWidgets[key].link);
+                bannerLinkEl.setAttribute("target", this.bannerWidgets[key].target);
             }
         }
     }
