@@ -50,6 +50,7 @@ import {FooterComponent} from "@app/src/Component/Footer/script";
 import {CookieNotifComponent} from "@app/src/Component/CookieNotif/script";
 import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
+import {VirtualsLobbyComponent} from "@app/src/Component/Main/Lobby/VirtualsLobby/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -75,6 +76,7 @@ ComponentManager.setComponents({
     live_dealer_lobby: new LiveDealerLobbyComponent(),
     arcade_lobby: new ArcadeLobbyComponent(),
     casino_lobby: new CasinoLobbyComponent(),
+    virtuals_lobby: new VirtualsLobbyComponent(),
     lottery_lobby: new LotteryLobbyComponent(),
     soda_casino_lobby: new SodaCasinoLobbyComponent(),
     exchange_lobby: new ExchangeLobbyComponent(),
