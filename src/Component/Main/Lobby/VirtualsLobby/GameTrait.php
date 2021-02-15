@@ -68,7 +68,7 @@ trait GameTrait
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
             $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
-                && $game['field_disable_game_loader'][0]['value']) ? "false" : "false";
+                && $game['field_disable_game_loader'][0]['value']) ? "false" : "true";
 
             $categoryList = [];
 
@@ -113,7 +113,10 @@ trait GameTrait
         foreach ($games as $game) {
             $publishOn = $game['publish_on'][0]['value'] ?? '';
             $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
-            $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
+            $status = true;
+            if (!$publishOn && !$unpublishOn) {
+                $status = $game['status'][0]['value'];
+            }
             if (PublishingOptions::checkDuration($publishOn, $unpublishOn)
                 && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
