@@ -39,19 +39,6 @@ trait GameTrait
                         ['product' => $product]
                     )
             ];
-// HERE
-//            if (count($game['field_game_filter']) > 0) {
-//                $filters = [];
-//                foreach ($game['field_game_filter'] as $filter) {
-//                    if (isset($filter['parent']) &&
-//                        isset($filter['parent']['field_games_filter_value'])) {
-//                        $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
-//                            = $filter['field_games_filter_value'][0]['value'];
-//                    }
-//                }
-//
-//                $processGame['filters'] = json_encode($filters);
-//            }
 
             $processGame['filters'] = $game['field_game_filter'] ?? [];
             $processGame['title'] = $game['title'] ?? "";
@@ -63,14 +50,10 @@ trait GameTrait
             $processGame['target'] = $game['field_games_target'] ?? "popup";
             $processGame['preview_mode'] = $game['field_preview_mode'] ?? 0;
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'])
-                && $game['field_disable_game_loader']) ? "false" : "false";
+                && $game['field_disable_game_loader']) ? "false" : "true";
 
             $categoryList = [];
-            // HERE
-//            foreach ($game['field_games_list_category'] as $category) {
-//                $categoryList[$category['field_games_alias'][0]['value']] =
-//                    $category['field_draggable_views']['category']['weight'] ?? 0;
-//            }
+
             foreach ($game['field_games_list_category'] as $category) {
                 $categoryList[$category['games_alias']] = $category['games_alias'];
             }
@@ -112,7 +95,10 @@ trait GameTrait
         foreach ($games as $game) {
             $publishOn = $game['publish_on'] ?? '';
             $unpublishOn = $game['unpublish_on'] ?? '';
-            $status = (!$publishOn && !$unpublishOn) ? $game['status'] : true;
+            $status = true;
+            if (!$publishOn && !$unpublishOn) {
+                $status = $game['status'];
+            }
             if (PublishingOptions::checkDuration($publishOn, $unpublishOn)
                 && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
