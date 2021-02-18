@@ -209,7 +209,7 @@ class CasinoLobbyComponentController
         try {
             foreach ($gamesCollection as $categoryName => $category) {
                 foreach ($category as $index => $game) {
-                    if ($game['preview_mode']) {
+                    if ($game['preview_mode'] == "True") {
                         unset($gamesCollection[$categoryName][$index]);
                     }
                 }
@@ -250,7 +250,7 @@ class CasinoLobbyComponentController
         try {
             $definitions['configs'] = $this->configAsync->getConfig('casino.casino_configuration');
             $definitions['all-games'] = $this->viewsAsync->withProduct($product)->getViewById(
-                'games_list',
+                'games_list_v2',
                 [
                     'page' => (string) $this->pager,
                 ]
