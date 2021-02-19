@@ -184,7 +184,7 @@ class GamesLobbyComponentController
         $categories = $this->views->getViewById('games_category');
 
         $allGames = $this->views->getViewById(
-            'games_list_v2',
+            'games_list',
             [
             'page' => (string) $page,
             ]
@@ -225,7 +225,7 @@ class GamesLobbyComponentController
         try {
             foreach ($gamesCollection as $categoryName => $category) {
                 foreach ($category as $index => $game) {
-                    if ($game['preview_mode'] == "True") {
+                    if ($game['preview_mode']) {
                         unset($gamesCollection[$categoryName][$index]);
                     }
                 }
@@ -302,15 +302,14 @@ class GamesLobbyComponentController
     {
         $gamesList = [];
         foreach ($games as $game) {
-            $publishOn = $game['publish_on'] ?? '';
-            $unpublishOn = $game['unpublish_on'] ?? '';
-            $status = (!$publishOn && !$unpublishOn) && ($game['status'] == "True");
+            $publishOn = $game['publish_on'][0]['value'] ?? '';
+            $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
+            $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
             if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $processGame = $this->processGame($game, $special);
                 if (!empty($processGame)) {
-                    $gameCode = $game['field_game_code'] ?? '';
-                    $gamesList['id:' . $gameCode] = $processGame;
+                    $gamesList['id:' . $game['field_game_code'][0]['value']] = $processGame;
                 }
             }
         }
@@ -327,61 +326,77 @@ class GamesLobbyComponentController
                 throw new \Exception('Player does not meet the currency restriction');
             }
             $processGame = [];
-            $size = $game['field_games_list_thumbnail_size'];
+            $size = $game['field_games_list_thumbnail_size'][0]['value'];
             $processGame['size'] = ($special) ? 'size-small' : $size;
 
-            if ($game['field_games_ribbon_label']) {
-                $processGame['ribbon']['background'] = $game['field_games_ribbon_color'];
-                $processGame['ribbon']['color'] = $game['field_games_text_color'];
-                $processGame['ribbon']['name'] = $game['field_games_ribbon_label'];
+            if (isset($game['field_game_ribbon'][0])) {
+                $ribbon = $game['field_game_ribbon'][0];
+                $processGame['ribbon']['background'] = $ribbon['field_games_ribbon_color'][0]['color'];
+                $processGame['ribbon']['color'] = $ribbon['field_games_text_color'][0]['color'];
+                $processGame['ribbon']['name'] = $ribbon['field_games_ribbon_label'][0]['value'];
             }
 
-            if (isset($game['field_all_games_ribbon_label'])) {
+            if (isset($game['field_all_games_category_ribbon'][0])) {
+                $allGamesribbon = $game['field_all_games_category_ribbon'][0];
                 $processGame['all_games_ribbon']['background'] =
-                    $game['field_all_games_ribbon_color'];
+                    $allGamesribbon['field_games_ribbon_color'][0]['color'];
                 $processGame['all_games_ribbon']['color'] =
-                    $game['field_all_games_text_color'];
+                    $allGamesribbon['field_games_text_color'][0]['color'];
                 $processGame['all_games_ribbon']['name'] =
-                    $game['field_all_games_ribbon_label'];
+                    $allGamesribbon['field_games_ribbon_label'][0]['value'];
             }
 
             $processGame['image'] = [
-                'alt' => $game['field_games_list_thumb_img_small_1'],
+                'alt' => $game['field_games_list_thumb_img_small'][0]['alt'],
                 'url' =>
                     $this->asset->generateAssetUri(
-                        $game['field_games_list_thumb_img_small'],
+                        $game['field_games_list_thumb_img_small'][0]['url'],
                         ['product' => 'mobile-games']
                     )
             ];
 
             if ($processGame['size'] == "size-large" && !$special) {
                 $processGame['image'] = [
-                    'alt' => $game['field_games_list_thumb_img_big_alt'],
+                    'alt' => $game['field_games_list_thumb_img_big'][0]['alt'],
                     'url' =>
                         $this->asset->generateAssetUri(
-                            $game['field_games_list_thumb_img_big'],
+                            $game['field_games_list_thumb_img_big'][0]['url'],
                             ['product' => 'mobile-games']
                         )
                 ];
             }
 
-            $processGame['filters'] = $game['field_game_filter'];
-            $processGame['title'] = $game['title'] ?? "";
-            $processGame['game_code'] = $game['field_game_code'] ?? "";
-            $processGame['game_provider'] = $this->parseProvider($game['field_game_provider'] ?? "");
-            $processGame['game_subprovider'] = $game['field_games_subprovider'] ?? "";
-            $processGame['game_platform'] = $game['field_game_platform'] ?? "";
-            $processGame['keywords'] = $game['field_keywords'] ?? "";
+            if (count($game['field_game_filter']) > 0) {
+                $filters = [];
+                foreach ($game['field_game_filter'] as $filter) {
+                    if (isset($filter['parent']) &&
+                        isset($filter['parent']['field_games_filter_value'])) {
+                        $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
+                            = $filter['field_games_filter_value'][0]['value'];
+                    }
+                }
+
+                $processGame['filters'] = json_encode($filters);
+            }
+
+
+            $processGame['title'] = $game['title'][0]['value'] ?? "";
+            $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
+            $processGame['game_provider'] = $this->parseProvider($game['field_game_provider'][0]['value'] ?? "");
+            $processGame['game_subprovider'] = $game['field_games_subprovider'][0]['name'][0]['value'] ?? "";
+            $processGame['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
+            $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
-            $processGame['target'] = $game['field_games_target'] ?? "popup";
-            $processGame['preview_mode'] = $game['field_preview_mode'] ?? 0;
-            $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'])
-                && $game['field_disable_game_loader']) ? "false" : "true";
+            $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
+            $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
+            $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
+                && $game['field_disable_game_loader'][0]['value']) ? "false" : "true";
 
             $categoryList = [];
 
             foreach ($game['field_games_list_category'] as $category) {
-                $categoryList[$category['games_alias']] = $category['games_alias'];
+                $categoryList[$category['field_games_alias'][0]['value']] =
+                    $category['field_games_alias'][0]['value'];
             }
 
             $processGame['categories'] = $categoryList;
@@ -396,11 +411,12 @@ class GamesLobbyComponentController
     {
         $playerDetails = $this->playerSession->getDetails();
         $playerCurrency = $playerDetails['currency'] ?? '';
-        $provider = $this->parseProvider($game['field_game_provider'] ?? "");
+        $provider = $this->parseProvider($game['field_game_provider'][0]['value'] ?? "");
 
         if ($playerDetails) {
-            $subProviderCurrency = (!empty($game['field_supported_currencies']))
-                ? preg_split("/\r\n|\n|\r/", $game['field_supported_currencies'])
+            $subprovider = $game['field_games_subprovider'][0] ?? [];
+            $subProviderCurrency = (isset($subprovider['field_supported_currencies'][0]['value']))
+                ? preg_split("/\r\n|\n|\r/", $subprovider['field_supported_currencies'][0]['value'])
                 : [];
 
             if (count($subProviderCurrency)) {
