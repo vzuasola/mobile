@@ -7,6 +7,7 @@ use App\MobileEntry\Services\PublishingOptions\PublishingOptions;
 
 class ArcadeLobbyComponentController
 {
+    const CURRENCY = '_currency';
     const TIMEOUT = 1800;
     const PRODUCT = 'mobile-arcade';
     const RECOMMENDED_GAMES = 'recommended-games';
@@ -254,12 +255,12 @@ class ArcadeLobbyComponentController
     {
         try {
             $currencies = array_filter($gameConfig, function ($config) {
-                $length = strlen('_currency');
+                $length = strlen(self::CURRENCY);
                 if ($length == 0) {
                     return true;
                 }
 
-                return (substr($config, -$length) === '_currency');
+                return (substr($config, -$length) === self::CURRENCY);
             }, ARRAY_FILTER_USE_KEY);
 
             $this->providersCurrency = array_merge($this->providersCurrency, $currencies);
@@ -351,13 +352,12 @@ class ArcadeLobbyComponentController
         foreach ($games as $game) {
             $publishOn = $game['publish_on'][0]['value'] ?? '';
             $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
-            $published = $game['status'][0]['value'] === 'true' ? true : false;
-            $status = (!$publishOn && !$unpublishOn) ? $published : true;
+            $status = $this->getStatus($publishOn, $unpublishOn, $game);
             if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $processedGame = $this->processGame($game, $special);
                 $preview_mode = $game['field_preview_mode'][0]['value'] === 'true' ? true : false;
-                if (!$isPreview && $preview_mode || !count($processedGame)) {
+                if ((!$isPreview && $preview_mode) || !count($processedGame)) {
                     continue;
                 }
                 if (count($processedGame['categories'])) {
@@ -380,8 +380,8 @@ class ArcadeLobbyComponentController
             $subProviderCurrency = (isset($subprovider['supported_currencies']))
                 ? preg_split("/\r\n|\n|\r/", $subprovider['supported_currencies'])
                 : [];
-            $providerCurrency = (isset($this->providersCurrency[$provider . "_currency"]))
-                ? preg_split("/\r\n|\n|\r/", $this->providersCurrency[$provider . "_currency"])
+            $providerCurrency = (isset($this->providersCurrency[$provider . self::CURRENCY]))
+                ? preg_split("/\r\n|\n|\r/", $this->providersCurrency[$provider . self::CURRENCY])
                 : [];
 
             if ($this->playerDetails) {
@@ -583,5 +583,14 @@ class ArcadeLobbyComponentController
     private function parseProvider($provider)
     {
         return self::PROVIDER_MAP[$provider] ?? $provider;
+    }
+
+    /**
+     * Get status
+     */
+    private function getStatus($publishOn, $unpublishOn, $game)
+    {
+        $published = $game['status'][0]['value'] === 'true' ? true : false;
+        return (!$publishOn && !$unpublishOn) ? $published : true;
     }
 }
