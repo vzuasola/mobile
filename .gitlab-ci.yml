@@ -37,11 +37,10 @@ before_script:
       - .composer-cache/
   allow_failure: true
 
-.php code sniffer: # Disable for now
+php code sniffer:
   stage: tests
   script:
     - python -u automation/run.py --stage phpcs
-  allow_failure: true
 
 es linter:
   stage: tests
