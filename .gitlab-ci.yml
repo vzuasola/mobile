@@ -26,7 +26,7 @@ before_script:
   - export DEPLOY_RESULT_URL="$DEPLOY_URL/lastBuild/logText/progressiveText?start=0"
   - export GITLAB_EMAIL="$GITLAB_USER_EMAIL"
 
-static code analysis:
+.static code analysis: # Disable for now
   stage: tests
   script:
     - python -u automation/run.py --stage phpunit-sonarqube
@@ -35,12 +35,13 @@ static code analysis:
     key: v2
     paths:
       - .composer-cache/
-      - .sonar-cache/
+  allow_failure: true
 
-php code sniffer:
+.php code sniffer: # Disable for now
   stage: tests
   script:
     - python -u automation/run.py --stage phpcs
+  allow_failure: true
 
 es linter:
   stage: tests
