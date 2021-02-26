@@ -431,8 +431,8 @@ class ArcadeLobbyComponentController
             $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] === 'true' ? true : false;
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
                 && $game['field_disable_game_loader'][0]['value']) ? "false" : "true";
-
-            $processGame['categories'] = $this->getGameCategories($game['field_games_list_category_export'][0]['value']);
+            $categories = $this->getGameCategories($game['field_games_list_category_export'][0]['value']);
+            $processGame['categories'] = $categories;
 
             return $processGame;
         } catch (\Exception $e) {
