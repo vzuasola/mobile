@@ -356,8 +356,8 @@ class ArcadeLobbyComponentController
             if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $processedGame = $this->processGame($game, $special);
-                $preview_mode = $game['field_preview_mode'][0]['value'] === 'true' ? true : false;
-                if ((!$isPreview && $preview_mode) || !count($processedGame)) {
+                $previewMode = $game['field_preview_mode'][0]['value'] === 'true';
+                if ((!$isPreview && $previewMode) || !count($processedGame)) {
                     continue;
                 }
                 if (count($processedGame['categories'])) {
@@ -375,10 +375,10 @@ class ArcadeLobbyComponentController
     {
         try {
             $processGame = [];
-            $subprovider = $game['field_games_subprovider_export'][0]['value'] ?? null;
+            $subProvider = $game['field_games_subprovider_export'][0]['value'] ?? null;
             $provider = $this->parseProvider($game['field_game_provider'][0]['value'] ?? "");
-            $subProviderCurrency = (isset($subprovider['supported_currencies']))
-                ? preg_split("/\r\n|\n|\r/", $subprovider['supported_currencies'])
+            $subProviderCurrency = (isset($subProvider['supported_currencies']))
+                ? preg_split("/\r\n|\n|\r/", $subProvider['supported_currencies'])
                 : [];
             $providerCurrency = (isset($this->providersCurrency[$provider . self::CURRENCY]))
                 ? preg_split("/\r\n|\n|\r/", $this->providersCurrency[$provider . self::CURRENCY])
@@ -424,7 +424,7 @@ class ArcadeLobbyComponentController
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $processGame['game_provider'] = $provider;
-            $processGame['game_subprovider'] = $subprovider['name'] ?? "";
+            $processGame['game_subprovider'] = $subProvider['name'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
@@ -590,7 +590,7 @@ class ArcadeLobbyComponentController
      */
     private function getStatus($publishOn, $unpublishOn, $game)
     {
-        $published = $game['status'][0]['value'] === 'true' ? true : false;
+        $published = $game['status'][0]['value'] === 'true';
         return (!$publishOn && !$unpublishOn) ? $published : true;
     }
 }
