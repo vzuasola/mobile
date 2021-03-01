@@ -63,7 +63,7 @@ trait GameTrait
             $processGame['categories'] = $categoryList;
 
             return $processGame;
-        } catch (\Exception $e) {;
+        } catch (\Exception $e) {
             return [];
         }
     }
