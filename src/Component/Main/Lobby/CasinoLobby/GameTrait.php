@@ -19,23 +19,25 @@ trait GameTrait
             $size = 'size-small';
             $processGame['size'] = ($special) ? 'size-small' : $size;
 
-            if ($game['field_games_ribbon_label']) {
-                $processGame['ribbon']['background'] = $game['field_games_ribbon_color'];
-                $processGame['ribbon']['color'] = $game['field_games_text_color'];
-                $processGame['ribbon']['name'] = $game['field_games_ribbon_label'];
+            if (!empty($game['field_game_ribbon']['games_ribbon_label'])) {
+                $ribbon = $game['field_game_ribbon'];
+                $processGame['ribbon']['background'] = $ribbon['games_ribbon_color'];
+                $processGame['ribbon']['color'] = $ribbon['games_text_color'];
+                $processGame['ribbon']['name'] = $ribbon['games_ribbon_label'];
             }
 
-            if (isset($game['field_all_games_ribbon_label'])) {
-                $processGame['all_games_ribbon']['background'] = $game['field_all_games_ribbon_color'];
-                $processGame['all_games_ribbon']['color'] = $game['field_all_games_text_color'];
-                $processGame['all_games_ribbon']['name'] = $game['field_all_games_ribbon_label'];
+            if (!empty($game['field_all_games_category_ribbon']['games_ribbon_label'])) {
+                $allGamesribbon = $game['field_all_games_category_ribbon'];
+                $processGame['all_games_ribbon']['background'] = $allGamesribbon['games_ribbon_color'];
+                $processGame['all_games_ribbon']['color'] = $allGamesribbon['games_text_color'];
+                $processGame['all_games_ribbon']['name'] = $allGamesribbon['games_ribbon_label'];
             }
 
             $processGame['image'] = [
-                'alt' => $game['field_games_list_thumb_img_small_1'],
+                'alt' => $game['field_games_list_thumb_img_small']['alt'],
                 'url' =>
                     $this->asset->generateAssetUri(
-                        $game['field_games_list_thumb_img_small'],
+                        $game['field_games_list_thumb_img_small']['url'],
                         ['product' => $product]
                     )
             ];
@@ -62,7 +64,6 @@ trait GameTrait
 
             return $processGame;
         } catch (\Exception $e) {
-            $e->getMessage();
             return [];
         }
     }
