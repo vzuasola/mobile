@@ -60,17 +60,18 @@ class JSystemModuleController
         if ($this->checkCurrency($request)) {
             $data['currency'] = true;
             $requestData = $request->getParsedBody();
-            $params = explode('|', $requestData['gameCode']);
 
-            try {
-                $responseData = $this->jsystem->getGameUrlById('icore_jsystem', $params[0], [
-                    'options' => [
-                        'languageCode' => $requestData['langCode'],
-                        'providerProduct' => $params[1] ?? null,
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
+            try  {
+                if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
+                    $requestData['lobby'] === "false"
+                ) {
+                    $data = $this->getGameUrl($request);
+                }
+
+                if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
+                    $requestData['lobby'] === "true"
+                ) {
+                    $data = $this->getGameLobby($request);
                 }
             } catch (\Exception $e) {
                 $data['currency'] = true;
@@ -78,5 +79,51 @@ class JSystemModuleController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    private function getGameLobby($request)
+    {
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
+        $params = explode('|', $requestData['gameCode']);
+
+        try {
+            $responseData = $this->jsystem->getLobby('icore_jsystem', [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                    'providerProduct' => $params[1] ?? null,
+                    'gameCode' => $params[0] ?? null,
+                ]
+            ]);
+            if ($responseData) {
+                $data['gameurl'] = $responseData;
+            }
+        } catch (\Exception $e) {
+            $data['currency'] = true;
+        }
+
+        return $data;
+    }
+
+    private function getGameUrl($request)
+    {
+        $data['currency'] = true;
+        $requestData = $request->getParsedBody();
+        $params = explode('|', $requestData['gameCode']);
+        try {
+            $responseData = $this->jsystem->getGameUrlById('icore_jsystem', $params[0], [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                    'providerProduct' => $params[1] ?? null,
+                ]
+            ]);
+            if ($responseData['url']) {
+                $data['gameurl'] = $responseData['url'];
+            }
+        } catch (\Exception $e) {
+            $data['currency'] = true;
+        }
+
+        return $data;
     }
 }
