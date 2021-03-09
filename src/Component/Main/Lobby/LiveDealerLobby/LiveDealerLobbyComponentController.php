@@ -97,10 +97,10 @@ class LiveDealerLobbyComponentController
                 $publishOn = $game['publish_on'][0]['value'] ?? '';
                 $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
                 $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
-                $published = $game['status'][0]['value'] === 'true' ? true : false;
+                $published = $game['status'][0]['value'] === 'true';
                 $status = (!$publishOn && !$unpublishOn) ? $published : true;
                 if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
-                    $preview_mode = $game['field_preview_mode'][0]['value'] === 'true' ? true : false;
+                    $preview_mode = $game['field_preview_mode'][0]['value'] === 'true';
                     if (!$this->checkSupportedCurrency($game)) {
                         continue;
                     }
