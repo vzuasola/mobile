@@ -160,7 +160,7 @@ class LiveDealerLobbyComponentController
             $definition['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
             $definition['lobby_tab'] = $game['field_lobby_tab_export'][0]['value']['alias'] ?? "";
             $definition['target'] = $game['field_target'][0]['value'] ?? "popup";
-            $definition['preview_mode'] = $game['field_preview_mode'][0]['value'] === 'true' ? true : false;
+            $definition['preview_mode'] = $game['field_preview_mode'][0]['value'] === 'true';
             $definition['use_game_loader'] = (isset($game['field_use_game_loader'][0]['value'])
                 && $game['field_use_game_loader'][0]['value']) ? "true" : "false";
             $definition['use_game_lobby'] = $useGameLobby;
