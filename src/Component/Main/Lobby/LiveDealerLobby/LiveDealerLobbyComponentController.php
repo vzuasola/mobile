@@ -92,7 +92,7 @@ class LiveDealerLobbyComponentController
     {
         try {
             $gamesList = [];
-            $games = $this->views->getViewById('games_list_v2',['page' => (string) $this->pager]);
+            $games = $this->views->getViewById('games_list_v2', ['page' => (string) $this->pager]);
             foreach ($games as $game) {
                 $publishOn = $game['publish_on'][0]['value'] ?? '';
                 $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
