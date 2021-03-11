@@ -1,3 +1,6 @@
-<div class="virtuals-container">
-    <h1>Content Placeholer goes here</h1>
+<div class="virtuals-lobby-tile-container clearfix">
+    <div id="game-container">
+        {% include '@component/Main/Lobby/VirtualsLobby/templates/loader.html.twig' %}
+    </div>
 </div>
+{{ include('@app/src/Module/GameIntegration/templates/ucl.html.twig') }}

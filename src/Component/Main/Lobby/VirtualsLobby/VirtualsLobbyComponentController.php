@@ -3,32 +3,11 @@
 namespace App\MobileEntry\Component\Main\Lobby\VirtualsLobby;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
-use App\Async\Async;
-use App\MobileEntry\Component\Main\Lobby\VirtualsLobby\GameTrait;
 
 class VirtualsLobbyComponentController
 {
-    use GameTrait;
-
+    const PRODUCT = 'mobile-virtuals';
     const TIMEOUT = 1800;
-
-    const RECOMMENDED_GAMES = 'recommended-games';
-    const ALL_GAMES = 'all-games';
-    const RECENTLY_PLAYED_GAMES = 'recently-played';
-    const FAVORITE_GAMES = 'favorites';
-
-    private $playerSession;
-    private $views;
-    private $configs;
-    private $rest;
-    private $asset;
-    private $recentGames;
-    private $favorite;
-    private $configAsync;
-    private $viewsAsync;
-    private $cacher;
-    private $currentLanguage;
-
     /**
      *
      */
@@ -40,10 +19,6 @@ class VirtualsLobbyComponentController
             $container->get('rest'),
             $container->get('config_fetcher'),
             $container->get('asset'),
-            $container->get('recents_fetcher'),
-            $container->get('favorites_fetcher'),
-            $container->get('config_fetcher_async'),
-            $container->get('views_fetcher_async'),
             $container->get('redis_cache_adapter'),
             $container->get('lang')
         );
@@ -58,301 +33,209 @@ class VirtualsLobbyComponentController
         $rest,
         $configs,
         $asset,
-        $recentGames,
-        $favorite,
-        $configAsync,
-        $viewsAsync,
         $cacher,
         $currentLanguage
     ) {
         $this->playerSession = $playerSession;
-        $this->views = $views;
+        $this->views = $views->withProduct(self::PRODUCT);
         $this->rest = $rest;
         $this->configs = $configs;
         $this->asset = $asset;
-        $this->recentGames = $recentGames;
-        $this->favorite = $favorite;
-        $this->configAsync = $configAsync;
-        $this->viewsAsync = $viewsAsync;
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
     }
 
+    /**
+     * Retrieves list of games
+     */
     public function lobby($request, $response)
     {
-        $params = $request->getQueryParams();
-        $product = $params['lobbyProduct'] ?? 'mobile-virtuals';
-        $data = $this->getLobbyData($product);
-
-        if (!isset($params['pvw'])) {
-            $data['games'] = $this->removeGamesPreviewMode($data['games']);
-        }
-
-        $enableRecommended = false;
-        $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list'], $enableRecommended);
-        $data['enableRecommended'] = $enableRecommended;
-
-        unset($data['categories_list']);
-        unset($data['special_categories']);
-
-        return $this->rest->output($response, $data);
-    }
-
-    public function recent($request, $response)
-    {
-        $gameCode = $request->getParsedBody();
-        if (isset($gameCode['gameCode'])) {
-            $result = $this->setRecentlyPlayedGames($gameCode['gameCode']);
-            return $this->rest->output($response, $result);
-        }
-    }
-
-    public function favorite($request, $response)
-    {
-        $gameCode = $request->getParsedBody();
-        if (isset($gameCode['gameCode'])) {
-            $result = $this->toggleFavoriteGames($gameCode['gameCode']);
-            return $this->rest->output($response, $result);
-        }
-    }
-
-    public function getFavorites($request, $response)
-    {
-        $data = [];
         try {
-            $favoritesGamesList = $this->getSpecialCategoriesGameList([$this::FAVORITE_GAMES]);
-            if (count($favoritesGamesList)) {
-                $favoritesGamesList = $this->proccessSpecialGames($favoritesGamesList[$this::FAVORITE_GAMES]);
-                usort($favoritesGamesList, [$this, 'sortRecentGames']);
+            $item = $this->cacher->getItem('views.virtuals-lobby-data.' . $this->currentLanguage);
 
-                foreach ($favoritesGamesList as $games) {
-                    $data[] = 'id:' . $games['id'];
+            if (!$item->isHit() || true) {
+                $data = $this->getGamesList();
+
+                if (!empty($data)) {
+                    $item->set([
+                        'body' => $data,
+                    ]);
+
+                    $this->cacher->save($item, [
+                        'expires' => self::TIMEOUT,
+                    ]);
                 }
+            } else {
+                $body = $item->get();
+                $data = $body['body'];
             }
-        } catch (\Exception $e) {
-            $data = [];
+            return $this->rest->output($response, $data);
         }
-
-        return $this->rest->output($response, $data);
-    }
-
-    public function getRecentlyPlayed($request, $response)
-    {
-        $data = [];
-        try {
-            $recentGamesList = $this->getSpecialCategoriesGameList([$this::RECENTLY_PLAYED_GAMES]);
-            if (count($recentGamesList)) {
-                $recentGamesList = $this->proccessSpecialGames($recentGamesList[$this::RECENTLY_PLAYED_GAMES]);
-                usort($recentGamesList, [$this, 'sortRecentGames']);
-
-                foreach ($recentGamesList as $games) {
-                    $data[] = 'id:' . $games['id'];
-                }
-            }
-        } catch (\Exception $e) {
-            $data = [];
+        catch (\Throwable $e) {
+            print $e->getMessage();
+            die();
         }
-
-        return $this->rest->output($response, $data);
     }
 
-    private function getLobbyData($product)
-    {
-        $cacheKey = 'views.'. $product .'-lobby-data.';
-        $item = $this->cacher->getItem($cacheKey . $this->currentLanguage);
-
-        if (!$item->isHit()) {
-            $data = $this->generateLobbyData($product);
-            if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
-                $item->set([
-                    'body' => $data,
-                ]);
-
-                $this->cacher->save($item, [
-                    'expires' => self::TIMEOUT,
-                ]);
-            }
-        } else {
-            $body = $item->get();
-
-            $data = $body['body'];
-        }
-
-        return $data;
-    }
-
-    private function generateLobbyData($product)
-    {
-        $data = [];
-        $categories = $this->views->withProduct($product)->getViewById('games_category');
-        $definitions = $this->getDefinitions($product);
-
-        $asyncData = Async::resolve($definitions);
-        $specialCategories = [];
-        $specialCategories = $this->getSpecialCategories($categories);
-
-        $data['special_categories'] = $specialCategories;
-        $data['categories_list'] = $categories;
-        $data['games'] = $this->getGamesAndCategory(
-            $asyncData['all-games'],
-            $product
-        );
-
-        return $data;
-    }
-
-    private function removeGamesPreviewMode($gamesCollection)
-    {
-        try {
-            foreach ($gamesCollection as $categoryName => $category) {
-                foreach ($category as $index => $game) {
-                    if ($game['preview_mode']) {
-                        unset($gamesCollection[$categoryName][$index]);
-                    }
-                }
-            }
-        } catch (\Exception $e) {
-            // placeholder
-        }
-
-        return $gamesCollection;
-    }
-
-    private function getSpecialCategoriesGameList($categories)
-    {
-        $definitions = [];
-        try {
-            if ($this->playerSession->isLogin()) {
-                foreach ($categories as $category) {
-                    switch ($category) {
-                        case $this::RECENTLY_PLAYED_GAMES:
-                            $definitions[$category] = $this->recentGames->getRecents();
-                            break;
-                        case $this::FAVORITE_GAMES:
-                            $definitions[$category] = $this->favorite->getFavorites();
-                            break;
-                    }
-                }
-            }
-        } catch (\Exception $e) {
-            $definitions = [];
-        }
-        return $definitions;
-    }
-
-    private function getDefinitions($product)
-    {
-        $definitions = [];
-
-        try {
-            $definitions['configs'] = $this->configAsync->getConfig('virtuals.virtuals_configuration');
-            $definitions['all-games'] = $this->viewsAsync->withProduct($product)->getViewById('games_list');
-        } catch (\Exception $e) {
-            $definitions = [];
-        }
-
-        return $definitions;
-    }
 
     /**
-     * Get games by category with sort
+     * Retrieves list of games from drupal
      */
-    private function getGamesAndCategory($allGames, $product)
+    private function getGamesList()
     {
-        $gamesList = [];
-
-        $gamesList['all-games'] = $this->arrangeGames($product, $allGames, 'all-games');
-
+        try {
+            $gamesList = [];
+            $games = $this->views->getViewById('games_list');
+            foreach ($games as $game) {
+                $gamesList[] = $this->getGameDefinition($game);
+            }
+        } catch (\Exception $e) {
+            $gamesList = [];
+        }
         return $gamesList;
     }
 
     /**
-     * Get list of special categories
+     * Process games list array
      */
-    private function getSpecialCategories($categories)
+    private function getGameDefinition($game)
     {
-        $specialCategories = [];
-        foreach ($categories as $category) {
-            if (strtolower($category['field_isordinarycategory']) === "false") {
-                $specialCategories[$category['field_games_alias']] = $category;
-            }
-        }
+        try {
+            $sizePortrait = [
+                'small' => 'col-4',
+                'large' => 'col-12'
+            ];
 
-        return $specialCategories;
+            $sizeLandscape = [
+                'small' => 'col-4',
+                'large' => 'col-8',
+                'full' => 'col-12'
+            ];
+            $definition = [];
+            if (isset($game['field_game_ribbon'][0])) {
+                $ribbon = $game['field_game_ribbon'][0];
+                $definition['ribbon']['name'] = $ribbon['field_ribbon_label'][0]['value'] ?? '';
+                $definition['ribbon']['background'] = $ribbon['field_ribbon_background_color'][0]['color'];
+                $definition['ribbon']['color'] = $ribbon['field_ribbon_text_color'][0]['color'];
+            }
+            $size = $game['field_game_thumbnail_size'][0]['value'];
+            $imgUrl = $this->asset->generateAssetUri(
+                $game["field_game_thumbnail_$size"][0]['url'],
+                ['product' => self::PRODUCT]
+            );
+            $definition['image'] = [
+                'alt' => $game["field_game_thumbnail_small"][0]['alt'] ?? '',
+                'url' => $imgUrl
+            ];
+            $definition['img_landscape'] = $imgUrl;
+            $landscapesize = $game['field_game_landscape_size'][0]['value'];
+            $landscapesize = ($landscapesize === 'full') ? 'large' : $landscapesize;
+            $definition['img_landscape'] = $this->asset->generateAssetUri(
+                $game["field_game_thumbnail_$landscapesize"][0]['url'],
+                ['product' => self::PRODUCT]
+            );
+
+            $definition['portrait_size'] = $sizePortrait[$size];
+            $definition['landscape_size'] = $sizeLandscape[$game['field_game_landscape_size'][0]['value']];
+            $definition['title'] = $game['title'][0]['value'] ?? '';
+            $definition['game_provider'] = $game['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
+            $definition['target'] = $game['field_target'][0]['value'] ?? '';
+            $definition['use_game_loader'] = isset($game['field_use_game_loader'][0]['value'])
+                ? $game['field_use_game_loader'][0]['value'] : "false";
+            $definition['game_maintenance_text'] = null;
+            $definition['game_maintenance'] = false;
+
+            if ($this->checkIfMaintenance($game)) {
+                $definition['game_maintenance'] = true;
+                $definition['game_maintenance_text'] = $game['field_maintenance_blurb'][0]['value'];
+            }
+
+            return $definition;
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
-    /**
-     * Set favorite games
-     */
-    private function toggleFavoriteGames($gameCode)
+    public function maintenance($request, $response)
     {
-        $response = ['success' => false];
-        try {
-            if ($this->playerSession->isLogin()) {
-                $favoriteGames = $this->favorite->getFavorites();
-                $favoriteGames = $this->proccessSpecialGames($favoriteGames);
-                $favoriteGames = (is_array($favoriteGames)) ? $favoriteGames : [];
-                $favorites = [];
-                foreach ($favoriteGames as $games) {
-                    $favorites[] = $games['id'];
-                }
-
-                if (count($favorites) >= 0 &&
-                    in_array($gameCode, $favorites)
-                ) {
-                    $this->favorite->removeFavorites([$gameCode]);
-                    $response['success'] = true;
-                    return $response;
-                }
-
-                $this->favorite->saveFavorites([$gameCode]);
-
-                $response['success'] = true;
-            }
-        } catch (\Exception $e) {
-            $response['success'] = false;
+        if (!$request) {
+            return false;
         }
-
-        return $response;
+        try {
+            $list = [];
+            $providers = [];
+            $games = $this->views->getViewById('games_list');
+            foreach ($games as $game) {
+                $maintenance = $this->getGameMaintenance($game);
+                $list["maintenance"][] = $maintenance["maintenance"];
+                $providers += $maintenance["game_providers"];
+            }
+            json_encode($providers, JSON_FORCE_OBJECT);
+            $list["game_providers"] = $providers;
+        } catch (\Exception $e) {
+            $list = [];
+        }
+        return $this->rest->output($response, $list);
     }
 
-    /**
-     * Set recently played games
-     */
-    private function setRecentlyPlayedGames($gameCode)
+    private function getGameMaintenance($game)
     {
-        $response = ['success' => false];
         try {
-            if ($this->playerSession->isLogin()) {
-                $recentlyPlayed = $this->recentGames->getRecents();
-                $recentlyPlayed = $this->proccessSpecialGames($recentlyPlayed);
-                $recentlyPlayed = (is_array($recentlyPlayed)) ? $recentlyPlayed : [];
-                usort($recentlyPlayed, [$this, 'sortRecentGames']);
-                $recent = [];
-                foreach ($recentlyPlayed as $games) {
-                    $recent[] = $games['id'];
-                }
-
-                // Remove last item when it reaches 21
-                if (count($recent) >= 21) {
-                    $removedGameCode = end($recent);
-                    $this->recentGames->removeRecents([$removedGameCode]);
-                }
-
-                // Move item to the top of stack if it exists already
-                if ((count($recent) >= 0 && count($recent) < 22)
-                    && in_array($gameCode, $recent)) {
-                    $this->recentGames->removeRecents([$gameCode]);
-                }
-
-                $this->recentGames->saveRecents([$gameCode]);
-
-                $response['success'] = true;
+            $definition['game_maintenance_text'] = null;
+            $definition['game_maintenance'] = false;
+            $provider = $game['field_game_provider'];
+            $definition['game_provider'] = $provider[0]['field_game_provider_key'][0]['value'] ?? '';
+            if ($this->checkIfMaintenance($game)) {
+                $definition['game_maintenance'] = true;
+                $definition['game_maintenance_text'] = $game['field_maintenance_blurb'][0]['value'];
             }
+            $list['maintenance'] = $definition;
+            $list['game_providers'][$definition["game_provider"]] =  [
+                'maintenance' => $definition['game_maintenance'],
+                'game_code' => $definition["game_provider"],
+            ];
+            return $list;
         } catch (\Exception $e) {
-            $response['success'] = false;
+            return [];
+        }
+    }
+
+    private function checkIfMaintenance($game)
+    {
+        $dateStart = $game['field_maintenance_start_date'][0]['value'] ?? null;
+        $dateEnd = $game['field_maintenance_end_date'][0]['value'] ?? null;
+        if (!$dateStart && !$dateEnd) {
+            return false;
+        }
+        $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
+        $currentDate = $currentDate->getTimestamp();
+        if ($dateStart && $dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate && $endDate->getTimestamp() >= $currentDate) {
+                return true;
+            }
         }
 
-        return $response;
+        if ($dateStart && !$dateEnd) {
+            $startDate = new \DateTime($dateStart, new \DateTimeZone('UTC'));
+            $startDate = $startDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($startDate->getTimestamp() <= $currentDate) {
+                return true;
+            }
+        }
+
+        if ($dateEnd && !$dateStart) {
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone('UTC'));
+            $endDate = $endDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            if ($endDate->getTimestamp() >= $currentDate) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
