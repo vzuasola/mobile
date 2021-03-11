@@ -50,31 +50,25 @@ class VirtualsLobbyComponentController
      */
     public function lobby($request, $response)
     {
-        try {
-            $item = $this->cacher->getItem('views.virtuals-lobby-data.' . $this->currentLanguage);
+        $item = $this->cacher->getItem('views.virtuals-lobby-data.' . $this->currentLanguage);
 
-            if (!$item->isHit() || true) {
-                $data = $this->getGamesList();
+        if (!$item->isHit()) {
+            $data = $this->getGamesList();
 
-                if (!empty($data)) {
-                    $item->set([
-                        'body' => $data,
-                    ]);
+            if (!empty($data)) {
+                $item->set([
+                    'body' => $data,
+                ]);
 
-                    $this->cacher->save($item, [
-                        'expires' => self::TIMEOUT,
-                    ]);
-                }
-            } else {
-                $body = $item->get();
-                $data = $body['body'];
+                $this->cacher->save($item, [
+                    'expires' => self::TIMEOUT,
+                ]);
             }
-            return $this->rest->output($response, $data);
+        } else {
+            $body = $item->get();
+            $data = $body['body'];
         }
-        catch (\Throwable $e) {
-            print $e->getMessage();
-            die();
-        }
+        return $this->rest->output($response, $data);
     }
 
 
