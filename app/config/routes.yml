@@ -124,7 +124,7 @@ routes:
         attributes:
             product: mobile-casino-gold
 
-    /{id:virtuals}:
+    /{id:virtual-sports|virtual-world|virtualsports|virtual-network|virtual-sports-coupon|virtuals}:
         method: GET
         action: App\MobileEntry\Controller\VirtualsController:view
         components:
