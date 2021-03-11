@@ -45,23 +45,22 @@ class VirtualsLobbyComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $config = $this->configs->getConfig('games_search.search_configuration');
             $virtualsGeneralConfig = $this->configs->getConfig('virtuals.virtuals_configuration');
         } catch (\Exception $e) {
-            $config = [];
+            $virtualsGeneralConfig = [];
+        }
+
+        try {
+            $tabs = $this->views->withProduct($this->product->getProduct())->getViewById('lobby_tabs');
+        } catch (\Exception $e) {
+            $tabs = [];
         }
 
         return [
             'authenticated' => $this->playerSession->isLogin(),
-            'search_blurb' => $config['search_blurb'] ?? "",
-            'search_no_result_msg' => $config['search_no_result_msg'] ?? "",
-            'filter_no_result_msg' => $config['filter_no_result_msg'] ?? "",
-            'msg_recommended_available' => $config['msg_recommended_available'] ?? "",
-            'msg_no_recommended' => $config['msg_no_recommended'] ?? "",
-            'title_weight' => $config['title_weight'] ?? 0,
-            'keywords_weight' => $config['keywords_weight'] ?? 0,
             'product' => $this->getProductIntegration(),
-            'infinite_scroll' => $virtualsGeneralConfig['lobby_infinite_scroll'] ?? true
+            'tabs' => $tabs,
+            'configs' => $virtualsGeneralConfig ?? [],
         ];
     }
 
