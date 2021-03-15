@@ -80,7 +80,6 @@ class CasinoLobbyComponentController
         $this->viewsAsync = $viewsAsync;
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
-
     }
 
     public function lobby($request, $response)
