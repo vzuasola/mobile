@@ -5,13 +5,15 @@ namespace App\MobileEntry\Component\Main\Lobby\CasinoLobby;
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\Async\Async;
 use App\MobileEntry\Component\Main\Lobby\CasinoLobby\GameTrait;
+use App\MobileEntry\Component\Main\Lobby\GamesListVersionTrait;
 
 class CasinoLobbyComponentController
 {
+    use GamesListVersionTrait;
     use GameTrait;
 
     const TIMEOUT = 1800;
-
+    const PRODUCT = 'mobile-casino';
     const RECOMMENDED_GAMES = 'recommended-games';
     const ALL_GAMES = 'all-games';
     const RECENTLY_PLAYED_GAMES = 'recently-played';
@@ -29,6 +31,7 @@ class CasinoLobbyComponentController
     private $cacher;
     private $currentLanguage;
     private $pager = "";
+    private $gamesListVersion;
 
     /**
      *
@@ -77,6 +80,7 @@ class CasinoLobbyComponentController
         $this->viewsAsync = $viewsAsync;
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
+
     }
 
     public function lobby($request, $response)
@@ -84,6 +88,7 @@ class CasinoLobbyComponentController
         $query = $request->getQueryParams();
         $params = $request->getQueryParams();
         $product = $params['lobbyProduct'] ?? 'mobile-casino';
+        $this->gamesListVersion = $this->getGamesListVersion($product);
         $this->pager = $query['page'] ?? null;
         $data = $this->getLobbyData($product);
 
@@ -209,7 +214,9 @@ class CasinoLobbyComponentController
         try {
             foreach ($gamesCollection as $categoryName => $category) {
                 foreach ($category as $index => $game) {
-                    if ($game['preview_mode'] == "True") {
+                    $previewMode = $this->gamesListVersion
+                        ? ($game['preview_mode'] == "True") : ($game['preview_mode']);
+                    if ($previewMode) {
                         unset($gamesCollection[$categoryName][$index]);
                     }
                 }
@@ -249,8 +256,9 @@ class CasinoLobbyComponentController
 
         try {
             $definitions['configs'] = $this->configAsync->getConfig('casino.casino_configuration');
+            $gamesListV = $this->gamesListVersion ? 'games_list_v2' : 'games_list';
             $definitions['all-games'] = $this->viewsAsync->withProduct($product)->getViewById(
-                'games_list_v2',
+                $gamesListV,
                 [
                     'page' => (string) $this->pager,
                 ]
