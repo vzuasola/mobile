@@ -179,7 +179,7 @@ class LiveDealerLobbyComponentController
             $definition['use_game_loader'] = (isset($game['field_use_game_loader'][0]['value'])
                 && $game['field_use_game_loader'][0]['value']) ? "true" : "false";
             $definition['use_game_lobby'] = $useGameLobby;
-            $definition['sort_weight'] = $game['field_lobby_tab_weight'][0]['value'] ?? 0;
+            $definition['sort_weight'] = $game['weight'][0]['value'] ?? 0;
 
             return $definition;
         } catch (\Exception $e) {
