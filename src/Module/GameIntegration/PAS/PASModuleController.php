@@ -5,6 +5,7 @@ namespace App\MobileEntry\Module\GameIntegration\PAS;
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Drupal\Config;
 use App\Fetcher\Drupal\ViewsFetcher;
+use App\MobileEntry\Services\Accounts\Accounts;
 
 class PASModuleController
 {
@@ -26,9 +27,9 @@ class PASModuleController
     private $rest;
 
     /**
-     * @var App\Fetcher\Integration\PaymentAccountFetcher
+     * @var $accountService Accounts
      */
-    private $paymentAccount;
+    private $accountService;
 
     private $parser;
 
@@ -67,7 +68,7 @@ class PASModuleController
      */
     public function __construct(
         $rest,
-        $paymentAccount,
+        $accountService,
         $parser,
         $config,
         $player,
@@ -76,7 +77,7 @@ class PASModuleController
         $viewsFetcher
     ) {
         $this->rest = $rest;
-        $this->paymentAccount = $paymentAccount;
+        $this->accountService = $accountService;
         $this->parser = $parser;
         $this->config = $config->withProduct('mobile-casino');
         $this->player = $player;
@@ -110,7 +111,7 @@ class PASModuleController
         $data = [];
 
         try {
-            $data['provisioned'] = $this->paymentAccount->hasAccount(
+            $data['provisioned'] = $this->accountService->hasAccount(
                 'casino-gold',
                 $request->getQueryParam('username')
             );

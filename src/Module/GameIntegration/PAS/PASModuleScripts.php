@@ -4,6 +4,7 @@ namespace App\MobileEntry\Module\GameIntegration\PAS;
 
 use App\Drupal\Config;
 
+use App\MobileEntry\Services\Accounts\Accounts;
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 
 /**
@@ -16,8 +17,10 @@ class PASModuleScripts implements ComponentAttachmentInterface
     private $config;
 
     private $lang;
-
-    private $paymentAccount;
+    /**
+     * @var $accountService Accounts
+     */
+    private $accountService;
 
     private $player;
 
@@ -38,12 +41,12 @@ class PASModuleScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang, $paymentAccount, $player)
+    public function __construct($playerSession, $config, $lang, $accountService, $player)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
         $this->lang = $lang;
-        $this->paymentAccount = $paymentAccount;
+        $this->accountService = $accountService;
         $this->player = $player;
     }
 
@@ -93,7 +96,7 @@ class PASModuleScripts implements ComponentAttachmentInterface
             'lang' => $this->lang ?? 'en',
             'langguageMap' => Config::parse($ptConfig['languages']),
             'iapiConfigs' => $iapiConfigs,
-            'isGold' => ($this->playerSession->isLogin()) ? $this->paymentAccount->hasAccount('casino-gold') : false,
+            'isGold' => ($this->playerSession->isLogin()) ? $this->accountService->hasAccount('casino-gold') : false,
             'pasErrorConfig' => [
                 'errorMap' => isset($ptConfig['error_mapping']) ? Config::parse($ptConfig['error_mapping']) : [],
                 'errorTitle' => $ptConfig['error_header_title_text'] ?? '',

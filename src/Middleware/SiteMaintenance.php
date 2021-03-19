@@ -43,9 +43,9 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
     private $playerSession;
 
     /**
-     * @var $paymentAccount Accounts
+     * @var $accountService Accounts
      */
-    private $paymentAccount;
+    private $accountService;
 
     /**
      * @var $preference PreferencesFetcher
@@ -62,7 +62,7 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
         $this->handler = $container->get('handler');
         $this->configs = $container->get('config_fetcher')->withProduct('mobile-entrypage');
         $this->playerSession = $container->get('player_session');
-        $this->paymentAccount = $container->get('accounts_service');
+        $this->accountService = $container->get('accounts_service');
         $this->preference = $container->get('preferences_fetcher');
     }
 
@@ -96,7 +96,7 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
                     $preferences = $this->preference->getPreferences($this->playerSession->getUsername());
                     //do nothing, if the player is NON casino-gold account
                     //OR, if the player preferred the CLASSIC casino
-                    if (!$this->paymentAccount->hasAccount('casino-gold')
+                    if (!$this->accountService->hasAccount('casino-gold')
                         || ($preferences['casino.preferred'] ?? 'casino') === 'casino') {
                         return;
                     }

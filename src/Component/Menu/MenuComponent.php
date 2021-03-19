@@ -2,6 +2,7 @@
 
 namespace App\MobileEntry\Component\Menu;
 
+use App\MobileEntry\Services\Accounts\Accounts;
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class MenuComponent implements ComponentWidgetInterface
@@ -27,9 +28,9 @@ class MenuComponent implements ComponentWidgetInterface
     private $config;
 
     /**
-     * @var App\Fetcher\Drupal\PaymentFetcher
+     * @var $accountService Accounts
      */
-    private $paymentAccount;
+    private $accountService;
 
     private $idDomain;
 
@@ -54,13 +55,13 @@ class MenuComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $menus, $config, $paymentAccount, $idDomain, $product)
+    public function __construct($playerSession, $views, $menus, $config, $accountService, $idDomain, $product)
     {
         $this->playerSession = $playerSession;
         $this->views = $views;
         $this->menus = $menus;
         $this->config = $config;
-        $this->paymentAccount = $paymentAccount;
+        $this->accountService = $accountService;
         $this->idDomain = $idDomain;
         $this->product = $product;
     }
@@ -136,7 +137,7 @@ class MenuComponent implements ComponentWidgetInterface
             }
 
             try {
-                $data['is_provisioned'] = $this->paymentAccount->hasAccount('casino-gold');
+                $data['is_provisioned'] = $this->accountService->hasAccount('casino-gold');
             } catch (\Exception $e) {
                 $data['is_provisioned'] = false;
             }
