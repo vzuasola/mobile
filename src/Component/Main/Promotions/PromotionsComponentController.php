@@ -2,6 +2,8 @@
 
 namespace App\MobileEntry\Component\Main\Promotions;
 
+use App\MobileEntry\Services\Accounts\Accounts;
+
 /**
  *
  */
@@ -39,9 +41,9 @@ class PromotionsComponentController
     private $configs;
 
     /**
-     * @var App\Fetcher\Integration\PaymentAccountFetcher
+     * @var $accountService Accounts
      */
-    private $paymentAccount;
+    private $accountService;
 
     private $rest;
     private $url;
@@ -79,7 +81,7 @@ class PromotionsComponentController
         $views,
         $rest,
         $configs,
-        $paymentAccount,
+        $accountService,
         $url,
         $asset,
         $cacher,
@@ -91,7 +93,7 @@ class PromotionsComponentController
         $this->views = $views;
         $this->rest = $rest;
         $this->configs = $configs;
-        $this->paymentAccount = $paymentAccount;
+        $this->accountService = $accountService;
         $this->url = $url;
         $this->asset = $asset;
         $this->cacher = $cacher;
@@ -108,7 +110,7 @@ class PromotionsComponentController
         $isLogin = $this->playerSession->isLogin();
         $isProvisioned = false;
         if ($isLogin) {
-            $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
+            $isProvisioned = $this->accountService->hasAccount('casino-gold');
         }
         $languageParam = $request->getQueryParams();
         $language = $languageParam['language'] ?? 'en';
@@ -214,7 +216,7 @@ class PromotionsComponentController
 
         $isProvisioned = false;
         if ($this->playerSession->isLogin()) {
-            $isProvisioned = $this->paymentAccount->hasAccount('casino-gold');
+            $isProvisioned = $this->accountService->hasAccount('casino-gold');
         }
 
         $archived = $this->createPromotions(

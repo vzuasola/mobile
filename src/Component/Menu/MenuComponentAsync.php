@@ -2,6 +2,7 @@
 
 namespace App\MobileEntry\Component\Menu;
 
+use App\MobileEntry\Services\Accounts\Accounts;
 use App\Plugins\ComponentWidget\AsyncComponentInterface;
 
 class MenuComponentAsync implements AsyncComponentInterface
@@ -22,9 +23,9 @@ class MenuComponentAsync implements AsyncComponentInterface
     private $menus;
 
     /**
-     * @var App\Fetcher\AsyncIntegration\PaymentAccountFetcher
+     * @var $accountService Accounts
      */
-    private $accounts;
+    private $accountService;
 
     /**
      *
@@ -35,19 +36,19 @@ class MenuComponentAsync implements AsyncComponentInterface
             $container->get('config_fetcher_async'),
             $container->get('views_fetcher_async'),
             $container->get('menu_fetcher_async'),
-            $container->get('payment_account_fetcher_async')
+            $container->get('accounts_service')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($config, $views, $menus, $accounts)
+    public function __construct($config, $views, $menus, $accountService)
     {
         $this->config = $config;
         $this->views = $views;
         $this->menus = $menus;
-        $this->accounts = $accounts;
+        $this->accountService = $accountService;
     }
 
     /**
@@ -62,7 +63,7 @@ class MenuComponentAsync implements AsyncComponentInterface
             $this->menus->getMultilingualMenu('secondary-menu'),
             $this->menus->getMultilingualMenu('mobile-pre-login'),
             $this->menus->getMultilingualMenu('mobile-post-login'),
-            $this->accounts->hasAccount('casino-gold'),
+            $this->accountService->hasAccount('casino-gold'),
         ];
     }
 }
