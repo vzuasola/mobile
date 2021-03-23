@@ -242,6 +242,12 @@ class LiveDealerLobbyComponentController
                   ->getConfig('webcomposer_config.games_gpi_provider');
                 $currencies = explode("\r\n", ($config['gpi_live_dealer_currency'] ?? ''));
                 break;
+            case 'opus':
+                $config = $this->configs
+                    ->withProduct(self::PRODUCT)
+                    ->getConfig('webcomposer_config.games_opus_provider');
+                $currencies = explode("\r\n", ($config['currency'] ?? ''));
+                break;
             case 'pas':
                 $config = $this->configs
                   ->withProduct(self::PRODUCT)
