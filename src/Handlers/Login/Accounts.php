@@ -8,7 +8,9 @@ namespace App\MobileEntry\Handlers\Login;
 class Accounts
 {
     const PRODUCTS = ['casino-gold'];
-
+    /**
+     * @var $accountService \App\MobileEntry\Services\Accounts\Accounts
+     */
     private $accountService;
     private $session;
 
