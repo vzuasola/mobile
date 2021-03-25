@@ -38,7 +38,6 @@ export class OpusModule implements ModuleInterface, GameInterface {
     }
 
     launch(options) {
-        debugger;
         if (options.provider === this.key) {
             const lang = Router.getLanguage();
             let langCode = "en";
