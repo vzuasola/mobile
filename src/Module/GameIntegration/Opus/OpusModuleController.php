@@ -44,7 +44,6 @@ class OpusModuleController
             $container->get('player_session'),
             $container->get('views_fetcher'),
             $container->get('lang'),
-            $container->get('product'),
             $container->get('jwt_encryption')
         );
     }
@@ -60,7 +59,6 @@ class OpusModuleController
         PlayerSession $playerSession,
         $viewsFetcher,
         $lang,
-        $product,
         JWTEncryption $jwtEncryption
     ) {
         $this->rest = $rest;
@@ -70,7 +68,6 @@ class OpusModuleController
         $this->playerSession = $playerSession;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-live-dealer');
         $this->lang = $lang;
-        $this->product = $product;
         $this->jwtEncryption = $jwtEncryption;
     }
 
@@ -116,7 +113,11 @@ class OpusModuleController
 
             $languageParse = Config::parse($config['languages'] ?? '');
             $languageCode = $languageParse[$language] ?? "en-US";
-            $product = str_replace('mobile-', '', $this->product) ?? 'live-dealer';
+            $product = str_replace(
+                'mobile-',
+                '',
+                $params['product'] ?? 'live-dealer'
+            );
 
             $options = [
                 'issuer' => self::ISSUER,
@@ -130,7 +131,7 @@ class OpusModuleController
             ];
 
             $token = $this->jwtEncryption->encrypt($payload, $options);
-            $redirectUrl = $gameUri . $language. "/$product/game/opus/redirect?token=$token&login=$isLogin";
+            $redirectUrl = $gameUri . $language . "/$product/game/opus/redirect?token=$token&login=$isLogin";
 
             if ($redirectUrl) {
                 $data['gameurl'] = $redirectUrl;
@@ -172,7 +173,7 @@ class OpusModuleController
                 }
             }
 
-            $config =  $productConfig->getGeneralConfigById('games_opus_provider');
+            $config = $productConfig->getGeneralConfigById('games_opus_provider');
             $currencies = explode("\r\n", $config['currency'] ?? "");
 
             if (in_array($playerCurrency, $currencies)) {
