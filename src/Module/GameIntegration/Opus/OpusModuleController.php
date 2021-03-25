@@ -62,8 +62,7 @@ class OpusModuleController
         $lang,
         $product,
         JWTEncryption $jwtEncryption
-    )
-    {
+    ) {
         $this->rest = $rest;
         $this->opus = $opus;
         $this->config = $config->withProduct('mobile-live-dealer');
