@@ -50,6 +50,7 @@ import {LotteryIntegrationModule} from "@app/src/Module/ProductIntegration/Lotte
 import {SodaCasinoIntegrationModule} from "@app/src/Module/ProductIntegration/SodaCasino/script";
 import {PartnerMatrixModule} from "@app/src/Module/PartnerMatrix/script";
 import {JSystemModule} from "@app/src/Module/GameIntegration/JSystem/script";
+import {OpusModule} from "@app/src/Module/GameIntegration/Opus/script";
 
 ComponentManager.setModules({
     avaya: new AvayaModule(),
@@ -87,6 +88,7 @@ ComponentManager.setModules({
     fun_gaming_integration: new FunGamingModule(),
     ky_gaming_integration: new KYGamingModule(),
     lottoland_integration: new LottolandModule(),
+    opus_integration: new OpusModule(),
     login_redirect: new LoginRedirectModule(),
     product_integration: new ProductIntegrationModule(),
     generic_integration: new GenericIntegrationModule(),
