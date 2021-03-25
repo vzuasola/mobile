@@ -84,7 +84,7 @@ class OpusModuleController
         $data['currency'] = false;
         if ($this->checkCurrency($request)) {
             $data['currency'] = true;
-            try  {
+            try {
                 $data = $this->getGameUrl($request);
             } catch (\Exception $e) {
                 $data['currency'] = true;
@@ -105,19 +105,19 @@ class OpusModuleController
                 $productConfig = $this->config->withProduct($params['product']);
             }
 
-            //---------------
             $config = $productConfig->getGeneralConfigById('games_opus_provider');
             $language = $this->lang;
             $isLogin = $this->playerSession->isLogin();
             $sessiontokenizer = null;
-            $gameUri = $config['opus_alternative_game_url'];
+            $gameUri = rtrim($config['opus_alternative_game_url'], '/') . '/';
 
-            if ($this->playerSession->isLogin()) {
+            if ($isLogin) {
                 $sessiontokenizer = $this->playerSession->getToken();
             }
 
             $languageParse = Config::parse($config['languages'] ?? '');
-            $languageCode = $languageParse[$language] ?? "en-us";
+            $languageCode = $languageParse[$language] ?? "en-US";
+            $product = $this->product ?? 'live-dealer';
 
             $options = [
                 'issuer' => self::ISSUER,
@@ -131,11 +131,7 @@ class OpusModuleController
             ];
 
             $token = $this->jwtEncryption->encrypt($payload, $options);
-            $redirectUrl = $gameUri . $language. "/$this->product/game/opus/redirect?token=$token&login=$isLogin";
-
-
-            //--------------
-
+            $redirectUrl = $gameUri . $language. "/$product/game/opus/redirect?token=$token&login=$isLogin";
 
             if ($redirectUrl) {
                 $data['gameurl'] = $redirectUrl;
@@ -162,12 +158,11 @@ class OpusModuleController
                 $viewsFetcher = $this->viewsFetcher->withProduct($params['product']);
             }
 
-
             if ($subProvider) {
                 $supportedCurrency = $viewsFetcher->getViewById(
-                        'games_subproviders',
-                        ['name' => $subProvider]
-                    )[0]['supported_currency'] ?? '';
+                    'games_subproviders',
+                    ['name' => $subProvider]
+                )[0]['supported_currency'] ?? '';
 
                 // If the game has a subprovider currency restriction, verify if the user met the restriction
                 if ($supportedCurrency) {
