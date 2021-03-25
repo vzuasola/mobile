@@ -67,6 +67,7 @@ export class JSystemModule implements ModuleInterface, GameInterface {
                     gameCode: options.code,
                     subprovider: options.subprovider || undefined,
                     langCode,
+                    lobby: options.lobby,
                 },
             }).then((response) => {
                 if (response.gameurl) {
