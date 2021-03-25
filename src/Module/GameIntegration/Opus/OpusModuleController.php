@@ -116,6 +116,7 @@ class OpusModuleController
 
             $languageParse = Config::parse($config['languages'] ?? '');
             $languageCode = $languageParse[$language] ?? "en-US";
+            $product = str_replace('mobile-', '', $this->product) ?? 'live-dealer';
 
             $options = [
                 'issuer' => self::ISSUER,
@@ -129,7 +130,7 @@ class OpusModuleController
             ];
 
             $token = $this->jwtEncryption->encrypt($payload, $options);
-            $redirectUrl = $gameUri . $language. "/live-dealer/game/opus/redirect?token=$token&login=$isLogin";
+            $redirectUrl = $gameUri . $language. "/$product/game/opus/redirect?token=$token&login=$isLogin";
 
             if ($redirectUrl) {
                 $data['gameurl'] = $redirectUrl;
