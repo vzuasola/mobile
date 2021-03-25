@@ -41,16 +41,15 @@ class Accounts
     public function hasAccount($product, $username = null)
     {
         $store = $this->session->get('accounts.products') ?? [];
-        $check = $store[$product] ?? false;
-
-        if (!isset($check)) {
-            try {
-                $check = $this->paymentAccount->hasAccount($product, $username);
-            } catch (\Throwable $e) {
-                // do nothing
-            }
+        // If there is a session return immediately
+        if (isset($store[$product])) {
+            return $store[$product];
         }
-
-        return $check;
+        // Else, fetch from the API the result
+        try {
+            return $this->paymentAccount->hasAccount($product, $username);
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 }
