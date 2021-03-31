@@ -2,11 +2,14 @@
 
 namespace App\MobileEntry\Services\Accounts;
 
+use App\Fetcher\Integration\PaymentAccountFetcher;
+
 /**
  * Class to check for accounts
  */
 class Accounts
 {
+    /** @var $paymentAccount PaymentAccountFetcher */
     private $paymentAccount;
     private $session;
 
@@ -31,21 +34,22 @@ class Accounts
     }
 
     /**
-     *
+     * @param $product
+     * @param null $username
+     * @return bool
      */
     public function hasAccount($product, $username = null)
     {
         $store = $this->session->get('accounts.products') ?? [];
-        $check = $store[$product] ?? null;
-
-        if (!isset($check)) {
-            try {
-                $check = $this->paymentAccount->hasAccount($product, $username);
-            } catch (\Exception $e) {
-                // do nothing
-            }
+        // If there is a session return immediately
+        if (isset($store[$product])) {
+            return $store[$product];
         }
-
-        return $check;
+        // Else, fetch from the API the result
+        try {
+            return $this->paymentAccount->hasAccount($product, $username);
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\CasinoOption;
 
 use App\Cookies\Cookies;
+use App\MobileEntry\Services\Accounts\Accounts;
 use App\Utils\Host;
 
 /**
@@ -28,9 +29,9 @@ class CasinoOptionComponentController
     private $configs;
 
     /**
-     * @var App\Fetcher\Integration\PaymentAccountFetcher
+     * @var Accounts
      */
-    private $paymentAccount;
+    private $accountService;
 
     private $parser;
 
@@ -52,13 +53,13 @@ class CasinoOptionComponentController
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $preferences, $rest, $configs, $paymentAccount, $parser)
+    public function __construct($playerSession, $preferences, $rest, $configs, $accountService, $parser)
     {
         $this->playerSession = $playerSession;
         $this->preferences = $preferences;
         $this->rest = $rest;
         $this->configs = $configs;
-        $this->paymentAccount = $paymentAccount;
+        $this->accountService = $accountService;
         $this->parser = $parser;
     }
 
@@ -119,7 +120,7 @@ class CasinoOptionComponentController
     private function isProvisioned($product, $username = null)
     {
         try {
-            $isProvisioned = $this->paymentAccount->hasAccount($product, $username);
+            $isProvisioned = $this->accountService->hasAccount($product, $username);
         } catch (\Exception $e) {
             $isProvisioned = false;
         }
