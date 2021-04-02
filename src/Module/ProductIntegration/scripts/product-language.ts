@@ -95,6 +95,8 @@ export class  ProductLanguage {
             "bu",
             "lo",
             "km",
+            "bn",
+            "pk",
         ],
         "exchange" : [
             "in",
