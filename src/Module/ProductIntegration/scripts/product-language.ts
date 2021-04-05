@@ -122,6 +122,8 @@ export class  ProductLanguage {
             "bu",
             "lo",
             "km",
+            "bn",
+            "pk",
         ],
         "virtual-sports" : [
             "en",
