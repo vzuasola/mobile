@@ -83,6 +83,8 @@ export class  ProductLanguage {
             "bu",
             "lo",
             "km",
+            "bn",
+            "pk",
         ],
         "games" : [
             "en",
