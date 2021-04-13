@@ -17,7 +17,7 @@ class RestController extends BaseController
 
         if (strpos($request->getUri()->getPath(), $args['id']) !== false
             && method_exists($this, $id)) {
-            $result[$id] = $this->$id($request, $response);
+            $result[$id] = $this->$id();
         } else {
             $result = [
                 'code' => '404',
@@ -31,7 +31,7 @@ class RestController extends BaseController
     /**
      * Get login text, labels and configurations
      */
-    private function login($request, $response)
+    private function login()
     {
         try {
             $headerConfigs = $this->get('config_fetcher')
