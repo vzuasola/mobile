@@ -74,6 +74,5 @@ class RestController extends BaseController
             'data' => $data,
             'error_messages' => $error_messages
         ];
-
     }
 }
