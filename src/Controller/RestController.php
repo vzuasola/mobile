@@ -18,7 +18,7 @@ class RestController extends BaseController
         $loginData = $this->formatData($this->getLoginData(), $language);
 
         $result =  array_merge($loginData);
- 
+
         return $this->rest->output($response, $result);
     }
 
