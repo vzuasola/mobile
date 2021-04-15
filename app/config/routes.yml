@@ -412,7 +412,7 @@ routes:
         headers:
             Cache-Control: no-cache, no-store, must-revalidate
 
-    /api-fe/component/{type}/{id}:
+    /api-fe/components:
         method: ANY
         action: App\MobileEntry\Controller\RestController:getJson
         headers:
