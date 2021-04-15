@@ -13,8 +13,7 @@ class RestController extends BaseController
     public function getJson($request, $response, $args)
     {
         $result = [];
-        $languageParam = $request->getQueryParams();
-        $language = $languageParam['language'] ?? 'en';
+        $language = $this->get('lang') ?? 'en';
 
         $loginData = $this->formatData($this->getLoginData(), $language);
 
