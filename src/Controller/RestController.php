@@ -16,8 +16,9 @@ class RestController extends BaseController
         $language = $this->get('lang') ?? 'en';
 
         $loginData = $this->formatData($this->getLoginData(), $language);
+        $sponsorsData = $this->formatData($this->getSponsorsData(), $language);
 
-        $result =  array_merge($loginData);
+        $result =  array_merge($loginData, $sponsorsData);
 
         return $this->rest->output($response, $result);
     }
@@ -58,6 +59,21 @@ class RestController extends BaseController
         $data['account_suspended'] = $loginConfigs['error_message_account_suspended'] ?? '';
         $data['account_locked'] = $loginConfigs['error_message_account_locked'] ?? '';
 
+        return $data;
+    }
+
+    /**
+     * Get sponsors title
+     */
+    private function getSponsorsData()
+    {
+        try {
+            $sponsors = $this->get('config_fetcher')->getConfig('mobile_entrypage.entrypage_configuration');
+        } catch (\Exception $e) {
+            $sponsors = [];
+        }
+
+        $data['homescreen_sponsors'] = $sponsors['parnerts_and_sponsor_title_text'] ?? '';
         return $data;
     }
 
