@@ -85,7 +85,7 @@ class RestController extends BaseController
     {
         try {
             $pnxConfig = $this->get('config_fetcher')->getConfig('webcomposer_config.pushnx_configuration_v2');
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $pnxConfig = [];
         }
         /**
