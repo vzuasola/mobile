@@ -17,8 +17,9 @@ class RestController extends BaseController
 
         $loginData = $this->formatData($this->getLoginData(), $language);
         $sponsorsData = $this->formatData($this->getSponsorsData(), $language);
+        $pnxData = $this->formatData($this->getPnxData(), $language);
 
-        $result =  array_merge($loginData, $sponsorsData);
+        $result =  array_merge($loginData, $sponsorsData, $pnxData);
 
         return $this->rest->output($response, $result);
     }
@@ -74,6 +75,44 @@ class RestController extends BaseController
         }
 
         $data['homescreen_sponsors'] = $sponsors['parnerts_and_sponsor_title_text'] ?? '';
+        return $data;
+    }
+
+    /**
+     * Get push notification text, labels and configurations
+     */
+    private function getPnxData()
+    {
+        try {
+            $pnxConfig = $this->get('config_fetcher')->getConfig('webcomposer_config.pushnx_configuration_v2');
+        } catch(\Exception $e) {
+            $pnxConfig = [];
+        }
+        /**
+         * Remove special html chars and use part of array we need
+         * DISMISS ALL NOTIFICATION
+         */
+        $dismissAll = $pnxConfig['dismiss_content']['value'];
+        $pushNotifDismissSubstr = substr($dismissAll, 0, strpos($dismissAll, "?"));
+        $pushNotifDismissHtml = strip_tags($pushNotifDismissSubstr);
+        $pushNotifDismissReplace = preg_replace('/&#13;\n/i', ' ', $pushNotifDismissHtml);
+        $pushNotifDismiss = $pushNotifDismissReplace . "?";
+
+        /**
+         * Remove special html chars and use part of array we need
+         * push notification warning
+         */
+        $pushNotifWarningSubstr = strstr($dismissAll, '?');
+        $pushNotifWarningHtmlRemove = strip_tags($pushNotifWarningSubstr);
+        $pushNotifWarningReplace = preg_replace('/&#13;|&#13;\n|\n|[-?]|\s+/i', ' ', $pushNotifWarningHtmlRemove);
+        $pushNotifWarning = trim($pushNotifWarningReplace);
+
+        $data['pushnotif_title'] = $pnxConfig['title'];
+        $data['pushnotif_dismissall'] = $pnxConfig['dismiss_button_label'];
+        $data['pushnotif_dismiss'] = $pushNotifDismiss;
+        $data['pushnotif_warning'] = $pushNotifWarning;
+        $data['pushnotif_yes'] = $pnxConfig['dismiss_yes'];
+        $data['pushnotif_no'] = $pnxConfig['dismiss_no'];
         return $data;
     }
 
