@@ -124,10 +124,6 @@ class RestController extends BaseController
             $menu = [];
             $tiles = $this->get("views_fetcher")->getViewById('mobile_product_menu');
             foreach ($tiles as $key => $tile) {
-                if (isset($tile['field_product_menu_url_post_log'][0]['uri'])) {
-                    $encode = base64_encode($tile['field_product_menu_url_post_log'][0]['uri']);
-                    $tile['field_post_login_url_encoded'] = $encode;
-                }
                 $menu[$tile['field_product_menu_id'][0]["value"]] = $tile["field_product_menu_title"][0]["value"];
             }
         } catch (\Exception $e) {
