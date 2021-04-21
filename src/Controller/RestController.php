@@ -108,12 +108,18 @@ class RestController extends BaseController
         $pushNotifWarningReplace = preg_replace('/&#13;|&#13;\n|\n|[-?]|\s+/i', ' ', $pushNotifWarningHtmlRemove);
         $pushNotifWarning = trim($pushNotifWarningReplace);
 
-        $data['pushnotif_title'] = $pnxConfig['title'] ?? "PUSH NOTIFICATION";
-        $data['pushnotif_dismissall'] = $pnxConfig['dismiss_button_label'] ?? "Dismiss Al";
-        $data['pushnotif_dismiss'] = $pushNotifDismiss ?? "ARE YOU SURE YOU WANT TO DISMISS ALL NOTIFICATIONS?";
-        $data['pushnotif_warning'] = $pushNotifWarning ?? "Dismissing all notifications will also decline all promotions you are eligible to";
-        $data['pushnotif_yes'] = $pnxConfig['dismiss_yes'] ?? "YES";
-        $data['pushnotif_no'] = $pnxConfig['dismiss_no'] ?? "NO";
+        $data['pushnotif_title'] = $pnxConfig['title']
+            ?? "PUSH NOTIFICATION";
+        $data['pushnotif_dismissall'] = $pnxConfig['dismiss_button_label']
+            ?? "Dismiss Al";
+        $data['pushnotif_dismiss'] = $pushNotifDismiss
+            ?? "ARE YOU SURE YOU WANT TO DISMISS ALL NOTIFICATIONS?";
+        $data['pushnotif_warning'] = $pushNotifWarning
+            ?? "Dismissing all notifications will also decline all promotions you are eligible to";
+        $data['pushnotif_yes'] = $pnxConfig['dismiss_yes']
+            ?? "YES";
+        $data['pushnotif_no'] = $pnxConfig['dismiss_no']
+            ?? "NO";
         return $data;
     }
 
@@ -128,8 +134,8 @@ class RestController extends BaseController
                 $productTile['field_post_login_url_encoded'] = $encode;
             }
 
-            // $product[$key] = $productTile['field_product_lobby_title'];
-            $product[$productTile['field_product_lobby_id'][0]['value']] = $productTile['field_product_lobby_title'][0]['value'];
+            $product[$productTile['field_product_lobby_id'][0]['value']] =
+                $productTile['field_product_lobby_title'][0]['value'];
         }
 
         $data['homescreen_icon_ow-sports'] = $product['product-owsports'] ?? "OW Sports";
