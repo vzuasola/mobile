@@ -18,8 +18,9 @@ class RestController extends BaseController
         $loginData = $this->formatData($this->getLoginData(), $language);
         $sponsorsData = $this->formatData($this->getSponsorsData(), $language);
         $pnxData = $this->formatData($this->getPnxData(), $language);
+        $prodData = $this->formatData($this->getProducts(), $language);
 
-        $result =  array_merge($loginData, $sponsorsData, $pnxData);
+        $result =  array_merge($loginData, $sponsorsData, $pnxData, $prodData);
 
         return $this->rest->output($response, $result);
     }
@@ -93,10 +94,10 @@ class RestController extends BaseController
          * DISMISS ALL NOTIFICATION
          */
         $dismissAll = $pnxConfig['dismiss_content']['value'];
-        $pushNotifDismissSubstr = substr($dismissAll, 0, strpos($dismissAll, "?"));
+        $pushNotifDismissSubstr = substr($dismissAll, 0, strpos($dismissAll, "/p>&#13;\n&#13;"));
         $pushNotifDismissHtml = strip_tags($pushNotifDismissSubstr);
         $pushNotifDismissReplace = preg_replace('/&#13;\n/i', ' ', $pushNotifDismissHtml);
-        $pushNotifDismiss = $pushNotifDismissReplace . "?";
+        $pushNotifDismiss = $pushNotifDismissReplace;
 
         /**
          * Remove special html chars and use part of array we need
@@ -107,12 +108,42 @@ class RestController extends BaseController
         $pushNotifWarningReplace = preg_replace('/&#13;|&#13;\n|\n|[-?]|\s+/i', ' ', $pushNotifWarningHtmlRemove);
         $pushNotifWarning = trim($pushNotifWarningReplace);
 
-        $data['pushnotif_title'] = $pnxConfig['title'];
-        $data['pushnotif_dismissall'] = $pnxConfig['dismiss_button_label'];
-        $data['pushnotif_dismiss'] = $pushNotifDismiss;
-        $data['pushnotif_warning'] = $pushNotifWarning;
-        $data['pushnotif_yes'] = $pnxConfig['dismiss_yes'];
-        $data['pushnotif_no'] = $pnxConfig['dismiss_no'];
+        $data['pushnotif_title'] = $pnxConfig['title']
+            ?? "PUSH NOTIFICATION";
+        $data['pushnotif_dismissall'] = $pnxConfig['dismiss_button_label']
+            ?? "Dismiss Al";
+        $data['pushnotif_dismiss'] = $pushNotifDismiss
+            ?? "ARE YOU SURE YOU WANT TO DISMISS ALL NOTIFICATIONS?";
+        $data['pushnotif_warning'] = $pushNotifWarning
+            ?? "Dismissing all notifications will also decline all promotions you are eligible to";
+        $data['pushnotif_yes'] = $pnxConfig['dismiss_yes']
+            ?? "YES";
+        $data['pushnotif_no'] = $pnxConfig['dismiss_no']
+            ?? "NO";
+        return $data;
+    }
+
+    public function getProducts()
+    {
+        $product = [];
+        $productTiles = $this->get('views_fetcher')->getViewById('product_lobby_tiles_entity');
+
+        foreach ($productTiles as $key => $productTile) {
+            if (isset($productTile['field_product_lobby_url_post_log'][0]['uri'])) {
+                $encode = base64_encode($productTile['field_product_lobby_url_post_log'][0]['uri']);
+                $productTile['field_post_login_url_encoded'] = $encode;
+            }
+
+            $product[$productTile['field_product_lobby_id'][0]['value']] =
+                $productTile['field_product_lobby_title'][0]['value'];
+        }
+
+        $data['homescreen_icon_ow-sports'] = $product['product-owsports'] ?? "OW Sports";
+        $data['homescreen_icon_dafa-sports'] = $product['product-dafasports'] ?? "Dafa Sports";
+        $data['homescreen_icon_games'] = $product['product-casino'] ?? "Casino";
+        $data['homescreen_icon_live-dealer'] = $product['product-live-dealer'] ?? "Live Dealer";
+        $data['homescreen_icon_arcade'] = $product['product-arcade'] ?? "Arcade";
+
         return $data;
     }
 
