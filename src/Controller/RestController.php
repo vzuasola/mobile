@@ -21,7 +21,7 @@ class RestController extends BaseController
         $pnxData = $this->formatData($this->getPnxData(), $language);
         $prodData = $this->formatData($this->getProducts(), $language);
 
-        $result =  array_merge($loginData, $sponsorsData, $pnxData,$menuData, $prodData);
+        $result =  array_merge($loginData, $sponsorsData, $pnxData, $menuData, $prodData);
 
         return $this->rest->output($response, $result);
     }
