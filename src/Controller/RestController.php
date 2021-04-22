@@ -17,10 +17,11 @@ class RestController extends BaseController
 
         $loginData = $this->formatData($this->getLoginData(), $language);
         $sponsorsData = $this->formatData($this->getSponsorsData(), $language);
+        $menuData = $this->formatData($this->getMenuData(), $language);
         $pnxData = $this->formatData($this->getPnxData(), $language);
         $prodData = $this->formatData($this->getProducts(), $language);
 
-        $result =  array_merge($loginData, $sponsorsData, $pnxData, $prodData);
+        $result =  array_merge($loginData, $sponsorsData, $pnxData, $menuData, $prodData);
 
         return $this->rest->output($response, $result);
     }
@@ -143,6 +144,27 @@ class RestController extends BaseController
         $data['homescreen_icon_games'] = $product['product-casino'] ?? "Casino";
         $data['homescreen_icon_live-dealer'] = $product['product-live-dealer'] ?? "Live Dealer";
         $data['homescreen_icon_arcade'] = $product['product-arcade'] ?? "Arcade";
+
+        return $data;
+    }
+
+    private function getMenuData()
+    {
+
+        try {
+            $menu = [];
+            $tiles = $this->get("views_fetcher")->getViewById('mobile_product_menu');
+            foreach ($tiles as $key => $tile) {
+                $menu[$tile['field_product_menu_id'][0]["value"]] = $tile["field_product_menu_title"][0]["value"];
+            }
+        } catch (\Exception $e) {
+            $menu = [];
+        }
+
+        $data['homescreen__menu_lottery'] = $menu["product-lottery"] ?? 'Lottery';
+        $data['homescreen__menu_virtuals'] = $menu["product-virtuals"]  ?? 'Virtuals';
+        $data['homescreen__menu_casino'] = $menu["product-casino"]  ?? 'Casino';
+        $data['homescreen__menu_promotions'] = $menu["product-promotions"] ?? 'Promotions';
 
         return $data;
     }
