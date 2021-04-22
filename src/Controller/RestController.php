@@ -16,12 +16,20 @@ class RestController extends BaseController
         $language = $this->get('lang') ?? 'en';
 
         $loginData = $this->formatData($this->getLoginData(), $language);
-        $sponsorsData = $this->formatData($this->getSponsorsData(), $language);
+        $sponsorsData = $this->formatData($this->getEntrypageData($language), $language);
         $menuData = $this->formatData($this->getMenuData(), $language);
         $pnxData = $this->formatData($this->getPnxData(), $language);
         $prodData = $this->formatData($this->getProducts(), $language);
+        $homeContactUs = $this->formatData($this->getHomeContactUs(), $language);
 
-        $result =  array_merge($loginData, $sponsorsData, $pnxData, $menuData, $prodData);
+        $result =  array_merge(
+            $loginData,
+            $sponsorsData,
+            $pnxData,
+            $menuData,
+            $prodData,
+            $homeContactUs
+        );
 
         return $this->rest->output($response, $result);
     }
@@ -66,17 +74,65 @@ class RestController extends BaseController
     }
 
     /**
-     * Get sponsors title
+     * Get sponsors title, socials title
      */
-    private function getSponsorsData()
+    private function getEntrypageData($language)
     {
+        $copyright = [
+            'en' => 'Copyright',
+            'eu' => 'Copyright',
+            'sc' => '版权',
+            'ch' => '版權',
+            'th' => 'ลิขสิทธิ์',
+            'vn' => 'Bản Quyền',
+            'id' => 'Hak cipta',
+            'jp' => 'Copyright',
+            'kr' => 'Copyright',
+            'in' => 'Copyright',
+            'hi' => 'कॉपीराइट',
+            'te' => 'కాపీరైట్',
+            'gr' => 'Πνευματική Ιδιοκτησία',
+            'pl' => 'Copyright',
+            'es' => 'Copyright',
+            'pt' => 'Copyright',
+            'lo' => 'ລິຂະສິດ',
+            'bu' => 'မူပိုင္ခြင့္',
+            'km' => 'រក្សាសិទ្ធិ©ឆ្នាំ',
+        ];
+
+        $allrights = [
+            'en' => 'All Rights Reserved',
+            'eu' => 'All Rights Reserved',
+            'sc' => '版权所有',
+            'ch' => '版權所有',
+            'th' => 'สงวนลิขสิทธิ์',
+            'vn' => 'Tất Cả Các Quyền Được Bảo Hộ',
+            'id' => 'Semua hak dilindungi',
+            'jp' => 'All Rights Reserved',
+            'kr' => 'All Rights Reserved',
+            'in' => 'All Rights Reserved',
+            'hi' => 'सभी अधिकार आरक्षित',
+            'te' => 'అన్ని హక్కులూ ప్రత్యేకించుకోవడమైనది',
+            'gr' => 'Όλα τα Δικαιώματα Κατοχυρωμένα',
+            'pl' => 'Wszystkie prawa zastrzeżone',
+            'es' => 'Todos los Derechos Reservados',
+            'pt' => 'Todos os Direitos Reservados',
+            'lo' => 'ຂ້າພະເຈົ້າລິຂະສິດ:',
+            'bu' => 'အားလံုးေသာၾကိဳတင္ကာကြယ္ခြင့္',
+            'km' => 'រក្សា​រ​សិទ្ធ​គ្រប់យ៉ាង',
+        ];
+
         try {
-            $sponsors = $this->get('config_fetcher')->getConfig('mobile_entrypage.entrypage_configuration');
+            $entryConfig = $this->get('config_fetcher')->getConfig('mobile_entrypage.entrypage_configuration');
         } catch (\Exception $e) {
-            $sponsors = [];
+            $entryConfig = [];
         }
 
-        $data['homescreen_sponsors'] = $sponsors['parnerts_and_sponsor_title_text'] ?? '';
+        $data['homescreen_sponsors'] = $entryConfig['parnerts_and_sponsor_title_text'] ?? '';
+        $data['homescreen__contactus_title'] = $entryConfig['contact_us_home_text'] ?? '';
+        $data['bottomnav_copyright'] = $copyright[$language] ?? '';
+        $data['bottomnav_all_right'] = $allrights[$language] ?? '';
+
         return $data;
     }
 
@@ -150,7 +206,6 @@ class RestController extends BaseController
 
     private function getMenuData()
     {
-
         try {
             $menu = [];
             $tiles = $this->get("views_fetcher")->getViewById('mobile_product_menu');
@@ -165,6 +220,27 @@ class RestController extends BaseController
         $data['homescreen__menu_virtuals'] = $menu["product-virtuals"]  ?? 'Virtuals';
         $data['homescreen__menu_casino'] = $menu["product-casino"]  ?? 'Casino';
         $data['homescreen__menu_promotions'] = $menu["product-promotions"] ?? 'Promotions';
+
+        return $data;
+    }
+
+    public function getHomeContactUs()
+    {
+        $menu_item = [];
+        try {
+            $menu = $this->menus->getMultilingualMenu('mobile-contact-us');
+        } catch (\Exception $e) {
+            $menu = [];
+        }
+
+        foreach ($menu as $item)
+        {
+            $menu_item[$item['attributes']['svg']] = $item['title'];
+        }
+
+        $data['homescreen__contactus_title_live_chat'] = $menu_item['contact-live-chat'] ?? 'Live Chat';
+        $data['homescreen__contactus_title_phone'] = $menu_item['contact-phone'] ?? 'Telephone';
+        $data['home_contact_email'] = $menu_item['contact-mail'] ?? 'Email';
 
         return $data;
     }
