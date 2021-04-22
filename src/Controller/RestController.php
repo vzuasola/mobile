@@ -112,7 +112,7 @@ class RestController extends BaseController
             'kr' => 'All Rights Reserved',
             'in' => 'All Rights Reserved',
             'hi' => 'सभी अधिकार आरक्षित',
-            'te' => 
+            'te' =>
                 'అన్ని హక్కులూ ప్రత్యేకించుకోవడమైనది',
             'gr' => 'Όλα τα Δικαιώματα Κατοχυρωμένα',
             'pl' => 'Wszystkie prawa zastrzeżone',
