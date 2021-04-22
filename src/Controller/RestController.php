@@ -112,7 +112,8 @@ class RestController extends BaseController
             'kr' => 'All Rights Reserved',
             'in' => 'All Rights Reserved',
             'hi' => 'सभी अधिकार आरक्षित',
-            'te' => 'అన్ని హక్కులూ ప్రత్యేకించుకోవడమైనది',
+            'te' => 
+                'అన్ని హక్కులూ ప్రత్యేకించుకోవడమైనది',
             'gr' => 'Όλα τα Δικαιώματα Κατοχυρωμένα',
             'pl' => 'Wszystkie prawa zastrzeżone',
             'es' => 'Todos los Derechos Reservados',
@@ -280,8 +281,7 @@ class RestController extends BaseController
             $menu = [];
         }
 
-        foreach ($menu as $item)
-        {
+        foreach ($menu as $item) {
             $menu_item[$item['attributes']['svg']] = $item['title'];
         }
 
