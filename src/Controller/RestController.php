@@ -179,15 +179,15 @@ class RestController extends BaseController
             $secondary = $this->get("menu_fetcher")->getMultilingualMenu('secondary-menu');
 
             foreach ($secondary as $key => $value) {
-                if (strpos($value["uri"],"security")) {
+                if (strpos($value["uri"], "security")) {
                     $secondaryMenu["security"] = $value["title"];
-                }elseif(strpos($value["uri"],"terms")){
+                }elseif(strpos($value["uri"], "terms")){
                     $secondaryMenu["terms"] = $value["title"];
-                }elseif(strpos($value["uri"],"privacy")){
+                }elseif(strpos($value["uri"], "privacy")){
                     $secondaryMenu["privacy"] = $value["title"];
-                }elseif(strpos($value["uri"],"affiliates")){
+                }elseif(strpos($value["uri"], "affiliates")){
                     $secondaryMenu["affiliates"] = $value["title"];
-                }elseif(strpos($value["uri"],"responsible")){
+                }elseif(strpos($value["uri"], "responsible")){
                     $secondaryMenu["responsible"] = $value["title"];
                 }
             }
