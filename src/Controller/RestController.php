@@ -154,6 +154,7 @@ class RestController extends BaseController
         try {
             $menu = [];
             $tiles = $this->get("views_fetcher")->getViewById('mobile_product_menu');
+
             foreach ($tiles as $key => $tile) {
                 $menu[$tile['field_product_menu_id'][0]["value"]] = $tile["field_product_menu_title"][0]["value"];
             }
@@ -161,10 +162,56 @@ class RestController extends BaseController
             $menu = [];
         }
 
+
+        try {
+            $quicklinksMenu = [];
+            $quicklinks = $this->get("menu_fetcher")->getMultilingualMenu('quicklinks');
+
+            foreach ($quicklinks as $key => $value) {
+                $quicklinksMenu[$value["attributes"]["svg"]] = $value["title"];
+            }
+        } catch (\Exception $e) {
+            $quicklinksMenu = [];
+        }
+
+        try {
+            $secondaryMenu = [];
+            $secondary = $this->get("menu_fetcher")->getMultilingualMenu('secondary-menu');
+
+            foreach ($secondary as $key => $value) {
+                if (strpos($value["uri"],"security")) {
+                    $secondaryMenu["security"] = $value["title"];
+                }elseif(strpos($value["uri"],"terms")){
+                    $secondaryMenu["terms"] = $value["title"];
+                }elseif(strpos($value["uri"],"privacy")){
+                    $secondaryMenu["privacy"] = $value["title"];
+                }elseif(strpos($value["uri"],"affiliates")){
+                    $secondaryMenu["affiliates"] = $value["title"];
+                }elseif(strpos($value["uri"],"responsible")){
+                    $secondaryMenu["responsible"] = $value["title"];
+                }
+            }
+        } catch (\Exception $e) {
+            $secondaryMenu = [];
+        }
+
         $data['homescreen__menu_lottery'] = $menu["product-lottery"] ?? 'Lottery';
         $data['homescreen__menu_virtuals'] = $menu["product-virtuals"]  ?? 'Virtuals';
         $data['homescreen__menu_casino'] = $menu["product-casino"]  ?? 'Casino';
         $data['homescreen__menu_promotions'] = $menu["product-promotions"] ?? 'Promotions';
+        $data['drawer_announcement'] = $quicklinksMenu["quicklinks-announcement"] ?? "Announcement";
+        $data['drawer_promotions'] = $quicklinksMenu["quicklinks-promotions"] ?? "Promotions";
+        $data['drawer_payments'] = $quicklinksMenu["quicklinks-announcement"] ?? "Announcement";
+        $data['drawer_contact_us'] = $quicklinksMenu["quicklinks-contact"] ?? "Contact Us";
+        $data['drawer_notification'] = $quicklinksMenu["quicklinks-notifications"] ?? "Notifications";
+        $data['drawer_payments'] = $quicklinksMenu["quicklinks-payments"] ?? "Payments";
+        $data['drawer_logout'] = $secondaryMenu["logout"] ?? "Logout";
+        $data['drawer_AboutUs'] = $secondaryMenu["about"] ?? "About Us";
+        $data['drawer_security'] = $secondaryMenu["security"] ?? "Security";
+        $data['drawer_privacy_policy'] = $secondaryMenu["privacy"] ?? "Privacy Policy";
+        $data['drawer_terms_of_use'] = $secondaryMenu["terms"] ?? "Terms of use";
+        $data['drawer_security'] = $secondaryMenu["security"] ?? "Security";
+        $data['drawer_affiliates'] = $secondaryMenu["affiliates"] ?? "Affiliates";
 
         return $data;
     }
