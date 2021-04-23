@@ -416,7 +416,7 @@ routes:
         method: ANY
         action: App\MobileEntry\Controller\RestController:getJson
         headers:
-        Cache-Control: no-cache, no-store, must-revalidate
+            Cache-Control: public, max-age=300
 
     /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}/launch/lottoland:
         method: GET
