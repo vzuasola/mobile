@@ -297,7 +297,7 @@ class RestController extends BaseController
             trim(str_replace('"<strong>{keyword}</strong>"', '', $blurb[1])) : "result/s for";
         $data['games_search_notfound'] = $searchConfig['search_no_result_msg'] ?
             trim(str_replace("<strong>{keyword}</strong>.", '', $searchConfig['search_no_result_msg'])) : "";
-        $data['games_search_suggest'] = $searchConfig['msg_recommended_available'] 
+        $data['games_search_suggest'] = $searchConfig['msg_recommended_available']
             ?? "You might want to try our recommended games.";
         $data['games_search'] = $searchConfig['search_title'] ?? "";
         $data['games_filter_submit'] = $searchConfig['games_filter_submit'] ?? "Submit";
