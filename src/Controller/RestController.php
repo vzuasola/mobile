@@ -21,6 +21,7 @@ class RestController extends BaseController
         $pnxData = $this->formatData($this->getPnxData(), $language);
         $prodData = $this->formatData($this->getProducts(), $language);
         $homeContactUs = $this->formatData($this->getHomeContactUs(), $language);
+        $casinoFilters = $this->formatData($this->getCasinoFilters(), $language);
 
         $result =  array_merge(
             $loginData,
@@ -28,7 +29,8 @@ class RestController extends BaseController
             $pnxData,
             $menuData,
             $prodData,
-            $homeContactUs
+            $homeContactUs,
+            $casinoFilters
         );
 
         return $this->rest->output($response, $result);
@@ -268,6 +270,53 @@ class RestController extends BaseController
         $data['drawer_terms_of_use'] = $secondaryMenu["terms"] ?? "Terms of use";
         $data['drawer_security'] = $secondaryMenu["security"] ?? "Security";
         $data['drawer_affiliates'] = $secondaryMenu["affiliates"] ?? "Affiliates";
+
+        return $data;
+    }
+
+    private function getCasinoFilters()
+    {
+        try {
+            $searchConfig = $this->get('config_fetcher')
+                ->withProduct('mobile-casino')
+                ->getConfig('games_search.search_configuration');
+        } catch (\Exception $e) {
+            $searchConfig = [];
+        }
+
+        try {
+            $filterView = $this->get('views_fetcher')->withProduct('mobile-casino');
+            $filters = $filterView->getViewById('games_filter');
+        } catch (\Exception $e) {
+            $filters = [];
+        }
+
+        $blurb = explode(' {count} ', $searchConfig['search_blurb']);
+        $data['games_search_shown'] = $blurb[0] ?? "Showing";
+        $data['games_search_result'] = $blurb[1] ?
+            trim(str_replace('"<strong>{keyword}</strong>"', '', $blurb[1])) : "result/s for";
+        $data['games_search_notfound'] = $searchConfig['search_no_result_msg'] ?
+            trim(str_replace("<strong>{keyword}</strong>.", '', $searchConfig['search_no_result_msg'])) : "";
+        $data['games_search_suggest'] = $searchConfig['msg_recommended_available'] 
+            ?? "You might want to try our recommended games.";
+        $data['games_search'] = $searchConfig['search_title'] ?? "";
+        $data['games_filter_submit'] = $searchConfig['games_filter_submit'] ?? "Submit";
+        $data['games_filter_cancel'] = $searchConfig['games_filter_cancel'] ?? "Clear";
+        $data['games_filter'] = $searchConfig['games_filter_title'] ?? "Filter";
+        $data['games_search'] = $searchConfig['search_title'] ?? "Search";
+
+        $parents = [];
+        foreach ($filters as $filter) {
+            $parent = str_replace([' ', '-'], '_', strtolower($filter['parent']['name'][0]['value']));
+            $key_prefix = "games_filter_" . $parent;
+            if (!isset($parents[$parent])) {
+                $data[$key_prefix] =
+                    $filter['parent']['field_games_filter_label'][0]['value'];
+                $parents[$parent] = $parent;
+            }
+            $key = str_replace([' ', '-'], '_', strtolower($filter['name'][0]['value']));
+            $data[$key_prefix . '_' . $key] = $filter['field_games_filter_label'][0]['value'];
+        }
 
         return $data;
     }
