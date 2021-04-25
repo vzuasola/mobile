@@ -12,6 +12,7 @@ import {MicroGamingModule} from "@app/src/Module/GameIntegration/MicroGaming/scr
 import {SkywindModule} from "@app/src/Module/GameIntegration/Skywind/script";
 import {SolidGamingModule} from "@app/src/Module/GameIntegration/SolidGaming/script";
 import {CQ9Module} from "@app/src/Module/GameIntegration/CQ9/script";
+/** @deprecated FlowGamingModule. */
 import {FlowGamingModule} from "@app/src/Module/GameIntegration/FlowGaming/script";
 import {OneGameModule} from "@app/src/Module/GameIntegration/OneGame/script";
 import {SAGamingModule} from "@app/src/Module/GameIntegration/SAGaming/script";
@@ -51,6 +52,7 @@ import {SodaCasinoIntegrationModule} from "@app/src/Module/ProductIntegration/So
 import {PartnerMatrixModule} from "@app/src/Module/PartnerMatrix/script";
 import {JSystemModule} from "@app/src/Module/GameIntegration/JSystem/script";
 import {OpusModule} from "@app/src/Module/GameIntegration/Opus/script";
+import {FGHubGamingModule} from "@app/src/Module/GameIntegration/FGHubGaming/script";
 
 ComponentManager.setModules({
     avaya: new AvayaModule(),
@@ -64,7 +66,7 @@ ComponentManager.setModules({
     solidgaming_integration: new SolidGamingModule(),
     cq9_integration: new CQ9Module(),
     microgaming_integration: new MicroGamingModule(),
-    flowgaming_integration: new FlowGamingModule(),
+    flowgaming_integration: new FlowGamingModule(), /** @deprecated FlowGamingModule. */
     onegame_integration: new OneGameModule(),
     sagaming_integration: new SAGamingModule(),
     pgsoft_integration: new PGSoftModule(),
@@ -103,4 +105,5 @@ ComponentManager.setModules({
     lottery_integration: new LotteryIntegrationModule(),
     soda_casino_integration: new SodaCasinoIntegrationModule(),
     partner_matrix: new PartnerMatrixModule(),
+    fghub_gaming_integration: new FGHubGamingModule(),
 });

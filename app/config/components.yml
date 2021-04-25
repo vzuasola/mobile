@@ -252,6 +252,7 @@ modules:
   skywind_integration:
     class: App\MobileEntry\Module\GameIntegration\Skywind\SkywindModule
 
+  # flowgaming_integration Deprecated
   flowgaming_integration:
     class: App\MobileEntry\Module\GameIntegration\FlowGaming\FlowGamingModule
 
@@ -326,6 +327,9 @@ modules:
 
   opus_integration:
     class: App\MobileEntry\Module\GameIntegration\Opus\OpusModule
+
+  fghub_gaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\FGHubGaming\FGHubGamingModule
 
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
