@@ -24,6 +24,7 @@ export class GameIntegrationModule implements ModuleInterface {
         const skywind: any = ComponentManager.getModuleInstance("skywind_integration");
         const solidgaming: any = ComponentManager.getModuleInstance("solidgaming_integration");
         const cq9: any = ComponentManager.getModuleInstance("cq9_integration");
+        /** @deprecated flowGaming. */
         const flowGaming: any = ComponentManager.getModuleInstance("flowgaming_integration");
         const oneGame: any = ComponentManager.getModuleInstance("onegame_integration");
         const saGaming: any = ComponentManager.getModuleInstance("sagaming_integration");
@@ -50,12 +51,14 @@ export class GameIntegrationModule implements ModuleInterface {
         const kyGaming: any = ComponentManager.getModuleInstance("ky_gaming_integration");
         const lottoland: any = ComponentManager.getModuleInstance("lottoland_integration");
         const opus: any = ComponentManager.getModuleInstance("opus_integration");
+        const fghubGaming: any = ComponentManager.getModuleInstance("fghub_gaming_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
         this.gameLauncher.setProvider("cq9", cq9);
         this.gameLauncher.setProvider("voidbridge", voidbridge);
         this.gameLauncher.setProvider("skywind", skywind);
+        /** @deprecated flowGaming. */
         this.gameLauncher.setProvider("flow_gaming", flowGaming);
         this.gameLauncher.setProvider("onegame", oneGame);
         this.gameLauncher.setProvider("sa_gaming", saGaming);
@@ -82,6 +85,7 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("ky_gaming", kyGaming);
         this.gameLauncher.setProvider("lottoland", lottoland);
         this.gameLauncher.setProvider("opus", opus);
+        this.gameLauncher.setProvider("fghub_gaming", fghubGaming);
 
         setTimeout(() => {
             this.gameLauncher.init();
