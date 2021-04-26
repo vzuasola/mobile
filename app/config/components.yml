@@ -256,9 +256,6 @@ modules:
   skywind_integration:
     class: App\MobileEntry\Module\GameIntegration\Skywind\SkywindModule
 
-  flowgaming_integration:
-    class: App\MobileEntry\Module\GameIntegration\FlowGaming\FlowGamingModule
-
   onegame_integration:
     class: App\MobileEntry\Module\GameIntegration\OneGame\OneGameModule
 
@@ -330,6 +327,9 @@ modules:
 
   opus_integration:
     class: App\MobileEntry\Module\GameIntegration\Opus\OpusModule
+
+  fghub_gaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\FGHubGaming\FGHubGamingModule
 
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
