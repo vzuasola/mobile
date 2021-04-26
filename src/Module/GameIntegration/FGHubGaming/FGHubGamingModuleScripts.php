@@ -17,7 +17,7 @@ class FGHubGamingModuleScripts implements ComponentAttachmentInterface
 
     private $lang;
 
-    const KEY = 'fghub_flow_gaming';
+    const KEY = 'fghub_gaming';
 
     /**
      *
