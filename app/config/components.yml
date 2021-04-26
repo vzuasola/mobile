@@ -256,10 +256,6 @@ modules:
   skywind_integration:
     class: App\MobileEntry\Module\GameIntegration\Skywind\SkywindModule
 
-  # flowgaming_integration Deprecated
-  flowgaming_integration:
-    class: App\MobileEntry\Module\GameIntegration\FlowGaming\FlowGamingModule
-
   onegame_integration:
     class: App\MobileEntry\Module\GameIntegration\OneGame\OneGameModule
 

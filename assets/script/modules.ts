@@ -12,8 +12,6 @@ import {MicroGamingModule} from "@app/src/Module/GameIntegration/MicroGaming/scr
 import {SkywindModule} from "@app/src/Module/GameIntegration/Skywind/script";
 import {SolidGamingModule} from "@app/src/Module/GameIntegration/SolidGaming/script";
 import {CQ9Module} from "@app/src/Module/GameIntegration/CQ9/script";
-/** @deprecated FlowGamingModule. */
-import {FlowGamingModule} from "@app/src/Module/GameIntegration/FlowGaming/script";
 import {OneGameModule} from "@app/src/Module/GameIntegration/OneGame/script";
 import {SAGamingModule} from "@app/src/Module/GameIntegration/SAGaming/script";
 import {PGSoftModule} from "@app/src/Module/GameIntegration/PGSoft/script";
@@ -66,7 +64,6 @@ ComponentManager.setModules({
     solidgaming_integration: new SolidGamingModule(),
     cq9_integration: new CQ9Module(),
     microgaming_integration: new MicroGamingModule(),
-    flowgaming_integration: new FlowGamingModule(), /** @deprecated FlowGamingModule. */
     onegame_integration: new OneGameModule(),
     sagaming_integration: new SAGamingModule(),
     pgsoft_integration: new PGSoftModule(),
