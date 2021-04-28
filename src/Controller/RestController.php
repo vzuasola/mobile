@@ -360,6 +360,7 @@ class RestController extends BaseController
 
     private function getCasinoFilters($language)
     {
+        $data = [];
         $casinoLang = [
             "en",
             "sc",
@@ -399,11 +400,11 @@ class RestController extends BaseController
         }
 
         $filterItems = [];
-        $blurb = explode(' {count} ', $searchConfig['search_blurb']);
-        $data['games_search_shown'] = $blurb[0] ?? "Showing";
-        $data['games_search_result'] = $blurb[1] ?
+        $blurb = isset($searchConfig['search_blurb']) ? explode(' {count} ', $searchConfig['search_blurb']): [];
+        $data['games_search_shown'] = isset($blurb[0]) ? $blurb[0] : "Showing";
+        $data['games_search_result'] = isset($blurb[1]) ?
             trim(str_replace('"<strong>{keyword}</strong>"', '', $blurb[1])) : "result/s for";
-        $data['games_search_notfound'] = $searchConfig['search_no_result_msg'] ?
+        $data['games_search_notfound'] = isset($searchConfig['search_no_result_msg']) ?
             trim(str_replace("<strong>{keyword}</strong>.", '', $searchConfig['search_no_result_msg'])) : "";
         $data['games_search_suggest'] = $searchConfig['msg_recommended_available']
             ?? "You might want to try our recommended games.";
