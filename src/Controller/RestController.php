@@ -325,7 +325,7 @@ class RestController extends BaseController
         return $data;
     }
 
-    private function getGamesFilters()
+    private function getGamesFilters($language)
     {
         $gamesLang = [
             "en",
