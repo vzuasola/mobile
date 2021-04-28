@@ -483,7 +483,7 @@ class RestController extends BaseController
             'submit' => [
                 'key' => 'myaccount_save',
                 'value' => 'SAVE'
-            ],   
+            ],
         ];
 
         try {
@@ -503,8 +503,10 @@ class RestController extends BaseController
                     if ($key == 'preference_markup') {
                         $markup = explode("<hr>", $field['field_settings']['markup']);
                         $data[$keyMap[$key]['key']] = $markup[0];
-                        $data['myaccount_confirmation_detail'] = preg_replace('/&#13;|&#13;\n|\n|[-?]|\s+/i',
-                            ' ', strip_tags($markup[1]));
+                        $data['myaccount_confirmation_detail'] = preg_replace(
+                            '/&#13;|&#13;\n|\n|[-?]|\s+/i',
+                            ' ', strip_tags($markup[1])
+                        );
                     }
                 }
                 if ($key === 'gender') {
