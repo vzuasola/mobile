@@ -21,7 +21,11 @@ class RestController extends BaseController
         $pnxData = $this->formatData($this->getPnxData(), $language);
         $prodData = $this->formatData($this->getProducts(), $language);
         $homeContactUs = $this->formatData($this->getHomeContactUs(), $language);
-        $casinoFilters = $this->formatData($this->getCasinoFilters(), $language);
+        $casinoFilters = $this->formatData($this->getCasinoFilters($language), $language);
+        $gamesFilters = $this->formatData($this->getGamesFilters($language), $language);
+        $footer = $this->formatData($this->getFooterData(), $language);
+        $myaccount = $this->formatData($this->getMyAccountFormData(), $language);
+        $changePass = $this->formatData($this->getChangePassFormData(), $language);
 
         $result =  array_merge(
             $loginData,
@@ -30,7 +34,11 @@ class RestController extends BaseController
             $menuData,
             $prodData,
             $homeContactUs,
-            $casinoFilters
+            $casinoFilters,
+            $gamesFilters,
+            $footer,
+            $myaccount,
+            $changePass
         );
 
         return $this->rest->output($response, $result);
@@ -207,11 +215,36 @@ class RestController extends BaseController
         return $data;
     }
 
+    private function getFooterData()
+    {
+        try {
+            $footerMenu = [];
+            $footerMenu = $this->get('menu_fetcher')->getMultilingualMenu('mobile-footer');
+            foreach ($footerMenu as $key => $value) {
+                $footerMenu[$value['attributes']['svg']] = $value['title'];
+            }
+        } catch (\Exception $e) {
+            $footerMenu = [];
+        }
+
+        $data['bottomnav_language'] = $footerMenu['footer-language'] ?? 'Language';
+        $data['bottomnav_desktop_site'] = $footerMenu['footer-desktop'] ?? 'View Desktop Site';
+
+        return $data;
+    }
+
     private function getMenuData()
     {
         try {
+            $headerConfigs = $this->get('config_fetcher')
+                ->getConfig('webcomposer_config.header_configuration');
+        } catch (\Exception $e) {
+            $headerConfigs = [];
+        }
+
+        try {
             $menu = [];
-            $tiles = $this->get("views_fetcher")->getViewById('mobile_product_menu');
+            $tiles = $this->get('views_fetcher')->getViewById('mobile_product_menu');
 
             foreach ($tiles as $key => $tile) {
                 $menu[$tile['field_product_menu_id'][0]["value"]] = $tile["field_product_menu_title"][0]["value"];
@@ -223,74 +256,149 @@ class RestController extends BaseController
 
         try {
             $quicklinksMenu = [];
-            $quicklinks = $this->get("menu_fetcher")->getMultilingualMenu('quicklinks');
+            $quicklinks = $this->get('menu_fetcher')->getMultilingualMenu('quicklinks');
 
             foreach ($quicklinks as $key => $value) {
-                $quicklinksMenu[$value["attributes"]["svg"]] = $value["title"];
+                $quicklinksMenu[$value['attributes']['svg']] = $value['title'];
             }
         } catch (\Exception $e) {
             $quicklinksMenu = [];
         }
 
         try {
+            $topMenu = $this->get('menu_fetcher')->getMultilingualMenu('mobile-post-login');
+            foreach ($topMenu as $key => $value) {
+                if (strpos($value['uri'], 'cashier')) {
+                    $data['drawer_cashier'] = $value['title'] ?? 'CASHIER';
+                }
+                if (strpos($value['uri'], 'account')) {
+                    $data['drawer_MyAccount'] = $value['title'] ?? 'MY ACCOUNT';
+                }
+            }
+        } catch (\Exception $e) {
+            $topMenu = [];
+        }
+
+        try {
             $secondaryMenu = [];
-            $secondary = $this->get("menu_fetcher")->getMultilingualMenu('secondary-menu');
+            $secondary = $this->get('menu_fetcher')->getMultilingualMenu('secondary-menu');
 
             foreach ($secondary as $key => $value) {
-                if (strpos($value["uri"], "security")) {
-                    $secondaryMenu["security"] = $value["title"];
-                } elseif (strpos($value["uri"], "terms")) {
-                    $secondaryMenu["terms"] = $value["title"];
-                } elseif (strpos($value["uri"], "privacy")) {
-                    $secondaryMenu["privacy"] = $value["title"];
-                } elseif (strpos($value["uri"], "affiliates")) {
-                    $secondaryMenu["affiliates"] = $value["title"];
-                } elseif (strpos($value["uri"], "responsible")) {
-                    $secondaryMenu["responsible"] = $value["title"];
+                if (strpos($value['uri'], 'security')) {
+                    $secondaryMenu['security'] = $value['title'];
+                } elseif (strpos($value['uri'], 'terms')) {
+                    $secondaryMenu['terms'] = $value['title'];
+                } elseif (strpos($value['uri'], 'privacy')) {
+                    $secondaryMenu['privacy'] = $value['title'];
+                } elseif (strpos($value['uri'], 'affiliates')) {
+                    $secondaryMenu['affiliates'] = $value['title'];
+                } elseif (strpos($value['uri'], 'responsible')) {
+                    $secondaryMenu['responsible'] = $value['title'];
                 }
             }
         } catch (\Exception $e) {
             $secondaryMenu = [];
         }
 
-        $data['homescreen__menu_lottery'] = $menu["product-lottery"] ?? 'Lottery';
-        $data['homescreen__menu_virtuals'] = $menu["product-virtuals"]  ?? 'Virtuals';
-        $data['homescreen__menu_casino'] = $menu["product-casino"]  ?? 'Casino';
-        $data['homescreen__menu_promotions'] = $menu["product-promotions"] ?? 'Promotions';
-        $data['drawer_announcement'] = $quicklinksMenu["quicklinks-announcement"] ?? "Announcement";
-        $data['drawer_promotions'] = $quicklinksMenu["quicklinks-promotions"] ?? "Promotions";
-        $data['drawer_payments'] = $quicklinksMenu["quicklinks-announcement"] ?? "Announcement";
-        $data['drawer_contact_us'] = $quicklinksMenu["quicklinks-contact"] ?? "Contact Us";
-        $data['drawer_notification'] = $quicklinksMenu["quicklinks-notifications"] ?? "Notifications";
-        $data['drawer_payments'] = $quicklinksMenu["quicklinks-payments"] ?? "Payments";
-        $data['drawer_logout'] = $secondaryMenu["logout"] ?? "Logout";
-        $data['drawer_AboutUs'] = $secondaryMenu["about"] ?? "About Us";
-        $data['drawer_security'] = $secondaryMenu["security"] ?? "Security";
-        $data['drawer_privacy_policy'] = $secondaryMenu["privacy"] ?? "Privacy Policy";
-        $data['drawer_terms_of_use'] = $secondaryMenu["terms"] ?? "Terms of use";
-        $data['drawer_security'] = $secondaryMenu["security"] ?? "Security";
-        $data['drawer_affiliates'] = $secondaryMenu["affiliates"] ?? "Affiliates";
+        $data['drawer_total-balance'] = $headerConfigs['total_balance_label'] ?? 'Total Balance';
+        $data['drawer_links'] = $headerConfigs['links_title'] ?? 'Links';
+        $data['homescreen__menu_lottery'] = $menu['product-lottery'] ?? 'Lottery';
+        $data['homescreen__menu_virtuals'] = $menu['product-virtuals']  ?? 'Virtuals';
+        $data['homescreen__menu_casino'] = $menu['product-casino']  ?? 'Casino';
+        $data['homescreen__menu_promotions'] = $menu['product-promotions'] ?? 'Promotions';
+        $data['drawer_home'] = $quicklinksMenu['quicklinks-home'] ?? 'Home';
+        $data['drawer_announcement'] = $quicklinksMenu['quicklinks-announcement'] ?? 'Announcement';
+        $data['drawer_promotions'] = $quicklinksMenu['quicklinks-promotions'] ?? 'Promotions';
+        $data['drawer_payments'] = $quicklinksMenu['quicklinks-payments'] ?? 'Payments';
+        $data['drawer_contact_us'] = $quicklinksMenu['quicklinks-contact'] ?? 'Contact Us';
+        $data['drawer_notification'] = $quicklinksMenu['quicklinks-notifications'] ?? 'Notifications';
+        $data['drawer_payments'] = $quicklinksMenu['quicklinks-payments'] ?? 'Payments';
+        $data['drawer_logout'] = $secondaryMenu['logout'] ?? 'Logout';
+        $data['drawer_AboutUs'] = $secondaryMenu['about'] ?? 'About Us';
+        $data['drawer_security'] = $secondaryMenu['security'] ?? 'Security';
+        $data['drawer_privacy_policy'] = $secondaryMenu['privacy'] ?? 'Privacy Policy';
+        $data['drawer_terms_of_use'] = $secondaryMenu['terms'] ?? 'Terms of use';
+        $data['drawer_security'] = $secondaryMenu['security'] ?? 'Security';
+        $data['drawer_affiliates'] = $secondaryMenu['affiliates'] ?? 'Affiliates';
+        $data['drawer_ResponsibleGaming'] = $secondaryMenu['responsible'] ?? 'Responsible Gaming';
 
         return $data;
     }
 
-    private function getCasinoFilters()
+    private function getGamesFilters()
     {
+        $gamesLang = [
+            "en",
+            "sc",
+            "th",
+            "vn",
+            "id",
+            "in",
+            "hi",
+            "te",
+            "kr",
+            "pt",
+            "es",
+            "bu",
+            "lo",
+            "km",
+        ];
         try {
-            $searchConfig = $this->get('config_fetcher')
-                ->withProduct('mobile-casino')
-                ->getConfig('games_search.search_configuration');
+            $filters = [];
+            if (in_array($language, $gamesLang)) {
+                $filterView = $this->get('views_fetcher')->withProduct('mobile-games');
+                $filters = $filterView->getViewById('games_filter');
+            }
+        } catch (\Exception $e) {
+            $filters = [];
+        }
+
+        $data = $this->getFilters($filters, 'games_filter_');
+
+        return $data;
+    }
+
+    private function getCasinoFilters($language)
+    {
+        $casinoLang = [
+            "en",
+            "sc",
+            "th",
+            "vn",
+            "id",
+            "kr",
+            "in",
+            "hi",
+            "te",
+            "pt",
+            "es",
+            "lo",
+            "bu",
+            "km",
+        ];
+
+        try {
+            $searchConfig = [];
+            if (in_array($language, $casinoLang)) {
+                $searchConfig = $this->get('config_fetcher')
+                    ->withProduct('mobile-casino')
+                    ->getConfig('games_search.search_configuration');
+            }
         } catch (\Exception $e) {
             $searchConfig = [];
         }
 
         try {
-            $filterView = $this->get('views_fetcher')->withProduct('mobile-casino');
-            $filters = $filterView->getViewById('games_filter');
+            $filters = [];
+            if (in_array($language, $casinoLang)) {
+                $filterView = $this->get('views_fetcher')->withProduct('mobile-casino');
+                $filters = $filterView->getViewById('games_filter');
+            }
         } catch (\Exception $e) {
             $filters = [];
         }
 
+        $filterItems = [];
         $blurb = explode(' {count} ', $searchConfig['search_blurb']);
         $data['games_search_shown'] = $blurb[0] ?? "Showing";
         $data['games_search_result'] = $blurb[1] ?
@@ -304,11 +412,18 @@ class RestController extends BaseController
         $data['games_filter_cancel'] = $searchConfig['games_filter_cancel'] ?? "Clear";
         $data['games_filter'] = $searchConfig['games_filter_title'] ?? "Filter";
         $data['games_search'] = $searchConfig['search_title'] ?? "Search";
+        $filterItems = $this->getFilters($filters, "casino_filter_");
 
+        return $data + $filterItems;
+    }
+
+    private function getFilters($filters, $prefix)
+    {
+        $data = [];
         $parents = [];
         foreach ($filters as $filter) {
             $parent = str_replace([' ', '-'], '_', strtolower($filter['parent']['name'][0]['value']));
-            $key_prefix = "games_filter_" . $parent;
+            $key_prefix = $prefix . $parent;
             if (!isset($parents[$parent])) {
                 $data[$key_prefix] =
                     $filter['parent']['field_games_filter_label'][0]['value'];
@@ -316,6 +431,113 @@ class RestController extends BaseController
             }
             $key = str_replace([' ', '-'], '_', strtolower($filter['name'][0]['value']));
             $data[$key_prefix . '_' . $key] = $filter['field_games_filter_label'][0]['value'];
+        }
+
+        return $data;
+    }
+
+    private function getMyAccountFormData()
+    {
+        $data = [];
+        $keyMap = [
+            'account_markup' => [
+                'key' => 'myaccount_account_details',
+                'value' => 'Account Details'
+            ],
+            'birthdate' => [
+                'key' => 'myaccount_birth_date',
+                'value' => 'Date of Birth'
+            ],
+            'communication_markup' => [
+                'key' => 'myaccount_communication_details',
+                'value' => 'Communication Details'
+            ],
+            'gender' => [
+                'key' => 'myaccount_gender',
+                'value' => 'Gender'
+            ],
+            'primary' => [
+                'key' => 'myaccount_primary',
+                'value' => 'Primary'
+            ],
+            'city' => [
+                'key' => 'myaccount_town_city',
+                'value' => 'Town / City'
+            ],
+            'address_markup' => [
+                'key' => 'myaccount_home_address',
+                'value' => 'Home Address'
+            ],
+            'address' => [
+                'key' => 'myaccount_address',
+                'value' => 'Address'
+            ],
+            'postal_code' =>[
+                'key' => 'myaccount_postal_code',
+                'value' => 'Postal Code'
+            ],
+            'preference_markup' => [
+                'key' => 'myaccount_contact_preference',
+                'value' => 'Contact Preference'
+            ],
+            'submit' => [
+                'key' => 'myaccount_save',
+                'value' => 'SAVE'
+            ],   
+        ];
+
+        try {
+            $formMyProfile = $this->get('config_form_fetcher')
+                ->withProduct('account')->getDataById('my_profile_form');
+
+            foreach ($formMyProfile['fields'] as $key => $field) {
+                if (!array_key_exists($key, $keyMap)) {
+                    continue;
+                }
+
+                $data[$keyMap[$key]['key']] = $field['field_settings']['label'] ?? $keyMap[$key]['value'];
+                if ($field['type'] === 'markup') {
+                    $data[$keyMap[$key]['key']] = $field['field_settings']['markup'] ?
+                        strip_tags($field['field_settings']['markup'])
+                        : $keyMap[$key]['value'];
+                    if ($key == 'preference_markup') {
+                        $markup = explode("<hr>", $field['field_settings']['markup']);
+                        $data[$keyMap[$key]['key']] = $markup[0];
+                        $data['myaccount_confirmation_detail'] = preg_replace('/&#13;|&#13;\n|\n|[-?]|\s+/i',
+                            ' ', strip_tags($markup[1]));
+                    }
+                }
+                if ($key === 'gender') {
+                    $choices = explode(PHP_EOL, $field['field_settings']['choices']);
+                    $data['myaccount_gender_male'] = $choices[0] ?
+                        str_replace(["\r", "\n", "M|"], '', $choices[0]) : 'Male';
+                    $data['myaccount_gender_female'] = $choices[1] ?
+                        substr($choices[1], 2) : 'Female';
+                }
+            }
+        } catch (\Exception $e) {
+            $formMyProfile = [];
+        }
+
+        return $data;
+    }
+
+    private function getChangePassFormData()
+    {
+        try {
+            $changePass = $this->get('config_form_fetcher')
+                ->withProduct('account')->getDataById('account_change_password_form');
+
+            $fields = [];
+            foreach ($changePass['fields'] as $key => $field) {
+                $fields[$key] = $field['field_settings']['label'] ?? '';
+            }
+
+            $data['myaccount_current_pass'] = $fields['current_password'] ?? 'Current Password';
+            $data['myaccount_new_pass'] = $fields['new_password'] ?? 'New Password';
+            $data['myaccount_confirm_password'] = $fields['verify_password'] ?? 'Current Password';
+        } catch (\Exception $e) {
+            $changePass = [];
         }
 
         return $data;
