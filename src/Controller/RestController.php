@@ -505,7 +505,8 @@ class RestController extends BaseController
                         $data[$keyMap[$key]['key']] = $markup[0];
                         $data['myaccount_confirmation_detail'] = preg_replace(
                             '/&#13;|&#13;\n|\n|[-?]|\s+/i',
-                            ' ', strip_tags($markup[1])
+                            ' ',
+                            strip_tags($markup[1])
                         );
                     }
                 }
