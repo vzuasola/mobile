@@ -1,22 +1,19 @@
 <?php
 
-namespace App\MobileEntry\Module\GameIntegration\FlowGaming;
+namespace App\MobileEntry\Module\GameIntegration\FGHubGaming;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Fetcher\Drupal\ViewsFetcher;
 
-/**
- * @deprecated
- */
-class FlowGamingModuleController
+class FGHubGamingModuleController
 {
     use ProviderTrait;
 
-    const KEY = 'flow_gaming';
+    const KEY = 'fghub_gaming';
 
     private $rest;
 
-    private $flowGaming;
+    private $fghubGaming;
 
     private $config;
 
@@ -44,10 +41,10 @@ class FlowGamingModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $flowGaming, $config, $player, $viewsFetcher)
+    public function __construct($rest, $fghubGaming, $config, $player, $viewsFetcher)
     {
         $this->rest = $rest;
-        $this->flowGaming = $flowGaming;
+        $this->fghubGaming = $fghubGaming;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
@@ -60,26 +57,42 @@ class FlowGamingModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
+
         if ($this->checkCurrency($request)) {
-            $data['currency'] = true;
             $requestData = $request->getParsedBody();
-            $params = explode('|', $requestData['gameCode']);
-            $platformCode = $params[1] ?? 'NETENT_CAS';
-            try {
-                $responseData = $this->flowGaming->getGameUrlById('icore_flg', $params[0], [
-                    'options' => [
-                        'languageCode' => $requestData['langCode'],
-                        'platformCode' => $platformCode
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $data['gameurl'] = $responseData['url'];
-                }
-            } catch (\Exception $e) {
-                $data['currency'] = true;
+
+            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
+                $data = $this->getGameUrl($requestData);
             }
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    /**
+     * Get Game URL
+     */
+    private function getGameUrl($requestData)
+    {
+        $data['currency'] = true;
+        $params = explode('|', $requestData['gameCode']);
+        $providerProduct = $params[1] ?? 'games';
+        try {
+            $responseData = $this->fghubGaming->getGameUrlById('icore_fghub', $params[0], [
+                'options' => [
+                    'languageCode' => $requestData['langCode'],
+                    'providerProduct' => $providerProduct
+                ]
+            ]);
+
+            if ($responseData['url']) {
+                $data['gameurl'] = $responseData['url'];
+            }
+        } catch (\Exception $e) {
+            die($e->getMessage());
+            $data['currency'] = true;
+        }
+
+        return $data;
     }
 }
