@@ -14,7 +14,8 @@ trait ProviderTrait
      * Get the equivalent langCode
      * of current language from iCore
      */
-    public function languageCode($request, $key = 'webcomposer_config.icore_games_integration') {
+    public function languageCode($request, $key = 'webcomposer_config.icore_games_integration')
+    {
         $params = $request->getParsedBody();
         $language = $params['lang'];
         $productConfig = $this->config;
