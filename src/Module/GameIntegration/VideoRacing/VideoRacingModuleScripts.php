@@ -17,8 +17,6 @@ class VideoRacingModuleScripts implements ComponentAttachmentInterface
 
     private $lang;
 
-    const KEY = 'video_racing';
-
     /**
      *
      */
@@ -26,7 +24,6 @@ class VideoRacingModuleScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('player_session'),
-            $container->get('config_fetcher'),
             $container->get('lang')
         );
     }
@@ -34,10 +31,9 @@ class VideoRacingModuleScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang)
+    public function __construct($playerSession, $lang)
     {
         $this->playerSession = $playerSession;
-        $this->config = $config->withProduct('mobile-lottery');
         $this->lang = $lang;
     }
 
@@ -47,13 +43,8 @@ class VideoRacingModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-
             $data = [
                 'authenticated' => $this->playerSession->isLogin(),
-                'lang' => $this->lang,
-                'currencies' => explode(PHP_EOL, $config[self::KEY . '_currency']),
-                'languages' => Config::parse($config[self::KEY . '_language_mapping'] ?? ''),
             ];
         } catch (\Exception $e) {
             $data = [];
