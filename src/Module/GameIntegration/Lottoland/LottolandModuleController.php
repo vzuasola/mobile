@@ -77,7 +77,7 @@ class LottolandModuleController
         try {
             $responseData = $this->lottland->getLobby('icore_lottoland', [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                 ]
             ]);
 

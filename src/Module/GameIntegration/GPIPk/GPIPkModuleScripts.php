@@ -13,11 +13,9 @@ class GPIPkModuleScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
-    private $config;
-
     private $lang;
 
-    const KEY = 'gpi_pk';
+    const KEY = 'gpi_pk10';
 
     /**
      *
@@ -26,7 +24,6 @@ class GPIPkModuleScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('player_session'),
-            $container->get('config_fetcher'),
             $container->get('lang')
         );
     }
@@ -34,10 +31,9 @@ class GPIPkModuleScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang)
+    public function __construct($playerSession, $lang)
     {
         $this->playerSession = $playerSession;
-        $this->config = $config->withProduct('mobile-lottery');
         $this->lang = $lang;
     }
 
@@ -47,11 +43,8 @@ class GPIPkModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $gpiConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
-
             $data = [
-                'currencies' => explode(PHP_EOL, $gpiConfig['gpi_pk10_currency']),
-                'languages' => Config::parse($gpiConfig['gpi_pk10_language_mapping'] ?? ''),
+                'authenticated' => $this->playerSession->isLogin(),
             ];
         } catch (\Exception $e) {
             $data = [];
