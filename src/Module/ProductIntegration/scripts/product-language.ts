@@ -33,6 +33,8 @@ export class  ProductLanguage {
             "pl",
             "bu",
             "km",
+            "bn",
+            "pk",
         ],
         "sports-df" : [
             "en",
@@ -54,6 +56,8 @@ export class  ProductLanguage {
             "bu",
             "lo",
             "km",
+            "bn",
+            "pk",
         ],
         "lottery" : [
             "en",
@@ -95,6 +99,8 @@ export class  ProductLanguage {
             "bu",
             "lo",
             "km",
+            "bn",
+            "pk",
         ],
         "exchange" : [
             "in",
