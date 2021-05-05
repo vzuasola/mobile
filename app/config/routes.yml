@@ -426,6 +426,12 @@ routes:
         headers:
             Cache-Control: no-cache, no-store, must-revalidate
 
+    /api-fe/components:
+        method: ANY
+        action: App\MobileEntry\Controller\RestController:getJson
+        headers:
+            Cache-Control: public, max-age=300
+
     /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}/launch/lottoland:
         method: GET
         action: App\MobileEntry\Controller\GameWindowController:view
