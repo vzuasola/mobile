@@ -97,7 +97,7 @@ class Products
             'buyuwang',
             'buyudaren',
         ],
-        'virtual-sports' => [
+        'virtuals' => [
             'virtual-sports',
             'virtual-world',
             'virtualsports',
