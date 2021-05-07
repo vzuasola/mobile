@@ -26,7 +26,7 @@ before_script:
   - export DEPLOY_RESULT_URL="$DEPLOY_URL/lastBuild/logText/progressiveText?start=0"
   - export GITLAB_EMAIL="$GITLAB_USER_EMAIL"
 
-.static code analysis: # Disable for now
+.static code analysis:
   stage: tests
   script:
     - python -u automation/run.py --stage phpunit-sonarqube
