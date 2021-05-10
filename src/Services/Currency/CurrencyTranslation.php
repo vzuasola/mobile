@@ -36,7 +36,10 @@ class CurrencyTranslation
     {
         if (strtoupper($currency) === 'MBC') {
             $currency = 'mBTC';
+        } elseif (strtoupper($currency) === 'TUS') {
+            $currency = 'USDT';
         }
+
         switch ($this->lang) {
             case 'sc':
                 if ($translated = Currency::getTranslation($currency)) {
