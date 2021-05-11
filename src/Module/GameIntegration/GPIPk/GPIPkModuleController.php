@@ -10,7 +10,7 @@ class GPIPkModuleController
 {
     use ProviderTrait;
 
-    const KEY = 'gpi_pk';
+    const KEY = 'gpi_pk10';
 
     private $rest;
 
@@ -86,7 +86,7 @@ class GPIPkModuleController
             $ticket = $sessiontokenizer . '.1036';
 
             $args = array_merge([
-                'lang' => $requestData['langCode'],
+                'lang' => $this->languageCode($request, 'webcomposer_config.games_gpi_provider'),
                 'vendor' => $vendor,
                 'ticket' => $ticket,
                 'version' => $versionno,

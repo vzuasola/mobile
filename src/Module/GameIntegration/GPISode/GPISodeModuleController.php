@@ -86,7 +86,7 @@ class GPISodeModuleController
             $ticket = $sessiontokenizer . '.1036';
 
             $args = array_merge([
-                'lang' => $requestData['langCode'],
+                'lang' => $this->languageCode($request, 'webcomposer_config.games_gpi_provider'),
                 'vendor' => $vendor,
                 'ticket' => $ticket,
                 'version' => $versionno,

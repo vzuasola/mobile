@@ -26,7 +26,6 @@ class GPIThaiModuleScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('player_session'),
-            $container->get('config_fetcher'),
             $container->get('lang')
         );
     }
@@ -34,10 +33,9 @@ class GPIThaiModuleScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang)
+    public function __construct($playerSession, $lang)
     {
         $this->playerSession = $playerSession;
-        $this->config = $config->withProduct('mobile-lottery');
         $this->lang = $lang;
     }
 
@@ -47,11 +45,8 @@ class GPIThaiModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $gpiConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
-
             $data = [
-                'currencies' => explode(PHP_EOL, $gpiConfig['gpi_thai_lottey_currency']),
-                'languages' => Config::parse($gpiConfig['gpi_thai_lottey_language_mapping'] ?? ''),
+                'authenticated' => $this->playerSession->isLogin(),
             ];
         } catch (\Exception $e) {
             $data = [];
