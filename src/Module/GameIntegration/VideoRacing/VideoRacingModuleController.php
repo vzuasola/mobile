@@ -80,7 +80,7 @@ class VideoRacingModuleController
         try {
             $responseData = $this->videoRacing->getLobby('icore_vr', [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                 ]
             ]);
             if ($responseData) {
@@ -102,7 +102,7 @@ class VideoRacingModuleController
         try {
             $responseData = $this->videoRacing->getGameUrlById('icore_vr', $params[0], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'providerProduct' => $params[1] ?? null,
                 ]
             ]);
