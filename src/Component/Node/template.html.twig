@@ -7,7 +7,7 @@
 {% if type == "page" %}
 {{ widget('node_basic_page', {'node': node}) }}
 {% endif %}
-{% if (type == "lottery_page" or type == "exchange_page") %}
+{% if (type == "lottery_page" or type == "exchange_page" or type == "virtuals_page") %}
     {{ widget('node_inner_page', {'node': node}) }}
 {% endif %}
 {% if (type == "blank_page") %}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Lobby\LiveDealerLobby;
+namespace App\MobileEntry\Component\Main\Lobby\VirtualsLobby;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 use App\MobileEntry\Services\Product\Products;
@@ -8,7 +8,7 @@ use App\MobileEntry\Services\Product\Products;
 /**
  *
  */
-class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
+class VirtualsLobbyComponentScripts implements ComponentAttachmentInterface
 {
     private $configs;
     private $playerSession;
@@ -36,7 +36,7 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
-        $this->views = $views->withProduct($product->getProduct());
+        $this->views = $views;
     }
 
     /**
@@ -45,29 +45,22 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $liveDealerGeneralConfig = $this->configs->getConfig('live_dealer.live_dealer_configuration');
+            $virtualsGeneralConfig = $this->configs->getConfig('virtuals.virtuals_configuration');
         } catch (\Exception $e) {
-            $liveDealerGeneralConfig = [];
+            $virtualsGeneralConfig = [];
         }
 
         try {
-            $tabs = $this->views->getViewById('lobby_tabs');
+            $tabs = $this->views->withProduct($this->product->getProduct())->getViewById('lobby_tabs');
         } catch (\Exception $e) {
             $tabs = [];
-        }
-
-        try {
-            $pager = $this->views->getViewById('games_list', ['pager' => 1]);
-        } catch (\Exception $e) {
-            $pager = [];
         }
 
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'product' => $this->getProductIntegration(),
-            'pagerConfig' => $pager ?? [],
             'tabs' => $tabs,
-            'configs' => $liveDealerGeneralConfig ?? [],
+            'configs' => $virtualsGeneralConfig ?? [],
         ];
     }
 
@@ -75,7 +68,7 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
     {
         try {
             $result = [];
-            $products = $this->views->withProduct('mobile-entrypage')->getViewById('products');
+            $products = $this->views->getViewById('products');
 
             foreach ($products as $product) {
                 $instanceId = $product['field_product_instance_id'][0]['value'];

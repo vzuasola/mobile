@@ -4,9 +4,13 @@ namespace App\MobileEntry\Component\Main\Lobby\ArcadeLobby;
 
 use App\Player\PlayerSession;
 use App\MobileEntry\Services\PublishingOptions\PublishingOptions;
+use App\MobileEntry\Component\Main\Lobby\GamesListVersionTrait;
 
 class ArcadeLobbyComponentController
 {
+    use GamesListVersionTrait;
+
+    const CURRENCY = '_currency';
     const TIMEOUT = 1800;
     const PRODUCT = 'mobile-arcade';
     const RECOMMENDED_GAMES = 'recommended-games';
@@ -51,6 +55,9 @@ class ArcadeLobbyComponentController
     private $playerDetails;
 
     private $providersCurrency = [];
+
+    private $gamesListVersion;
+
 
     /**
      *
@@ -99,6 +106,7 @@ class ArcadeLobbyComponentController
         $this->currentLanguage = $currentLanguage;
         $this->recentGames = $recentGames;
         $this->favorite = $favorite;
+        $this->gamesListVersion = $this->getGamesListVersion();
     }
 
     /**
@@ -254,12 +262,12 @@ class ArcadeLobbyComponentController
     {
         try {
             $currencies = array_filter($gameConfig, function ($config) {
-                $length = strlen('_currency');
+                $length = strlen(self::CURRENCY);
                 if ($length == 0) {
                     return true;
                 }
 
-                return (substr($config, -$length) === '_currency');
+                return (substr($config, -$length) === self::CURRENCY);
             }, ARRAY_FILTER_USE_KEY);
 
             $this->providersCurrency = array_merge($this->providersCurrency, $currencies);
@@ -296,11 +304,12 @@ class ArcadeLobbyComponentController
             $categories = [];
         }
 
+        $gamesListV = $this->gamesListVersion ? 'games_list_v2' : 'games_list';
         try {
             $allGames = $this->viewsFetcher->getViewById(
-                'games_list',
+                $gamesListV,
                 [
-                'page' => (string) $page,
+                    'page' => (string) $page,
                 ]
             );
         } catch (\Exception $e) {
@@ -351,12 +360,16 @@ class ArcadeLobbyComponentController
         foreach ($games as $game) {
             $publishOn = $game['publish_on'][0]['value'] ?? '';
             $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
-            $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
+            $status = $this->getStatus($publishOn, $unpublishOn, $game);
+
             if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
-                $processedGame = $this->processGame($game, $special);
-                $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
-                if (!$isPreview && $preview_mode || !count($processedGame)) {
+                $processedGame = $this->gamesListVersion
+                    ? $this->processGameV2($game, $special) : $this->processGameV1($game, $special);
+                $previewMode = $this->gamesListVersion
+                    ? ($game['field_preview_mode'][0]['value'] === 'true')
+                    : ($game['field_preview_mode'][0]['value'] ?? 0);
+                if ((!$isPreview && $previewMode) || !count($processedGame)) {
                     continue;
                 }
                 if (count($processedGame['categories'])) {
@@ -368,19 +381,19 @@ class ArcadeLobbyComponentController
     }
 
     /**
-     * Simplify game array
+     * Simplify game array V2
      */
-    private function processGame($game, $special = false)
+    private function processGameV2($game, $special = false)
     {
         try {
             $processGame = [];
-            $subprovider = $game['field_games_subprovider'][0] ?? [];
+            $subProvider = $game['field_games_subprovider_export'][0]['value'] ?? null;
             $provider = $this->parseProvider($game['field_game_provider'][0]['value'] ?? "");
-            $subProviderCurrency = (isset($subprovider['field_supported_currencies'][0]['value']))
-                ? preg_split("/\r\n|\n|\r/", $subprovider['field_supported_currencies'][0]['value'])
+            $subProviderCurrency = (isset($subProvider['supported_currencies']))
+                ? preg_split("/\r\n|\n|\r/", $subProvider['supported_currencies'])
                 : [];
-            $providerCurrency = ($this->providersCurrency[$provider . "_currency"])
-                ? preg_split("/\r\n|\n|\r/", $this->providersCurrency[$provider . "_currency"])
+            $providerCurrency = (isset($this->providersCurrency[$provider . self::CURRENCY]))
+                ? preg_split("/\r\n|\n|\r/", $this->providersCurrency[$provider . self::CURRENCY])
                 : [];
 
             if ($this->playerDetails) {
@@ -393,71 +406,50 @@ class ArcadeLobbyComponentController
                 }
             }
 
-            if (isset($game['field_game_ribbon'][0])) {
-                $ribbon = $game['field_game_ribbon'][0];
-                $processGame['ribbon']['background'] = $ribbon['field_games_ribbon_color'][0]['color'];
-                $processGame['ribbon']['color'] = $ribbon['field_games_text_color'][0]['color'];
-                $processGame['ribbon']['name'] = $ribbon['field_games_ribbon_label'][0]['value'];
+            if (isset($game['field_game_ribbon_export'][0]['value'])) {
+                $ribbon = $game['field_game_ribbon_export'][0]['value'] ?? [];
+                $processGame['ribbon']['background'] = $ribbon['games_ribbon_color'] ?? null;
+                $processGame['ribbon']['color'] = $ribbon['games_text_color'] ?? null;
+                $processGame['ribbon']['name'] = $ribbon['games_ribbon_label'] ?? null;
             }
 
-            if (isset($game['field_all_games_category_ribbon'][0])) {
-                $allGamesribbon = $game['field_all_games_category_ribbon'][0];
+            if (isset($game['field_all_games_category_ribbon_export'][0]['value'])) {
+                $allGamesribbon = $game['field_all_games_category_ribbon_export'][0]['value'] ?? [];
                 $processGame['all_games_ribbon']['background'] =
-                    $allGamesribbon['field_games_ribbon_color'][0]['color'];
+                    $allGamesribbon['games_ribbon_color'] ?? null;
                 $processGame['all_games_ribbon']['color'] =
-                    $allGamesribbon['field_games_text_color'][0]['color'];
+                    $allGamesribbon['games_text_color'] ?? null;
                 $processGame['all_games_ribbon']['name'] =
-                    $allGamesribbon['field_games_ribbon_label'][0]['value'];
+                    $allGamesribbon['games_ribbon_label'] ?? null;
             }
 
             $processGame['image'] = [
-                'alt' => $game['field_games_thumbnail_image'][0]['alt'],
+                'alt' => $game['field_games_thumbnail_image_export'][0]['value']['alt'] ?? '',
                 'url' =>
                     $this->asset->generateAssetUri(
-                        $game['field_games_thumbnail_image'][0]['url'],
+                        $game['field_games_thumbnail_image_export'][0]['value']['url'] ?? '',
                         ['product' => self::PRODUCT]
                     )
             ];
 
-            if (isset($game['field_game_filter']) && count($game['field_game_filter']) > 0) {
-                $processGame['filters'] = $this->getGameFilters($game['field_game_filter']);
-            }
-
-
+            $processGame['filters'] = $game['field_game_filter_export'][0]['value'] ?? [];
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $processGame['game_provider'] = $provider;
-            $processGame['game_subprovider'] = $subprovider['name'][0]['value'] ?? "";
+            $processGame['game_subprovider'] = $subProvider['name'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
-            $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
+            $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] === 'true' ? true : false;
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
                 && $game['field_disable_game_loader'][0]['value']) ? "false" : "true";
-
-            $processGame['categories'] = $this->getGameCategories($game['field_games_list_category']);
+            $categories = $this->getGameCategories($game['field_games_list_category_export'][0]['value']);
+            $processGame['categories'] = $categories;
 
             return $processGame;
         } catch (\Exception $e) {
             return [];
         }
-    }
-
-    /**
-     * Get games filters
-     */
-    private function getGameFilters($gameFilters)
-    {
-        $filters = [];
-        foreach ($gameFilters as $filter) {
-            if (isset($filter['parent']) &&
-                isset($filter['parent']['field_games_filter_value'])) {
-                $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
-                    = $filter['field_games_filter_value'][0]['value'];
-            }
-        }
-
-        return json_encode($filters);
     }
 
     /**
@@ -467,15 +459,23 @@ class ArcadeLobbyComponentController
     {
         $categoryList = [];
         foreach ($gameCategories as $category) {
+            if ($this->gamesListVersion) {
+                $publishDate = $category['publish_date'] ?? '';
+                $unpublishDate = $category['unpublish_date'] ?? '';
+                $gamesDisable = $category['games_disable'];
+                $gamesAlias = $category['games_alias'];
+            } else {
+                $publishDate = $category['field_publish_date'][0]['value'] ?? '';
+                $unpublishDate = $category['field_unpublish_date'][0]['value'] ?? '';
+                $gamesDisable = $category['field_games_disable'][0]['value'];
+                $gamesAlias = $category['field_games_alias'][0]['value'];
+            }
             $isPublished = PublishingOptions::checkDuration(
-                $category['field_publish_date'][0]['value'] ?? '',
-                $category['field_unpublish_date'][0]['value'] ?? ''
+                $publishDate,
+                $unpublishDate
             );
-            if ($category['field_games_disable'][0]['value'] !== "1" &&
-                $isPublished
-            ) {
-                $categoryList[$category['field_games_alias'][0]['value']] =
-                $category['field_games_alias'][0]['value'];
+            if ($gamesDisable !== "1" && $isPublished) {
+                $categoryList[$gamesAlias] = $gamesAlias;
             }
         }
 
@@ -603,5 +603,111 @@ class ArcadeLobbyComponentController
     private function parseProvider($provider)
     {
         return self::PROVIDER_MAP[$provider] ?? $provider;
+    }
+
+    /**
+     * Get status
+     */
+    private function getStatus($publishOn, $unpublishOn, $game)
+    {
+        if ($this->gamesListVersion) {
+            $published = $game['status'][0]['value'] === 'true';
+        } else {
+            $published = $game['status'][0]['value'];
+        }
+
+        return (!$publishOn && !$unpublishOn) ? $published : true;
+    }
+
+    /**
+     * Simplify game array V1
+     */
+    private function processGameV1($game, $special = false)
+    {
+        try {
+            $processGame = [];
+            $subprovider = $game['field_games_subprovider'][0] ?? [];
+            $provider = $this->parseProvider($game['field_game_provider'][0]['value'] ?? "");
+            $subProviderCurrency = (isset($subprovider['field_supported_currencies'][0]['value']))
+                ? preg_split("/\r\n|\n|\r/", $subprovider['field_supported_currencies'][0]['value'])
+                : [];
+            $providerCurrency = ($this->providersCurrency[$provider . "_currency"])
+                ? preg_split("/\r\n|\n|\r/", $this->providersCurrency[$provider . "_currency"])
+                : [];
+
+            if ($this->playerDetails) {
+                // If the game has a subprovider currency restriction, verify if the user met the restriction
+                if (count($subProviderCurrency)) {
+                    $this->verifyCurrency($subProviderCurrency);
+                } // else verify if the player met the provider currency restriction
+                else {
+                    $this->verifyCurrency($providerCurrency);
+                }
+            }
+
+            if (isset($game['field_game_ribbon'][0])) {
+                $ribbon = $game['field_game_ribbon'][0];
+                $processGame['ribbon']['background'] = $ribbon['field_games_ribbon_color'][0]['color'];
+                $processGame['ribbon']['color'] = $ribbon['field_games_text_color'][0]['color'];
+                $processGame['ribbon']['name'] = $ribbon['field_games_ribbon_label'][0]['value'];
+            }
+
+            if (isset($game['field_all_games_category_ribbon'][0])) {
+                $allGamesribbon = $game['field_all_games_category_ribbon'][0];
+                $processGame['all_games_ribbon']['background'] =
+                    $allGamesribbon['field_games_ribbon_color'][0]['color'];
+                $processGame['all_games_ribbon']['color'] =
+                    $allGamesribbon['field_games_text_color'][0]['color'];
+                $processGame['all_games_ribbon']['name'] =
+                    $allGamesribbon['field_games_ribbon_label'][0]['value'];
+            }
+
+            $processGame['image'] = [
+                'alt' => $game['field_games_thumbnail_image'][0]['alt'],
+                'url' =>
+                    $this->asset->generateAssetUri(
+                        $game['field_games_thumbnail_image'][0]['url'],
+                        ['product' => self::PRODUCT]
+                    )
+            ];
+
+            if (isset($game['field_game_filter']) && count($game['field_game_filter']) > 0) {
+                $processGame['filters'] = $this->getGameFilters($game['field_game_filter']);
+            }
+
+            $processGame['title'] = $game['title'][0]['value'] ?? "";
+            $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
+            $processGame['game_provider'] = $provider;
+            $processGame['game_subprovider'] = $subprovider['name'][0]['value'] ?? "";
+            $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
+            $processGame['weight'] = 0;
+            $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
+            $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
+            $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
+                && $game['field_disable_game_loader'][0]['value']) ? "false" : "true";
+
+            $processGame['categories'] = $this->getGameCategories($game['field_games_list_category']);
+
+            return $processGame;
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Get games filters
+     */
+    private function getGameFilters($gameFilters)
+    {
+        $filters = [];
+        foreach ($gameFilters as $filter) {
+            if (isset($filter['parent']) &&
+                isset($filter['parent']['field_games_filter_value'])) {
+                $filters[$filter['parent']['field_games_filter_value'][0]['value']][]
+                    = $filter['field_games_filter_value'][0]['value'];
+            }
+        }
+
+        return json_encode($filters);
     }
 }
