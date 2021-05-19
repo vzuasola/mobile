@@ -1,6 +1,7 @@
 <?php
 
 namespace App\MobileEntry\Component\Language;
+
 use App\MobileEntry\Services\Product\Products;
 
 class LanguageComponentController
