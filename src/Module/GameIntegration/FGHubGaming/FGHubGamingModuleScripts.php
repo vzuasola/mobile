@@ -1,15 +1,15 @@
 <?php
 
-namespace App\MobileEntry\Module\GameIntegration\FlowGaming;
+namespace App\MobileEntry\Module\GameIntegration\FGHubGaming;
 
 use App\Drupal\Config;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 
 /**
- * @deprecated
+ *
  */
-class FlowGamingModuleScripts implements ComponentAttachmentInterface
+class FGHubGamingModuleScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
@@ -17,7 +17,7 @@ class FlowGamingModuleScripts implements ComponentAttachmentInterface
 
     private $lang;
 
-    const KEY = 'flow_gaming';
+    const KEY = 'fghub_gaming';
 
     /**
      *
