@@ -10,7 +10,7 @@ use App\Utils\IP;
 class RateLimit
 {
     /**
-     * 
+     *
      */
     private $settings;
 
@@ -46,7 +46,7 @@ class RateLimit
     }
 
     /**
-     * 
+     *
      */
     public function checkLimit($key, $operation = 1, $interval = 60)
     {
