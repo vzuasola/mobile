@@ -52,6 +52,8 @@ export class ForgotUsername extends FormBase {
         // Disable fields
         this.disableFields(this.form);
 
+        console.log("checkField -----------");
+
         xhr({
             url: Router.generateRoute("cant_login", "forgotusername"),
             type: "json",
@@ -61,6 +63,10 @@ export class ForgotUsername extends FormBase {
             },
         })
             .then((resp) => {
+                console.log(".then resp:", resp);
+                // if (resp.message === "FORGOT_USERNAME_SUCCESS" ||
+                //     resp.response_code === 'SUCCESS' ||
+                //     resp.response_code === 'SUCCESS1')
                 if (resp.status === "FORGOT_USERNAME_SUCCESS") {
                     this.showConfirmationMessage(this.form, ".api-success-message");
                 } else {
@@ -68,7 +74,9 @@ export class ForgotUsername extends FormBase {
                 }
             })
             .fail((err, msg) => {
-                this.showMessage(this.emailContainer, "Error retrieving data...");
+                console.log(".fail err:", err);
+                console.log(".fail msg:", msg);
+                this.showMessage(this.emailContainer, msg);
             })
             .always((resp) => {
                 this.loader.hide();
