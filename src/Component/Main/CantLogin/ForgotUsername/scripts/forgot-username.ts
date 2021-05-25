@@ -63,7 +63,7 @@ export class ForgotUsername extends FormBase {
             .then((resp) => {
                 if (resp.status === "FORGOT_USERNAME_SUCCESS" ||
                     resp.status === "SUCCESS" ||
-                    resp.response_code === "SUCCESS1") {
+                    resp.status === "SUCCESS1") {
                     this.showConfirmationMessage(this.form, ".api-success-message");
                 } else {
                     this.showMessage(this.emailContainer, this.messageMapping(resp.status));

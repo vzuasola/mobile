@@ -103,7 +103,7 @@ class CantLoginComponentController
 
         if ($isLimitExceeded) {
             return $this->rest->output($response, [
-                'response_code' => 'SUCCESS1',
+                'status' => 'SUCCESS1',
             ]);
         }
 
