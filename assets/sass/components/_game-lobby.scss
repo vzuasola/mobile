@@ -1,16 +1,13 @@
 .mobile-soda-casino {
-
     #game-container,
     #game-search-result {
         .game-listing {
             padding: 0 1% 1.75% 1%;
         }
     }
-
     .game-container {
         background: #02122E;
     }
-
     .game-ribbon {
         top: 0;
         max-height: 6.125rem;
@@ -20,59 +17,49 @@
         border-radius: unset;
         border-bottom-right-radius: 1.2rem;
     }
-
     .component-widget-wrapper {
         background: #001F51;
     }
-
     .sponsors-list {
         background: #001F51;
     }
 }
 
 .mobile-lottery,
+.mobile-virtuals,
 .mobile-exchange {
-
     .lottery-lobby-tile-container,
+    .virtuals-lobby-tile-container,
     .exchange-lobby-tile-container {
         padding-top: 1%;
-
         ul {
             padding: 0 0.5%;
             margin: 0;
-
             li {
                 padding: 0 0.5% 1% 0.5%;
             }
         }
-
         #game-container {
             width: 100%;
-
             .small-image {
                 width: 50%;
             }
-
             .large-image {
                 width: 100%;
             }
-
             .game-listing {
                 &-item {
                     padding: 0;
                     display: block;
                     float: none;
-
                     img {
                         height: 15rem;
                     }
                 }
-
                 a {
                     float: none;
                     display: block;
                 }
-
                 .label-game-title {
                     font-weight: 400;
                     width: 98%;
@@ -81,8 +68,8 @@
             }
         }
     }
-
     .lottery-tile-maintenance,
+    .virtuals-tile-maintenance,
     .exchange-tile-maintenance {
         &-title {
             position: absolute;
@@ -91,7 +78,6 @@
             color: $white;
             z-index: 1;
         }
-
         p {
             position: absolute;
             top: 45%;
@@ -106,8 +92,8 @@
             line-height: initial;
         }
     }
-
     .lottery-tile-maintenance:after,
+    .virtuals-tile-maintenance:after,
     .exchange-tile-maintenance:after {
         position: absolute;
         z-index: 0;
@@ -118,7 +104,6 @@
         height: 96.666667%;
         width: 98.5%;
     }
-
     .game-ribbon {
         position: absolute;
         top: 0.5rem;
@@ -129,8 +114,8 @@
         font-size: 1.2rem;
         border-radius: 0;
         font-weight: bold;
-
-        &.lottery-ribbon {
+        &.lottery-ribbon,
+        &.virtuals-ribbon {
             top: 1.0rem;
         }
     }
@@ -138,27 +123,24 @@
 
 // Portrait
 @media (orientation: portrait) {
-
     .mobile-lottery,
+    .mobile-virtuals,
     .mobile-exchange {
         #game-container {
-
             .game-tiles.large-override,
             .game-tiles.col-4.large-override,
             .game-tiles.col-4,
             .game-tiles.col-4.col-8.large-override {
                 width: 50%;
             }
-
             .game-tiles.col-4.small-override,
             .game-tiles.col-4.col-8 {
                 width: 100%;
             }
         }
-
         .col-4 {
-
             .lottery-tile-maintenance:after,
+            .virtuals-tile-maintenance:after,
             .exchange-tile-maintenance:after {
                 position: absolute;
                 z-index: 0;
@@ -170,10 +152,9 @@
                 width: 98%;
             }
         }
-
         .col-12 {
-
             .lottery-tile-maintenance:after,
+            .virtuals-tile-maintenance:after,
             .exchange-tile-maintenance:after {
                 position: absolute;
                 z-index: 0;
@@ -190,21 +171,19 @@
 
 // Landspace
 @media (orientation: landscape) {
-
     .mobile-lottery,
+    .mobile-virtuals,
     .mobile-exchange {
         #game-container {
             .game-tiles.col-4.small-override {
                 width: 33.33333%;
             }
-
             .game-tilescol-4.col-8.large-override {
                 width: 66.66667%;
             }
         }
     }
 }
-
 
 // Lottery Inner Page
 .node-inner-page {
@@ -216,7 +195,6 @@
             font-size: 1.5rem;
             font-weight: 600;
             border-radius: 0.35rem;
-
             .arrow {
                 display: inline-block;
                 width: 1.25rem;
@@ -229,7 +207,6 @@
                 transform: rotate(-45deg);
             }
         }
-
         .active {
             .arrow {
                 display: inline-block;
@@ -243,19 +220,16 @@
                 transform: rotate(-45deg);
             }
         }
-
         dd {
             .dd_wrapper {
                 padding-top: 0.5rem;
             }
-
             ul {
                 padding-left: 2.5rem;
                 color: $white;
             }
         }
     }
-
     table {
         width: initial !important;
     }
