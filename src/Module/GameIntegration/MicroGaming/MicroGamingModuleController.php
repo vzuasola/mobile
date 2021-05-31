@@ -74,12 +74,11 @@ class MicroGamingModuleController
     private function getGameLobby($request, $response)
     {
         $data['currency'] = true;
-        $requestData = $request->getParsedBody();
 
         try {
             $responseData = $this->microGaming->getLobby('icore_mg', [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                 ]
             ]);
             if ($responseData) {
@@ -103,7 +102,7 @@ class MicroGamingModuleController
 
             $responseData = $this->microGaming->getGameUrlById('icore_mg', $gameCode, [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'playMode' => 'true',
                     'providerProduct' => $productProvider,
                 ]

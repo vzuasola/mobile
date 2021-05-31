@@ -81,7 +81,7 @@ class EvolutionGamingModuleController
 
         try {
             $options = [
-                'languageCode' => $requestData['langCode']
+                'languageCode' => $this->languageCode($request)
             ];
 
             if (isset($requestData['gameCode']) && $requestData['gameCode'] !== 'undefined') {
@@ -110,7 +110,7 @@ class EvolutionGamingModuleController
         try {
             $responseData = $this->evoGaming->getGameUrlById('icore_evo', $requestData['gameCode'], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                 ]
             ]);
             if ($responseData['url']) {
