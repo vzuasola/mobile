@@ -50,6 +50,7 @@ trait GameTrait
                 $processGame['game_platform'] = $game['field_game_platform'] ?? "";
                 $processGame['keywords'] = $game['field_keywords'] ?? "";
                 $processGame['weight'] = 0;
+                $processGame['test'] = 2;
                 $processGame['target'] = $game['field_games_target'] ?? "popup";
                 $processGame['preview_mode'] = $game['field_preview_mode'] ?? 0;
                 $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'])
@@ -58,7 +59,10 @@ trait GameTrait
                 $categoryList = [];
 
                 foreach ($game['field_games_list_category'] as $category) {
-                    $categoryList[$category['games_alias']] = $category['games_alias'];
+                    if (isset($category['draggable'])) {
+                        $categoryList[$category['games_alias']] =
+                            $category['draggable']['weight'] ?? 0;
+                    }
                 }
 
                 $processGame['categories'] = $categoryList;
@@ -207,6 +211,7 @@ trait GameTrait
             $processGame['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
+            $processGame['test'] = 1;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
             $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
