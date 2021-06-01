@@ -107,8 +107,11 @@ class LiveDealerLobbyComponentController
             foreach ($games as $game) {
                 $publishOn = $this->getFieldValue($game, 'publish_on');
                 $unpublishOn = $this->getFieldValue($game, 'unpublishOn');
-                $unpublishOn = $this->getFieldValue($game, 'published');
-                $status = $this->getFieldValue($game, 'status') === "true" ? true : false;
+                $published = $this->getFieldValue($game, 'published');
+                $status = $this->getFieldValue($game, 'status');
+                if (!is_bool($status)) {
+                    $status = $status === 'true';
+                }
 
                 if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                     $preview_mode = $this->getFieldValue($game, 'field_preview_mode') === 'true' ? 1 : 0;
