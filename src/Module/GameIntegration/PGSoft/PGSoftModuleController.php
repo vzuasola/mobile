@@ -64,7 +64,7 @@ class PGSoftModuleController
             try {
                 $responseData = $this->pgSoft->getGameUrlById('icore_pgs', $requestData['gameCode'], [
                     'options' => [
-                        'languageCode' => $requestData['langCode'],
+                        'languageCode' => $this->languageCode($request),
                     ]
                 ]);
                 if ($responseData['url']) {

@@ -72,7 +72,7 @@ class RubyPlayModuleController
             try {
                 $responseData = $this->rubyPlay->getGameUrlById('icore_rp', $params[0], [
                     'options' => [
-                        'languageCode' => $requestData['langCode'],
+                        'languageCode' => $this->languageCode($request),
                         'providerProduct' => $params[1] ?? null,
                     ]
                 ]);
