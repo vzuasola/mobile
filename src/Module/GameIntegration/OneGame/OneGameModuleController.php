@@ -80,7 +80,7 @@ class OneGameModuleController
         try {
             $responseData = $this->oneGame->getGameUrlById('icore_onegame', $params[0], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'providerProduct' => $providerProduct
                 ]
             ]);
