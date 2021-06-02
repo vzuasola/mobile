@@ -10,6 +10,31 @@ use App\Player\PlayerInvalidException;
  */
 trait ProviderTrait
 {
+    /**
+     * Get the equivalent langCode
+     * of current language from iCore
+     */
+    public function languageCode($request, $key = 'webcomposer_config.icore_games_integration')
+    {
+        $params = $request->getParsedBody();
+        $language = $params['lang'];
+        $productConfig = $this->config;
+        if (isset($params['product'])) {
+            $productConfig = $this->config->withProduct($params['product']);
+        }
+
+        $config =  $productConfig->getConfig($key);
+
+        $mapping = Config::parse($config[self::KEY . '_language_mapping'] ?? '');
+
+        $langCode = "en";
+        if (isset($mapping[$language])) {
+            $langCode = $mapping[$language];
+        }
+
+        return $langCode;
+    }
+
     public function unsupported($request, $response)
     {
         try {

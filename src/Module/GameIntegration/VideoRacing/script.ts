@@ -11,18 +11,11 @@ import { ProviderMessageLightbox } from "../scripts/provider-message-lightbox";
 export class VideoRacingModule implements ModuleInterface, GameInterface {
     private key: string = "video_racing";
     private moduleName: string = "videoracing_integration";
-    private currencies: any;
-    private languages: any;
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
 
-    onLoad(attachments: {
-        currencies: any,
-        languages: any,
-    }) {
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
+    onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
     }
 
@@ -41,10 +34,6 @@ export class VideoRacingModule implements ModuleInterface, GameInterface {
     launch(options) {
         if (options.provider === this.key) {
             const lang = Router.getLanguage();
-            let langCode = "en";
-            if (typeof this.languages[lang] !== "undefined") {
-                langCode = this.languages[lang];
-            }
 
             if (options.maintenance === "true") {
                 this.messageLightbox.showMessage(
@@ -66,7 +55,7 @@ export class VideoRacingModule implements ModuleInterface, GameInterface {
                     product,
                     gameCode: options.code,
                     subprovider: options.subprovider || undefined,
-                    langCode,
+                    lang,
                 },
             }).then((response) => {
                 if (response.gameurl) {

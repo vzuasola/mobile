@@ -5,17 +5,24 @@ import PopupWindow from "@app/assets/script/components/popup";
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-import {GameInterface} from "../scripts/game.interface";
+import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 
-export class GPISodeModule implements ModuleInterface, GameInterface {
-    private key: string = "gpi_sode";
-    private moduleName: string = "gpi_sode_integration";
+export class FGHubGamingModule implements ModuleInterface, GameInterface {
+    private key: string = "fghub_gaming";
+    private moduleName: string = "fghub_gaming_integration";
+    private currencies: any;
+    private languages: any;
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
 
-    onLoad(attachments: {}) {
+    onLoad(attachments: {
+        currencies: any,
+        languages: any,
+    }) {
+        this.currencies = attachments.currencies;
+        this.languages = attachments.languages;
         this.messageLightbox = new ProviderMessageLightbox();
     }
 
@@ -34,6 +41,11 @@ export class GPISodeModule implements ModuleInterface, GameInterface {
     launch(options) {
         if (options.provider === this.key) {
             const lang = Router.getLanguage();
+            let langCode = "en";
+
+            if (typeof this.languages[lang] !== "undefined") {
+                langCode = this.languages[lang];
+            }
 
             if (options.maintenance === "true") {
                 this.messageLightbox.showMessage(
@@ -55,8 +67,7 @@ export class GPISodeModule implements ModuleInterface, GameInterface {
                     product,
                     gameCode: options.code,
                     subprovider: options.subprovider || undefined,
-                    lang,
-                    playMode: true,
+                    langCode,
                 },
             }).then((response) => {
                 if (response.gameurl) {
