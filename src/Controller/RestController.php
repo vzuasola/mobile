@@ -208,7 +208,7 @@ class RestController extends BaseController
 
         $data['homescreen_icon_ow-sports'] = $product['product-owsports'] ?? "OW Sports";
         $data['homescreen_icon_dafa-sports'] = $product['product-dafasports'] ?? "Dafa Sports";
-        $data['homescreen_icon_games'] = $product['product-casino'] ?? "Casino";
+        $data['homescreen_icon_games'] = $product['product-games'] ?? "Games";
         $data['homescreen_icon_live-dealer'] = $product['product-live-dealer'] ?? "Live Dealer";
         $data['homescreen_icon_arcade'] = $product['product-arcade'] ?? "Arcade";
 
@@ -528,6 +528,7 @@ class RestController extends BaseController
 
     private function getChangePassFormData()
     {
+        $data = [];
         try {
             $changePass = $this->get('config_form_fetcher')
                 ->withProduct('account')->getDataById('account_change_password_form');
