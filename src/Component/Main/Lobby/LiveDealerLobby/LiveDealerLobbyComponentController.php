@@ -105,16 +105,16 @@ class LiveDealerLobbyComponentController
                 ]
             );
             foreach ($games as $game) {
-                $publishOn = $game['publish_on'][0]['value'] ?? '';
-                $unpublishOn = $game['unpublish_on'][0]['value'] ?? '';
-                $published = $this->gamesListVersion
-                    ? $game['status'][0]['value'] === 'true'
-                    : $game['status'][0]['value'];
-                $status = (!$publishOn && !$unpublishOn) ? $published : true;
+                $publishOn = $this->getFieldValue($game, 'publish_on');
+                $unpublishOn = $this->getFieldValue($game, 'unpublishOn');
+                $published = $this->getFieldValue($game, 'published');
+                $status = $this->getFieldValue($game, 'status');
+                if (!is_bool($status)) {
+                    $status = $status === 'true';
+                }
+
                 if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
-                    $preview_mode = $this->gamesListVersion
-                        ? $game['field_preview_mode'][0]['value'] === 'true'
-                        : $game['field_preview_mode'][0]['value'] ?? 0;
+                    $preview_mode = $this->getFieldValue($game, 'field_preview_mode') === 'true' ? 1 : 0;
                     if (!$this->checkSupportedCurrency($game)) {
                         continue;
                     }
@@ -132,54 +132,68 @@ class LiveDealerLobbyComponentController
     }
 
     /**
+     * Get fields value by game version
+     */
+    private function getFieldValue($game, $key)
+    {
+        try {
+            $value = $this->gamesListVersion ? $game[$key] : $game[$key][0]['value'];
+        } catch (\Exception $e) {
+            return '';
+        }
+
+        return $value;
+    }
+
+    /**
      * Process games list array
      */
     private function getGameDefinitionV2($game)
     {
         try {
-            $subprovider = $game['field_games_subprovider_export'][0]['value'] ?? null;
+            $subprovider = $game['field_games_subprovider_export'] ?? null;
             $definition = [];
-            if (isset($game['field_game_ribbon_export'][0]['value'])) {
-                $ribbon = $game['field_game_ribbon_export'][0]['value'] ?? [];
+            if (isset($game['field_game_ribbon_export'])) {
+                $ribbon = $game['field_game_ribbon_export'] ?? [];
                 $definition['ribbon']['background'] = $ribbon['ribbon_background_color'] ?? null;
                 $definition['ribbon']['color'] = $ribbon['ribbon_text_color'] ?? null;
                 $definition['ribbon']['name'] = $ribbon['label'] ?? null;
             }
 
             $definition['provider_image'] = [
-                'alt' => $game['field_provider_logo_export'][0]['value']['alt'],
+                'alt' => $game['field_provider_logo_export']['alt'],
                 'url' =>
                     $this->asset->generateAssetUri(
-                        $game['field_provider_logo_export'][0]['value']['url'],
+                        $game['field_provider_logo_export']['url'],
                         ['product' => self::PRODUCT]
                     )
             ];
 
             $definition['image'] = [
-                'alt' => $game['field_thumbnail_image_export'][0]['value']['alt'],
+                'alt' => $game['field_thumbnail_image_export']['alt'],
                 'url' =>
                     $this->asset->generateAssetUri(
-                        $game['field_thumbnail_image_export'][0]['value']['url'],
+                        $game['field_thumbnail_image_export']['url'],
                         ['product' => self::PRODUCT]
                     )
             ];
             $useGameLobby = "true";
             if (isset($game['field_game_lobby'][0])) {
-                $useGameLobby = $game['field_game_lobby'][0]['value'] ? "true" : "false";
+                $useGameLobby = $game['field_game_lobby'] ? "true" : "false";
             }
-
-            $definition['title'] = $game['title'][0]['value'] ?? "";
-            $definition['game_code'] = $game['field_game_code'][0]['value'] ?? "";
-            $definition['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";
+            $definition['title'] = $game['publish_on'] ?? "";
+            $definition['title'] = $game['title'] ?? "";
+            $definition['game_code'] = $game['field_game_code'] ?? "";
+            $definition['game_provider'] = $game['field_game_provider'] ?? "";
             $definition['game_subprovider'] = $subprovider['name'] ?? "";
-            $definition['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
-            $definition['lobby_tab'] = $game['field_lobby_tab_export'][0]['value']['alias'] ?? "";
-            $definition['target'] = $game['field_target'][0]['value'] ?? "popup";
-            $definition['preview_mode'] = $game['field_preview_mode'][0]['value'] === 'true';
-            $definition['use_game_loader'] = (isset($game['field_use_game_loader'][0]['value'])
-                && $game['field_use_game_loader'][0]['value']) ? "true" : "false";
+            $definition['game_platform'] = $game['field_game_platform'] ?? "";
+            $definition['lobby_tab'] = $game['field_lobby_tab_export'][0]['alias'] ?? "";
+            $definition['target'] = $game['field_target'] ?? "popup";
+            $definition['preview_mode'] = $game['field_preview_mode'] === 'true';
+            $definition['use_game_loader'] = (isset($game['field_use_game_loader'])
+                && $game['field_use_game_loader']) ? "true" : "false";
             $definition['use_game_lobby'] = $useGameLobby;
-            $definition['sort_weight'] = $game['weight'][0]['value'] ?? 0;
+            $definition['sort_weight'] = $game['field_lobby_tab_export'][0]['draggable']['weight'] ?? 0;
 
             return $definition;
         } catch (\Exception $e) {
