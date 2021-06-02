@@ -65,7 +65,7 @@ class CQ9ModuleController
             try {
                 $responseData = $this->cq9->getGameUrlById('icore_cq9', $params[0], [
                     'options' => [
-                        'languageCode' => $requestData['langCode'],
+                        'languageCode' => $this->languageCode($request),
                         'providerProduct' => $params[1] ?? null,
                     ]
                 ]);

@@ -90,7 +90,7 @@ class JSystemModuleController
         try {
             $responseData = $this->jsystem->getLobby('icore_jsystem', [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'providerProduct' => $params[1] ?? null,
                     'gameCode' => $params[0] ?? null,
                 ]
@@ -113,7 +113,7 @@ class JSystemModuleController
         try {
             $responseData = $this->jsystem->getGameUrlById('icore_jsystem', $params[0], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'providerProduct' => $params[1] ?? null,
                 ]
             ]);

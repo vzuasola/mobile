@@ -58,7 +58,10 @@ trait GameTrait
                 $categoryList = [];
 
                 foreach ($game['field_games_list_category'] as $category) {
-                    $categoryList[$category['games_alias']] = $category['games_alias'];
+                    if (isset($category['draggable'])) {
+                        $categoryList[$category['games_alias']] =
+                            $category['draggable']['weight'] ?? 0;
+                    }
                 }
 
                 $processGame['categories'] = $categoryList;

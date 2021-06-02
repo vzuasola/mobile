@@ -63,7 +63,7 @@ class GPIModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
-        if ($this->checkCurrency($request)) {
+        if ($this->checkCurrency1($request)) {
             $data = $this->getGameLobby($request, $response);
         }
 
@@ -73,20 +73,17 @@ class GPIModuleController
     private function getGameLobby($request, $response)
     {
         $data['currency'] = true;
-        $requestData = $request->getParsedBody();
         try {
             $gpiConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
-            $providerMapping = Config::parse($gpiConfig['gpi_live_dealer_language_mapping'] ?? '');
             $extraParams = Config::parse($gpiConfig['gpi_live_dealer_extra_params']);
             $sessiontokenizer = $this->playerSession->getToken();
 
             $domain = $gpiConfig['gpi_game_url'];
-            $versionno = $gpiConfig['gpi_lottery_keno_version_no'];
             $vendor = $gpiConfig['gpi_vendor_id'];
             $ticket = $sessiontokenizer . '.1035';
 
             $args = array_merge([
-                'lang' => $requestData['langCode'],
+                'lang' => $this->languageCode($request, 'webcomposer_config.games_gpi_provider'),
                 'op' => $vendor,
                 'token' => $ticket,
                 'sys' => 'CUSTOM',
@@ -104,7 +101,7 @@ class GPIModuleController
         return $data;
     }
 
-    private function checkCurrency($request)
+    private function checkCurrency1($request)
     {
         try {
             $config =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
