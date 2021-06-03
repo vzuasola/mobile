@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a8c7a5a45f7eb80c261dad8f80e4b5f",
+    "content-hash": "ac2c1f53d95d57e1a023b865e14a7eff",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -3032,7 +3032,11 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
+<<<<<<< HEAD
             "time": "2021-04-27T02:46:53+00:00"
+=======
+            "time": "2021-05-18T01:46:07+00:00"
+>>>>>>> origin/sprint-85-p2
         },
         {
             "name": "willdurand/negotiation",
