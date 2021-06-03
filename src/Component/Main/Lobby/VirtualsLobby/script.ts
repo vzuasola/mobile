@@ -156,12 +156,18 @@ export class VirtualsLobbyComponent implements ComponentInterface {
                     scrollable: 1,
                     resizable: 1,
                 };
-
+                let redirect = false;
+                let redirectionUrl = "";
                 let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
                 const source = utility.getParameterByName("source");
 
                 for (const key in data.options) {
                     if (data.options.hasOwnProperty(key)) {
+                        if (key === "redirection" && data.options[key]) {
+                            redirectionUrl = data.options[key];
+                            redirect = true;
+                            break;
+                        }
                         const param = data.options[key];
                         url = utility.addQueryParam(url, key, param);
                     }
@@ -169,6 +175,10 @@ export class VirtualsLobbyComponent implements ComponentInterface {
 
                 url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
                 url = utility.addQueryParam(url, "loaderFlag", "true");
+                if (redirect) {
+                    url = redirectionUrl;
+                }
+
                 if (data.options.target === "popup" || data.options.target === "_blank") {
                     this.windowObject = PopupWindow(url, "gameWindow", prop);
                 }
