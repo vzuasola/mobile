@@ -82,7 +82,7 @@ class WACModuleController
         try {
             $responseData = $this->wac->getLobby('icore_wac', [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'gameCode' => $requestData['gameCode'],
                 ]
             ]);
@@ -106,7 +106,7 @@ class WACModuleController
             $params = explode('|', $requestData['gameCode']);
             $responseData = $this->wac->getGameUrlById('icore_wac', $params[0], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'providerProduct' => $params[1] ?? null,
                 ]
             ]);

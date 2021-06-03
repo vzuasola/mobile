@@ -1,28 +1,20 @@
 import * as xhr from "@core/assets/js/vendor/reqwest";
-import * as utility from "@core/assets/js/components/utility";
 import PopupWindow from "@app/assets/script/components/popup";
 
-import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import { ComponentManager, ModuleInterface } from "@plugins/ComponentWidget/asset/component";
+import { Router } from "@plugins/ComponentWidget/asset/router";
 
-import {GameInterface} from "./../scripts/game.interface";
-import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import { GameInterface } from "./../scripts/game.interface";
+import { ProviderMessageLightbox } from "../scripts/provider-message-lightbox";
 
 export class EzugiGamingModule implements ModuleInterface, GameInterface {
     private key: string = "ezugi_gaming";
     private moduleName: string = "ezugi_gaming_integration";
-    private currencies: any;
-    private languages: any;
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
 
-    onLoad(attachments: {
-        currencies: any,
-        languages: any,
-    }) {
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
+    onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
     }
 
@@ -39,57 +31,54 @@ export class EzugiGamingModule implements ModuleInterface, GameInterface {
     }
 
     launch(options) {
-        if (options.provider === this.key) {
-            const lang = Router.getLanguage();
-            let langCode = "en";
+        if (options.provider !== this.key) {
+            return;
+        }
 
-            if (typeof this.languages[lang] !== "undefined") {
-                langCode = this.languages[lang];
+        const lang = Router.getLanguage();
+
+        if (options.maintenance === "true") {
+            this.messageLightbox.showMessage(
+                this.moduleName,
+                "maintenance",
+                options,
+            );
+            return;
+        }
+
+        const product = options.hasOwnProperty("currentProduct") ? options.currentProduct
+            : ComponentManager.getAttribute("product");
+
+        xhr({
+            url: Router.generateModuleRoute(this.moduleName, "launch"),
+            type: "json",
+            method: "post",
+            data: {
+                product,
+                lang,
+                gameCode: options.gameCode,
+                subprovider: options.subprovider || undefined,
+            },
+        }).then((response) => {
+            if (response.gameurl) {
+                if (options.loader === "true") {
+                    window.location.href = response.gameurl;
+                } else {
+                    this.launchGame(options.target);
+                    this.updatePopupWindow(response.gameurl);
+                }
             }
 
-            if (options.maintenance === "true") {
+            if (!response.currency) {
                 this.messageLightbox.showMessage(
                     this.moduleName,
-                    "maintenance",
+                    "unsupported",
                     options,
                 );
-                return;
             }
-
-            const product = options.hasOwnProperty("currentProduct") ? options.currentProduct
-                : ComponentManager.getAttribute("product");
-
-            xhr({
-                url: Router.generateModuleRoute(this.moduleName, "launch"),
-                type: "json",
-                method: "post",
-                data: {
-                    product,
-                    langCode,
-                    gameCode: options.gameCode,
-                    subprovider: options.subprovider || undefined,
-                },
-            }).then((response) => {
-                if (response.gameurl) {
-                    if (options.loader === "true") {
-                        window.location.href = response.gameurl;
-                    } else {
-                        this.launchGame(options.target);
-                        this.updatePopupWindow(response.gameurl);
-                    }
-                }
-
-                if (!response.currency) {
-                    this.messageLightbox.showMessage(
-                        this.moduleName,
-                        "unsupported",
-                        options,
-                    );
-                }
-            }).fail((error, message) => {
-                // Do nothing
-            });
-        }
+        }).fail((error, message) => {
+            // Do nothing
+        });
     }
 
     logout() {
