@@ -146,6 +146,26 @@ class LiveDealerLobbyComponentController
     }
 
     /**
+     * Get Subprovider currencies
+     */
+    private function subProviderCurrency($game)
+    {
+        try {
+            $subprovider = isset($game['field_games_subprovider_export'])
+                ? $game['field_games_subprovider_export'] : $game['field_games_subprovider'][0];
+            $subProviderSupportedCurrency = isset($subprovider['supported_currencies'])
+                ? $subprovider['supported_currencies'] : $subprovider['field_supported_currencies'][0]['value'];
+            $subProviderCurrency = (isset($subProviderSupportedCurrency))
+                ? preg_split("/\r\n|\n|\r/", $subProviderSupportedCurrency)
+                : [];
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        return $subProviderCurrency;
+    }
+
+    /**
      * Process games list array
      */
     private function getGameDefinitionV2($game)
@@ -221,7 +241,6 @@ class LiveDealerLobbyComponentController
                 $providerData = [];
                 $providerData['game_code'] = $provider['field_game_provider_key'][0]['value'];
                 $providerData['maintenance'] = $provider['field_game_provider_maintenance'][0]['value'] ?? false;
-
                 if (!$providerData['maintenance']) {
                     $providerData['maintenance'] = $this->checkIfMaintenance(
                         $provider['field_game_provider_start_date'][0]['value'] ?? [],
@@ -243,11 +262,8 @@ class LiveDealerLobbyComponentController
             return true; // Display the game, nothing to compare here
         }
         $playerCurrency = $playerDetails['currency'] ?? '';
-        $provider = $game['field_game_provider'][0]['value'] ?? '';
-        $subprovider = $game['field_games_subprovider'][0] ?? [];
-        $subProviderCurrency = (isset($subprovider['field_supported_currencies'][0]['value']))
-          ? preg_split("/\r\n|\n|\r/", $subprovider['field_supported_currencies'][0]['value'])
-          : [];
+        $provider = $this->getFieldValue($game, 'field_game_provider');
+        $subProviderCurrency = $this->subProviderCurrency($game);
 
         switch ($provider) {
             case 'gpi':
