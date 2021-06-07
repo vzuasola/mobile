@@ -129,6 +129,12 @@ class VirtualsLobbyComponentController
                 ['product' => self::PRODUCT]
             );
 
+            if ($game['field_select_game_tile_action'][0]['value'] === 'redirection') {
+                $definition['game_redirection'] = $game['field_redirection_inner_page'][0]['value'] ?? '';
+            } elseif ($game['field_select_game_tile_action'][0]['value'] === 'game_code') {
+                $definition['game_code'] = $game['field_game_code'][0]['value'] ?? '';
+            }
+
             $definition['portrait_size'] = $sizePortrait[$size];
             $definition['landscape_size'] = $sizeLandscape[$game['field_game_landscape_size'][0]['value']];
             $definition['title'] = $game['title'][0]['value'] ?? '';
