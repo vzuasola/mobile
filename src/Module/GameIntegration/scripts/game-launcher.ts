@@ -110,7 +110,13 @@ class GameLauncher {
      */
     private onClick(e, src) {
         let loader = false;
+        let redirect = false;
         const el = utility.find(src, (element) => {
+            if (element.getAttribute("data-game-redirection")) {
+                redirect = true;
+                return true;
+            }
+
             if (utility.hasClass(src, "game-favorite", true)) {
                 return false;
             }
@@ -130,24 +136,30 @@ class GameLauncher {
         });
 
         if (el) {
-            ComponentManager.broadcast("game.launch", {
-                src: el,
-            });
             const options = this.getOptionsByElement(el);
-            if (!loader) {
-                e.preventDefault();
-
-                const provider = el.getAttribute("data-game-provider");
-
-                options.provider = provider;
-                this.invoke(provider, "prelaunch", [options]);
-                this.invoke(provider, "launch", [options]);
-            }
-
-            if (loader) {
-                ComponentManager.broadcast("game.launch.loader", {
+            if (redirect) {
+                ComponentManager.broadcast("game.redirect", {
                     options,
                 });
+            } else {
+                ComponentManager.broadcast("game.launch", {
+                    src: el,
+                });
+                if (!loader) {
+                    e.preventDefault();
+
+                    const provider = el.getAttribute("data-game-provider");
+
+                    options.provider = provider;
+                    this.invoke(provider, "prelaunch", [options]);
+                    this.invoke(provider, "launch", [options]);
+                }
+
+                if (loader) {
+                    ComponentManager.broadcast("game.launch.loader", {
+                        options,
+                    });
+                }
             }
         }
     }
@@ -157,7 +169,13 @@ class GameLauncher {
      */
     private onLogin(e, data) {
         let loader = false;
+        let redirect = false;
         const el = utility.find(data.src, (element) => {
+            if (element.getAttribute("data-game-redirection")) {
+                redirect = true;
+                return true;
+            }
+
             if (element.getAttribute("data-game-loader") === "true") {
                 loader = true;
                 return true;
@@ -170,23 +188,29 @@ class GameLauncher {
 
         if (el) {
             const options = this.getOptionsByElement(el);
-            ComponentManager.broadcast("game.launch", {
-                src: el,
-                response: data.response,
-            });
-            if (!loader) {
-                e.preventDefault();
-
-                const provider = el.getAttribute("data-game-provider");
-                options.provider = provider;
-
-                this.launch(provider, options);
-            }
-
-            if (loader) {
-                ComponentManager.broadcast("game.launch.loader", {
+            if (redirect) {
+                ComponentManager.broadcast("game.redirect", {
                     options,
                 });
+            } else {
+                ComponentManager.broadcast("game.launch", {
+                    src: el,
+                    response: data.response,
+                });
+                if (!loader) {
+                    e.preventDefault();
+
+                    const provider = el.getAttribute("data-game-provider");
+                    options.provider = provider;
+
+                    this.launch(provider, options);
+                }
+
+                if (loader) {
+                    ComponentManager.broadcast("game.launch.loader", {
+                        options,
+                    });
+                }
             }
         }
     }

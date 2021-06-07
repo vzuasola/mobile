@@ -57,6 +57,7 @@ export class VirtualsLobbyComponent implements ComponentInterface {
                 this.setLobby();
             });
         });
+        this.listenToRedirectionGameClick();
         this.listenClickGameTile();
         this.listenToLaunchGameLoader();
         this.highlightQuickNavMenu();
@@ -93,6 +94,7 @@ export class VirtualsLobbyComponent implements ComponentInterface {
                 this.setLobby();
             });
         });
+        this.listenToRedirectionGameClick();
         this.listenToLaunchGameLoader();
         this.highlightQuickNavMenu();
         this.listenOnChangeOrientation();
@@ -138,7 +140,48 @@ export class VirtualsLobbyComponent implements ComponentInterface {
     private listenClickGameTile() {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "game-listing-item", true);
-            this.showLogin(el);
+
+            if (el && !el.getAttribute("data-game-redirection")) {
+                this.showLogin(el);
+            }
+        });
+    }
+
+    /**
+     * Event listener for click of redirection inner page
+     */
+    private listenToRedirectionGameClick() {
+        ComponentManager.subscribe("game.redirect", (event, src, data) => {
+            if (ComponentManager.getAttribute("product") === "mobile-virtuals") {
+                let url = "";
+                // Pop up loader with all data
+                const prop = {
+                    width: 360,
+                    height: 720,
+                    scrollbars: 1,
+                    scrollable: 1,
+                    resizable: 1,
+                };
+                url = data.options.redirection;
+                const source = utility.getParameterByName("source");
+
+                if (data.options.target === "popup" || data.options.target === "_blank") {
+                    this.windowObject = PopupWindow(url, "gameWindow", prop);
+                }
+
+                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
+                    return;
+                }
+
+                // handle redirects if we are on a PWA standalone
+                if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                    source === "pwa" || data.options.target === "_self" || data.options.target === "_top" &&
+                    (data.options.target !== "popup" || data.options.target !== "_blank")
+                ) {
+                    window.location.href = url;
+                    return;
+                }
+            }
         });
     }
 
@@ -156,18 +199,12 @@ export class VirtualsLobbyComponent implements ComponentInterface {
                     scrollable: 1,
                     resizable: 1,
                 };
-                let redirect = false;
-                let redirectionUrl = "";
+
                 let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
                 const source = utility.getParameterByName("source");
 
                 for (const key in data.options) {
                     if (data.options.hasOwnProperty(key)) {
-                        if (key === "redirection" && data.options[key]) {
-                            redirectionUrl = data.options[key];
-                            redirect = true;
-                            break;
-                        }
                         const param = data.options[key];
                         url = utility.addQueryParam(url, key, param);
                     }
@@ -175,9 +212,6 @@ export class VirtualsLobbyComponent implements ComponentInterface {
 
                 url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
                 url = utility.addQueryParam(url, "loaderFlag", "true");
-                if (redirect) {
-                    url = redirectionUrl;
-                }
 
                 if (data.options.target === "popup" || data.options.target === "_blank") {
                     this.windowObject = PopupWindow(url, "gameWindow", prop);
