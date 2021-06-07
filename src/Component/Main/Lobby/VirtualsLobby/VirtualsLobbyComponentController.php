@@ -129,7 +129,6 @@ class VirtualsLobbyComponentController
                 ['product' => self::PRODUCT]
             );
 
-            $definition['game_redirection'] = $definition['game_code'] = '';
             if ($game['field_select_game_tile_action'][0]['value'] === 'redirection') {
                 $definition['game_redirection'] = $game['field_redirection_inner_page'][0]['value'] ?? '';
             } elseif ($game['field_select_game_tile_action'][0]['value'] === 'game_code') {
