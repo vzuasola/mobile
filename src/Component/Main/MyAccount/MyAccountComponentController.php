@@ -46,6 +46,11 @@ class MyAccountComponentController
     private $session;
 
     /**
+     * Rate Limit
+     */
+    private $rateLimit;
+
+    /**
      *
      */
     public static function create($container)
@@ -58,7 +63,9 @@ class MyAccountComponentController
             $container->get('user_fetcher'),
             $container->get('receive_news'),
             $container->get('player_session'),
-            $container->get('session')
+            $container->get('session')            
+            $container->get('rate_limit'),
+
         );
     }
 
