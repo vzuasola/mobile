@@ -63,9 +63,8 @@ class MyAccountComponentController
             $container->get('user_fetcher'),
             $container->get('receive_news'),
             $container->get('player_session'),
-            $container->get('session')            
-            $container->get('rate_limit'),
-
+            $container->get('session'),            
+            $container->get('rate_limit')
         );
     }
 
@@ -80,7 +79,8 @@ class MyAccountComponentController
         $userFetcher,
         $receiveNews,
         $playerSession,
-        $session
+        $session,
+        $rate_limit
     ) {
         $this->rest = $rest;
         $this->changePassword = $changePass;
@@ -90,6 +90,7 @@ class MyAccountComponentController
         $this->subscription = $receiveNews;
         $this->playerSession = $playerSession;
         $this->session = $session;
+        $this->rateLimit = $rate_limit;
     }
 
     /**
@@ -123,6 +124,20 @@ class MyAccountComponentController
      */
     public function sendverificationcode($request, $response)
     {
+
+        $config = $this->configFetcher->getConfigById('rate_limit');
+
+        $interval = $config['rate_limit_sms_interval'] ?? 60;
+        $operation = $config['rate_limit_sms_operation'] ?? 1;
+
+        $isLimitExceeded = $this->rateLimit->checkLimit("sms_verification", $operation, $interval);
+
+        if ($isLimitExceeded) {
+            return $this->rest->output($response, [
+                'response_code' => 'SUCCESS1',
+            ]);
+        }
+
         $subTypeId = $request->getParsedBody()['data'] ?? null;
 
         try {
