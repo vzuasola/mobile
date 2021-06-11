@@ -124,7 +124,6 @@ class MyAccountComponentController
      */
     public function sendverificationcode($request, $response)
     {
-
         $config = $this->configFetcher->getConfigById('rate_limit');
 
         $interval = $config['rate_limit_sms_interval'] ?? 60;

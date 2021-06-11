@@ -38,4 +38,3 @@ $container['currency_translation'] = function ($c) {
 $container['rate_limit'] = function ($c) {
     return RateLimit::create($c);
 };
-
