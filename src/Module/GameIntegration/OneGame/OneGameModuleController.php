@@ -73,7 +73,7 @@ class OneGameModuleController
      * Get Game URL
      */
     private function getGameUrl($request)
-    {   
+    {
         $requestData = $request->getParsedBody();
         $data['currency'] = true;
         $params = explode('|', $requestData['gameCode']);
