@@ -1,30 +1,21 @@
-import * as Promise from "promise-polyfill";
 import * as xhr from "@core/assets/js/vendor/reqwest";
-import * as utility from "@core/assets/js/components/utility";
 import PopupWindow from "@app/assets/script/components/popup";
 
-import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import { ComponentManager, ModuleInterface } from "@plugins/ComponentWidget/asset/component";
+import { Router } from "@plugins/ComponentWidget/asset/router";
 
-import {GameInterface} from "./../scripts/game.interface";
-import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
-import { resolve, reject } from "q";
+import { GameInterface } from "./../scripts/game.interface";
+import { ProviderMessageLightbox } from "../scripts/provider-message-lightbox";
 
 export class GoldDeluxeModule implements ModuleInterface, GameInterface {
     private key: string = "gold_deluxe";
     private moduleName: string = "gold_deluxe_integration";
-    private currencies: any;
     private languages: any;
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
 
-    onLoad(attachments: {
-        currencies: any,
-        languages: any,
-    }) {
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
+    onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
     }
 
@@ -41,58 +32,55 @@ export class GoldDeluxeModule implements ModuleInterface, GameInterface {
     }
 
     launch(options) {
-        if (options.provider === this.key) {
-            const lang = Router.getLanguage();
-            let langCode = "en";
+        if (options.provider !== this.key) {
+            return;
+        }
+        const lang = Router.getLanguage();
 
-            if (typeof this.languages[lang] !== "undefined") {
-                langCode = this.languages[lang];
+        if (options.maintenance === "true") {
+            this.messageLightbox.showMessage(
+                this.moduleName,
+                "maintenance",
+                options,
+            );
+            return;
+        }
+
+        const product = options.hasOwnProperty("currentProduct") ? options.currentProduct
+            : ComponentManager.getAttribute("product");
+
+        xhr({
+            url: Router.generateModuleRoute(this.moduleName, "launch"),
+            type: "json",
+            method: "post",
+            data: {
+                product,
+                gameCode: options.code,
+                subprovider: options.subprovider || undefined,
+                lang,
+                playMode: true,
+            },
+        }).then((response) => {
+            if (response.gameurl) {
+                if (options.loader === "true") {
+                    window.location.href = response.gameurl;
+                } else {
+                    this.launchGame(options.target);
+                    this.updatePopupWindow(response.gameurl);
+                }
             }
 
-            if (options.maintenance === "true") {
+            if (!response.currency) {
                 this.messageLightbox.showMessage(
                     this.moduleName,
-                    "maintenance",
+                    "unsupported",
                     options,
                 );
-                return;
             }
+        }).fail((error, message) => {
+            // Do nothing
+        });
 
-            const product = options.hasOwnProperty("currentProduct") ? options.currentProduct
-                : ComponentManager.getAttribute("product");
-
-            xhr({
-                url: Router.generateModuleRoute(this.moduleName, "launch"),
-                type: "json",
-                method: "post",
-                data: {
-                    product,
-                    gameCode: options.code,
-                    subprovider: options.subprovider || undefined,
-                    langCode,
-                    playMode: true,
-                },
-            }).then((response) => {
-                if (response.gameurl) {
-                    if (options.loader === "true") {
-                        window.location.href = response.gameurl;
-                    } else {
-                        this.launchGame(options.target);
-                        this.updatePopupWindow(response.gameurl);
-                    }
-                }
-
-                if (!response.currency) {
-                    this.messageLightbox.showMessage(
-                        this.moduleName,
-                        "unsupported",
-                        options,
-                    );
-                }
-            }).fail((error, message) => {
-                // Do nothing
-            });
-        }
     }
 
     logout() {

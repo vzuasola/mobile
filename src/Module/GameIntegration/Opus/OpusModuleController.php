@@ -78,7 +78,7 @@ class OpusModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
-        if ($this->checkCurrency($request)) {
+        if ($this->checkCurrency($request, 'games_opus_provider', true)) {
             $data['currency'] = true;
             try {
                 $data = $this->getGameUrl($request);
@@ -143,7 +143,7 @@ class OpusModuleController
         return $data;
     }
 
-    public function checkCurrency($request)
+    public function checkCurrency1($request)
     {
         try {
             $params = $request->getParsedBody();

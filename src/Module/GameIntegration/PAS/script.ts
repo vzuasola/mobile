@@ -107,6 +107,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     login(username, password) {
+        this.username = username;
         this.isSessionAlive = true;
         return new Promise((resolve, reject) => {
             const user = username.toUpperCase();
@@ -188,7 +189,7 @@ export class PASModule implements ModuleInterface, GameInterface {
             const lang = Router.getLanguage();
             const language = this.getLanguageMap(lang);
             // If there is no playerId attachment, this means that there is no session available.
-            if (!this.playerId) {
+            if (!this.username) {
                 this.messageLightbox.showMessage(
                     this.moduleName,
                     "unsupported",
@@ -443,6 +444,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     }
                 }).fail((error, message) => {
                     // Do nothing
+                    this.username = null;
                 });
             }
             if (!this.futurama) {

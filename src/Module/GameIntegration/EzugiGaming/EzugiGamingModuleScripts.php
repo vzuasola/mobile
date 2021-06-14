@@ -13,32 +13,22 @@ class EzugiGamingModuleScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
-    private $config;
-
-    private $lang;
-
-    const KEY = 'ezugi_gaming';
-
     /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('player_session'),
-            $container->get('config_fetcher'),
-            $container->get('lang')
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang)
+    public function __construct($playerSession)
     {
         $this->playerSession = $playerSession;
-        $this->config = $config->withProduct('mobile-live-dealer');
-        $this->lang = $lang;
     }
 
     /**
@@ -47,13 +37,8 @@ class EzugiGamingModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $ezugiConfig =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-
             $data = [
-                'authenticated' => $this->playerSession->isLogin(),
-                'lang' => $this->lang,
-                'currencies' => explode(PHP_EOL, $ezugiConfig[self::KEY . '_currency']),
-                'languages' => Config::parse($ezugiConfig[self::KEY . '_language_mapping'] ?? ''),
+                'authenticated' => $this->playerSession->isLogin()
             ];
         } catch (\Exception $e) {
             $data = [];

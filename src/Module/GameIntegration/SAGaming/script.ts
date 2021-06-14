@@ -2,11 +2,11 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as utility from "@core/assets/js/components/utility";
 import PopupWindow from "@core/assets/js/components/utils/popup";
 
-import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import { ComponentManager, ModuleInterface } from "@plugins/ComponentWidget/asset/component";
+import { Router } from "@plugins/ComponentWidget/asset/router";
 
-import {GameInterface} from "./../scripts/game.interface";
-import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import { GameInterface } from "./../scripts/game.interface";
+import { ProviderMessageLightbox } from "../scripts/provider-message-lightbox";
 
 export class SAGamingModule implements ModuleInterface, GameInterface {
     private key: string = "sa_gaming";
@@ -17,12 +17,7 @@ export class SAGamingModule implements ModuleInterface, GameInterface {
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
 
-    onLoad(attachments: {
-        currencies: any,
-        languages: any,
-    }) {
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
+    onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
     }
 
@@ -41,10 +36,6 @@ export class SAGamingModule implements ModuleInterface, GameInterface {
     launch(options) {
         if (options.provider === this.key) {
             const lang = Router.getLanguage();
-            let langCode = "en";
-            if (typeof this.languages[lang] !== "undefined") {
-                langCode = this.languages[lang];
-            }
 
             if (options.maintenance === "true") {
                 this.messageLightbox.showMessage(
@@ -66,7 +57,7 @@ export class SAGamingModule implements ModuleInterface, GameInterface {
                     product,
                     gameCode: options.code,
                     subprovider: options.subprovider || undefined,
-                    langCode,
+                    lang,
                     lobby: options.lobby,
                 },
             }).then((response) => {

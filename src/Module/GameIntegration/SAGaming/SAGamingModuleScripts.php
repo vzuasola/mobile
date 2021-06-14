@@ -13,10 +13,6 @@ class SAGamingModuleScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
-    private $config;
-
-    private $lang;
-
     const KEY = 'sa_gaming';
 
     /**
@@ -25,20 +21,16 @@ class SAGamingModuleScripts implements ComponentAttachmentInterface
     public static function create($container)
     {
         return new static(
-            $container->get('player_session'),
-            $container->get('config_fetcher'),
-            $container->get('lang')
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang)
+    public function __construct($playerSession)
     {
         $this->playerSession = $playerSession;
-        $this->config = $config->withProduct('mobile-games');
-        $this->lang = $lang;
     }
 
     /**
@@ -47,13 +39,8 @@ class SAGamingModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $config =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-
             $data = [
-                'authenticated' => $this->playerSession->isLogin(),
-                'lang' => $this->lang,
-                'currencies' => explode(PHP_EOL, $config[self::KEY . '_currency']),
-                'languages' => Config::parse($config[self::KEY . '_language_mapping'] ?? ''),
+                'authenticated' => $this->playerSession->isLogin()
             ];
         } catch (\Exception $e) {
             $data = [];
