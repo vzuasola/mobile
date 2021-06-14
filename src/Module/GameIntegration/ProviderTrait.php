@@ -25,7 +25,7 @@ trait ProviderTrait
 
         $config = $isConfigById ? $productConfig->getGeneralConfigById($key) : $productConfig->getConfig($key);
 
-        $mapping = Config::parse($isConfigById ? $config['currency'] : $config[self::KEY . '_language_mapping'] ?? '');
+        $mapping = Config::parse($isConfigById ? $config['languages'] : $config[self::KEY . '_language_mapping'] ?? '');
 
         $langCode = "en";
         if (isset($mapping[$language])) {
