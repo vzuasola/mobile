@@ -7,6 +7,7 @@ use App\MobileEntry\Services\Domains\IDDomain;
 use App\MobileEntry\Services\Accounts\Accounts;
 use App\MobileEntry\Services\Currency\CurrencyTranslation;
 use App\MobileEntry\Services\Product\ProductResolver;
+use App\MobileEntry\Component\Main\CantLogin\RateLimit;
 
 require APP_ROOT . '/core/app/dependencies.php';
 
@@ -32,4 +33,8 @@ $container['product_resolver'] = function ($c) {
 
 $container['currency_translation'] = function ($c) {
     return CurrencyTranslation::create($c);
+};
+
+$container['rate_limit'] = function ($c) {
+    return RateLimit::create($c);
 };
