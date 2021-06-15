@@ -79,12 +79,10 @@ class SkywindModuleController
     private function getGameLobby($request)
     {
         $data['currency'] = true;
-        $requestData = $request->getParsedBody();
-
         try {
             $responseData = $this->skywind->getLobby('icore_sw', [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                 ]
             ]);
             if ($responseData) {
@@ -104,7 +102,7 @@ class SkywindModuleController
         try {
             $responseData = $this->skywind->getGameUrlById('icore_sw', $requestData['gameCode'], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'playMode' => true
                 ]
             ]);

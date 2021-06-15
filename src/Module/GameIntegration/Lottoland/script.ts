@@ -11,21 +11,10 @@ import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 export class LottolandModule implements ModuleInterface, GameInterface {
     private key: string = "lottoland";
     private moduleName: string = "lottoland_integration";
-    private currencies: any;
-    private languages: any;
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
-    private script: any;
-    onLoad(attachments: {
-        currencies: any,
-        languages: any,
-        script: any,
-    }) {
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
-        this.script = attachments.script;
-
+    onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
     }
 
@@ -44,11 +33,6 @@ export class LottolandModule implements ModuleInterface, GameInterface {
     launch(options) {
         if (options.provider === this.key) {
             const lang = Router.getLanguage();
-            let langCode = "en";
-
-            if (typeof this.languages[lang] !== "undefined") {
-                langCode = this.languages[lang];
-            }
 
             if (options.maintenance === "true") {
                 this.messageLightbox.showMessage(
@@ -70,7 +54,7 @@ export class LottolandModule implements ModuleInterface, GameInterface {
                     product,
                     gameCode: options.code,
                     subprovider: options.subprovider || undefined,
-                    langCode,
+                    lang,
                     playMode: true,
                     lobby: options.lobby,
                 },

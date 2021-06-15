@@ -83,7 +83,7 @@ class SAGamingModuleController
 
         try {
             $options = [
-                'languageCode' => $requestData['langCode']
+                'languageCode' => $this->languageCode($request)
             ];
 
             if (isset($requestData['gameCode'])) {
@@ -113,7 +113,7 @@ class SAGamingModuleController
         try {
             $responseData = $this->saGaming->getGameUrlById('icore_sa', $params[0], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'providerProduct' => $params[1] ?? null,
                 ]
             ]);

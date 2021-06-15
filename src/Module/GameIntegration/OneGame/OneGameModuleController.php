@@ -62,7 +62,7 @@ class OneGameModuleController
             $requestData = $request->getParsedBody();
 
             if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
-                $data = $this->getGameUrl($requestData);
+                $data = $this->getGameUrl($request);
             }
         }
 
@@ -72,15 +72,16 @@ class OneGameModuleController
     /**
      * Get Game URL
      */
-    private function getGameUrl($requestData)
+    private function getGameUrl($request)
     {
+        $requestData = $request->getParsedBody();
         $data['currency'] = true;
         $params = explode('|', $requestData['gameCode']);
         $providerProduct = $params[1] ?? 'games';
         try {
             $responseData = $this->oneGame->getGameUrlById('icore_onegame', $params[0], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'providerProduct' => $providerProduct
                 ]
             ]);

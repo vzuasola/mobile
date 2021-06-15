@@ -75,12 +75,11 @@ class GoldDeluxeModuleController
     private function getGameLobby($request, $response)
     {
         $data['currency'] = true;
-        $requestData = $request->getParsedBody();
 
         try {
             $responseData = $this->goldDeluxe->getLobby('icore_gd', [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request)
                 ]
             ]);
             if ($responseData) {
@@ -101,7 +100,7 @@ class GoldDeluxeModuleController
         try {
             $responseData = $this->goldDeluxe->getGameUrlById('icore_gd', $requestData['gameCode'], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request)
                 ]
             ]);
             if ($responseData['url']) {

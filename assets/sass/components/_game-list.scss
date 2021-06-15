@@ -1,41 +1,34 @@
 .game-container {
     background: $dark-red;
-
     #game-container,
     #game-search-result {
         width: 100%;
         position: relative;
-        transition:all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
         z-index: 0;
         width: 100%;
-
         .mobile-game-loader {
             width: 100vw;
             height: 20vw;
             z-index: 1;
-
             .sk-fading-circle {
                 width: 6rem;
                 height: 6rem;
             }
         }
     }
-
     #game-container {
         height: 100%;
     }
-
     .search-blurb {
         margin: 1rem 0 1rem 1rem;
         display: block;
         position: relative;
-
         span {
             display: block;
         }
     }
 }
-
 
 .game-tiles {
     display: inline-block;
@@ -45,7 +38,6 @@
     width: 100%;
     float: left;
     padding: 0 1% 1.75% 1%;
-
     .size-small,
     .size-large {
         .game-favorite {
@@ -54,30 +46,25 @@
             outline: none;
             border: 0;
             cursor: pointer;
-
             svg {
                 margin: 15% 0 0 55%;
                 width: 32%;
                 outline: none;
                 border: 0;
                 cursor: pointer;
-
                 path {
                     fill: $white;
                 }
             }
         }
     }
-
     .size-small {
         width: 33.33333333%;
-
         .game-favorite {
             right: 2.75%;
             width: 40%;
             height: 40%;
         }
-
         .game-favorite.active {
             svg {
                 path {
@@ -86,35 +73,29 @@
             }
         }
     }
-
     .size-large {
         width: 66.66666667%;
-
         .game-favorite {
             right: 1.5%;
             width: 20%;
             height: 20%;
         }
-
         .game-favorite.active {
             svg {
                 fill: $yellow;
             }
         }
     }
-
     &-item {
         position: relative;
         float: left;
         display: inline-block;
         min-height: 0.1rem;
         padding: 0 1%;
-
         img {
             min-width: 33%;
             min-height: 9rem;
         }
-
         .label-game-title {
             position: absolute;
             color: white;
@@ -125,12 +106,10 @@
             text-align: center;
         }
     }
-
-    .size-large:nth-child(even) + .size-small {
+    .size-large:nth-child(even)+.size-small {
         margin-top: -24.5%;
     }
-
-    .size-large:nth-child(odd) + .size-small {
+    .size-large:nth-child(odd)+.size-small {
         padding-bottom: 1.5%;
     }
 }
@@ -146,8 +125,8 @@
     font-size: 1.2rem;
     border-radius: 0.2rem;
     font-weight: bold;
-
-    &.lottery-ribbon {
+    &.lottery-ribbon,
+    &.virtuals-ribbon {
         left: -0.1rem;
         top: 1.0rem;
     }
@@ -159,16 +138,13 @@
 
 .game-loader {
     float: left;
-
     &-load-more {
         font-size: 0;
     }
-
     .mobile-game-loader {
         width: 100vw;
         height: 20vw;
         z-index: 1;
-
         .sk-fading-circle {
             width: 6rem;
             height: 6rem;
@@ -177,16 +153,36 @@
 }
 
 @-webkit-keyframes bounce-left {
-    0%, 20%, 50%, 80%, 100% {-webkit-transform: translateX(0);}
-    40% {-webkit-transform: translateX(-3.0rem);}
-    60% {-webkit-transform: translateX(-2.0rem);}
-} 
-@keyframes bounce-left {
-    0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
-    40% {transform: translateX(-3.0rem);}
-    60% {transform: translateX(-2.0rem);}
-} 
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        -webkit-transform: translateX(0);
+    }
+    40% {
+        -webkit-transform: translateX(-3.0rem);
+    }
+    60% {
+        -webkit-transform: translateX(-2.0rem);
+    }
+}
 
+@keyframes bounce-left {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateX(0);
+    }
+    40% {
+        transform: translateX(-3.0rem);
+    }
+    60% {
+        transform: translateX(-2.0rem);
+    }
+}
 
 .bounce-left {
     -webkit-animation-duration: 1s;
@@ -196,16 +192,36 @@
 }
 
 @-webkit-keyframes bounce-right {
-    0%, 20%, 50%, 80%, 100% {-webkit-transform: translateX(0);}
-    40% {-webkit-transform: translateX(3.0rem);}
-    60% {-webkit-transform: translateX(2.0rem);}
-} 
-@keyframes bounce-right {
-    0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
-    40% {transform: translateX(3.0rem);}
-    60% {transform: translateX(2.0rem);}
-} 
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        -webkit-transform: translateX(0);
+    }
+    40% {
+        -webkit-transform: translateX(3.0rem);
+    }
+    60% {
+        -webkit-transform: translateX(2.0rem);
+    }
+}
 
+@keyframes bounce-right {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateX(0);
+    }
+    40% {
+        transform: translateX(3.0rem);
+    }
+    60% {
+        transform: translateX(2.0rem);
+    }
+}
 
 .bounce-right {
     -webkit-animation-duration: 1s;

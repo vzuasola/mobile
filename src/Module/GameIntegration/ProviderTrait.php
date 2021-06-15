@@ -10,6 +10,31 @@ use App\Player\PlayerInvalidException;
  */
 trait ProviderTrait
 {
+    /**
+     * Get the equivalent langCode
+     * of current language from iCore
+     */
+    public function languageCode($request, $key = 'webcomposer_config.icore_games_integration', $isConfigById = false)
+    {
+        $params = $request->getParsedBody();
+        $language = $params['lang'];
+        $productConfig = $this->config;
+        if (isset($params['product'])) {
+            $productConfig = $this->config->withProduct($params['product']);
+        }
+
+        $config = $isConfigById ? $productConfig->getGeneralConfigById($key) : $productConfig->getConfig($key);
+
+        $mapping = Config::parse($isConfigById ? $config['languages'] : $config[self::KEY . '_language_mapping'] ?? '');
+
+        $langCode = "en";
+        if (isset($mapping[$language])) {
+            $langCode = $mapping[$language];
+        }
+
+        return $langCode;
+    }
+
     public function unsupported($request, $response)
     {
         try {
@@ -63,7 +88,7 @@ trait ProviderTrait
         return $this->rest->output($response, $data);
     }
 
-    public function checkCurrency($request)
+    public function checkCurrency($request, $key = 'webcomposer_config.icore_games_integration', $isConfigById = false)
     {
         try {
             $params = $request->getParsedBody();
@@ -94,8 +119,10 @@ trait ProviderTrait
                 }
             }
 
-            $config =  $productConfig->getConfig('webcomposer_config.icore_games_integration');
-            $currencies = explode("\r\n", $config[self::KEY . '_currency']);
+            $config = $isConfigById ? $productConfig->getGeneralConfigById($key)
+                : $productConfig->getConfig($key);
+            $currencies = $isConfigById ? explode("\r\n", $config['currency'])
+                : explode("\r\n", $config[self::KEY . '_currency']);
 
             if (in_array($playerCurrency, $currencies)) {
                 return true;

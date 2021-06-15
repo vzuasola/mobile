@@ -15,7 +15,8 @@ class Products
         'lottery' => 'mobile-lottery',
         'exchange' => 'mobile-exchange',
         'arcade' => 'mobile-arcade',
-        'soda-casino' => 'mobile-soda-casino'
+        'soda-casino' => 'mobile-soda-casino',
+        'virtual-sports' => 'mobile-virtuals'
     ];
 
     const PRODUCT_DIRECT_INTEGRATION = [
@@ -96,7 +97,7 @@ class Products
             'buyuwang',
             'buyudaren',
         ],
-        'virtual-sports' => [
+        'virtuals' => [
             'virtual-sports',
             'virtual-world',
             'virtualsports',

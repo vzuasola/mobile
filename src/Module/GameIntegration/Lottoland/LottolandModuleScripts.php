@@ -13,8 +13,6 @@ class LottolandModuleScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
-    private $config;
-
     private $lang;
 
     const KEY = 'lottoland';
@@ -26,7 +24,6 @@ class LottolandModuleScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('player_session'),
-            $container->get('config_fetcher'),
             $container->get('lang')
         );
     }
@@ -34,10 +31,9 @@ class LottolandModuleScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang)
+    public function __construct($playerSession, $lang)
     {
         $this->playerSession = $playerSession;
-        $this->config = $config->withProduct('mobile-lottery');
         $this->lang = $lang;
     }
 
@@ -47,14 +43,8 @@ class LottolandModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $lottoland =  $this->config->getConfig('webcomposer_config.icore_games_integration');
-
             $data = [
                 'authenticated' => $this->playerSession->isLogin(),
-                'lang' => $this->lang,
-                'currencies' => explode(PHP_EOL, $lottoland[self::KEY . '_currency']),
-                'languages' => Config::parse($lottoland[self::KEY . '_language_mapping'] ?? ''),
-                'script' => $lottoland[self::KEY . '_javascript_assets'],
             ];
         } catch (\Exception $e) {
             $data = [];

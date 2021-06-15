@@ -75,12 +75,11 @@ class EBetModuleController
     private function getGameLobby($request, $response)
     {
         $data['currency'] = true;
-        $requestData = $request->getParsedBody();
 
         try {
             $responseData = $this->eBet->getLobby('icore_ebet', [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request)
                 ]
             ]);
             if ($responseData) {
@@ -101,7 +100,7 @@ class EBetModuleController
         try {
             $responseData = $this->eBet->getGameUrlById('icore_ebet', $requestData['gameCode'], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request)
                 ]
             ]);
             if ($responseData['url']) {

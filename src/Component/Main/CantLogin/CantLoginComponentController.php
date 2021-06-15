@@ -32,6 +32,11 @@ class CantLoginComponentController
     private $configFetcher;
 
     /**
+     * Rate Limit
+     */
+    private $rateLimit;
+
+    /**
      *
      */
     public static function create($container)
@@ -39,18 +44,22 @@ class CantLoginComponentController
         return new static(
             $container->get('rest'),
             $container->get('user_fetcher'),
-            $container->get('change_password')
+            $container->get('change_password'),
+            $container->get('rate_limit'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $userFetcher, $changePassword)
+    public function __construct($rest, $userFetcher, $changePassword, $rate_limit, $config_fetcher)
     {
         $this->rest = $rest;
         $this->userFetcher = $userFetcher;
         $this->changePassword = $changePassword;
+        $this->rateLimit = $rate_limit;
+        $this->configFetcher = $config_fetcher->withProduct('account');
     }
 
     /**
@@ -86,6 +95,18 @@ class CantLoginComponentController
      */
     public function forgotusername($request, $response)
     {
+        $config = $this->configFetcher->getConfigById('rate_limit');
+        $interval = $config['rate_limit_username_interval'] ?? 60;
+        $operation = $config['rate_limit_username_operation'] ?? 1;
+
+        $isLimitExceeded = $this->rateLimit->checkLimit("forgotusername", $operation, $interval);
+
+        if ($isLimitExceeded) {
+            return $this->rest->output($response, [
+                'status' => 'SUCCESS1',
+            ]);
+        }
+
         $email = $request->getParam('email');
 
         try {
@@ -103,8 +124,9 @@ class CantLoginComponentController
             }
         }
 
+        // Always retrun success
         return $this->rest->output($response, [
-            'status' => $status,
+            'status' => 'SUCCESS',
         ]);
     }
 

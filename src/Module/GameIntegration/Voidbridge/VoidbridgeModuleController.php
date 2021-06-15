@@ -64,26 +64,26 @@ class VoidbridgeModuleController
             if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
               $requestData['lobby'] === "false"
             ) {
-                $data = $this->getGameUrl($requestData);
+                $data = $this->getGameUrl($request, $requestData);
             }
             if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
               $requestData['lobby'] === "true"
             ) {
-                $data = $this->getGameLobby($requestData);
+                $data = $this->getGameLobby($request, $requestData);
             }
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function getGameUrl($requestData)
+    private function getGameUrl($request, $requestData)
     {
         $data['currency'] = true;
         $params = explode('|', $requestData['gameCode']);
         try {
             $responseData = $this->voidbridge->getGameUrlById('icore_vb', $params[0], [
               'options' => [
-                'languageCode' => $requestData['langCode'],
+                'languageCode' => $this->languageCode($request),
                 'userAgent' => $requestData['userAgent'],
                 'providerProduct' => $params[1] ?? null,
               ]
@@ -98,7 +98,7 @@ class VoidbridgeModuleController
         return $data;
     }
 
-    private function getGameLobby($requestData)
+    private function getGameLobby($request, $requestData)
     {
         $data['currency'] = true;
         $params = explode('|', $requestData['gameCode']);
@@ -106,7 +106,7 @@ class VoidbridgeModuleController
           'options' => [
             'lobbyCode' => $params[0] ?? $requestData['gameCode'],
             'providerProduct' => $params[1] ?? null,
-            'languageCode' => $requestData['langCode'],
+            'languageCode' => $this->languageCode($request),
             'userAgent' => $requestData['userAgent'],
             'view' => $requestData['view'] ?? null,
           ]

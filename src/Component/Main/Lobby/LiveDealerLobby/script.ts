@@ -9,6 +9,7 @@ import * as Handlebars from "handlebars/runtime";
 import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
+import { resetForm } from "@app/assets/script/components/form-base";
 
 /**
  *
@@ -28,6 +29,8 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private providers: any;
     private productMenu: string = "product-live-dealer";
     private lazyLoader: LazyLoader;
+    private currentPage: number;
+    private pager: number;
 
     constructor() {
         this.lazyLoader = new LazyLoader();
@@ -108,14 +111,33 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     }
 
     private liveDealerXhrRequest(method: string, callback) {
-        xhr({
-            url: Router.generateRoute("live_dealer_lobby", method),
-            type: "json",
-        }).then((response) => {
+        if ("lobby" === method) {
+            const promises = [];
+            for (let page = 0; page < this.attachments.pagerConfig.total_pages; page++) {
+                const url = utility
+                    .addQueryParam(Router.generateRoute("live_dealer_lobby", method), "page", page || "0");
+                promises.push(xhr({ url, type: "json" }));
+            }
+            Promise.all(promises)
+                .then((response) => {
+                    let values = [];
+                    response.forEach((batch) => {
+                        values = values.concat(batch);
+                    });
+                    callback(values);
+                }).catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            xhr({
+                url: Router.generateRoute("live_dealer_lobby", method),
+                type: "json",
+            }).then((response) => {
                 callback(response);
-        }).fail((error, message) => {
-            console.log(error);
-        });
+            }).fail((error, message) => {
+                console.log(error);
+            });
+        }
     }
 
     /**

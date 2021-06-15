@@ -80,6 +80,8 @@ class LoginComponentController
                 ];
                 // Set the authentication cookies
                 $this->setAuthCookies();
+                session_start();
+                session_regenerate_id(false);
             } catch (\Exception $e) {
                 if ($e instanceof AccountLockedException) {
                     $response = $response->withStatus(403);
@@ -120,6 +122,9 @@ class LoginComponentController
 
         try {
             $data['success'] = $this->playerSession->logout();
+            session_unset();
+            session_destroy();
+            session_write_close();
         } catch (\Exception $e) {
             $data['message'] = $e->getMessage();
         }
