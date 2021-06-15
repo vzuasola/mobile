@@ -246,7 +246,7 @@ export class SmsVerification extends FormBase {
                     data: this.subTypeId,
                 },
             }).then((res) => {
-                if (res.response_code === "SMS_VERIFICATION_SUCCESS") {
+                if (res.response_code === "SMS_VERIFICATION_SUCCESS" || res.response_code === "SUCCESS1" ) {
                     utility.addClass(verificationError, "hidden");
                     verificationError.innerHTML = "";
 
@@ -276,7 +276,7 @@ export class SmsVerification extends FormBase {
                 data: this.subTypeId,
             },
         }).then((res) => {
-            if (res.response_code === "SMS_VERIFICATION_SUCCESS") {
+            if (res.response_code === "SMS_VERIFICATION_SUCCESS" || res.response_code === "SUCCESS1" ) {
                 utility.addClass(verificationError, "hidden");
                 utility.removeClass(verificationSuccess, "hidden");
                 verificationSuccess.innerHTML = res.message;
