@@ -186,7 +186,7 @@ class GamesLobbyComponentController
     private function generatePageLobbyData($page)
     {
         $data = [];
-        $categories = $this->views->getViewById('games_category');
+        $categories = $this->views->getViewById('games_category_v2');
         $gamesListV = $this->gamesListVersion ? 'games_list_v2' : 'games_list';
         $allGames = $this->views->getViewById(
             $gamesListV,
