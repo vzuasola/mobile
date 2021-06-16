@@ -2,6 +2,7 @@
 
 namespace App\MobileEntry\Component\Main\CantLogin;
 
+use RateLimit\Exception\LimitExceeded;
 use RateLimit\Rate;
 use RateLimit\PredisRateLimiter;
 use Predis\Client;

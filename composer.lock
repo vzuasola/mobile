@@ -2278,6 +2278,7 @@
                 "symfony",
                 "words"
             ],
+            "abandoned": "use `EnglishInflector` from the String component instead",
             "time": "2018-11-11T19:52:12+00:00"
         },
         {
