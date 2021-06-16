@@ -142,12 +142,10 @@ export class  ProductLanguage {
             "en",
             "sc",
             "th",
+            "kr",
             "vn",
             "id",
             "in",
-            "kr",
-            "pt",
-            "es",
         ],
     };
 
