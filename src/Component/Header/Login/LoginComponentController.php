@@ -70,6 +70,8 @@ class LoginComponentController
                 }
 
                 $data['success'] = $this->playerSession->login($username, $password, $options);
+                session_start();
+                session_regenerate_id(false);
                 $data['hash'] = md5($this->playerSession->getToken());
                 $data['token'] = $this->playerSession->getToken();
                 $data['matrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
@@ -80,8 +82,6 @@ class LoginComponentController
                 ];
                 // Set the authentication cookies
                 $this->setAuthCookies();
-                session_start();
-                session_regenerate_id(false);
             } catch (\Exception $e) {
                 if ($e instanceof AccountLockedException) {
                     $response = $response->withStatus(403);
