@@ -51,6 +51,7 @@ import {PartnerMatrixModule} from "@app/src/Module/PartnerMatrix/script";
 import {JSystemModule} from "@app/src/Module/GameIntegration/JSystem/script";
 import {OpusModule} from "@app/src/Module/GameIntegration/Opus/script";
 import {FGHubGamingModule} from "@app/src/Module/GameIntegration/FGHubGaming/script";
+import {PTPlusModule} from "@app/src/Module/GameIntegration/PTPlus/script";
 
 ComponentManager.setModules({
     avaya: new AvayaModule(),
@@ -103,4 +104,5 @@ ComponentManager.setModules({
     soda_casino_integration: new SodaCasinoIntegrationModule(),
     partner_matrix: new PartnerMatrixModule(),
     fghub_gaming_integration: new FGHubGamingModule(),
+    ptplus_integration: new PTPlusModule(),
 });
