@@ -45,15 +45,14 @@ trait GameTrait
             $processGame['filters'] = "";
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
-            $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "ptplus";
+            $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "pas";
             $processGame['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
             $processGame['weight'] = 0;
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
             $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
-            $processGame['use_game_loader'] = isset($game['field_disable_game_loader'][0]['value'])
-                && $game['field_disable_game_loader'][0]['value'] === false ? true : false;
-            $processGame['game_type'] = $game['field_game_type'][0]['value'] ?? "";
+            $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
+                && $game['field_disable_game_loader'][0]['value']) ? "false" : "false";
 
             $categoryList = [];
             foreach ($game['field_games_list_category'] as $category) {

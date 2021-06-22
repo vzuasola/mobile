@@ -24,11 +24,6 @@ class PASModuleController
         'mobile-soda-casino' => 'soda',
     ];
 
-    const BLOCKED_PRODUCTS = [
-        'mobile-games',
-        'mobile-live-dealer'
-    ];
-
     private $rest;
 
     /**
@@ -156,7 +151,7 @@ class PASModuleController
                 $playtechGameCode = $requestData['options']['code'];
 
                 // Check if game is blocked (dafabetgames only)
-                if (in_array($productKey, self::BLOCKED_PRODUCTS)) {
+                if ($productKey === 'mobile-games') {
                     $playtechGameCode = $this->getGameUrlParams($requestData);
                     if (!$playtechGameCode) {
                         throw new \Exception("Blocked");
