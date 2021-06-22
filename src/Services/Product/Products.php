@@ -120,6 +120,7 @@ class Products
             'sodabt',
             'sodfa',
             'sda',
+            'ptplus'
         ],
     ];
 
