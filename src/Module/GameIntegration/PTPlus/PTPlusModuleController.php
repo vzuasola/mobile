@@ -1,19 +1,19 @@
 <?php
 
-namespace App\MobileEntry\Module\GameIntegration\OneGame;
+namespace App\MobileEntry\Module\GameIntegration\PTPlus;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Fetcher\Drupal\ViewsFetcher;
 
-class OneGameModuleController
+class PTPlusModuleController
 {
     use ProviderTrait;
 
-    const KEY = 'onegame';
+    const KEY = 'ptplus';
 
     private $rest;
 
-    private $oneGame;
+    private $ptplus;
 
     private $config;
 
@@ -41,13 +41,13 @@ class OneGameModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $oneGame, $config, $player, $viewsFetcher)
+    public function __construct($rest, $ptplus, $config, $player, $viewsFetcher)
     {
         $this->rest = $rest;
-        $this->oneGame = $oneGame;
-        $this->config = $config->withProduct('mobile-games');
+        $this->ptplus = $ptplus;
+        $this->config = $config->withProduct('mobile-soda-casino');
         $this->player = $player;
-        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
+        $this->viewsFetcher = $viewsFetcher->withProduct('mobile-soda-casino');
     }
 
     /**
@@ -62,7 +62,7 @@ class OneGameModuleController
             $requestData = $request->getParsedBody();
 
             if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
-                $data = $this->getGameUrl($request);
+                $data = $this->getGameUrl($requestData);
             }
         }
 
@@ -72,23 +72,25 @@ class OneGameModuleController
     /**
      * Get Game URL
      */
-    private function getGameUrl($request)
+    private function getGameUrl($requestData)
     {
-        $requestData = $request->getParsedBody();
         $data['currency'] = true;
         $params = explode('|', $requestData['gameCode']);
-        $providerProduct = $params[1] ?? 'games';
+        $providerProduct = $requestData['product'] ?? 'mobile-soda-casino';
         try {
-            $responseData = $this->oneGame->getGameUrlById('icore_onegame', $params[0], [
+            $responseData = $this->ptplus->getGameUrlById('icore_ptplus', $params[0], [
                 'options' => [
-                    'languageCode' => $this->languageCode($request),
-                    'providerProduct' => $providerProduct
+                    'languageCode' => $requestData['lang'],
+                    'providerProduct' => $providerProduct,
+                    'gameType' => $params[1] ?? null
                 ]
             ]);
+
             if ($responseData['url']) {
                 $data['gameurl'] = $responseData['url'];
             }
         } catch (\Exception $e) {
+            die($e->getMessage());
             $data['currency'] = true;
         }
 
