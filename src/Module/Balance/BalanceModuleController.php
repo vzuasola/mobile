@@ -22,6 +22,7 @@ class BalanceModuleController
         'exchange' => 10,
         // 'esports' => 11,
         'soda_casino' => 13,
+        'ptplus' => 15,
     ];
 
     const PARTNER_MATRIX_BEHAVIORS = [
@@ -38,7 +39,7 @@ class BalanceModuleController
         'mobile-exchange' => 10,
         'mobile-lottery' => 5,
         'mobile-arcade' => 5,
-        'mobile-soda-casino' => 13,
+        'mobile-soda-casino' => 15,
         'mobile-virtuals' => 6,
     ];
 
