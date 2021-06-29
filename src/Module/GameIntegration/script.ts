@@ -42,7 +42,6 @@ export class GameIntegrationModule implements ModuleInterface {
         const lottoland: any = ComponentManager.getModuleInstance("lottoland_integration");
         const opus: any = ComponentManager.getModuleInstance("opus_integration");
         const fghubGaming: any = ComponentManager.getModuleInstance("fghub_gaming_integration");
-        const ptplus: any = ComponentManager.getModuleInstance("ptplus_integration");
         this.gameLauncher.setProvider("pas", pas);
         this.gameLauncher.setProvider("micro_gaming", microGaming);
         this.gameLauncher.setProvider("solid_gaming", solidgaming);
@@ -75,7 +74,6 @@ export class GameIntegrationModule implements ModuleInterface {
         this.gameLauncher.setProvider("lottoland", lottoland);
         this.gameLauncher.setProvider("opus", opus);
         this.gameLauncher.setProvider("fghub_gaming", fghubGaming);
-        this.gameLauncher.setProvider("ptplus", ptplus);
 
         setTimeout(() => {
             this.gameLauncher.init();

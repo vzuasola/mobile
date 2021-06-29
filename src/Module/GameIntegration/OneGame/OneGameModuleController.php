@@ -62,7 +62,7 @@ class OneGameModuleController
             $requestData = $request->getParsedBody();
 
             if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
-                $data = $this->getGameUrl($request);
+                $data = $this->getGameUrl($requestData);
             }
         }
 
@@ -72,9 +72,8 @@ class OneGameModuleController
     /**
      * Get Game URL
      */
-    private function getGameUrl($request)
+    private function getGameUrl($requestData)
     {
-        $requestData = $request->getParsedBody();
         $data['currency'] = true;
         $params = explode('|', $requestData['gameCode']);
         $providerProduct = $params[1] ?? 'games';

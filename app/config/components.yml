@@ -331,9 +331,6 @@ modules:
   fghub_gaming_integration:
     class: App\MobileEntry\Module\GameIntegration\FGHubGaming\FGHubGamingModule
 
-  ptplus_integration:
-    class: App\MobileEntry\Module\GameIntegration\PTPlus\PTPlusModule
-
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule
 

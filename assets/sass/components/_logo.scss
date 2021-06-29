@@ -4,6 +4,7 @@
     top: 1rem;
     left: 50%;
     margin: 0;
+
     a,
     span {
         position: relative;
@@ -11,11 +12,13 @@
         height: 3.1rem;
         display: inline-block;
         margin-right: 1.5rem;
+
         .sc &,
         .ch & {
             width: 14.8rem;
         }
     }
+
     img {
         position: absolute;
         top: 0;
@@ -24,32 +27,29 @@
     }
 }
 
-
 /*SODA CASINO*/
+.mobile-soda-casino {
+    .header-mobile-soda-casino {
+        .logo {
+            img {
+                top: -0.8rem;
+                width: 65%;
+                left: 2.5rem;
+            }
+        }
+    }
+}
 
-// .mobile-soda-casino {
-//     .header-mobile-soda-casino {
-//         .logo {
-//             img {
-//                 top: -0.8rem;
-//                 width: 65%;
-//                 left: 2.5rem;
-//             }
-//         }
-//     }
-// }
 // Tablet
-// @include media(">=tablet") {
-
-/*SODA CASINO*/
-
-//     .mobile-soda-casino {
-//         .header-mobile-soda-casino {
-//             .logo {
-//                 img {
-//                     width: 70%;
-//                 }
-//             }
-//         }
-//     }
-// }
+@include media(">=tablet") {
+    /*SODA CASINO*/
+    .mobile-soda-casino {
+        .header-mobile-soda-casino {
+            .logo {
+                img {
+                    width: 70%;
+                }
+            }
+        }
+    }
+}

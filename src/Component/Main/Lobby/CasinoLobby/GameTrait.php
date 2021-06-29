@@ -15,55 +15,60 @@ trait GameTrait
     private function processGameV2($product, $game, $special = false)
     {
         try {
-            $processGame = [];
-            $size = 'size-small';
-            $processGame['size'] = ($special) ? 'size-small' : $size;
+            if ($this->gamesListVersion) {
+                $processGame = [];
+                $size = 'size-small';
+                $processGame['size'] = ($special) ? 'size-small' : $size;
 
-            if (!empty($game['field_game_ribbon']['games_ribbon_label'])) {
-                $ribbon = $game['field_game_ribbon'];
-                $processGame['ribbon']['background'] = $ribbon['games_ribbon_color'];
-                $processGame['ribbon']['color'] = $ribbon['games_text_color'];
-                $processGame['ribbon']['name'] = $ribbon['games_ribbon_label'];
+                if (!empty($game['field_game_ribbon']['games_ribbon_label'])) {
+                    $ribbon = $game['field_game_ribbon'];
+                    $processGame['ribbon']['background'] = $ribbon['games_ribbon_color'];
+                    $processGame['ribbon']['color'] = $ribbon['games_text_color'];
+                    $processGame['ribbon']['name'] = $ribbon['games_ribbon_label'];
+                }
+
+                if (!empty($game['field_all_games_category_ribbon']['games_ribbon_label'])) {
+                    $allGamesribbon = $game['field_all_games_category_ribbon'];
+                    $processGame['all_games_ribbon']['background'] = $allGamesribbon['games_ribbon_color'];
+                    $processGame['all_games_ribbon']['color'] = $allGamesribbon['games_text_color'];
+                    $processGame['all_games_ribbon']['name'] = $allGamesribbon['games_ribbon_label'];
+                }
+
+                $processGame['image'] = [
+                    'alt' => $game['field_games_list_thumb_img_small']['alt'],
+                    'url' =>
+                        $this->asset->generateAssetUri(
+                            $game['field_games_list_thumb_img_small']['url'],
+                            ['product' => $product]
+                        )
+                ];
+
+                $processGame['filters'] = $game['field_game_filter'] ?? [];
+                $processGame['title'] = $game['title'] ?? "";
+                $processGame['game_code'] = $game['field_game_code'] ?? "";
+                $processGame['game_provider'] = $game['field_game_provider'] ?? "pas"; // HERE
+                $processGame['game_platform'] = $game['field_game_platform'] ?? "";
+                $processGame['keywords'] = $game['field_keywords'] ?? "";
+                $processGame['weight'] = 0;
+                $processGame['target'] = $game['field_games_target'] ?? "popup";
+                $processGame['preview_mode'] = $game['field_preview_mode'] ?? 0;
+                $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'])
+                    && $game['field_disable_game_loader']) ? "false" : "true";
+
+                $categoryList = [];
+
+                foreach ($game['field_games_list_category'] as $category) {
+                    if (isset($category['draggable'])) {
+                        $categoryList[$category['games_alias']] =
+                            $category['draggable']['weight'] ?? 0;
+                    }
+                }
+
+                $processGame['categories'] = $categoryList;
+
+                return $processGame;
             }
-
-            if (!empty($game['field_all_games_category_ribbon']['games_ribbon_label'])) {
-                $allGamesribbon = $game['field_all_games_category_ribbon'];
-                $processGame['all_games_ribbon']['background'] = $allGamesribbon['games_ribbon_color'];
-                $processGame['all_games_ribbon']['color'] = $allGamesribbon['games_text_color'];
-                $processGame['all_games_ribbon']['name'] = $allGamesribbon['games_ribbon_label'];
-            }
-
-            $processGame['image'] = [
-                'alt' => $game['field_games_list_thumb_img_small']['alt'],
-                'url' =>
-                    $this->asset->generateAssetUri(
-                        $game['field_games_list_thumb_img_small']['url'],
-                        ['product' => $product]
-                    )
-            ];
-
-            $processGame['filters'] = $game['field_game_filter'] ?? [];
-            $processGame['title'] = $game['title'] ?? "";
-            $processGame['game_code'] = $game['field_game_code'] ?? "";
-            $processGame['game_provider'] = $game['field_game_provider'] ?? "pas"; // HERE
-            $processGame['game_platform'] = $game['field_game_platform'] ?? "";
-            $processGame['keywords'] = $game['field_keywords'] ?? "";
-            $processGame['weight'] = 0;
-            $processGame['target'] = $game['field_games_target'] ?? "popup";
-            $processGame['preview_mode'] = $game['field_preview_mode'] ?? 0;
-            $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'])
-                && $game['field_disable_game_loader']) ? "false" : "true";
-
-            $categoryList = [];
-
-            foreach ($game['field_games_list_category'] as $category) {
-                    $categoryList[$category['games_alias']] =
-                        $category['draggable']['weight'] ?? 0;
-            }
-
-            $processGame['categories'] = $categoryList;
-
-            return $processGame;
+            return [];
         } catch (\Exception $e) {
             return [];
         }
@@ -108,9 +113,7 @@ trait GameTrait
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $fieldGameCode = $this->gamesListVersion
                     ? $game['field_game_code'] : $game['field_game_code'][0]['value'];
-                $fieldId = $this->gamesListVersion
-                    ? $game['id'] : $game['nid'][0]['value'];
-                $gamesList['id:' . $fieldGameCode . $fieldId] = $this->gamesListVersion
+                $gamesList['id:' . $fieldGameCode] = $this->gamesListVersion
                     ? $this->processGameV2($product, $game, $special)
                     : $this->processGameV1($product, $game, $special);
             }

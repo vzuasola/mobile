@@ -7,56 +7,70 @@
     line-height: normal;
     @include translateY(-50%);
     z-index: 2;
+
     .btn-mobile-login {
         max-width: 8rem;
         padding: 0.5rem;
         white-space: inherit;
+
         span:first-child {
             line-height: 1.5rem;
             font-size: 1.3rem;
         }
+
         // Language specific (mobile only)
         @include media("<tablet") {
             .sc &,
             .ch & {
                 max-width: 5.5rem;
             }
+
             .th & {
                 max-width: 8rem;
             }
+
             .vn &,
             .pl & {
                 max-width: 9.5rem;
             }
+
             .id & {
                 max-width: 7rem;
                 margin-top: 0.6rem;
             }
+
             .jp &,
             .gr & {
                 max-width: 7.5rem;
             }
+
             .kr & {
                 max-width: 6.5rem
             }
         }
+
     }
+
     .btn {
-        max-width: 9.5rem;
-        padding: 0.2rem 0.3rem;
-        border-radius: 0.3rem;
-        font-size: 1.2rem;
-        color: $red;
-        @include media(">tablet") {
-            max-width: 15.5rem;
-        }
+            max-width: 9.5rem;
+            padding: 0.2rem 0.3rem;
+            border-radius: 0.3rem;
+            font-size: 1.2rem;
+            color: $red;
+
+            @include media(">tablet") {
+                max-width: 15.5rem;
+            }
     }
+
     &-pl {
         .btn {
             font-size: 1rem;
+
         }
     }
 }
+
 
 // SODA CASINO
 .header-mobile-soda-casino {
@@ -64,38 +78,44 @@
         border: 0.1rem solid $soda-yellow;
         background-color: transparent;
         text-align: center;
-        // font-weight: normal;
-        // font-size: 2.4rem;
+        font-weight: normal;
+        font-size: 2.4rem;
         letter-spacing: 0;
         color: $soda-yellow;
         opacity: 1;
         width: 9rem;
     }
+
     .login-trigger.btn {
         max-width: 10.5rem;
         border: 0.1rem solid $soda-yellow;
         opacity: 1;
-        // font-size: 1.5rem;
+        font-size: 1.5rem;
         padding: 0.3rem 0.4rem;
+
         @include media(">tablet") {
             max-width: 16.5rem;
         }
     }
+    
 }
 
 .mobile-soda-casino-modal {
-    .login-submit.btn,
+    .login-submit.btn ,
     .btn-join.btn {
         background-color: transparent;
         opacity: 1;
         font-size: 2.4rem;
     }
+
     .login-submit.btn {
         border: 0.2rem solid $soda-yellow;
     }
+
     .btn-join.btn {
         border: 0.2rem solid #FF5F6D;
     }
+
     .modal-close-button {
         background: transparent;
         fill: #e4e4e4;
