@@ -10,18 +10,11 @@ import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 export class JSystemModule implements ModuleInterface, GameInterface {
     private key: string = "jsystem";
     private moduleName: string = "jsystem_integration";
-    private currencies: any;
-    private languages: any;
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
 
-    onLoad(attachments: {
-        currencies: any,
-        languages: any,
-    }) {
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
+    onLoad(attachments: {}) {
         this.messageLightbox =  new ProviderMessageLightbox();
     }
 
@@ -40,11 +33,6 @@ export class JSystemModule implements ModuleInterface, GameInterface {
     launch(options) {
         if (options.provider === this.key) {
             const lang = Router.getLanguage();
-            let langCode = "en";
-
-            if (typeof this.languages[lang] !== "undefined") {
-                langCode = this.languages[lang];
-            }
 
             if (options.maintenance === "true") {
                 this.messageLightbox.showMessage(
@@ -66,7 +54,7 @@ export class JSystemModule implements ModuleInterface, GameInterface {
                     product,
                     gameCode: options.code,
                     subprovider: options.subprovider || undefined,
-                    langCode,
+                    lang,
                     lobby: options.lobby,
                 },
             }).then((response) => {

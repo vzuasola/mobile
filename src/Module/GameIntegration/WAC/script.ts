@@ -1,5 +1,4 @@
 import * as xhr from "@core/assets/js/vendor/reqwest";
-import * as utility from "@core/assets/js/components/utility";
 import PopupWindow from "@app/assets/script/components/popup";
 
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
@@ -11,18 +10,11 @@ import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
 export class WACModule implements ModuleInterface, GameInterface {
     private key: string = "wac";
     private moduleName: string = "wac_integration";
-    private currencies: any;
-    private languages: any;
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
 
-    onLoad(attachments: {
-        currencies: any,
-        languages: any,
-    }) {
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
+    onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
     }
 
@@ -41,11 +33,6 @@ export class WACModule implements ModuleInterface, GameInterface {
     launch(options) {
         if (options.provider === this.key) {
             const lang = Router.getLanguage();
-            let langCode = "en";
-
-            if (typeof this.languages[lang] !== "undefined") {
-                langCode = this.languages[lang];
-            }
 
             if (options.maintenance === "true") {
                 this.messageLightbox.showMessage(
@@ -65,7 +52,7 @@ export class WACModule implements ModuleInterface, GameInterface {
                 method: "post",
                 data: {
                     product,
-                    langCode,
+                    lang,
                     gameCode: options.code,
                     subprovider: options.subprovider || undefined,
                     lobby: options.lobby,

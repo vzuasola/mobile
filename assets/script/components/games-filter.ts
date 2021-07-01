@@ -306,14 +306,16 @@ export class GamesFilter {
         let conditionCheck = Object.keys(filters).length;
 
         if (typeof game.filters !== "undefined") {
-            const gameFilters = JSON.parse(game.filters);
+            const gameFilters = game.filters;
             for (const filterKey in filters) {
-                if (filters.hasOwnProperty(filterKey) && gameFilters.hasOwnProperty(filterKey)) {
+                if (filters.hasOwnProperty(filterKey) ) {
                     const filter = filters[filterKey];
-                    const gameFilter = gameFilters[filterKey];
+                    const gameFilter = gameFilters;
 
                     for (const checkValue of filter) {
-                        if (gameFilter.indexOf(checkValue) !== -1) {
+                        const cleanValue = checkValue.replace (/(^")|("$)/g, "");
+                        if (gameFilter.indexOf(checkValue) !== -1
+                            || gameFilter.indexOf(cleanValue) !== -1) {
                             trueCtr++;
                             break;
                         }

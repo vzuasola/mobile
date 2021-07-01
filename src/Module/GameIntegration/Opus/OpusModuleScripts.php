@@ -13,32 +13,22 @@ class OpusModuleScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
-    private $config;
-
-    private $lang;
-
-    const KEY = 'opus';
-
     /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('player_session'),
-            $container->get('config_fetcher'),
-            $container->get('lang')
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang)
+    public function __construct($playerSession)
     {
         $this->playerSession = $playerSession;
-        $this->config = $config->withProduct('mobile-live-dealer');
-        $this->lang = $lang;
     }
 
     /**
@@ -47,13 +37,8 @@ class OpusModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $opusConfig =  $this->config->getGeneralConfigById('games_opus_provider');
-
             $data = [
-                'authenticated' => $this->playerSession->isLogin(),
-                'lang' => $this->lang,
-                'currencies' => explode(PHP_EOL, $opusConfig['currency']),
-                'languages' => Config::parse($opusConfig['languages'] ?? ''),
+                'authenticated' => $this->playerSession->isLogin()
             ];
         } catch (\Exception $e) {
             $data = [];
