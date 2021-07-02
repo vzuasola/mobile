@@ -71,7 +71,7 @@ class LoginComponentController
 
                 $data['success'] = $this->playerSession->login($username, $password, $options);
                 session_start();
-                session_regenerate_id(false);
+                session_regenerate_id(true);
                 $data['hash'] = md5($this->playerSession->getToken());
                 $data['token'] = $this->playerSession->getToken();
                 $data['matrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
@@ -122,6 +122,7 @@ class LoginComponentController
 
         try {
             $data['success'] = $this->playerSession->logout();
+            session_start();
             session_unset();
             session_destroy();
             session_write_close();
