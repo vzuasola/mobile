@@ -211,6 +211,7 @@ class RestController extends BaseController
         $data['homescreen_icon_games'] = $product['product-casino'] ?? "Casino";
         $data['homescreen_icon_live-dealer'] = $product['product-live-dealer'] ?? "Live Dealer";
         $data['homescreen_icon_arcade'] = $product['product-arcade'] ?? "Arcade";
+        $data['homescreen_icon_ptplus'] = $product['product-ptplus'] ?? "PT+";
 
         return $data;
     }
