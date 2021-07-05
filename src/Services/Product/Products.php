@@ -120,6 +120,12 @@ class Products
             'sodabt',
             'sodfa',
             'sda',
+            'ptplus',
+            'playtechplus',
+            'casinoplus',
+            'slotsplus',
+            'slots-tournament',
+            'casino-gamification'
         ],
     ];
 
