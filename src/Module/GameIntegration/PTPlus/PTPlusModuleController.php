@@ -60,6 +60,7 @@ class PTPlusModuleController
 
         if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
+            $requestData['lang'] = $this->languageCode($request);
 
             if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
                 $data = $this->getGameUrl($requestData);
