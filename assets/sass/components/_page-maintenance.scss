@@ -34,7 +34,8 @@
 }
 
 // mobile casino soda content background
-.mobile-soda-casino.page-maintenance {
+.mobile-soda-casino.page-maintenance,
+.mobile-ptplus.page-maintenance {
     background: $soda-dark-blue;
     color: #fec270;
 
@@ -42,7 +43,8 @@
         color: #fec270;
     }
 
-    .mobile-soda-casino-btn {
+    .mobile-soda-casino-btn,
+    .mobile-ptplus-btn {
         border-radius: 4rem;
         background: transparent;
         text-decoration: none;
@@ -50,7 +52,8 @@
         width: 46%;
     }
 
-    .mobile-soda-casino-btn.left {
+    .mobile-soda-casino-btn.left,
+    .mobile-ptplus-btn.left {
         border: 1px solid #ea5868;
         color: #ea5868;
         text-decoration: none;
@@ -58,7 +61,8 @@
         width: 46%;
     }
 
-    .mobile-soda-casino-btn.right {
+    .mobile-soda-casino-btn.right,
+    .mobile-ptplus-btn.right {
         border: 1px solid #fec270;
         color: #fec270;
     }

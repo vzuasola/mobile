@@ -1,6 +1,6 @@
 <section>
     <span class="mobile-menu-icon"></span>
-    {% if app.product_resolver.getProduct == "mobile-soda-casino" %}
+    {% if (app.product_resolver.getProduct == "mobile-soda-casino") or (app.product_resolver.getProduct == "mobile-ptplus") %}
         {% include '@app/web/images/svg/header/soda-burger-menu.svg' ignore missing %}
     {% else %}
         <svg class="mobile-menu-burger-icon" viewBox="0 90 24 15.197">
