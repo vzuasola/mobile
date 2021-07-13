@@ -1,6 +1,7 @@
 .mobile-casino,
 .mobile-casino-gold,
-.mobile-soda-casino {
+.mobile-soda-casino,
+.mobile-ptplus {
     .category-tab {
         position: -webkit-sticky;
         position: sticky;
@@ -180,7 +181,8 @@
 }
 
 // Soda Casino
-.mobile-soda-casino {
+.mobile-soda-casino,
+.mobile-ptplus {
     .category-tab {
         background: $soda-blue;
 

@@ -59,7 +59,8 @@
 }
 
 // SODA CASINO
-.header-mobile-soda-casino {
+.header-mobile-soda-casino,
+.header-mobile-ptplus {
     .login-trigger.btn-yellow {
         border: 0.1rem solid $soda-yellow;
         background-color: transparent;
@@ -83,7 +84,8 @@
     }
 }
 
-.mobile-soda-casino-modal {
+.mobile-soda-casino-modal,
+.mobile-ptplus-modal {
     .login-submit.btn,
     .btn-join.btn {
         background-color: transparent;
