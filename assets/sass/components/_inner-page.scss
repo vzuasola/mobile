@@ -77,7 +77,8 @@
     }
 }
 
-.mobile-soda-casino.maintenance {
+.mobile-soda-casino.maintenance,
+.mobile-ptplus.maintenance {
     background: $soda-dark-blue;
     min-height: 70vh;
     height: 100%;
@@ -86,7 +87,8 @@
 
 
 // SODA CASINO
-.mobile-soda-casino {
+.mobile-soda-casino,
+.mobile-ptplus {
     .unsupported-currency-image {
         height: 16rem;
         background: url($unsupported-currency-gold) no-repeat top center;
