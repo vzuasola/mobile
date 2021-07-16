@@ -47,7 +47,6 @@ class AllBetModuleController
         $this->allbet = $allbet;
         $this->config = $config->withProduct('mobile-live-dealer');
         $this->player = $player;
-        $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-live-dealer');
     }
 
@@ -60,16 +59,17 @@ class AllBetModuleController
         $data['currency'] = false;
 
         if ($this->checkCurrency($request)) {
-            $data = $this->getGameLobby($request, $response);
+            $requestData = $request->getParsedBody();
+            $requestData['langCode'] = $this->languageCode($request);
+            $data = $this->getGameLobby($requestData);
         }
 
         return $this->rest->output($response, $data);
     }
 
-    private function getGameLobby($request, $response)
+    private function getGameLobby($requestData)
     {
         $data['currency'] = true;
-        $requestData = $request->getParsedBody();
 
         try {
             $responseData = $this->allbet->getLobby('icore_ab', [
