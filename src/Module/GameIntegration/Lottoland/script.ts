@@ -57,6 +57,7 @@ export class LottolandModule implements ModuleInterface, GameInterface {
                     lang,
                     playMode: true,
                     lobby: options.lobby,
+                    isNativeApp: options["is-native"] || "",
                 },
             }).then((response) => {
                 if (response.gameurl) {
