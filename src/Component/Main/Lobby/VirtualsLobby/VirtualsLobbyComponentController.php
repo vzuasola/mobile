@@ -128,9 +128,14 @@ class VirtualsLobbyComponentController
                 $game["field_game_thumbnail_$landscapesize"][0]['url'],
                 ['product' => self::PRODUCT]
             );
+            $definition['is_native_app'] = !empty($game['field_native_app'][0]['value']) ?: '';
 
             if ($game['field_select_game_tile_action'][0]['value'] === 'redirection') {
                 $definition['game_redirection'] = $game['field_redirection_inner_page'][0]['value'] ?? '';
+                if ($definition['is_native_app'] && $definition['game_redirection']) {
+                    $definition['game_redirection'] .= strpos($definition['game_redirection'], '?') !== false
+                        ? '&is_native_app=1' : '?is_native_app=1';
+                }
             } elseif ($game['field_select_game_tile_action'][0]['value'] === 'game_code') {
                 $definition['game_code'] = $game['field_game_code'][0]['value'] ?? '';
             }
