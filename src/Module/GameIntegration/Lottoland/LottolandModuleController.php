@@ -73,7 +73,6 @@ class LottolandModuleController
     {
         $data['currency'] = true;
         $requestData = $request->getParsedBody();
-
         try {
             $responseData = $this->lottland->getLobby('icore_lottoland', [
                 'options' => [
@@ -87,6 +86,10 @@ class LottolandModuleController
                 $parsedUrl['scheme'] = $uri->getScheme();
                 $parsedUrl['host'] = $uri->getHost() . '/' . $this->lang .
                 '/keno/launch/lottoland';
+                if (!empty($requestData['isNativeApp']) && $requestData['isNativeApp'] === "true") {
+                    $parsedUrl['query'] = empty($parsedUrl['query'])
+                        ? 'is_native_app=1' : $parsedUrl['query'] . '&' .'is_native_app=1';
+                }
 
                 $newUrl = http_build_url($parsedUrl);
                 $data['gameurl'] = $newUrl;
