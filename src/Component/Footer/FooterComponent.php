@@ -40,7 +40,8 @@ class FooterComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($menus, $views, $product, $configs) {
+    public function __construct($menus, $views, $product, $configs)
+    {
         $this->menus = $menus;
         $this->views = $views;
         $this->product = $product;
@@ -118,8 +119,8 @@ class FooterComponent implements ComponentWidgetInterface
                 $footerTabs[$key]['weight'] = $tab['weight'][0]['value'];
             }
         }
-
-        $counts = array_map( function( $v ) {
+        $counts = array_map( function($v)
+        {
             return $v[ 'weight' ];
         }, $footerTabs );
 
