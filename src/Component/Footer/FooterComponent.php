@@ -119,10 +119,9 @@ class FooterComponent implements ComponentWidgetInterface
                 $footerTabs[$key]['weight'] = $tab['weight'][0]['value'];
             }
         }
-        $counts = array_map( function($v)
-        {
-            return $v[ 'weight' ];
-        }, $footerTabs );
+        $counts = array_map(function ($v) {
+            return $v['weight'];
+        }, $footerTabs);
 
         array_multisort($counts, SORT_ASC, SORT_NUMERIC, $footerTabs);
 
