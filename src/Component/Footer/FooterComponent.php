@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\Footer;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
+use App\MobileEntry\Services\Product\Products;
 
 class FooterComponent implements ComponentWidgetInterface
 {
@@ -15,11 +16,13 @@ class FooterComponent implements ComponentWidgetInterface
      * @var App\Fetcher\Drupal\ViewsFetcher
      */
     private $views;
+    private $viewsFloating;
 
     /**
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
     private $configs;
+    private $product;
 
     /**
      *
@@ -29,6 +32,7 @@ class FooterComponent implements ComponentWidgetInterface
         return new static(
             $container->get('menu_fetcher'),
             $container->get('views_fetcher'),
+            $container->get('product_resolver'),
             $container->get('config_fetcher')
         );
     }
@@ -36,14 +40,13 @@ class FooterComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct(
-        $menus,
-        $views,
-        $configs
-    ) {
+    public function __construct($menus, $views, $product, $configs)
+    {
         $this->menus = $menus;
         $this->views = $views;
+        $this->product = $product;
         $this->configs = $configs;
+        $this->viewsFloating = $views->withProduct($product->getProduct());
     }
 
     /**
@@ -78,6 +81,17 @@ class FooterComponent implements ComponentWidgetInterface
         }
 
         try {
+            $floatingFooter = [];
+            $floatingFooter = $this->viewsFloating->getViewById('floating_footer');
+            if (!empty($floatingFooter)) {
+                $floatingFooter = $this->dataConvert($floatingFooter);
+            }
+            $data['floatingFooter'] = $floatingFooter;
+        } catch (\Exception $e) {
+            $data['floatingFooter'] = [];
+        }
+
+        try {
             $data['entrypage_config'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
         } catch (\Exception $e) {
             $data['entrypage_config'] = [];
@@ -86,5 +100,31 @@ class FooterComponent implements ComponentWidgetInterface
         $data['copyright'] = 'Copyright';
 
         return $data;
+    }
+
+    /**
+     * Data convert and sort
+     *
+     * @return array
+     */
+    public function dataConvert($floatingFooter)
+    {
+        $footerTabs = [];
+        foreach ($floatingFooter as $key => $tab) {
+            if ($tab['field_status_tab'][0]['value']) {
+                $footerTabs[$key]['label_tab'] = $tab['field_label_tab'][0]['value'];
+                $footerTabs[$key]['icon_tab'] = $tab['field_icon_tab'][0]['url'];
+                $footerTabs[$key]['active_icon_tab'] = $tab['field_active_icon_tab'][0]['url'];
+                $footerTabs[$key]['status_tab'] = $tab['field_status_tab'][0]['value'];
+                $footerTabs[$key]['weight'] = $tab['weight'][0]['value'];
+            }
+        }
+        $counts = array_map(function ($v) {
+            return $v['weight'];
+        }, $footerTabs);
+
+        array_multisort($counts, SORT_ASC, SORT_NUMERIC, $footerTabs);
+
+        return $footerTabs;
     }
 }
