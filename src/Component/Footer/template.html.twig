@@ -1,6 +1,10 @@
-<footer class="footer footer-{{ app.product_resolver.getProduct }}">
+<footer class="footer footer-{{ app.product_resolver.getProduct }} floating-{{ app.product_resolver.getProduct }}">
     {{ include('@component/Footer/templates/sponsor.html.twig') }}
-    <div class="footer-mobile-menu" id="footer-menu"></div>
+    {% if app.product_resolver.getProduct == "mobile-ptplus" and floatingFooter %}
+        {{ include('@component/Footer/templates/footer-menu.html.twig') }}
+    {% else %}
+        <div class="footer-mobile-menu" id="footer-menu"></div>
+    {% endif %}
     {{ include('@component/Footer/templates/copyright.html.twig') }}
 </footer>
 <span class="hidden">
