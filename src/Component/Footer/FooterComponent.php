@@ -22,6 +22,9 @@ class FooterComponent implements ComponentWidgetInterface
      * @var App\Fetcher\Drupal\ConfigFetcher
      */
     private $configs;
+
+    private $asset;
+
     private $product;
 
     /**
@@ -33,20 +36,22 @@ class FooterComponent implements ComponentWidgetInterface
             $container->get('menu_fetcher'),
             $container->get('views_fetcher'),
             $container->get('product_resolver'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('asset')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $views, $product, $configs)
+    public function __construct($menus, $views, $product, $configs, $asset)
     {
         $this->menus = $menus;
         $this->views = $views;
         $this->product = $product;
         $this->configs = $configs;
         $this->viewsFloating = $views->withProduct($product->getProduct());
+        $this->asset = $asset;
     }
 
     /**
@@ -113,8 +118,10 @@ class FooterComponent implements ComponentWidgetInterface
         foreach ($floatingFooter as $key => $tab) {
             if ($tab['field_status_tab'][0]['value']) {
                 $footerTabs[$key]['label_tab'] = $tab['field_label_tab'][0]['value'];
-                $footerTabs[$key]['icon_tab'] = $tab['field_icon_tab'][0]['url'];
-                $footerTabs[$key]['active_icon_tab'] = $tab['field_active_icon_tab'][0]['url'];
+                $footerTabs[$key]['icon_tab'] = $this->asset->generateAssetUri($tab['field_icon_tab'][0]['url']);
+                $footerTabs[$key]['active_icon_tab'] = $this->asset->generateAssetUri(
+                    $tab['field_active_icon_tab'][0]['url']
+                );
                 $footerTabs[$key]['status_tab'] = $tab['field_status_tab'][0]['value'];
                 $footerTabs[$key]['weight'] = $tab['weight'][0]['value'];
             }
