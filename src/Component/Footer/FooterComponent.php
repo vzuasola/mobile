@@ -119,7 +119,9 @@ class FooterComponent implements ComponentWidgetInterface
             if ($tab['field_status_tab'][0]['value']) {
                 $footerTabs[$key]['label_tab'] = $tab['field_label_tab'][0]['value'];
                 $footerTabs[$key]['icon_tab'] = $this->asset->generateAssetUri($tab['field_icon_tab'][0]['url']);
-                $footerTabs[$key]['active_icon_tab'] = $this->asset->generateAssetUri($tab['field_active_icon_tab'][0]['url']);
+                $footerTabs[$key]['active_icon_tab'] = $this->asset->generateAssetUri(
+                    $tab['field_active_icon_tab'][0]['url']
+                );
                 $footerTabs[$key]['status_tab'] = $tab['field_status_tab'][0]['value'];
                 $footerTabs[$key]['weight'] = $tab['weight'][0]['value'];
             }
