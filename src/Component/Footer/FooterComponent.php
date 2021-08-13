@@ -118,9 +118,13 @@ class FooterComponent implements ComponentWidgetInterface
         foreach ($floatingFooter as $key => $tab) {
             if ($tab['field_status_tab'][0]['value']) {
                 $footerTabs[$key]['label_tab'] = $tab['field_label_tab'][0]['value'];
-                $footerTabs[$key]['icon_tab'] = $this->asset->generateAssetUri($tab['field_icon_tab'][0]['url']);
+                $footerTabs[$key]['icon_tab'] = $this->asset->generateAssetUri(
+                    $tab['field_icon_tab'][0]['url'],
+                    ['product' => $this->product->getProduct()]
+                );
                 $footerTabs[$key]['active_icon_tab'] = $this->asset->generateAssetUri(
-                    $tab['field_active_icon_tab'][0]['url']
+                    $tab['field_active_icon_tab'][0]['url'],
+                    ['product' => $this->product->getProduct()]
                 );
                 $footerTabs[$key]['status_tab'] = $tab['field_status_tab'][0]['value'];
                 $footerTabs[$key]['weight'] = $tab['weight'][0]['value'];
