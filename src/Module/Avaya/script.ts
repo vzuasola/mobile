@@ -145,7 +145,7 @@ export class AvayaModule implements ModuleInterface {
         if (product === "mobile-entrypage") {
             return url;
         } else if (product === "mobile-soda-casino") {
-            return utility.addQueryParam(url, "product", "games");
+            return utility.addQueryParam(url, "product", "ptplus");
         } else {
             return utility.addQueryParam(url, "product", product.replace("mobile-", ""));
         }
