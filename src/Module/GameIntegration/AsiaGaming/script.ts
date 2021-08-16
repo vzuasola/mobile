@@ -1,31 +1,20 @@
 import * as xhr from "@core/assets/js/vendor/reqwest";
-import * as utility from "@core/assets/js/components/utility";
 import PopupWindow from "@core/assets/js/components/utils/popup";
 
-import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import { ComponentManager, ModuleInterface } from "@plugins/ComponentWidget/asset/component";
+import { Router } from "@plugins/ComponentWidget/asset/router";
 
-import {GameInterface} from "./../scripts/game.interface";
+import { GameInterface } from "./../scripts/game.interface";
 import { ProviderMessageLightbox } from "../scripts/provider-message-lightbox";
 
 export class AsiaGamingModule implements ModuleInterface, GameInterface {
     private key: string = "asia_gaming";
     private moduleName: string = "asiagaming_integration";
-    private currencies: any;
-    private languages: any;
-    private customLobby: string;
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
 
-    onLoad(attachments: {
-        currencies: any,
-        languages: any,
-        customLobby: string,
-    }) {
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
-        this.customLobby = attachments.customLobby;
+    onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
     }
 
@@ -44,11 +33,6 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
     launch(options) {
         if (options.provider === this.key) {
             const lang = Router.getLanguage();
-            let langCode = "en";
-            if (typeof this.languages[lang] !== "undefined") {
-                langCode = this.languages[lang];
-            }
-
             if (options.maintenance === "true") {
                 this.messageLightbox.showMessage(
                     this.moduleName,
@@ -69,14 +53,14 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
                     product,
                     gameCode: options.code,
                     subprovider: options.subprovider || undefined,
-                    langCode,
+                    lang,
                 },
             }).then((response) => {
                 if (response.gameurl) {
-                    if (this.customLobby) {
+                    if (response.customLobby) {
                         response.gameurl = response.gameurl
                             .replace(/(lobbyUrl=).*?(&)/,
-                                "$1" + this.customLobby + "$2");
+                                "$1" + response.customLobby + "$2");
                     }
                     if (options.loader === "true") {
                         window.location.href = response.gameurl;

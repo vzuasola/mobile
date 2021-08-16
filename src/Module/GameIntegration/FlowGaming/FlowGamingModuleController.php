@@ -5,6 +5,9 @@ namespace App\MobileEntry\Module\GameIntegration\FlowGaming;
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Fetcher\Drupal\ViewsFetcher;
 
+/**
+ * @deprecated
+ */
 class FlowGamingModuleController
 {
     use ProviderTrait;
@@ -65,7 +68,7 @@ class FlowGamingModuleController
             try {
                 $responseData = $this->flowGaming->getGameUrlById('icore_flg', $params[0], [
                     'options' => [
-                        'languageCode' => $requestData['langCode'],
+                        'languageCode' => $this->languageCode($request),
                         'platformCode' => $platformCode
                     ]
                 ]);

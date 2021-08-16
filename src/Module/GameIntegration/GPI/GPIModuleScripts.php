@@ -13,32 +13,22 @@ class GPIModuleScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
-    private $config;
-
-    private $lang;
-
-    const KEY = 'gpi';
-
     /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('player_session'),
-            $container->get('config_fetcher'),
-            $container->get('lang')
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang)
+    public function __construct($playerSession)
     {
         $this->playerSession = $playerSession;
-        $this->config = $config->withProduct('mobile-live-dealer');
-        $this->lang = $lang;
     }
 
     /**
@@ -46,17 +36,6 @@ class GPIModuleScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        try {
-            $gpiConfig =  $this->config->getConfig('webcomposer_config.games_gpi_provider');
-
-            $data = [
-                'currencies' => explode(PHP_EOL, $gpiConfig['gpi_live_dealer_currency']),
-                'languages' => Config::parse($gpiConfig['gpi_live_dealer_language_mapping'] ?? ''),
-            ];
-        } catch (\Exception $e) {
-            $data = [];
-        }
-
-        return $data;
+        return [];
     }
 }

@@ -1,0 +1,331 @@
+declare var navigator: any;
+
+import * as utility from "@core/assets/js/components/utility";
+import * as xhr from "@core/assets/js/vendor/reqwest";
+import PopupWindow from "@app/assets/script/components/popup";
+import {LazyLoader} from "./scripts/lazy-loader";
+import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
+
+/**
+ *
+ */
+export class VirtualsLobbyComponent implements ComponentInterface {
+    private attachments: any;
+    private configs: any[];
+    private element: HTMLElement;
+    private games: any;
+    private gameLink: string;
+    private maintenance: any[];
+    private isLogin: boolean;
+    private lazyLoader: LazyLoader;
+    private product: any[];
+    private response: any;
+    private windowObject: any;
+    private mIndex: number = 0;
+    private events: {};
+    private productMenu: string = "product-virtuals";
+    private providers: any;
+    private isLobbyLoaded: boolean = false;
+
+    constructor() {
+        this.lazyLoader = new LazyLoader();
+    }
+
+    onLoad(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        product: any[],
+        configs: any[],
+    }) {
+
+        this.attachments = attachments;
+        this.element = element;
+        this.isLogin = attachments.authenticated;
+        this.product = attachments.product;
+        this.configs = attachments.configs;
+        this.games = undefined;
+        this.events = {};
+        this.virtualsXhrRequest("maintenance", (maintenanceResponse) => {
+            this.maintenance = maintenanceResponse.maintenance;
+            ComponentManager.broadcast("game.maintenance", {
+                games: maintenanceResponse.game_providers,
+            });
+            this.virtualsXhrRequest("lobby", (response) => {
+                this.games = response;
+                this.pushMaintenance();
+                this.highlightMenu();
+                this.setLobby();
+            });
+        });
+        this.listenToRedirectionGameClick();
+        this.listenClickGameTile();
+        this.listenToLaunchGameLoader();
+        this.highlightQuickNavMenu();
+        this.listenOnChangeOrientation();
+    }
+
+    onReload(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        product: any[],
+        configs: any[],
+    }) {
+
+        if (typeof this.events === "undefined") {
+            this.events = {};
+        }
+        if (!this.element) {
+            this.listenClickGameTile();
+        }
+        this.attachments = attachments;
+        this.element = element;
+        this.isLogin = attachments.authenticated;
+        this.product = attachments.product;
+        this.configs = attachments.configs;
+        this.games = undefined;
+        this.virtualsXhrRequest("maintenance", (maintenanceResponse) => {
+            this.maintenance = maintenanceResponse.maintenance;
+            ComponentManager.broadcast("game.maintenance", {
+                games: maintenanceResponse.game_providers,
+            });
+            this.virtualsXhrRequest("lobby", (response) => {
+                this.games = response;
+                this.pushMaintenance();
+                this.highlightMenu();
+                this.setLobby();
+            });
+        });
+        this.listenToRedirectionGameClick();
+        this.listenToLaunchGameLoader();
+        this.highlightQuickNavMenu();
+        this.listenOnChangeOrientation();
+    }
+
+    private virtualsXhrRequest(method: string, callback) {
+        xhr({
+            url: Router.generateRoute("virtuals_lobby", method),
+            type: "json",
+        }).then((response) => {
+            callback(response);
+        }).fail((error, message) => {
+            console.log(error);
+        });
+    }
+
+    /**
+     * Populate lobby with the response from cms
+     */
+    private setLobby() {
+        this.populateGames();
+        this.isLobbyLoaded = true;
+    }
+
+    /**
+     * Populate game thumbnails
+     */
+    private populateGames() {
+        /* tslint:disable:no-string-literal */
+        const enableLazyLoad = false;
+        /* tslint:disable:no-string-literal */
+        this.lazyLoader.init(
+            this.games,
+            this.isLogin,
+            this.element.querySelector("#game-container"),
+            enableLazyLoad,
+        );
+    }
+
+    /**
+     * Event listener for game item click
+     */
+    private listenClickGameTile() {
+        ComponentManager.subscribe("click", (event, src, data) => {
+            const el = utility.hasClass(src, "game-listing-item", true);
+
+            if (el && !el.getAttribute("data-game-redirection")) {
+                this.showLogin(el);
+            }
+        });
+    }
+
+    /**
+     * Event listener for click of redirection inner page
+     */
+    private listenToRedirectionGameClick() {
+        ComponentManager.subscribe("game.redirect", (event, src, data) => {
+            if (ComponentManager.getAttribute("product") === "mobile-virtuals") {
+                let url = "";
+                // Pop up loader with all data
+                const prop = {
+                    width: 360,
+                    height: 720,
+                    scrollbars: 1,
+                    scrollable: 1,
+                    resizable: 1,
+                };
+                url = data.options.redirection;
+                const source = utility.getParameterByName("source");
+
+                if (data.options.target === "popup" || data.options.target === "_blank") {
+                    this.windowObject = PopupWindow(url, "gameWindow", prop);
+                }
+
+                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
+                    return;
+                }
+
+                // handle redirects if we are on a PWA standalone
+                if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                    source === "pwa" || data.options.target === "_self" || data.options.target === "_top" &&
+                    (data.options.target !== "popup" || data.options.target !== "_blank")
+                ) {
+                    window.location.href = url;
+                    return;
+                }
+            }
+        });
+    }
+
+    /**
+     * Event listener for launching pop up loader
+     */
+    private listenToLaunchGameLoader() {
+        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
+            if (ComponentManager.getAttribute("product") === "mobile-virtuals") {
+                // Pop up loader with all data
+                const prop = {
+                    width: 360,
+                    height: 720,
+                    scrollbars: 1,
+                    scrollable: 1,
+                    resizable: 1,
+                };
+
+                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
+                const source = utility.getParameterByName("source");
+
+                for (const key in data.options) {
+                    if (data.options.hasOwnProperty(key)) {
+                        const param = data.options[key];
+                        url = utility.addQueryParam(url, key, param);
+                    }
+                }
+
+                url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+                url = utility.addQueryParam(url, "loaderFlag", "true");
+
+                if (data.options.target === "popup" || data.options.target === "_blank") {
+                    this.windowObject = PopupWindow(url, "gameWindow", prop);
+                }
+
+                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
+                    return;
+                }
+
+                // handle redirects if we are on a PWA standalone
+                if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                    source === "pwa" || data.options.target === "_self" || data.options.target === "_top" &&
+                    (data.options.target !== "popup" || data.options.target !== "_blank")
+                ) {
+                    window.location.href = url;
+                    return;
+                }
+            }
+        });
+    }
+
+    /**
+     * Event listener for window resize
+     */
+    private listenOnChangeOrientation() {
+        if (this.checkEvent("changeorientation")) {
+            utility.listen(window, "resize", (event, src: any) => {
+                if (ComponentManager.getAttribute("product") === "mobile-virtuals") {
+                    if (ComponentManager.getAttribute("product") === "mobile-virtuals" && this.isLobbyLoaded) {
+                        this.setLobby();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * Helper function for updating pop up window URL
+     */
+    private updatePopupWindow(url) {
+        try {
+            if (this.windowObject.location.href !== "about:blank" &&
+                url === this.gameLink &&
+                !this.windowObject.closed
+            ) {
+                this.windowObject.focus();
+            } else {
+                this.gameLink = url;
+                this.windowObject.location.href = url;
+            }
+        } catch (e) {
+            if (url !== this.gameLink) {
+                this.gameLink = url;
+                this.windowObject.location.href = url;
+            }
+
+            if (this.windowObject) {
+                this.windowObject.focus();
+            }
+        }
+    }
+
+    /**
+     * Triggers login lightbox
+     */
+    private showLogin(el) {
+        if (el && !this.isLogin) {
+            ComponentManager.broadcast("header.login", {
+                src: el,
+                productVia: this.product[0].login_via,
+                regVia: this.product[0].reg_via,
+            });
+        }
+    }
+
+    private pushMaintenance() {
+        this.mIndex = 0;
+        if (this.maintenance.length > 0) {
+            while (this.mIndex < this.maintenance.length ) {
+                this.games[this.mIndex].game_maintenance = this.maintenance[this.mIndex].game_maintenance;
+                this.games[this.mIndex].game_maintenance_text = this.maintenance[this.mIndex].game_maintenance_text;
+                this.mIndex++;
+            }
+        }
+    }
+
+    /**
+     *  Helper function used to highlight product on Left Nav Menu
+     */
+    private highlightMenu() {
+        ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
+    }
+
+    /**
+     *  Helper function used to highlight active links
+     *  Broadcasts which page should be highlighted on Quick Nav Menu
+     */
+    private highlightQuickNavMenu() {
+        if (this.checkEvent("tab_nav.ready")) {
+            ComponentManager.subscribe("tab_nav.ready", (event, target, data) => {
+                ComponentManager.broadcast("tab_nav.highlight", { menu: "home" });
+            });
+        }
+    }
+
+    /**
+     *  Helper function used to prevent duplication of listeners
+     */
+    private checkEvent(key) {
+        if (this.events.hasOwnProperty(key)) {
+            return false;
+        }
+
+        this.events[key] = key;
+        return true;
+    }
+}

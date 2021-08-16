@@ -96,6 +96,10 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\ArcadeLobby\ArcadeLobbyComponent
     parent: lobby
 
+  virtuals_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\VirtualsLobby\VirtualsLobbyComponent
+    parent: lobby
+
   casino_lobby:
     class: App\MobileEntry\Component\Main\Lobby\CasinoLobby\CasinoLobbyComponent
     parent: lobby
@@ -252,9 +256,6 @@ modules:
   skywind_integration:
     class: App\MobileEntry\Module\GameIntegration\Skywind\SkywindModule
 
-  flowgaming_integration:
-    class: App\MobileEntry\Module\GameIntegration\FlowGaming\FlowGamingModule
-
   onegame_integration:
     class: App\MobileEntry\Module\GameIntegration\OneGame\OneGameModule
 
@@ -326,6 +327,12 @@ modules:
 
   opus_integration:
     class: App\MobileEntry\Module\GameIntegration\Opus\OpusModule
+
+  fghub_gaming_integration:
+    class: App\MobileEntry\Module\GameIntegration\FGHubGaming\FGHubGamingModule
+
+  ptplus_integration:
+    class: App\MobileEntry\Module\GameIntegration\PTPlus\PTPlusModule
 
   login_redirect:
     class: App\MobileEntry\Module\LoginRedirect\LoginRedirectModule

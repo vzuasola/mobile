@@ -71,6 +71,10 @@ class BalanceDefinition
         13 => [
             self::WALLET_TYPES['realmoney'],
             self::WALLET_TYPES['nonwithdrawable']
+        ],
+        15 => [
+            self::WALLET_TYPES['realmoney'],
+            self::WALLET_TYPES['bonus']
         ]
     ];
 }

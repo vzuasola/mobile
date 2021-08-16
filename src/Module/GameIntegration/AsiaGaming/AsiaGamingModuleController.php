@@ -4,6 +4,7 @@ namespace App\MobileEntry\Module\GameIntegration\AsiaGaming;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Fetcher\Drupal\ViewsFetcher;
+use App\Plugins\Token\Parser;
 
 class AsiaGamingModuleController
 {
@@ -25,6 +26,11 @@ class AsiaGamingModuleController
     private $viewsFetcher;
 
     /**
+     * @var Parser
+     */
+    private $parser;
+
+    /**
      *
      */
     public static function create($container)
@@ -34,20 +40,22 @@ class AsiaGamingModuleController
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('token_parser')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $asiaGaming, $config, $player, $viewsFetcher)
+    public function __construct($rest, $asiaGaming, $config, $player, $viewsFetcher, Parser $parser)
     {
         $this->rest = $rest;
         $this->asiaGaming = $asiaGaming;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
+        $this->parser = $parser;
     }
 
     /**
@@ -57,9 +65,9 @@ class AsiaGamingModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
+        $requestData = $request->getParsedBody();
 
         if ($this->checkCurrency($request)) {
-            $requestData = $request->getParsedBody();
             if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
                 $data = $this->getGameUrl($request, $response);
             }
@@ -67,6 +75,10 @@ class AsiaGamingModuleController
             if (!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') {
                 $data = $this->getGameLobby($request, $response);
             }
+        }
+
+        if ($data && $data['gameurl']) {
+            $data['customLobby'] = $this->getCustomLobby($requestData);
         }
 
         return $this->rest->output($response, $data);
@@ -80,7 +92,7 @@ class AsiaGamingModuleController
         try {
             $responseData = $this->asiaGaming->getLobby('icore_ag', [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                 ]
             ]);
             if ($responseData) {
@@ -102,7 +114,7 @@ class AsiaGamingModuleController
         try {
             $responseData = $this->asiaGaming->getGameUrlById('icore_ag', $params[0], [
                 'options' => [
-                    'languageCode' => $requestData['langCode'],
+                    'languageCode' => $this->languageCode($request),
                     'providerProduct' => $params[1] ?? null,
                 ]
             ]);
@@ -114,5 +126,26 @@ class AsiaGamingModuleController
         }
 
         return $data;
+    }
+
+    private function getCustomLobby($params)
+    {
+        $customLobby = null ;
+        try {
+            $config = $this->config;
+            if (isset($params['product'])) {
+                $config = $this->config->withProduct($params['product']);
+            }
+
+            $config = $config->getConfig('webcomposer_config.icore_games_integration');
+            $customLobby = $this->parser->processTokens(
+                ($config[self::KEY . '_custom_lobbyDomain_enabled'] ?? false)
+                    ? ($config[self::KEY . '_custom_lobbyDomain'] ?? '')
+                    : ''
+            );
+        } catch (\Exception $e) {
+            // nothing to do
+        }
+        return $customLobby;
     }
 }
