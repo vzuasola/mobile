@@ -142,10 +142,13 @@ export class AvayaModule implements ModuleInterface {
 
     private attachProduct(url) {
         const product = ComponentManager.getAttribute("product");
-        if (product !== "mobile-entrypage") {
+        if (product === "mobile-entrypage") {
+            return url;
+        } else if (product === "mobile-soda-casino") {
+            return utility.addQueryParam(url, "product", "ptplus");
+        } else {
             return utility.addQueryParam(url, "product", product.replace("mobile-", ""));
         }
-        return url;
     }
 
     /**
