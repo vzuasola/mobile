@@ -138,6 +138,7 @@ class LotteryLobbyComponentController
                 ? $game['field_use_game_loader'][0]['value'] : "false";
             $definition['game_maintenance_text'] = null;
             $definition['game_maintenance'] = false;
+            $definition['is_native_app'] = !empty($game['field_native_app'][0]['value']) ?: '';
 
             if ($this->checkIfMaintenance($game)) {
                 $definition['game_maintenance'] = true;

@@ -10,7 +10,7 @@ class GPIThaiModuleController
 {
     use ProviderTrait;
 
-    const KEY = 'gpi_thai';
+    const KEY = 'gpi_thai_lottey';
 
     private $rest;
 
