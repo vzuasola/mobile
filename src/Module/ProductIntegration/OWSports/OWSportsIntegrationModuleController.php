@@ -272,7 +272,7 @@ class OWSportsIntegrationModuleController
                     'connect_timeout'  => 5.0,
                 ]);
 
-                $response = $client->request('POST', $this->parameters['sunplus.auth.server'], [
+                $response = $client->request('POST', $this->parameters['sunplus.login.url'], [
                     'form_params' => [
                         'vendor_id' => $this->parameters['sunplus.vendor.id'],
                         'vendor_member_id' => $this->playerSession->getUsername()
@@ -280,7 +280,6 @@ class OWSportsIntegrationModuleController
                 ]);
 
                 $body = $response->getBody();
-
                 $result = json_decode($body, true);
                 if (isset($result['Data'])) {
                     return $result['Data'];
