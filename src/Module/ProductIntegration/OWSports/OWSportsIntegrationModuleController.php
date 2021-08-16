@@ -218,7 +218,7 @@ class OWSportsIntegrationModuleController
                 }
 
                 if (isset($queryStr[0]) && isset($queryStr[1]) && $queryStr[0] == 'token') {
-                    $queryStr[1] = $this->getLoginToken();
+                    $encodedUrlParams[$queryStr[0]] = $this->getLoginToken();
                 }
             }
 
