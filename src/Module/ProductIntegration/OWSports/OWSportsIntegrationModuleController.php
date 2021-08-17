@@ -273,11 +273,11 @@ class OWSportsIntegrationModuleController
                 ]);
                 $response = $client->request('POST', $this->parameters['sunplus.server'] .
                     $this->parameters['sunplus.login.url'], [
-                    'form_params' => [
-                        'vendor_id' => $this->parameters['sunplus.vendor.id'],
-                        'vendor_member_id' => $this->playerSession->getUsername()
-                    ]
-                ]);
+                        'form_params' => [
+                            'vendor_id' => $this->parameters['sunplus.vendor.id'],
+                            'vendor_member_id' => $this->playerSession->getUsername()
+                        ]
+                    ]);
 
                 $body = $response->getBody();
                 $result = json_decode($body, true);
