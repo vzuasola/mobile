@@ -271,8 +271,8 @@ class OWSportsIntegrationModuleController
                     'timeout'  => 10.0,
                     'connect_timeout'  => 5.0,
                 ]);
-
-                $response = $client->request('POST', $this->parameters['sunplus.login.url'], [
+                $response = $client->request('POST', $this->parameters['sunplus.server'] .
+                    $this->parameters['sunplus.login.url'], [
                     'form_params' => [
                         'vendor_id' => $this->parameters['sunplus.vendor.id'],
                         'vendor_member_id' => $this->playerSession->getUsername()
