@@ -20,19 +20,21 @@ class OWSportsIntegrationModuleController
             $container->get('player_session'),
             $container->get('config_fetcher'),
             $container->get('rest'),
-            $container->get('token_parser')
+            $container->get('token_parser'),
+            $container->get('parameters')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $rest, $parser)
+    public function __construct($playerSession, $config, $rest, $parser, $parameters)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
         $this->rest = $rest;
         $this->parser = $parser;
+        $this->parameters = $parameters;
     }
 
     /**
@@ -214,6 +216,10 @@ class OWSportsIntegrationModuleController
                     $encodedUrlParams[$queryStr[0]] =
                         $this->parser->processTokens($queryStr[1]);
                 }
+
+                if (isset($queryStr[0]) && isset($queryStr[1]) && $queryStr[0] == 'token') {
+                    $encodedUrlParams[$queryStr[0]] = $this->getLoginToken();
+                }
             }
 
             $queryStr = http_build_query($encodedUrlParams, '&');
@@ -252,5 +258,37 @@ class OWSportsIntegrationModuleController
         }
 
         return $mobileAgents;
+    }
+
+    private function getLoginToken()
+    {
+        if ($this->playerSession->isLogin()) {
+            try {
+                $client = new \GuzzleHttp\Client([
+                    'headers' => [
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                    ],
+                    'timeout'  => 10.0,
+                    'connect_timeout'  => 5.0,
+                ]);
+                $response = $client->request('POST', $this->parameters['sunplus.server'] .
+                    $this->parameters['sunplus.login.url'], [
+                        'form_params' => [
+                            'vendor_id' => $this->parameters['sunplus.vendor.id'],
+                            'vendor_member_id' => $this->playerSession->getUsername()
+                        ]
+                    ]);
+
+                $body = $response->getBody();
+                $result = json_decode($body, true);
+                if (isset($result['Data'])) {
+                    return $result['Data'];
+                }
+
+                return $result['error_code'];
+            } catch (\Exception $e) {
+                // do nothing
+            }
+        }
     }
 }
