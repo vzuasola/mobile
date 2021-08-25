@@ -69,6 +69,5 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
             'tabs' => $tabs,
             'configs' => $ptplusGeneralConfig ?? [],
         ];
-
     }
 }

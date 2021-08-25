@@ -108,7 +108,7 @@ class PTPlusLobbyComponentController
 
             $data = $body['body'];
         }
-        
+
         if (!$isPreview) {
             $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
@@ -207,7 +207,6 @@ class PTPlusLobbyComponentController
         } catch (\Exception $e) {
             $data = [];
         }
-
         return $this->rest->output($response, $data);
     }
 
@@ -228,8 +227,7 @@ class PTPlusLobbyComponentController
         $data['categories_list'] = $categories;
         $data['games'] = $this->getGamesAndCategory(
             $allGames
-        );
-        
+        );      
         return $data;
     }
 
@@ -366,16 +364,13 @@ class PTPlusLobbyComponentController
                         $game['field_thumbnail_image'][0]['url'],
                         ['product' => self::PRODUCT]
                     )
-            ];
-            
+            ];            
             $categoryList = [];
             foreach ($game['field_games_list_category'] as $category) {
                 $categoryList[$category['field_games_alias'][0]['value']] =
                     $category['field_games_alias'][0]['value'];
             }
-            
-            $processGame['categories'] = $categoryList;
-   
+            $processGame['categories'] = $categoryList;  
             return $processGame;
         } catch (\Exception $e) {
             return [];

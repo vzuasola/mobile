@@ -4,26 +4,20 @@ import * as Promise from "promise-polyfill";
 
 import * as utility from "@core/assets/js/components/utility";
 import Swipe from "@app/assets/script/components/custom-touch/swipe";
-import * as Handlebars from "handlebars/runtime";
 
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as categoriesTemplate from "./handlebars/categories.handlebars";
 import * as gameTemplate from "./handlebars/games.handlebars";
 import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
-import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
-import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
 
 import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
-import {Loader} from "@app/assets/script/components/loader";
 // import {Marker} from "@app/assets/script/components/marker";
-import EqualHeight from "@app/assets/script/components/equal-height";
 
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
-import {ProviderDrawer} from "./scripts/provider-drawer";
 import PopupWindow from "@app/assets/script/components/popup";
 
 /**
