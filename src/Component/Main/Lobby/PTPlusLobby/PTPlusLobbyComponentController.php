@@ -364,7 +364,7 @@ class PTPlusLobbyComponentController
                         $game['field_thumbnail_image'][0]['url'],
                         ['product' => self::PRODUCT]
                     )
-            ];         
+            ];
             $categoryList = [];
             foreach ($game['field_games_list_category'] as $category) {
                 $categoryList[$category['field_games_alias'][0]['value']] =
