@@ -155,4 +155,17 @@ class Products
         'sports-df' => 'mobile-sports-df',
         'ptplus' => 'mobile-ptplus',
     ];
+
+    const PRODUCTS_WITH_CMS = [
+        'mobile-entrypage',
+        'mobile-casino',
+        'mobile-casino-gold',
+        'mobile-live-dealer',
+        'mobile-lottery',
+        'mobile-exchange',
+        'mobile-arcade',
+        'mobile-virtuals',
+        'mobile-soda-casino',
+        'mobile-games'
+    ];
 }
