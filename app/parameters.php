@@ -19,6 +19,5 @@ $parameters['appsvc.origin.iuat'] = 'http://cms-appsvc.games.iuat';
 
 // Sunplus Service
 $parameters['sunplus.vendor.id'] = 'cl62AmDS5oU';
-$parameters['sunplus.server'] = '%env(SUNPLUS_AUTH_SERVER)%';
-$parameters['env(SUNPLUS_AUTH_SERVER)'] = 'http://tsa.dafabet.com';
-$parameters['sunplus.login.url'] = '/api/Login';
+$parameters['sunplus.server'] = 'http://tsa.dafabet.com';
+$parameters['sunplus.login.url'] = $parameters['sunplus.server'] . '/api/Login';

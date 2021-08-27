@@ -2,8 +2,6 @@
 
 namespace App\MobileEntry\Component\Language;
 
-use App\MobileEntry\Services\Product\Products;
-
 class LanguageComponentController
 {
     /**
@@ -79,9 +77,7 @@ class LanguageComponentController
         $data['mobile_language_select'] = $footerConfigs['mobile_language_select'] ?? 'Select Language';
 
         try {
-            $product = $request->getParam('product');
-            $product = (($product && in_array($product, Products::PRODUCTS_WITH_CMS)))
-                ? $product : 'mobile-entrypage';
+            $product = $request->getParam('product') ?? 'mobile-entrypage';
             if ($product === 'mobile-sports-df' || $product === 'mobile-sports') {
                 $product = 'mobile-entrypage';
             }

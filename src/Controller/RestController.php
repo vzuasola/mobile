@@ -44,15 +44,6 @@ class RestController extends BaseController
         return $this->rest->output($response, $result);
     }
 
-    public function getOWSportsParams($request, $response)
-    {
-        $data['sunplus.vendor.id'] = $this->get('parameters')['sunplus.vendor.id'];
-        $data['sunplus.server'] = $this->get('parameters')['sunplus.server'];
-        $data['sunplus.login.url'] = $this->get('parameters')['sunplus.login.url'];
-
-        return $this->get('rest')->output($response, $data);
-    }
-
     /**
      * Get login text, labels and configurations
      */
