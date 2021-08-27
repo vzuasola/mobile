@@ -5,11 +5,18 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class PTPlusLobbyComponent implements ComponentWidgetInterface
 {
-    private $viewFetcher;
+    private $view;
+
+    private $configs;
+
+    private $product;
 
     public static function create($container)
     {
         return new static(
+            $container->get('player_session'),
+            $container->get('config_fetcher'),
+            $container->get('product_resolver'),
             $container->get('views_fetcher')
         );
     }
@@ -17,9 +24,12 @@ class PTPlusLobbyComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($view)
+    public function __construct($playerSession, $configs, $product, $views)
     {
-        $this->viewFetcher = $view->withProduct('ptplus');
+        $this->playerSession = $playerSession;
+        $this->product = $product;
+        $this->configs = $configs;
+        $this->views = $views;
     }
 
     /**
