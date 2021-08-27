@@ -15,18 +15,6 @@
     }
 }
 
-.mobile-ptplus {
-    .footer-mobile-item {
-        a.active {
-            background-color: #8c2618;
-
-            .floating-footer-span {
-                color: #ffe000;
-            }
-        }
-    }
-}
-
 @import "../components/footer-sponsor";
 @import "../components/footer-mobile-menu";
 @import "../components/footer-copyright";

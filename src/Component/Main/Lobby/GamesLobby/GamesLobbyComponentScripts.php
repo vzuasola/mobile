@@ -4,22 +4,18 @@ namespace App\MobileEntry\Component\Main\Lobby\GamesLobby;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 use App\MobileEntry\Services\Product\Products;
-use App\MobileEntry\Component\Main\Lobby\GamesListVersionTrait;
 
 /**
  *
  */
 class GamesLobbyComponentScripts implements ComponentAttachmentInterface
 {
-    use GamesListVersionTrait;
-
     const PRODUCT = 'games';
     private $configs;
     private $playerSession;
     private $product;
     private $views;
     private $request;
-    private $gamesListVersion;
 
     /**
      *
@@ -45,7 +41,6 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
         $this->configs = $configs->withProduct($product->getProduct());
         $this->views = $views->withProduct($product->getProduct());
         $this->request = $request;
-        $this->gamesListVersion = $this->getGamesListVersion('mobile-games');
     }
 
     /**
@@ -56,8 +51,7 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
         try {
             $config = $this->configs->getConfig('games_search.search_configuration');
             $gtsGeneralConfig = $this->configs->getConfig('gts.gts_configuration');
-            $gamesListV = $this->gamesListVersion ? 'games_list_v2' : 'games_list';
-            $pager = $this->views->getViewById($gamesListV, ['pager' => 1]);
+            $pager = $this->views->getViewById('games_list', ['pager' => 1]);
         } catch (\Exception $e) {
             $config = [];
         }

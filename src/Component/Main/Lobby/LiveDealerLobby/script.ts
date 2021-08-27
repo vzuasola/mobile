@@ -304,6 +304,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         const activeTabClass = this.getActiveTab();
         const contTab = this.element.querySelector(".game-lobby-container");
         const activeTab = this.element.querySelector(".tab-" + activeTabClass);
+
         if (activeTab) {
             utility.addClass(activeTab, "active");
         }
@@ -368,6 +369,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
                 const contTab = this.element.querySelector(".game-container");
                 const tabEl = this.element.querySelector("#providers-filter-transfer-container");
                 const prevActiveTab = tabEl.querySelector(".pft-item a.active");
+
                 if (prevActiveTab.getAttribute("data-alias") !== el.querySelector("a").getAttribute("data-alias")) {
                     utility.removeClass(contTab, prevActiveTab.getAttribute("data-alias"));
                 }

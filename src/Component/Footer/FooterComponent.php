@@ -128,7 +128,6 @@ class FooterComponent implements ComponentWidgetInterface
                 );
                 $footerTabs[$key]['status_tab'] = $tab['field_status_tab'][0]['value'];
                 $footerTabs[$key]['weight'] = $tab['weight'][0]['value'];
-                $footerTabs[$key]['page_url'] = $tab['field_page_url'][0]['value'] ?? "";
             }
         }
         $counts = array_map(function ($v) {
