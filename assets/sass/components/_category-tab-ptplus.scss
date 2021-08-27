@@ -1,5 +1,19 @@
 .mobile-ptplus {
-    background-color: #d9d9d9;
+    .game-container {
+        background-color: #d9d9d9;
+    }
+
+    .category-page {
+        background-color: #d9d9d9;
+        display: none;
+        height: calc(100% - 100px);
+        width: 100%;
+        position: absolute;
+        top: 50px;
+        margin: 0;
+        padding: 0;
+        z-index: 99;
+    }
 
     #lobby-tab-filter {
         .pft-list-menu {
@@ -59,19 +73,5 @@
                 }
             }
         }
-    }
-
-    .category-page {
-        display: none;
-        height: 90vh;
-        height: calc(100% - 100px);
-        position: absolute;
-        top: 50px;
-        z-index: 99;
-        overflow: hidden;
-    }
-
-    .home-page {
-        background-color: #d9d9d9;
     }
 }

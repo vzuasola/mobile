@@ -3,7 +3,7 @@ declare var navigator: any;
 import * as Promise from "promise-polyfill";
 
 import * as utility from "@core/assets/js/components/utility";
-import Swipe from "@app/assets/script/components/custom-touch/swipe";
+// import Swipe from "@app/assets/script/components/custom-touch/swipe";
 
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
@@ -66,7 +66,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.load = true;
         this.listenChangeCategory();
-        this.listenHashChange();
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.generateLobby(() => {
@@ -99,7 +98,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }) {
         if (!this.element) {
             this.listenChangeCategory();
-            this.listenHashChange();
             this.listenClickGameTile();
             this.listenGameLaunch();
             // this.listenToCategory();
@@ -482,51 +480,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         });
     }
 
-    /**
-     * Event listener for category click
-     */
-    private listenHashChange() {
-        utility.listen(window, "hashchange", (event, src: any) => {
-            if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
-                // this.currentPage = 0;
-                // const first = this.response.categories[0].field_games_alias;
-                // const key = this.getActiveCategory(this.response.games, first);
-                // let sidebar = false;
-                // if (utility.getHash(window.location.href) !== key &&
-                //     key !== first
-                // ) {
-                //     window.location.hash = key;
-                // }
-
-                // const categoriesEl = document.querySelector("#game-categories");
-                // // const activeLink = categoriesEl.querySelector(".category-tab .active a");
-
-                // // Add active to categories
-                // const actives = categoriesEl.querySelectorAll(".category-" + key);
-
-                // if (actives.length === 1) {
-                //     src = categoriesEl.querySelector(".game-category-more");
-                //     utility.addClass(src, "active");
-                //     sidebar = true;
-                // }
-
-                // for (const id in actives) {
-                //     if (actives.hasOwnProperty(id)) {
-                //         const active = actives[id];
-                //         utility.addClass(active, "active");
-                //         if (!sidebar) {
-                //             utility.addClass(active.parentElement, "active");
-                //         }
-                //     }
-                // }
-
-                // this.setGames(this.response.games[key], key);
-                // ComponentManager.broadcast("category.change");
-
-            }
-        });
-    }
-
     // private onLoadActiveMore() {
     //     const categoriesEl = document.querySelector("#game-categories");
     //     const activeLink = categoriesEl.querySelector(".category-tab .active a");
@@ -689,10 +642,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }
                 this.makeActive(el.querySelector("a"));
                 if (dataAlias === "game-categories") {
-                    document.querySelector(".home-page").setAttribute("style", "display: none");
+                    document.querySelector(".game-container").setAttribute("style", "display: none");
                     document.querySelector(".category-page").setAttribute("style", "display: block");
                 } else {
-                    document.querySelector(".home-page").setAttribute("style", "display: block");
+                    document.querySelector(".game-container").setAttribute("style", "display: block");
                     document.querySelector(".category-page").setAttribute("style", "display: none");
                 }
             }
@@ -717,16 +670,16 @@ export class PTPlusLobbyComponent implements ComponentInterface {
 
     private displayCategoryPageContent() {
         const hash = utility.getHash(window.location.href);
-        const homePageContent = document.querySelector(".home-page");
+        const homePageContent = document.querySelector(".game-container");
         const categoryPageContent = document.querySelector(".category-page");
         const activeTab = document.querySelector(".tab-" + hash);
         if (hash === "game-categories") {
             this.makeActive(activeTab);
             document.querySelector(".category-page").setAttribute("style", "display: block");
-            document.querySelector(".home-page").setAttribute("style", "display: none");
+            document.querySelector(".game-container").setAttribute("style", "display: none");
         } else {
             this.makeActive(activeTab);
-            document.querySelector(".home-page").setAttribute("style", "display: block");
+            document.querySelector(".game-container").setAttribute("style", "display: block");
             document.querySelector(".category-page").setAttribute("style", "display: none");
         }
     }
