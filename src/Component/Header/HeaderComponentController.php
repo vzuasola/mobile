@@ -63,7 +63,7 @@ class HeaderComponentController
 
         $lang = $params['language'] ?? 'en';
         $data['logo_title'] = $headerConfigsByProduct['logo_title'] ?? 'Dafabet';
-        $data['logo_link'] = ($currentProduct == 'mobile-soda-casino') ? '/{lang}'.$productRoute : '/{lang}';
+        $data['logo_link'] = ($currentProduct == 'mobile-ptplus') ? '/{lang}'.$productRoute : '/{lang}';
         $data['product'] =  $currentProduct;
         $data['language'] = $lang;
 

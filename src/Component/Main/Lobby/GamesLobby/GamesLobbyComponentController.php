@@ -392,7 +392,7 @@ class GamesLobbyComponentController
             $processGame['target'] = $game['field_games_target'] ?? "popup";
             $processGame['preview_mode'] = $game['field_preview_mode'] ?? 0;
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'])
-                && $game['field_disable_game_loader']) ? "false" : "true";
+                && $game['field_disable_game_loader'] === 'True') ? "false" : "true";
 
             $categoryList = [];
 
