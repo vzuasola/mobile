@@ -47,7 +47,7 @@ class PTPlusLobbyComponent implements ComponentWidgetInterface
     {
         $data = null;
         try {
-            $data['ptplus'] = $this->viewFetcher->getViewById('ptplus');
+            $data['ptplus'] = $this->views->getViewById('ptplus');
         } catch (\Exception $e) {
             $data = [];
         }
