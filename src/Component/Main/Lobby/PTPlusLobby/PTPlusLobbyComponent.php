@@ -5,11 +5,7 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class PTPlusLobbyComponent implements ComponentWidgetInterface
 {
-    private $views;
-
-    private $configs;
-
-    private $product;
+    private $viewFetcher;
 
     public static function create($container)
     {
@@ -23,10 +19,7 @@ class PTPlusLobbyComponent implements ComponentWidgetInterface
      */
     public function __construct($view)
     {
-        $this->playerSession = $playerSession;
-        $this->product = $product;
-        $this->configs = $configs;
-        $this->views = $views->withProduct($product->getProduct());
+        $this->viewFetcher = $view->withProduct('ptplus');
     }
 
     /**
@@ -44,7 +37,7 @@ class PTPlusLobbyComponent implements ComponentWidgetInterface
     {
         $data = null;
         try {
-            $data['ptplus'] = $this->views->getViewById('ptplus');
+            $data['ptplus'] = $this->viewFetcher->getViewById('ptplus');
         } catch (\Exception $e) {
             $data = [];
         }
