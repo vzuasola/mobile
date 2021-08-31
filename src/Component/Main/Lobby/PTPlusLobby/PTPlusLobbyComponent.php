@@ -5,7 +5,7 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class PTPlusLobbyComponent implements ComponentWidgetInterface
 {
-    private $view;
+    private $views;
 
     private $configs;
 
@@ -29,7 +29,7 @@ class PTPlusLobbyComponent implements ComponentWidgetInterface
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->configs = $configs;
-        $this->views = $views;
+        $this->views = $views->withProduct($product->getProduct());
     }
 
     /**
