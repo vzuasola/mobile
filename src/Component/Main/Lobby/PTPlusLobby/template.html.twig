@@ -1,3 +1,7 @@
-<div class="sample">
-    This is my Lobby with name {{ ptplus[0].title[0].value }}
+<div id="game-categories" class="category-page"></div>
+<div class="game-container clearfix">
+    <div id="lobby-tab-filter" class="pft-list clearfix"></div>
+    <div id="game-container" class="game-tiles clear">
+        {% include '@component/Main/Lobby/LiveDealerLobby/templates/loader.html.twig' %}
+    </div>
 </div>
