@@ -3,7 +3,7 @@
     <ul class="menu">
         {% for tabs in floatingFooter %}
             <li class="footer-mobile-item">
-                <a href="#" target="" class="">
+                <a href="#{{ tabs.page_url }}" target="" class="tab-{{ tabs.page_url }}" data-alias="{{ tabs.page_url }}">
                     <img class="inactive" src="{{ tabs.icon_tab }}" alt="">
                     <img class="active" src="{{ tabs.active_icon_tab }}" alt="" style="display:none">
                     <span class="floating-footer-span">{{ tabs.label_tab }}</span>
