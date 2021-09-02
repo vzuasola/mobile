@@ -392,7 +392,8 @@ class PTPlusLobbyComponentController
                 $category['published'] = $isPublished;
                 if ($category['field_games_category_logo']) {
                     $category['field_games_category_logo'] = $this->asset->generateAssetUri(
-                        $category['field_games_category_logo']
+                        $category['field_games_category_logo'],
+                        ['product' => self::PRODUCT]
                     );
                 }
                 $categoryList[] = $category;
