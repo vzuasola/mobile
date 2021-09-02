@@ -33,18 +33,10 @@ export class AvayaModule implements ModuleInterface {
     onLoad(attachments: {}) {
         // Add listen to everything
         ComponentManager.subscribe("click", (event, src, data) => {
-            console.log("test");
-            /*this.baseUrl = attachments.baseUrl;
-            this.options = {
-            apiUrl: attachments.urlPost,
-            validity: attachments.validity,
-            nonce: attachments.jwtKey || false,
-            timeout: attachments.postTimeout || 5000,*/
             xhr({
                 url: Router.generateModuleRoute("avaya", "avayaconfig"),
                 type: "json",
             }).then((response) => {
-                console.log(response);
                 this.baseUrl = response.baseUrl;
                 this.apiUrl = response.urlPost;
                 this.validity = response.validity;
@@ -56,9 +48,9 @@ export class AvayaModule implements ModuleInterface {
 
             this.options = {
                 apiUrl: this.apiUrl,
-                validity: 1800,
-                nonce: "secret-jwt-key" || false,
-                timeout: 5000,
+                validity: this.validity,
+                nonce: this.jwtKey || false,
+                timeout: this.postTimeout,
                 onSuccess: (token) => {
                     // Add the token to the base url
                     this.updatePopupWindow(utility.addQueryParam(this.baseUrl, "s", token));
