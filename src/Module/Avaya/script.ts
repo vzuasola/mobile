@@ -23,36 +23,54 @@ export class AvayaModule implements ModuleInterface {
     private options: any = {};
     private prevUrl: string;
     private baseUrl: string;
+    private apiUrl: string;
+    private validity: string;
+    private jwtKey: string;
+    private postTimeout: string;
     private urlQryStr: false;
     private dataSrc: false;
 
-    onLoad(attachments: {
-        baseUrl: string,
-        urlPost: string,
-        postTimeout: number,
-        jwtKey: string,
-        validity: number,
-    }) {
-        this.baseUrl = attachments.baseUrl;
-        this.options = {
+    onLoad(attachments: {}) {
+        // Add listen to everything
+        ComponentManager.subscribe("click", (event, src, data) => {
+            console.log("test");
+            /*this.baseUrl = attachments.baseUrl;
+            this.options = {
             apiUrl: attachments.urlPost,
             validity: attachments.validity,
             nonce: attachments.jwtKey || false,
-            timeout: attachments.postTimeout || 5000,
-            onSuccess: (token) => {
-                // Add the token to the base url
-                this.updatePopupWindow(utility.addQueryParam(this.baseUrl, "s", token));
-            },
-            onFail: (error) => {
-                // Use the default avaya base url
-                this.updatePopupWindow(this.baseUrl);
-            },
-        };
+            timeout: attachments.postTimeout || 5000,*/
+            xhr({
+                url: Router.generateModuleRoute("avaya", "avayaconfig"),
+                type: "json",
+            }).then((response) => {
+                console.log(response);
+                this.baseUrl = response.baseUrl;
+                this.apiUrl = response.urlPost;
+                this.validity = response.validity;
+                this.jwtKey = response.jwtKey;
+                this.postTimeout = response.postTimeout;
+            }).fail((err, msg) => {
+                // do nothing
+            });
 
-        // Instantiate the avaya library
-        this.avayaClass = new Avaya(this.options);
-        // Add listen to everything
-        ComponentManager.subscribe("click", (event, src, data) => {
+            this.options = {
+                apiUrl: this.apiUrl,
+                validity: 1800,
+                nonce: "secret-jwt-key" || false,
+                timeout: 5000,
+                onSuccess: (token) => {
+                    // Add the token to the base url
+                    this.updatePopupWindow(utility.addQueryParam(this.baseUrl, "s", token));
+                },
+                onFail: (error) => {
+                    // Use the default avaya base url
+                    this.updatePopupWindow(this.baseUrl);
+                },
+            };
+
+            // Instantiate the avaya library
+            this.avayaClass = new Avaya(this.options);
             this.getAvayaToken(event, src, data);
         });
 
