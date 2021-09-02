@@ -65,15 +65,19 @@
                     position: relative;
                     float: left;
                     min-height: 10rem;
+                    text-align: center;
+                    padding: .5rem;
                     
                     p {
                         color: #373737;
                         text-align: center;
+                        margin: 0;
+                        padding-top: 0.5rem;
                     }
 
                     img {
-                        height: 4rem;
-                        width: 4rem;
+                        max-height: 6rem;
+                        min-width: 6rem;
                     }
                 }
             }
