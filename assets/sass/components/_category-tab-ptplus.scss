@@ -1,6 +1,11 @@
 .mobile-ptplus {
     .game-container {
         background-color: #d9d9d9;
+
+        .game-listing {
+            width: 33.33333333%;
+            padding: 0 .2% 1%;
+        }
     }
 
     .category-page {
@@ -60,15 +65,19 @@
                     position: relative;
                     float: left;
                     min-height: 10rem;
+                    text-align: center;
+                    padding: .5rem;
                     
                     p {
                         color: #373737;
                         text-align: center;
+                        margin: 0;
+                        padding-top: 0.5rem;
                     }
 
                     img {
-                        height: 4rem;
-                        width: 4rem;
+                        max-height: 6rem;
+                        min-width: 6rem;
                     }
                 }
             }
