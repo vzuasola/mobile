@@ -173,8 +173,12 @@ class HeaderComponent implements ComponentWidgetInterface
         }
 
         try {
+            $product = $this->product->getProduct();
+            if ($product === 'mobile-sports' || $product === 'mobile-sports-df') {
+                $product = 'mobile-entrypage';
+            }
             $headerConfigsByProduct = $this->configs
-                ->withProduct($this->product->getProduct())
+                ->withProduct($product)
                 ->getConfig('webcomposer_config.header_configuration');
         } catch (\Exception $e) {
             $headerConfigsByProduct = [];
