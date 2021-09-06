@@ -82,6 +82,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenToLaunchGameLoader();
         this.componentFinish();
         this.listenClickTab();
+        this.activeLinks();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -124,6 +125,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.currentPage = 0;
         this.load = true;
         this.componentFinish();
+        this.activeLinks();
     }
 
     private componentFinish() {
@@ -681,6 +683,34 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             this.makeActive(activeTab);
             document.querySelector(".game-container").setAttribute("style", "display: block");
             document.querySelector(".category-page").setAttribute("style", "display: none");
+        }
+    }
+
+    /**
+     * Active Link for ptplus main page
+     */
+    private activeLinks() {
+        let productLinks;
+        let locationPathname;
+        let numberSign;
+        let questionMark;
+        locationPathname = window.location.pathname;
+        numberSign = window.location.href.split("/")[4].split("#")[1];
+        questionMark = window.location.href.split("/")[4].split("?")[1];
+        if ((typeof numberSign === "undefined" || !numberSign)
+            && (typeof questionMark === "undefined" || !questionMark)) {
+            productLinks = document.querySelectorAll(".floating-footer > ul > li > a");
+            for (const row of productLinks) {
+                let productName;
+                let productUrl;
+                productName = row.dataset.name;
+                productUrl = row.hash;
+                if (productName === "home") {
+                    utility.addClass(row, "active");
+                    row.querySelector("img.inactive").setAttribute("style", "display: none");
+                    row.querySelector("img.active").setAttribute("style", "display: block");
+                }
+            }
         }
     }
 

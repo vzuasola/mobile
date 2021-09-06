@@ -1,12 +1,13 @@
-<footer class="footer footer-{{ app.product_resolver.getProduct }} floating-{{ app.product_resolver.getProduct }}">
-    {{ include('@component/Footer/templates/sponsor.html.twig') }}
-    {% if app.product_resolver.getProduct == "mobile-ptplus" and floatingFooter %}
-        {{ include('@component/Footer/templates/footer-menu.html.twig') }}
-    {% else %}
+<footer class="footer footer-{{ app.product_resolver.getProduct }}">
+        {{ include('@component/Footer/templates/sponsor.html.twig') }}
         <div class="footer-mobile-menu" id="footer-menu"></div>
-    {% endif %}
-    {{ include('@component/Footer/templates/copyright.html.twig') }}
+        {{ include('@component/Footer/templates/copyright.html.twig') }}
 </footer>
+<div class="floating-{{ app.product_resolver.getProduct }}">
+        {% if app.product_resolver.getProduct == "mobile-ptplus" and floatingFooter %}
+                {{ include('@component/Footer/templates/footer-menu.html.twig') }}
+        {% endif %}
+</div>
 <span class="hidden">
     {% include '@app/web/images/svg/footer/footer-icons.svg' ignore missing %}
     {% include '@app/web/images/svg/quicklinks/quicklinks-icons.svg' ignore missing %}
