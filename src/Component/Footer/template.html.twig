@@ -2,6 +2,7 @@
         {{ include('@component/Footer/templates/sponsor.html.twig') }}
         <div class="footer-mobile-menu" id="footer-menu"></div>
         {{ include('@component/Footer/templates/copyright.html.twig') }}
+        <div class="floating-section"></div>
 </footer>
 <div class="floating-{{ app.product_resolver.getProduct }}">
         {% if app.product_resolver.getProduct == "mobile-ptplus" and floatingFooter %}
