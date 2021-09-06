@@ -117,6 +117,7 @@ class FooterComponent implements ComponentWidgetInterface
         $footerTabs = [];
         foreach ($floatingFooter as $key => $tab) {
             if ($tab['field_status_tab'][0]['value']) {
+                $footerTabs[$key]['name_tab'] = strtolower($tab['name'][0]['value']);
                 $footerTabs[$key]['label_tab'] = $tab['field_label_tab'][0]['value'];
                 $footerTabs[$key]['icon_tab'] = $this->asset->generateAssetUri(
                     $tab['field_icon_tab'][0]['url'],
