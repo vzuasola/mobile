@@ -70,12 +70,12 @@
     }
 }
 
-.footer-mobile-ptplus {
-    margin-bottom: 55px;
-}
+    .footer .floating-section {
+        height: 55px;
+        visibility: hidden;
+    }
 
 .floating-mobile-ptplus, .floating-ptplus {
-    margin-bottom: 70px;
 
     .floating-footer {
         position: fixed;
