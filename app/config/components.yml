@@ -295,9 +295,6 @@ modules:
   gpi_sode_integration:
     class: App\MobileEntry\Module\GameIntegration\GPISode\GPISodeModule
 
-  exchange_launcher_integration:
-    class: App\MobileEntry\Module\GameIntegration\ExchangeLauncher\ExchangeLauncherModule
-
   tgp_integration:
     class: App\MobileEntry\Module\GameIntegration\TGP\TGPModule
 
@@ -348,9 +345,6 @@ modules:
 
   lottery_integration:
     class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
-
-  exchange_integration:
-    class: App\MobileEntry\Module\ProductIntegration\Exchange\ExchangeIntegrationModule
 
   soda_casino_integration:
     class: App\MobileEntry\Module\ProductIntegration\SodaCasino\SodaCasinoIntegrationModule
