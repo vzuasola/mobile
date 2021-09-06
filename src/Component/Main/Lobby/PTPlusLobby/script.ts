@@ -3,7 +3,6 @@ declare var navigator: any;
 import * as Promise from "promise-polyfill";
 
 import * as utility from "@core/assets/js/components/utility";
-// import Swipe from "@app/assets/script/components/custom-touch/swipe";
 
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
@@ -14,8 +13,6 @@ import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
 import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
-
-// import {Marker} from "@app/assets/script/components/marker";
 
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import PopupWindow from "@app/assets/script/components/popup";
@@ -65,21 +62,16 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.tabs = attachments.tabs;
         this.pager = 0;
         this.load = true;
-        this.listenChangeCategory();
         this.listenClickGameTile();
         this.listenGameLaunch();
+        this.listenFavoriteClick();
         this.generateLobby(() => {
-            this.highlightMenu();
             this.lobby();
         });
-        this.moveCategory();
-        // this.listenToCategory();
-        // this.listenToSwipe();
-        // this.initMarker();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        this.listenToLaunchGameLoader();
+        // this.listenToLaunchGameLoader();
         this.componentFinish();
         this.listenClickTab();
     }
@@ -97,11 +89,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         infinite_scroll: boolean,
     }) {
         if (!this.element) {
-            this.listenChangeCategory();
             this.listenClickGameTile();
             this.listenGameLaunch();
-            // this.listenToCategory();
-            this.listenToLaunchGameLoader();
+            this.listenFavoriteClick();
+            // this.listenToLaunchGameLoader();
             this.listenClickTab();
         }
         this.response = null;
@@ -113,12 +104,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.load = true;
         this.generateLobby(() => {
-            this.highlightMenu();
             this.lobby();
         });
-        this.moveCategory();
-        // this.listenToSwipe();
-        // this.initMarker();
 
         this.pager = 0;
         this.currentPage = 0;
@@ -132,17 +119,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             method: "parseLink",
             selector: "[href*=ticket\\.token]",
         });
-    }
-
-    private highlightMenu() {
-        ComponentManager.broadcast("menu.highlight", { menu: this.productMenu });
-    }
-
-    private moveCategory() {
-        const container = document.querySelector("#categories-container");
-        const categoriesEl = document.querySelector("#game-categories");
-
-        container.appendChild(categoriesEl);
     }
 
     /**
@@ -277,14 +253,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     * List of favorites games, used for toggle of favorites
     * list status.
     */
-    private getFavoritesList(favorites) {
-        const favoritesList = {};
-        for (const id of favorites) {
-            favoritesList[id.substr(3)] = "active";
-        }
+    // private getFavoritesList(favorites) {
+    //     const favoritesList = {};
+    //     for (const id of favorites) {
+    //         favoritesList[id.substr(3)] = "active";
+    //     }
 
-        return favoritesList;
-    }
+    //     return favoritesList;
+    // }
 
     /**
      * Request games lobby to games lobby component controller lobby method
@@ -316,11 +292,11 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         const newResponse = Object.assign({}, mergeResponse);
                         newResponse.games = this.getCategoryGames(newResponse);
                         newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
-                        if (pageResponse.hasOwnProperty("fav")) {
-                            const key = "fav";
-                            const favoritesList = pageResponse[key];
-                            newResponse.favorite_list = this.getFavoritesList(favoritesList);
-                        }
+                        // if (pageResponse.hasOwnProperty("fav")) {
+                        //     const key = "fav";
+                        //     const favoritesList = pageResponse[key];
+                        //     newResponse.favorite_list = this.getFavoritesList(favoritesList);
+                        // }
                         this.response = newResponse;
                         if (callback) {
                             callback();
@@ -405,7 +381,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             scroll: false,
         });
 
-        // this.onLoadActiveMore();
     }
 
     /**
@@ -461,35 +436,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     /**
-     * Event listener for category click
-     */
-    private listenChangeCategory() {
-        ComponentManager.subscribe("click", (event: Event, src) => {
-            const first = this.response.categories[0].field_games_alias;
-            const key = this.getActiveCategory(this.response.games, first);
-            const categoriesEl = document.querySelector("#game-categories");
-
-            if (utility.hasClass(src, "game-category-item", true) &&
-                !utility.hasClass(src, "game-category-more", true) ||
-                utility.hasClass(src, "category-provider-menu", true)
-            ) {
-                this.currentPage = 0;
-                window.location.hash = "";
-                ComponentManager.broadcast("category.change");
-            }
-        });
-    }
-
-    // private onLoadActiveMore() {
-    //     const categoriesEl = document.querySelector("#game-categories");
-    //     const activeLink = categoriesEl.querySelector(".category-tab .active a");
-    //     if (!utility.hasClass(activeLink, "category-tab")) {
-    //         const src = categoriesEl.querySelector(".game-category-more");
-    //         utility.addClass(src, "active");
-    //     }
-    // }
-
-    /**
      * Event listener for game item click
      */
     private listenClickGameTile() {
@@ -531,11 +477,11 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         });
     }
 
-    private isSeen(el) {
-        if (el) {
-            return el.getBoundingClientRect().bottom <= window.innerHeight;
-        }
-    }
+    // private isSeen(el) {
+    //     if (el) {
+    //         return el.getBoundingClientRect().bottom <= window.innerHeight;
+    //     }
+    // }
 
     private getPagedContent(data) {
         const temp = data.slice(0);
@@ -592,40 +538,40 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     /**
      * Event listener for launching pop up loader
      */
-    private listenToLaunchGameLoader() {
-        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
-                // Pop up loader with all data
-                const prop = {
-                    width: 360,
-                    height: 720,
-                    scrollbars: 1,
-                    scrollable: 1,
-                    resizable: 1,
-                };
+    // private listenToLaunchGameLoader() {
+    //     ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
+    //         if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
+    //             // Pop up loader with all data
+    //             const prop = {
+    //                 width: 360,
+    //                 height: 720,
+    //                 scrollbars: 1,
+    //                 scrollable: 1,
+    //                 resizable: 1,
+    //             };
 
-                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-                const source = utility.getParameterByName("source");
+    //             let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
+    //             const source = utility.getParameterByName("source");
 
-                for (const key in data.options) {
-                    if (data.options.hasOwnProperty(key)) {
-                        const param = data.options[key];
-                        url = utility.addQueryParam(url, key, param);
-                    }
-                }
+    //             for (const key in data.options) {
+    //                 if (data.options.hasOwnProperty(key)) {
+    //                     const param = data.options[key];
+    //                     url = utility.addQueryParam(url, key, param);
+    //                 }
+    //             }
 
-                url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
-                url = utility.addQueryParam(url, "loaderFlag", "true");
-                if (data.options.target === "popup" || data.options.target === "_blank") {
-                    this.windowObject = PopupWindow(url, "gameWindow", prop);
-                }
+    //             url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+    //             url = utility.addQueryParam(url, "loaderFlag", "true");
+    //             if (data.options.target === "popup" || data.options.target === "_blank") {
+    //                 this.windowObject = PopupWindow(url, "gameWindow", prop);
+    //             }
 
-                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
-                    return;
-                }
-            }
-        });
-    }
+    //             if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
+    //                 return;
+    //             }
+    //         }
+    //     });
+    // }
 
     /**
      * Event listener for floating footer item click
@@ -635,7 +581,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             const el = utility.hasClass(src, "footer-mobile-item", true);
             if (el) {
                 const dataAlias = el.querySelector("a").getAttribute("data-alias");
-                const activeTab = document.querySelector(".tab-" + dataAlias);
+                // const activeTab = document.querySelector(".tab-" + dataAlias);
                 const allTabs = el.parentElement.querySelectorAll("a");
                 for (const allTab of allTabs) {
                     this.makeInactive(allTab);
@@ -670,15 +616,12 @@ export class PTPlusLobbyComponent implements ComponentInterface {
 
     private displayCategoryPageContent() {
         const hash = utility.getHash(window.location.href);
-        const homePageContent = document.querySelector(".game-container");
-        const categoryPageContent = document.querySelector(".category-page");
         const activeTab = document.querySelector(".tab-" + hash);
+        this.makeActive(activeTab);
         if (hash === "game-categories") {
-            this.makeActive(activeTab);
             document.querySelector(".category-page").setAttribute("style", "display: block");
             document.querySelector(".game-container").setAttribute("style", "display: none");
         } else {
-            this.makeActive(activeTab);
             document.querySelector(".game-container").setAttribute("style", "display: block");
             document.querySelector(".category-page").setAttribute("style", "display: none");
         }
@@ -699,5 +642,17 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         if (tabsEl) {
             tabsEl.innerHTML = template;
         }
+    }
+
+    /**
+     * Event listener for favorites click
+     */
+     private listenFavoriteClick() {
+        ComponentManager.subscribe("click", (event, src) => {
+            const el = utility.hasClass(src, "game-favorite", true);
+            if (el && this.attachments.authenticated) {
+                utility.toggleClass(el, "active");
+            }
+        });
     }
 }
