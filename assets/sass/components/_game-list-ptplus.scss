@@ -108,6 +108,13 @@
                     right: 1.5%;
                     bottom: 3.5%;
                 }
+
+                .game-ribbon {
+                    max-width: 90%;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
             }
         }
     }
