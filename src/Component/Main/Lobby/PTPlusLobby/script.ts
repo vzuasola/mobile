@@ -113,6 +113,44 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.activeLinks();
     }
 
+    /**
+     * Active Link for ptplus main page
+     */
+    private activeLinks() {
+        let productLinks: any = [];
+        let locationPathname;
+        let numberSign;
+        let questionMark;
+        locationPathname = window.location.pathname;
+        numberSign = window.location.href.split("/")[4].split("#")[1];
+        questionMark = window.location.href.split("/")[4].split("?")[1];
+
+        if ((typeof numberSign === "undefined" || !numberSign)
+            && (typeof questionMark === "undefined" || !questionMark)) {
+
+            productLinks = document.querySelectorAll(".floating-mobile-ptplus .floating-footer > ul > li > a");
+
+            for (const row of productLinks) {
+                let productName;
+                let productUrl;
+                productName = row.dataset.name;
+                productUrl = row.hash;
+
+                if (productName === "home") {
+                    if (utility.hasClass(document.querySelector('[data-name="home"]'), "lang")) {
+                        setTimeout(() => {
+                            this.activeLinks();
+                        }, 1000);
+                    }
+                    utility.addClass(row, "active");
+                    utility.addClass(row, "lang");
+                    row.querySelector("img.inactive").setAttribute("style", "display: none");
+                    row.querySelector("img.active").setAttribute("style", "display: block");
+                }
+            }
+        }
+    }
+
     private componentFinish() {
         ComponentManager.broadcast("token.parse", {
             element: this.element,
@@ -534,7 +572,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
      */
      private listenClickTab() {
         ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.hasClass(src, "footer-mobile-item", true);
+            const el = utility.hasClass(src, "floating-footer", true);
             if (el) {
                 const dataAlias = el.querySelector("a").getAttribute("data-alias");
                 // const activeTab = document.querySelector(".tab-" + dataAlias);
@@ -580,34 +618,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         } else {
             document.querySelector(".game-container").setAttribute("style", "display: block");
             document.querySelector(".category-page").setAttribute("style", "display: none");
-        }
-    }
-
-    /**
-     * Active Link for ptplus main page
-     */
-    private activeLinks() {
-        let productLinks;
-        let locationPathname;
-        let numberSign;
-        let questionMark;
-        locationPathname = window.location.pathname;
-        numberSign = window.location.href.split("/")[4].split("#")[1];
-        questionMark = window.location.href.split("/")[4].split("?")[1];
-        if ((typeof numberSign === "undefined" || !numberSign)
-            && (typeof questionMark === "undefined" || !questionMark)) {
-            productLinks = document.querySelectorAll(".floating-footer > ul > li > a");
-            for (const row of productLinks) {
-                let productName;
-                let productUrl;
-                productName = row.dataset.name;
-                productUrl = row.hash;
-                if (productName === "home") {
-                    utility.addClass(row, "active");
-                    row.querySelector("img.inactive").setAttribute("style", "display: none");
-                    row.querySelector("img.active").setAttribute("style", "display: block");
-                }
-            }
         }
     }
 
