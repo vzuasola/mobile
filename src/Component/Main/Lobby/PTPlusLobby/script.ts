@@ -71,7 +71,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        // this.listenToLaunchGameLoader();
         this.componentFinish();
         this.listenClickTab();
         this.activeLinks();
@@ -93,7 +92,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             this.listenClickGameTile();
             this.listenGameLaunch();
             this.listenFavoriteClick();
-            // this.listenToLaunchGameLoader();
             this.listenClickTab();
         }
         this.response = null;
@@ -479,12 +477,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         });
     }
 
-    // private isSeen(el) {
-    //     if (el) {
-    //         return el.getBoundingClientRect().bottom <= window.innerHeight;
-    //     }
-    // }
-
     private getPagedContent(data) {
         const temp = data.slice(0);
         const batch: any = [];
@@ -536,44 +528,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         response.games = gamesList;
         return gamesList;
     }
-
-    /**
-     * Event listener for launching pop up loader
-     */
-    // private listenToLaunchGameLoader() {
-    //     ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-    //         if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
-    //             // Pop up loader with all data
-    //             const prop = {
-    //                 width: 360,
-    //                 height: 720,
-    //                 scrollbars: 1,
-    //                 scrollable: 1,
-    //                 resizable: 1,
-    //             };
-
-    //             let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-    //             const source = utility.getParameterByName("source");
-
-    //             for (const key in data.options) {
-    //                 if (data.options.hasOwnProperty(key)) {
-    //                     const param = data.options[key];
-    //                     url = utility.addQueryParam(url, key, param);
-    //                 }
-    //             }
-
-    //             url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
-    //             url = utility.addQueryParam(url, "loaderFlag", "true");
-    //             if (data.options.target === "popup" || data.options.target === "_blank") {
-    //                 this.windowObject = PopupWindow(url, "gameWindow", prop);
-    //             }
-
-    //             if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
-    //                 return;
-    //             }
-    //         }
-    //     });
-    // }
 
     /**
      * Event listener for floating footer item click
