@@ -139,7 +139,9 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 if (productName === "home") {
                     if (utility.hasClass(document.querySelector('[data-name="home"]'), "lang")) {
                         setTimeout(() => {
-                            this.activeLinks();
+                            setTimeout(() => {
+                                this.activeLinks();
+                            }, 500);
                         }, 2000);
                     }
                     utility.addClass(row, "active");
