@@ -18,8 +18,6 @@ class IDDomain
         'm.d8bola.net',
         'd8id.com',
         'm.d8id.com',
-        'd8id.net',
-        'm.d8id.net',
         'd8gol.com',
         'm.d8gol.com',
         'golemas.com',
