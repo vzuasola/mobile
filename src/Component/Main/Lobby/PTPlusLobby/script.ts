@@ -140,7 +140,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     if (utility.hasClass(document.querySelector('[data-name="home"]'), "lang")) {
                         setTimeout(() => {
                             this.activeLinks();
-                        }, 1000);
+                        }, 2000);
                     }
                     utility.addClass(row, "active");
                     utility.addClass(row, "lang");
@@ -572,7 +572,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
      */
      private listenClickTab() {
         ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.hasClass(src, "floating-footer", true);
+            const el = utility.hasClass(src, "footer-mobile-item", true);
             if (el) {
                 const dataAlias = el.querySelector("a").getAttribute("data-alias");
                 // const activeTab = document.querySelector(".tab-" + dataAlias);
