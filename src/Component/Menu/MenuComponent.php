@@ -178,8 +178,6 @@ class MenuComponent implements ComponentWidgetInterface
                     strpos($link['attributes']['class'], 'language-trigger') !== false
                 ) {
                     unset($quicklinks[$key]);
-                } elseif ($this->idDomain->bypassId()) {
-                    $quicklinks[$key];
                 }
             }
         }
