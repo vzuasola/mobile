@@ -30,7 +30,7 @@ class IDDomain
         'stg-m.elysium-csn.com',
     ];
 
-    const BYPASS_DOMAIN = [
+    const BYPASS_ID_DOMAIN = [
         'd8id.net',
         'm.d8id.net',
         'mobile-entrypage-www.elysium-dfbt.com',
@@ -86,14 +86,11 @@ class IDDomain
 
         $countryCode = $this->getGeoIpCountry();
 
+        if (in_array($hostname, self::BYPASS_ID_DOMAIN)) {
+            return false;
+        }
+
         return (in_array($hostname, self::DOMAINS) && strtolower($this->lang) == strtolower(self::LANG))
             || strtolower($countryCode) == strtolower(self::LANG);
-    }
-
-    public function bypassDomain()
-    {
-        $hostname = Host::getHostname();
-
-        return (in_array($hostname, self::BYPASS_DOMAIN));
     }
 }
