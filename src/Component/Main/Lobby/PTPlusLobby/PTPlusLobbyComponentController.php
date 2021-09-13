@@ -192,24 +192,6 @@ class PTPlusLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
-    public function collection($request, $response)
-    {
-        $data = [];
-        try {
-            $gamesCollections = $this->views->getViewById('games_collection');
-
-            if ($gamesCollections) {
-                foreach ($gamesCollections as $gamesCollection) {
-                    $data[$gamesCollection['field_type']][] =
-                        'id:' . $gamesCollection['field_game_code_1'];
-                }
-            }
-        } catch (\Exception $e) {
-            $data = [];
-        }
-        return $this->rest->output($response, $data);
-    }
-
     private function generatePageLobbyData($page)
     {
         $data = [];
@@ -398,13 +380,16 @@ class PTPlusLobbyComponentController
                 $category['published'] = $isPublished;
                 if ($category['field_games_category_logo']) {
                     $category['field_games_category_logo'] = $this->asset->generateAssetUri(
-                        $category['field_games_category_logo'],
+                        $category['field_games_category_logo'][0]['url'],
                         ['product' => self::PRODUCT]
                     );
                 }
+                $category['field_games_alias'] = $category['field_games_alias'][0]['value'] ?? "";
+                $category['name'] = $category['name'][0]['value'];
                 $categoryList[] = $category;
             }
         }
+        usort($categoryList, [$this, 'sortCategoriesByWeight']);
         return $categoryList;
     }
 
@@ -523,5 +508,13 @@ class PTPlusLobbyComponentController
     public static function sortRecentGames($game1, $game2)
     {
         return ($game1['timestamp'] > $game2['timestamp']) ? -1 : 1;
+    }
+
+    /**
+     * Sort categories by weight
+     */
+    public static function sortCategoriesByWeight($category1, $category2)
+    {
+        return ($category2['weight'] > $category1['weight']) ? -1 : 1;
     }
 }
