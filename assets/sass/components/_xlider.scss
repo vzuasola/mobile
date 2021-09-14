@@ -98,6 +98,9 @@
     // Blurb
     &-blurb {
         &.bottom {
+            background: rgba(0,0,0,0.6);
+            padding-bottom: 2rem;
+            margin-bottom: -2rem;
             opacity: 0;
             bottom: -20rem;
             transform: translateY(0);
