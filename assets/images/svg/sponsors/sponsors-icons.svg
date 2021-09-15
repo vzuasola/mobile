@@ -1636,8 +1636,7 @@
 			<path class="st45" d="M12.34,161c-0.17-0.28-0.34-0.57-0.51-0.85C12.6,160.08,12.31,160.63,12.34,161z"/>
 		</g>
 	</svg>
-	<svg id="sponsor-palmeiras-fc" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 180 180">
+	<svg id="sponsor-palmeiras-fc" x="0px" y="0px" viewBox="0 0 180 180">
     <style type="text/css">
         .st1{fill-rule:evenodd;clip-rule:evenodd;fill:#FFEF00;}
         .st2{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
