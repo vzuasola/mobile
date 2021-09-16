@@ -7,6 +7,7 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as categoriesTemplate from "./handlebars/categories.handlebars";
+// import * as rectangularGameTemplate from "./handlebars/games-rectangular.handlebars";
 import * as gameTemplate from "./handlebars/games.handlebars";
 import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
 
@@ -15,7 +16,7 @@ import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/ass
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
-import PopupWindow from "@app/assets/script/components/popup";
+import Swipe from "@app/assets/script/components/custom-touch/swipe";
 
 /**
  *
@@ -35,6 +36,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private windowObject: any;
     private gameLink: string;
     private tabs: any[];
+    private filterFlag: string;
+    private groupedGames: any;
     private productMenu: string = "product-ptplus";
 
     constructor() {
@@ -54,6 +57,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         tabs: any[],
         infinite_scroll: boolean,
     }) {
+        this.groupedGames = undefined;
         this.response = null;
         this.element = element;
         this.attachments = attachments;
@@ -65,6 +69,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
+        this.listenToRectangularGame();
+        this.listenToSwipe();
         this.generateLobby(() => {
             this.lobby();
         });
@@ -92,8 +98,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             this.listenClickGameTile();
             this.listenGameLaunch();
             this.listenFavoriteClick();
+            this.listenToRectangularGame();
             this.listenClickTab();
         }
+        this.groupedGames = undefined;
         this.response = null;
         this.element = element;
         this.attachments = attachments;
@@ -105,7 +113,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.generateLobby(() => {
             this.lobby();
         });
-
+        this.listenToSwipe();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -290,17 +298,17 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     /*
-    * List of favorites games, used for toggle of favorites
-    * list status.
-    */
-    // private getFavoritesList(favorites) {
-    //     const favoritesList = {};
-    //     for (const id of favorites) {
-    //         favoritesList[id.substr(3)] = "active";
-    //     }
+     * List of favorites games, used for toggle of favorites
+     * list status.
+     */
+    private getFavoritesList(favorites) {
+        const favoritesList = {};
+        for (const id of favorites) {
+            favoritesList[id.substr(3)] = "active";
+        }
 
-    //     return favoritesList;
-    // }
+        return favoritesList;
+    }
 
     /**
      * Request games lobby to games lobby component controller lobby method
@@ -332,12 +340,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         const newResponse = Object.assign({}, mergeResponse);
                         newResponse.games = this.getCategoryGames(newResponse);
                         newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
-                        // if (pageResponse.hasOwnProperty("fav")) {
-                        //     const key = "fav";
-                        //     const favoritesList = pageResponse[key];
-                        //     newResponse.favorite_list = this.getFavoritesList(favoritesList);
-                        // }
+                        if (pageResponse.hasOwnProperty("fav")) {
+                            const key = "fav";
+                            const favoritesList = pageResponse[key];
+                            newResponse.favorite_list = this.getFavoritesList(favoritesList);
+                        }
                         this.response = newResponse;
+                        console.log(newResponse);
+                        console.log("huhuu");
                         if (callback) {
                             callback();
                         }
@@ -393,7 +403,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private setLobby(key?: string) {
         if (!key) {
             key = this.response.categories[0].field_games_alias;
-            key = this.getActiveCategory(this.response.games, key);
         }
         this.setCategories(this.response.categories, key);
         this.setGames(this.response.games[key], key);
@@ -421,20 +430,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             scroll: false,
         });
 
-    }
-
-    /**
-     * Get the hash in the url or the first returned category
-     *
-     */
-    private getActiveCategory(gamesList, key) {
-        const hash = utility.getHash(window.location.href);
-
-        if (gamesList.hasOwnProperty(hash) && gamesList[hash].length > 0) {
-            return hash;
-        }
-
-        return key;
     }
 
     /**
@@ -577,7 +572,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             const el = utility.hasClass(src, "footer-mobile-item", true);
             if (el) {
                 const dataAlias = el.querySelector("a").getAttribute("data-alias");
-                // const activeTab = document.querySelector(".tab-" + dataAlias);
                 const allTabs = el.parentElement.querySelectorAll("a");
                 for (const allTab of allTabs) {
                     this.makeInactive(allTab);
@@ -612,9 +606,9 @@ export class PTPlusLobbyComponent implements ComponentInterface {
 
     private displayCategoryPageContent() {
         const hash = utility.getHash(window.location.href);
-        const activeTab = document.querySelector(".tab-" + hash);
-        this.makeActive(activeTab);
         if (hash === "game-categories") {
+            const activeTab = document.querySelector(".tab-" + hash);
+            this.makeActive(activeTab);
             document.querySelector(".category-page").setAttribute("style", "display: block");
             document.querySelector(".game-container").setAttribute("style", "display: none");
         } else {
@@ -641,14 +635,121 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     /**
-     * Event listener for favorites click
+     * Event listener for game item click
      */
-     private listenFavoriteClick() {
+    private listenFavoriteClick() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "game-favorite", true);
-            if (el && this.attachments.authenticated) {
+            if (el && this.isLogin) {
                 utility.toggleClass(el, "active");
+                const gameCode = el.parentElement.getAttribute("data-game-code");
+                xhr({
+                    url: Router.generateRoute("ptplus_lobby", "favorite"),
+                    type: "json",
+                    method: "post",
+                    data: {
+                        gameCode,
+                    },
+                }).then((result) => {
+                    if (result.success) {
+                        this.response = null;
+                        this.doRequest(() => {
+                            if (this.filterFlag === "favorites") {
+                                if (typeof this.response.games[this.filterFlag] === "undefined") {
+                                    this.setLobby();
+                                }
+
+                                if (typeof this.response.games[this.filterFlag] !== "undefined") {
+                                    this.setGames(this.response.games[this.filterFlag]);
+                                }
+                            }
+                        });
+
+                        ComponentManager.broadcast("games.favorite", {srcElement: el});
+                    }
+                }).fail((error, message) => {
+                    console.log(error);
+                });
             }
         });
+    }
+
+    private listenToRectangularGame() {
+        ComponentManager.subscribe("game.launch", (event, src, data) => {
+            const categoriesEl = this.element.querySelector("#lobby-tab-filter");
+            const categories = categoriesEl.querySelectorAll(".game-tab");
+            const categoryScroll = categoriesEl.querySelector("#rectangular-games");
+            let scroll = 0;
+            if (data.scroll === "prev") {
+                scroll = -30;
+            }
+
+            for (const id in categories) {
+                if (categories.hasOwnProperty(id)) {
+                    const category = categories[id];
+                    scroll += category.getBoundingClientRect().width;
+                    if (utility.hasClass(category, "active")) {
+                        if (data.scroll === "prev") {
+                            scroll -= category.getBoundingClientRect().width;
+                        }
+
+                        if (data.scroll !== "next") {
+                            scroll -= category.getBoundingClientRect().width;
+                        }
+                        break;
+                    }
+               }
+            }
+
+            categoryScroll.scrollLeft = scroll;
+        });
+    }
+
+    private listenToSwipe() {
+        const games: any = this.element.querySelector("#lobby-tab-filter");
+        new Swipe(games);
+        if (games) {
+            // Left Swipe
+            utility.addEventListener(games, "swipeleft", (event, src) => {
+                // Games go right
+                const gamesEl = this.element.querySelector("#rectangular-games");
+                const activeLi = gamesEl.querySelector(".game-tab .active");
+                const sibling = utility.nextElementSibling(activeLi);
+                if (sibling) {
+                    const siblingUrl = sibling.querySelector("a").getAttribute("href");
+                    window.location.hash = siblingUrl;
+                    ComponentManager.broadcast("game.launch", {
+                        scroll: "next",
+                    });
+                } else {
+                    // Add bounce effect
+                    utility.addClass(games, "bounce-left");
+                    setTimeout(() => {
+                        utility.removeClass(games, "bounce-left");
+                    }, 1000);
+                }
+
+            });
+            // Right Swipe
+            utility.addEventListener(games, "swiperight", (event, src) => {
+                // Active category go left
+                const categoriesEl = this.element.querySelector("#rectangular-games");
+                const activeLi = categoriesEl.querySelector(".game-tab .active");
+                const sibling = utility.previousElementSibling(activeLi);
+                if (sibling) {
+                    const siblingUrl = sibling.querySelector("a").getAttribute("href");
+                    window.location.hash = siblingUrl;
+                    ComponentManager.broadcast("game.launch", {
+                        scroll: "prev",
+                    });
+                } else {
+                    // Add bounce effect
+                    utility.addClass(games, "bounce-right");
+                    setTimeout(() => {
+                        utility.removeClass(games, "bounce-right");
+                    }, 1000);
+                }
+            });
+        }
     }
 }
