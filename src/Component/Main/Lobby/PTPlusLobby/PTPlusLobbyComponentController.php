@@ -389,7 +389,6 @@ class PTPlusLobbyComponentController
                 $categoryList[] = $category;
             }
         }
-        usort($categoryList, [$this, 'sortCategoriesByWeight']);
         return $categoryList;
     }
 
@@ -508,13 +507,5 @@ class PTPlusLobbyComponentController
     public static function sortRecentGames($game1, $game2)
     {
         return ($game1['timestamp'] > $game2['timestamp']) ? -1 : 1;
-    }
-
-    /**
-     * Sort categories by weight
-     */
-    public static function sortCategoriesByWeight($category1, $category2)
-    {
-        return ($category2['weight'] > $category1['weight']) ? -1 : 1;
     }
 }
