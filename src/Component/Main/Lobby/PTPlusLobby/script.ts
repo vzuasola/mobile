@@ -336,12 +336,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     this.checkPromiseState(promises, id, () => {
                         const mergeResponse = this.mergeResponsePromises(pageResponse);
 
-                         // clone respone object
-                         const newResponse = Object.assign({}, mergeResponse);
-
-                         newResponse.games = this.getCategoryGames(newResponse.games);
-                         newResponse.games = this.groupGamesByContainer(newResponse.games);
-                         newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
+                        // clone respone object
+                        const newResponse = Object.assign({}, mergeResponse);
+                        newResponse.games = this.getCategoryGames(newResponse);
+                        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
                         if (pageResponse.hasOwnProperty("fav")) {
                             const key = "fav";
                             const favoritesList = pageResponse[key];
@@ -405,7 +403,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             key = this.response.categories[0].field_games_alias;
         }
         this.setCategories(this.response.categories, key);
-        console.log(this.response.games, "huhu1");
         this.setGames(this.response.games[key], key);
         this.displayCategoryPageContent();
         this.populateTabs();
