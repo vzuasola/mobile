@@ -336,18 +336,18 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     this.checkPromiseState(promises, id, () => {
                         const mergeResponse = this.mergeResponsePromises(pageResponse);
 
-                        // clone respone object
-                        const newResponse = Object.assign({}, mergeResponse);
-                        newResponse.games = this.getCategoryGames(newResponse);
-                        newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
+                         // clone respone object
+                         const newResponse = Object.assign({}, mergeResponse);
+
+                         newResponse.games = this.getCategoryGames(newResponse.games);
+                         newResponse.games = this.groupGamesByContainer(newResponse.games);
+                         newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
                         if (pageResponse.hasOwnProperty("fav")) {
                             const key = "fav";
                             const favoritesList = pageResponse[key];
                             newResponse.favorite_list = this.getFavoritesList(favoritesList);
                         }
                         this.response = newResponse;
-                        console.log(newResponse);
-                        console.log("huhuu");
                         if (callback) {
                             callback();
                         }
@@ -405,6 +405,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             key = this.response.categories[0].field_games_alias;
         }
         this.setCategories(this.response.categories, key);
+        console.log(this.response.games, "huhu1");
         this.setGames(this.response.games[key], key);
         this.displayCategoryPageContent();
         this.populateTabs();
@@ -461,12 +462,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
 
         if (gamesEl) {
             gamesEl.innerHTML = template;
-            const loaders = gamesEl.querySelectorAll(".game-loader");
-            if (loaders.length > 1) {
-                for (let ctr = 0; ctr < loaders.length - 1; ctr++) {
-                    loaders[ctr].remove();
-                }
-            }
         }
     }
 
@@ -751,5 +746,34 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }
             });
         }
+    }
+
+    private groupGamesByContainer(gamesList) {
+        const groupList: any = [];
+        for (const category in gamesList) {
+            if (gamesList.hasOwnProperty(category)) {
+                const categoryGame = gamesList[category];
+
+                const arrayGameList = [];
+                for (const gameKey in categoryGame) {
+                    if (categoryGame.hasOwnProperty(gameKey)) {
+                        const game = categoryGame[gameKey];
+                        arrayGameList.push(game);
+                    }
+                }
+
+                const temp = arrayGameList.slice(0);
+
+                const batch: any = [];
+                while (temp.length > 0) {
+                    batch.push(temp.splice(0, 3));
+                }
+
+                groupList[category] = batch;
+
+            }
+        }
+
+        return groupList;
     }
 }
