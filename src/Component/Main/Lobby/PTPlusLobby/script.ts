@@ -7,9 +7,8 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as categoriesTemplate from "./handlebars/categories.handlebars";
-// import * as rectangularGameTemplate from "./handlebars/games-rectangular.handlebars";
+import * as rectangularGameTemplate from "./handlebars/games-rectangular.handlebars";
 import * as gameTemplate from "./handlebars/games.handlebars";
-import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
 
 import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
@@ -69,7 +68,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
-        this.listenToRectangularGame();
         this.listenToSwipe();
         this.generateLobby(() => {
             this.lobby();
@@ -98,7 +96,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             this.listenClickGameTile();
             this.listenGameLaunch();
             this.listenFavoriteClick();
-            this.listenToRectangularGame();
             this.listenClickTab();
         }
         this.groupedGames = undefined;
@@ -365,7 +362,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 filteredCategory.push(category);
             }
         }
-
         return filteredCategory;
     }
 
@@ -400,12 +396,20 @@ export class PTPlusLobbyComponent implements ComponentInterface {
      */
     private setLobby(key?: string) {
         if (!key) {
-            key = this.response.categories[0].field_games_alias;
+            for (const category of this.response.categories) {
+                if (category.hasOwnProperty("field_games_alias")) {
+                    key = category.field_games_alias;
+                    this.setGames(this.response.games[key], 0, category.name);
+                    this.setCategories(this.response.categories, key);
+                }
+            }
         }
-        this.setCategories(this.response.categories, key);
-        this.setGames(this.response.games[key], key);
         this.displayCategoryPageContent();
-        this.populateTabs();
+        const lobbyGames = this.groupGamesByLobby(this.response.games["all-games"]);
+        if (lobbyGames.hasOwnProperty("popular_games")) {
+            const lobbyTabTitle = lobbyGames.popular_games[0].lobby_tab_title;
+            this.setRectagularGame(lobbyGames.popular_games, lobbyTabTitle);
+        }
     }
 
     /**
@@ -433,16 +437,16 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, activeCategory: string = " ", page: number = 0, isRecommend = false) {
+    private setGames(data, page: number = 0, catName = null) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
-
+        const catCount = data.length;
         let template = gameTemplate({
             games: pager[page],
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
-            isRecommended: isRecommend,
-            isAllGames: activeCategory === "all-games",
+            categoryName: catName,
+            categoryCount: catCount,
         });
 
         if (this.currentPage > page) {
@@ -452,13 +456,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     games: pager[ctr],
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
-                    isAllGames: activeCategory === "all-games",
+                    categoryName: catName,
+                    categoryCount: catCount,
                 });
             }
         }
 
         if (gamesEl) {
-            gamesEl.innerHTML = template;
+            gamesEl.innerHTML += template;
         }
     }
 
@@ -522,7 +527,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     private getCategoryGames(response) {
-        // let gamesList: any = [];
         const gamesList: any = [];
         const allGames = response.games["all-games"];
         for (const gameId in allGames) {
@@ -610,19 +614,17 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     /**
-     * Populate lobby tabs
+     * Set Rectangular Game Template
      */
-    private populateTabs() {
-        const tabsEl = this.element.querySelector("#lobby-tab-filter");
-        const template = tabTemplate({
-            tabs: this.tabs,
-            authenticated: this.isLogin,
-            configs: this.attachments.configs,
-            hasTransferTab: (this.isLogin && this.attachments.configs.games_transfer_link !== ""),
+    private setRectagularGame(data, lobbyTabTitle) {
+        const rectGameEl = this.element.querySelector("#rectangular-game-content");
+        const template = rectangularGameTemplate({
+            games: data,
+            categoryName: lobbyTabTitle,
         });
 
-        if (tabsEl) {
-            tabsEl.innerHTML = template;
+        if (rectGameEl) {
+            rectGameEl.innerHTML = template;
         }
     }
 
@@ -666,111 +668,33 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         });
     }
 
-    private listenToRectangularGame() {
-        ComponentManager.subscribe("game.launch", (event, src, data) => {
-            const categoriesEl = this.element.querySelector("#lobby-tab-filter");
-            const categories = categoriesEl.querySelectorAll(".game-tab");
-            const categoryScroll = categoriesEl.querySelector("#rectangular-games");
-            let scroll = 0;
-            if (data.scroll === "prev") {
-                scroll = -30;
-            }
-
-            for (const id in categories) {
-                if (categories.hasOwnProperty(id)) {
-                    const category = categories[id];
-                    scroll += category.getBoundingClientRect().width;
-                    if (utility.hasClass(category, "active")) {
-                        if (data.scroll === "prev") {
-                            scroll -= category.getBoundingClientRect().width;
-                        }
-
-                        if (data.scroll !== "next") {
-                            scroll -= category.getBoundingClientRect().width;
-                        }
-                        break;
-                    }
-               }
-            }
-
-            categoryScroll.scrollLeft = scroll;
-        });
-    }
-
+    /**
+     * Rectangular Games Slider
+     */
     private listenToSwipe() {
-        const games: any = this.element.querySelector("#lobby-tab-filter");
+        const games: any = this.element.querySelector("#rectangular-game-content");
         new Swipe(games);
-        if (games) {
-            // Left Swipe
-            utility.addEventListener(games, "swipeleft", (event, src) => {
-                // Games go right
-                const gamesEl = this.element.querySelector("#rectangular-games");
-                const activeLi = gamesEl.querySelector(".game-tab .active");
-                const sibling = utility.nextElementSibling(activeLi);
-                if (sibling) {
-                    const siblingUrl = sibling.querySelector("a").getAttribute("href");
-                    window.location.hash = siblingUrl;
-                    ComponentManager.broadcast("game.launch", {
-                        scroll: "next",
-                    });
-                } else {
-                    // Add bounce effect
-                    utility.addClass(games, "bounce-left");
-                    setTimeout(() => {
-                        utility.removeClass(games, "bounce-left");
-                    }, 1000);
-                }
-
-            });
-            // Right Swipe
-            utility.addEventListener(games, "swiperight", (event, src) => {
-                // Active category go left
-                const categoriesEl = this.element.querySelector("#rectangular-games");
-                const activeLi = categoriesEl.querySelector(".game-tab .active");
-                const sibling = utility.previousElementSibling(activeLi);
-                if (sibling) {
-                    const siblingUrl = sibling.querySelector("a").getAttribute("href");
-                    window.location.hash = siblingUrl;
-                    ComponentManager.broadcast("game.launch", {
-                        scroll: "prev",
-                    });
-                } else {
-                    // Add bounce effect
-                    utility.addClass(games, "bounce-right");
-                    setTimeout(() => {
-                        utility.removeClass(games, "bounce-right");
-                    }, 1000);
-                }
-            });
-        }
     }
 
-    private groupGamesByContainer(gamesList) {
-        const groupList: any = [];
-        for (const category in gamesList) {
-            if (gamesList.hasOwnProperty(category)) {
-                const categoryGame = gamesList[category];
-
-                const arrayGameList = [];
-                for (const gameKey in categoryGame) {
-                    if (categoryGame.hasOwnProperty(gameKey)) {
-                        const game = categoryGame[gameKey];
-                        arrayGameList.push(game);
-                    }
+    /**
+     * Group games by lobby
+     */
+      private groupGamesByLobby(games) {
+        const groupedGames: any = [];
+        for (const gameId in games) {
+            if (games.hasOwnProperty(gameId)) {
+                const game = games[gameId];
+                if (!groupedGames.hasOwnProperty(game.lobby_tab)
+                ) {
+                    groupedGames[game.lobby_tab] = [];
                 }
 
-                const temp = arrayGameList.slice(0);
-
-                const batch: any = [];
-                while (temp.length > 0) {
-                    batch.push(temp.splice(0, 3));
+                if (typeof groupedGames[game.lobby_tab] !== "undefined"
+                ) {
+                    groupedGames[game.lobby_tab].push(game);
                 }
-
-                groupList[category] = batch;
-
             }
         }
-
-        return groupList;
+        return groupedGames;
     }
 }
