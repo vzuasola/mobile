@@ -1,18 +1,21 @@
-<div class="category-tab-list" id="category-tab">
-    <ul class="game-category">
-    {{#each categories}}
-        {{#if this.published }}
-            <li class="game-category-item {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
-                <a
-                    href="#{{this.field_games_alias}}"
-                    class="category-tab category-{{this.field_games_alias}} {{#condition ../active "===" this.field_games_alias}}active{{/condition}}"
-                    data-category-filter-id="{{this.field_games_alias}}"
-                    data-category-filter-name="{{{this.name}}}"
-                >
-                    {{{this.name}}}
-                </a>
-            </li>
-        {{/if}}
+<div class="rectangular-game">
+     <div class="category-data">
+        <span class="category-name">{{categoryName}}</span>
+    </div>
+    <ul class="rectangular-game-tile">
+    {{#each games}}
+        <li class="rectangular-game-tile-item {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
+             <a class="game-list game-listing-item"
+            {{#if ../isLogin}}
+            data-game-launch="true"
+            {{/if}}
+            data-game-code="{{this.game_code}}"
+            data-game-title="{{this.title}}"
+            data-game-keywords ="{{this.keywords}}"
+            >
+                <img class="w-100" src="{{this.image_big.url}}" alt="{{this.image_big.alt}}">                
+            </a>
+        </li>
     {{/each}}
     </ul>
 </div>
