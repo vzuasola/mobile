@@ -202,10 +202,6 @@ class PTPlusLobbyComponentController
             'page' => (string) $page,
             ]
         );
-        // $specialCategories = [];
-        // $specialCategories = $this->getSpecialCategories($categories);
-
-        // $data['special_categories'] = $specialCategories;
         $data['categories_list'] = $categories;
         $data['games'] = $this->getGamesAndCategory(
             $allGames
@@ -353,12 +349,22 @@ class PTPlusLobbyComponentController
                         ['product' => self::PRODUCT]
                     )
             ];
+            $processGame['image_big'] = [
+                'alt' => $game['field_game_thumbnail_big'][0]['alt'],
+                'url' =>
+                    $this->asset->generateAssetUri(
+                        $game['field_game_thumbnail_big'][0]['url'],
+                        ['product' => self::PRODUCT]
+                    )
+            ];
             $categoryList = [];
             foreach ($game['field_games_list_category'] as $category) {
                 $categoryList[$category['field_games_alias'][0]['value']] =
                     $category['field_games_alias'][0]['value'];
             }
             $processGame['categories'] = $categoryList;
+            $processGame['lobby_tab'] = $game['field_games_list_lobby'][0]['field_alias'][0]['value'] ?? "";
+            $processGame['lobby_tab_title'] = $game['field_games_list_lobby'][0]['field_label'][0]['value'] ?? "";
             return $processGame;
         } catch (\Exception $e) {
             return [];

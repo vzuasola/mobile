@@ -3,6 +3,31 @@
         background-color: $light-gray;
         padding: 0 1rem;
     }
+
+    .lobby-item-title {
+        color: #373737;
+        text-transform: uppercase;
+        font-weight: 500;
+        float: left;
+        font-size: 1.6rem;
+    }
+
+    .category-data {
+        padding: 1rem 0;
+    }
+    .category-name {
+        color: #373737;
+        text-transform: uppercase;
+        font-weight: 500;
+        float: left;
+        font-size: 1.6rem;
+    }
+
+    .category-count {
+        color: #af0000;
+        float: right;
+        font-size: 1.6rem;
+    }
     
     #game-container {
         width: 100%;
@@ -12,6 +37,8 @@
         .game-lobby-container {
             margin: 0;
             padding: 0;
+            display: inline-block;
+            width: 100%;
 
             .game-listing {
                 position: relative;
@@ -116,6 +143,27 @@
                     overflow: hidden;
                 }
             }
+        }
+    }
+
+    .rectangular-game {
+        white-space: nowrap;
+        overflow-x: auto;
+    }
+
+    .rectangular-game-tile {
+        float: left;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+
+        img {
+            border-radius: .5rem;
+        }
+
+        .rectangular-game-tile-item {
+            display: inline-block;
         }
     }
 }
