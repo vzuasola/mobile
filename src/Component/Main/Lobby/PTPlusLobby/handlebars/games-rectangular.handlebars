@@ -1,7 +1,7 @@
-<div class="rectangular-game">
-     <div class="category-data">
-        <span class="category-name">{{categoryName}}</span>
-    </div>
+<div class="category-data">
+    <span class="category-name">{{categoryName}}</span>
+</div>
+<div class="rectangular-game">    
     <ul class="rectangular-game-tile">
     {{#each games}}
         <li class="rectangular-game-tile-item {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
