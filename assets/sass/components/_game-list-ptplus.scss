@@ -1,7 +1,6 @@
 .mobile-ptplus {
     .game-container {
         background-color: $light-gray;
-        padding: 0 1rem;
     }
 
     .lobby-item-title {
@@ -20,19 +19,21 @@
         text-transform: uppercase;
         font-weight: 500;
         float: left;
-        font-size: 1.6rem;
+        font-size: 1.5rem;
+        padding-left: 3px;
     }
 
     .category-count {
         color: #af0000;
         float: right;
         font-size: 1.6rem;
+        padding-right: 3px;
     }
     
     #game-container {
         width: 100%;
         float: left;
-        padding: 1% 1% 1.75%;
+        padding: 0 1rem;
 
         .game-lobby-container {
             margin: 0;
@@ -146,24 +147,39 @@
         }
     }
 
-    .rectangular-game {
-        white-space: nowrap;
-        overflow-x: auto;
-    }
+    #rectangular-game-content {
+        padding-left: 1rem;
 
-    .rectangular-game-tile {
-        float: left;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        display: inline-block;
-
-        img {
-            border-radius: .5rem;
+        .rectangular-game {
+            white-space: nowrap;
+            overflow-x: auto;
+            width: 100%;
+            padding-left: 3px;
+        }
+    
+        .rectangular-game-tile {
+            float: left;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+            padding-top: 3px;
+    
+            img {
+                border-radius: .5rem;
+            }
+    
+            .rectangular-game-tile-item {
+                display: inline-block;
+                max-width: 40%;
+            }
         }
 
-        .rectangular-game-tile-item {
-            display: inline-block;
+        // mobile
+        @include media("<tablet") {
+            .rectangular-game-tile img {
+                max-height: 6rem;
+            }
         }
     }
 }

@@ -672,7 +672,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
      * Rectangular Games Slider
      */
     private listenToSwipe() {
-        const games: any = this.element.querySelector("#rectangular-game-content");
+        const games: any = this.element.querySelector(".rectangular-game-tile");
         new Swipe(games);
     }
 
