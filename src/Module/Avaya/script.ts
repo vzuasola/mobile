@@ -32,38 +32,49 @@ export class AvayaModule implements ModuleInterface {
 
     onLoad(attachments: {}) {
         // Add listen to everything
+        const element = document.getElementById(".mobile-menu-icon");
         ComponentManager.subscribe("click", (event, src, data) => {
-            xhr({
-                url: Router.generateModuleRoute("avaya", "avayaconfig"),
-                type: "json",
-            }).then((response) => {
-                this.baseUrl = response.baseUrl;
-                this.apiUrl = response.urlPost;
-                this.validity = response.validity;
-                this.jwtKey = response.jwtKey;
-                this.postTimeout = response.postTimeout;
-            }).fail((err, msg) => {
-                // do nothing
+            const target = utility.find(src, (el) => {
+                let link = "";
+                // check if set
+                const href = el.getAttribute("href");
+                if (el.getAttribute("href")) {
+                    link = href.substring(href.lastIndexOf("/") + 1, href.length);
+                    if (link === "linkto:avaya") {
+                        xhr({
+                            url: Router.generateModuleRoute("avaya", "avayaconfig"),
+                            type: "json",
+                        }).then((response) => {
+                            this.baseUrl = response.baseUrl;
+                            this.apiUrl = response.urlPost;
+                            this.validity = response.validity;
+                            this.jwtKey = response.jwtKey;
+                            this.postTimeout = response.postTimeout;
+                        }).fail((err, msg) => {
+                            // do nothing
+                        });
+
+                        this.options = {
+                            apiUrl: this.apiUrl,
+                            validity: this.validity,
+                            nonce: this.jwtKey || false,
+                            timeout: this.postTimeout,
+                            onSuccess: (token) => {
+                                // Add the token to the base url
+                                this.updatePopupWindow(utility.addQueryParam(this.baseUrl, "s", token));
+                            },
+                            onFail: (error) => {
+                                // Use the default avaya base url
+                                this.updatePopupWindow(this.baseUrl);
+                            },
+                        };
+
+                        // Instantiate the avaya library
+                        this.avayaClass = new Avaya(this.options);
+                        this.getAvayaToken(event, src, data);
+                    }
+                }
             });
-
-            this.options = {
-                apiUrl: this.apiUrl,
-                validity: this.validity,
-                nonce: this.jwtKey || false,
-                timeout: this.postTimeout,
-                onSuccess: (token) => {
-                    // Add the token to the base url
-                    this.updatePopupWindow(utility.addQueryParam(this.baseUrl, "s", token));
-                },
-                onFail: (error) => {
-                    // Use the default avaya base url
-                    this.updatePopupWindow(this.baseUrl);
-                },
-            };
-
-            // Instantiate the avaya library
-            this.avayaClass = new Avaya(this.options);
-            this.getAvayaToken(event, src, data);
         });
 
         ComponentManager.subscribe("session.login", (event, src) => {
