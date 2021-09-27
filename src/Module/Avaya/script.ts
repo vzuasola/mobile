@@ -38,7 +38,8 @@ export class AvayaModule implements ModuleInterface {
             const contact = utility.hasClass(src, "contact-live-chat");
             const parentAnchor = utility.findParent(src, ".quicklinks-livechat", 4);
             const contactAnchor = utility.findParent(src, ".contact-live-chat", 4);
-            if (anchor || footerlink
+            if (anchor 
+                || footerlink
                 || contact
                 || utility.hasClass(contactAnchor, "contact-live-chat")
                 || utility.hasClass(parentAnchor, "quicklinks-livechat")) {
