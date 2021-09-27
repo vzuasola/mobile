@@ -22,7 +22,7 @@ export class AvayaModule implements ModuleInterface {
     private windowObject: any;
     private options: any = {};
     private prevUrl: string;
-    private baseUrl: string = "";
+    private baseUrl: string;
     private apiUrl: string;
     private validity: string;
     private jwtKey: string;
