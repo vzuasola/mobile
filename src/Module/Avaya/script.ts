@@ -34,8 +34,9 @@ export class AvayaModule implements ModuleInterface {
         // Add listen to everything
         ComponentManager.subscribe("click", (event, src, data) => {
             const anchor = utility.hasClass(src, "quicklinks-livechat");
+            const footerlink = utility.hasClass(src, "footer-livechat");
             const parentAnchor = utility.findParent(src, ".quicklinks-livechat", 4);
-            if (anchor || utility.hasClass(parentAnchor, "quicklinks-livechat")) {
+            if (anchor || footerlink || utility.hasClass(parentAnchor, "quicklinks-livechat")) {
                 xhr({
                     url: Router.generateModuleRoute("avaya", "avayaconfig"),
                     type: "json",
