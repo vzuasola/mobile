@@ -32,7 +32,6 @@ export class AvayaModule implements ModuleInterface {
 
     onLoad(attachments: {}) {
         // Add listen to everything
-        const element = document.getElementById(".mobile-menu-icon");
         ComponentManager.subscribe("click", (event, src, data) => {
             const target = utility.find(src, (el) => {
                 let link = "";
