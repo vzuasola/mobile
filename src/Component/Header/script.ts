@@ -21,7 +21,6 @@ export class HeaderComponent implements ComponentInterface {
         this.attachProduct();
         this.refreshBalance();
         this.componentFinish();
-        this.getLogo();
 
         Router.on(RouterClass.afterNavigate, (event) => {
             if (this.attachments.authenticated) {
@@ -47,7 +46,6 @@ export class HeaderComponent implements ComponentInterface {
         this.attachments = attachments;
         this.attachProduct();
         this.refreshBalance();
-        this.getLogo();
         this.componentFinish();
     }
 
@@ -137,33 +135,5 @@ export class HeaderComponent implements ComponentInterface {
 
     private formatBalance(balance) {
         return balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
-    /**
-     * Set logo
-     *
-     */
-    private generateLogoMarkup(data) {
-        const logo: HTMLElement = this.element.querySelector("#header-logo");
-        const template = logoTemplate({
-            logoData: data,
-        });
-        logo.innerHTML = template;
-    }
-
-    private getLogo() {
-        xhr({
-            url: Router.generateRoute("header", "getlogo"),
-            type: "json",
-            data: {
-                product: ComponentManager.getAttribute("product"),
-                language: ComponentManager.getAttribute("language"),
-                style: ComponentManager.getAttribute("product"),
-                route: ComponentManager.getAttribute("route"),
-            },
-        }).then((response) => {
-            this.logoData = response;
-            this.generateLogoMarkup(this.logoData);
-        });
     }
 }
