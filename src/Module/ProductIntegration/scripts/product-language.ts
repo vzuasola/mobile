@@ -85,6 +85,7 @@ export class  ProductLanguage {
             "km",
             "bn",
             "pk",
+            "jp",
         ],
         "games" : [
             "en",
@@ -103,6 +104,7 @@ export class  ProductLanguage {
             "km",
             "bn",
             "pk",
+            "jp",
         ],
         "exchange" : [
             "in",
@@ -126,6 +128,7 @@ export class  ProductLanguage {
             "km",
             "bn",
             "pk",
+            "jp",
         ],
         "virtual-sports" : [
             "en",
