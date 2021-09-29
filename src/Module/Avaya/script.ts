@@ -45,6 +45,7 @@ export class AvayaModule implements ModuleInterface {
             if (leftMenuLink
                 || footerLink
                 || contactLink
+                || utility.hasClass(footerLinkParent, "footer-livechat")
                 || utility.hasClass(contactLinkParent, "contact-live-chat")
                 || utility.hasClass(leftMenuLinkParent, "quicklinks-livechat")) {
 
