@@ -24,6 +24,7 @@ export class AvayaModule implements ModuleInterface {
     private prevUrl: string;
     private baseUrl: string;
     private apiUrl: string;
+    private isFetchedConfig = false;
     private validity: string;
     private jwtKey: string;
     private postTimeout: string;
@@ -52,29 +53,30 @@ export class AvayaModule implements ModuleInterface {
                     url: Router.generateModuleRoute("avaya", "avayaconfig"),
                     type: "json",
                 }).then((response) => {
+                    this.isFetchedConfig = true;
                     this.baseUrl = response.baseUrl;
                     this.apiUrl = response.urlPost;
                     this.validity = response.validity;
                     this.jwtKey = response.jwtKey;
                     this.postTimeout = response.postTimeout;
-
-                    this.options = {
-                        apiUrl: this.apiUrl,
-                        validity: this.validity,
-                        nonce: this.jwtKey || false,
-                        timeout: this.postTimeout,
-                        onSuccess: (token) => {
-                            // Add the token to the base url
-                            this.updatePopupWindow(utility.addQueryParam(this.baseUrl, "s", token));
-                        },
-                        onFail: (error) => {
-                            // Use the default avaya base url
-                            this.updatePopupWindow(this.baseUrl);
-                        },
-                    };
                 }).fail((err, msg) => {
                     // do nothing
                 });
+
+                this.options = {
+                    apiUrl: this.apiUrl,
+                    validity: this.validity,
+                    nonce: this.jwtKey || false,
+                    timeout: this.postTimeout,
+                    onSuccess: (token) => {
+                        // Add the token to the base url
+                        this.updatePopupWindow(utility.addQueryParam(this.baseUrl, "s", token));
+                    },
+                    onFail: (error) => {
+                        // Use the default avaya base url
+                        this.updatePopupWindow(this.baseUrl);
+                    },
+                };
 
                  // Instantiate the avaya library
                 this.avayaClass = new Avaya(this.options);
