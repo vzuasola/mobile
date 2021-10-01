@@ -147,39 +147,36 @@
         }
     }
 
-    #rectangular-game-content {
+    .rectangular-game {
         padding-left: 1rem;
+        white-space: nowrap;
+        overflow-x: auto;
+        width: 100%;
+        padding-left: 3px;
+    }
 
-        .rectangular-game {
-            white-space: nowrap;
-            overflow-x: auto;
-            width: 100%;
-            padding-left: 3px;
+    .rectangular-game-tile {
+        float: left;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        padding-top: 3px;
+
+        img {
+            border-radius: .5rem;
         }
-    
-        .rectangular-game-tile {
-            float: left;
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
+
+        .rectangular-game-tile-item {
             display: inline-block;
-            padding-top: 3px;
-    
-            img {
-                border-radius: .5rem;
-            }
-    
-            .rectangular-game-tile-item {
-                display: inline-block;
-                max-width: 40%;
-            }
+            max-width: 40%;
         }
+    }
 
-        // mobile
-        @include media("<tablet") {
-            .rectangular-game-tile img {
-                max-height: 6rem;
-            }
+    // mobile
+    @include media("<tablet") {
+        .rectangular-game-tile img {
+            max-height: 6rem;
         }
     }
 }
