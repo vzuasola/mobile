@@ -399,17 +399,27 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             for (const category of this.response.categories) {
                 if (category.hasOwnProperty("field_games_alias")) {
                     key = category.field_games_alias;
-                    this.setGames(this.response.games[key], 0, category.name);
+                    let showAll;
+                    if (category.field_enable_show_all_mobile[0] !== undefined) {
+                        showAll = category.field_enable_show_all_mobile[0].value;
+                    } else {
+                        showAll = false;
+                    }
+                    const imageSize = category.field_game_tile_image_size[0].value;
+                    switch (imageSize) {
+                        case "field_thumbnail_image":
+                            const allGameCount = this.response.games[key].length;
+                            const sliceGameCount = this.response.games[key].slice(0, 6);
+                            this.setGames(sliceGameCount, 0, category.name, showAll, allGameCount);
+                            break;
+                        case "field_game_thumbnail_big":
+                            this.setRectagularGame(this.response.games[key], category.name);
+                    }
                     this.setCategories(this.response.categories, key);
                 }
             }
         }
         this.displayCategoryPageContent();
-        const lobbyGames = this.groupGamesByLobby(this.response.games["all-games"]);
-        if (lobbyGames.hasOwnProperty("popular_games")) {
-            const lobbyTabTitle = lobbyGames.popular_games[0].lobby_tab_title;
-            this.setRectagularGame(lobbyGames.popular_games, lobbyTabTitle);
-        }
     }
 
     /**
@@ -437,16 +447,16 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, page: number = 0, catName = null) {
+    private setGames(data, page: number = 0, catName = null, enableAll = false, gameCount = null) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
-        const catCount = data.length;
         let template = gameTemplate({
             games: pager[page],
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
             categoryName: catName,
-            categoryCount: catCount,
+            enableAllText: enableAll,
+            gameCatCount: gameCount,
         });
 
         if (this.currentPage > page) {
@@ -457,7 +467,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
                     categoryName: catName,
-                    categoryCount: catCount,
+                    gameCatCount: gameCount,
                 });
             }
         }
@@ -616,15 +626,15 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     /**
      * Set Rectangular Game Template
      */
-    private setRectagularGame(data, lobbyTabTitle) {
-        const rectGameEl = this.element.querySelector("#rectangular-game-content");
+    private setRectagularGame(data, categoryTitle) {
+        const rectGameEl = this.element.querySelector("#game-container");
         const template = rectangularGameTemplate({
             games: data,
-            categoryName: lobbyTabTitle,
+            categoryName: categoryTitle,
         });
 
         if (rectGameEl) {
-            rectGameEl.innerHTML = template;
+            rectGameEl.innerHTML += template;
         }
     }
 
@@ -674,27 +684,5 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private listenToSwipe() {
         const games: any = this.element.querySelector(".rectangular-game-tile");
         new Swipe(games);
-    }
-
-    /**
-     * Group games by lobby
-     */
-      private groupGamesByLobby(games) {
-        const groupedGames: any = [];
-        for (const gameId in games) {
-            if (games.hasOwnProperty(gameId)) {
-                const game = games[gameId];
-                if (!groupedGames.hasOwnProperty(game.lobby_tab)
-                ) {
-                    groupedGames[game.lobby_tab] = [];
-                }
-
-                if (typeof groupedGames[game.lobby_tab] !== "undefined"
-                ) {
-                    groupedGames[game.lobby_tab].push(game);
-                }
-            }
-        }
-        return groupedGames;
     }
 }
