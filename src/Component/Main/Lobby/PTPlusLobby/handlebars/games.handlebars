@@ -1,7 +1,11 @@
 <div class="lobby-content">
     <div class="category-data">
         <span class="category-name">{{categoryName}}</span>
-        <a href="#" class="category-count">Show All ({{categoryCount}}) >></a>
+        <a href="#" class="category-count">
+            {{#if enableAllText}}
+                Show All ({{gameCatCount}}) >>
+            {{/if}}
+        </a>
     </div>
     <ul class="game-lobby-container">
     {{#each games}}
