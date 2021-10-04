@@ -1,5 +1,5 @@
 <div class="header-dafabet header-{{ app.product_resolver.getProduct }} clearfix">
-    <div id="header-logo"></div>
+    {{ include('@component/Header/templates/logo-image.html.twig') }}
     {% if is_login %}
     <div class="account-balance">
         <a href="{{ url(cashier_link.uri) }}" target="{{ cashier_link.attributes.target }}" class="hidden">
