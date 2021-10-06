@@ -32,7 +32,6 @@ $settings['settings']['components']['render']['preload'] = [
     'profiler',
     'footer',
     'marketing',
-    'backtotop',
     'seo',
     'meta'
 ];
