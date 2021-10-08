@@ -53,6 +53,10 @@ $settings['settings']['page_cache']['default_timeout'] = 1800;
 
 $settings['settings']['fetchers']['enable_permanent_caching'] = true;
 
+// Sessions
+
+$settings['settings']['session']['lazy'] = true; // Do not start session unless writing information
+
 // Environment Specific
 
 if (\App\Kernel::environment() === 'DEV') {
