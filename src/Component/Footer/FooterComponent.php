@@ -103,7 +103,6 @@ class FooterComponent implements ComponentWidgetInterface
             if (!empty($footerConfigs['back_to_top_title'])) {
                 $data['back_to_top'] = !$this->blockUtils->isVisibleOn($footerConfigs['back_to_top_title']);
             }
-
         } catch (\Exception $e) {
             $footerConfigs = [];
             $data['cookie_notification'] = 'Cookie Notification';
