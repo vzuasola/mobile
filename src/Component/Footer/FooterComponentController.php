@@ -91,8 +91,6 @@ class FooterComponentController
             $data['geo_ip'] = '';
         }
 
-        $data['geo_ip'] = 'CZ';
-
         return $this->rest->output($response, $data);
     }
 
