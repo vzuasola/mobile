@@ -13,3 +13,17 @@
     {% include '@app/web/images/svg/footer/footer-icons.svg' ignore missing %}
     {% include '@app/web/images/svg/quicklinks/quicklinks-icons.svg' ignore missing %}
 </span>
+<div class="cookie-notif hidden" data-country-codes="{{ country_codes }}">
+    {{ cookie_notification|raw }}
+    <span class="cookie-notif-close">x</span>
+</div>
+{% if back_to_top %}
+<span class="back-to-top hide">
+    <svg viewBox="0 30 24 44.999">
+        <use xlink:href="#arrow" />
+    </svg>
+</span>
+{% endif %}
+<span class="hidden">
+    {% include '@app/web/images/svg/backtotop/dafabet-backtotop.svg' ignore missing %}
+</span>

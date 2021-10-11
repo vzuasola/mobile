@@ -12,6 +12,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 {% endblock %}
 
+{% block marketing_space %}
+    {{ widget('marketing_space') }}
+{% endblock %}
+
 {% block header %}
     {{ widget('meta') }}
     {{ widget('header') }}
@@ -21,10 +25,11 @@
 
 {% block body %}
     {% block main %}
+        {{ widget('tab_navigation') }}
         {{ widget('main') }}
     {% endblock main %}
 
-    {{ widget('language1') }}
+    {{ widget('language') }}
     {{ widget('push_notification') }}
     {{ widget('casino_option') }}
 {% endblock body %}

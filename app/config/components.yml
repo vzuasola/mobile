@@ -182,9 +182,6 @@ components:
   marketing:
     class: App\MobileEntry\Component\Marketing\MarketingComponent
 
-  backtotop:
-    class: App\MobileEntry\Component\Backtotop\BacktotopComponent
-
   pwa_home_screen:
     class: App\MobileEntry\Component\PWA\PWAHomeScreenComponent
 
