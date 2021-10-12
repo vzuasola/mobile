@@ -1,4 +1,28 @@
-<div class="home-contact" id="home-contact"></div>
+<div class="home-contact" id="home-contact">
+{% if contact_menu %}
+    {% if contact_us_text  %}
+    <p class="home-contact-title">{{ contact_us_text }}</p>
+    {% endif %}
+    <div class="home-contact-main">
+        <ul class="home-contact-items clearfix">
+            {% for menu in contact_menu %}
+                <li class="home-contact-list">
+                    <a href="{{ menu.uri }}"
+                        class="{{ menu.attributes.class }} {{ menu.attributes.svg }} {{menu.attributes.device}} contact-box"
+                        {% if menu.attributes.dataRouter %}{% else %} data-router="true" {% endif %} data-router-refresh="main" target="{{ menu.attributes.target }}">
+
+                        <svg viewBox="0 0 20 20">
+                            <use xlink:href="#{{ menu.attributes.svg }}" />
+                        </svg>
+                        <span>{{ menu.title }}</span>
+                    </a>
+                </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+</div>
 <span class="hidden">
     {% include '@app/web/images/svg/contacts/contact-icons.svg' ignore missing %}
 </span>

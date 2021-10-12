@@ -4,7 +4,7 @@ namespace App\MobileEntry\Controller;
 
 use App\BaseController;
 
-class VirtualsController extends BaseController
+class PTPlusController extends BaseController
 {
     /**
      *
@@ -19,8 +19,8 @@ class VirtualsController extends BaseController
             $config = [];
         }
 
-        $data['title'] = $config["lobby_page_title"] ?? 'Virtuals';
+        $data['title'] = $config["lobby_page_title"] ?? 'PT+';
 
-        return $this->widgets->render($response, '@site/lobby.page.html.twig', $data);
+        return $this->widgets->render($response, '@site/page.html.twig', $data);
     }
 }

@@ -69,3 +69,46 @@
         border-bottom: 0.1rem solid $soda-gray;
     }
 }
+
+    .footer .floating-section {
+        height: 55px;
+        visibility: hidden;
+    }
+
+.floating-mobile-ptplus, .floating-ptplus {
+
+    .floating-footer {
+        position: fixed;
+        left: 0;;
+        right: 0;
+        bottom: 0;
+        z-index:120;
+    }
+
+    .floating-footer .floating-footer-span {
+        width: 100%;
+        display: block;
+        margin: 3px 0 0;
+        text-transform: capitalize;
+    }
+
+    .floating-footer li {
+        width: 100%;
+    }
+
+    .floating-footer li a {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        border: none;
+    }
+
+    .floating-footer li a img {
+        display: block;
+        width: 100%;
+        height: 2rem;
+    }
+}
+
+
+
+

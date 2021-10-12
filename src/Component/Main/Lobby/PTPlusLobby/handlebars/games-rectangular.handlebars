@@ -1,0 +1,21 @@
+<div class="category-data">
+    <span class="category-name">{{categoryName}}</span>
+</div>
+<div class="rectangular-game">    
+    <ul class="rectangular-game-tile">
+    {{#each games}}
+        <li class="rectangular-game-tile-item {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
+             <a class="game-list game-listing-item"
+            {{#if ../isLogin}}
+            data-game-launch="true"
+            {{/if}}
+            data-game-code="{{this.game_code}}"
+            data-game-title="{{this.title}}"
+            data-game-keywords ="{{this.keywords}}"
+            >
+                <img class="w-100" src="{{this.image_big.url}}" alt="{{this.image_big.alt}}">                
+            </a>
+        </li>
+    {{/each}}
+    </ul>
+</div>

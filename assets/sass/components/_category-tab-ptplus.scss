@@ -1,0 +1,62 @@
+.mobile-ptplus {
+    .category-page {
+        background: $light-gray;
+        display: none;
+        height: calc(100% - 101px);
+        width: 100%;
+        position: absolute;
+        top: 50px;
+        margin: 0;
+        padding: 0;
+        z-index: 99;
+        overflow: auto;
+        padding: 0 1rem; 
+    }
+
+    #game-categories {
+        .category-menu-title {
+            font-size: 1.8rem;
+            color: #af0000;
+            text-align: center;
+            padding-top: 1.5rem;
+        }
+
+        .all-category {
+            .main-game-category {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: inline-block;
+                width: 100%;
+
+                .game-category-item {
+                    border: 0.1rem solid #373737;
+                    border-radius: 0.5rem;
+                    display: inline-block;
+                    width: calc(33.33333333% - 0.4rem);
+                    margin: 0.2rem;
+                    position: relative;
+                    float: left;
+                    height: 10rem;
+                    text-align: center;
+                    padding: .5rem;
+                    line-height: 1.3rem;
+                    
+                    p {
+                        color: #373737;
+                        text-align: center;
+                        margin: 0;
+                        padding-top: 0.4rem;
+                        font-size: 1.3rem;
+                        font-weight: 500;
+                    }
+
+                    img {
+                        height: 6rem;
+                        width: 6rem;
+                    }
+                }
+            }
+        }
+    }
+}

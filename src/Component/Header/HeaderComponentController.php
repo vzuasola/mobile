@@ -3,7 +3,6 @@
 namespace App\MobileEntry\Component\Header;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
-use App\MobileEntry\Services\Product\Products;
 
 class HeaderComponentController
 {
@@ -49,8 +48,7 @@ class HeaderComponentController
     public function getlogo($request, $response)
     {
         $params = $request->getQueryParams();
-        $currentProduct = ($params['product'] && in_array($params['product'], Products::PRODUCTS_WITH_CMS))
-            ? $params['product'] : 'mobile-entrypage';
+        $currentProduct = $params['product'] ?? 'mobile-entrypage';
         $productStyle = $params['style'] ?? 'mobile-entrypage';
         $productRoute = $params['route'] ?? '/';
         try {
@@ -63,7 +61,7 @@ class HeaderComponentController
 
         $lang = $params['language'] ?? 'en';
         $data['logo_title'] = $headerConfigsByProduct['logo_title'] ?? 'Dafabet';
-        $data['logo_link'] = ($currentProduct == 'mobile-soda-casino') ? '/{lang}'.$productRoute : '/{lang}';
+        $data['logo_link'] = ($currentProduct == 'mobile-ptplus') ? '/{lang}'.$productRoute : '/{lang}';
         $data['product'] =  $currentProduct;
         $data['language'] = $lang;
 

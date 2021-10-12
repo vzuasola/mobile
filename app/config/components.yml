@@ -182,9 +182,6 @@ components:
   marketing:
     class: App\MobileEntry\Component\Marketing\MarketingComponent
 
-  backtotop:
-    class: App\MobileEntry\Component\Backtotop\BacktotopComponent
-
   pwa_home_screen:
     class: App\MobileEntry\Component\PWA\PWAHomeScreenComponent
 
@@ -196,6 +193,10 @@ components:
 
   ucp:
     class: App\MobileEntry\Component\Main\UnsupportedCurrency\UnsupportedCurrencyComponent
+
+  ptplus_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\PTPlusLobby\PTPlusLobbyComponent
+    parent: lobby
 
 # Define modules
 modules:

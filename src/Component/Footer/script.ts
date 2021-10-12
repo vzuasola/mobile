@@ -4,7 +4,8 @@ import * as Handlebars from "handlebars/runtime";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import * as footerTemplate from "./handlebars/menu.handlebars";
-
+import BacktoTop from "@app/assets/script/components/back-to-top";
+import {CookieNotif} from "./scripts/cookie-notif";
 import {DafaConnect} from "@app/assets/script/dafa-connect";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
@@ -18,10 +19,19 @@ export class FooterComponent implements ComponentInterface {
     private originalUrl: string;
     private product: string;
     private footerData: any;
+    private geoIp: string;
 
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getFooter();
+        this.cookieNotif((geoIp) => {
+            new CookieNotif({
+                geoIp,
+                element: this.element,
+            });
+        });
+
+        this.activeBackToTop(element);
 
         Router.on(RouterClass.afterNavigate, (event) => {
             this.refreshFooter();
@@ -31,6 +41,13 @@ export class FooterComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getFooter();
+        this.activeBackToTop(element);
+        this.cookieNotif((geoIp) => {
+            new CookieNotif({
+                geoIp,
+                element: this.element,
+            });
+        });
     }
 
     private getOriginalUrl() {
@@ -84,6 +101,21 @@ export class FooterComponent implements ComponentInterface {
         });
     }
 
+    private cookieNotif(callback) {
+        if (!this.geoIp) {
+            xhr({
+                url: Router.generateRoute("footer", "getGeoIp"),
+                type: "json",
+            }).then((response) => {
+                this.geoIp = response.geo_ip;
+
+                callback(response.geo_ip);
+            });
+        }
+
+        callback(this.geoIp);
+    }
+
     /**
      * Set the download in the template
      *
@@ -135,5 +167,10 @@ export class FooterComponent implements ComponentInterface {
 
         data.footer_menu = menus;
         return data;
+    }
+
+    private activeBackToTop(element) {
+        const backtoTop = new BacktoTop(element);
+        backtoTop.init();
     }
 }
