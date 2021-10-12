@@ -41,8 +41,7 @@ class ContactUsComponent implements ComponentWidgetInterface
         $menus,
         $configs,
         $playerSession
-    )
-    {
+    ) {
         $this->configs = $configs;
         $this->menus = $menus;
         $this->playerSession = $playerSession;
@@ -70,13 +69,12 @@ class ContactUsComponent implements ComponentWidgetInterface
         try {
             $contact_menu  = $this->menus->getMultilingualMenu('mobile-contact-us');
             foreach ($contact_menu as $menu) {
-                if ( $isPartnerMatrix &&
+                if ($isPartnerMatrix &&
                     $menu['attributes']['partnerMatrixPlayer'] !== "partner-matrix-app") {
                     continue;
                 }
                 $data['contact_menu'][] = $menu;
             }
-
         } catch (\Exception $e) {
             $data['contact_menu'] = [];
         }
