@@ -39,7 +39,17 @@ export class SodaCasinoIntegrationModule extends Redirectable implements ModuleI
                         return;
                     }
 
-                    Router.navigate(response.url, ["*"], {removeParams: ["product"]});
+                    Router.navigate(response.url, [
+                        "header",
+                        "menu",
+                        "announcement",
+                        "language",
+                        "main",
+                        "push_notification",
+                        "casino_option",
+                        "marketing",
+                        "seo",
+                    ], {removeParams: ["product"]});
                     this.loader.hide();
                     return;
                 }
