@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b622277173c7d72feb77e643555c46ee",
+    "content-hash": "ca152995f9a0dbabe734a87378142b7a",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3104,11 +3104,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.212.2",
+            "version": "dev-feature-MDAFABET-485-change-session-cache-lifetime-value",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "57ffc6652e97e8356142f0091d0d4fd84c3dca3f"
+                "reference": "f774f756878152c80ecef41c94889c2edf149c0d"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3159,7 +3159,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2021-10-08T09:12:54+00:00"
+            "time": "2021-10-13T10:47:22+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -4793,5 +4793,6 @@
     "platform": {
         "php": ">=7.1.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
