@@ -47,7 +47,17 @@ export class SodaCasinoPreference {
         if (response.success) {
             if (response.redirect &&
                 response.preferredProduct !== this.casinoOptionMapping[currentProduct]) {
-                Router.navigate(response.redirect, ["*"]);
+                Router.navigate(response.redirect, [
+                    "header",
+                    "menu",
+                    "announcement",
+                    "language",
+                    "main",
+                    "push_notification",
+                    "casino_option",
+                    "marketing",
+                    "seo",
+                ]);
                 this.loader.hide();
                 return;
             }

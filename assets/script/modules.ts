@@ -26,7 +26,6 @@ import {GPIKenoModule} from "@app/src/Module/GameIntegration/GPIKeno/script";
 import {GPIPkModule} from "@app/src/Module/GameIntegration/GPIPk/script";
 import {GPIThaiModule} from "@app/src/Module/GameIntegration/GPIThai/script";
 import {GPISodeModule} from "@app/src/Module/GameIntegration/GPISode/script";
-import {ExchangeLauncherModule} from "@app/src/Module/GameIntegration/ExchangeLauncher/script";
 import {TGPModule} from "@app/src/Module/GameIntegration/TGP/script";
 import {AllBetModule} from "@app/src/Module/GameIntegration/AllBet/script";
 import {WACModule} from "@app/src/Module/GameIntegration/WAC/script";
@@ -41,11 +40,11 @@ import {GenericIntegrationModule} from "@app/src/Module/ProductIntegration/Gener
 import {ALSIntegrationModule} from "@app/src/Module/ProductIntegration/ALS/script";
 import {OWSportsIntegrationModule} from "@app/src/Module/ProductIntegration/OWSports/script";
 import {CasinoIntegrationModule} from "@app/src/Module/ProductIntegration/Casino/script";
-import {ExchangeIntegrationModule} from "@app/src/Module/ProductIntegration/Exchange/script";
 import {GamesIntegrationModule} from "@app/src/Module/ProductIntegration/Games/script";
 import {LiveDealerIntegrationModule} from "@app/src/Module/ProductIntegration/LiveDealer/script";
 import {ArcadeIntegrationModule} from "@app/src/Module/ProductIntegration/Arcade/script";
 import {LotteryIntegrationModule} from "@app/src/Module/ProductIntegration/Lottery/script";
+import {VirtualsIntegrationModule} from "@app/src/Module/ProductIntegration/Virtuals/script";
 import {SodaCasinoIntegrationModule} from "@app/src/Module/ProductIntegration/SodaCasino/script";
 import {PartnerMatrixModule} from "@app/src/Module/PartnerMatrix/script";
 import {JSystemModule} from "@app/src/Module/GameIntegration/JSystem/script";
@@ -99,6 +98,7 @@ ComponentManager.setModules({
     live_dealer_integration: new LiveDealerIntegrationModule(),
     arcade_integration: new ArcadeIntegrationModule(),
     lottery_integration: new LotteryIntegrationModule(),
+    virtuals_integration: new VirtualsIntegrationModule(),
     soda_casino_integration: new SodaCasinoIntegrationModule(),
     partner_matrix: new PartnerMatrixModule(),
     fghub_gaming_integration: new FGHubGamingModule(),
