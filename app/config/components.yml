@@ -340,6 +340,9 @@ modules:
   lottery_integration:
     class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
 
+  virtuals_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Virtuals\VirtualsIntegrationModule
+
   soda_casino_integration:
     class: App\MobileEntry\Module\ProductIntegration\SodaCasino\SodaCasinoIntegrationModule
 
