@@ -18,8 +18,6 @@ class IDDomain
         'm.d8bola.net',
         'd8id.com',
         'm.d8id.com',
-        'd8id.net',
-        'm.d8id.net',
         'd8gol.com',
         'm.d8gol.com',
         'golemas.com',
@@ -30,6 +28,11 @@ class IDDomain
         'm.pialadunia888.com',
         'stg-m.elysium-pkr.com',
         'stg-m.elysium-csn.com',
+    ];
+
+    const BYPASS_ID_DOMAIN = [
+        'd8id.net',
+        'm.d8id.net',
     ];
 
     /**
@@ -81,6 +84,10 @@ class IDDomain
         $hostname = Host::getHostname();
 
         $countryCode = $this->getGeoIpCountry();
+
+        if (in_array($hostname, self::BYPASS_ID_DOMAIN)) {
+            return false;
+        }
 
         return (in_array($hostname, self::DOMAINS) && strtolower($this->lang) == strtolower(self::LANG))
             || strtolower($countryCode) == strtolower(self::LANG);
