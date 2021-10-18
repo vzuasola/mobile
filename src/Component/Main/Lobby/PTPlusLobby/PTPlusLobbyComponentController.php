@@ -334,6 +334,10 @@ class PTPlusLobbyComponentController
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
+            $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "ptplus";
+            $processGame['use_game_loader'] = !empty($game['field_disable_game_loader'][0]['value']) ? false : true;
+            $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
+
             if (isset($game['field_game_ribbon'][0])) {
                 $ribbon = $game['field_game_ribbon'][0];
                 $processGame['ribbon']['background'] = $ribbon['field_ribbon_background_color'][0]['color'];
