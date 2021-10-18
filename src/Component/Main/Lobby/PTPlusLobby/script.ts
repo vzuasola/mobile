@@ -16,6 +16,7 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import Swipe from "@app/assets/script/components/custom-touch/swipe";
+import PopupWindow from "@app/assets/script/components/popup";
 
 /**
  *
@@ -68,6 +69,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
+        this.listenToLaunchGameLoader();
         this.listenToSwipe();
         this.generateLobby(() => {
             this.lobby();
@@ -95,6 +97,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         if (!this.element) {
             this.listenClickGameTile();
             this.listenGameLaunch();
+            this.listenToLaunchGameLoader();
             this.listenFavoriteClick();
             this.listenClickTab();
         }
@@ -498,6 +501,13 @@ export class PTPlusLobbyComponent implements ComponentInterface {
      */
     private listenGameLaunch() {
         ComponentManager.subscribe("game.launch", (event, src, data) => {
+            if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
+                ComponentManager.broadcast("clickstream.game.launch", {
+                    srcEl: data.src,
+                    product: ComponentManager.getAttribute("product"),
+                    response: data.response,
+                });
+            }
             const el = utility.hasClass(data.src, "game-list", true);
             if (el) {
                 const gameCode = el.getAttribute("data-game-code");
@@ -515,6 +525,53 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }).fail((error, message) => {
                     console.log(error);
                 });
+            }
+        });
+    }
+
+    /**
+     * Event listener for launching pop up loader
+     */
+     private listenToLaunchGameLoader() {
+        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
+            if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
+                // Pop up loader with all data
+                const prop = {
+                    width: 360,
+                    height: 720,
+                    scrollbars: 1,
+                    scrollable: 1,
+                    resizable: 1,
+                };
+
+                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
+                const source = utility.getParameterByName("source");
+
+                for (const key in data.options) {
+                    if (data.options.hasOwnProperty(key)) {
+                        const param = data.options[key];
+                        url = utility.addQueryParam(url, key, param);
+                    }
+                }
+
+                url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+                url = utility.addQueryParam(url, "loaderFlag", "true");
+                if (data.options.target === "popup" || data.options.target === "_blank") {
+                    this.windowObject = PopupWindow(url, "gameWindow", prop);
+                }
+
+                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
+                    return;
+                }
+
+                // handle redirects if we are on a PWA standalone
+                if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
+                    source === "pwa" || data.options.target === "_self" || data.options.target === "_top" &&
+                    (data.options.target !== "popup" || data.options.target !== "_blank")
+                ) {
+                    window.location.href = url;
+                    return;
+                }
             }
         });
     }
@@ -631,6 +688,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         const template = rectangularGameTemplate({
             games: data,
             categoryName: categoryTitle,
+            isLogin: this.isLogin,
         });
 
         if (rectGameEl) {
