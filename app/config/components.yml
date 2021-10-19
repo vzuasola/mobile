@@ -182,9 +182,6 @@ components:
   marketing:
     class: App\MobileEntry\Component\Marketing\MarketingComponent
 
-  backtotop:
-    class: App\MobileEntry\Component\Backtotop\BacktotopComponent
-
   pwa_home_screen:
     class: App\MobileEntry\Component\PWA\PWAHomeScreenComponent
 
@@ -342,6 +339,9 @@ modules:
 
   lottery_integration:
     class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
+
+  virtuals_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Virtuals\VirtualsIntegrationModule
 
   soda_casino_integration:
     class: App\MobileEntry\Module\ProductIntegration\SodaCasino\SodaCasinoIntegrationModule

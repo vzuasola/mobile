@@ -191,7 +191,17 @@ export class CasinoLobbyComponent implements ComponentInterface {
                     url = utility.addQueryParam(url, key, params[key]);
                 }
             }
-            Router.navigate(url, ["*"]);
+            Router.navigate(url, [
+                "header",
+                "menu",
+                "announcement",
+                "language",
+                "main",
+                "push_notification",
+                "casino_option",
+                "marketing",
+                "seo",
+            ]);
             Router.on(RouterClass.afterNavigate, (event) => {
                ComponentManager.broadcast("redirect.postlogin.casino-gold", { loader: this.loader });
             });

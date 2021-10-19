@@ -1,28 +1,23 @@
 import * as utility from "@core/assets/js/components/utility";
-import * as Handlebars from "handlebars/runtime";
-
-import * as xhr from "@core/assets/js/vendor/reqwest";
-
-import * as contactUsTemplate from "./handlebars/contact.handlebars";
-import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import EqualHeight from "@app/assets/script/components/equal-height";
-import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
+import {ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 
 /**
  *
  */
 export class ContactUsComponent implements ComponentInterface {
     private element: HTMLElement;
-    private contactUsData: any;
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getContactUs();
+        this.checkVisibility();
+        this.equalizeContactUsHeight();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getContactUs();
+        this.checkVisibility();
+        this.equalizeContactUsHeight();
     }
 
     private equalizeContactUsHeight() {
@@ -30,55 +25,57 @@ export class ContactUsComponent implements ComponentInterface {
         equalDownload.init();
     }
 
-    private getContactUs() {
-        xhr({
-            url: Router.generateRoute("home_contactus", "contactUs"),
-            type: "json",
-        }).then((response) => {
-            this.contactUsData = response;
-            this.generateContactUsMarkup(this.contactUsData);
-            this.equalizeContactUsHeight();
-        });
+    private checkVisibility() {
+        const isIOS = this.isIOS();
+        const contactItems = this.element.querySelectorAll(".home-contact-list a");
+        if (typeof contactItems !== "undefined") {
+            for (const key in contactItems) {
+                if (contactItems.hasOwnProperty(key)) {
+                    const parentEl = utility.findParent(contactItems[key], "li");
+                    if ((!isIOS && utility.hasClass(contactItems[key], "ios")) ||
+                    (isIOS && utility.hasClass(contactItems[key], "android"))) {
+                        parentEl.remove();
+                    }
+                }
+            }
+
+            this.applyMenuClass();
+        }
     }
 
-    /**
-     * Set the download in the template
-     *
-     */
-    private generateContactUsMarkup(data) {
-        const contactUs: HTMLElement = this.element.querySelector("#home-contact");
-        data = this.procesMenu(data);
-        const template = contactUsTemplate({
-            contactUsData: data,
-            contactUstext: data.entrypage_config.contact_us_home_text,
-            menuClass: data.contact_menu.length === 4 ? "col-3"
-            : ((data.contact_menu.length === 3)
-            ? "home-contact-col-3 push" : data.contact_menu.length === 2
-            ? "home-contact-col-2" : data.contact_menu.length === 1
-            ? "home-contact-full-width" : "home-contact-more"),
-        });
+    private applyMenuClass() {
+        const contactItems = this.element.querySelectorAll(".home-contact-list");
+        const menuClass = [];
+        menuClass[4] = "col-3";
+        menuClass[3] = "home-contact-col-3";
+        menuClass[2] = "home-contact-col-2";
+        menuClass[1] = "home-contact-full-width";
 
-        contactUs.innerHTML = template;
-    }
+        if (typeof contactItems !== "undefined") {
+            const itemClass = (typeof menuClass[contactItems.length] !== "undefined")
+                ? menuClass[contactItems.length] : "home-contact-more";
 
-    private procesMenu(data) {
-        const contacts = [];
-        for (const contact in data.contact_menu) {
-            if (data.contact_menu.hasOwnProperty(contact)) {
-                const contactUsData = data.contact_menu[contact];
-                const playerMatrix = (data.partnerMatrix === true &&
-                    contactUsData.attributes.partnerMatrixPlayer === "partner-matrix-app")
-                    || data.partnerMatrix === false;
-
-                if (playerMatrix) {
-                    if (!contactUsData.attributes.device) {
-                        contacts.push(contactUsData);
+            for (const key in contactItems) {
+                if (contactItems.hasOwnProperty(key)) {
+                    utility.addClass(contactItems[key], itemClass);
+                    if (contactItems.length === 3) {
+                        utility.addClass(contactItems[key], "push");
                     }
                 }
             }
         }
+    }
 
-        data.contact_menu = contacts;
-        return data;
+    private isIOS() {
+        return [
+            "iPad Simulator",
+            "iPhone Simulator",
+            "iPod Simulator",
+            "iPad",
+            "iPhone",
+            "iPod",
+        ].indexOf(navigator.platform) !== -1
+        // iPad on iOS 13 detection
+        || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
     }
 }

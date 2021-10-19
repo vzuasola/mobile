@@ -65,7 +65,17 @@ export class CasinoOptionComponent implements ComponentInterface {
                     if (response.preferredProduct && response.redirect) {
                         this.setSelectedOption(response.preferredProduct);
 
-                        Router.navigate(response.redirect, ["*"]);
+                        Router.navigate(response.redirect, [
+                            "header",
+                            "menu",
+                            "announcement",
+                            "language",
+                            "main",
+                            "push_notification",
+                            "casino_option",
+                            "marketing",
+                            "seo",
+                        ]);
                         Modal.close("#casino-option-lightbox");
                     }
                 });

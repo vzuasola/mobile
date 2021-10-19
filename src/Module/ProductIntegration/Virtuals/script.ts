@@ -7,8 +7,8 @@ import {Redirector} from "@app/assets/script/components/redirector";
 
 import {Redirectable} from "../scripts/redirectable";
 
-export class LiveDealerIntegrationModule extends Redirectable implements ModuleInterface {
-    protected code = "live-dealer";
+export class VirtualsIntegrationModule extends Redirectable implements ModuleInterface {
+    protected code = "virtuals";
     protected isLoginOnly = false;
 
     protected doRequest(src) {
@@ -49,6 +49,7 @@ export class LiveDealerIntegrationModule extends Redirectable implements ModuleI
                         "casino_option",
                         "marketing",
                         "seo",
+                        "tab_navigation",
                     ], {removeParams: ["product"]});
                     this.loader.hide();
                     return;

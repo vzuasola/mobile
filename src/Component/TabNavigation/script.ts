@@ -3,7 +3,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as quickNavTemplate from "./handlebars/tab-navigation.handlebars";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 /**
  *
@@ -13,18 +13,19 @@ export class TabNavigationComponent implements ComponentInterface {
     private events = {};
     private quickNavMenu: [];
     private product: string;
+    private isLoaded: boolean = false;
 
     onLoad(element: HTMLElement) {
         this.element = element;
         this.events = {};
         this.quickNavMenu = [];
         this.product = ComponentManager.getAttribute("product");
-        this.tabNavXhrRequest("quickNav", (response) => {
-            this.quickNavMenu = response;
-            if (response.quick_nav.length > 0) {
-                this.populateQuickNavMenu();
-                this.highlightQuickNavMenu();
-                this.broadcastTabNavReady();
+        this.initQuickNav();
+
+        Router.on(RouterClass.afterNavigate, (event) => {
+            if (!this.isLoaded) {
+                this.initQuickNav();
+                this.isLoaded = true;
             }
         });
     }
@@ -33,6 +34,13 @@ export class TabNavigationComponent implements ComponentInterface {
         this.element = element;
         this.quickNavMenu = [];
         this.product = ComponentManager.getAttribute("product");
+        this.initQuickNav();
+        if (typeof this.events === "undefined") {
+            this.events = {};
+        }
+    }
+
+    private initQuickNav() {
         this.tabNavXhrRequest("quickNav", (response) => {
             this.quickNavMenu = response;
             if (response.quick_nav.length > 0) {
@@ -41,9 +49,6 @@ export class TabNavigationComponent implements ComponentInterface {
                 this.broadcastTabNavReady();
             }
         });
-        if (typeof this.events === "undefined") {
-            this.events = {};
-        }
     }
 
     /**
@@ -77,7 +82,6 @@ export class TabNavigationComponent implements ComponentInterface {
             router_refresh: JSON.stringify(["main", "tab_navigation"]),
         });
         /* tslint:disable:no-string-literal */
-
         this.element.querySelector(".quick-nav-menu").innerHTML = template;
     }
 
