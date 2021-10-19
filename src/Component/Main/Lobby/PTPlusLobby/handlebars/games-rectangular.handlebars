@@ -1,10 +1,12 @@
-<div class="category-data">
+<div class="category-data req-category-data">
     <span class="category-name">{{categoryName}}</span>
-</div>
-<div class="rectangular-game">    
+</div> 
+<div class="rectangular-game">  
     <ul class="rectangular-game-tile">
     {{#each games}}
-        <li class="rectangular-game-tile-item {{#condition ../active "===" this.field_games_alias}}active{{/condition}}">
+        <li class="rectangular-game-tile-item"
+            style="background-image: url({{this.image_big.url}})" 
+            role="img" aria-label="{{this.image_big.alt}}">
              <a class="game-list game-listing-item"
             {{#if ../isLogin}}
             data-game-launch="true"
@@ -16,7 +18,6 @@
             data-game-loader="{{this.use_game_loader}}"
             data-game-target="{{this.target}}"
             >
-                <img class="w-100" src="{{this.image_big.url}}" alt="{{this.image_big.alt}}">                
             </a>
         </li>
     {{/each}}
