@@ -33,6 +33,8 @@ class IDDomain
     const BYPASS_ID_DOMAIN = [
         'd8id.net',
         'm.d8id.net',
+        'itct-www.elysium-dfbt.com',
+        'istg-www.elysium-dfbt.com',
     ];
 
     /**
