@@ -79,6 +79,7 @@ export class LanguageComponent implements ComponentInterface {
                             "casino_option",
                             "marketing",
                             "seo",
+                            "footer",
                         ],
                         {
                             language: selectedLang,
