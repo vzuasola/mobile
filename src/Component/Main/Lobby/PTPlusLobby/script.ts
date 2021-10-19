@@ -15,7 +15,6 @@ import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/ass
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
-import Swipe from "@app/assets/script/components/custom-touch/swipe";
 import PopupWindow from "@app/assets/script/components/popup";
 
 /**
@@ -70,7 +69,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.listenFavoriteClick();
         this.listenToLaunchGameLoader();
-        this.listenToSwipe();
         this.generateLobby(() => {
             this.lobby();
         });
@@ -113,7 +111,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.generateLobby(() => {
             this.lobby();
         });
-        this.listenToSwipe();
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -734,13 +731,5 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 });
             }
         });
-    }
-
-    /**
-     * Rectangular Games Slider
-     */
-    private listenToSwipe() {
-        const games: any = this.element.querySelector(".rectangular-game-tile");
-        new Swipe(games);
     }
 }
