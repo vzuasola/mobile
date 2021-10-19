@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b71444d01fec12c217c67c62276e3a49",
+    "content-hash": "2dadfbc68ba622408e4165000f1e7d3a",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3104,11 +3104,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.212.1",
+            "version": "dev-feature-ipl-277-fix-error-500-invalid-component",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "e1a3f312600e69a0b3e165272ca4cd2caa771516"
+                "reference": "a49f29103c5a2eed7e337ff65cf35e581fc64703"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3159,7 +3159,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2021-10-05T12:50:44+00:00"
+            "time": "2021-10-13T10:41:05+00:00"
         },
         {
             "name": "willdurand/negotiation",
