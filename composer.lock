@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2dadfbc68ba622408e4165000f1e7d3a",
+    "content-hash": "9e47adb6367bd0dba9262ffd161c4960",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3104,11 +3104,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-feature-ipl-277-fix-error-500-invalid-component",
+            "version": "dev-release-v1.212.3",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "a49f29103c5a2eed7e337ff65cf35e581fc64703"
+                "reference": "a413c9b46b864e397a5b38357736bcc9737c8667"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3159,7 +3159,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2021-10-13T10:41:05+00:00"
+            "time": "2021-10-19T05:31:49+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -4647,6 +4647,7 @@
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
+            "abandoned": true,
             "time": "2015-07-28T20:34:47+00:00"
         },
         {
