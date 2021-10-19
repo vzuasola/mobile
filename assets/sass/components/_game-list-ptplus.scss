@@ -14,6 +14,11 @@
     .category-data {
         padding: 1rem 0;
     }
+
+    .req-category-data {
+        padding: 1rem 1rem 0 1rem;
+    }
+
     .category-name {
         color: #373737;
         text-transform: uppercase;
@@ -33,7 +38,10 @@
     #game-container {
         width: 100%;
         float: left;
-        padding: 0 1rem;
+
+        .lobby-content {
+            padding: 0 1rem;
+        }
 
         .game-lobby-container {
             margin: 0;
@@ -46,16 +54,24 @@
                 float: left;
                 display: inline-block;
                 min-height: 0.1rem;
-                width: 33.33333333%;
-                padding: 3px;
+                width: calc(33.33333333% - 6px);
+                margin: 3px;
+                background-repeat:no-repeat;
+                -webkit-background-size:cover;
+                -moz-background-size:cover;
+                -o-background-size:cover;
+                background-size:cover;
+                background-position:center;
+                min-height: 86px;
+                border-radius: .5rem;
+                padding: 0;
 
                 a {
                     float: none;
                     display: block;
-                }
-
-                img {
-                    border-radius: .5rem;
+                    padding: 0;
+                    width: 100%;
+                    min-height: 86px;
                 }
 
                 .label-game-title {
@@ -144,39 +160,91 @@
                     overflow: hidden;
                 }
             }
+
+            @media only screen and (min-width: 768px) {
+                .game-listing {
+                    .game-listing-item {
+                        min-height: 172px;
+                        min-width: 220px;
+                    }
+                }
+            }
+
+            @media only screen and (min-width: 1024px) {
+                .game-listing {
+                    .game-listing-item {
+                        min-height: 25vw;
+                    }
+                }
+            }
         }
     }
 
     .rectangular-game {
-        padding-left: 1rem;
         white-space: nowrap;
         overflow-x: auto;
         width: 100%;
-        padding-left: 3px;
+        padding-left: 1rem;
     }
-
     .rectangular-game-tile {
         float: left;
         list-style-type: none;
         margin: 0;
         padding: 0;
         display: inline-block;
-        padding-top: 3px;
-
-        img {
-            border-radius: .5rem;
-        }
+        font-size: 0;
 
         .rectangular-game-tile-item {
             display: inline-block;
-            max-width: 40%;
+            margin: 3px 3px 0 3px;
+            background-repeat:no-repeat;
+            -webkit-background-size:cover;
+            -moz-background-size:cover;
+            -o-background-size:cover;
+            background-size:cover;
+            background-position:center;
+            min-width: 139px;
+            border-radius: .5rem;
+
+            .game-listing-item {
+                padding: 0;
+                width: 100%;
+                min-height: 86px;
+            }
+        }
+
+        @media only screen and (min-width: 768px) {
+            .rectangular-game-tile-item {
+                width: 36%;
+
+                .game-listing-item {
+                    min-height: 172px;
+                    min-width: 278px;
+                }
+            }
+        }
+
+        @media only screen and (min-width: 1024px) {
+            .rectangular-game-tile-item {
+                width: 56%;
+            }
+
+            .game-listing-item {
+                height: 25vw;
+            }
         }
     }
 
-    // mobile
-    @include media("<tablet") {
-        .rectangular-game-tile img {
-            max-height: 6rem;
+    @media (orientation: landscape){
+        .rectangular-game-tile-item,
+        .game-listing {
+            .game-listing-item {
+                height: 25vw;
+            }
+        }
+
+        .rectangular-game-tile-item {
+            width: 40vw;
         }
     }
 }
