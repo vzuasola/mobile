@@ -3,7 +3,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as quickNavTemplate from "./handlebars/tab-navigation.handlebars";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
  *
@@ -13,7 +13,6 @@ export class TabNavigationComponent implements ComponentInterface {
     private events = {};
     private quickNavMenu: [];
     private product: string;
-    private isLoaded: boolean = false;
 
     onLoad(element: HTMLElement) {
         this.element = element;
@@ -21,13 +20,6 @@ export class TabNavigationComponent implements ComponentInterface {
         this.quickNavMenu = [];
         this.product = ComponentManager.getAttribute("product");
         this.initQuickNav();
-
-        Router.on(RouterClass.afterNavigate, (event) => {
-            if (!this.isLoaded) {
-                this.initQuickNav();
-                this.isLoaded = true;
-            }
-        });
     }
 
     onReload(element: HTMLElement) {
