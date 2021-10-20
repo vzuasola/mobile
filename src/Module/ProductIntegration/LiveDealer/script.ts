@@ -39,17 +39,7 @@ export class LiveDealerIntegrationModule extends Redirectable implements ModuleI
                         return;
                     }
 
-                    Router.navigate(response.url, [
-                        "header",
-                        "menu",
-                        "announcement",
-                        "language",
-                        "main",
-                        "push_notification",
-                        "casino_option",
-                        "marketing",
-                        "seo",
-                    ], {removeParams: ["product"]});
+                    Router.navigate(response.url, ["*"], {removeParams: ["product"]});
                     this.loader.hide();
                     return;
                 }

@@ -21,6 +21,6 @@ class LotteryController extends BaseController
 
         $data['title'] = $config["lobby_page_title"] ?? 'Lottery';
 
-        return $this->widgets->render($response, '@site/lobby.page.html.twig', $data);
+        return $this->widgets->render($response, '@site/page.html.twig', $data);
     }
 }
