@@ -410,7 +410,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         case "field_thumbnail_image":
                             const allGameCount = this.response.games[key].length;
                             const sliceGameCount = this.response.games[key].slice(0, 6);
-                            this.setGames(sliceGameCount, 0, category.name, showAll, allGameCount);
+                            this.setGames(sliceGameCount, 0, category.name, key, showAll, allGameCount);
                             break;
                         case "field_game_thumbnail_big":
                             this.setRectagularGame(this.response.games[key], category.name);
@@ -419,6 +419,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }
             }
         }
+        this.test();
         this.displayCategoryPageContent();
     }
 
@@ -447,14 +448,16 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, page: number = 0, catName = null, enableAll = false, gameCount = null) {
+    private setGames(data, page: number = 0, catName = null, catUrl = null, enableAll = false, gameCount = null) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
+        const fullCatUrl = window.location.href + "#" + catUrl;
         let template = gameTemplate({
             games: pager[page],
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
             categoryName: catName,
+            categoryUrl: fullCatUrl,
             enableAllText: enableAll,
             gameCatCount: gameCount,
         });
@@ -467,6 +470,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
                     categoryName: catName,
+                    categoryUrl: fullCatUrl,
                     gameCatCount: gameCount,
                 });
             }
@@ -731,5 +735,9 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 });
             }
         });
+    }
+
+    private test() {
+        console.log(window.location);
     }
 }
