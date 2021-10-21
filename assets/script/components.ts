@@ -3,7 +3,6 @@ import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/componen
 import {AccessDeniedComponent} from "@app/src/Component/Main/AccessDenied/script";
 import {MaintenanceComponent} from "@app/src/Component/Main/Maintenance/script";
 import {HeaderComponent} from "@app/src/Component/Header/script";
-import {BacktotopComponent} from "@app/src/Component/Backtotop/script";
 import {MenuComponent} from "@app/src/Component/Menu/script";
 import {MetaComponent} from "@app/src/Component/Meta/script";
 import {LoginComponent} from "@app/src/Component/Header/Login/script";
@@ -46,7 +45,6 @@ import {MyAccountProfileComponent} from "@app/src/Component/Main/MyAccount/Profi
 import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/MyAccount/Profile/VerifyPassword/script";
 import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
 import {FooterComponent} from "@app/src/Component/Footer/script";
-import {CookieNotifComponent} from "@app/src/Component/CookieNotif/script";
 import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
 import {VirtualsLobbyComponent} from "@app/src/Component/Main/Lobby/VirtualsLobby/script";
@@ -55,7 +53,6 @@ ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
     maintenance: new MaintenanceComponent(),
     header: new HeaderComponent(),
-    backtotop: new BacktotopComponent(),
     menu: new MenuComponent(),
     meta: new MetaComponent(),
     header_login: new LoginComponent(),
@@ -99,7 +96,6 @@ ComponentManager.setComponents({
     profile_verify_password: new MyAccountProfileVerifyPasswordComponent(),
     change_password: new MyAccountChangePasswordComponent(),
     footer: new FooterComponent(),
-    cookie_notification: new CookieNotifComponent(),
     game_loader: new GameLoaderComponent(),
     ucp: new UnsupportedCurrencyComponent(),
 });
