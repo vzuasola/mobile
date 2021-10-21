@@ -279,6 +279,15 @@ routes:
             enabled: true
             expires: 1800
 
+    /api/plugins/component/route/footer/footer:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: private, max-age=300
+        page_cache:
+            enabled: true
+            expires: 1800
+
     /api/plugins/component/route/promotions/archive:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
