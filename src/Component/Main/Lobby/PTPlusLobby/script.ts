@@ -78,6 +78,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.componentFinish();
         this.listenClickTab();
         this.activeLinks();
+        this.listenHashChange();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -98,6 +99,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             this.listenToLaunchGameLoader();
             this.listenFavoriteClick();
             this.listenClickTab();
+            this.listenHashChange();
         }
         this.groupedGames = undefined;
         this.response = null;
@@ -117,7 +119,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.componentFinish();
         this.activeLinks();
     }
-
     /**
      * Active Link for ptplus main page
      */
@@ -396,42 +397,84 @@ export class PTPlusLobbyComponent implements ComponentInterface {
      */
     private setLobby(key?: string) {
         if (!key) {
-            for (const category of this.response.categories) {
-                if (category.hasOwnProperty("field_games_alias")) {
-                    key = category.field_games_alias;
-                    let showAll;
-                    if (category.field_enable_show_all_mobile[0] !== undefined) {
-                        showAll = category.field_enable_show_all_mobile[0].value;
-                    } else {
-                        showAll = false;
-                    }
-                    const imageSize = category.field_game_tile_image_size[0].value;
-                    switch (imageSize) {
-                        case "field_thumbnail_image":
-                            const allGameCount = this.response.games[key].length;
-                            const sliceGameCount = this.response.games[key].slice(0, 6);
-                            this.setGames(sliceGameCount, 0, category.name, key, showAll, allGameCount);
-                            break;
-                        case "field_game_thumbnail_big":
-                            this.setRectagularGame(this.response.games[key], category.name);
-                    }
-                    this.setCategories(this.response.categories, key);
+            this.homePageContent(key);
+            key = utility.getHash(window.location.href);
+        }
+        if (key !== "game-categories" && key !== "") {
+            this.gameCategoryPageContent(key);
+        }
+        this.displayCategoryPageContent();
+    }
+
+    /**
+     * Display home page content
+     *
+     */
+    private homePageContent(key?: string) {
+        for (const category of this.response.categories) {
+            if (category.hasOwnProperty("field_games_alias")) {
+                key = category.field_games_alias;
+                let showAll;
+                const template = "home-page-content";
+                if (category.field_enable_show_all_mobile[0] !== undefined) {
+                    showAll = category.field_enable_show_all_mobile[0].value;
+                } else {
+                    showAll = false;
+                }
+                const imageSize = category.field_game_tile_image_size[0].value;
+                switch (imageSize) {
+                    case "field_thumbnail_image":
+                        const allGameCount = this.response.games[key].length;
+                        const sliceGameCount = this.response.games[key].slice(0, 6);
+                        const processPageContent = {
+                            categoryName: category.name,
+                            categoryUrl: key,
+                            enableAll: showAll,
+                            gameCount: allGameCount,
+                            templateType: template,
+                            backUrl: "",
+                        };
+                        this.setGames(sliceGameCount, 0, processPageContent);
+                        break;
+                    case "field_game_thumbnail_big":
+                        this.setRectagularGame(this.response.games[key], category.name);
+                }
+                this.setCategories(this.response.categories);
+            }
+        }
+    }
+
+    /**
+     * Display game category page content
+     *
+     */
+    private gameCategoryPageContent(key?: string) {
+        for (const category of this.response.categories) {
+            if (category.hasOwnProperty("field_games_alias")) {
+                const catKey = category.field_games_alias;
+                if (key === catKey) {
+                    const processPageContent = {
+                        categoryName: category.name,
+                        categoryUrl: 0,
+                        enableAll: false,
+                        gameCount: 0,
+                        templateType: "category-game-content",
+                        backUrl: key,
+                    };
+                    this.setGames(this.response.games[catKey], 0, processPageContent);
                 }
             }
         }
-        this.test();
-        this.displayCategoryPageContent();
     }
 
     /**
      * Set the category in the template
      *
      */
-    private setCategories(data, key) {
+    private setCategories(data) {
         const categoriesEl = document.querySelector("#game-categories");
         const template = categoriesTemplate({
             categories: data,
-            active: key,
             configs: this.attachments.configs,
         });
 
@@ -448,18 +491,19 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, page: number = 0, catName = null, catUrl = null, enableAll = false, gameCount = null) {
+    private setGames(data, page: number = 0, pageContent: object = {}) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
-        const fullCatUrl = window.location.href + "#" + catUrl;
         let template = gameTemplate({
             games: pager[page],
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
-            categoryName: catName,
-            categoryUrl: fullCatUrl,
-            enableAllText: enableAll,
-            gameCatCount: gameCount,
+            categoryName: pageContent[`categoryName`],
+            categoryUrl: pageContent[`categoryUrl`],
+            enableAllText: pageContent[`enableAll`],
+            gameCatCount: pageContent[`gameCount`],
+            pageTemplate: pageContent[`templateType`],
+            backUrl: pageContent[`backUrl`],
         });
 
         if (this.currentPage > page) {
@@ -469,15 +513,19 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     games: pager[ctr],
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
-                    categoryName: catName,
-                    categoryUrl: fullCatUrl,
-                    gameCatCount: gameCount,
+                    categoryName: pageContent[`categoryName`],
+                    categoryUrl: pageContent[`categoryUrl`],
+                    gameCatCount: pageContent[`gameCount`],
+                    backUrl: pageContent[`backUrl`],
                 });
             }
         }
-
         if (gamesEl) {
-            gamesEl.innerHTML += template;
+            if (pageContent[`templateType`] === "home-page-content") {
+                gamesEl.innerHTML += template;
+            } else if (pageContent[`templateType`] === "category-game-content") {
+                gamesEl.innerHTML = template;
+            }
         }
     }
 
@@ -641,13 +689,13 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     this.makeInactive(allTab);
                 }
                 this.makeActive(el.querySelector("a"));
-                if (dataAlias === "game-categories") {
-                    document.querySelector(".game-container").setAttribute("style", "display: none");
-                    document.querySelector(".category-page").setAttribute("style", "display: block");
-                } else {
-                    document.querySelector(".game-container").setAttribute("style", "display: block");
-                    document.querySelector(".category-page").setAttribute("style", "display: none");
-                }
+                // if (dataAlias === "game-categories") {
+                //     document.querySelector(".game-container").setAttribute("style", "display: none");
+                //     document.querySelector(".category-page").setAttribute("style", "display: block");
+                // } else {
+                //     document.querySelector(".game-container").setAttribute("style", "display: block");
+                //     document.querySelector(".category-page").setAttribute("style", "display: none");
+                // }
             }
         });
     }
@@ -737,7 +785,45 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         });
     }
 
-    private test() {
-        console.log(window.location);
+    /**
+     * Event listener for category click
+     */
+     private listenHashChange() {
+        utility.listen(window, "hashchange", (event, src: any) => {
+            if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
+                this.currentPage = 0;
+                let key;
+                const locHref = utility.getHash(window.location.href);
+                const gamesEl = this.element.querySelector("#game-container");
+                for (const category of this.response.categories) {
+                    if (category.hasOwnProperty("field_games_alias")) {
+                        key = category.field_games_alias;
+                        if (locHref === key) {
+                            const processPageContent = {
+                                categoryName: category.name,
+                                categoryUrl: 0,
+                                enableAll: false,
+                                gameCount: 0,
+                                templateType: "category-game-content",
+                                backUrl: utility.getHash(event.oldURL),
+                            };
+                            this.setGames(this.response.games[key], 0, processPageContent);
+                        }
+                    }
+                }
+                if (locHref === "game-categories") {
+                    document.querySelector(".game-container").setAttribute("style", "display: none");
+                    document.querySelector(".category-page").setAttribute("style", "display: block");
+                } else if (locHref === "") {
+                    document.querySelector(".game-container").setAttribute("style", "display: block");
+                    document.querySelector(".category-page").setAttribute("style", "display: none");
+                    gamesEl.innerHTML = "";
+                    this.homePageContent(key);
+                } else {
+                    document.querySelector(".game-container").setAttribute("style", "display: block");
+                    document.querySelector(".category-page").setAttribute("style", "display: none");
+                }
+            }
+        });
     }
 }
