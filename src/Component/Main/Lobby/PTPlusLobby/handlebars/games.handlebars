@@ -1,11 +1,22 @@
 <div class="lobby-content">
     <div class="category-data">
-        <span class="category-name">{{categoryName}}</span>
-        <a href="#" class="category-count">
-            {{#if enableAllText}}
-                Show All ({{gameCatCount}}) >>
-            {{/if}}
-        </a>
+        {{#equals pageTemplate "home-page-content"}}
+            <span class="category-name">{{categoryName}}</span>
+            <a href="#{{categoryUrl}}" class="category-count">
+                {{#if enableAllText}}
+                    Show All ({{gameCatCount}}) >>
+                {{/if}}
+            </a>
+        {{/equals}}
+        {{#equals pageTemplate "category-game-content"}}
+            <div class="category-page-header">
+                <a href="#{{backUrl}}" class="back-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="54.5" height="18.197" 
+                    viewBox="0 0 54.5 18.197"><g transform="translate(-325.5 -132.5)"><g transform="translate(328.344 150.197) rotate(180)"><path d="M1.037,17.019a.594.594,0,0,1-.43.178.593.593,0,0,1-.43-.178.609.609,0,0,1,0-.86L7.736,8.6.178,1.038a.608.608,0,1,1,.86-.86L9.026,8.169a.609.609,0,0,1,0,.86Z" transform="translate(-6.859 0)" fill="#af050f"/><path d="M.608,17.7a1.108,1.108,0,0,1-.783-1.891L7.029,8.6l-7.2-7.207a1.109,1.109,0,0,1,0-1.567A1.1,1.1,0,0,1,.608-.5a1.1,1.1,0,0,1,.783.324L9.379,7.815a1.109,1.109,0,0,1,0,1.567L1.391,17.373A1.1,1.1,0,0,1,.608,17.7ZM.608.5A.106.106,0,0,0,.531.531a.108.108,0,0,0,0,.153L8.443,8.6.531,16.513a.108.108,0,0,0,0,.153.1.1,0,0,0,.076.031.1.1,0,0,0,.076-.031L8.672,8.675a.108.108,0,0,0,0-.153L.684.531A.106.106,0,0,0,.608.5Z" transform="translate(-6.859 0)" fill="#af0000"/></g><path d="M4066-45.4h52" transform="translate(-3739 187)" fill="#af0000"/><path d="M4118-44.4h-52a1,1,0,0,1-1-1,1,1,0,0,1,1-1h52a1,1,0,0,1,1,1A1,1,0,0,1,4118-44.4Z" transform="translate(-3739 187)" fill="#af0000"/></g></svg>
+                </a>
+                <span class="category-page-title">{{categoryName}}</span>
+            </div>
+        {{/equals}}
     </div>
     <ul class="game-lobby-container">
     {{#each games}}
