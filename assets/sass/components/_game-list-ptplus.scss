@@ -41,6 +41,21 @@
 
         .lobby-content {
             padding: 0 1rem;
+
+            .category-page-header {
+                padding: 1rem 0;
+
+                .category-page-title {
+                    width: 100%;
+                    text-align: center;
+                    color: #af0000;
+                    text-transform: capitalize;
+                    margin-top: -22px;
+                    display: block;
+                    font-size: 1.8rem;
+                    font-weight: 500;
+                }
+            }
         }
 
         .game-lobby-container {
@@ -61,7 +76,7 @@
                 -moz-background-size:cover;
                 -o-background-size:cover;
                 background-size:cover;
-                background-position:center;
+                background-position:center center;
                 min-height: 86px;
                 border-radius: .5rem;
                 padding: 0;
@@ -160,23 +175,6 @@
                     overflow: hidden;
                 }
             }
-
-            @media only screen and (min-width: 768px) {
-                .game-listing {
-                    .game-listing-item {
-                        min-height: 172px;
-                        min-width: 220px;
-                    }
-                }
-            }
-
-            @media only screen and (min-width: 1024px) {
-                .game-listing {
-                    .game-listing-item {
-                        min-height: 25vw;
-                    }
-                }
-            }
         }
     }
 
@@ -193,6 +191,7 @@
         padding: 0;
         display: inline-block;
         font-size: 0;
+        width: 100%;
 
         .rectangular-game-tile-item {
             display: inline-block;
@@ -202,7 +201,7 @@
             -moz-background-size:cover;
             -o-background-size:cover;
             background-size:cover;
-            background-position:center;
+            background-position:center center;
             min-width: 139px;
             border-radius: .5rem;
 
@@ -210,27 +209,6 @@
                 padding: 0;
                 width: 100%;
                 min-height: 86px;
-            }
-        }
-
-        @media only screen and (min-width: 768px) {
-            .rectangular-game-tile-item {
-                width: 36%;
-
-                .game-listing-item {
-                    min-height: 172px;
-                    min-width: 278px;
-                }
-            }
-        }
-
-        @media only screen and (min-width: 1024px) {
-            .rectangular-game-tile-item {
-                width: 56%;
-            }
-
-            .game-listing-item {
-                height: 25vw;
             }
         }
     }
@@ -245,6 +223,58 @@
 
         .rectangular-game-tile-item {
             width: 40vw;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        #game-container {
+            .lobby-content {
+                .category-page-header {
+                    .category-page-title {
+                        font-size: 2rem;
+                    }
+                }
+            }
+
+            .game-lobby-container {
+                .game-listing {
+                    .game-listing-item {
+                        min-height: 172px;
+                        min-width: 220px;
+                    }
+                }
+            } 
+            
+            .rectangular-game-tile {
+                .rectangular-game-tile-item {    
+                    .game-listing-item {
+                        min-height: 172px;
+                        min-width: 278px;
+                    }
+                }
+            }
+        }
+    }
+
+    @media only screen and (min-width: 1024px) {
+        #game-container {
+            .game-lobby-container {
+                .game-listing {
+                    .game-listing-item {
+                        min-height: 25vw;
+                    }
+                }
+            }
+
+            .rectangular-game-tile {
+                .rectangular-game-tile-item {
+                    width: 40%;
+
+                    .game-listing-item {
+                        height: 25vw;
+                    }
+                }
+            }
         }
     }
 }
