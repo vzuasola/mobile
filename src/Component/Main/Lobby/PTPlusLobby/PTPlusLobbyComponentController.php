@@ -532,7 +532,7 @@ class PTPlusLobbyComponentController
                     $gameCategory = $gamesCollection['field_games_category'][0]['field_games_alias'][0]['value'] ?? '';
                     $games = $gamesCollection['field_games'] ?? [];
                     if ($gameCategory && $games) {
-                       $data[$type][$gameCategory] = $this->getGameCodes($games);
+                        $data[$type][$gameCategory] = $this->getGameCodes($games);
                     }
                 }
             }
