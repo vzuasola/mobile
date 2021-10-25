@@ -245,12 +245,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
 
         promises.games = gamesList;
         gamesDictionary = this.getGamesDictionary(gamesList[key]);
-        gamesList[key] = this.gamesCollectionSort.sortGamesCollection(
-            promises,
-            "all-games",
-            true,
-            gamesDictionary,
-        );
 
         return promises;
     }
@@ -643,7 +637,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     private getCategoryGames(response) {
-        const gamesList: any = [];
+        let gamesList: any = [];
         const allGames = response.games["all-games"];
         for (const gameId in allGames) {
             if (allGames.hasOwnProperty(gameId)) {
@@ -673,7 +667,37 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         /* tslint:disable:no-string-literal */
         gamesList["all-games"] = response.games["all-games"];
         response.games = gamesList;
+        /* Sorting of top games collection */
+        gamesList = this.doSortCategoryGames(response, gamesList);
         return gamesList;
+    }
+
+    private doSortCategoryGames(response, gamesList) {
+        const sortedGamesList: any = [];
+        const exemptFromSort: any = ["all-games", "recently-played"];
+
+        /* tslint:disable:no-string-literal */
+        sortedGamesList["all-games"] = response.games["all-games"];
+        sortedGamesList["recently-played"] = response.games["recently-played"];
+
+        for (const category in gamesList) {
+            if (exemptFromSort.indexOf(category) !== -1) {
+                continue;
+            }
+
+            if (response.gamesCollection.top && response.gamesCollection.top.hasOwnProperty(category)) {
+                sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
+                    gamesList[category],
+                    response.gamesCollection.top[category],
+                );
+            } else {
+                sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
+                    gamesList[category],
+                );
+            }
+        }
+
+        return sortedGamesList;
     }
 
     /**

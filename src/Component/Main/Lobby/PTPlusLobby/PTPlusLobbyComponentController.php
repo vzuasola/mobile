@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\Lobby\ptpLUSLobby;
+namespace App\MobileEntry\Component\Main\Lobby\PTPlusLobby;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use App\MobileEntry\Services\PublishingOptions\PublishingOptions;
@@ -515,5 +515,44 @@ class PTPlusLobbyComponentController
     public static function sortRecentGames($game1, $game2)
     {
         return ($game1['timestamp'] > $game2['timestamp']) ? -1 : 1;
+    }
+
+
+    /**
+     * Retrieves list of games collection which will be used for sorting games.
+     */
+    public function collection($request, $response)
+    {
+        $data = [];
+        try {
+            $gamesCollections = $this->views->getViewById('mobile-collection');
+            if ($gamesCollections) {
+                foreach ($gamesCollections as $gamesCollection) {
+                    $type = $gamesCollection['field_type'][0]['name'][0]['value'] ?? 'top';
+                    $gameCategory = $gamesCollection['field_games_category'][0]['field_games_alias'][0]['value'] ?? '';
+                    $games = $gamesCollection['field_games'] ?? [];
+                    if ($gameCategory && $games) {
+                       $data[$type][$gameCategory] = $this->getGameCodes($games);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    private function getGameCodes($gamesCollectionList)
+    {
+        $data = [];
+        foreach ($gamesCollectionList as $games) {
+            if (empty($games['field_game_code'][0]['value'])) {
+                continue;
+            }
+            $data[] = $games['field_game_code'][0]['value'];
+        }
+
+        return $data;
     }
 }
