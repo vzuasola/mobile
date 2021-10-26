@@ -457,6 +457,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     };
                     this.setGames(this.response.games[catKey], 0, processPageContent);
                 }
+                const gameActiveEl = document.querySelector('[data-name="games"]');
+                this.makeActive(gameActiveEl);
             }
         }
     }
@@ -707,19 +709,26 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "footer-mobile-item", true);
             if (el) {
-                const dataAlias = el.querySelector("a").getAttribute("data-alias");
                 const allTabs = el.parentElement.querySelectorAll("a");
                 for (const allTab of allTabs) {
                     this.makeInactive(allTab);
                 }
                 this.makeActive(el.querySelector("a"));
-                // if (dataAlias === "game-categories") {
-                //     document.querySelector(".game-container").setAttribute("style", "display: none");
-                //     document.querySelector(".category-page").setAttribute("style", "display: block");
-                // } else {
-                //     document.querySelector(".game-container").setAttribute("style", "display: block");
-                //     document.querySelector(".category-page").setAttribute("style", "display: none");
-                // }
+            }
+            const showAll = utility.hasClass(src, "category-count", true);
+            const homeActiveEl = document.querySelector('[data-name="home"]');
+            const gameActiveEl = document.querySelector('[data-name="games"]');
+            const backArrow = utility.hasClass(src, "back-arrow", true);
+            if (showAll) {
+                this.makeInactive(homeActiveEl);
+                this.makeActive(gameActiveEl);
+            }
+            if (backArrow) {
+                const backArrowHref = document.querySelector('[class="back-arrow"]').getAttribute("href");
+                if (backArrowHref === "#") {
+                    this.makeInactive(gameActiveEl);
+                    this.makeActive(homeActiveEl);
+                }
             }
         });
     }
@@ -760,6 +769,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         const rectGameEl = this.element.querySelector("#game-container");
         const template = rectangularGameTemplate({
             games: data,
+            favorites: this.response.favorite_list,
             categoryName: categoryTitle,
             isLogin: this.isLogin,
         });
