@@ -455,10 +455,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         templateType: "category-game-content",
                         backUrl: key,
                     };
+                    const gameActiveEl = document.querySelector('[data-name="games"]');
+                    this.makeActive(gameActiveEl);
                     this.setGames(this.response.games[catKey], 0, processPageContent);
                 }
-                const gameActiveEl = document.querySelector('[data-name="games"]');
-                this.makeActive(gameActiveEl);
             }
         }
     }
@@ -828,6 +828,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 this.currentPage = 0;
                 let key;
                 const locHref = utility.getHash(window.location.href);
+                let backUrlHash = utility.getHash(event.oldURL);
+                if (!event.oldURL.includes("#")) {
+                    backUrlHash = "";
+                }
                 const gamesEl = this.element.querySelector("#game-container");
                 for (const category of this.response.categories) {
                     if (category.hasOwnProperty("field_games_alias")) {
@@ -839,7 +843,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                                 enableAll: false,
                                 gameCount: 0,
                                 templateType: "category-game-content",
-                                backUrl: utility.getHash(event.oldURL),
+                                backUrl: backUrlHash,
                             };
                             this.setGames(this.response.games[key], 0, processPageContent);
                         }
