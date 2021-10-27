@@ -447,10 +447,7 @@ routes:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:moduleList
         headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
+            Cache-Control: no-cache, no-store, must-revalidate
 
     /api-fe/components:
         method: ANY
