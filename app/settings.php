@@ -37,7 +37,7 @@ $settings['settings']['components']['render']['preload'] = [
 ];
 
 $settings['settings']['components']['router']['widget_headers'] = [
-    'Cache-Control' => 'private, max-age=300',
+    'Cache-Control' => 'private, max-age=323',
 ];
 
 // Cache
@@ -60,7 +60,7 @@ $settings['settings']['session']['lazy'] = true; // Do not start session unless 
 // Environment Specific
 
 if (\App\Kernel::environment() === 'DEV') {
-    $settings['settings']['page_cache']['enable'] = false;
+    $settings['settings']['page_cache']['enable'] = true;
 }
 
 if (\App\Kernel::environment() !== 'DEV') {
