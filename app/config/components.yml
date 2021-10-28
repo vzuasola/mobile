@@ -8,6 +8,8 @@ components:
 
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
+    headers:
+      Cache-Control: private, max-age=1800
 
   header_login:
     class: App\MobileEntry\Component\Header\Login\LoginComponent
@@ -15,6 +17,8 @@ components:
 
   menu:
     class: App\MobileEntry\Component\Menu\MenuComponent
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
 
   meta:
     class: App\MobileEntry\Component\Meta\MetaComponent
