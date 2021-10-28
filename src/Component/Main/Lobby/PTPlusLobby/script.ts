@@ -78,6 +78,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.componentFinish();
         this.listenClickTab();
         this.activeLinks();
+        this.listenHashChange();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -98,6 +99,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             this.listenToLaunchGameLoader();
             this.listenFavoriteClick();
             this.listenClickTab();
+            this.listenHashChange();
         }
         this.groupedGames = undefined;
         this.response = null;
@@ -117,7 +119,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.componentFinish();
         this.activeLinks();
     }
-
     /**
      * Active Link for ptplus main page
      */
@@ -244,12 +245,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
 
         promises.games = gamesList;
         gamesDictionary = this.getGamesDictionary(gamesList[key]);
-        gamesList[key] = this.gamesCollectionSort.sortGamesCollection(
-            promises,
-            "all-games",
-            true,
-            gamesDictionary,
-        );
 
         return promises;
     }
@@ -396,41 +391,86 @@ export class PTPlusLobbyComponent implements ComponentInterface {
      */
     private setLobby(key?: string) {
         if (!key) {
-            for (const category of this.response.categories) {
-                if (category.hasOwnProperty("field_games_alias")) {
-                    key = category.field_games_alias;
-                    let showAll;
-                    if (category.field_enable_show_all_mobile[0] !== undefined) {
-                        showAll = category.field_enable_show_all_mobile[0].value;
-                    } else {
-                        showAll = false;
-                    }
-                    const imageSize = category.field_game_tile_image_size[0].value;
-                    switch (imageSize) {
-                        case "field_thumbnail_image":
-                            const allGameCount = this.response.games[key].length;
-                            const sliceGameCount = this.response.games[key].slice(0, 6);
-                            this.setGames(sliceGameCount, 0, category.name, showAll, allGameCount);
-                            break;
-                        case "field_game_thumbnail_big":
-                            this.setRectagularGame(this.response.games[key], category.name);
-                    }
-                    this.setCategories(this.response.categories, key);
+            this.homePageContent(key);
+            key = utility.getHash(window.location.href);
+        }
+        if (key !== "game-categories" && key !== "") {
+            this.gameCategoryPageContent(key);
+        }
+        this.displayCategoryPageContent();
+    }
+
+    /**
+     * Display home page content
+     *
+     */
+    private homePageContent(key?: string) {
+        for (const category of this.response.categories) {
+            if (category.hasOwnProperty("field_games_alias")) {
+                key = category.field_games_alias;
+                let showAll;
+                const template = "home-page-content";
+                if (category.field_enable_show_all_mobile[0] !== undefined) {
+                    showAll = category.field_enable_show_all_mobile[0].value;
+                } else {
+                    showAll = false;
+                }
+                const imageSize = category.field_game_tile_image_size[0].value;
+                switch (imageSize) {
+                    case "field_thumbnail_image":
+                        const allGameCount = this.response.games[key].length;
+                        const sliceGameCount = this.response.games[key].slice(0, 6);
+                        const processPageContent = {
+                            categoryName: category.name,
+                            categoryUrl: key,
+                            enableAll: showAll,
+                            gameCount: allGameCount,
+                            templateType: template,
+                            backUrl: "",
+                        };
+                        this.setGames(sliceGameCount, 0, processPageContent);
+                        break;
+                    case "field_game_thumbnail_big":
+                        this.setRectagularGame(this.response.games[key], category.name);
+                }
+                this.setCategories(this.response.categories);
+            }
+        }
+    }
+
+    /**
+     * Display game category page content
+     *
+     */
+    private gameCategoryPageContent(key?: string) {
+        for (const category of this.response.categories) {
+            if (category.hasOwnProperty("field_games_alias")) {
+                const catKey = category.field_games_alias;
+                if (key === catKey) {
+                    const processPageContent = {
+                        categoryName: category.name,
+                        categoryUrl: 0,
+                        enableAll: false,
+                        gameCount: 0,
+                        templateType: "category-game-content",
+                        backUrl: key,
+                    };
+                    const gameActiveEl = document.querySelector('[data-name="games"]');
+                    this.makeActive(gameActiveEl);
+                    this.setGames(this.response.games[catKey], 0, processPageContent);
                 }
             }
         }
-        this.displayCategoryPageContent();
     }
 
     /**
      * Set the category in the template
      *
      */
-    private setCategories(data, key) {
+    private setCategories(data) {
         const categoriesEl = document.querySelector("#game-categories");
         const template = categoriesTemplate({
             categories: data,
-            active: key,
             configs: this.attachments.configs,
         });
 
@@ -447,16 +487,19 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     /**
      * Set the games list in the template
      */
-    private setGames(data, page: number = 0, catName = null, enableAll = false, gameCount = null) {
+    private setGames(data, page: number = 0, pageContent: object = {}) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
         let template = gameTemplate({
             games: pager[page],
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
-            categoryName: catName,
-            enableAllText: enableAll,
-            gameCatCount: gameCount,
+            categoryName: pageContent[`categoryName`],
+            categoryUrl: pageContent[`categoryUrl`],
+            enableAllText: pageContent[`enableAll`],
+            gameCatCount: pageContent[`gameCount`],
+            pageTemplate: pageContent[`templateType`],
+            backUrl: pageContent[`backUrl`],
         });
 
         if (this.currentPage > page) {
@@ -466,14 +509,19 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     games: pager[ctr],
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
-                    categoryName: catName,
-                    gameCatCount: gameCount,
+                    categoryName: pageContent[`categoryName`],
+                    categoryUrl: pageContent[`categoryUrl`],
+                    gameCatCount: pageContent[`gameCount`],
+                    backUrl: pageContent[`backUrl`],
                 });
             }
         }
-
         if (gamesEl) {
-            gamesEl.innerHTML += template;
+            if (pageContent[`templateType`] === "home-page-content") {
+                gamesEl.innerHTML += template;
+            } else if (pageContent[`templateType`] === "category-game-content") {
+                gamesEl.innerHTML = template;
+            }
         }
     }
 
@@ -591,7 +639,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     private getCategoryGames(response) {
-        const gamesList: any = [];
+        let gamesList: any = [];
         const allGames = response.games["all-games"];
         for (const gameId in allGames) {
             if (allGames.hasOwnProperty(gameId)) {
@@ -621,7 +669,37 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         /* tslint:disable:no-string-literal */
         gamesList["all-games"] = response.games["all-games"];
         response.games = gamesList;
+        /* Sorting of top games collection */
+        gamesList = this.doSortCategoryGames(response, gamesList);
         return gamesList;
+    }
+
+    private doSortCategoryGames(response, gamesList) {
+        const sortedGamesList: any = [];
+        const exemptFromSort: any = ["all-games", "recently-played"];
+
+        /* tslint:disable:no-string-literal */
+        sortedGamesList["all-games"] = response.games["all-games"];
+        sortedGamesList["recently-played"] = response.games["recently-played"];
+
+        for (const category in gamesList) {
+            if (exemptFromSort.indexOf(category) !== -1) {
+                continue;
+            }
+
+            if (response.gamesCollection.top && response.gamesCollection.top.hasOwnProperty(category)) {
+                sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
+                    gamesList[category],
+                    response.gamesCollection.top[category],
+                );
+            } else {
+                sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
+                    gamesList[category],
+                );
+            }
+        }
+
+        return sortedGamesList;
     }
 
     /**
@@ -631,18 +709,25 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "footer-mobile-item", true);
             if (el) {
-                const dataAlias = el.querySelector("a").getAttribute("data-alias");
                 const allTabs = el.parentElement.querySelectorAll("a");
                 for (const allTab of allTabs) {
                     this.makeInactive(allTab);
                 }
                 this.makeActive(el.querySelector("a"));
-                if (dataAlias === "game-categories") {
-                    document.querySelector(".game-container").setAttribute("style", "display: none");
-                    document.querySelector(".category-page").setAttribute("style", "display: block");
-                } else {
-                    document.querySelector(".game-container").setAttribute("style", "display: block");
-                    document.querySelector(".category-page").setAttribute("style", "display: none");
+            }
+            const showAll = utility.hasClass(src, "category-count", true);
+            const homeActiveEl = document.querySelector('[data-name="home"]');
+            const gameActiveEl = document.querySelector('[data-name="games"]');
+            const backArrow = utility.hasClass(src, "back-arrow", true);
+            if (showAll) {
+                this.makeInactive(homeActiveEl);
+                this.makeActive(gameActiveEl);
+            }
+            if (backArrow) {
+                const backArrowHref = document.querySelector('[class="back-arrow"]').getAttribute("href");
+                if (backArrowHref === "#") {
+                    this.makeInactive(gameActiveEl);
+                    this.makeActive(homeActiveEl);
                 }
             }
         });
@@ -684,6 +769,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         const rectGameEl = this.element.querySelector("#game-container");
         const template = rectangularGameTemplate({
             games: data,
+            favorites: this.response.favorite_list,
             categoryName: categoryTitle,
             isLogin: this.isLogin,
         });
@@ -729,6 +815,52 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }).fail((error, message) => {
                     console.log(error);
                 });
+            }
+        });
+    }
+
+    /**
+     * Event listener for category click
+     */
+     private listenHashChange() {
+        utility.listen(window, "hashchange", (event, src: any) => {
+            if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
+                this.currentPage = 0;
+                let key;
+                const locHref = utility.getHash(window.location.href);
+                let backUrlHash = utility.getHash(event.oldURL);
+                if (!event.oldURL.includes("#")) {
+                    backUrlHash = "";
+                }
+                const gamesEl = this.element.querySelector("#game-container");
+                for (const category of this.response.categories) {
+                    if (category.hasOwnProperty("field_games_alias")) {
+                        key = category.field_games_alias;
+                        if (locHref === key) {
+                            const processPageContent = {
+                                categoryName: category.name,
+                                categoryUrl: 0,
+                                enableAll: false,
+                                gameCount: 0,
+                                templateType: "category-game-content",
+                                backUrl: backUrlHash,
+                            };
+                            this.setGames(this.response.games[key], 0, processPageContent);
+                        }
+                    }
+                }
+                if (locHref === "game-categories") {
+                    document.querySelector(".game-container").setAttribute("style", "display: none");
+                    document.querySelector(".category-page").setAttribute("style", "display: block");
+                } else if (locHref === "") {
+                    document.querySelector(".game-container").setAttribute("style", "display: block");
+                    document.querySelector(".category-page").setAttribute("style", "display: none");
+                    gamesEl.innerHTML = "";
+                    this.homePageContent(key);
+                } else {
+                    document.querySelector(".game-container").setAttribute("style", "display: block");
+                    document.querySelector(".category-page").setAttribute("style", "display: none");
+                }
             }
         });
     }
