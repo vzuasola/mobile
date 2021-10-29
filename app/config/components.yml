@@ -9,7 +9,7 @@ components:
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
     headers:
-      Cache-Control: private, max-age=1800
+      Cache-Control: public, max-age=300
 
   header_login:
     class: App\MobileEntry\Component\Header\Login\LoginComponent
