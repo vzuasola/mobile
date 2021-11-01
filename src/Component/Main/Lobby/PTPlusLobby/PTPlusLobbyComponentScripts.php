@@ -57,10 +57,17 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
             $pager = [];
         }
 
+        try {
+            $pageContents = $this->views->getViewById('page_content_list');
+        } catch (\Exception $e) {
+            $pageContents = [];
+        }
+
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'pagerConfig' => $pager ?? [],
             'configs' => $ptplusGeneralConfig ?? [],
+            'pageData' => $pageContents ?? [],
         ];
     }
 }
