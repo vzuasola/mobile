@@ -494,7 +494,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             template = "";
             for (let ctr = 0; ctr <= this.currentPage; ctr++) {
                 template += gameTemplate({
-                    games: pager[page],
+                    games: pager[ctr],
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
                     categoryName: pageContent[`categoryName`],
