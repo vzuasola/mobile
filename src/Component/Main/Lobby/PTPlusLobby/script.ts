@@ -34,7 +34,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private state: boolean;
     private windowObject: any;
     private gameLink: string;
-    private tabs: any[];
+    private pageData: any[];
     private filterFlag: string;
     private groupedGames: any;
     private productMenu: string = "product-ptplus";
@@ -53,7 +53,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         product: any[],
         configs: any[],
         pagerConfig: any[],
-        tabs: any[],
+        pageData: any[],
         infinite_scroll: boolean,
     }) {
         this.groupedGames = undefined;
@@ -62,7 +62,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.attachments = attachments;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
-        this.tabs = attachments.tabs;
+        this.pageData = attachments.pageData;
         this.pager = 0;
         this.load = true;
         this.listenClickGameTile();
@@ -90,7 +90,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         product: any[],
         configs: any[],
         pagerConfig: any[],
-        tabs: any[],
+        pageData: any[],
         infinite_scroll: boolean,
     }) {
         if (!this.element) {
@@ -107,7 +107,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.attachments = attachments;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
-        this.tabs = attachments.tabs;
+        this.pageData = attachments.pageData;
         this.pager = 0;
         this.load = true;
         this.generateLobby(() => {
@@ -405,30 +405,20 @@ export class PTPlusLobbyComponent implements ComponentInterface {
      *
      */
     private homePageContent(key?: string) {
+        const templateType = "home-page-content";
         for (const category of this.response.categories) {
             if (category.hasOwnProperty("field_games_alias")) {
                 key = category.field_games_alias;
-                let showAll;
-                const template = "home-page-content";
-                if (category.field_enable_show_all_mobile[0] !== undefined) {
-                    showAll = category.field_enable_show_all_mobile[0].value;
-                } else {
-                    showAll = false;
-                }
+                const showAll = category.field_enable_show_all[0] !== undefined ?
+                    category.field_enable_show_all[0].value : false;
                 const imageSize = category.field_game_tile_image_size[0].value;
                 switch (imageSize) {
                     case "field_thumbnail_image":
-                        const allGameCount = this.response.games[key].length;
+                        const gameCount = this.response.games[key].length;
                         const sliceGameCount = this.response.games[key].slice(0, 6);
-                        const processPageContent = {
-                            categoryName: category.name,
-                            categoryUrl: key,
-                            enableAll: showAll,
-                            gameCount: allGameCount,
-                            templateType: template,
-                            backUrl: "",
-                        };
-                        this.setGames(sliceGameCount, 0, processPageContent);
+                        const catName = category.name;
+                        const pageContent = this.catPageData(catName, key, showAll, gameCount, templateType, "");
+                        this.setGames(sliceGameCount, 0, pageContent);
                         break;
                     case "field_game_thumbnail_big":
                         this.setRectagularGame(this.response.games[key], category.name);
@@ -447,17 +437,13 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             if (category.hasOwnProperty("field_games_alias")) {
                 const catKey = category.field_games_alias;
                 if (key === catKey) {
-                    const processPageContent = {
-                        categoryName: category.name,
-                        categoryUrl: 0,
-                        enableAll: false,
-                        gameCount: 0,
-                        templateType: "category-game-content",
-                        backUrl: key,
-                    };
+                    const catName = category.name;
+                    const templateType = "category-game-content";
+                    const backUrlHash = key;
+                    const pageContent = this.catPageData(catName, 0, false, 0, templateType, backUrlHash);
                     const gameActiveEl = document.querySelector('[data-name="games"]');
                     this.makeActive(gameActiveEl);
-                    this.setGames(this.response.games[catKey], 0, processPageContent);
+                    this.setGames(this.response.games[catKey], 0, pageContent);
                 }
             }
         }
@@ -471,7 +457,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         const categoriesEl = document.querySelector("#game-categories");
         const template = categoriesTemplate({
             categories: data,
-            configs: this.attachments.configs,
+            pageData: this.pageContentKey("game_categories"),
         });
 
         if (categoriesEl) {
@@ -490,12 +476,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private setGames(data, page: number = 0, pageContent: object = {}) {
         const gamesEl = this.element.querySelector("#game-container");
         const pager = this.getPagedContent(data);
+        const showAllText = this.pageContentKey("show_all");
         let template = gameTemplate({
             games: pager[page],
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
             categoryName: pageContent[`categoryName`],
             categoryUrl: pageContent[`categoryUrl`],
+            displayShowAllText: showAllText,
             enableAllText: pageContent[`enableAll`],
             gameCatCount: pageContent[`gameCount`],
             pageTemplate: pageContent[`templateType`],
@@ -511,7 +499,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     isLogin: this.isLogin,
                     categoryName: pageContent[`categoryName`],
                     categoryUrl: pageContent[`categoryUrl`],
+                    displayShowAllText: showAllText,
+                    enableAllText: pageContent[`enableAll`],
                     gameCatCount: pageContent[`gameCount`],
+                    pageTemplate: pageContent[`templateType`],
                     backUrl: pageContent[`backUrl`],
                 });
             }
@@ -577,7 +568,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     /**
      * Event listener for launching pop up loader
      */
-     private listenToLaunchGameLoader() {
+    private listenToLaunchGameLoader() {
         ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
             if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
                 // Pop up loader with all data
@@ -705,7 +696,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     /**
      * Event listener for floating footer item click
      */
-     private listenClickTab() {
+    private listenClickTab() {
         ComponentManager.subscribe("click", (event, src, data) => {
             const el = utility.hasClass(src, "footer-mobile-item", true);
             if (el) {
@@ -822,7 +813,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     /**
      * Event listener for category click
      */
-     private listenHashChange() {
+    private listenHashChange() {
         utility.listen(window, "hashchange", (event, src: any) => {
             if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
                 this.currentPage = 0;
@@ -837,15 +828,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     if (category.hasOwnProperty("field_games_alias")) {
                         key = category.field_games_alias;
                         if (locHref === key) {
-                            const processPageContent = {
-                                categoryName: category.name,
-                                categoryUrl: 0,
-                                enableAll: false,
-                                gameCount: 0,
-                                templateType: "category-game-content",
-                                backUrl: backUrlHash,
-                            };
-                            this.setGames(this.response.games[key], 0, processPageContent);
+                            const templateType = "category-game-content";
+                            const catName = category.name;
+                            const pageContent = this.catPageData(catName, 0, false, 0, templateType, backUrlHash);
+                            this.setGames(this.response.games[key], 0, pageContent);
                         }
                     }
                 }
@@ -863,5 +849,32 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }
             }
         });
+    }
+
+    /**
+     * Object for category page data from CMS
+     */
+    private catPageData(catName, catUrl, enable, count, template, backUrlHash) {
+        return {
+            categoryName: catName,
+            categoryUrl: catUrl,
+            enableAll: enable,
+            gameCount: count,
+            templateType: template,
+            backUrl: backUrlHash,
+        };
+    }
+
+    /**
+     * get page content keys
+     */
+    private pageContentKey(datakey) {
+        let pageContentName = "";
+        for (const data of this.pageData) {
+            if (datakey === data.field_page_content_key[0].value) {
+                pageContentName = data.name[0].value;
+            }
+        }
+        return pageContentName;
     }
 }
