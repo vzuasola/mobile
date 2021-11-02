@@ -92,7 +92,7 @@ class PTPlusLobbyComponentController
           . $page . $this->currentLanguage . "-" . $previewKey);
 
         if (!$item->isHit()) {
-            $data = $this->generatePageLobbyData($page);
+            $data = $this->generatePageLobbyData($page, $isPreview);
 
             if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
                 $item->set([
@@ -107,10 +107,6 @@ class PTPlusLobbyComponentController
             $body = $item->get();
 
             $data = $body['body'];
-        }
-
-        if (!$isPreview) {
-            $data['games'] = $this->removeGamesPreviewMode($data['games']);
         }
 
         $data['categories'] = $this->getArrangedCategoriesByGame($data['categories_list']);
@@ -192,7 +188,7 @@ class PTPlusLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
-    private function generatePageLobbyData($page)
+    private function generatePageLobbyData($page, $isPreview)
     {
         $data = [];
         $categories = $this->views->getViewById('games_category');
@@ -204,7 +200,8 @@ class PTPlusLobbyComponentController
         );
         $data['categories_list'] = $categories;
         $data['games'] = $this->getGamesAndCategory(
-            $allGames
+            $allGames,
+            $isPreview
         );
         return $data;
     }
@@ -225,23 +222,6 @@ class PTPlusLobbyComponentController
             $result = $this->toggleFavoriteGames($gameCode['gameCode']);
             return $this->rest->output($response, $result);
         }
-    }
-
-    private function removeGamesPreviewMode($gamesCollection)
-    {
-        try {
-            foreach ($gamesCollection as $categoryName => $category) {
-                foreach ($category as $index => $game) {
-                    if ($game['preview_mode']) {
-                        unset($gamesCollection[$categoryName][$index]);
-                    }
-                }
-            }
-        } catch (\Exception $e) {
-            // placeholder
-        }
-
-        return $gamesCollection;
     }
 
     private function getSpecialCategoriesGameList($categories)
@@ -278,11 +258,15 @@ class PTPlusLobbyComponentController
     /**
      * Get games by category with sort
      */
-    private function getGamesAndCategory($allGames)
+    private function getGamesAndCategory($allGames, $isPreview)
     {
         $gamesList = [];
 
-        $gamesList['all-games'] = $this->arrangeGames($allGames, 'all-games');
+        $gamesList['all-games'] = $this->arrangeGames(
+            $allGames,
+            'all-games',
+            $isPreview
+        );
 
         return $gamesList;
     }
@@ -305,7 +289,7 @@ class PTPlusLobbyComponentController
     /**
      * Arrange games per category
      */
-    private function arrangeGames($games, $categoryId)
+    private function arrangeGames($games, $categoryId, $isPreview)
     {
         $gamesList = [];
         foreach ($games as $game) {
@@ -314,9 +298,13 @@ class PTPlusLobbyComponentController
             $status = (!$publishOn && !$unpublishOn) ? $game['status'][0]['value'] : true;
             if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
-                $processGame = $this->processGame($game, $special);
-                if (!empty($processGame)) {
-                    $gamesList['id:' . $game['field_game_code'][0]['value']] = $processGame;
+                $processedGame = $this->processGame($game, $special);
+                $preview_mode = $game['field_preview_mode'][0]['value'] ?? 0;
+                if (!$isPreview && $preview_mode) {
+                    continue;
+                }
+                if (count($processedGame['categories'])) {
+                    $gamesList['id:' . $game['field_game_code'][0]['value']] =  $processedGame;
                 }
             }
         }
