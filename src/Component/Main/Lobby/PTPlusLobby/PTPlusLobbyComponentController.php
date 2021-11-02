@@ -263,7 +263,7 @@ class PTPlusLobbyComponentController
         $gamesList = [];
 
         $gamesList['all-games'] = $this->arrangeGames(
-            $allGames, 
+            $allGames,
             'all-games',
             $isPreview
         );
