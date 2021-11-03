@@ -14,6 +14,9 @@ import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launche
 import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
+import {GamesSearch} from "./scripts/games-search";
+import {GamesFilter} from "@app/assets/script/components/games-filter";
+
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import PopupWindow from "@app/assets/script/components/popup";
 
@@ -26,6 +29,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private response: any;
     private isLogin: boolean;
     private gameLauncher;
+    private gamesSearch: GamesSearch;
+    private gamesFilter: GamesFilter;
     private gamesCollectionSort: GamesCollectionSorting;
     private currentPage: number;
     private pager: number;
@@ -41,6 +46,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
 
     constructor() {
         this.gameLauncher = GameLauncher;
+        this.gamesSearch = new GamesSearch();
+        this.gamesFilter = new GamesFilter();
         this.gamesCollectionSort = new GamesCollectionSorting();
     }
 
@@ -48,6 +55,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         authenticated: boolean,
         title_weight: number,
         keywords_weight: 0,
+        search_no_result_msg: string,
+        search_blurb: string,
         msg_recommended_available: string,
         msg_no_recommended: string,
         product: any[],
@@ -65,6 +74,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.tabs = attachments.tabs;
         this.pager = 0;
         this.load = true;
+        this.gamesSearch.handleOnLoad(this.element, attachments);
+        this.gamesFilter.handleOnLoad(this.element, attachments);
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
@@ -85,6 +96,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         authenticated: boolean,
         title_weight: number,
         keywords_weight: 0,
+        search_no_result_msg: string,
+        search_blurb: string,
         msg_recommended_available: string,
         msg_no_recommended: string,
         product: any[],
@@ -113,6 +126,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.generateLobby(() => {
             this.lobby();
         });
+        this.gamesSearch.handleOnReLoad(this.element, attachments);
+        this.gamesFilter.handleOnReLoad(this.element, attachments);
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -383,6 +398,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     private lobby() {
+        this.gamesSearch.setGamesList(this.response);
+        this.gamesFilter.setGamesList(this.response);
         this.setLobby();
     }
 
@@ -481,7 +498,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         ComponentManager.broadcast("category.set", {
             scroll: false,
         });
-
     }
 
     /**
@@ -566,6 +582,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }).then((result) => {
                     if (result.success) {
                         this.response = null;
+                        this.doRequest(() => {
+                            this.gamesSearch.setGamesList(this.response);
+                            this.gamesFilter.setGamesList(this.response);
+                        });
                     }
                 }).fail((error, message) => {
                     console.log(error);
@@ -752,13 +772,21 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private displayCategoryPageContent() {
         const hash = utility.getHash(window.location.href);
         if (hash === "game-categories") {
-            const activeTab = document.querySelector(".tab-" + hash);
-            this.makeActive(activeTab);
+            const activeTab1 = document.querySelector(".tab-" + hash);
+            this.makeActive(activeTab1);
             document.querySelector(".category-page").setAttribute("style", "display: block");
+            document.querySelector(".game-container").setAttribute("style", "display: none");
+            document.querySelector(".search-page").setAttribute("style", "display: none");
+        } else if (hash === "game-search") {
+            const activeTab2 = document.querySelector(".tab-" + hash);
+            this.makeActive(activeTab2);
+            document.querySelector(".search-page").setAttribute("style", "display: block");
+            document.querySelector(".category-page").setAttribute("style", "display: none");
             document.querySelector(".game-container").setAttribute("style", "display: none");
         } else {
             document.querySelector(".game-container").setAttribute("style", "display: block");
             document.querySelector(".category-page").setAttribute("style", "display: none");
+            document.querySelector(".search-page").setAttribute("style", "display: none");
         }
     }
 
@@ -799,6 +827,9 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     if (result.success) {
                         this.response = null;
                         this.doRequest(() => {
+                            this.gamesSearch.setGamesList(this.response);
+                            this.gamesFilter.setGamesList(this.response);
+
                             if (this.filterFlag === "favorites") {
                                 if (typeof this.response.games[this.filterFlag] === "undefined") {
                                     this.setLobby();
@@ -852,14 +883,21 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 if (locHref === "game-categories") {
                     document.querySelector(".game-container").setAttribute("style", "display: none");
                     document.querySelector(".category-page").setAttribute("style", "display: block");
+                    document.querySelector(".search-page").setAttribute("style", "display: none");
+                } else if (locHref === "game-search") {
+                    document.querySelector(".game-container").setAttribute("style", "display: none");
+                    document.querySelector(".category-page").setAttribute("style", "display: none");
+                    document.querySelector(".search-page").setAttribute("style", "display: block");
                 } else if (locHref === "") {
                     document.querySelector(".game-container").setAttribute("style", "display: block");
                     document.querySelector(".category-page").setAttribute("style", "display: none");
+                    document.querySelector(".search-page").setAttribute("style", "display: none");
                     gamesEl.innerHTML = "";
                     this.homePageContent(key);
                 } else {
                     document.querySelector(".game-container").setAttribute("style", "display: block");
                     document.querySelector(".category-page").setAttribute("style", "display: none");
+                    document.querySelector(".search-page").setAttribute("style", "display: none");
                 }
             }
         });
