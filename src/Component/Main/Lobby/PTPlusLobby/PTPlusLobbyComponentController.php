@@ -199,8 +199,9 @@ class PTPlusLobbyComponentController
             ]
         );
         $data['categories_list'] = $categories;
-        $data['games'] = $this->getGamesAndCategory(
+        $data['games']['all-games'] = $this->arrangeGames(
             $allGames,
+            'all-games',
             $isPreview
         );
         return $data;
@@ -256,22 +257,6 @@ class PTPlusLobbyComponentController
     }
 
     /**
-     * Get games by category with sort
-     */
-    private function getGamesAndCategory($allGames, $isPreview)
-    {
-        $gamesList = [];
-
-        $gamesList['all-games'] = $this->arrangeGames(
-            $allGames,
-            'all-games',
-            $isPreview
-        );
-
-        return $gamesList;
-    }
-
-    /**
      * Get list of special categories
      */
     private function getSpecialCategories($categories)
@@ -303,8 +288,8 @@ class PTPlusLobbyComponentController
                 if (!$isPreview && $preview_mode) {
                     continue;
                 }
-                if (count($processedGame['categories'])) {
-                    $gamesList['id:' . $game['field_game_code'][0]['value']] =  $processedGame;
+                if (!empty($processedGame)) {
+                    $gamesList['id:' . $game['field_game_code'][0]['value']] = $processedGame;
                 }
             }
         }
