@@ -497,6 +497,8 @@ class PTPlusLobbyComponentController
     public function collection($request, $response)
     {
         $data = [];
+        $query = $request->getQueryParams();
+        $isPreview = $query['pvw'] ?? false;
         try {
             $gamesCollections = $this->views->getViewById('mobile-collection');
             if ($gamesCollections) {
@@ -505,7 +507,7 @@ class PTPlusLobbyComponentController
                     $gameCategory = $gamesCollection['field_games_category'][0]['field_games_alias'][0]['value'] ?? '';
                     $games = $gamesCollection['field_games'] ?? [];
                     if ($gameCategory && $games) {
-                        $data[$type][$gameCategory] = $this->getGameCodes($games);
+                        $data[$type][$gameCategory] = $this->getGameCodes($games, $isPreview);
                     }
                 }
             }
@@ -516,11 +518,15 @@ class PTPlusLobbyComponentController
         return $this->rest->output($response, $data);
     }
 
-    private function getGameCodes($gamesCollectionList)
+    private function getGameCodes($gamesCollectionList, $isPreview)
     {
         $data = [];
         foreach ($gamesCollectionList as $games) {
             if (empty($games['field_game_code'][0]['value'])) {
+                continue;
+            }
+            $preview_mode = $games['field_preview_mode'][0]['value'] ?? 0;
+            if (!$isPreview && $preview_mode) {
                 continue;
             }
             $data[] = $games['field_game_code'][0]['value'];
