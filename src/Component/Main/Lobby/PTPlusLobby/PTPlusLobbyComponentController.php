@@ -525,7 +525,7 @@ class PTPlusLobbyComponentController
             if (empty($games['field_game_code'][0]['value'])) {
                 continue;
             }
-            $preview_mode = $games['field_preview_mode'][0]['value'] ?? 0;            
+            $preview_mode = $games['field_preview_mode'][0]['value'] ?? 0;           
             if (!$isPreview && $preview_mode) {
                 continue;
             }
