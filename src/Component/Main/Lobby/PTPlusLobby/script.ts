@@ -352,11 +352,17 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private filterCategories(categories, gamesList) {
         const filteredCategory: any = [];
         for (const category of categories) {
+            if (category.field_games_alias === "favorites") {
+                filteredCategory.push(category);
+                continue;
+            }
+
             if (gamesList.hasOwnProperty(category.field_games_alias)
                 && gamesList[category.field_games_alias].length) {
                 filteredCategory.push(category);
             }
         }
+
         return filteredCategory;
     }
 
@@ -424,6 +430,13 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         this.setRectagularGame(this.response.games[key], category.name);
                 }
                 this.setCategories(this.response.categories);
+            }
+        }
+
+        const favEl = document.querySelector('[data-category-filter-id="favorites"]');
+        if (favEl && this.response.games.hasOwnProperty("favorites")) {
+            if (!this.isLogin || !this.response.games.favorites.length) {
+                favEl.parentElement.setAttribute("style", "display: none");
             }
         }
     }
@@ -658,6 +671,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         }
 
         /* tslint:disable:no-string-literal */
+        gamesList["favorites"] = response.games["favorites"];
+        gamesList["recently-played"] = response.games["recently-played"];
         gamesList["all-games"] = response.games["all-games"];
         response.games = gamesList;
         /* Sorting of top games collection */
@@ -667,10 +682,11 @@ export class PTPlusLobbyComponent implements ComponentInterface {
 
     private doSortCategoryGames(response, gamesList) {
         const sortedGamesList: any = [];
-        const exemptFromSort: any = ["all-games", "recently-played"];
+        const exemptFromSort: any = ["all-games", "favorites", "recently-played"];
 
         /* tslint:disable:no-string-literal */
         sortedGamesList["all-games"] = response.games["all-games"];
+        sortedGamesList["favorites"] = response.games["favorites"];
         sortedGamesList["recently-played"] = response.games["recently-played"];
 
         for (const category in gamesList) {
@@ -788,26 +804,86 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     },
                 }).then((result) => {
                     if (result.success) {
-                        this.response = null;
-                        this.doRequest(() => {
-                            if (this.filterFlag === "favorites") {
-                                if (typeof this.response.games[this.filterFlag] === "undefined") {
-                                    this.setLobby();
-                                }
-
-                                if (typeof this.response.games[this.filterFlag] !== "undefined") {
-                                    this.setGames(this.response.games[this.filterFlag]);
-                                }
-                            }
-                        });
-
-                        ComponentManager.broadcast("games.favorite", {srcElement: el});
+                        this.getFavoritesData();
                     }
                 }).fail((error, message) => {
                     console.log(error);
                 });
             }
         });
+    }
+
+    private getFavoritesData() {
+        xhr({
+            url: Router.generateRoute("ptplus_lobby", "getFavorites"),
+            type: "json",
+        }).then((result) => {
+            if (result) {
+                this.response.favorite_list = this.getFavoritesList(result);
+                this.updateFavoritesData(result);
+                this.updateFavoritesStyles(this.response.favorite_list);
+            }
+        }).fail((error, message) => {
+            console.log(error);
+        });
+    }
+
+    private updateFavoritesData(data) {
+        const temp = [];
+        const category = {
+            name: "Favorites",
+            key: "favorites",
+        };
+        const categoriesEl = document.querySelector("[data-category-id=" + category.key + "]");
+        const favEl = document.querySelector('[data-category-filter-id="favorites"]');
+
+        for (const id of data) {
+            if (this.response.games["all-games"].hasOwnProperty(id)) {
+                temp.push(this.response.games["all-games"][id]);
+            }
+        }
+        this.response.games["favorites"] = temp;
+        const template = gameTemplate({
+            games: temp,
+            favorites: this.response.favorite_list,
+            isLogin: this.isLogin,
+            categoryName: category.name,
+            categoryUrl: category.key,
+            displayShowAllText: "",
+            enableAllText: "",
+            gameCatCount: "",
+            pageTemplate: "home-page-content",
+            backUrl: "",
+        });
+
+        if (categoriesEl) {
+            categoriesEl.outerHTML = template;
+        }
+
+        if (temp.length) {
+            favEl.parentElement.setAttribute("style", "display: block");
+        } else {
+            favEl.parentElement.setAttribute("style", "display: none");
+        }
+    }
+
+    private updateFavoritesStyles(favoriteList) {
+        const els = document.querySelectorAll(".game-listing-item");
+        for (const el of Array.from(els)) {
+            const gameCode = el.getAttribute("data-game-code");
+            const childEl = el.querySelector(".game-favorite");
+            if (!childEl) {
+                continue;
+            }
+
+            if (gameCode && favoriteList.hasOwnProperty(gameCode)) {
+                if (!utility.hasClass(childEl, "active")) {
+                    utility.addClass(childEl, "active");
+                }
+            } else {
+                utility.removeClass(childEl, "active");
+            }
+        }
     }
 
     /**
