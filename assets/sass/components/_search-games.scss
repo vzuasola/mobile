@@ -19,7 +19,7 @@
     background: #999;
 }
 
-.page-title-back-button {
+#game-search .page-title-back-button {
     order: 1;
     align-self: center;
     width: 4rem;
@@ -27,7 +27,7 @@
     background: #061c33;
 }
 
-.page-title-back-button svg {
+#game-search .page-title-back-button svg {
     width: 0.8rem;
     fill: #fff;
     margin-top: 0.75rem;
@@ -40,7 +40,7 @@
     /* prevent tap highlight color*/
     outline: none; }
 
-.games-search-content {
+#game-search .games-search-content {
     -webkit-transform: translate(0, 0%);
     -moz-transform: translate(0, 0%);
     -ms-transform: translate(0, 0%);
@@ -58,38 +58,38 @@
     margin-bottom: 0;
 }
 
-.games-search-content span {
+#game-search .games-search-content span {
     opacity: 0.8;
     z-index: 2;
 }
 
-.result-container {
+#game-search .result-container {
     padding-left: 5%;
     padding-right: 5%;
 }
 
-.result-container .games-search-result a {
+#game-search .result-container .games-search-result a {
     background-color: #fff;
 }
 
-.games-search-result-left {
+#game-search .games-search-result-left {
     padding: 3%;
 }
 
-.games-search-result-left img {
+#game-search .games-search-result-left img {
     border: 0.1rem solid #d9d9d9;
 }
 
-.games-search form {
+#game-search .games-search form {
     display: block;
     margin: 0;
 }
 
-.games-search h2 {
+#game-search .games-search h2 {
     color: #d9d9d9;
 }
 
-.games-search .search-blurb {
+#game-search .games-search .search-blurb {
     margin-top: 1rem;
     display: block;
     float: left;
@@ -100,33 +100,33 @@
     color: #af0000;
 }
 
-.games-search .search-blurb span {
+#game-search .games-search .search-blurb span {
     display: block;
 }
 
-.games-search .search-blurb span strong {
+#game-search .games-search .search-blurb span strong {
     font-weight: normal;
 }
 
-.games-search h2 {
+#game-search .games-search h2 {
     margin: 0rem 1rem 1rem;
     color: #d9d9d9;
     font-size: 1.6rem;
     font-weight: 600; }
 
-.games-search-filter-icon {
+#game-search .games-search-filter-icon {
     position: absolute;
     top: 1rem;
     right: 1.5rem;
     outline: none;
     cursor: pointer; }
 
-.games-search-filter-icon svg {
+#game-search .games-search-filter-icon svg {
     width: 2rem;
     height: 2rem;
     fill: #fff; }
 
-.games-search-back {
+#game-search .games-search-back {
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
@@ -135,7 +135,7 @@
     background: none;
 }
 
-.games-search input[type="search"] {
+#game-search .games-search input[type="search"] {
     width: 85%;
     height: 4.4rem;
     padding: 0;
@@ -159,15 +159,15 @@
     box-sizing: border-box;
 }
 
-.games-search input[type="search"]::-webkit-input-placeholder {
+#game-search .games-search input[type="search"]::-webkit-input-placeholder {
     color: #000;
 }
 
-.games-search input[type="search"]:-moz-placeholder {
+#game-search .games-search input[type="search"]:-moz-placeholder {
     color: #000;
 }
 
-.games-search-submit {
+#game-search .games-search-submit {
     width: 15%;
     height: 4.4rem;
     filter: none;
@@ -188,7 +188,7 @@
     position: relative;
 }
 
-.games-search-submit svg {
+#game-search .games-search-submit svg {
     position: absolute;
     top: 0.1rem;
     outline: none;
@@ -196,7 +196,7 @@
     width: 3rem;
     fill: #000; }
 
-.games-search-result ul {
+#game-search .games-search-result ul {
     width: 100%;
     display: block;
     padding-left: 0;
@@ -204,7 +204,7 @@
     margin-top: 1rem;
     float: left; }
 
-.games-search-result ul li {
+#game-search .games-search-result ul li {
     display: block;
     margin-top: 5px;
     padding-bottom: 0;
@@ -213,21 +213,21 @@
     float: left;
 }
 
-.games-search-result ul li a {
+#game-search .games-search-result ul li a {
     width: 100%; }
 
-.games-search-result ul li:last-child {
+#game-search .games-search-result ul li:last-child {
     border: 0; }
 
-.games-search-result-left, .games-search-result-right {
+#game-search .games-search-result-left, .games-search-result-right {
     display: inline-block;
     float: left; }
 
-.games-search-result-left {
+#game-search .games-search-result-left {
     width: 27%;
     position: relative; }
 
-.games-search-result-left .game-favorite {
+#game-search .games-search-result-left .game-favorite {
     position: absolute;
     right: 0;
     outline: none;
@@ -236,7 +236,7 @@
     width: 40%;
     height: 40%; }
 
-.games-search-result-left .game-favorite svg {
+#game-search .games-search-result-left .game-favorite svg {
     width: 1.7rem;
     top: 0;
     right: 12%;
@@ -249,16 +249,19 @@
     border: 0;
     cursor: pointer;
     fill: #fff;
-    margin: 15% 0 0 55%; }
+    margin: 15% 0 0 55%;
+}
 
-.games-search-result-left .game-favorite.active svg {
-    fill: #ffcd00; }
+#game-search .games-search-result-left .game-favorite.active svg {
+    fill: #ffcd00;
+}
 
-.games-search-result-right {
+#game-search .games-search-result-right {
     width: 59.666667%;
-    margin: 0 3% 0 4%; }
+    margin: 0 3% 0 4%;
+}
 
-.games-search-result-right p {
+#game-search .games-search-result-right p {
     margin: 0;
     text-align: left;
     color: #000;
@@ -271,7 +274,7 @@
     bottom: 50%;
 }
 
-.games-search-result svg {
+#game-search .games-search-result svg {
     position: absolute;
     bottom: 33%;
     -webkit-transform: translate(0, 50%);
@@ -290,12 +293,12 @@
     right: 22px;
 }
 
-.games-search-input,
-.games-search-body {
+#game-search .games-search-input,
+#game-search .games-search-body {
     position: relative;
 }
 
-.close-icon {
+#game-search .close-icon {
     position: absolute;
     top: 0;
     right: 0;
@@ -308,7 +311,7 @@
     z-index: 99;
 }
 
-.close-icon:after {
+#game-search .close-icon:after {
     position: absolute;
     right: 1.5rem;
     top: 1.2rem;
@@ -368,11 +371,11 @@
     padding: 1rem;
     margin: 0; }
 
-.games-search-filter-list ul {
+#game-search .games-search-filter-list ul {
     display: inline-block;
     float: left; }
 
-.games-search-filter-list ul li {
+#game-search .games-search-filter-list ul li {
     position: relative;
     display: block;
     margin-top: 1rem;
@@ -380,32 +383,33 @@
     border-radius: 0.5rem;
     padding: 0.75rem 0.5rem; }
 
-.games-search-filter-list ul li:nth-child(odd) {
+#game-search .games-search-filter-list ul li:nth-child(odd) {
     width: 46%;
     margin-right: 4%;
     float: left; }
 
-.games-search-filter-list ul li:nth-child(even) {
+#game-search .games-search-filter-list ul li:nth-child(even) {
     width: 46%;
     margin-left: 4%;
-    float: right; }
+    float: right;
+}
 
-.games-search-filter-list ul label {
+#game-search .games-search-filter-list ul label {
     position: relative;
     display: block;
     text-align: left;
     width: 80%; }
 
-.games-search-filter-list ul .marker-svg {
+#game-search .games-search-filter-list ul .marker-svg {
     position: absolute;
     top: 0.4rem;
     right: 0.4rem; }
 
-.games-search-filter-list ul .marker-svg svg {
+#game-search .games-search-filter-list ul .marker-svg svg {
     width: 1.7rem;
     height: 2.7rem; }
 
-.games-search-filter-list ul .active {
+#game-search .games-search-filter-list ul .active {
     border: 0.1rem solid #ffcd00;
     color: #ffcd00; }
 
@@ -419,10 +423,10 @@
     width: 100%;
     padding: 0.7rem; }
 
-.unsupported {
+#game-search .unsupported {
     z-index: 1031; }
 
-.unsupported-content {
+#game-search .unsupported-content {
     -webkit-transform: translate(0, 50%);
     -moz-transform: translate(0, 50%);
     -ms-transform: translate(0, 50%);
@@ -442,7 +446,7 @@
     background-color: #012951;
 }
 
-.unsupported-content svg {
+#game-search .unsupported-content svg {
     width: 2.5rem;
     height: 2.5rem;
     top: 0.5rem;
@@ -450,15 +454,15 @@
     right: .9rem;
 }
 
-.unsupported-content svg path {
+#game-search .unsupported-content svg path {
     fill: #e6e7e9;
 }
 
-.unsupported-content svg rect {
+#game-search .unsupported-content svg rect {
     fill: #012951;
 }
 
-.unsupported h2 {
+#game-search .unsupported h2 {
     color: #fff;
     font-size: 1.6rem;
     background: #012951;
@@ -467,7 +471,7 @@
     padding: 0 1rem 1rem;
 }
 
-.unsupported h2:after {
+#game-search .unsupported h2:after {
     content: "";
     position: absolute;
     width: 100%;
@@ -476,13 +480,13 @@
     bottom: 0;
 }
 
-.game-listing-item img {
+#game-search .game-listing-item img {
     min-width: 60%;
     min-height: 6rem;
     border-radius: 12%;
 }
 
-.game-listing-item {
+#game-search .game-listing-item {
     position: relative;
     float: left;
     display: inline-block;
