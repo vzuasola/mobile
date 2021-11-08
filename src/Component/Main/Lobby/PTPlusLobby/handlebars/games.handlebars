@@ -1,4 +1,8 @@
-<div class="lobby-content">
+<div class="lobby-content"
+    {{#unless games}}
+        style="display: none;"
+    {{/unless}}
+    data-category-id="{{categoryUrl}}">
     <div class="category-data">
         {{#equals pageTemplate "home-page-content"}}
             <span class="category-name">{{categoryName}}</span>
