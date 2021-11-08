@@ -46,6 +46,12 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
+            $config = $this->configs->getConfig('games_search.search_configuration');
+        } catch (\Exception $e) {
+            $config = [];
+        }
+
+        try {
             $ptplusGeneralConfig = $this->configs->getConfig('ptplus.ptplus_configuration');
         } catch (\Exception $e) {
             $ptplusGeneralConfig = [];
@@ -64,6 +70,15 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
         }
 
         return [
+            'search_blurb' => $pageContents['search_blurb']
+                ?? "DR Showing {count} result/s for \"<strong>{keyword}</strong>\"",
+            'search_no_result_msg' => $pageContents['search_no_result_msg']
+                ?? "No search results for <strong>{keyword}</strong>.",
+            'msg_recommended_available' => $pageContents['msg_recommended_available']
+                ?? "You might want to try our recommended games.",
+            'msg_no_recommended' => $pageContents['msg_no_recommended'] ?? "",
+            'title_weight' => $config['title_weight'] ?? 0,
+            'keywords_weight' => $config['keywords_weight'] ?? 0,
             'authenticated' => $this->playerSession->isLogin(),
             'pagerConfig' => $pager ?? [],
             'configs' => $ptplusGeneralConfig ?? [],

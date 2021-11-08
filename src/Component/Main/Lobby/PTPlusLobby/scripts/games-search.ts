@@ -4,15 +4,16 @@ import * as utility from "@core/assets/js/components/utility";
 
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {RecommendedGames} from "./recommended-games";
+import * as categoriesTemplate from "@app/src/Component/Main/Lobby/PTPlusLobby/handlebars/categories.handlebars";
 
 /**
- *
+ * GamesSearch Class
  */
 export class GamesSearch {
     private searchObj: Search;
     private isLogin: boolean;
     private isRecommended: boolean;
-    private favoritesList;
+    /*private favoritesList;*/
     private element;
     private config: any;
     private gamesList: any;
@@ -49,7 +50,6 @@ export class GamesSearch {
         msg_no_recommended: string,
         product: any[],
     }) {
-        console.log("handleOnLoad");
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
@@ -58,7 +58,7 @@ export class GamesSearch {
         this.listenChangeGameSearch();
         this.listenClickSearchButton();
         /*this.listenClickBackButton();*/
-        this.listenClickFavoriteOnPreview();
+        /*this.listenClickFavoriteOnPreview();*/
         /*this.listenCategoryChange();*/
         this.listenClickClearIcon();
         this.listenOnLogin();
@@ -75,14 +75,13 @@ export class GamesSearch {
         msg_no_recommended: string,
         product: any[],
     }) {
-        console.log("handleOnReLoad");
         if (!this.element) {
             this.listenActivateSearchLightbox();
             this.listenActivateSearchFilterLightbox();
             this.listenChangeGameSearch();
             this.listenClickSearchButton();
             /*this.listenClickBackButton();*/
-            this.listenClickFavoriteOnPreview();
+            /*this.listenClickFavoriteOnPreview();*/
             /*this.listenCategoryChange();*/
             this.listenClickClearIcon();
             this.listenOnLogin();
@@ -93,20 +92,20 @@ export class GamesSearch {
         this.element = element;
     }
 
+    /**
+     * Set Games List
+     */
     setGamesList(gamesList) {
+        console.log("setGamesList");
         this.response = gamesList;
         if (gamesList && gamesList.games["all-games"]) {
             const allGames = [];
-            for (const games in gamesList.games["all-games"]) {
-                if (gamesList.games["all-games"].hasOwnProperty(games)) {
-                    for (const game of games) {
-                        allGames.push(game);
-                    }
+            for (const games of gamesList.games["all-games"]) {
+                for (const game of games) {
+                    allGames.push(game);
                 }
             }
-
             this.gamesList = gamesList;
-            this.favoritesList = gamesList.favorite_list;
             this.searchObj.setData(allGames);
             this.recommendedGames = new RecommendedGames(this.gamesList, this.config);
         }
@@ -117,9 +116,6 @@ export class GamesSearch {
      * and search games result via lobby
      */
     private onSuccessSearch(response, keyword) {
-        console.log("onSuccessSearch");
-        console.log(response);
-        console.log(keyword);
         let blurb = this.config.search_blurb;
         blurb = "<span>" + blurb + "</span>";
         const sortedGames = this.sortSearchResult(keyword, response);
@@ -149,7 +145,6 @@ export class GamesSearch {
      */
     private onBeforeSearch(data) {
         // placeholder
-        console.log("onBeforeSearch");
         this.isRecommended = false;
     }
 
@@ -157,11 +152,11 @@ export class GamesSearch {
      * Callback function on search fail
      */
     private onFailedSearch(keyword) {
-        console.log("onFailedSearch");
         let blurb = this.config.search_no_result_msg;
         blurb = "<span>" + blurb + "</span>";
         const recommendedGames = this.recommendedGames.getGames();
         let recommendedBlurb = this.recommendedGames.getBlurb();
+
         if (recommendedBlurb) {
             recommendedBlurb = "<span>" + recommendedBlurb + "</span>";
             blurb = blurb.concat(recommendedBlurb);
@@ -223,13 +218,14 @@ export class GamesSearch {
      * Function that populates game tiles in games preview.
      */
     private setGamesResultPreview(sortedGames) {
+
         const previewTemplate = gamesSearchTemplate({
             games: sortedGames,
-            favorites: this.favoritesList,
+            /*favorites: this.favoritesList,*/
             isLogin: this.isLogin,
             isRecommended: this.isRecommended,
         });
-        console.log(previewTemplate);
+
         const gamesPreview = this.element.querySelector(".games-search-result");
 
         if (gamesPreview) {
@@ -241,7 +237,6 @@ export class GamesSearch {
      * Function that clears search results.
      */
     private clearSearchResult() {
-        console.log(this.element.querySelector(".games-search-result"));
         this.element.querySelector(".games-search-result").innerHTML = "";
         this.element.querySelector(".games-search-input").value = "";
     }
@@ -250,7 +245,6 @@ export class GamesSearch {
      *
      */
     private clearSearchBlurbPreview() {
-        console.log(this.element.querySelector("#blurb-preview"));
         this.element.querySelector("#blurb-preview").innerHTML = "";
     }
 
@@ -262,50 +256,11 @@ export class GamesSearch {
     }
 
     /**
-     * Function that enables search tab and sets category in URL to inactive
-     */
-    /*private activateSearchTab() {
-        const categoriesEl = document.querySelector("#game-categories");
-        // Clear Categories tab on header
-        categoriesEl.querySelectorAll(".game-category-item").forEach((el) => {
-            el.classList.remove("active");
-        });
-        const activeLink = categoriesEl.querySelector(".category-tab .active a");
-        let activeCategory = this.response.categories[0].field_games_alias;
-        if (activeLink) {
-            activeCategory = activeLink.getAttribute("data-category-filter-id");
-        }
-
-        if (utility.hasClass(categoriesEl.querySelector(".game-category-more"), "active") || !activeCategory) {
-            activeCategory = utility.getHash(window.location.href);
-        }
-
-        // set search tab as active tab
-        this.deactivateSearchTab();
-        const actives = document.querySelectorAll(".category-" + activeCategory);
-        // Clear categories tile from more sidebar
-        for (const id in actives) {
-            if (actives.hasOwnProperty(id)) {
-                const active = actives[id];
-                utility.removeClass(active, "active");
-            }
-        }
-
-        utility.addClass(this.element.querySelector(".search-tab"), "active");
-    }*/
-
-    /**
-     * Function that disables search tab and sets category in URL to active
-     */
-    /*private deactivateSearchTab() {
-        utility.removeClass(this.element.querySelector(".search-tab"), "active");
-        utility.removeClass(this.element.querySelector(".games-filter"), "active");
-    }*/
-
-    /**
      * Function that computes sort weight for search results
      */
     private setSortWeightPerGame(keyword, result) {
+        console.log("setSortWeightPerGame");
+
         const sortedGames = [];
         const sortWeight = {
             title: this.config.title_weight,
@@ -338,10 +293,9 @@ export class GamesSearch {
      */
     private sortSearchResult(keyword, result) {
         console.log("sortSearchResult");
-        console.log(keyword);
-        console.log(result);
+
         const sortedGames = this.setSortWeightPerGame(keyword, result);
-        console.log(sortedGames);
+
         sortedGames.sort((a, b) => {
             if (a.weight !== b.weight) {
                 return b.weight - a.weight;
@@ -376,7 +330,9 @@ export class GamesSearch {
      * Function that shows search lightbox.
      */
     private listenActivateSearchLightbox() {
+        console.log("listenActivateSearchLightbox");
         ComponentManager.subscribe("click", (event, src) => {
+            console.log("listenActivateSearchLightbox clicked");
             const el = utility.hasClass(src, "search-tab", true);
             const product = ComponentManager.getAttribute("product");
             if (el && product === "mobile-ptplus") {
@@ -389,7 +345,6 @@ export class GamesSearch {
 
         ComponentManager.subscribe("games.search", (event, src) => {
             console.log("games.search");
-            /*Modal.open("#games-search-lightbox");*/
         });
     }
 
@@ -397,7 +352,9 @@ export class GamesSearch {
      * Function that shows search filter lightbox.
      */
     private listenActivateSearchFilterLightbox() {
+        console.log("listenActivateSearchFilterLightbox");
         ComponentManager.subscribe("click", (event, src) => {
+            console.log("listenActivateSearchFilterLightbox clicked");
             const el = utility.hasClass(src, "games-filter", true);
             if (el) {
                 event.preventDefault();
@@ -409,7 +366,6 @@ export class GamesSearch {
 
         ComponentManager.subscribe("games.search.filter", (event, src, data) => {
             console.log("games.search.filter");
-            /*Modal.open("#games-search-filter-lightbox");*/
         });
     }
 
@@ -419,11 +375,8 @@ export class GamesSearch {
     private listenChangeGameSearch() {
         console.log("listenChangeGameSearch");
         ComponentManager.subscribe("keyup", (event, src) => {
+            console.log("listenChangeGameSearch keyup");
             const keyword =  this.element.querySelector(".games-search-input");
-            console.log("keyup");
-            console.log(keyword);
-            console.log(keyword.value);
-            console.log(this.timer);
 
             if (this.timer !== null) {
                 clearTimeout(this.timer);
@@ -444,7 +397,9 @@ export class GamesSearch {
      *
      */
     private listenSubmitGameSearch() {
+        console.log("listenSubmitGameSearch");
         ComponentManager.subscribe("submit", (event, src) => {
+            console.log("listenSubmitGameSearch submit");
             const el = utility.hasClass(src, "games-search-form", true);
             if (el) {
                 event.preventDefault();
@@ -460,11 +415,9 @@ export class GamesSearch {
     private listenClickSearchButton() {
         console.log("listenClickSearchButton");
         ComponentManager.subscribe("click", (event, src) => {
-            console.log("listenClickSearchButton cliked");
+            console.log("listenClickSearchButton clicked");
             const el = utility.hasClass(src, "games-search-submit", true);
             const keyword = this.element.querySelector(".games-search-input");
-            console.log(el);
-            console.log(keyword);
             if (el && keyword.value) {
                 keyword.blur();
                 event.preventDefault();
@@ -478,13 +431,6 @@ export class GamesSearch {
      */
     private showResultInLobby() {
         console.log("showResultInLobby");
-        /*this.activateSearchTab();*/
-        console.log(this.searchBlurb);
-        console.log(this.element.querySelector("#blurb-lobby"));
-        console.log(this.searchResult.length);
-        console.log(this.searchKeyword);
-        console.log(this.searchResult);
-        console.log("END");
         this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
             { count: this.searchResult.length, keyword: this.searchKeyword });
         if (this.searchResult.length) {
@@ -492,54 +438,15 @@ export class GamesSearch {
         } else {
             this.element.querySelector("#game-container").innerHTML = "";
         }
-
-        /*Modal.close("#games-search-lightbox");*/
     }
-
-    /**
-     * Listens for click event on back button.
-     * Shows games of active category in lobby before initiating search.
-     */
-    /*private listenClickBackButton() {
-        ComponentManager.subscribe("click", (event, src) => {
-            const el = utility.hasClass(src, "games-search-back", true);
-            if (el) {
-                event.preventDefault();
-                /!*Modal.close("#games-search-lightbox");*!/
-            }
-        });
-    }*/
-
-    /**
-     * Listens for click event on successful adding of favorites.
-     * Updates favorites icon state.
-     */
-    private listenClickFavoriteOnPreview() {
-        ComponentManager.subscribe("games.favorite", (event, src, data) => {
-            utility.toggleClass(data.srcElement, "active");
-        });
-    }
-
-    /**
-     * Listens for click event on category tabs to deactivate search tab
-     * as well as clear all search blurb.
-     */
-    /*private listenCategoryChange() {
-        ComponentManager.subscribe("category.change", (event, src, data) => {
-            if (utility.hasClass(this.element.querySelector(".search-tab"), "active") ||
-                utility.hasClass(this.element.querySelector(".games-filter"), "active")
-            ) {
-                this.deactivateSearchTab();
-            }
-            this.clearSearchBlurbLobby();
-        });
-    }*/
 
     /**
      * Clears search result and search blurb when clear icon is clicked.
      */
     private listenClickClearIcon() {
+        console.log("listenClickClearIcon");
         ComponentManager.subscribe("click", (event, src, data) => {
+            console.log("listenClickClearIcon clicked");
             const el = utility.hasClass(src, "close-icon", true);
             console.log(el);
             if (el) {
@@ -553,12 +460,13 @@ export class GamesSearch {
      * Closes games search lightbox when login lightbox is triggered.
      */
     private listenOnLogin() {
+        console.log("listenOnLogin");
         ComponentManager.subscribe("header.login", (event, src, data) => {
+            console.log("listenOnLogin header.login");
             const el = utility.hasClass(data.src, "game-listing-item", true);
             if (el && utility.hasClass(this.element.querySelector("#games-search-lightbox"),
                 "modal-active")) {
                 console.log("listenOnLogin");
-                /*Modal.close("#games-search-lightbox");*/
             }
         });
     }

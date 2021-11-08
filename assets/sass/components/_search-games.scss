@@ -4,7 +4,7 @@
     height: calc(100% - 101px);
     width: 100%;
     position: absolute;
-    top: 55px;
+    top: 50px;
     margin: 0;
     z-index: 99;
     overflow: auto;
@@ -19,21 +19,19 @@
     background: #999;
 }
 
-.games-search-content .modal-inner-container > span {
-    opacity: 0.8;
-    z-index: 2; }
-
 .page-title-back-button {
     order: 1;
     align-self: center;
     width: 4rem;
     height: 3rem;
-    background: #061c33; }
+    background: #061c33;
+}
 
 .page-title-back-button svg {
     width: 0.8rem;
     fill: #fff;
-    margin-top: 0.75rem; }
+    margin-top: 0.75rem;
+}
 
 .games-search * {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -56,34 +54,59 @@
     background: #999;
     padding: 1.5rem;
     border: 0;
-    border-radius: 0;}
+    border-radius: 0;
+    margin-bottom: 0;
+}
 
 .games-search-content span {
     opacity: 0.8;
-    z-index: 2; }
+    z-index: 2;
+}
 
-.games-search .modal-body {
-    margin: 1.6rem 0; }
+.result-container {
+    padding-left: 5%;
+    padding-right: 5%;
+}
 
-.games-search .modal-body form {
+.result-container .games-search-result a {
+    background-color: #fff;
+}
+
+.games-search-result-left {
+    padding: 3%;
+}
+
+.games-search-result-left img {
+    border: 0.1rem solid #d9d9d9;
+}
+
+.games-search form {
     display: block;
-    margin: 0; }
+    margin: 0;
+}
 
-.games-search .modal-body h2 {
-    color: #d9d9d9; }
+.games-search h2 {
+    color: #d9d9d9;
+}
 
-.games-search .modal-body .search-blurb {
+.games-search .search-blurb {
     margin-top: 1rem;
     display: block;
     float: left;
     width: 100%;
-    text-align: left; }
+    text-align: left;
+    padding-left: 5%;
+    padding-right: 5%;
+    color: #af0000;
+}
 
-.games-search .modal-body .search-blurb span {
-    display: block; }
+.games-search .search-blurb span {
+    display: block;
+}
 
-.games-search .modal-body .search-blurb span strong {
-    font-weight: normal; }
+.games-search .search-blurb span strong {
+    font-weight: normal;
+}
 
 .games-search h2 {
     margin: 0rem 1rem 1rem;
@@ -136,7 +159,7 @@
     box-sizing: border-box;
 }
 
-.games-search input[type="search"]::-webkit-input-placeholder{
+.games-search input[type="search"]::-webkit-input-placeholder {
     color: #000;
 }
 
@@ -180,13 +203,15 @@
     list-style-type: none;
     margin-top: 1rem;
     float: left; }
+
 .games-search-result ul li {
     display: block;
-    margin-top: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 0.1rem solid #051c33;
+    margin-top: 5px;
+    padding-bottom: 0;
+    border-bottom: hidden;
     width: 100%;
-    float: left; }
+    float: left;
+}
 
 .games-search-result ul li a {
     width: 100%; }
@@ -199,7 +224,7 @@
     float: left; }
 
 .games-search-result-left {
-    width: 33.33333333%;
+    width: 27%;
     position: relative; }
 
 .games-search-result-left .game-favorite {
@@ -229,9 +254,6 @@
 .games-search-result-left .game-favorite.active svg {
     fill: #ffcd00; }
 
-.games-search-result-left img {
-    border: 0.1rem solid #d9d9d9; }
-
 .games-search-result-right {
     width: 59.666667%;
     margin: 0 3% 0 4%; }
@@ -239,7 +261,7 @@
 .games-search-result-right p {
     margin: 0;
     text-align: left;
-    color: #fff;
+    color: #000;
     position: absolute;
     -webkit-transform: translate(0, 50%);
     -moz-transform: translate(0, 50%);
@@ -251,8 +273,7 @@
 
 .games-search-result svg {
     position: absolute;
-    right: 0;
-    bottom: 40%;
+    bottom: 33%;
     -webkit-transform: translate(0, 50%);
     -moz-transform: translate(0, 50%);
     -ms-transform: translate(0, 50%);
@@ -265,7 +286,8 @@
     transform: rotate(-180deg);
     margin: 0;
     width: 1.2rem;
-    fill: #fff;
+    fill: #000;
+    right: 22px;
 }
 
 .games-search-input,
@@ -309,54 +331,6 @@
 .games-search-input:not(:valid) ~ .close-icon {
     display: none;
 }
-
-.games-search-filter * {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    /* prevent tap highlight color*/
-    -webkit-tap-highlight-color: transparent;
-    /* prevent tap highlight color*/
-    outline: none; }
-
-.games-search-filter .modal-overlay {
-    background: #373737; }
-
-.games-search-filter-content {
-    -webkit-transform: translate(0, 0%);
-    -moz-transform: translate(0, 0%);
-    -ms-transform: translate(0, 0%);
-    -o-transform: translate(0, 0%);
-    transform: translate(0, 0%);
-    top: 0;
-    height: 100%;
-    max-height: 100%;
-    width: 100%;
-    max-width: 100%;
-    background: #012951;
-    padding: 1rem;
-    border: 0;
-    border-radius: 0;
-    margin-bottom: 0.8rem; }
-
-.games-search-filter-content .modal-inner-container {
-    margin-top: 2rem;
-    position: relative; }
-
-.games-search-filter-content .games-search-back {
-    position: absolute;
-    top: 0;
-    right: 0;
-    outline: none;
-    cursor: pointer; }
-
-.games-search-filter-content svg {
-    top: 0;
-    right: 2%;
-    width: 2.2rem;
-    height: 2.2rem;
-    fill: #fff; }
-
-.games-search-filter-content svg rect {
-    fill: #373737; }
 
 .games-search-filter h2 {
     margin: 0.5rem 1rem 1rem;
@@ -448,9 +422,6 @@
 .unsupported {
     z-index: 1031; }
 
-.unsupported .modal-inner-container {
-    padding: 1rem; }
-
 .unsupported-content {
     -webkit-transform: translate(0, 50%);
     -moz-transform: translate(0, 50%);
@@ -468,31 +439,24 @@
     margin: 0;
     padding: 0;
     border-radius: 0.5rem;
-    background-color: #012951; }
+    background-color: #012951;
+}
 
 .unsupported-content svg {
     width: 2.5rem;
     height: 2.5rem;
     top: 0.5rem;
     fill: #fff;
-    right: .9rem; }
+    right: .9rem;
+}
 
 .unsupported-content svg path {
-    fill: #e6e7e9; }
+    fill: #e6e7e9;
+}
 
 .unsupported-content svg rect {
-    fill: #012951; }
-
-.unsupported .modal-body {
-    margin: 1.6rem 0; }
-
-.unsupported .modal-body p {
-    color: #fff;
-    padding: 0 1rem;
-    font-size: 1.4rem; }
-
-.unsupported .modal-body .btn-yellow {
-    color: #012951; }
+    fill: #012951;
+}
 
 .unsupported h2 {
     color: #fff;
@@ -500,7 +464,8 @@
     background: #012951;
     position: relative;
     margin: 0;
-    padding: 0 1rem 1rem; }
+    padding: 0 1rem 1rem;
+}
 
 .unsupported h2:after {
     content: "";
@@ -508,4 +473,18 @@
     width: 100%;
     border-bottom: 1px solid #2d6fb2;
     left: 0;
-    bottom: 0; }
+    bottom: 0;
+}
+
+.game-listing-item img {
+    min-width: 60%;
+    min-height: 6rem;
+    border-radius: 12%;
+}
+
+.game-listing-item {
+    position: relative;
+    float: left;
+    display: inline-block;
+    min-height: 0.1rem;
+}

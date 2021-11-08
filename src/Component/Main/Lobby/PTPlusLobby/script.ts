@@ -21,7 +21,7 @@ import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import PopupWindow from "@app/assets/script/components/popup";
 
 /**
- *
+ * PTPlusLobbyComponent Class
  */
 export class PTPlusLobbyComponent implements ComponentInterface {
     private element: HTMLElement;
@@ -30,7 +30,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private isLogin: boolean;
     private gameLauncher;
     private gamesSearch: GamesSearch;
-    private gamesFilter: GamesFilter;
+    /*private gamesFilter: GamesFilter;*/
     private gamesCollectionSort: GamesCollectionSorting;
     private currentPage: number;
     private pager: number;
@@ -47,7 +47,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     constructor() {
         this.gameLauncher = GameLauncher;
         this.gamesSearch = new GamesSearch();
-        this.gamesFilter = new GamesFilter();
+        /*this.gamesFilter = new GamesFilter();*/
         this.gamesCollectionSort = new GamesCollectionSorting();
     }
 
@@ -75,7 +75,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.load = true;
         this.gamesSearch.handleOnLoad(this.element, attachments);
-        this.gamesFilter.handleOnLoad(this.element, attachments);
+        /*this.gamesFilter.handleOnLoad(this.element, attachments);*/
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
@@ -90,6 +90,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenClickTab();
         this.activeLinks();
         this.listenHashChange();
+        this.setPlaceholder();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -113,6 +114,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             this.listenFavoriteClick();
             this.listenClickTab();
             this.listenHashChange();
+            this.setPlaceholder();
         }
         this.groupedGames = undefined;
         this.response = null;
@@ -127,7 +129,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             this.lobby();
         });
         this.gamesSearch.handleOnReLoad(this.element, attachments);
-        this.gamesFilter.handleOnReLoad(this.element, attachments);
+        /*this.gamesFilter.handleOnReLoad(this.element, attachments);*/
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
@@ -215,6 +217,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         promises.push("recent");
         promises.push("fav");
         promises.push("games-collection");
+
         return promises;
     }
 
@@ -346,12 +349,15 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         // clone respone object
                         const newResponse = Object.assign({}, mergeResponse);
                         newResponse.games = this.getCategoryGames(newResponse);
+                        newResponse.games = this.groupGamesByContainer(newResponse.games);
                         newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
                         if (pageResponse.hasOwnProperty("fav")) {
                             const key = "fav";
                             const favoritesList = pageResponse[key];
                             newResponse.favorite_list = this.getFavoritesList(favoritesList);
                         }
+                        newResponse.games["recommended-games"] = newResponse.games["all-games"];
+
                         this.response = newResponse;
                         if (callback) {
                             callback();
@@ -372,6 +378,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 filteredCategory.push(category);
             }
         }
+
         return filteredCategory;
     }
 
@@ -393,13 +400,16 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         req["games-collection"] = {
             type: "collection",
         };
+        req["recommended-games"] = {
+            type: "getRecommendedGames",
+        };
 
         return req;
     }
 
     private lobby() {
         this.gamesSearch.setGamesList(this.response);
-        this.gamesFilter.setGamesList(this.response);
+        /*this.gamesFilter.setGamesList(this.response);*/
         this.setLobby();
     }
 
@@ -575,7 +585,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         this.response = null;
                         this.doRequest(() => {
                             this.gamesSearch.setGamesList(this.response);
-                            this.gamesFilter.setGamesList(this.response);
+                            /*this.gamesFilter.setGamesList(this.response);*/
                         });
                     }
                 }).fail((error, message) => {
@@ -819,7 +829,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         this.response = null;
                         this.doRequest(() => {
                             this.gamesSearch.setGamesList(this.response);
-                            this.gamesFilter.setGamesList(this.response);
+                            /*this.gamesFilter.setGamesList(this.response);*/
 
                             if (this.filterFlag === "favorites") {
                                 if (typeof this.response.games[this.filterFlag] === "undefined") {
@@ -914,5 +924,46 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             }
         }
         return pageContentName;
+    }
+
+    /**
+     *
+     */
+    private groupGamesByContainer(gamesList) {
+        const groupList: any = [];
+        for (const category in gamesList) {
+            if (gamesList.hasOwnProperty(category)) {
+                const categoryGame = gamesList[category];
+
+                const arrayGameList = [];
+                for (const gameKey in categoryGame) {
+                    if (categoryGame.hasOwnProperty(gameKey)) {
+                        const game = categoryGame[gameKey];
+                        arrayGameList.push(game);
+                    }
+                }
+
+                const temp = arrayGameList.slice(0);
+
+                const batch: any = [];
+                while (temp.length > 0) {
+                    batch.push(temp.splice(0, 3));
+                }
+
+                groupList[category] = batch;
+
+            }
+        }
+
+        return groupList;
+    }
+
+    /**
+     * Set the placeholder for search input
+     */
+    private setPlaceholder() {
+        const searchTag = document.querySelector("input#games-search-input");
+        const inputPlacholder = this.pageContentKey("search_for_games");
+        searchTag.setAttribute("placeholder", inputPlacholder);
     }
 }
