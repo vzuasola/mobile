@@ -5,10 +5,10 @@ routes:
         components:
             main: lobby
         headers:
-            Cache-Control: public, max-age=1800
+            Cache-Control: public, max-age=300
         page_cache:
             enabled: true
-            expires: 300
+            expires: 1800
 
     /manifest.json:
         method: GET
