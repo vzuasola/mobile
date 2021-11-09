@@ -537,8 +537,8 @@ class PTPlusLobbyComponentController
     /**
      * Get recommended games.
      */
-    public function getRecommendedGames($request, $response) {
-
+    public function getRecommendedGames($request, $response)
+    {
         $query = $request->getQueryParams();
         $isPreview = $query['pvw'] ?? false;
         $page = null;
