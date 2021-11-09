@@ -17,6 +17,7 @@ export class GamesSearch {
     private element;
     private config: any;
     private gamesList: any;
+    private lists: any;
     private searchFields = ["title", "keywords"];
     private searchResult = [];
     private searchKeyword;
@@ -24,6 +25,7 @@ export class GamesSearch {
     private recommendedGames;
     private response;
     private timer;
+    private timerLog;
 
     constructor() {
         this.searchObj = new Search({
@@ -57,9 +59,6 @@ export class GamesSearch {
         this.listenActivateSearchFilterLightbox();
         this.listenChangeGameSearch();
         this.listenClickSearchButton();
-        /*this.listenClickBackButton();*/
-        /*this.listenClickFavoriteOnPreview();*/
-        /*this.listenCategoryChange();*/
         this.listenClickClearIcon();
         this.listenOnLogin();
         this.listenSubmitGameSearch();
@@ -80,9 +79,6 @@ export class GamesSearch {
             this.listenActivateSearchFilterLightbox();
             this.listenChangeGameSearch();
             this.listenClickSearchButton();
-            /*this.listenClickBackButton();*/
-            /*this.listenClickFavoriteOnPreview();*/
-            /*this.listenCategoryChange();*/
             this.listenClickClearIcon();
             this.listenOnLogin();
             this.listenSubmitGameSearch();
@@ -93,10 +89,24 @@ export class GamesSearch {
     }
 
     /**
+     * Function that clears search results.
+     */
+    clearSearchResult() {
+        this.element.querySelector(".games-search-result").innerHTML = "";
+        this.element.querySelector(".games-search-input").value = "";
+    }
+
+    /**
+     * Function that clears blurb results.
+     */
+    clearSearchBlurbPreview() {
+        this.element.querySelector("#blurb-preview").innerHTML = "";
+    }
+
+    /**
      * Set Games List
      */
     setGamesList(gamesList) {
-        console.log("setGamesList");
         this.response = gamesList;
         if (gamesList && gamesList.games["all-games"]) {
             const allGames = [];
@@ -117,7 +127,7 @@ export class GamesSearch {
      */
     private onSuccessSearch(response, keyword) {
         let blurb = this.config.search_blurb;
-        blurb = "<span>" + blurb + "</span>";
+        blurb = "<span>" + blurb + " " + keyword + "</span>";
         const sortedGames = this.sortSearchResult(keyword, response);
         this.searchResult = sortedGames;
         this.searchKeyword = keyword;
@@ -153,7 +163,7 @@ export class GamesSearch {
      */
     private onFailedSearch(keyword) {
         let blurb = this.config.search_no_result_msg;
-        blurb = "<span>" + blurb + "</span>";
+        blurb = "<span>" + blurb + " " + keyword + "</span>";
         const recommendedGames = this.recommendedGames.getGames();
         let recommendedBlurb = this.recommendedGames.getBlurb();
 
@@ -218,7 +228,6 @@ export class GamesSearch {
      * Function that populates game tiles in games preview.
      */
     private setGamesResultPreview(sortedGames) {
-
         const previewTemplate = gamesSearchTemplate({
             games: sortedGames,
             /*favorites: this.favoritesList,*/
@@ -234,33 +243,9 @@ export class GamesSearch {
     }
 
     /**
-     * Function that clears search results.
-     */
-    private clearSearchResult() {
-        this.element.querySelector(".games-search-result").innerHTML = "";
-        this.element.querySelector(".games-search-input").value = "";
-    }
-
-    /**
-     *
-     */
-    private clearSearchBlurbPreview() {
-        this.element.querySelector("#blurb-preview").innerHTML = "";
-    }
-
-    /**
-     *
-     */
-    private clearSearchBlurbLobby() {
-        this.element.querySelector("#blurb-lobby").innerHTML = "";
-    }
-
-    /**
      * Function that computes sort weight for search results
      */
     private setSortWeightPerGame(keyword, result) {
-        console.log("setSortWeightPerGame");
-
         const sortedGames = [];
         const sortWeight = {
             title: this.config.title_weight,
@@ -292,8 +277,6 @@ export class GamesSearch {
      * Function that sorts search result
      */
     private sortSearchResult(keyword, result) {
-        console.log("sortSearchResult");
-
         const sortedGames = this.setSortWeightPerGame(keyword, result);
 
         sortedGames.sort((a, b) => {
@@ -316,23 +299,10 @@ export class GamesSearch {
     }
 
     /**
-     * Function that shows active category games before initiating a search.
-     */
-    private showPreviousCategoryTab() {
-        const activeCategory = utility.getHash(window.location.href);
-        if (this.gamesList.games[activeCategory]) {
-            // repopulate list of games for active tab
-            ComponentManager.broadcast("games.search.success", {games: this.gamesList.games[activeCategory]});
-        }
-    }
-
-    /**
      * Function that shows search lightbox.
      */
     private listenActivateSearchLightbox() {
-        console.log("listenActivateSearchLightbox");
         ComponentManager.subscribe("click", (event, src) => {
-            console.log("listenActivateSearchLightbox clicked");
             const el = utility.hasClass(src, "search-tab", true);
             const product = ComponentManager.getAttribute("product");
             if (el && product === "mobile-ptplus") {
@@ -342,19 +312,13 @@ export class GamesSearch {
                 ComponentManager.broadcast("games.search");
             }
         });
-
-        ComponentManager.subscribe("games.search", (event, src) => {
-            console.log("games.search");
-        });
     }
 
     /**
      * Function that shows search filter lightbox.
      */
     private listenActivateSearchFilterLightbox() {
-        console.log("listenActivateSearchFilterLightbox");
         ComponentManager.subscribe("click", (event, src) => {
-            console.log("listenActivateSearchFilterLightbox clicked");
             const el = utility.hasClass(src, "games-filter", true);
             if (el) {
                 event.preventDefault();
@@ -363,19 +327,13 @@ export class GamesSearch {
                 });
             }
         });
-
-        ComponentManager.subscribe("games.search.filter", (event, src, data) => {
-            console.log("games.search.filter");
-        });
     }
 
     /**
      * Games search preview.
      */
     private listenChangeGameSearch() {
-        console.log("listenChangeGameSearch");
         ComponentManager.subscribe("keyup", (event, src) => {
-            console.log("listenChangeGameSearch keyup");
             const keyword =  this.element.querySelector(".games-search-input");
 
             if (this.timer !== null) {
@@ -397,9 +355,7 @@ export class GamesSearch {
      *
      */
     private listenSubmitGameSearch() {
-        console.log("listenSubmitGameSearch");
         ComponentManager.subscribe("submit", (event, src) => {
-            console.log("listenSubmitGameSearch submit");
             const el = utility.hasClass(src, "games-search-form", true);
             if (el) {
                 event.preventDefault();
@@ -413,9 +369,7 @@ export class GamesSearch {
      * Shows games search result in games lobby.
      */
     private listenClickSearchButton() {
-        console.log("listenClickSearchButton");
         ComponentManager.subscribe("click", (event, src) => {
-            console.log("listenClickSearchButton clicked");
             const el = utility.hasClass(src, "games-search-submit", true);
             const keyword = this.element.querySelector(".games-search-input");
             if (el && keyword.value) {
@@ -430,7 +384,6 @@ export class GamesSearch {
      * Shows search result in games lobby.
      */
     private showResultInLobby() {
-        console.log("showResultInLobby");
         this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
             { count: this.searchResult.length, keyword: this.searchKeyword });
         if (this.searchResult.length) {
@@ -444,11 +397,8 @@ export class GamesSearch {
      * Clears search result and search blurb when clear icon is clicked.
      */
     private listenClickClearIcon() {
-        console.log("listenClickClearIcon");
         ComponentManager.subscribe("click", (event, src, data) => {
-            console.log("listenClickClearIcon clicked");
             const el = utility.hasClass(src, "close-icon", true);
-            console.log(el);
             if (el) {
                 this.clearSearchResult();
                 this.clearSearchBlurbPreview();
@@ -460,14 +410,19 @@ export class GamesSearch {
      * Closes games search lightbox when login lightbox is triggered.
      */
     private listenOnLogin() {
-        console.log("listenOnLogin");
         ComponentManager.subscribe("header.login", (event, src, data) => {
-            console.log("listenOnLogin header.login");
             const el = utility.hasClass(data.src, "game-listing-item", true);
-            if (el && utility.hasClass(this.element.querySelector("#games-search-lightbox"),
-                "modal-active")) {
-                console.log("listenOnLogin");
+            const val = this.element.querySelector("input#games-search-input").value;
+
+            if (this.timerLog !== null) {
+                clearTimeout(this.timerLog);
             }
+
+            this.timerLog = setTimeout(() => {
+                if (this.isLogin) {
+                   this.element.querySelector("input#games-search-input").value = val;
+               }
+            }, 1000);
         });
     }
 }

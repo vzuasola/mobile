@@ -68,15 +68,28 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
         } catch (\Exception $e) {
             $pageContents = [];
         }
+        foreach ($pageContents as $value) {
+            $key =  $value['field_page_content_key'][0]['value'];
+
+            if ('search_blurb' === $key) {
+                $searchBlurb = $value['name'][0]['value'];
+            } elseif ('search_no_result_msg' === $key) {
+                $searchNoResult = $value['name'][0]['value'];
+            } elseif ('msg_recommended_available' === $key) {
+                $recommendedAvailable = $value['name'][0]['value'];
+            } elseif ('msg_no_recommended' === $key) {
+                $noRecommended = $value['name'][0]['value'];
+            }
+        }
 
         return [
-            'search_blurb' => $pageContents['search_blurb']
-                ?? "DR Showing {count} result/s for \"<strong>{keyword}</strong>\"",
-            'search_no_result_msg' => $pageContents['search_no_result_msg']
-                ?? "No search results for <strong>{keyword}</strong>.",
-            'msg_recommended_available' => $pageContents['msg_recommended_available']
-                ?? "You might want to try our recommended games.",
-            'msg_no_recommended' => $pageContents['msg_no_recommended'] ?? "",
+            'search_blurb' => $searchBlurb
+                ?? "Search results for ",
+            'search_no_result_msg' => $searchNoResult
+                ?? "No search results for ",
+            'msg_recommended_available' => $recommendedAvailable
+                ?? "Try out these popular games for",
+            'msg_no_recommended' => $noRecommended ?? "",
             'title_weight' => $config['title_weight'] ?? 0,
             'keywords_weight' => $config['keywords_weight'] ?? 0,
             'authenticated' => $this->playerSession->isLogin(),

@@ -356,8 +356,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                             const favoritesList = pageResponse[key];
                             newResponse.favorite_list = this.getFavoritesList(favoritesList);
                         }
-                        newResponse.games["recommended-games"] = newResponse.games["all-games"];
-
+                        newResponse.games["recommended-games"] = newResponse.games.recommend;
                         this.response = newResponse;
                         if (callback) {
                             callback();
@@ -733,6 +732,17 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     gamesList[category],
                 );
             }
+
+            if (response.gamesCollection.recommended && response.gamesCollection.recommended.hasOwnProperty(category)) {
+                sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
+                    gamesList[category],
+                    response.gamesCollection.recommended[category],
+                );
+            } else {
+                sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
+                    gamesList[category],
+                );
+            }
         }
 
         return sortedGamesList;
@@ -793,6 +803,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             document.querySelector(".category-page").setAttribute("style", "display: block");
             document.querySelector(".game-container").setAttribute("style", "display: none");
             document.querySelector(".search-page").setAttribute("style", "display: none");
+            this.gamesSearch.clearSearchResult();
+            this.gamesSearch.clearSearchBlurbPreview();
         } else if (hash === "game-search") {
             const activeTab2 = document.querySelector(".tab-" + hash);
             this.makeActive(activeTab2);
@@ -803,6 +815,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             document.querySelector(".game-container").setAttribute("style", "display: block");
             document.querySelector(".category-page").setAttribute("style", "display: none");
             document.querySelector(".search-page").setAttribute("style", "display: none");
+            this.gamesSearch.clearSearchResult();
+            this.gamesSearch.clearSearchBlurbPreview();
         }
     }
 
@@ -969,6 +983,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     document.querySelector(".game-container").setAttribute("style", "display: none");
                     document.querySelector(".category-page").setAttribute("style", "display: block");
                     document.querySelector(".search-page").setAttribute("style", "display: none");
+                    this.gamesSearch.clearSearchResult();
+                    this.gamesSearch.clearSearchBlurbPreview();
                 } else if (locHref === "game-search") {
                     document.querySelector(".game-container").setAttribute("style", "display: none");
                     document.querySelector(".category-page").setAttribute("style", "display: none");
@@ -979,10 +995,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     document.querySelector(".search-page").setAttribute("style", "display: none");
                     gamesEl.innerHTML = "";
                     this.homePageContent(key);
+                    this.gamesSearch.clearSearchResult();
+                    this.gamesSearch.clearSearchBlurbPreview();
                 } else {
                     document.querySelector(".game-container").setAttribute("style", "display: block");
                     document.querySelector(".category-page").setAttribute("style", "display: none");
                     document.querySelector(".search-page").setAttribute("style", "display: none");
+                    this.gamesSearch.clearSearchResult();
+                    this.gamesSearch.clearSearchBlurbPreview();
                 }
             }
         });
@@ -1033,14 +1053,12 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }
 
                 const temp = arrayGameList.slice(0);
-
                 const batch: any = [];
                 while (temp.length > 0) {
                     batch.push(temp.splice(0, 3));
                 }
 
                 groupList[category] = batch;
-
             }
         }
 

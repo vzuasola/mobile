@@ -4,7 +4,7 @@
     height: calc(100% - 101px);
     width: 100%;
     position: absolute;
-    top: 50px;
+    top: 55px;
     margin: 0;
     z-index: 99;
     overflow: auto;
@@ -15,7 +15,7 @@
     margin: 0;
 }
 
-.games-search {
+#game-search .games-search {
     background: #999;
 }
 
@@ -33,7 +33,7 @@
     margin-top: 0.75rem;
 }
 
-.games-search * {
+#game-search .games-search * {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     /* prevent tap highlight color*/
     -webkit-tap-highlight-color: transparent;
@@ -326,22 +326,22 @@
     transform: scale3d(2.5, 1.75, 1.75);
 }
 
-.close-icon, .close-icon:after {
+#game-search .close-icon, .close-icon:after {
     position: absolute;
     cursor: pointer;
 }
 
-.games-search-input:not(:valid) ~ .close-icon {
+#game-search .games-search-input:not(:valid) ~ .close-icon {
     display: none;
 }
 
-.games-search-filter h2 {
+#game-search .games-search-filter h2 {
     margin: 0.5rem 1rem 1rem;
     color: #d9d9d9;
     font-size: 1.6rem;
     font-weight: 600; }
 
-.games-search-filter-back {
+#game-search .games-search-filter-back {
     position: absolute;
     top: 0;
     left: 0;
@@ -350,21 +350,21 @@
     background: transparent;
     z-index: 5; }
 
-.games-search-filter-back svg {
+#game-search .games-search-filter-back svg {
     fill: #fff;
     margin: 0; }
 
-.games-search-filter-body {
+#game-search .games-search-filter-body {
     margin-top: 1.5rem; }
 
-.games-search-filter-body input[type=reset]:disabled,
-.games-search-filter-body input[type=submit]:disabled {
+#game-search .games-search-filter-body input[type=reset]:disabled,
+#game-search .games-search-filter-body input[type=submit]:disabled {
     opacity: 0.25; }
 
-.games-search-filter-list {
+#game-search .games-search-filter-list {
     padding: 0; }
 
-.games-search-filter-list p {
+#game-search .games-search-filter-list p {
     font-size: 1.6rem;
     background: #051c33;
     text-align: left;
@@ -413,13 +413,13 @@
     border: 0.1rem solid #ffcd00;
     color: #ffcd00; }
 
-.filter-form-field {
+#game-search .filter-form-field {
     width: 46%;
     float: left;
     display: inline-block;
     margin: 0 2%; }
 
-.filter-form-field-btn {
+#game-search .filter-form-field-btn {
     width: 100%;
     padding: 0.7rem; }
 
