@@ -117,7 +117,10 @@ export class GamesSearch {
             }
             this.gamesList = gamesList;
             this.searchObj.setData(allGames);
+            console.log(this.config);
+            console.log(this.gamesList);
             this.recommendedGames = new RecommendedGames(this.gamesList, this.config);
+            console.log(this.recommendedGames);
         }
     }
 
