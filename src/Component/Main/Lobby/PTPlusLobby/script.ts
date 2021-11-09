@@ -356,7 +356,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                             const favoritesList = pageResponse[key];
                             newResponse.favorite_list = this.getFavoritesList(favoritesList);
                         }
-                        newResponse.games["recommended-games"] = newResponse.games.recommend;
+                        newResponse.games["recommended-games"] =
+                            newResponse.games.recommended ? newResponse.games.recommended : newResponse.games.recommend;
                         this.response = newResponse;
                         if (callback) {
                             callback();
