@@ -89,7 +89,7 @@ class PTPlusLobbyComponentController
         }
 
         $item = $this->cacher->getItem('views.'.self::PRODUCT.'-lobby-data.'
-          . $page . $this->currentLanguage . "-" . $previewKey);
+            . $page . $this->currentLanguage . "-" . $previewKey);
 
         if (!$item->isHit()) {
             $data = $this->generatePageLobbyData($page, $isPreview);
@@ -128,18 +128,18 @@ class PTPlusLobbyComponentController
                 array_walk(
                     $gamesCategory,
                     function (&$game) use ($categories) {
-                      // Compare the fetched categories & categories from games
+                        // Compare the fetched categories & categories from games
                         $diff = array_diff(
                             array_keys($game['categories']),
                             $categories
                         );
 
-                      // If no difference, then do nothing
+                        // If no difference, then do nothing
                         if (!$diff) {
                             return;
                         }
 
-                      // else, remove the disabled categories from the game data
+                        // else, remove the disabled categories from the game data
                         array_walk(
                             $diff,
                             function ($disabledCategory) use (&$game) {
@@ -195,7 +195,7 @@ class PTPlusLobbyComponentController
         $allGames = $this->views->getViewById(
             'games_list',
             [
-            'page' => (string) $page,
+                'page' => (string) $page,
             ]
         );
         $data['categories_list'] = $categories;
@@ -490,7 +490,6 @@ class PTPlusLobbyComponentController
         return ($game1['timestamp'] > $game2['timestamp']) ? -1 : 1;
     }
 
-
     /**
      * Retrieves list of games collection which will be used for sorting games.
      */
@@ -533,5 +532,28 @@ class PTPlusLobbyComponentController
         }
 
         return $data;
+    }
+
+    /**
+     * Get recommended games.
+     */
+    public function getRecommendedGames($request, $response)
+    {
+        $query = $request->getQueryParams();
+        $isPreview = $query['pvw'] ?? false;
+        $page = null;
+        $recommend = [];
+
+        if (isset($query['page'])) {
+            $page = $query['page'];
+        }
+
+        $data = $this->generatePageLobbyData($page, $isPreview);
+
+        if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
+            $recommend = $data['games']['all-games'];
+        }
+
+        return $this->rest->output($response, $recommend);
     }
 }
