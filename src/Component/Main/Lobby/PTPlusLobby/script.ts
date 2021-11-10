@@ -349,15 +349,13 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         // clone respone object
                         const newResponse = Object.assign({}, mergeResponse);
                         newResponse.games = this.getCategoryGames(newResponse);
-                        newResponse.games = this.groupGamesByContainer(newResponse.games);
                         newResponse.categories = this.filterCategories(newResponse.categories, newResponse.games);
                         if (pageResponse.hasOwnProperty("fav")) {
                             const key = "fav";
                             const favoritesList = pageResponse[key];
                             newResponse.favorite_list = this.getFavoritesList(favoritesList);
                         }
-                        newResponse.games["recommended-games"] =
-                            newResponse.games.recommended ? newResponse.games.recommended : newResponse.games.recommend;
+                        newResponse.games["all-games-search"] = this.groupGamesByContainer(newResponse.games);
                         this.response = newResponse;
                         if (callback) {
                             callback();
@@ -798,6 +796,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
 
     private displayCategoryPageContent() {
         const hash = utility.getHash(window.location.href);
+
         if (hash === "game-categories") {
             const activeTab1 = document.querySelector(".tab-" + hash);
             this.makeActive(activeTab1);
