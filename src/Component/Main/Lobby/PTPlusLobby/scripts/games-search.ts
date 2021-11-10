@@ -108,19 +108,17 @@ export class GamesSearch {
      */
     setGamesList(gamesList) {
         this.response = gamesList;
-        if (gamesList && gamesList.games["all-games"]) {
+        if (gamesList && gamesList.games["all-games-search"]["all-games"]) {
             const allGames = [];
-            for (const games of gamesList.games["all-games"]) {
+            for (const games of gamesList.games["all-games-search"]["all-games"]) {
                 for (const game of games) {
                     allGames.push(game);
                 }
             }
+
             this.gamesList = gamesList;
             this.searchObj.setData(allGames);
-            console.log(this.config);
-            console.log(this.gamesList);
             this.recommendedGames = new RecommendedGames(this.gamesList, this.config);
-            console.log(this.recommendedGames);
         }
     }
 
