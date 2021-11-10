@@ -10,11 +10,11 @@ export class RecommendedGames {
     constructor(gamesList, config) {
         this.response = gamesList;
         this.recommendedGames = [];
-        if (gamesList && gamesList.games["recommended-games"]) {
+        if (gamesList && gamesList.games.recommended) {
             this.recommendedGames = [];
-            for (const games of gamesList.games["recommended-games"]) {
-                for (const game of games) {
-                    this.recommendedGames.push(game);
+            for (const games of gamesList.games.recommended) {
+                if (games !== undefined) {
+                    this.recommendedGames.push(games);
                 }
             }
         }
