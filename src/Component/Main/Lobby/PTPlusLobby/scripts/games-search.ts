@@ -119,7 +119,9 @@ export class GamesSearch {
             }
 
             this.gamesList = gamesList;
-            recommendedSort = this.gamesList.gamesCollection.recommended.recommended;
+            if (this.gamesList.gamesCollection.recommended) {
+                recommendedSort = this.gamesList.gamesCollection.recommended.recommended;
+            }
             this.recommendedSort = this.sortGamesByRecommended(recommendedSort, allGames);
             gamesList.games.recommended = this.recommendedSort;
             this.searchObj.setData(allGames);
@@ -133,8 +135,10 @@ export class GamesSearch {
     private sortGamesByRecommended(recommendedSort, allGames) {
         const recGames = [];
         for (const game of allGames) {
-            if (recommendedSort.includes(game.game_code)) {
-                recGames.push(game);
+            for (const code of recommendedSort) {
+                if (code === game.game_code) {
+                    recGames.push(game);
+                }
             }
         }
 
