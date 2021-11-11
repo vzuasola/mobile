@@ -74,8 +74,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pageData = attachments.pageData;
         this.pager = 0;
         this.load = true;
-        this.gamesSearch.handleOnLoad(this.element, attachments);
-        /*this.gamesFilter.handleOnLoad(this.element, attachments);*/
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
@@ -91,6 +89,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.activeLinks();
         this.listenHashChange();
         this.setPlaceholder();
+        this.gamesSearch.handleOnLoad(this.element, attachments);
+        /*this.gamesFilter.handleOnLoad(this.element, attachments);*/
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -114,7 +114,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             this.listenFavoriteClick();
             this.listenClickTab();
             this.listenHashChange();
-            this.setPlaceholder();
         }
         this.groupedGames = undefined;
         this.response = null;
@@ -128,13 +127,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.generateLobby(() => {
             this.lobby();
         });
-        this.gamesSearch.handleOnReLoad(this.element, attachments);
-        /*this.gamesFilter.handleOnReLoad(this.element, attachments);*/
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
         this.componentFinish();
         this.activeLinks();
+        this.setPlaceholder();
+        this.gamesSearch.handleOnReLoad(this.element, attachments);
+        /*this.gamesFilter.handleOnReLoad(this.element, attachments);*/
     }
     /**
      * Active Link for ptplus main page
