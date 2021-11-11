@@ -107,6 +107,8 @@ export class GamesSearch {
      * Set Games List
      */
     setGamesList(gamesList) {
+        console.log("gamesList");
+        console.log(gamesList);
         let recommendedSort = [];
         this.response = gamesList;
         if (gamesList && gamesList.games["all-games-search"]["all-games"]) {
@@ -116,6 +118,7 @@ export class GamesSearch {
                     allGames.push(game);
                 }
             }
+            console.log("recommendedSort");
             console.log(recommendedSort);
             this.gamesList = gamesList;
             if (this.gamesList.gamesCollection.recommended !== undefined) {
