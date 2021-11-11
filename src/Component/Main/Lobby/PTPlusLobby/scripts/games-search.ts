@@ -121,9 +121,13 @@ export class GamesSearch {
             console.log("recommendedSort");
             console.log(recommendedSort);
             this.gamesList = gamesList;
-            if (this.gamesList.gamesCollection.recommended !== undefined) {
-                recommendedSort = this.gamesList.gamesCollection.recommended.recommended;
+            console.log(gamesList.gamesCollection.recommended);
+
+            if (gamesList.gamesCollection.recommended !== undefined) {
+                console.log(gamesList.gamesCollection.recommended.recommended);
+                recommendedSort = gamesList.gamesCollection.recommended.recommended;
             }
+
             console.log(recommendedSort);
             recommendedSort = this.sortGamesByRecommended(recommendedSort, allGames);
             console.log(recommendedSort);
@@ -138,6 +142,7 @@ export class GamesSearch {
      */
     private sortGamesByRecommended(recommendedSort, allGames) {
         const recGames = [];
+        console.log("sortGamesByRecommended");
         console.log(recommendedSort);
         if (recommendedSort !== undefined) {
             for (const code of recommendedSort) {
