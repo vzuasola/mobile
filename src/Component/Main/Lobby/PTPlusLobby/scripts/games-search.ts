@@ -119,7 +119,7 @@ export class GamesSearch {
             }
 
             this.gamesList = gamesList;
-            if (this.gamesList.gamesCollection.recommended) {
+            if (this.gamesList.gamesCollection.recommended !== undefined) {
                 recommendedSort = this.gamesList.gamesCollection.recommended.recommended;
             }
             this.recommendedSort = this.sortGamesByRecommended(recommendedSort, allGames);
@@ -134,10 +134,12 @@ export class GamesSearch {
      */
     private sortGamesByRecommended(recommendedSort, allGames) {
         const recGames = [];
-        for (const game of allGames) {
-            for (const code of recommendedSort) {
-                if (code === game.game_code) {
-                    recGames.push(game);
+        if (recommendedSort.length !== 0) {
+            for (const game of allGames) {
+                for (const code of recommendedSort) {
+                    if (code === game.game_code) {
+                        recGames.push(game);
+                    }
                 }
             }
         }
