@@ -136,7 +136,7 @@ export class GamesSearch {
     private sortGamesByRecommended(recommendedSort, allGames) {
         const recGames = [];
         console.log(recommendedSort);
-        if (recommendedSort.length !== 0) {
+        if (recommendedSort !== undefined) {
             for (const game of allGames) {
                 for (const code of recommendedSort) {
                     if (code === game.game_code) {
