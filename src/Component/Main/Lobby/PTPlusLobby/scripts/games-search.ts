@@ -24,7 +24,6 @@ export class GamesSearch {
     private searchBlurb;
     private recommendedGames;
     private response;
-    private recommendedSort;
     private timer;
     private timerLog;
 
@@ -117,13 +116,15 @@ export class GamesSearch {
                     allGames.push(game);
                 }
             }
-
+            console.log(recommendedSort);
             this.gamesList = gamesList;
             if (this.gamesList.gamesCollection.recommended !== undefined) {
                 recommendedSort = this.gamesList.gamesCollection.recommended.recommended;
             }
-            this.recommendedSort = this.sortGamesByRecommended(recommendedSort, allGames);
-            gamesList.games.recommended = this.recommendedSort;
+            console.log(recommendedSort);
+            recommendedSort = this.sortGamesByRecommended(recommendedSort, allGames);
+            console.log(recommendedSort);
+            gamesList.games.recommended = recommendedSort;
             this.searchObj.setData(allGames);
             this.recommendedGames = new RecommendedGames(this.gamesList, this.config);
         }
@@ -134,6 +135,7 @@ export class GamesSearch {
      */
     private sortGamesByRecommended(recommendedSort, allGames) {
         const recGames = [];
+        console.log(recommendedSort);
         if (recommendedSort.length !== 0) {
             for (const game of allGames) {
                 for (const code of recommendedSort) {
