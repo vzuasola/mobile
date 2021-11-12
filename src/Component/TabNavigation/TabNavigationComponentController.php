@@ -58,9 +58,8 @@ class TabNavigationComponentController
                 $keyword = $keywords[1] ?? '/';
             }
             if (isset($params['product'])) {
-                $product = ($params['product'] && in_array($params['product'], Products::PRODUCTS_WITH_CMS))
-                    ? $params['product'] : 'mobile-entrypage';
-                $data['quick_nav_product'] = $alias = str_replace("mobile-", "", $product);
+                $product = $params['product'];
+                $data['quick_nav_product'] = $alias = str_replace("mobile-", "", $params['product']);
                 if (in_array($alias, $productList)) {
                     $quickNavMenu = $this->menus->withProduct($product)
                                         ->getMultilingualMenu('quick-nav');

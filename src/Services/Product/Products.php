@@ -16,7 +16,8 @@ class Products
         'exchange' => 'mobile-exchange',
         'arcade' => 'mobile-arcade',
         'soda-casino' => 'mobile-soda-casino',
-        'virtual-sports' => 'mobile-virtuals'
+        'virtual-sports' => 'mobile-virtuals',
+        'ptplus' => 'mobile-ptplus',
     ];
 
     const PRODUCT_DIRECT_INTEGRATION = [
@@ -127,6 +128,9 @@ class Products
             'slots-tournament',
             'casino-gamification'
         ],
+        'ptplus' => [
+            'ptplus',
+        ],
     ];
 
     const PLAYER_MATRIX_PRODUCT_MAPPING = [
@@ -148,19 +152,7 @@ class Products
         'soda-casino' => 'mobile-soda-casino',
         'virtual-sports' => 'mobile-virtuals',
         'sports' => 'mobile-sports',
-        'sports-df' => 'mobile-sports-df'
-    ];
-
-    const PRODUCTS_WITH_CMS = [
-        'mobile-entrypage',
-        'mobile-casino',
-        'mobile-casino-gold',
-        'mobile-live-dealer',
-        'mobile-lottery',
-        'mobile-exchange',
-        'mobile-arcade',
-        'mobile-virtuals',
-        'mobile-soda-casino',
-        'mobile-games'
+        'sports-df' => 'mobile-sports-df',
+        'ptplus' => 'mobile-ptplus',
     ];
 }

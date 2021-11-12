@@ -4,7 +4,7 @@ namespace App\MobileEntry\Controller;
 
 use App\BaseController;
 
-class HomeController extends BaseController
+class PTPlusController extends BaseController
 {
     /**
      *
@@ -19,8 +19,7 @@ class HomeController extends BaseController
             $config = [];
         }
 
-        $data['title'] = $config["lobby_page_title"] ?? $this->get('translation_manager')->getTranslation('home');
-        $data['is_front'] = true;
+        $data['title'] = $config["lobby_page_title"] ?? 'PT+';
 
         return $this->widgets->render($response, '@site/page.html.twig', $data);
     }
