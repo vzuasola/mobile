@@ -56,8 +56,8 @@ ComponentManager.subscribe(RouterClass.navigateError, (event, src, data) => {
 Router.setOption(
     "main-components",
     ["header", "main", "menu", "footer", "language",
-        "push_notification", "marketing", "seo", "announcement",
-        , "casino_option"],
+        "push_notification", "marketing", "seo", "tab_navigation",
+        "announcement", "casino_option"],
 );
 
 ComponentManager.init();

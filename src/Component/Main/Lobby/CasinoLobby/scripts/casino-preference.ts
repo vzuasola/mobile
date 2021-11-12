@@ -47,17 +47,7 @@ export class CasinoPreference {
         if (response.success) {
             if (response.redirect &&
                 response.preferredProduct !== this.casinoOptionMapping[currentProduct]) {
-                Router.navigate(response.redirect, [
-                    "header",
-                    "menu",
-                    "announcement",
-                    "language",
-                    "main",
-                    "push_notification",
-                    "casino_option",
-                    "marketing",
-                    "seo",
-                ]);
+                Router.navigate(response.redirect, ["*"]);
                 this.loader.hide();
                 return;
             }

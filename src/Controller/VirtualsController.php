@@ -21,6 +21,6 @@ class VirtualsController extends BaseController
 
         $data['title'] = $config["lobby_page_title"] ?? 'Virtuals';
 
-        return $this->widgets->render($response, '@site/lobby.page.html.twig', $data);
+        return $this->widgets->render($response, '@site/page.html.twig', $data);
     }
 }

@@ -69,17 +69,7 @@ export class LanguageComponent implements ComponentInterface {
                     ComponentManager.broadcast("language.change");
                     Router.navigate(
                         redirectionUrl,
-                        [
-                            "header",
-                            "menu",
-                            "announcement",
-                            "language",
-                            "main",
-                            "push_notification",
-                            "casino_option",
-                            "marketing",
-                            "seo",
-                        ],
+                        ["*"],
                         {
                             language: selectedLang,
                         },

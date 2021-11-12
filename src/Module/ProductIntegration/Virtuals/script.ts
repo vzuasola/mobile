@@ -39,18 +39,7 @@ export class VirtualsIntegrationModule extends Redirectable implements ModuleInt
                         return;
                     }
 
-                    Router.navigate(response.url, [
-                        "header",
-                        "menu",
-                        "announcement",
-                        "language",
-                        "main",
-                        "push_notification",
-                        "casino_option",
-                        "marketing",
-                        "seo",
-                        "tab_navigation",
-                    ], {removeParams: ["product"]});
+                    Router.navigate(response.url, ["*"], {removeParams: ["product"]});
                     this.loader.hide();
                     return;
                 }
