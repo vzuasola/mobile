@@ -107,8 +107,6 @@ export class GamesSearch {
      * Set Games List
      */
     setGamesList(gamesList) {
-        console.log("gamesList");
-        console.log(gamesList);
         let recommendedSort = [];
         this.response = gamesList;
         if (gamesList && gamesList.games["all-games-search"]["all-games"]) {
@@ -118,19 +116,13 @@ export class GamesSearch {
                     allGames.push(game);
                 }
             }
-            console.log("recommendedSort");
-            console.log(recommendedSort);
             this.gamesList = gamesList;
-            console.log(gamesList.gamesCollection.recommended);
 
             if (gamesList.gamesCollection.recommended !== undefined) {
-                console.log(gamesList.gamesCollection.recommended.recommended);
                 recommendedSort = gamesList.gamesCollection.recommended.recommended;
             }
 
-            console.log(recommendedSort);
             recommendedSort = this.sortGamesByRecommended(recommendedSort, allGames);
-            console.log(recommendedSort);
             gamesList.games.recommended = recommendedSort;
             this.searchObj.setData(allGames);
             this.recommendedGames = new RecommendedGames(this.gamesList, this.config);
@@ -142,8 +134,7 @@ export class GamesSearch {
      */
     private sortGamesByRecommended(recommendedSort, allGames) {
         const recGames = [];
-        console.log("sortGamesByRecommended");
-        console.log(recommendedSort);
+
         if (recommendedSort !== undefined) {
             for (const code of recommendedSort) {
                 for (const game of allGames) {
