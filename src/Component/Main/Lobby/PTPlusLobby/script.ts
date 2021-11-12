@@ -356,8 +356,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                             newResponse.favorite_list = this.getFavoritesList(favoritesList);
                         }
                         newResponse.games["all-games-search"] = this.groupGamesByContainer(newResponse.games);
-                        console.log("all-games-search");
-                        console.log(newResponse);
+
                         this.response = newResponse;
                         if (callback) {
                             callback();
@@ -404,9 +403,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         };
         req["games-collection"] = {
             type: "collection",
-        };
-        req["recommended-games"] = {
-            type: "getRecommendedGames",
         };
 
         return req;

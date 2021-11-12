@@ -533,27 +533,4 @@ class PTPlusLobbyComponentController
 
         return $data;
     }
-
-    /**
-     * Get recommended games.
-     */
-    public function getRecommendedGames($request, $response)
-    {
-        $query = $request->getQueryParams();
-        $isPreview = $query['pvw'] ?? false;
-        $page = null;
-        $recommend = [];
-
-        if (isset($query['page'])) {
-            $page = $query['page'];
-        }
-
-        $data = $this->generatePageLobbyData($page, $isPreview);
-
-        if (isset($data['games']['all-games']) && !empty($data['games']['all-games'])) {
-            $recommend = $data['games']['all-games'];
-        }
-
-        return $this->rest->output($response, $recommend);
-    }
 }
