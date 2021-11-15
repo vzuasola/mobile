@@ -89,5 +89,4 @@ class DownloadComponent implements ComponentWidgetInterface
 
         return $data;
     }
-
 }
