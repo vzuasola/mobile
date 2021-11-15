@@ -159,7 +159,7 @@ class MenuComponent implements ComponentWidgetInterface
         $data = [];
 
         try {
-            $casinoConfigs = $this->configs->getConfig('mobile_casino.casino_configuration');
+            $casinoConfigs = $this->config->getConfig('mobile_casino.casino_configuration');
             $data['title'] = $casinoConfigs['title'];
             $data['casino_text'] = $casinoConfigs['casino_text'];
             $data['casino_gold_text'] = $casinoConfigs['casino_gold_text'];
@@ -172,7 +172,7 @@ class MenuComponent implements ComponentWidgetInterface
         }
 
         try {
-            $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+            $headerConfigs = $this->config->getConfig('webcomposer_config.header_configuration');
         } catch (\Exception $e) {
             $headerConfigs = [];
         }
