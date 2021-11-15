@@ -1,4 +1,25 @@
-<div class="infobar-main clearfix" id="home-infobar"></div>
+<div class="infobar-main clearfix" id="home-infobar">
+    {% if infobar %}
+    <ul class="infobar infobar-{{language }}">
+        <li class="infobar-news">
+            <svg viewBox="0 0 20 20">
+                <use xlink:href="#infobar-news" />
+            </svg>
+            <p>{{ news_text }}</p>
+        </li>
+        <li class="infobar-marquee">
+            <ul class="infobar-marquee-content">
+                <li class="list-inline">
+                {% for news in infobar %}
+                    {{ news.field_body|raw }} {% if news.field_body|length > 1 %}<span class="pipe"> | </span>{% endif %}
+                {% endfor %}
+                </li>
+            </ul>
+        </li>
+    </ul>
+    {% endif %}
+
+</div>
 <span class="hidden">
     {% include '@app/web/images/svg/infobar-icons.svg' ignore missing %}
 </span>

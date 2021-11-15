@@ -1,0 +1,70 @@
+{% if downloads_menu|length > 0 %}
+{% if entrypage_config.download_app_text %}
+    <p class="download-title">{{ entrypage_config.download_app_text }}</p>
+{% endif %}
+<ul class="app-download clearfix">
+    {% for downloads in downloads_menu %}
+        {% if loop.index < 4 %}
+            {% if not partnerMatrix and downloads.attributes.partnerMatrixPlayer == "partner-matrix-app" %}
+            {% else %}
+                <li class="app-download-list">
+                    <a href="{{ downloads.uri }}"
+                    class="{{ downloads.attributes.class }} {{ downloads.attributes.svg }} {{downloads.attributes.device}} download-box"
+                    data-router="true"
+                    data-router-refresh="main"
+                    target="{{ downloads.attributes.target }}"
+                    >
+                        {% if downloads.attributes.menuTag %}
+                            <p class="app-download-list-new-tag">
+                                {{ downloads.attributes.menuTag|raw }}
+                            </p>
+                        {% endif %}
+                        <svg viewBox="0 0 20 20">
+                            <use xlink:href="#{{ downloads.attributes.svg }}" />
+                        </svg>
+                        <span>{{ downloads.title }}</span>
+                    </a>
+                </li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+{% if downloads_menu|length > 4 %}
+    <dl class="download-accordion ckeditor-accordion">
+        <dt data-transition-top="true"
+        class="swap-text" data-text-original="{{ entrypage_config.all_apps_text }}"
+        data-text-swap="{{ entrypage_config.view_less_text }}">
+            {{ entrypage_config.all_apps_text }}
+        </dt>
+        <dd>
+            <ul class="app-download-accordion clearfix">
+            {% for downloads in downloads_menu %}
+                {% if loop.index > 3 %}
+                    {% if not partnerMatrix and downloads.attributes.partnerMatrixPlayer == "partner-matrix-app" %}
+                    {% else %}
+                        <li class="app-download-list">
+                            <a href="{{ downloads.uri }}"
+                            class="{{ downloads.attributes.class }} {{ downloads.attributes.svg }} {{downloads.attributes.device}} download-box"
+                            target="{{ downloads.attributes.target }}"
+                            data-router="true"
+                            data-router-refresh="main">
+                                {% if downloads.attributes.menuTag %}
+                                    <p class="app-download-list-new-tag">
+                                        {{ downloads.attributes.menuTag|raw }}
+                                    </p>
+                                {% endif %}
+                                <svg viewBox="0 0 20 20">
+                                    <use xlink:href="#{{ downloads.attributes.svg }}" />
+                                </svg>
+                                <span>{{ downloads.title }}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </dd>
+    </dl>
+{% endif %}
+

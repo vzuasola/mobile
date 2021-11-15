@@ -6,14 +6,19 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class InfobarComponent implements ComponentWidgetInterface
 {
-    private $request;
+    /**
+     * @var App\Fetcher\Drupal\Views
+     */
+    private $views;
 
     /**
-     * @var App\Fetcher\Drupal\ConfigFetcher
+     * @var App\Player\PlayerSession
      */
-    private $configs;
+    private $playerSession;
 
-    private $views;
+    private $currentLanguage;
+
+    private $translation;
 
     /**
      *
@@ -21,20 +26,22 @@ class InfobarComponent implements ComponentWidgetInterface
     public static function create($container)
     {
         return new static(
-            $container->get('router_request'),
-            $container->get('config_fetcher'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('player_session'),
+            $container->get('lang'),
+            $container->get('translation_manager')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($request, $configs, $views)
+    public function __construct($views, $playerSession, $language, $translation)
     {
-        $this->request = $request;
-        $this->configs = $configs;
         $this->views = $views;
+        $this->playerSession = $playerSession;
+        $this->currentLanguage = $language;
+        $this->translation = $translation;
     }
 
 
@@ -55,6 +62,44 @@ class InfobarComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        return [];
+        try {
+            $infobar = $this->views->getViewById('infobar');
+            $data['infobar'] = $this->processInfobar($infobar);
+        } catch (\Exception $e) {
+            $data['infobar'] = [];
+        }
+
+        $data['news_text'] = $this->translation->getTranslation('infobar');
+        $data['language'] = $this->currentLanguage;
+        return $data;
+    }
+
+    private function processInfobar($data)
+    {
+        try {
+            $infobarList = [];
+            $isLogin = $this->playerSession->isLogin();
+
+            foreach ($data as $infobarItem) {
+                $showBoth = count($infobarItem['field_log_in_state']) > 1;
+                $loginState = $infobarItem['field_log_in_state'][0]['value'] ?? 0;
+                $enableInfobar = $infobarItem['field_infobar_enable'][0]['value'] ?? 0;
+
+                // selectively choose fields based on login state
+                if ($enableInfobar) {
+                    if ($isLogin && ($showBoth || $loginState)) {
+                        $infobarList[]['field_body'] = $infobarItem['field_post_body'][0]['value'];
+                    }
+
+                    if (!$isLogin && ($showBoth || !$loginState)) {
+                        $infobarList[]['field_body'] = $infobarItem['field_body'][0]['value'];
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $infobarList = [];
+        }
+
+        return $infobarList;
     }
 }

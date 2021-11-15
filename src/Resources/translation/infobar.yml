@@ -1,0 +1,18 @@
+default: News
+translations:
+  en: News
+  eu: News
+  sc: 公告
+  ch: 公告
+  th: ข่าวสำคัญ
+  vn: Tin Tức
+  id: info
+  jp: 最新情報
+  kr: 공지
+  in: News
+  gr: Νea
+  pl: News
+  es: Noticias
+  pt: Noticias
+  hi: समाचार
+  te: న్యూస్
