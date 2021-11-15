@@ -3104,11 +3104,7 @@
         },
         {
             "name": "webcomposer/fe-core",
-<<<<<<< HEAD
-            "version": "dev-working",
-=======
             "version": "dev-release-v1.225.0",
->>>>>>> sprint-96-p2
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
