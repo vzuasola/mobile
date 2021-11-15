@@ -26,7 +26,6 @@ import {MarketingComponent} from "@app/src/Component/Marketing/script";
 import {LobbySliderComponent} from "@app/src/Component/Main/Lobby/Slider/script";
 import {ProductsComponent} from "@app/src/Component/Main/Lobby/Home/Products/script";
 import {NodeComponent} from "@app/src/Component/Node/script";
-import {CasinoOptionComponent} from "@app/src/Component/CasinoOption/script";
 import {LanguageComponent} from "@app/src/Component/Language/script";
 // import {INLanguageComponent} from "@app/src/Component/Language/INLanguage/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
@@ -75,7 +74,6 @@ ComponentManager.setComponents({
     lottery_lobby: new LotteryLobbyComponent(),
     soda_casino_lobby: new SodaCasinoLobbyComponent(),
     node: new NodeComponent(),
-    casino_option: new CasinoOptionComponent(),
     language: new LanguageComponent(),
     // in_language: new INLanguageComponent(),
     marketing: new MarketingComponent(),

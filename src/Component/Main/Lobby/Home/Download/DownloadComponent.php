@@ -16,6 +16,8 @@ class DownloadComponent implements ComponentWidgetInterface
      */
     private $configs;
 
+    private $playerSession;
+
     /**
      *
      */
@@ -23,17 +25,19 @@ class DownloadComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('menu_fetcher'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $configs)
+    public function __construct($menus, $configs, $playerSession)
     {
         $this->menus = $menus;
         $this->configs = $configs;
+        $this->playerSession = $playerSession;
     }
 
 
@@ -54,6 +58,35 @@ class DownloadComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        return [];
+        try {
+            $menuClass = [
+                1 => 'app-download-full-width',
+                2 => 'app-download-col-2',
+                3 => 'app-download-col-3 push',
+                4 => 'col-3',
+            ];
+
+            $menuClassMore = [
+                5 => 'app-download-full-width',
+                6 => 'app-download-col-2',
+                7 => 'app-download-col-3 push',
+                8 => 'col-3'
+            ];
+            $data['downloads_menu']  = $this->menus->getMultilingualMenu('mobile-downloads');
+            $data['menu_class'] = $menuClass[count($data['downloads_menu'])] ?? 'col-3';
+            $data['menu_class_more'] = $menuClassMore[count($data['downloads_menu'])] ?? 'col-3';
+        } catch (\Exception $e) {
+            $data['downloads_menu'] = [];
+        }
+
+        try {
+            $data['entrypage_config'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
+        } catch (\Exception $e) {
+            $data['entrypage_config'] = [];
+        }
+
+        $data['partnerMatrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
+
+        return $data;
     }
 }

@@ -65,31 +65,15 @@ class FooterComponentController
         $data = [];
 
         try {
+            $data['geo_ip'] = $this->idDomain->getGeoIpCountry();
             $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
             $data['languageVisibility'] = $this->idDomain->isLangSelectorHidden();
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
+            $data['geo_ip'] = '';
         }
 
         $this->cleanFooterMenu($data['footer_menu']);
-
-        return $this->rest->output($response, $data);
-    }
-
-    /**
-     * Defines the data to be passed to the twig template
-     *
-     * @return array
-     */
-    public function getGeoIp($request, $response)
-    {
-        $data = [];
-
-        try {
-            $data['geo_ip'] = $this->idDomain->getGeoIpCountry();
-        } catch (\Exception $e) {
-            $data['geo_ip'] = '';
-        }
 
         return $this->rest->output($response, $data);
     }
