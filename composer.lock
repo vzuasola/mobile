@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e2d8dd9189e8c05645788dbf2a23dcf",
+    "content-hash": "c167eecf0de7d213c74e68a3ef7fb095",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3104,7 +3104,11 @@
         },
         {
             "name": "webcomposer/fe-core",
+<<<<<<< HEAD
             "version": "dev-working",
+=======
+            "version": "dev-release-v1.225.0",
+>>>>>>> sprint-96-p2
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
@@ -4647,7 +4651,6 @@
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
-            "abandoned": true,
             "time": "2015-07-28T20:34:47+00:00"
         },
         {

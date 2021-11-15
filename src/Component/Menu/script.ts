@@ -4,6 +4,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
+import {CasinoOption} from "./scripts/casino-option";
 import {Menu} from "./scripts/menu";
 import {PushNotification} from "./scripts/push-notification";
 
@@ -15,6 +16,7 @@ import {Redirector} from "@app/assets/script/components/redirector";
  */
 export class MenuComponent implements ComponentInterface {
     private pushNotification: PushNotification;
+    private casinoOption: CasinoOption;
 
     private element: HTMLElement;
     private isLogin: boolean;
@@ -25,6 +27,7 @@ export class MenuComponent implements ComponentInterface {
 
     constructor() {
         this.pushNotification = new PushNotification();
+        this.casinoOption = new CasinoOption();
     }
 
     onLoad(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
@@ -66,6 +69,9 @@ export class MenuComponent implements ComponentInterface {
             this.menuReady();
         });
 
+        // casino option
+        this.casinoOption.onLoad(this.element, {});
+
     }
 
     onReload(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
@@ -83,6 +89,8 @@ export class MenuComponent implements ComponentInterface {
 
         this.reloadBalance();
         this.pushNotification.handleOnLoad(element, attachments);
+        // casino option
+        this.casinoOption.onReload(this.element, {});
     }
 
     private menuReady() {

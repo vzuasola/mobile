@@ -149,6 +149,36 @@ class MenuComponent implements ComponentWidgetInterface
             $data['secondary_menu'] = [];
         }
 
+        $data['casino_option'] = $this->getCasinoOptionData();
+
+        return $data;
+    }
+
+    private function getCasinoOptionData()
+    {
+        $data = [];
+
+        try {
+            $casinoConfigs = $this->configs->getConfig('mobile_casino.casino_configuration');
+            $data['title'] = $casinoConfigs['title'];
+            $data['casino_text'] = $casinoConfigs['casino_text'];
+            $data['casino_gold_text'] = $casinoConfigs['casino_gold_text'];
+            $data['maintenance_text'] = $casinoConfigs['maintenance_text'];
+        } catch (\Exception $e) {
+            $data['title'] = 'Please select your preferred casino';
+            $data['casino_text'] = 'Casino Classic';
+            $data['casino_gold_text'] = 'Casino Gold';
+            $data['maintenance_text'] = 'Under Maintenance';
+        }
+
+        try {
+            $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+        } catch (\Exception $e) {
+            $headerConfigs = [];
+        }
+
+        $data['logo_title'] = $headerConfigs['logo_title'] ?? 'Dafabet';
+
         return $data;
     }
 
