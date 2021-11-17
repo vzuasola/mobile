@@ -21,8 +21,9 @@ export class FooterComponent implements ComponentInterface {
     private footerData: any;
     private geoIp: string;
 
-    onLoad(element: HTMLElement, attachments: {}) {
+    onLoad(element: HTMLElement, attachments: {geo_ip: string}) {
         this.element = element;
+        this.geoIp = attachments.geo_ip;
         this.getFooter();
 
         this.activeBackToTop(element);
@@ -32,8 +33,9 @@ export class FooterComponent implements ComponentInterface {
         });
     }
 
-    onReload(element: HTMLElement, attachments: {}) {
+    onReload(element: HTMLElement, attachments: {geo_ip: string}) {
         this.element = element;
+        this.geoIp = attachments.geo_ip;
         this.getFooter();
         this.activeBackToTop(element);
     }
@@ -86,9 +88,10 @@ export class FooterComponent implements ComponentInterface {
             this.generateFooterMarkup(this.footerData);
             this.getOriginalUrl();
             this.attachProduct();
+            console.log(this.geoIp);
 
             new CookieNotif({
-                geoIp: response.geo_ip,
+                geoIp: this.geoIp,
                 element: this.element,
             });
         });
