@@ -87,18 +87,19 @@ export class DownloadComponent implements ComponentInterface {
                 }
             }
 
-            if (this.element.querySelectorAll(".app-download-list a").length) {
-                utility.addClass(dlContainer, "download-background");
-            } else {
-                dlContainer.remove();
-            }
-
             this.rearrange();
             this.applyMenuStyle(".app-download .app-download-list");
             this.applyMenuStyle(".download-accordion .app-download-list");
 
-            if (!this.element.querySelectorAll(".app-download-accordion .app-download-list").length) {
+            if (downloadAccordion
+                && !this.element.querySelectorAll(".app-download-accordion .app-download-list").length) {
                 downloadAccordion.remove();
+            }
+
+            if (this.element.querySelectorAll(".app-download-list a").length) {
+                utility.addClass(dlContainer, "download-background");
+            } else {
+                dlContainer.remove();
             }
         }
     }
@@ -109,7 +110,6 @@ export class DownloadComponent implements ComponentInterface {
         const downloadAccordion = this.element.querySelector(".app-download-accordion");
 
         // clear all lists first
-        console.log(downloadItems);
         if (appDownload) {
             appDownload.innerHTML = "";
         }
