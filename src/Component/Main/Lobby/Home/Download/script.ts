@@ -93,18 +93,39 @@ export class DownloadComponent implements ComponentInterface {
                 dlContainer.remove();
             }
 
-            const downloadlist = this.applyMenuStyle(".app-download .app-download-list");
-            const downloadAccordionItems = this.applyMenuStyle(".download-accordion .app-download-list");
+            this.rearrange();
+            this.applyMenuStyle(".app-download .app-download-list");
+            this.applyMenuStyle(".download-accordion .app-download-list");
 
-            if (downloadlist.length <= 0 &&
-                typeof downloadAccordionItems !== "undefined" &&
-                downloadAccordionItems.length) {
-                for (const item in downloadAccordionItems) {
-                    if (downloadAccordionItems.hasOwnProperty(item)) {
-                        appDownload.append(downloadAccordionItems[item]);
-                    }
-                }
+            if (!this.element.querySelectorAll(".app-download-accordion .app-download-list").length) {
                 downloadAccordion.remove();
+            }
+        }
+    }
+
+    private rearrange() {
+        const downloadItems = this.element.querySelectorAll(".app-download-list");
+        const appDownload = this.element.querySelector(".app-download");
+        const downloadAccordion = this.element.querySelector(".app-download-accordion");
+
+        // clear all lists first
+        console.log(downloadItems);
+        if (appDownload) {
+            appDownload.innerHTML = "";
+        }
+
+        if (downloadAccordion) {
+            downloadAccordion.innerHTML = "";
+        }
+
+        for (let i = 0; i < downloadItems.length; i++) {
+            if (downloadItems.hasOwnProperty(i)) {
+                console.log(i);
+                if (i <= 3) {
+                    appDownload.append(downloadItems[i]);
+                } else {
+                    downloadAccordion.append(downloadItems[i]);
+                }
             }
         }
     }
@@ -123,14 +144,11 @@ export class DownloadComponent implements ComponentInterface {
                 const itemClass = (typeof menuClass[downloadItems.length] !== "undefined")
                     ? menuClass[downloadItems.length] : "col-3";
                 utility.addClass(downloadItems[i], itemClass);
-                newItem.push(downloadItems[i]);
                 if (i === 3) {
                     utility.addClass(downloadItems[i], "push");
                 }
             }
         }
-
-        return newItem;
     }
 
     private swapText() {
