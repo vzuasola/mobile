@@ -120,7 +120,6 @@ export class DownloadComponent implements ComponentInterface {
 
         for (let i = 0; i < downloadItems.length; i++) {
             if (downloadItems.hasOwnProperty(i)) {
-                console.log(i);
                 if (i <= 3) {
                     appDownload.append(downloadItems[i]);
                 } else {
