@@ -136,14 +136,13 @@ export class DownloadComponent implements ComponentInterface {
         menuClass[2] = "app-download-col-2";
         menuClass[3] = "app-download-col-3";
         menuClass[4] = "col-3";
-        const newItem: any = [];
 
         for (let i = 0; i < downloadItems.length; i++) {
             if (downloadItems.hasOwnProperty(i)) {
                 const itemClass = (typeof menuClass[downloadItems.length] !== "undefined")
                     ? menuClass[downloadItems.length] : "col-3";
                 utility.addClass(downloadItems[i], itemClass);
-                if (i === 3) {
+                if (downloadItems.length === 3) {
                     utility.addClass(downloadItems[i], "push");
                 }
             }
