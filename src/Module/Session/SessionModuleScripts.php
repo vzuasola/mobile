@@ -19,6 +19,8 @@ class SessionModuleScripts implements ComponentAttachmentInterface
      */
     private $playerSession;
 
+    private $idDomain;
+
     /**
      *
      */
@@ -26,17 +28,19 @@ class SessionModuleScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('config_fetcher'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('id_domain')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession)
+    public function __construct($configs, $playerSession, $idDomain)
     {
         $this->configs = $configs;
         $this->playerSession = $playerSession;
+        $this->idDomain = $idDomain;
     }
 
     /**
