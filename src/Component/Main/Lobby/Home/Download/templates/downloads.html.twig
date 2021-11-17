@@ -5,7 +5,7 @@
 <ul class="app-download clearfix">
     {% for downloads in downloads_menu %}
         {% if loop.index < 4 %}
-            {% if not partnerMatrix and downloads.attributes.partnerMatrixPlayer == "partner-matrix-app" %}
+            {% if partnerMatrix and downloads.attributes.partnerMatrixPlayer != "partner-matrix-app" %}
             {% else %}
                 <li class="app-download-list">
                     <a href="{{ downloads.uri }}"
@@ -41,7 +41,7 @@
             <ul class="app-download-accordion clearfix">
             {% for downloads in downloads_menu %}
                 {% if loop.index > 3 %}
-                    {% if not partnerMatrix and downloads.attributes.partnerMatrixPlayer == "partner-matrix-app" %}
+                    {% if partnerMatrix and downloads.attributes.partnerMatrixPlayer != "partner-matrix-app" %}
                     {% else %}
                         <li class="app-download-list">
                             <a href="{{ downloads.uri }}"
