@@ -3,7 +3,6 @@
 namespace App\MobileEntry\Component\Main\Lobby\Slider;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
-use App\MobileEntry\Services\Product\Products;
 
 class SliderComponentController
 {
@@ -106,8 +105,7 @@ class SliderComponentController
         try {
             $data['product'] = [];
             $params = $request->getQueryParams();
-            $product = ($params['product'] && in_array($params['product'], Products::PRODUCTS_WITH_CMS))
-                ? $params['product'] : 'mobile-entrypage';
+            $product = $params['product'] ?? 'mobile-entrypage';
             $language = $this->getLatamLang($product);
             if ($product != 'mobile-entrypage') {
                 $this->configs = $this->configs->withProduct($product);
