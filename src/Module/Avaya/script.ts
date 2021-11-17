@@ -23,37 +23,63 @@ export class AvayaModule implements ModuleInterface {
     private options: any = {};
     private prevUrl: string;
     private baseUrl: string;
+    private apiUrl: string;
+    private validity: string;
+    private jwtKey: string;
+    private postTimeout: string;
     private urlQryStr: false;
     private dataSrc: false;
 
-    onLoad(attachments: {
-        baseUrl: string,
-        urlPost: string,
-        postTimeout: number,
-        jwtKey: string,
-        validity: number,
-    }) {
-        this.baseUrl = attachments.baseUrl;
-        this.options = {
-            apiUrl: attachments.urlPost,
-            validity: attachments.validity,
-            nonce: attachments.jwtKey || false,
-            timeout: attachments.postTimeout || 5000,
-            onSuccess: (token) => {
-                // Add the token to the base url
-                this.updatePopupWindow(utility.addQueryParam(this.baseUrl, "s", token));
-            },
-            onFail: (error) => {
-                // Use the default avaya base url
-                this.updatePopupWindow(this.baseUrl);
-            },
-        };
-
-        // Instantiate the avaya library
-        this.avayaClass = new Avaya(this.options);
+    onLoad(attachments: {}) {
         // Add listen to everything
-        ComponentManager.subscribe("click", (event, src, data) => {
-            this.getAvayaToken(event, src, data);
+        document.addEventListener("click", (event) => {
+            const target = utility.getTarget(event);
+            const leftMenuLink = utility.hasClass(target, "quicklinks-livechat");
+            const footerLink = utility.hasClass(target, "footer-livechat");
+            const contactLink = utility.hasClass(target, "contact-live-chat");
+            const leftMenuLinkParent = utility.findParent(target, ".quicklinks-livechat", 4);
+            const footerLinkParent = utility.findParent(target, ".footer-livechat", 4);
+            const contactLinkParent = utility.findParent(target, ".contact-live-chat", 4);
+
+            if (leftMenuLink
+                || footerLink
+                || contactLink
+                || utility.hasClass(footerLinkParent, "footer-livechat")
+                || utility.hasClass(contactLinkParent, "contact-live-chat")
+                || utility.hasClass(leftMenuLinkParent, "quicklinks-livechat")) {
+
+                xhr({
+                    url: Router.generateModuleRoute("avaya", "avayaconfig"),
+                    type: "json",
+                }).then((response) => {
+                    this.baseUrl = response.baseUrl;
+                    this.apiUrl = response.urlPost;
+                    this.validity = response.validity;
+                    this.jwtKey = response.jwtKey;
+                    this.postTimeout = response.postTimeout;
+
+                    this.options = {
+                        apiUrl: this.apiUrl,
+                        validity: this.validity,
+                        nonce: this.jwtKey || false,
+                        timeout: this.postTimeout,
+                        onSuccess: (token) => {
+                            // Add the token to the base url
+                            this.updatePopupWindow(utility.addQueryParam(this.baseUrl, "s", token));
+                        },
+                        onFail: (error) => {
+                            // Use the default avaya base url
+                            this.updatePopupWindow(this.baseUrl);
+                        },
+                    };
+                }).fail((err, msg) => {
+                    // do nothing
+                });
+
+                 // Instantiate the avaya library
+                this.avayaClass = new Avaya(this.options);
+                this.getAvayaToken(event, target);
+            }
         });
 
         ComponentManager.subscribe("session.login", (event, src) => {
@@ -157,7 +183,7 @@ export class AvayaModule implements ModuleInterface {
      * @param object event
      * @return void/boolean
      */
-    private getAvayaToken(event, src, data) {
+    private getAvayaToken(event, src) {
         let target = utility.find(src, (el) => {
             if (el.tagName === "A") {
                 const href = el.getAttribute("href");

@@ -19,20 +19,20 @@ export class TabNavigationComponent implements ComponentInterface {
         this.events = {};
         this.quickNavMenu = [];
         this.product = ComponentManager.getAttribute("product");
-        this.tabNavXhrRequest("quickNav", (response) => {
-            this.quickNavMenu = response;
-            if (response.quick_nav.length > 0) {
-                this.populateQuickNavMenu();
-                this.highlightQuickNavMenu();
-                this.broadcastTabNavReady();
-            }
-        });
+        this.initQuickNav();
     }
 
     onReload(element: HTMLElement) {
         this.element = element;
         this.quickNavMenu = [];
         this.product = ComponentManager.getAttribute("product");
+        this.initQuickNav();
+        if (typeof this.events === "undefined") {
+            this.events = {};
+        }
+    }
+
+    private initQuickNav() {
         this.tabNavXhrRequest("quickNav", (response) => {
             this.quickNavMenu = response;
             if (response.quick_nav.length > 0) {
@@ -41,9 +41,6 @@ export class TabNavigationComponent implements ComponentInterface {
                 this.broadcastTabNavReady();
             }
         });
-        if (typeof this.events === "undefined") {
-            this.events = {};
-        }
     }
 
     /**
@@ -77,7 +74,6 @@ export class TabNavigationComponent implements ComponentInterface {
             router_refresh: JSON.stringify(["main", "tab_navigation"]),
         });
         /* tslint:disable:no-string-literal */
-
         this.element.querySelector(".quick-nav-menu").innerHTML = template;
     }
 

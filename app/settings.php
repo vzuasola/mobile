@@ -32,7 +32,6 @@ $settings['settings']['components']['render']['preload'] = [
     'profiler',
     'footer',
     'marketing',
-    'backtotop',
     'seo',
     'meta'
 ];
@@ -53,6 +52,10 @@ $settings['settings']['page_cache']['default_timeout'] = 1800;
 // Fetchers
 
 $settings['settings']['fetchers']['enable_permanent_caching'] = true;
+
+// Sessions
+
+$settings['settings']['session']['lazy'] = true; // Do not start session unless writing information
 
 // Environment Specific
 

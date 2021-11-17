@@ -3,7 +3,6 @@ import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/componen
 import {AccessDeniedComponent} from "@app/src/Component/Main/AccessDenied/script";
 import {MaintenanceComponent} from "@app/src/Component/Main/Maintenance/script";
 import {HeaderComponent} from "@app/src/Component/Header/script";
-import {BacktotopComponent} from "@app/src/Component/Backtotop/script";
 import {MenuComponent} from "@app/src/Component/Menu/script";
 import {MetaComponent} from "@app/src/Component/Meta/script";
 import {LoginComponent} from "@app/src/Component/Header/Login/script";
@@ -25,7 +24,6 @@ import {SodaCasinoLobbyComponent} from "@app/src/Component/Main/Lobby/SodaCasino
 import {GameWindowComponent} from "@app/src/Component/Main/GameWindow/script";
 import {LobbyComponent} from "@app/src/Component/Main/Lobby/script";
 import {MarketingComponent} from "@app/src/Component/Marketing/script";
-import {MarketingSpaceComponent} from "@app/src/Component/MarketingSpace/script";
 import {LobbySliderComponent} from "@app/src/Component/Main/Lobby/Slider/script";
 import {ProductsComponent} from "@app/src/Component/Main/Lobby/Home/Products/script";
 import {NodeComponent} from "@app/src/Component/Node/script";
@@ -47,7 +45,6 @@ import {MyAccountProfileComponent} from "@app/src/Component/Main/MyAccount/Profi
 import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/MyAccount/Profile/VerifyPassword/script";
 import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
 import {FooterComponent} from "@app/src/Component/Footer/script";
-import {CookieNotifComponent} from "@app/src/Component/CookieNotif/script";
 import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
 import {VirtualsLobbyComponent} from "@app/src/Component/Main/Lobby/VirtualsLobby/script";
@@ -57,7 +54,6 @@ ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
     maintenance: new MaintenanceComponent(),
     header: new HeaderComponent(),
-    backtotop: new BacktotopComponent(),
     menu: new MenuComponent(),
     meta: new MetaComponent(),
     header_login: new LoginComponent(),
@@ -86,7 +82,6 @@ ComponentManager.setComponents({
     language: new LanguageComponent(),
     // in_language: new INLanguageComponent(),
     marketing: new MarketingComponent(),
-    marketing_space: new MarketingSpaceComponent(),
     profiler: new ProfilerComponent(),
     cant_login: new CantLoginComponent(),
     node_promotions: new PromotionsNodeComponent(),
@@ -102,7 +97,6 @@ ComponentManager.setComponents({
     profile_verify_password: new MyAccountProfileVerifyPasswordComponent(),
     change_password: new MyAccountChangePasswordComponent(),
     footer: new FooterComponent(),
-    cookie_notification: new CookieNotifComponent(),
     game_loader: new GameLoaderComponent(),
     ucp: new UnsupportedCurrencyComponent(),
     ptplus_lobby: new PTPlusLobbyComponent(),

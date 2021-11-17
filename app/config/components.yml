@@ -8,6 +8,8 @@ components:
 
   header:
     class: App\MobileEntry\Component\Header\HeaderComponent
+    headers:
+      Cache-Control: public, max-age=300
 
   header_login:
     class: App\MobileEntry\Component\Header\Login\LoginComponent
@@ -15,9 +17,8 @@ components:
 
   menu:
     class: App\MobileEntry\Component\Menu\MenuComponent
-
-  marketing_space:
-    class: App\MobileEntry\Component\MarketingSpace\MarketingSpaceComponent
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
 
   meta:
     class: App\MobileEntry\Component\Meta\MetaComponent
@@ -185,14 +186,8 @@ components:
   marketing:
     class: App\MobileEntry\Component\Marketing\MarketingComponent
 
-  backtotop:
-    class: App\MobileEntry\Component\Backtotop\BacktotopComponent
-
   pwa_home_screen:
     class: App\MobileEntry\Component\PWA\PWAHomeScreenComponent
-
-  cookie_notification:
-    class: App\MobileEntry\Component\CookieNotif\CookieNotifComponent
 
   game_loader:
     class: App\MobileEntry\Component\GameLoader\GameLoaderComponent
@@ -299,9 +294,6 @@ modules:
   gpi_sode_integration:
     class: App\MobileEntry\Module\GameIntegration\GPISode\GPISodeModule
 
-  exchange_launcher_integration:
-    class: App\MobileEntry\Module\GameIntegration\ExchangeLauncher\ExchangeLauncherModule
-
   tgp_integration:
     class: App\MobileEntry\Module\GameIntegration\TGP\TGPModule
 
@@ -353,8 +345,8 @@ modules:
   lottery_integration:
     class: App\MobileEntry\Module\ProductIntegration\Lottery\LotteryIntegrationModule
 
-  exchange_integration:
-    class: App\MobileEntry\Module\ProductIntegration\Exchange\ExchangeIntegrationModule
+  virtuals_integration:
+    class: App\MobileEntry\Module\ProductIntegration\Virtuals\VirtualsIntegrationModule
 
   soda_casino_integration:
     class: App\MobileEntry\Module\ProductIntegration\SodaCasino\SodaCasinoIntegrationModule

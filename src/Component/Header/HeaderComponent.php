@@ -173,8 +173,12 @@ class HeaderComponent implements ComponentWidgetInterface
         }
 
         try {
+            $product = $this->product->getProduct();
+            if ($product === 'mobile-sports' || $product === 'mobile-sports-df') {
+                $product = 'mobile-entrypage';
+            }
             $headerConfigsByProduct = $this->configs
-                ->withProduct($this->product->getProduct())
+                ->withProduct($product)
                 ->getConfig('webcomposer_config.header_configuration');
         } catch (\Exception $e) {
             $headerConfigsByProduct = [];
@@ -187,6 +191,9 @@ class HeaderComponent implements ComponentWidgetInterface
         $data['mobile_remember'] = $headerConfigs['mobile_remember'] ?? 'Remember Username';
         $data['mobile_login_reg'] = $headerConfigs['mobile_login_reg'] ?? 'Login/Join';
         $data['join_now_link'] = $headerConfigs['registration_link'] ?? [];
+        $productRoute = $params['route'] ?? '/';
+        $data['logo_link'] = '/{lang}';
+
 
         try {
             $isLogin = $this->playerSession->isLogin();

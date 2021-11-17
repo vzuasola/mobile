@@ -28,6 +28,13 @@ class FooterComponent implements ComponentWidgetInterface
     private $product;
 
     /**
+     * Block utility helper
+     *
+     * @var object
+     */
+    private $blockUtils;
+
+    /**
      *
      */
     public static function create($container)
@@ -37,21 +44,29 @@ class FooterComponent implements ComponentWidgetInterface
             $container->get('views_fetcher'),
             $container->get('product_resolver'),
             $container->get('config_fetcher'),
-            $container->get('asset')
+            $container->get('asset'),
+            $container->get('block_utils')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $views, $product, $configs, $asset)
-    {
+    public function __construct(
+        $menus,
+        $views,
+        $product,
+        $configs,
+        $asset,
+        $blockUtils
+    ) {
         $this->menus = $menus;
         $this->views = $views;
         $this->product = $product;
         $this->configs = $configs;
-        $this->viewsFloating = $views->withProduct($product->getProduct());
         $this->asset = $asset;
+        $this->blockUtils = $blockUtils;
+        $this->viewsFloating = $views->withProduct($product->getProduct());
     }
 
     /**
@@ -72,6 +87,8 @@ class FooterComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+        $data['back_to_top'] = true;
+        $data['copyright'] = 'Copyright';
 
         try {
             $data['sponsors'] = $this->views->getViewById('mobile_sponsor_list_v2');
@@ -102,7 +119,19 @@ class FooterComponent implements ComponentWidgetInterface
             $data['entrypage_config'] = [];
         }
 
-        $data['copyright'] = 'Copyright';
+        try {
+            $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
+            $data['cookie_notification'] = $footerConfigs['cookie_notification']['value'] ?? 'cookie notification';
+            $data['country_codes'] = $footerConfigs['country_codes'] ?? '';
+
+            if (!empty($footerConfigs['back_to_top_title'])) {
+                $data['back_to_top'] = !$this->blockUtils->isVisibleOn($footerConfigs['back_to_top_title']);
+            }
+        } catch (\Exception $e) {
+            $footerConfigs = [];
+            $data['cookie_notification'] = 'Cookie Notification';
+            $data['country_codes'] = '';
+        }
 
         return $data;
     }

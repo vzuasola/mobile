@@ -1,22 +1,18 @@
 <?php
 
-namespace App\MobileEntry\Module\Avaya;
+namespace App\MobileEntry\Module\ProductIntegration\Virtuals;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
-
-use Firebase\JWT\JWT;
 
 /**
  *
  */
-class AvayaModuleScripts implements ComponentAttachmentInterface
+class VirtualsIntegrationModuleScripts implements ComponentAttachmentInterface
 {
     /**
      * @var App\Player\PlayerSession
      */
     private $playerSession;
-
-    private $configFetcher;
 
     /**
      *
@@ -24,18 +20,16 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
     public static function create($container)
     {
         return new static(
-            $container->get('player_session'),
-            $container->get('config_fetcher')
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $configFetcher)
+    public function __construct($playerSession)
     {
         $this->playerSession = $playerSession;
-        $this->configFetcher = $configFetcher;
     }
 
     /**
@@ -43,7 +37,9 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        $data = [];
-        return $data;
+        return [
+            'authenticated' => $this->playerSession->isLogin(),
+            'matrix' => $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false,
+        ];
     }
 }
