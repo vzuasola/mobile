@@ -62,12 +62,6 @@ class MetaComponent implements ComponentWidgetInterface
         '/laohuji',
         '/playflash',
         '/spinwin',
-        // exchange
-        '/exchange',
-        '/cricket',
-        '/indiabet',
-        '/cric-exchange',
-        '/betting-exchange',
         // arcade
         '/arcade',
         '/youxi',

@@ -19,7 +19,6 @@ import {LiveDealerLobbyComponent} from "@app/src/Component/Main/Lobby/LiveDealer
 import {ArcadeLobbyComponent} from "@app/src/Component/Main/Lobby/ArcadeLobby/script";
 import {CasinoLobbyComponent} from "@app/src/Component/Main/Lobby/CasinoLobby/script";
 import {LotteryLobbyComponent} from "@app/src/Component/Main/Lobby/LotteryLobby/script";
-import {ExchangeLobbyComponent} from "@app/src/Component/Main/Lobby/ExchangeLobby/script";
 import {SodaCasinoLobbyComponent} from "@app/src/Component/Main/Lobby/SodaCasinoLobby/script";
 import {GameWindowComponent} from "@app/src/Component/Main/GameWindow/script";
 import {LobbyComponent} from "@app/src/Component/Main/Lobby/script";
@@ -74,7 +73,6 @@ ComponentManager.setComponents({
     virtuals_lobby: new VirtualsLobbyComponent(),
     lottery_lobby: new LotteryLobbyComponent(),
     soda_casino_lobby: new SodaCasinoLobbyComponent(),
-    exchange_lobby: new ExchangeLobbyComponent(),
     node: new NodeComponent(),
     language: new LanguageComponent(),
     // in_language: new INLanguageComponent(),

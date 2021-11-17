@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e47adb6367bd0dba9262ffd161c4960",
+    "content-hash": "c167eecf0de7d213c74e68a3ef7fb095",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3104,11 +3104,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.212.3",
+            "version": "dev-release-v1.225.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "a413c9b46b864e397a5b38357736bcc9737c8667"
+                "reference": "04af05d76b4a24fd9282c3e0c5774e0164e02215"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3159,7 +3159,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2021-10-19T05:31:49+00:00"
+            "time": "2021-11-04T03:42:14+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -4647,7 +4647,6 @@
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
-            "abandoned": true,
             "time": "2015-07-28T20:34:47+00:00"
         },
         {
