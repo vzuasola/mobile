@@ -59,22 +59,7 @@ class DownloadComponent implements ComponentWidgetInterface
     public function getData()
     {
         try {
-            $menuClass = [
-                1 => 'app-download-full-width',
-                2 => 'app-download-col-2',
-                3 => 'app-download-col-3 push',
-                4 => 'col-3',
-            ];
-
-            $menuClassMore = [
-                5 => 'app-download-full-width',
-                6 => 'app-download-col-2',
-                7 => 'app-download-col-3 push',
-                8 => 'col-3'
-            ];
             $data['downloads_menu']  = $this->menus->getMultilingualMenu('mobile-downloads');
-            $data['menu_class'] = $menuClass[count($data['downloads_menu'])] ?? 'col-3';
-            $data['menu_class_more'] = $menuClassMore[count($data['downloads_menu'])] ?? 'col-3';
         } catch (\Exception $e) {
             $data['downloads_menu'] = [];
         }
