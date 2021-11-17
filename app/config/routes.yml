@@ -171,20 +171,6 @@ routes:
         attributes:
             product: mobile-sports-df
 
-    /{id:exchange|cricket|indiabet|cric-exchange|betting-exchange}:
-        method: GET
-        action: App\MobileEntry\Controller\ExchangeController:view
-        components:
-            main: lobby
-            lobby_content: exchange_lobby
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-exchange
-
     /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}:
         method: GET
         action: App\MobileEntry\Controller\LotteryController:view

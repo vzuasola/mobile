@@ -3,40 +3,29 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {Loader} from "@app/assets/script/components/loader";
 import {Modal} from "@app/assets/script/components/modal";
-import {Redirector} from "@app/assets/script/components/redirector";
 
-import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
+import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
-/**
- *
- */
-export class CasinoOptionComponent implements ComponentInterface {
-    private loader: Loader;
+export class CasinoOption {
+
     private element: HTMLElement;
-    private isLogin: boolean;
 
-    constructor() {
-        this.loader = new Loader(document.body, true);
-    }
-
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onLoad(element: HTMLElement, attachments: {} ) {
         this.element = element;
-        this.isLogin = attachments.authenticated;
 
         this.listenSettingsLightbox();
         this.listenCasinoOptionLink();
         this.listenLogout();
     }
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+    onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
     }
 
     private listenSettingsLightbox() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "settings-trigger", true);
-
             if (el) {
                 event.preventDefault();
                 ComponentManager.broadcast("casino.preference");
@@ -75,7 +64,7 @@ export class CasinoOptionComponent implements ComponentInterface {
 
     private getPreference(product, callback) {
         xhr({
-            url: Router.generateRoute("casino_option", "preference"),
+            url: Router.generateRoute("menu", "preference"),
             type: "json",
             method: "post",
             data: {
