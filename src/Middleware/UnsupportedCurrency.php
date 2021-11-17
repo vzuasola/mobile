@@ -16,7 +16,6 @@ use App\Drupal\Config;
 class UnsupportedCurrency implements ResponseMiddlewareInterface
 {
     const PRODUCTS = [
-        'mobile-exchange',
         'mobile-soda-casino'
     ];
 

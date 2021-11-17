@@ -40,7 +40,6 @@ class CashierToken implements TokenInterface
         $productIncluded = [
             'mobile-live-dealer',
             'mobile-soda-casino',
-            'mobile-exchange',
             'mobile-lottery',
         ];
         if (in_array($product, $productIncluded)) {
