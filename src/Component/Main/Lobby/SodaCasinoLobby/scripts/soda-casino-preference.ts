@@ -66,7 +66,7 @@ export class SodaCasinoPreference {
         this.loader.show();
 
         xhr({
-            url: Router.generateRoute("casino_option", "preference"),
+            url: Router.generateRoute("menu", "preference"),
             type: "json",
         }).then((response) => {
             callback(response);
