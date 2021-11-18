@@ -201,13 +201,14 @@ class LiveDealerLobbyComponentController
             if (isset($game['field_game_lobby'][0])) {
                 $useGameLobby = $game['field_game_lobby'] ? "true" : "false";
             }
+            $fieldLobbyTab = strtolower($game['field_lobby_tab']);
             $definition['title'] = $game['publish_on'] ?? "";
             $definition['title'] = $game['title'] ?? "";
             $definition['game_code'] = $game['field_game_code'] ?? "";
             $definition['game_provider'] = $game['field_game_provider'] ?? "";
             $definition['game_subprovider'] = $subprovider['name'] ?? "";
             $definition['game_platform'] = $game['field_game_platform'] ?? "";
-            $definition['lobby_tab'] = $game['field_lobby_tab_export'][0]['alias'] ?? "";
+            $definition['lobby_tab'] = $fieldLobbyTab ?? "";
             $definition['target'] = $game['field_target'] ?? "popup";
             $definition['preview_mode'] = $game['field_preview_mode'] === 'true';
             $definition['use_game_loader'] = (isset($game['field_use_game_loader'])
