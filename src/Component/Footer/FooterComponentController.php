@@ -76,24 +76,6 @@ class FooterComponentController
         return $this->rest->output($response, $data);
     }
 
-    /**
-     * Defines the data to be passed to the twig template
-     *
-     * @return array
-     */
-    public function getGeoIp($request, $response)
-    {
-        $data = [];
-
-        try {
-            $data['geo_ip'] = $this->idDomain->getGeoIpCountry();
-        } catch (\Exception $e) {
-            $data['geo_ip'] = '';
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
     private function cleanFooterMenu(&$footerMenu)
     {
         if ($footerMenu) {

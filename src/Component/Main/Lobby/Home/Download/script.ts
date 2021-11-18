@@ -17,16 +17,25 @@ import Accordion from "@app/assets/script/components/accordion";
  */
 export class DownloadComponent implements ComponentInterface {
     private element: HTMLElement;
-    private downloadData: any;
     private timer;
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getDownloads();
+        this.filterDownloads();
+        this.equalizeDownloadHeight();
+        this.accordion(this.element);
+        this.swapText();
+        this.bindDownloadLightbox();
+        this.downloadLaunch(element);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getDownloads();
+        this.filterDownloads();
+        this.equalizeDownloadHeight();
+        this.accordion(this.element);
+        this.swapText();
+        this.bindDownloadLightbox();
+        this.downloadLaunch(element);
     }
 
     private downloadsVisibility() {
@@ -56,83 +65,86 @@ export class DownloadComponent implements ComponentInterface {
         const accordion = new Accordion(element, { openByDefault: 0});
     }
 
-    private getDownloads() {
-        xhr({
-            url: Router.generateRoute("home_download", "downloads"),
-            type: "json",
-        }).then((response) => {
-            this.downloadData = response;
-            this.generateDownloadMarkup(this.downloadData);
-            this.equalizeDownloadHeight();
-            this.accordion(this.element);
-            this.swapText();
-            this.generateDownloadLightboxMarkup(this.downloadData);
-        });
-    }
-
-    /**
-     * Set the download in the template
-     *
-     */
-    private generateDownloadMarkup(data) {
-        const download: HTMLElement = this.element.querySelector("#downloads");
-        data = this.procesMenu(data);
-        const template = downloadTemplate({
-            downloadData: data,
-            menuClass: data.downloads_menu.length === 4 ? "col-3"
-            : ((data.downloads_menu.length === 3)
-            ? "app-download-col-3 push" : data.downloads_menu.length === 2
-            ? "app-download-col-2" : data.downloads_menu.length  === 1
-            ? "app-download-full-width" : "col-3"),
-            // Show more List
-            menuClassMore: data.downloads_menu.length === 5 ? "app-download-full-width"
-            : ((data.downloads_menu.length === 6)
-            ? "app-download-col-2" : data.downloads_menu.length === 7
-            ? "app-download-col-3 push" : data.downloads_menu.length === 8
-            ? "col-3" : "col-3"),
-            allApptext: data.entrypage_config.all_apps_text,
-            viewLesstext: data.entrypage_config.view_less_text,
-            downloadApptext: data.entrypage_config.download_app_text,
-        });
-
-        download.innerHTML = template;
-    }
-
-    private procesMenu(data) {
-        const menus = [];
-        const download: HTMLElement = this.element.querySelector("#downloads");
-        for (const menu in data.downloads_menu) {
-            if (data.downloads_menu.hasOwnProperty(menu)) {
-                const downloadData = data.downloads_menu[menu];
-                const playerMatrix = (data.partnerMatrix === true &&
-                    downloadData.attributes.partnerMatrixPlayer === "partner-matrix-app")
-                    || data.partnerMatrix === false;
-
-                if (playerMatrix) {
-                    if (!downloadData.attributes.device) {
-                        utility.addClass(download, "download-background");
-                        menus.push(downloadData);
+    private filterDownloads() {
+        const isIOS = this.downloadsVisibility();
+        const downloadAccordion = this.element.querySelector(".download-accordion");
+        const dlContainer: HTMLElement = this.element.querySelector("#downloads");
+        const downloadItems = this.element.querySelectorAll(".app-download-list a");
+        if (typeof downloadItems !== "undefined") {
+            for (const key in downloadItems) {
+                if (downloadItems.hasOwnProperty(key)) {
+                    const parentEl = utility.findParent(downloadItems[key], "li");
+                    if ((!isIOS && utility.hasClass(downloadItems[key], "ios")) ||
+                    (isIOS && utility.hasClass(downloadItems[key], "android"))) {
+                        parentEl.remove();
                     }
 
-                    if (this.downloadsVisibility() && downloadData.attributes.device === "ios") {
-                        utility.addClass(download, "download-background");
-                        utility.addClass(this.element.querySelector("#download-lightbox"), "ios-device");
-                        menus.push(downloadData);
-                    }
-
-                    if (!this.downloadsVisibility() && downloadData.attributes.device === "android") {
-                        utility.addClass(download, "download-background");
+                    if (utility.hasClass(downloadItems[key], "android")) {
                         utility.addClass(this.element.querySelector("#download-lightbox"), "android-device");
-                        menus.push(downloadData);
                     }
                 }
             }
+
+            this.rearrange();
+            this.applyMenuStyle(".app-download .app-download-list");
+            this.applyMenuStyle(".download-accordion .app-download-list");
+
+            if (downloadAccordion
+                && !this.element.querySelectorAll(".app-download-accordion .app-download-list").length) {
+                downloadAccordion.remove();
+            }
+
+            if (this.element.querySelectorAll(".app-download-list a").length) {
+                utility.addClass(dlContainer, "download-background");
+            } else {
+                dlContainer.remove();
+            }
+        }
+    }
+
+    private rearrange() {
+        const downloadItems = this.element.querySelectorAll(".app-download-list");
+        const appDownload = this.element.querySelector(".app-download");
+        const downloadAccordion = this.element.querySelector(".app-download-accordion");
+
+        // clear all lists first
+        if (appDownload) {
+            appDownload.innerHTML = "";
         }
 
-        this.bindDownloadLightbox();
+        if (downloadAccordion) {
+            downloadAccordion.innerHTML = "";
+        }
 
-        data.downloads_menu = menus;
-        return data;
+        for (let i = 0; i < downloadItems.length; i++) {
+            if (downloadItems.hasOwnProperty(i)) {
+                if (i < 4) {
+                    appDownload.append(downloadItems[i]);
+                } else {
+                    downloadAccordion.append(downloadItems[i]);
+                }
+            }
+        }
+    }
+
+    private applyMenuStyle(menuList) {
+        const downloadItems = this.element.querySelectorAll(menuList);
+        const menuClass = [];
+        menuClass[1] = "app-download-full-width";
+        menuClass[2] = "app-download-col-2";
+        menuClass[3] = "app-download-col-3";
+        menuClass[4] = "col-3";
+
+        for (let i = 0; i < downloadItems.length; i++) {
+            if (downloadItems.hasOwnProperty(i)) {
+                const itemClass = (typeof menuClass[downloadItems.length] !== "undefined")
+                    ? menuClass[downloadItems.length] : "col-3";
+                utility.addClass(downloadItems[i], itemClass);
+                if (downloadItems.length === 3) {
+                    utility.addClass(downloadItems[i], "push");
+                }
+            }
+        }
     }
 
     private swapText() {
@@ -147,31 +159,6 @@ export class DownloadComponent implements ComponentInterface {
                 }
             }
         });
-    }
-
-    private generateDownloadLightboxMarkup(data) {
-        const downloadLightbox: HTMLElement = this.element.querySelector("#download-lightbox");
-        const templateLightbox = downloadlightboxTemplate({
-            downloadData: data,
-            downloadLighboxImage: data.entrypage_config.file_image_page_image,
-            // Download App
-            downloadAppTitle: data.entrypage_config.download_app_title,
-            downloadDesc: data.entrypage_config.mobile_download_description_select.value,
-            downloadlinkTitle: data.entrypage_config.download_app_link_title,
-            downloadTargetlink: data.entrypage_config.link_target,
-            downloadlink: data.entrypage_config.download_app_link,
-            downloadlinkIos: data.entrypage_config.download_app_link_ios,
-            // Launch App
-            launchAppTitle: data.entrypage_config.launch_app_title,
-            launchDesc: data.entrypage_config.mobile_launch_description_select.value,
-            launchlinkTitle: data.entrypage_config.launch_app_link_title,
-            launchDescVerify: data.entrypage_config.mobile_launch_verify_description_select.value,
-            launchIt: data.entrypage_config.launch_app_launch_it, // title Ok, Got it
-            launchLink: data.entrypage_config.launch_app_link,
-        });
-
-        downloadLightbox.innerHTML = templateLightbox;
-        this.downloadLaunch(this.element);
     }
 
     private bindDownloadLightbox() {

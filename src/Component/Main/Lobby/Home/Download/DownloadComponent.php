@@ -16,6 +16,8 @@ class DownloadComponent implements ComponentWidgetInterface
      */
     private $configs;
 
+    private $playerSession;
+
     /**
      *
      */
@@ -23,17 +25,19 @@ class DownloadComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('menu_fetcher'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($menus, $configs)
+    public function __construct($menus, $configs, $playerSession)
     {
         $this->menus = $menus;
         $this->configs = $configs;
+        $this->playerSession = $playerSession;
     }
 
 
@@ -54,6 +58,20 @@ class DownloadComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        return [];
+        try {
+            $data['downloads_menu']  = $this->menus->getMultilingualMenu('mobile-downloads');
+        } catch (\Exception $e) {
+            $data['downloads_menu'] = [];
+        }
+
+        try {
+            $data['entrypage_config'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
+        } catch (\Exception $e) {
+            $data['entrypage_config'] = [];
+        }
+
+        $data['partnerMatrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
+
+        return $data;
     }
 }

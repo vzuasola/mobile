@@ -10,11 +10,12 @@ export class SessionModule implements ModuleInterface {
     private isSessionStarted: boolean = false;
     private isLogin: boolean = false;
     private hash: string;
+    private geoip: string;
     private hasLogout: boolean = false;
 
-    onLoad(attachments: {authenticated: boolean, timeout: number, hash: string}) {
+    onLoad(attachments: {authenticated: boolean, timeout: number, hash: string, geoip: string}) {
         const timeout = attachments.timeout ? attachments.timeout : 15;
-
+        this.geoip = attachments.geoip;
         this.session = new Session(timeout * 60);
 
         if (attachments.authenticated) {
