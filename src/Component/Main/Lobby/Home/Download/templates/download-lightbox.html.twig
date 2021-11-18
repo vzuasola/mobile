@@ -1,0 +1,56 @@
+{% if entrypage_config %}
+<div class="modal-content download-lightbox-content">
+    <div class="modal-body download-lightbox-body">
+        {% if entrypage_config.file_image_page_image %}
+        <img src="{{ entrypage_config.file_image_page_image }}" alt="{{entrypage_config.download_app_title}}" />
+        {% endif %}
+        <div class="half-width">
+            <div class="col-6 download-lightbox-item">
+                <div class="download-lightbox-details download-box">
+                    {% if entrypage_config.download_app_title %}
+                    <p class="download-lightbox-title">{{ entrypage_config.download_app_title }}</p>
+                    {% endif %}
+                    {{ entrypage_config.mobile_download_description_select.value|raw }}
+                </div>
+                {% if entrypage_config.download_app_link %}
+                <a href="{{ entrypage_config.download_app_link }}" target="{{ entrypage_config.link_target }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-android">
+                    {{ entrypage_config.download_app_link_title }}
+                </a>
+                {% endif %}
+                {% if entrypage_config.download_app_link_ios %}
+                <a href="{{ entrypage_config.download_app_link_ios }}" target="{{ entrypage_config.link_target }}" class="btn btn-yellow btn-small download-lightbox-btn download-box-btn-ios">
+                    {{ entrypage_config.download_app_link_title }}
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="col-6 download-lightbox-item">
+                <div class="download-lightbox-details download-box">
+                {% if entrypage_config.launch_app_title %}
+                <p class="download-lightbox-title">{{ entrypage_config.launch_app_title }}</p>
+                {% endif %}
+                    {{ entrypage_config.mobile_launch_description_select.value|raw }}
+                </div>
+                {% if entrypage_config.launch_app_link_title %}
+                <a href="{{ entrypage_config.launch_app_link }}" class="btn-launch btn btn-yellow btn-small download-lightbox-btn download-box-btn">
+                    {{ entrypage_config.launch_app_link_title }}
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="full-width hidden">
+            <div class="col-12 download-lightbox-item">
+                <div class="download-lightbox-details download-box">
+                    {{ entrypage_config.mobile_launch_verify_description_select.value|raw }}
+                </div>
+                {% if entrypage_config.launch_app_launch_it %}
+                <a href="#" class="modal-close btn btn-yellow btn-small download-lightbox-btn">
+                    {{  entrypage_config.launch_app_launch_it }}
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

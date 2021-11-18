@@ -24,12 +24,6 @@ export class FooterComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.getFooter();
-        this.cookieNotif((geoIp) => {
-            new CookieNotif({
-                geoIp,
-                element: this.element,
-            });
-        });
 
         this.activeBackToTop(element);
 
@@ -42,12 +36,6 @@ export class FooterComponent implements ComponentInterface {
         this.element = element;
         this.getFooter();
         this.activeBackToTop(element);
-        this.cookieNotif((geoIp) => {
-            new CookieNotif({
-                geoIp,
-                element: this.element,
-            });
-        });
     }
 
     private getOriginalUrl() {
@@ -98,22 +86,13 @@ export class FooterComponent implements ComponentInterface {
             this.generateFooterMarkup(this.footerData);
             this.getOriginalUrl();
             this.attachProduct();
-        });
-    }
-
-    private cookieNotif(callback) {
-        if (!this.geoIp) {
-            xhr({
-                url: Router.generateRoute("footer", "getGeoIp"),
-                type: "json",
-            }).then((response) => {
-                this.geoIp = response.geo_ip;
-
-                callback(response.geo_ip);
+            const session = ComponentManager.getModuleInstance("session");
+            /* tslint:disable:no-string-literal */
+            new CookieNotif({
+                geoIp: session["geoip"],
+                element: this.element,
             });
-        }
-
-        callback(this.geoIp);
+        });
     }
 
     /**

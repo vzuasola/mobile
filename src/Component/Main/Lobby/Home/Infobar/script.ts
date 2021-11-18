@@ -16,22 +16,16 @@ export class InfobarComponent implements ComponentInterface {
     private InfobarData: any;
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getInfobar();
+        this.activateMarquee();
+        this.listenInfobarTouch();
+        this.listenChangeOrientation();
     }
 
     onReload(element: HTMLElement, attachments: {}) {
         this.element = element;
-        this.getInfobar();
-    }
-
-    private getInfobar() {
-        xhr({
-            url: Router.generateRoute("home_infobar", "infobar"),
-            type: "json",
-        }).then((response) => {
-            this.InfobarData = response;
-            this.generateInfobarMarkup(this.InfobarData);
-        });
+        this.activateMarquee();
+        this.listenInfobarTouch();
+        this.listenChangeOrientation();
     }
 
     private activateMarquee() {
@@ -72,43 +66,5 @@ export class InfobarComponent implements ComponentInterface {
                 }
             }
         });
-    }
-
-    /**
-     * Set the infobar in the template
-     *
-     */
-    private generateInfobarMarkup(data) {
-        const translation = {
-            en: "News",
-            eu: "News",
-            sc: "公告",
-            ch: "公告",
-            th: "ข่าวสำคัญ",
-            vn: "Tin Tức",
-            id: "info",
-            jp: "最新情報",
-            kr: "공지",
-            in: "News",
-            gr: "Νea",
-            pl: "News",
-            es: "Noticias",
-            pt: "Noticias",
-            hi: "समाचार",
-            te: "న్యూస్",
-        };
-
-        const language = ComponentManager.getAttribute("language");
-        const Infobar: HTMLElement = this.element.querySelector("#home-infobar");
-        const template = infobarTemplate({
-            InfobarData: data,
-            newsInfobarText: translation[language],
-            language: ComponentManager.getAttribute("language"),
-        });
-
-        Infobar.innerHTML = template;
-        this.activateMarquee();
-        this.listenInfobarTouch();
-        this.listenChangeOrientation();
     }
 }

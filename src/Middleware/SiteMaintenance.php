@@ -25,7 +25,6 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
         'mobile-casino-gold',
         'mobile-live-dealer',
         'mobile-lottery',
-        'mobile-exchange',
         'mobile-arcade',
         'mobile-soda-casino',
         'mobile-sports',
