@@ -17,7 +17,6 @@ import Accordion from "@app/assets/script/components/accordion";
  */
 export class DownloadComponent implements ComponentInterface {
     private element: HTMLElement;
-    private downloadData: any;
     private timer;
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
@@ -68,7 +67,6 @@ export class DownloadComponent implements ComponentInterface {
 
     private filterDownloads() {
         const isIOS = this.downloadsVisibility();
-        const appDownload = this.element.querySelector(".app-download");
         const downloadAccordion = this.element.querySelector(".download-accordion");
         const dlContainer: HTMLElement = this.element.querySelector("#downloads");
         const downloadItems = this.element.querySelectorAll(".app-download-list a");
@@ -120,7 +118,7 @@ export class DownloadComponent implements ComponentInterface {
 
         for (let i = 0; i < downloadItems.length; i++) {
             if (downloadItems.hasOwnProperty(i)) {
-                if (i <= 3) {
+                if (i < 4) {
                     appDownload.append(downloadItems[i]);
                 } else {
                     downloadAccordion.append(downloadItems[i]);
