@@ -92,8 +92,6 @@ class LanguageComponentController
             $data['language'] = [];
         }
 
-        $data['partnerMatrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
-
         return $this->rest->output($response, $data);
     }
 }
