@@ -123,9 +123,13 @@ components:
 
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
+    headers:
+      Cache-Control: public, max-age=300
 
   language:
     class: App\MobileEntry\Component\Language\LanguageComponent
+    headers:
+      Cache-Control: public, max-age=300
 
   # in_language:
   #   class: App\MobileEntry\Component\Language\INLanguage\INLanguageComponent
@@ -133,6 +137,8 @@ components:
 
   push_notification:
     class: App\MobileEntry\Component\PushNotification\PushNotificationComponent
+    headers:
+      Cache-Control: public, max-age=300
 
   promotions:
     class: App\MobileEntry\Component\Main\Promotions\PromotionsComponent
