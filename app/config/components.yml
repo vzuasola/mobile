@@ -198,6 +198,10 @@ components:
   ucp:
     class: App\MobileEntry\Component\Main\UnsupportedCurrency\UnsupportedCurrencyComponent
 
+  ptplus_lobby:
+    class: App\MobileEntry\Component\Main\Lobby\PTPlusLobby\PTPlusLobbyComponent
+    parent: lobby
+
 # Define modules
 modules:
   session:
