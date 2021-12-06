@@ -145,6 +145,8 @@ components:
 
   tab_navigation:
     class: App\MobileEntry\Component\TabNavigation\TabNavigationComponent
+    headers:
+      Cache-Control: public, max-age=300
 
   cant_login:
     class: App\MobileEntry\Component\Main\CantLogin\CantLoginComponent

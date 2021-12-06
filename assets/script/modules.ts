@@ -45,7 +45,6 @@ import {LiveDealerIntegrationModule} from "@app/src/Module/ProductIntegration/Li
 import {ArcadeIntegrationModule} from "@app/src/Module/ProductIntegration/Arcade/script";
 import {LotteryIntegrationModule} from "@app/src/Module/ProductIntegration/Lottery/script";
 import {VirtualsIntegrationModule} from "@app/src/Module/ProductIntegration/Virtuals/script";
-import {SodaCasinoIntegrationModule} from "@app/src/Module/ProductIntegration/SodaCasino/script";
 import {PartnerMatrixModule} from "@app/src/Module/PartnerMatrix/script";
 import {JSystemModule} from "@app/src/Module/GameIntegration/JSystem/script";
 import {OpusModule} from "@app/src/Module/GameIntegration/Opus/script";
@@ -99,7 +98,6 @@ ComponentManager.setModules({
     arcade_integration: new ArcadeIntegrationModule(),
     lottery_integration: new LotteryIntegrationModule(),
     virtuals_integration: new VirtualsIntegrationModule(),
-    soda_casino_integration: new SodaCasinoIntegrationModule(),
     partner_matrix: new PartnerMatrixModule(),
     fghub_gaming_integration: new FGHubGamingModule(),
     ptplus_integration: new PTPlusModule(),
