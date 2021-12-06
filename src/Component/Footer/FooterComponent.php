@@ -52,15 +52,21 @@ class FooterComponent implements ComponentWidgetInterface
     /**
      * Public constructor
      */
-    public function __construct($menus, $views, $product, $configs, $asset, $blockUtils)
-    {
+    public function __construct(
+        $menus,
+        $views,
+        $product,
+        $configs,
+        $asset,
+        $blockUtils
+    ) {
         $this->menus = $menus;
         $this->views = $views;
         $this->product = $product;
         $this->configs = $configs;
-        $this->viewsFloating = $views->withProduct($product->getProduct());
         $this->asset = $asset;
         $this->blockUtils = $blockUtils;
+        $this->viewsFloating = $views->withProduct($product->getProduct());
     }
 
     /**
