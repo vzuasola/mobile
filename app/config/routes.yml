@@ -279,9 +279,6 @@ routes:
         action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
         headers:
             Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
 
     /api/plugins/component/route/announcement/announcements:
         method: ANY
@@ -293,6 +290,12 @@ routes:
             expires: 1800
 
     /api/plugins/component/route/lobby_slider/sliders:
+        method: ANY
+        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+        headers:
+            Cache-Control: public, max-age=300
+
+    /api/plugins/component/route/tab_navigation/quicknav:
         method: ANY
         action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
         headers:
