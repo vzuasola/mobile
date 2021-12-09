@@ -25,16 +25,15 @@
         data-game-location="search"
         >
         <div class="games-search-result-left" data-game-code="{{this.game_code}}">
-            {{#if this.ribbon}}
+            {{!-- {{#if this.ribbon}}
                 <div class="game-ribbon"
                     style="background: {{this.ribbon.background}}; color: {{this.ribbon.color}};"
                 >
                     {{this.ribbon.name}}
                 </div>
-            {{/if}}
+            {{/if}} --}}
             <img class="w-100" src="{{this.image.url}}" alt="{{this.image.alt}}">
         </div>
-
         <div class="games-search-result-right">
             <p>{{this.title}}</p>
         </div>

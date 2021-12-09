@@ -46,6 +46,7 @@ import {FooterComponent} from "@app/src/Component/Footer/script";
 import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
 import {VirtualsLobbyComponent} from "@app/src/Component/Main/Lobby/VirtualsLobby/script";
+import {PTPlusLobbyComponent} from "@app/src/Component/Main/Lobby/PTPlusLobby/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -94,4 +95,5 @@ ComponentManager.setComponents({
     footer: new FooterComponent(),
     game_loader: new GameLoaderComponent(),
     ucp: new UnsupportedCurrencyComponent(),
+    ptplus_lobby: new PTPlusLobbyComponent(),
 });
