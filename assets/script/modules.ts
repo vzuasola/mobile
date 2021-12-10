@@ -1,6 +1,7 @@
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 import {AvayaModule} from "@app/src/Module/Avaya/script";
+import {WebRtcModule} from "@app/src/Module/WebRtc/script";
 import {BalanceModule} from "@app/src/Module/Balance/script";
 import {SessionModule} from "@app/src/Module/Session/script";
 import {TokenParserModule} from "@app/src/Module/TokenParser/script";
@@ -53,6 +54,7 @@ import {PTPlusModule} from "@app/src/Module/GameIntegration/PTPlus/script";
 
 ComponentManager.setModules({
     avaya: new AvayaModule(),
+    web_rtc: new WebRtcModule(),
     balance: new BalanceModule(),
     session: new SessionModule(),
     token_parser: new TokenParserModule(),
