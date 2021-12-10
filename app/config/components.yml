@@ -215,6 +215,9 @@ modules:
   avaya:
     class: App\MobileEntry\Module\Avaya\AvayaModule
 
+  web_rtc:
+    class: App\MobileEntry\Module\WebRtc\WebRtcModule
+
   balance:
     class: App\MobileEntry\Module\Balance\BalanceModule
 
