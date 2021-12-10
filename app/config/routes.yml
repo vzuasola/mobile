@@ -8,7 +8,7 @@ routes:
             Cache-Control: public, max-age=300
         page_cache:
             enabled: true
-            expires: 1800
+            expires: 300
 
     /manifest.json:
         method: GET
