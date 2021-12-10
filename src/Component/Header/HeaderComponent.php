@@ -186,8 +186,7 @@ class HeaderComponent implements ComponentWidgetInterface
         $data['mobile_login_reg'] = $headerConfigs['mobile_login_reg'] ?? 'Login/Join';
         $data['join_now_link'] = $headerConfigs['registration_link'] ?? [];
         $productRoute = $params['route'] ?? '/';
-        $data['logo_link'] = '/{lang}';
-
+        $data['logo_link'] = $headerConfigs['mobile_logo_url'] ?? '/{lang}';
 
         try {
             $isLogin = $this->playerSession->isLogin();
