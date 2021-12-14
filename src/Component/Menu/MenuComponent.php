@@ -113,6 +113,7 @@ class MenuComponent implements ComponentWidgetInterface
 
         $data['config_new_text'] = $headerConfigs['product_menu_new_tag'] ?? 'New';
         $data['config_links_text'] = $headerConfigs['links_title'] ?? 'Links';
+        $data['logo_link'] = $headerConfigs['mobile_logo_url'] ?? '/{lang}';
 
         $isLogin = $this->playerSession->isLogin();
 
