@@ -719,14 +719,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 continue;
             }
 
+            sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
+                gamesList[category],
+            );
+
             if (response.gamesCollection.top && response.gamesCollection.top.hasOwnProperty(category)) {
                 sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
                     gamesList[category],
                     response.gamesCollection.top[category],
-                );
-            } else {
-                sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
-                    gamesList[category],
                 );
             }
 
@@ -734,10 +734,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
                     gamesList[category],
                     response.gamesCollection.recommended[category],
-                );
-            } else {
-                sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
-                    gamesList[category],
                 );
             }
         }
