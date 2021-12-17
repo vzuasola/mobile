@@ -1,7 +1,5 @@
-{% set logoUri = header.logo_uri is defined ? header.logo_uri : url('/') %}
-
 <a
-    href="{{ logoUri }}"
+    href="{{ logo_link }}"
     hreflang="{{ app.lang }}"
     rel="{{ logo_title }}"
     title="{{ logo_title }}"
