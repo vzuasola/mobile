@@ -18,7 +18,7 @@ components:
   menu:
     class: App\MobileEntry\Component\Menu\MenuComponent
     headers:
-      Cache-Control: no-cache, no-store, must-revalidate
+      Cache-Control: public, max-age=300
 
   meta:
     class: App\MobileEntry\Component\Meta\MetaComponent
