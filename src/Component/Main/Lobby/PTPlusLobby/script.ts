@@ -880,7 +880,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             url: Router.generateRoute("ptplus_lobby", "getFavorites"),
             type: "json",
         }).then((result) => {
-            if (result) {
+            if (result && this.response !== null) {
                 this.response.favorite_list = this.getFavoritesList(result);
                 this.updateFavoritesData(result);
                 this.updateFavoritesStyles(this.response.favorite_list);
