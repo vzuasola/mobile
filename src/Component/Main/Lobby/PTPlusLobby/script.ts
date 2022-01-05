@@ -719,14 +719,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 continue;
             }
 
+            sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
+                gamesList[category],
+            );
+
             if (response.gamesCollection.top && response.gamesCollection.top.hasOwnProperty(category)) {
                 sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
                     gamesList[category],
                     response.gamesCollection.top[category],
-                );
-            } else {
-                sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
-                    gamesList[category],
                 );
             }
 
@@ -734,10 +734,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
                     gamesList[category],
                     response.gamesCollection.recommended[category],
-                );
-            } else {
-                sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
-                    gamesList[category],
                 );
             }
         }
@@ -884,7 +880,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             url: Router.generateRoute("ptplus_lobby", "getFavorites"),
             type: "json",
         }).then((result) => {
-            if (result) {
+            if (result && this.response !== null) {
                 this.response.favorite_list = this.getFavoritesList(result);
                 this.updateFavoritesData(result);
                 this.updateFavoritesStyles(this.response.favorite_list);
@@ -948,6 +944,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }
             } else {
                 utility.removeClass(childEl, "active");
+                if (window.location.hash === "#favorites") {
+                    el.parentElement.setAttribute("style", "display: none");
+                    if (Object.keys(this.response.favorite_list).length === 0) {
+                        setTimeout(() => {
+                            window.location.hash = "#game-categories";
+                        }, 500);
+                    }
+                }
             }
         }
     }
