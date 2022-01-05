@@ -280,7 +280,10 @@
 
 #game-search .games-search-result svg {
     position: absolute;
-    bottom: 33%;
+    margin: auto;
+    top: 45%;
+    align-items: center;
+    justify-content: center;
     -webkit-transform: translate(0, 50%);
     -moz-transform: translate(0, 50%);
     -ms-transform: translate(0, 50%);
@@ -291,7 +294,6 @@
     -ms-transform: rotate(-180deg);
     -o-transform: rotate(-180deg);
     transform: rotate(-180deg);
-    margin: 0;
     width: 1.2rem;
     fill: #000;
     right: 22px;
