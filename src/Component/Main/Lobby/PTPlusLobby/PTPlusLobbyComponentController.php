@@ -504,8 +504,8 @@ class PTPlusLobbyComponentController
                 foreach ($gamesCollections as $gamesCollection) {
                     $type = $gamesCollection['field_type'][0]['name'][0]['value'] ?? 'top';
                     $games = $gamesCollection['field_games'] ?? [];
-                    if ($gameCategory && $games) {
-                        $data[$type][$gameCategory] = $this->getGameCodes($games, $isPreview);
+                    if ($games) {
+                        $data[$type] = $this->getGameCodes($games, $isPreview);
                     }
                 }
             }
