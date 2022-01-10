@@ -4,7 +4,7 @@ export class GamesCollectionSorting {
      * Games that are not on the top games collection will be
      * sorted alphabetically.
      */
-    sortGamesCollection(gamesList, gamesCollection) {
+     sortGamesCollection(gamesList, gamesCollection, externalCategories = []) {
         const sortedCollection = [];
         const sortedAlpha = this.sortGameTitleAlphabetical(gamesList);
 
@@ -15,7 +15,15 @@ export class GamesCollectionSorting {
                 }
                 return row.game_code === gameCode;
             });
-            sortedCollection.push(filtered[0]);
+            if (typeof filtered[0] === "undefined" && typeof externalCategories !== "undefined") {
+                for (const gameItem in externalCategories) {
+                    if (externalCategories[gameItem].game_code === gameCode) {
+                        sortedCollection.push(externalCategories[gameItem]);
+                    }
+                }
+            } else {
+                sortedCollection.push(filtered[0]);
+            }
         }
 
         return sortedCollection.concat(sortedAlpha);
