@@ -727,7 +727,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
                     gamesList[category],
                     response.gamesCollection.top[category],
-                    sortedGamesList["all-games"],
                 );
             }
 
