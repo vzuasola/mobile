@@ -28,7 +28,8 @@ class SiteMaintenance implements RequestMiddlewareInterface, ResponseMiddlewareI
         'mobile-arcade',
         'mobile-soda-casino',
         'mobile-sports',
-        'mobile-sports-df'
+        'mobile-sports-df',
+        'mobile-ptplus'
     ];
 
     /**
