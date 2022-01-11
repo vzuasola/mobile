@@ -40,7 +40,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private windowObject: any;
     private gameLink: string;
     private pageData: any[];
-    private filterFlag: string;
     private groupedGames: any;
     private productMenu: string = "product-ptplus";
 
@@ -850,23 +849,9 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     },
                 }).then((result) => {
                     if (result.success) {
-                        this.response = null;
                         this.doRequest(() => {
                             this.gamesSearch.setGamesList(this.response);
-                            /*this.gamesFilter.setGamesList(this.response);*/
-
-                            if (this.filterFlag === "favorites") {
-                                if (typeof this.response.games[this.filterFlag] === "undefined") {
-                                    this.setLobby();
-                                }
-
-                                if (typeof this.response.games[this.filterFlag] !== "undefined") {
-                                    this.setGames(this.response.games[this.filterFlag]);
-                                }
-                            }
                         });
-
-                        ComponentManager.broadcast("games.favorite", {srcElement: el});
                         this.getFavoritesData();
                     }
                 }).fail((error, message) => {
