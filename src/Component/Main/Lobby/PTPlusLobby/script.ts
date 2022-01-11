@@ -932,13 +932,17 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 utility.removeClass(childEl, "active");
                 if (window.location.hash === "#favorites") {
                     el.parentElement.setAttribute("style", "display: none");
-                    if (Object.keys(this.response.favorite_list).length === 0) {
-                        setTimeout(() => {
-                            window.location.hash = "#game-categories";
-                        }, 500);
-                    }
                 }
             }
+        }
+        this.redirectEmptyFavPage();
+    }
+
+    private redirectEmptyFavPage() {
+        if (Object.keys(this.response.favorite_list).length === 0 && window.location.hash === "#favorites") {
+            setTimeout(() => {
+                window.location.hash = "#game-categories";
+            }, 500);
         }
     }
 
