@@ -939,6 +939,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     private redirectEmptyFavPage() {
+        console.log(Object.keys(this.response.favorite_list).length);
+        console.log(window.location.hash);
         if (Object.keys(this.response.favorite_list).length === 0 && window.location.hash === "#favorites") {
             window.location.hash = "";
             window.location.hash = "#game-categories";
