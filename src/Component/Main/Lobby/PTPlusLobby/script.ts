@@ -939,10 +939,9 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     private redirectEmptyFavPage() {
-        if (Object.keys(this.response.favorite_list).length === 0 && window.location.hash === "#favorites") {
-            setTimeout(() => {
-                window.location.hash = "#game-categories";
-            }, 500);
+        if (this.response.games.favorites.length === 0 && window.location.hash === "#favorites") {
+            window.location.hash = "";
+            window.location.hash = "#game-categories";
         }
     }
 
