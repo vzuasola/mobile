@@ -40,7 +40,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private windowObject: any;
     private gameLink: string;
     private pageData: any[];
-    private filterFlag: string;
     private groupedGames: any;
     private productMenu: string = "product-ptplus";
 
@@ -719,14 +718,15 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 continue;
             }
 
+            sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
+                gamesList[category],
+            );
+
             if (response.gamesCollection.top && response.gamesCollection.top.hasOwnProperty(category)) {
                 sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
                     gamesList[category],
                     response.gamesCollection.top[category],
-                );
-            } else {
-                sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
-                    gamesList[category],
+                    sortedGamesList["all-games"],
                 );
             }
 
@@ -734,10 +734,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 sortedGamesList[category] = this.gamesCollectionSort.sortGamesCollection(
                     gamesList[category],
                     response.gamesCollection.recommended[category],
-                );
-            } else {
-                sortedGamesList[category] = this.gamesCollectionSort.sortGameTitleAlphabetical(
-                    gamesList[category],
                 );
             }
         }
@@ -853,23 +849,9 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     },
                 }).then((result) => {
                     if (result.success) {
-                        this.response = null;
                         this.doRequest(() => {
                             this.gamesSearch.setGamesList(this.response);
-                            /*this.gamesFilter.setGamesList(this.response);*/
-
-                            if (this.filterFlag === "favorites") {
-                                if (typeof this.response.games[this.filterFlag] === "undefined") {
-                                    this.setLobby();
-                                }
-
-                                if (typeof this.response.games[this.filterFlag] !== "undefined") {
-                                    this.setGames(this.response.games[this.filterFlag]);
-                                }
-                            }
                         });
-
-                        ComponentManager.broadcast("games.favorite", {srcElement: el});
                         this.getFavoritesData();
                     }
                 }).fail((error, message) => {
@@ -884,7 +866,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             url: Router.generateRoute("ptplus_lobby", "getFavorites"),
             type: "json",
         }).then((result) => {
-            if (result) {
+            if (result && this.response !== null) {
                 this.response.favorite_list = this.getFavoritesList(result);
                 this.updateFavoritesData(result);
                 this.updateFavoritesStyles(this.response.favorite_list);
@@ -948,7 +930,18 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }
             } else {
                 utility.removeClass(childEl, "active");
+                if (window.location.hash === "#favorites") {
+                    el.parentElement.setAttribute("style", "display: none");
+                }
             }
+        }
+        this.redirectEmptyFavPage();
+    }
+
+    private redirectEmptyFavPage() {
+        if (this.response.games.favorites.length === 0 && window.location.hash === "#favorites") {
+            window.location.hash = "";
+            window.location.hash = "#game-categories";
         }
     }
 
