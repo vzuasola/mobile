@@ -51,6 +51,7 @@ import {JSystemModule} from "@app/src/Module/GameIntegration/JSystem/script";
 import {OpusModule} from "@app/src/Module/GameIntegration/Opus/script";
 import {FGHubGamingModule} from "@app/src/Module/GameIntegration/FGHubGaming/script";
 import {PTPlusModule} from "@app/src/Module/GameIntegration/PTPlus/script";
+import {PtplusTournamentModule} from "@app/src/Module/PtplusTournament/script";
 
 ComponentManager.setModules({
     avaya: new AvayaModule(),
@@ -103,4 +104,5 @@ ComponentManager.setModules({
     partner_matrix: new PartnerMatrixModule(),
     fghub_gaming_integration: new FGHubGamingModule(),
     ptplus_integration: new PTPlusModule(),
+    ptplus_tournament: new PtplusTournamentModule(),
 });
