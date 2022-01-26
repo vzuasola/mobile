@@ -1,6 +1,8 @@
 import * as utility from "@core/assets/js/components/utility";
+
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import PopupWindow from "@app/assets/script/components/popup";
+
 export class PtplusTournamentModule implements ModuleInterface {
     private attachments: any;
     private element;
