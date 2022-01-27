@@ -11,8 +11,6 @@ class PtplusTournamentModuleScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
-    private $config;
-
     /**
      *
      */
