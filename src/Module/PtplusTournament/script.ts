@@ -20,59 +20,52 @@ export class PtplusTournamentModule implements ModuleInterface {
         this.redirectPtplusTornamentPage();
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
+            this.playerId = data.response.user.playerId;
         });
 
-        ComponentManager.subscribe("session.logout", (event) => {
+        ComponentManager.subscribe("session.logout", (event, src) => {
             this.isLogin = false;
+            this.playerId = "";
         });
-    }
-
-    onReload(attachments: {
-        authenticated: boolean,
-        playerId,
-    }) {
-        this.attachments = attachments;
-        this.isLogin = attachments.authenticated;
-        this.playerId = attachments.playerId;
-        this.redirectPtplusTornamentPage();
     }
 
     private redirectPtplusTornamentPage() {
         ComponentManager.subscribe("click", (event, src, data) => {
-            const el = utility.find(src, (element) => {
-                return element.getAttribute("data-game-login-tournament") === "true";
-            });
-            if (el && this.isLogin) {
-                ComponentManager.broadcast("balance.return", {
-                    success: (response) => {
-                        const currency = response.currency;
-                        const balanceKey = response.map["mobile-ptplus"];
-                        const balance = response.balances[balanceKey];
-                        const playerId = "W2W" + this.playerId;
-                        if (this.isLogin && typeof balance !== "undefined" && currency !== "") {
-                            // Pop up loader with all data
-                            const date = new Date().toISOString().slice(0, 10);
-                            const prop = {
-                                width: 360,
-                                height: 720,
-                                scrollbars: 1,
-                                scrollable: 1,
-                                resizable: 1,
-                            };
-                            const options = [
-                                response.currency,
-                                playerId,
-                                balance.toFixed(2),
-                                date,
-                                "goldencircle",
-                            ];
-
-                            let url = "https://ptplus-b.hotspin88.com/loginFromGame?data=";
-                            url = url + options;
-                            this.windowObject = PopupWindow(url, "gameWindow", prop);
-                        }
-                    },
+            if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
+                const el = utility.find(src, (element) => {
+                    return element.getAttribute("data-game-login-tournament") === "true";
                 });
+                if (el && this.isLogin) {
+                    ComponentManager.broadcast("balance.return", {
+                        success: (response) => {
+                            const currency = response.currency;
+                            const balanceKey = response.map["mobile-ptplus"];
+                            const balance = response.balances[balanceKey];
+                            const playerId = "W2W" + this.playerId;
+                            if (typeof balance !== "undefined" && currency !== "") {
+                                // Pop up loader with all data
+                                const date = new Date().toISOString().slice(0, 10);
+                                const prop = {
+                                    width: 360,
+                                    height: 720,
+                                    scrollbars: 1,
+                                    scrollable: 1,
+                                    resizable: 1,
+                                };
+                                const options = [
+                                    response.currency,
+                                    playerId,
+                                    balance.toFixed(2),
+                                    date,
+                                    "goldencircle",
+                                ];
+                                let url = "https://ptplus-b.hotspin88.com/loginFromGame?data=";
+                                url = url + options;
+                                this.windowObject = PopupWindow(url, "gameWindow", prop);
+                            }
+                        },
+                    });
+                }
             }
         });
     }
