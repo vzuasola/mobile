@@ -12,6 +12,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 {% endblock %}
 
+{% block script_header %}
+    <script async src="{{ asset('js/app.js') }}"></script>
+{% endblock %}
+
 {% block body %}
     {% block main %}
         {{ widget('main', {'node': node}) }}
@@ -20,5 +24,4 @@
 
 {% block script %}
     {{ parent() }}
-    <script src="{{ asset('js/app.js') }}"></script>
 {% endblock %}
