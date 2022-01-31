@@ -8,12 +8,12 @@
     {{ widget('marketing') }}
 {% endblock %}
 
-{% block css %}
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-{% endblock %}
-
 {% block script_header %}
     <script async src="{{ asset('js/app.js') }}"></script>
+{% endblock %}
+
+{% block css %}
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}

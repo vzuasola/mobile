@@ -9,8 +9,8 @@
     <title>{{ title }}</title>
     {% block seo %}{% endblock %}
     {% block marketing %}{% endblock %}
-    {% block css %}{% endblock %}
     {% block script_header %}{% endblock %}
+    {% block css %}{% endblock %}
 </head>
 <body
     class="{{ app.lang }} {{ app.product_resolver.getProduct }}"
