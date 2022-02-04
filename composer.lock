@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f01c74ea7d1ea5bbdfd768a9eefe7bf2",
+    "content-hash": "8f83485a516846d78246e2a5bed58685",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1325,6 +1325,16 @@
                 "predis",
                 "redis"
             ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/tillkruss",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tillkruss",
+                    "type": "github"
+                }
+            ],
             "time": "2016-06-16T16:22:20+00:00"
         },
         {
@@ -2278,7 +2288,7 @@
                 "symfony",
                 "words"
             ],
-            "abandoned": "use `EnglishInflector` from the String component instead",
+            "abandoned": "EnglishInflector from the String component",
             "time": "2018-11-11T19:52:12+00:00"
         },
         {
@@ -3104,11 +3114,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.226.0",
+            "version": "dev-release-v1.226.1",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "04af05d76b4a24fd9282c3e0c5774e0164e02215"
+                "reference": "ffdbf9ed24b528d21960562d50c1d5a1acfb454a"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3159,7 +3169,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2021-11-04T03:42:14+00:00"
+            "time": "2022-01-25T11:24:26+00:00"
         },
         {
             "name": "willdurand/negotiation",

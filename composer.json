@@ -5,7 +5,7 @@
     "require": {
         "php": ">=7.1.0",
         "oomphinc/composer-installers-extender": "^1.1",
-        "webcomposer/fe-core": "dev-release-v1.226.0",
+        "webcomposer/fe-core": "dev-release-v1.226.1",
         "nikolaposa/rate-limit": "^2.2"
     },
     "autoload": {
@@ -34,7 +34,11 @@
     },
     "config": {
         "secure-http": false,
-        "cache-dir": ".composer-cache"
+        "cache-dir": ".composer-cache",
+        "allow-plugins": {
+            "composer/installers": true,
+            "oomphinc/composer-installers-extender": true
+        }
     },
     "extra": {
         "product": "webcomposer",
