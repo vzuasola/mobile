@@ -21,6 +21,8 @@ class LoginComponentScripts implements ComponentAttachmentInterface
      */
     private $playerSession;
 
+    private $player;
+
     /**
      *
      */
@@ -28,18 +30,19 @@ class LoginComponentScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('config_fetcher'),
-            $container->get('player_session')
+            $container->get('player_session'),
+            $container->get('player')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession)
+    public function __construct($configs, $playerSession, $player)
     {
         $this->configs = $configs;
         $this->playerSession = $playerSession;
-        $this->playerDetails = false;
+        $this->player = $player;
     }
 
 
@@ -52,7 +55,11 @@ class LoginComponentScripts implements ComponentAttachmentInterface
             $currCountry = $_SERVER['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY'] ?? 'PH';
 
             if ($this->playerSession->isLogin()) {
-                $this->playerDetails = $this->user->getPlayerDetails();
+                $currency = $this->player->getCurrency();
+                $playerId = $this->player->getPlayerID();
+            } else {
+                $currency = null;
+                $playerId = null;
             }
             $config = $this->configs->getConfig('webcomposer_config.login_configuration');
         } catch (\Exception $e) {
@@ -62,8 +69,8 @@ class LoginComponentScripts implements ComponentAttachmentInterface
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'country' => $currCountry,
-            'currency' => $this->playerDetails['currency'],
-            'playerId' => $this->playerDetails['playerId'],
+            'playerId' => $playerId,
+            'currency' => $currency,
             'token' => $this->playerSession->getToken(),
             'logip' => IP::getIpAddress(),
 
