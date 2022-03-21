@@ -22,6 +22,11 @@ export class LoginComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {
         authenticated: boolean,
+        username: string,
+        playerId: string,
+        token: string,
+        currency: string,
+        country: string,
         error_messages: {[name: string]: string},
     }) {
         this.validationService.handleOnLoad(element, attachments);
@@ -30,6 +35,11 @@ export class LoginComponent implements ComponentInterface {
 
     onReload(element: HTMLElement, attachments: {
         authenticated: boolean,
+        username: string,
+        playerId: string,
+        token: string,
+        currency: string,
+        country: string,
         error_messages: {[name: string]: string},
     }) {
         this.validationService.handleOnReload(element, attachments);

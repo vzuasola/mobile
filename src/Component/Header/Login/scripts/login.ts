@@ -21,9 +21,14 @@ export class Login {
     private sync: SyncEvents;
     private productCheckPreference: any = ["mobile-casino", "mobile-casino-gold"];
     private products: any = [];
-
     private isLogin: boolean;
     private element: HTMLElement;
+
+    private username: string;
+    private playerId: string;
+    private token: string;
+    private currency: string;
+    private country: string;
 
     // stores the array of promises callbacks
     private loginEvents = [];
@@ -41,9 +46,20 @@ export class Login {
         this.listenLoginEvents();
     }
 
-    handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean,
+            username: string,
+            playerId: string,
+            token: string,
+            currency: string,
+            country: string,
+        }) {
         this.element = element;
         this.isLogin = attachments.authenticated;
+        this.username = attachments.username;
+        this.playerId = attachments.playerId;
+        this.token = attachments.token;
+        this.currency = attachments.currency;
+        this.country = attachments.currency;
 
         this.listenLogin();
         this.listenLogout();
@@ -53,16 +69,49 @@ export class Login {
         this.updateLoginLayout();
     }
 
-    handleOnReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+    handleOnReload(element: HTMLElement, attachments: {authenticated: boolean,
+            username: string,
+            playerId: string,
+            token: string,
+            currency: string,
+            country: string,
+        }) {
         if (this.isLogin && !attachments.authenticated) {
             ComponentManager.broadcast("session.logout");
         }
-        this.isLogin = attachments.authenticated;
         this.element = element;
+        this.isLogin = attachments.authenticated;
+        this.username = attachments.username;
+        this.playerId = attachments.playerId;
+        this.token = attachments.token;
+        this.currency = attachments.currency;
+        this.country = attachments.currency;
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
         this.updateLoginLayout();
+    }
+
+    private performanceMetric() {
+        const account = {
+            is_logged_in: this.isLogin,
+            logip: "10.5.0.1",
+            playerID: this.playerId,
+            userName: this.username,
+            token: this.token,
+            currency: this.currency,
+            name: document.title,
+            path: location.pathname,
+            startTime: performance.timeOrigin + performance.now(),
+            country: this.country,
+        };
+        const headers = {
+            type: "text/plain;charset=utf-8",
+        };
+        const blob = new Blob([JSON.stringify(account)], headers);
+        const metricUrl =
+            "https://cashier-custom-end-user-monitoring-api-001-v433up62aa-de.a.run.app/api/v1/push";
+        navigator.sendBeacon(metricUrl, blob);
     }
 
     /**
@@ -234,7 +283,6 @@ export class Login {
             Modal.open("#login-lightbox");
 
             ComponentManager.broadcast("session.failed", {error, form});
-
             this.loader.hide();
         });
     }
@@ -267,6 +315,7 @@ export class Login {
     private listenLogin() {
         ComponentManager.subscribe("session.login", (event, src) => {
             this.isLogin = true;
+            this.performanceMetric();
         });
 
         ComponentManager.subscribe("click", (event, src) => {
