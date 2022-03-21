@@ -49,7 +49,8 @@ class LoginComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         $currency = null;
-        $currCountry = (isset($_SERVER['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY'])) ? trim($_SERVER['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY']) : '';
+        $currCountry = (isset($_SERVER['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY'])) ?
+            trim($_SERVER['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY']) : '';
         try {
             $currency = null;
             $playerId = null;
