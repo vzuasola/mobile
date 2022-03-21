@@ -2,6 +2,8 @@
 
 namespace App\MobileEntry\Component\Header\Login;
 
+use App\Utils\IP;
+
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 
 /**
@@ -37,7 +39,9 @@ class LoginComponentScripts implements ComponentAttachmentInterface
     {
         $this->configs = $configs;
         $this->playerSession = $playerSession;
+        $this->playerDetails = false;
     }
+
 
     /**
      * @{inheritdoc}
@@ -45,6 +49,12 @@ class LoginComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
+            $serverParams = $this->request->getServerParams();
+            $serverGeoipCountry = $serverParams['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY'] ?? null;
+
+            if ($this->playerSession->isLogin()) {
+                $this->playerDetails = $this->user->getPlayerDetails();
+            }
             $config = $this->configs->getConfig('webcomposer_config.login_configuration');
         } catch (\Exception $e) {
             $config = [];
@@ -52,12 +62,11 @@ class LoginComponentScripts implements ComponentAttachmentInterface
 
         return [
             'authenticated' => $this->playerSession->isLogin(),
-            'country' => 'COUNTRY',
-            'currency' => $this->playerSession->getDetails()['currency'] ?? '',
-            'playerId' => $this->playerSession->getDetails()['playerId'] ?? '',
-            'username' => $this->playerSession->getUsername() ?? '',
-            'sessionToken' => md5($this->playerSession->getToken()),
-            'logip' => 'LOCALHOST',
+            'country' => $serverGeoipCountry,
+            'currency' => $this->playerDetails['currency'],
+            'playerId' => $this->playerDetails['playerId'],
+            'token' => $this->playerSession->getToken(),
+            'logip' => IP::getIpAddress(),
 
             'error_messages' => [
                 'blank_username' => $config['error_message_blank_username'] ?? '',

@@ -22,10 +22,9 @@ export class LoginComponent implements ComponentInterface {
 
     onLoad(element: HTMLElement, attachments: {
         authenticated: boolean,
-        username: string,
         playerId: string,
         currency: string,
-        sessionToken: string,
+        token: string,
         country: string,
         logip: string,
         error_messages: {[name: string]: string},
@@ -36,10 +35,9 @@ export class LoginComponent implements ComponentInterface {
 
     onReload(element: HTMLElement, attachments: {
         authenticated: boolean,
-        username: string,
         playerId: string,
         currency: string,
-        sessionToken: string,
+        token: string,
         country: string,
         logip: string,
         error_messages: {[name: string]: string},

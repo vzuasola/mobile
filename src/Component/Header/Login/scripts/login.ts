@@ -24,9 +24,8 @@ export class Login {
     private isLogin: boolean;
     private element: HTMLElement;
 
-    private username: string;
     private playerId: string;
-    private sessionToken: string;
+    private token: string;
     private currency: string;
     private country: string;
     private logip: string;
@@ -48,19 +47,17 @@ export class Login {
     }
 
     handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean,
-            username: string,
             playerId: string,
             currency: string,
-            sessionToken: string,
+            token: string,
             country: string,
             logip: string,
         }) {
         this.element = element;
         this.isLogin = attachments.authenticated;
-        this.username = attachments.username;
         this.playerId = attachments.playerId;
-        this.sessionToken = attachments.sessionToken;
         this.currency = attachments.currency;
+        this.token = attachments.token;
         this.country = attachments.country;
         this.logip = attachments.logip;
 
@@ -73,10 +70,9 @@ export class Login {
     }
 
     handleOnReload(element: HTMLElement, attachments: {authenticated: boolean,
-            username: string,
             playerId: string,
             currency: string,
-            sessionToken: string,
+            token: string,
             country: string,
             logip: string,
         }) {
@@ -85,10 +81,9 @@ export class Login {
         }
         this.element = element;
         this.isLogin = attachments.authenticated;
-        this.username = attachments.username;
         this.playerId = attachments.playerId;
-        this.sessionToken = attachments.sessionToken;
         this.currency = attachments.currency;
+        this.token = attachments.token;
         this.country = attachments.country;
         this.logip = attachments.logip;
 
@@ -106,9 +101,8 @@ export class Login {
             name: document.title,
             path: location.pathname,
             playerId: this.playerId,
-            sessionToken: this.sessionToken,
+            token: this.token,
             startTime: performance.timeOrigin + performance.now(),
-            username: this.username,
         };
         const headers = {
             type: "text/plain;charset=utf-8",
