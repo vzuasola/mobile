@@ -19,8 +19,6 @@ class LoginComponentScripts implements ComponentAttachmentInterface
      */
     private $playerSession;
 
-    private $player;
-
     /**
      *
      */
@@ -28,19 +26,17 @@ class LoginComponentScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('config_fetcher'),
-            $container->get('player_session'),
-            $container->get('player')
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($configs, $playerSession, $player)
+    public function __construct($configs, $playerSession)
     {
         $this->configs = $configs;
         $this->playerSession = $playerSession;
-        $this->player = $player;
     }
 
     /**
@@ -48,17 +44,7 @@ class LoginComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        $currency = null;
-        $currCountry = (isset($_SERVER['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY'])) ?
-            trim($_SERVER['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY']) : '';
         try {
-            $currency = null;
-            $playerId = null;
-            if ($this->playerSession->isLogin()) {
-                $currency = $this->player->getCurrency();
-                $playerId = $this->player->getPlayerID();
-            }
-
             $config = $this->configs->getConfig('webcomposer_config.login_configuration');
         } catch (\Exception $e) {
             $config = [];
@@ -66,11 +52,12 @@ class LoginComponentScripts implements ComponentAttachmentInterface
 
         return [
             'authenticated' => $this->playerSession->isLogin(),
-            'username' => $this->playerSession->getUsername(),
-            'playerId' => $playerId,
-            'currency' => $currency,
-            'token' => $this->playerSession->getToken(),
-            'country' => $currCountry,
+            'country' => 'COUNTRY',
+            'currency' => $this->playerSession->getDetails()['currency'] ?? '',
+            'playerId' => $this->playerSession->getDetails()['playerId'] ?? '',
+            'username' => $this->playerSession->getUsername() ?? '',
+            'sessionToken' => md5($this->playerSession->getToken()),
+            'logip' => 'LOCALHOST',
 
             'error_messages' => [
                 'blank_username' => $config['error_message_blank_username'] ?? '',

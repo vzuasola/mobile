@@ -24,9 +24,10 @@ export class LoginComponent implements ComponentInterface {
         authenticated: boolean,
         username: string,
         playerId: string,
-        token: string,
         currency: string,
+        sessionToken: string,
         country: string,
+        logip: string,
         error_messages: {[name: string]: string},
     }) {
         this.validationService.handleOnLoad(element, attachments);
@@ -37,9 +38,10 @@ export class LoginComponent implements ComponentInterface {
         authenticated: boolean,
         username: string,
         playerId: string,
-        token: string,
         currency: string,
+        sessionToken: string,
         country: string,
+        logip: string,
         error_messages: {[name: string]: string},
     }) {
         this.validationService.handleOnReload(element, attachments);

@@ -26,9 +26,10 @@ export class Login {
 
     private username: string;
     private playerId: string;
-    private token: string;
+    private sessionToken: string;
     private currency: string;
     private country: string;
+    private logip: string;
 
     // stores the array of promises callbacks
     private loginEvents = [];
@@ -49,17 +50,19 @@ export class Login {
     handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean,
             username: string,
             playerId: string,
-            token: string,
             currency: string,
+            sessionToken: string,
             country: string,
+            logip: string,
         }) {
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.username = attachments.username;
         this.playerId = attachments.playerId;
-        this.token = attachments.token;
+        this.sessionToken = attachments.sessionToken;
         this.currency = attachments.currency;
-        this.country = attachments.currency;
+        this.country = attachments.country;
+        this.logip = attachments.logip;
 
         this.listenLogin();
         this.listenLogout();
@@ -72,9 +75,10 @@ export class Login {
     handleOnReload(element: HTMLElement, attachments: {authenticated: boolean,
             username: string,
             playerId: string,
-            token: string,
             currency: string,
+            sessionToken: string,
             country: string,
+            logip: string,
         }) {
         if (this.isLogin && !attachments.authenticated) {
             ComponentManager.broadcast("session.logout");
@@ -83,9 +87,10 @@ export class Login {
         this.isLogin = attachments.authenticated;
         this.username = attachments.username;
         this.playerId = attachments.playerId;
-        this.token = attachments.token;
+        this.sessionToken = attachments.sessionToken;
         this.currency = attachments.currency;
-        this.country = attachments.currency;
+        this.country = attachments.country;
+        this.logip = attachments.logip;
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
@@ -94,16 +99,16 @@ export class Login {
 
     private performanceMetric() {
         const account = {
-            is_logged_in: this.isLogin,
-            logip: "10.5.0.1",
-            playerID: this.playerId,
-            userName: this.username,
-            token: this.token,
+            country: this.country,
             currency: this.currency,
+            is_logged_in: this.isLogin,
+            logip: this.logip,
             name: document.title,
             path: location.pathname,
+            playerId: this.playerId,
+            sessionToken: this.sessionToken,
             startTime: performance.timeOrigin + performance.now(),
-            country: this.country,
+            username: this.username,
         };
         const headers = {
             type: "text/plain;charset=utf-8",
@@ -230,6 +235,9 @@ export class Login {
             data,
         }).then((response) => {
             if (response && response.success) {
+                setTimeout(() => {
+                    this.performanceMetric();
+                }, 500);
                 const remember = src.querySelector('[name="remember"]');
 
                 if (remember) {
@@ -315,7 +323,6 @@ export class Login {
     private listenLogin() {
         ComponentManager.subscribe("session.login", (event, src) => {
             this.isLogin = true;
-            this.performanceMetric();
         });
 
         ComponentManager.subscribe("click", (event, src) => {
