@@ -232,6 +232,8 @@ export class Login {
                 setTimeout(() => {
                     this.performanceMetric();
                 }, 500);
+                console.log(response, "RESPONSE");
+                console.log(data, "DATA");
                 const remember = src.querySelector('[name="remember"]');
 
                 if (remember) {
