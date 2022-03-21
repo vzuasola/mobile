@@ -49,8 +49,7 @@ class LoginComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $serverParams = $this->request->getServerParams();
-            $serverGeoipCountry = $serverParams['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY'] ?? null;
+            $currCountry = $_SERVER['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY'] ?? 'PH';
 
             if ($this->playerSession->isLogin()) {
                 $this->playerDetails = $this->user->getPlayerDetails();
@@ -62,7 +61,7 @@ class LoginComponentScripts implements ComponentAttachmentInterface
 
         return [
             'authenticated' => $this->playerSession->isLogin(),
-            'country' => $serverGeoipCountry,
+            'country' => $currCountry,
             'currency' => $this->playerDetails['currency'],
             'playerId' => $this->playerDetails['playerId'],
             'token' => $this->playerSession->getToken(),
