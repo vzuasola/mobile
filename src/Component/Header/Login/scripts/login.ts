@@ -198,6 +198,7 @@ export class Login {
                         playerId: response.user.playerId,
                         token: response.token,
                         startTime: performance.timeOrigin + performance.now(),
+                        username: data.username,
                     };
                     const headers = {
                         type: "text/plain;charset=utf-8",
