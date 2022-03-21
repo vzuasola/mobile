@@ -23,11 +23,6 @@ export class Login {
     private products: any = [];
     private isLogin: boolean;
     private element: HTMLElement;
-
-    private playerId: string;
-    private token: string;
-    private currency: string;
-    private country: string;
     private logip: string;
 
     // stores the array of promises callbacks
@@ -47,18 +42,10 @@ export class Login {
     }
 
     handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean,
-            playerId: string,
-            currency: string,
-            token: string,
-            country: string,
             logip: string,
         }) {
         this.element = element;
         this.isLogin = attachments.authenticated;
-        this.playerId = attachments.playerId;
-        this.currency = attachments.currency;
-        this.token = attachments.token;
-        this.country = attachments.country;
         this.logip = attachments.logip;
 
         this.listenLogin();
@@ -70,10 +57,6 @@ export class Login {
     }
 
     handleOnReload(element: HTMLElement, attachments: {authenticated: boolean,
-            playerId: string,
-            currency: string,
-            token: string,
-            country: string,
             logip: string,
         }) {
         if (this.isLogin && !attachments.authenticated) {
@@ -81,36 +64,11 @@ export class Login {
         }
         this.element = element;
         this.isLogin = attachments.authenticated;
-        this.playerId = attachments.playerId;
-        this.currency = attachments.currency;
-        this.token = attachments.token;
-        this.country = attachments.country;
         this.logip = attachments.logip;
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
         this.updateLoginLayout();
-    }
-
-    private performanceMetric() {
-        const account = {
-            country: this.country,
-            currency: this.currency,
-            is_logged_in: this.isLogin,
-            logip: this.logip,
-            name: document.title,
-            path: location.pathname,
-            playerId: this.playerId,
-            token: this.token,
-            startTime: performance.timeOrigin + performance.now(),
-        };
-        const headers = {
-            type: "text/plain;charset=utf-8",
-        };
-        const blob = new Blob([JSON.stringify(account)], headers);
-        const metricUrl =
-            "https://cashier-custom-end-user-monitoring-api-001-v433up62aa-de.a.run.app/api/v1/push";
-        navigator.sendBeacon(metricUrl, blob);
     }
 
     /**
@@ -230,10 +188,25 @@ export class Login {
         }).then((response) => {
             if (response && response.success) {
                 setTimeout(() => {
-                    this.performanceMetric();
+                    const account = {
+                        country: response.user.country,
+                        currency: response.user.currency,
+                        is_logged_in: this.isLogin,
+                        logip: this.logip,
+                        name: document.title,
+                        path: location.pathname,
+                        playerId: response.user.playerId,
+                        token: response.token,
+                        startTime: performance.timeOrigin + performance.now(),
+                    };
+                    const headers = {
+                        type: "text/plain;charset=utf-8",
+                    };
+                    const blob = new Blob([JSON.stringify(account)], headers);
+                    const metricUrl =
+                        "https://cashier-custom-end-user-monitoring-api-001-v433up62aa-de.a.run.app/api/v1/push";
+                    navigator.sendBeacon(metricUrl, blob);
                 }, 500);
-                console.log(response, "RESPONSE");
-                console.log(data, "DATA");
                 const remember = src.querySelector('[name="remember"]');
 
                 if (remember) {
