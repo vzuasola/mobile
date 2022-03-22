@@ -192,10 +192,11 @@ export class Login {
             data,
         }).then((response) => {
             if (response && response.success) {
-
+                const entry = performance.getEntriesByType("mark")[0];
                 const account = {
                     country: response.user.country,
                     currency: response.user.currency,
+                    endTime: performance.timeOrigin + performance.timeOrigin + entry.duration,
                     is_logged_in: this.isLogin,
                     logip: this.logip,
                     name: document.title,
@@ -210,9 +211,10 @@ export class Login {
                 };
                 const blob = new Blob([JSON.stringify(account)], headers);
                 const metricUrl = this.metricsEndpoint;
-                navigator.sendBeacon(metricUrl, blob);
                 const sendMSG = navigator.sendBeacon(metricUrl, blob);
-                console.log(sendMSG);
+                if (sendMSG === true) {
+                    navigator.sendBeacon(metricUrl, blob);
+                }
 
                 const remember = src.querySelector('[name="remember"]');
 
