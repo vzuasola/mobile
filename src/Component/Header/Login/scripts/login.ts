@@ -211,7 +211,7 @@ export class Login {
                 const blob = new Blob([JSON.stringify(account)], headers);
                 const metricUrl = this.metricsEndpoint;
                 navigator.sendBeacon(metricUrl, blob);
-                let sendMSG = navigator.sendBeacon(metricUrl, blob);
+                const sendMSG = navigator.sendBeacon(metricUrl, blob);
                 console.log(sendMSG);
 
                 const remember = src.querySelector('[name="remember"]');
