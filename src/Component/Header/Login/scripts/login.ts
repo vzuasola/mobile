@@ -199,30 +199,31 @@ export class Login {
             data,
         }).then((response) => {
             if (response && response.success) {
-                const entry = performance.getEntriesByType("element");
-                const account = {
-                    country: response.user.country,
-                    currency: response.user.currency,
-                    endTime: performance.timeOrigin + performance.timeOrigin + entry.length,
-                    is_logged_in: this.isLogin,
-                    logip: this.logip,
-                    name: document.title,
-                    path: location.pathname,
-                    playerId: response.user.playerId,
-                    token: response.token,
-                    startTime: performance.timeOrigin + performance.now(),
-                    username: data.username.toUpperCase(),
-                };
-                const headers = {
-                    type: "text/plain;charset=utf-8",
-                };
-                const blob = new Blob([JSON.stringify(account)], headers);
-                const metricUrl = this.metricsEndpoint;
-                const sendMessage = navigator.sendBeacon(metricUrl, blob);
-                if (sendMessage === true && !this.isBeaconSupported) {
-                    navigator.sendBeacon(metricUrl, blob);
-                }
-
+                setTimeout(() => {
+                    const entry = performance.getEntriesByType("element");
+                    const account = {
+                        country: response.user.country,
+                        currency: response.user.currency,
+                        endTime: performance.timeOrigin + performance.timeOrigin + entry.length,
+                        is_logged_in: this.isLogin,
+                        logip: this.logip,
+                        name: document.title,
+                        path: location.pathname,
+                        playerId: response.user.playerId,
+                        token: response.token,
+                        startTime: performance.timeOrigin + performance.now(),
+                        username: data.username.toUpperCase(),
+                    };
+                    const headers = {
+                        type: "text/plain;charset=utf-8",
+                    };
+                    const blob = new Blob([JSON.stringify(account)], headers);
+                    const metricUrl = this.metricsEndpoint;
+                    const sendMessage = navigator.sendBeacon(metricUrl, blob);
+                    if (sendMessage === true && !this.isBeaconSupported) {
+                        navigator.sendBeacon(metricUrl, blob);
+                    }
+                }, 500);
                 const remember = src.querySelector('[name="remember"]');
 
                 if (remember) {
