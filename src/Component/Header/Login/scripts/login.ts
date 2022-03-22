@@ -168,13 +168,6 @@ export class Login {
         return;
     }
 
-    private isBeaconSupported() {
-        return window &&
-            window.navigator &&
-            typeof window.navigator.sendBeacon === "function" &&
-            typeof window.Blob === "function";
-    }
-
     /**
      * Do the actual login request
      */
@@ -219,8 +212,8 @@ export class Login {
                 const blob = new Blob([JSON.stringify(account)], headers);
                 const metricUrl = this.metricsEndpoint;
                 const sendMessage = navigator.sendBeacon(metricUrl, blob);
-                if (sendMessage === true && !this.isBeaconSupported) {
-                    navigator.sendBeacon(metricUrl, blob);
+                if (!sendMessage) {
+                    console.log("Send Message Response", response);
                 }
                 const remember = src.querySelector('[name="remember"]');
 
