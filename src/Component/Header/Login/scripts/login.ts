@@ -192,7 +192,7 @@ export class Login {
             data,
         }).then((response) => {
             if (response && response.success) {
-                const entry = performance.getEntriesByType("mark")[0];
+                const entry = performance.getEntriesByType("element")[0];
                 const account = {
                     country: response.user.country,
                     currency: response.user.currency,
