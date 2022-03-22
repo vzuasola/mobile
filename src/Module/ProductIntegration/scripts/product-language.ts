@@ -149,6 +149,7 @@ export class  ProductLanguage {
             "vn",
             "id",
             "in",
+            "jp",
         ],
     };
 
