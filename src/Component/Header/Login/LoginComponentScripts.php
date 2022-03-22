@@ -53,9 +53,18 @@ class LoginComponentScripts implements ComponentAttachmentInterface
             $config = [];
         }
 
+        try {
+            $Entrypageconfig = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
+        } catch (\Exception $e) {
+            $Entrypageconfig = [];
+        }
+
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'logip' => IP::getIpAddress(),
+            'authenticated' => $this->playerSession->isLogin(),
+            'metricsEndpoint' => $Entrypageconfig['metricsEndpoint'] 
+                ?? 'https://cashier-custom-end-user-monitoring-api-001-v433up62aa-de.a.run.app/api/v1/push',
 
             'error_messages' => [
                 'blank_username' => $config['error_message_blank_username'] ?? '',

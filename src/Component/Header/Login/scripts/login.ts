@@ -24,6 +24,7 @@ export class Login {
     private isLogin: boolean;
     private element: HTMLElement;
     private logip: string;
+    private metricsEndpoint: string;
 
     // stores the array of promises callbacks
     private loginEvents = [];
@@ -43,10 +44,12 @@ export class Login {
 
     handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean,
             logip: string,
+            metricsEndpoint: string,
         }) {
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.logip = attachments.logip;
+        this.metricsEndpoint = attachments.metricsEndpoint;
 
         this.listenLogin();
         this.listenLogout();
@@ -58,6 +61,7 @@ export class Login {
 
     handleOnReload(element: HTMLElement, attachments: {authenticated: boolean,
             logip: string,
+            metricsEndpoint: string,
         }) {
         if (this.isLogin && !attachments.authenticated) {
             ComponentManager.broadcast("session.logout");
@@ -65,6 +69,7 @@ export class Login {
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.logip = attachments.logip;
+        this.metricsEndpoint = attachments.metricsEndpoint;
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
@@ -198,14 +203,13 @@ export class Login {
                         playerId: response.user.playerId,
                         token: response.token,
                         startTime: performance.timeOrigin + performance.now(),
-                        username: data.username,
+                        username: data.username.toUpperCase(),
                     };
                     const headers = {
                         type: "text/plain;charset=utf-8",
                     };
                     const blob = new Blob([JSON.stringify(account)], headers);
-                    const metricUrl =
-                        "https://cashier-custom-end-user-monitoring-api-001-v433up62aa-de.a.run.app/api/v1/push";
+                    const metricUrl = this.metricsEndpoint;
                     navigator.sendBeacon(metricUrl, blob);
                 }, 500);
                 const remember = src.querySelector('[name="remember"]');
