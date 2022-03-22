@@ -168,6 +168,13 @@ export class Login {
         return;
     }
 
+    private isBeaconSupported() {
+        return window &&
+            window.navigator &&
+            typeof window.navigator.sendBeacon === "function" &&
+            typeof window.Blob === "function";
+    }
+
     /**
      * Do the actual login request
      */
@@ -192,11 +199,11 @@ export class Login {
             data,
         }).then((response) => {
             if (response && response.success) {
-                const entry = performance.getEntriesByType("element")[0];
+                const entry = performance.getEntriesByType("element");
                 const account = {
                     country: response.user.country,
                     currency: response.user.currency,
-                    endTime: performance.timeOrigin + performance.timeOrigin + entry.duration,
+                    endTime: performance.timeOrigin + performance.timeOrigin + entry.length,
                     is_logged_in: this.isLogin,
                     logip: this.logip,
                     name: document.title,
@@ -211,8 +218,8 @@ export class Login {
                 };
                 const blob = new Blob([JSON.stringify(account)], headers);
                 const metricUrl = this.metricsEndpoint;
-                const sendMSG = navigator.sendBeacon(metricUrl, blob);
-                if (sendMSG === true) {
+                const sendMessage = navigator.sendBeacon(metricUrl, blob);
+                if (sendMessage === true && !this.isBeaconSupported) {
                     navigator.sendBeacon(metricUrl, blob);
                 }
 
