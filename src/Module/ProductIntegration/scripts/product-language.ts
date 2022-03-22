@@ -15,6 +15,7 @@ export class  ProductLanguage {
             "lo",
             "bu",
             "km",
+            "jp",
         ],
         "sports" : [
             "en",
