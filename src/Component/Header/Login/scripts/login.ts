@@ -205,7 +205,7 @@ export class Login {
                         country: response.user.country,
                         currency: response.user.currency,
                         endTime: performance.timeOrigin + performance.timeOrigin + entry.length,
-                        is_logged_in: this.isLogin,
+                        is_logged_in: response.authenticated,
                         logip: this.logip,
                         name: document.title,
                         path: location.pathname,
