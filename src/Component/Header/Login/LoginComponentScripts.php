@@ -60,10 +60,10 @@ class LoginComponentScripts implements ComponentAttachmentInterface
         }
 
         return [
-            'authenticated' => $this->playerSession->isLogin(),
             'logip' => IP::getIpAddress(),
             'metricsEndpoint' => $Entrypageconfig['metricsEndpoint']
-                ?? 'https://cashier-custom-end-user-monitoring-api-001-v433up62aa-de.a.run.app/api/v1/push',
+            ?? 'https://cashier-custom-end-user-monitoring-api-001-v433up62aa-de.a.run.app/api/v1/push',
+            'authenticated' => $this->playerSession->isLogin(),
 
             'error_messages' => [
                 'blank_username' => $config['error_message_blank_username'] ?? '',
