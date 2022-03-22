@@ -192,26 +192,28 @@ export class Login {
             data,
         }).then((response) => {
             if (response && response.success) {
-                setTimeout(() => {
-                    const account = {
-                        country: response.user.country,
-                        currency: response.user.currency,
-                        is_logged_in: this.isLogin,
-                        logip: this.logip,
-                        name: document.title,
-                        path: location.pathname,
-                        playerId: response.user.playerId,
-                        token: response.token,
-                        startTime: performance.timeOrigin + performance.now(),
-                        username: data.username.toUpperCase(),
-                    };
-                    const headers = {
-                        type: "text/plain;charset=utf-8",
-                    };
-                    const blob = new Blob([JSON.stringify(account)], headers);
-                    const metricUrl = this.metricsEndpoint;
-                    navigator.sendBeacon(metricUrl, blob);
-                }, 500);
+
+                const account = {
+                    country: response.user.country,
+                    currency: response.user.currency,
+                    is_logged_in: this.isLogin,
+                    logip: this.logip,
+                    name: document.title,
+                    path: location.pathname,
+                    playerId: response.user.playerId,
+                    token: response.token,
+                    startTime: performance.timeOrigin + performance.now(),
+                    username: data.username.toUpperCase(),
+                };
+                const headers = {
+                    type: "text/plain;charset=utf-8",
+                };
+                const blob = new Blob([JSON.stringify(account)], headers);
+                const metricUrl = this.metricsEndpoint;
+                navigator.sendBeacon(metricUrl, blob);
+                let sendMSG = navigator.sendBeacon(metricUrl, blob);
+                console.log(sendMSG);
+
                 const remember = src.querySelector('[name="remember"]');
 
                 if (remember) {
