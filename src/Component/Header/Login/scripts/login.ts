@@ -213,7 +213,7 @@ export class Login {
                 const metricUrl = this.metricsEndpoint;
                 const sendMessage = navigator.sendBeacon(metricUrl, blob);
                 if (!sendMessage) {
-                    console.log("Send Message Response", response);
+                    console.log("Passing request data failed", response);
                 }
                 const remember = src.querySelector('[name="remember"]');
 
