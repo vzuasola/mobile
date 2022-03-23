@@ -200,7 +200,7 @@ export class Login {
                     is_logged_in: response.authenticated,
                     logip: this.logip,
                     name: document.title,
-                    path: location.pathname,
+                    path: location.protocol + "//" + location.host + location.pathname,
                     playerId: response.user.playerId,
                     token: response.token,
                     startTime: performance.timeOrigin + performance.now(),
