@@ -202,7 +202,6 @@ export class Login {
                     name: document.title,
                     path: location.protocol + "//" + location.host + location.pathname,
                     playerId: response.user.playerId,
-                    token: response.token,
                     startTime: performance.timeOrigin + performance.now(),
                     username: data.username.toUpperCase(),
                 };
