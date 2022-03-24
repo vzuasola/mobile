@@ -203,6 +203,7 @@ export class Login {
                     path: location.protocol + "//" + location.host + location.pathname,
                     playerId: response.user.playerId,
                     startTime: performance.timeOrigin + performance.now(),
+                    username: data.username.toUpperCase(),
                 };
                 const headers = {
                     type: "text/plain;charset=utf-8",
