@@ -196,7 +196,7 @@ export class Login {
                 const account = {
                     country: response.user.country,
                     currency: response.user.currency,
-                    endTime: performance.timeOrigin + performance.timeOrigin + entry.length,
+                    endTime: performance.timeOrigin + entry.length,
                     is_logged_in: response.authenticated,
                     logip: this.logip,
                     name: document.title,
