@@ -133,7 +133,6 @@ class LoginComponentController
                 'secure' => false,
                 'http' => false
             ]);
-
         } catch (\Exception $e) {
             $data['message'] = $e->getMessage();
         }
