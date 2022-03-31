@@ -2,6 +2,7 @@ middlewares:
   request:
     site_maintenance: App\MobileEntry\Middleware\SiteMaintenance
     cookie_authentication: App\Middleware\Request\CookieAuthentication
+    session_token_auth: App\MobileEntry\Middleware\SessionTokenAuth
     slashes: App\Middleware\Request\Slashes
     case_insensitive: App\Middleware\Request\CaseInsensitiveRoute
     page_cache: App\MobileEntry\Middleware\ResponseCache

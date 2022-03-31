@@ -126,6 +126,14 @@ class LoginComponentController
             session_unset();
             session_destroy();
             session_write_close();
+            Cookies::remove('ctk', [
+                'expire' => 0,
+                'path' => '/',
+                'domain' => Host::getDomain(),
+                'secure' => false,
+                'http' => false
+            ]);
+
         } catch (\Exception $e) {
             $data['message'] = $e->getMessage();
         }
