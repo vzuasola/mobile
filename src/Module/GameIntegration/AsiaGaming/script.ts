@@ -54,6 +54,7 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
                     gameCode: options.code,
                     subprovider: options.subprovider || undefined,
                     lang,
+                    lobby: options.lobby,
                 },
             }).then((response) => {
                 if (response.gameurl) {
