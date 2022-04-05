@@ -66,13 +66,15 @@ class AsiaGamingModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
         $requestData = $request->getParsedBody();
+        $isLobby = $requestData['lobby'] ?? 'false';
 
         if ($this->checkCurrency($request)) {
-            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
+            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined' &&
+               $isLobby === 'false') {
                 $data = $this->getGameUrl($request, $response);
             }
 
-            if (!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') {
+            if ($isLobby === 'true') {
                 $data = $this->getGameLobby($request, $response);
             }
         }
@@ -90,11 +92,12 @@ class AsiaGamingModuleController
         $requestData = $request->getParsedBody();
 
         try {
-            $responseData = $this->asiaGaming->getLobby('icore_ag', [
-                'options' => [
-                    'languageCode' => $this->languageCode($request),
-                ]
-            ]);
+            $options['options']['languageCode'] =  $this->languageCode($request);
+            if (isset($requestData['gameCode']) && !empty($requestData['gameCode'])) {
+                $options['options']['gameCode'] = $requestData['gameCode'];
+            }
+
+            $responseData = $this->asiaGaming->getLobby('icore_ag', $options);
             if ($responseData) {
                 $data['gameurl'] = $responseData;
             }
