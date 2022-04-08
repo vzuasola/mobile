@@ -192,17 +192,19 @@ export class Login {
             data,
         }).then((response) => {
             if (response && response.success) {
-                const entry = performance.getEntriesByType("element");
+                const timeOrigin = performance.timeOrigin;
+                const entry = performance.getEntriesByType("navigation")[0];
+                const startTime = performance.now();
                 const account = {
                     country: response.user.country,
                     currency: response.user.currency,
-                    endTime: performance.timeOrigin + entry.length,
+                    endTime: timeOrigin + startTime + entry.duration,
                     is_logged_in: response.authenticated,
                     logip: this.logip,
                     name: document.title,
                     path: location.protocol + "//" + location.host + location.pathname,
                     playerId: response.user.playerId,
-                    startTime: performance.timeOrigin + performance.now(),
+                    startTime: timeOrigin + startTime + entry.startTime,
                     username: data.username.toUpperCase(),
                 };
                 const headers = {
