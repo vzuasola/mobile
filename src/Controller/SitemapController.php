@@ -43,14 +43,13 @@ class SitemapController extends BaseController
         $lang = $response->getHeader('Content-Language');
         $lang = $lang[0];
 
-        //$sitemap = [];
-        //$sitemap = $this->menus->getMultilingualMenu('quicklinks');
-        $sitemap = $this->get('menu_fetcher')
+        $links = $this->get('menu_fetcher')
                 ->getMultilingualMenu('quicklinks');
-        ddd($sitemap);
+        $title = 'Quick Links';
+        $data['links']['quicklinks'] = $this->getQuickLinks($title, $links);
 
-        if (!empty($sitemap['links'])) {
-            $data['sitemap_xml'] = $this->getSitemapItems($sitemap['links'], $data['sitemap_base'], $lang);
+        if (!empty($data['links'])) {
+            $data['sitemap_xml'] = $this->getSitemapItems($data['links'], $data['sitemap_base'], $lang);
         }
 
         // if there are no sitemap entries to show, then throw a 404
@@ -63,7 +62,6 @@ class SitemapController extends BaseController
             ->withHeader('Content-Type', 'application/xml');
     }
 
-    
     /**
      *
      */
@@ -75,13 +73,16 @@ class SitemapController extends BaseController
 
         foreach ($links as $value) {
             $path = $value['alias'] ? $value['alias'] : $value['uri'];
-            //$path = $this->token->processTokens($path);
-            $result['path'][] = [
-                'label' => $value['title'],
-                'path' => $path,
-                'frequency' => 'daily',
-                'priority' => '0.5',
-            ];
+            if ($path == "#" || $path == "/") {
+                $path = "";
+            } else {
+                $result['path'][] = [
+                    'label' => $value['title'],
+                    'path' => $path,
+                    'frequency' => 'daily',
+                    'priority' => '0.5',
+                ];
+            }
         }
 
         return $result;
