@@ -10,23 +10,6 @@ use Slim\Exception\NotFoundException;
 class SitemapController extends BaseController
 {
     /**
-     *
-     */
-    public function show($request, $response)
-    {
-
-        /*$data['sitemap'] = $this->getSection('sitemap');
-        ddd($data);*/
-        $data['sitemap'] = [];
-        return $this->view
-            ->render($response, '@base/components/sitemap/sitemap.xml.twig', $data)
-            ->withHeader('Content-Type', 'application/xml');
-
-        /*return $this->view->render($response, '@site/pages/sitemap.html.twig', $data);
-*/
-    }
-
-    /**
      * Route for showing the sitemap.xml
      */
     public function showXML($request, $response)
