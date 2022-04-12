@@ -117,5 +117,4 @@ class SitemapController extends BaseController
         }
         return $data;
     }
-
 }
