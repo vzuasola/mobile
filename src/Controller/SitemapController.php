@@ -30,7 +30,6 @@ class SitemapController extends BaseController
                 ->getMultilingualMenu('quicklinks');
         $title = 'Quick Links';
         $data['links']['quicklinks'] = $this->getQuickLinks($title, $links);
-
         if (!empty($data['links'])) {
             $data['sitemap_xml'] = $this->getSitemapItems($data['links'], $data['sitemap_base'], $lang);
         }
@@ -57,7 +56,7 @@ class SitemapController extends BaseController
         foreach ($links as $value) {
             $path = $value['alias'] ? $value['alias'] : $value['uri'];
             if ($path == "#" || $path == "/") {
-                $path = "";
+                continue;
             } else {
                 $result['path'][] = [
                     'label' => $value['title'],
