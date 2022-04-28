@@ -39,11 +39,9 @@ export class PtplusTournamentModule implements ModuleInterface {
                     ComponentManager.broadcast("balance.return", {
                         success: (response) => {
                             let currency = response.currency;
-                            console.log(currency, "1111111");
                             if (currency === "RMB") {
                                 currency = "CNY";
                             }
-                            console.log(currency, "2222222");
                             const balanceKey = response.map["mobile-ptplus"];
                             const balance = response.balances[balanceKey];
                             const playerId = "W2W" + this.playerId;
@@ -58,7 +56,7 @@ export class PtplusTournamentModule implements ModuleInterface {
                                     resizable: 1,
                                 };
                                 const options = [
-                                    response.currency,
+                                    currency,
                                     playerId,
                                     balance.toFixed(2),
                                     date,
