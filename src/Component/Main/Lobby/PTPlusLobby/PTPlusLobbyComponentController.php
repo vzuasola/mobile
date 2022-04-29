@@ -315,7 +315,7 @@ class PTPlusLobbyComponentController
                 $ribbon = $game['field_game_ribbon'][0];
                 $processGame['ribbon']['background'] = $ribbon['field_ribbon_background_color'][0]['color'];
                 $processGame['ribbon']['color'] = $ribbon['field_ribbon_text_color'][0]['color'];
-                $processGame['ribbon']['name'] = $ribbon['field_ribbon_label'][0]['value'];
+                $processGame['ribbon']['name'] = $ribbon['name'][0]['value'];
             }
 
             $processGame['image'] = [
