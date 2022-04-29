@@ -39,7 +39,7 @@ export class PtplusTournamentModule implements ModuleInterface {
                     ComponentManager.broadcast("balance.return", {
                         success: (response) => {
                             let currency = response.currency;
-                            if (currency === "RMB") {
+                            if (currency === "RMB" || currency === "人民币") {
                                 currency = "CNY";
                             }
                             const balanceKey = response.map["mobile-ptplus"];
