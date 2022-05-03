@@ -768,6 +768,9 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     this.makeInactive(gameActiveEl);
                     this.makeActive(homeActiveEl);
                 }
+                if (backArrowHref === window.location.hash) {
+                    window.history.go(-1);
+                }
             }
         });
     }
@@ -970,6 +973,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         }
                     }
                 }
+                const homeActiveEl = document.querySelector('[data-name="home"]');
+                const gameActiveEl = document.querySelector('[data-name="games"]');
                 if (locHref === "game-categories") {
                     document.querySelector(".game-container").setAttribute("style", "display: none");
                     document.querySelector(".category-page").setAttribute("style", "display: block");
@@ -988,6 +993,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     this.homePageContent(key);
                     this.gamesSearch.clearSearchResult();
                     this.gamesSearch.clearSearchBlurbPreview();
+                    this.makeInactive(gameActiveEl);
+                    this.makeActive(homeActiveEl);
                 } else {
                     document.querySelector(".game-container").setAttribute("style", "display: block");
                     document.querySelector(".category-page").setAttribute("style", "display: none");
