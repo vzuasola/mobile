@@ -473,7 +473,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 if (key === catKey) {
                     const catName = category.name;
                     const templateType = "category-game-content";
-                    const backUrlHash = key;
+                    const backUrlHash = localStorage.getItem("customBackUrl");
                     const pageContent = this.catPageData(catName, 0, false, 0, templateType, backUrlHash);
                     const gameActiveEl = document.querySelector('[data-name="games"]');
                     this.makeActive(gameActiveEl);
@@ -768,9 +768,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     this.makeInactive(gameActiveEl);
                     this.makeActive(homeActiveEl);
                 }
-                if (backArrowHref === window.location.hash) {
-                    window.history.go(-1);
-                }
             }
         });
     }
@@ -957,10 +954,12 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 this.currentPage = 0;
                 let key;
                 const locHref = utility.getHash(window.location.href);
-                let backUrlHash = utility.getHash(event.oldURL);
-                if (!event.oldURL.includes("#")) {
-                    backUrlHash = "";
+                if (locHref === "") {
+                    localStorage.setItem("customBackUrl", locHref);
+                } else if ( locHref === "game-categories") {
+                    localStorage.setItem("customBackUrl", locHref);
                 }
+                const backUrlHash = localStorage.getItem("customBackUrl");
                 const gamesEl = this.element.querySelector("#game-container");
                 for (const category of this.response.categories) {
                     if (category.hasOwnProperty("field_games_alias")) {
