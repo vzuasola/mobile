@@ -877,9 +877,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     private updateFavoritesData(data) {
+        let catName = "";
+        for (const categoryItem of this.response.categories) {
+            if (categoryItem.hasOwnProperty("field_games_alias") && categoryItem.field_games_alias === "favorites") {
+                catName = categoryItem.name;
+            }
+        }
         const temp = [];
         const category = {
-            name: "Favorites",
             key: "favorites",
         };
         const categoriesEl = document.querySelector("[data-category-id=" + category.key + "]");
@@ -895,7 +900,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             games: temp,
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
-            categoryName: category.name,
+            categoryName: catName,
             categoryUrl: category.key,
             displayShowAllText: "",
             enableAllText: "",
