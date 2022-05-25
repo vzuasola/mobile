@@ -20,6 +20,13 @@
     &-banner {
         position: relative;
 
+        .game-listing-item {
+            float: none;
+            display: unset;
+            min-height: unset;
+            padding: unset;
+        }
+
         &-scheduler {
             position: absolute;
             bottom: 0;
