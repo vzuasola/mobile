@@ -87,9 +87,7 @@ export class PromotionsGameNodeComponent implements ComponentInterface {
             const el = utility.hasClass(src, "game-listing-item", true);
             if (el && !this.isLogin) {
                 ComponentManager.broadcast("header.login", {
-                    src: el,
-                    // productVia: this.product[0].login_via,
-                    // regVia: this.product[0].reg_via,
+                    src: el
                 });
             }
         });
@@ -100,16 +98,14 @@ export class PromotionsGameNodeComponent implements ComponentInterface {
      */
       private listenGameLaunch() {
         ComponentManager.subscribe("game.launch", (event, src, data) => {
-            // if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
-            ComponentManager.broadcast("clickstream.game.launch", {
-                srcEl: data.src,
-                // product: ComponentManager.getAttribute("product"),
-                product: "mobile-ptplus",
-                response: data.response,
-            });
-            // }
             const el = utility.hasClass(data.src, "game-list", true);
             if (el) {
+                const gameProduct = el.getAttribute("data-game-product");
+                ComponentManager.broadcast("clickstream.game.launch", {
+                    srcEl: data.src,
+                    product: gameProduct,
+                    response: data.response,
+                });
                 const gameCode = el.getAttribute("data-game-code");
                 console.log(gameCode);
                 xhr({
@@ -122,11 +118,6 @@ export class PromotionsGameNodeComponent implements ComponentInterface {
                 }).then((result) => {
                     if (result.success) {
                         this.response = null;
-                        // this.doRequest(() => {
-                        //     this.gamesSearch.setGamesList(this.response);
-                        //     /*this.gamesFilter.setGamesList(this.response);*/
-                        // });
-                        console.log("succeed");
                     }
                 }).fail((error, message) => {
                     console.log(error);
@@ -140,37 +131,38 @@ export class PromotionsGameNodeComponent implements ComponentInterface {
      */
     private listenToLaunchGameLoader() {
         ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            // if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
-            // Pop up loader with all data
-            const prop = {
-                width: 360,
-                height: 720,
-                scrollbars: 1,
-                scrollable: 1,
-                resizable: 1,
-            };
+            const el = utility.hasClass(data.src, "game-list", true);
+            if (el) {
+                const gameProduct = el.getAttribute("data-game-product");
+                // Pop up loader with all data
+                const prop = {
+                    width: 360,
+                    height: 720,
+                    scrollbars: 1,
+                    scrollable: 1,
+                    resizable: 1,
+                };
 
-            let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-            const source = utility.getParameterByName("source");
+                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
+                const source = utility.getParameterByName("source");
 
-            for (const key in data.options) {
-                if (data.options.hasOwnProperty(key)) {
-                    const param = data.options[key];
-                    url = utility.addQueryParam(url, key, param);
+                for (const key in data.options) {
+                    if (data.options.hasOwnProperty(key)) {
+                        const param = data.options[key];
+                        url = utility.addQueryParam(url, key, param);
+                    }
+                }
+
+                url = utility.addQueryParam(url, "currentProduct", gameProduct);
+                url = utility.addQueryParam(url, "loaderFlag", "true");
+                if (data.options.target === "popup" || data.options.target === "_blank") {
+                    this.windowObject = PopupWindow(url, "gameWindow", prop);
+                }
+
+                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
+                    return;
                 }
             }
-
-            url = utility.addQueryParam(url, "currentProduct", "mobile-ptplus");
-            url = utility.addQueryParam(url, "loaderFlag", "true");
-            if (data.options.target === "popup" || data.options.target === "_blank") {
-                this.windowObject = PopupWindow(url, "gameWindow", prop);
-            }
-
-            if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
-                return;
-            }
-
-            // }
         });
     }
 
