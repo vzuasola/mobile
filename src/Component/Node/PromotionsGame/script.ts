@@ -87,7 +87,7 @@ export class PromotionsGameNodeComponent implements ComponentInterface {
             const el = utility.hasClass(src, "game-listing-item", true);
             if (el && !this.isLogin) {
                 ComponentManager.broadcast("header.login", {
-                    src: el
+                    src: el,
                 });
             }
         });
