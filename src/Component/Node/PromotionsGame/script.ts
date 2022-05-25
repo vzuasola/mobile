@@ -160,7 +160,7 @@ export class PromotionsGameNodeComponent implements ComponentInterface {
                 }
             }
 
-            url = utility.addQueryParam(url, "currentProduct", "mobile_ptplus");
+            url = utility.addQueryParam(url, "currentProduct", "mobile-ptplus");
             url = utility.addQueryParam(url, "loaderFlag", "true");
             if (data.options.target === "popup" || data.options.target === "_blank") {
                 this.windowObject = PopupWindow(url, "gameWindow", prop);
