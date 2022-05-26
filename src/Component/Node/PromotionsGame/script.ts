@@ -107,7 +107,6 @@ export class PromotionsGameNodeComponent implements ComponentInterface {
                     response: data.response,
                 });
                 const gameCode = el.getAttribute("data-game-code");
-                console.log(gameCode);
                 xhr({
                     url: Router.generateRoute("ptplus_lobby", "recent"),
                     type: "json",
@@ -131,9 +130,8 @@ export class PromotionsGameNodeComponent implements ComponentInterface {
      */
     private listenToLaunchGameLoader() {
         ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            const el = utility.hasClass(data.src, "game-list", true);
-            if (el) {
-                const gameProduct = el.getAttribute("data-game-product");
+            const gameProduct = data.options.product;
+            if (gameProduct) {
                 // Pop up loader with all data
                 const prop = {
                     width: 360,
