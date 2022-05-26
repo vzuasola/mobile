@@ -7,6 +7,42 @@
     </a>
 </div>
 
+{% if node.field_games_list|length > 0 %}
+    <section class="xlider" id="main-slider">
+        {% for game_list in node.field_games_list %}
+            <div class="xlide-item">
+                <a
+                    {% if is_login %}
+                        data-game-launch="true"
+                    {% endif %}
+                    data-game-product = "{{ game_list.field_product.0.value }}"
+                    data-game-code = "{{ game_list.field_game_code.0.value }}"
+                    data-game-keywords = "{{ node.keywords.0.keywords.0.value }}"
+                    data-game-provider = "{{ node.field_banner_game_launch.0.field_game_list_provider.0.value }}"
+                    {% if node.field_banner_game_launch.0.field_use_game_loader.0.value %}
+                        data-game-loader = "true"
+                    {% else %}
+                        data-game-loader = "false"
+                    {% endif %}
+                    data-game-target = "{{ node.field_banner_game_launch.0.field_target.0.value }}"
+                >
+                    <picture>
+                        <source srcset="" media="(min-width: 40em) and (orientation: landscape)">
+                        <img
+                            src="{{ game_list.field_game_image.0.url }}"
+                            alt="{{ game_list.field_game_image.alt }}"
+                            class="w-100"
+                        >
+                    </picture>
+                    <div class="xlider-blurb bottom">
+                        <p>{{ game_list.field_game_title.0.value }}</p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </section>
+{% endif %}
+
 {% if is_login %}
     <div class="promotions-body-banner">
         {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
@@ -24,12 +60,13 @@
                 {% if is_login %}
                     data-game-launch="true"
                 {% endif %}
-                data-game-code = "{{ node.field_banner_game_launch.0.field_game_code.0.value }}"
                 data-game-product = "{{ node.field_banner_game_launch.0.field_product.0.value }}"
+                data-game-code = "{{ node.field_banner_game_launch.0.field_game_code.0.value }}"
                 data-game-keywords = "{{ node.keywords.0.keywords.0.value }}"
                 data-game-provider = "{{ node.field_banner_game_launch.0.field_game_list_provider.0.value }}"
-                data-game-subprovider = "{{ node.field_banner_game_launch.0.field_game_list_subprovider.0.value }}"
-                data-game-platform = "{{ node.field_banner_game_launch.0.field_game_platform.0.value }}"
+                {% if node.field_banner_game_launch.0.field_game_list_subprovider.0.value %}
+                    data-game-subprovider = "{{ node.field_banner_game_launch.0.field_game_list_subprovider.0.value }}"
+                {% endif %}
                 {% if node.field_banner_game_launch.0.field_use_game_loader.0.value %}
                     data-game-loader = "true"
                 {% else %}
@@ -72,16 +109,17 @@
         {% endif %}
 
         {% if node.field_banner_image.0.url %}
-             <a class="game-list game-listing-item"
+            <a class="game-list game-listing-item"
                 {% if is_login %}
                     data-game-launch="true"
                 {% endif %}
-                data-game-code = "{{ node.field_banner_game_launch.0.field_game_code.0.value }}"
                 data-game-product = "{{ node.field_banner_game_launch.0.field_product.0.value }}"
+                data-game-code = "{{ node.field_banner_game_launch.0.field_game_code.0.value }}"
                 data-game-keywords = "{{ node.keywords.0.keywords.0.value }}"
                 data-game-provider = "{{ node.field_banner_game_launch.0.field_game_list_provider.0.value }}"
-                data-game-subprovider = "{{ node.field_banner_game_launch.0.field_game_list_subprovider.0.value }}"
-                data-game-platform = "{{ node.field_banner_game_launch.0.field_game_platform.0.value }}"
+                {% if node.field_banner_game_launch.0.field_game_list_subprovider.0.value %}
+                    data-game-subprovider = "{{ node.field_banner_game_launch.0.field_game_list_subprovider.0.value }}"
+                {% endif %}
                 {% if node.field_banner_game_launch.0.field_use_game_loader.0.value %}
                     data-game-loader = "true"
                 {% else %}
