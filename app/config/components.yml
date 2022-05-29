@@ -39,10 +39,6 @@ components:
     class: App\MobileEntry\Component\Node\Blog\BlogComponent
     parent: node
 
-  node_promotions_game:
-    class: App\MobileEntry\Component\Node\PromotionsGame\PromotionsGameComponent
-    parent: node
-
   node_promotions:
     class: App\MobileEntry\Component\Node\Promotions\PromotionsComponent
     parent: node

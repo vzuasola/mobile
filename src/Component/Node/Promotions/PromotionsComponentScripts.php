@@ -20,16 +20,18 @@ class PromotionsComponentScripts implements ComponentAttachmentInterface
     public static function create($container)
     {
         return new static(
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('player_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($config)
+    public function __construct($config, $playerSession)
     {
         $this->config = $config;
+        $this->playerSession = $playerSession;
     }
 
     /**
@@ -46,6 +48,7 @@ class PromotionsComponentScripts implements ComponentAttachmentInterface
         }
 
         $data['countdown'] = $promoConfigs['countdown_format'] ?? "[days] days, [hours] remaining";
+        $data['authenticated'] = $this->playerSession->isLogin();
         return $data;
     }
 }
