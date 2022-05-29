@@ -30,7 +30,6 @@ import {LanguageComponent} from "@app/src/Component/Language/script";
 // import {INLanguageComponent} from "@app/src/Component/Language/INLanguage/script";
 import {ProfilerComponent} from "@app/src/Component/Profiler/script";
 import {CantLoginComponent} from "@app/src/Component/Main/CantLogin/script";
-import {PromotionsGameNodeComponent} from "@app/src/Component/Node/PromotionsGame/script";
 import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script";
 import {BasicPageComponent} from "@app/src/Component/Node/BasicPage/script";
 import {BlankPageComponent} from "@app/src/Component/Node/BlankPage/script";
@@ -81,7 +80,6 @@ ComponentManager.setComponents({
     marketing: new MarketingComponent(),
     profiler: new ProfilerComponent(),
     cant_login: new CantLoginComponent(),
-    node_promotions_game: new PromotionsGameNodeComponent(),
     node_promotions: new PromotionsNodeComponent(),
     node_basic_page: new BasicPageComponent(),
     node_blank_page: new BlankPageComponent(),
