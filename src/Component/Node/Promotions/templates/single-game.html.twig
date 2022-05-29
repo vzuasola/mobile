@@ -1,0 +1,38 @@
+{% if node.field_banner_image.0.url %}
+    <a class="game-list game-listing-item"
+        {% if is_login %}
+            data-game-launch="true"
+        {% endif %}
+        data-game-product = "{{ node.field_banner_game_launch.0.field_product.0.value }}"
+        data-game-code = "{{ node.field_banner_game_launch.0.field_game_code.0.value }}"
+        data-game-keywords = "{{ node.keywords.0.keywords.0.value }}"
+        {% for provider in game_provider %}
+            {% if node.field_banner_game_launch.0.field_game_provider.0.target_id == provider.tid %}
+                data-game-provider = "{{ provider.field_provider_code }}"
+            {% endif %}
+        {% endfor %}
+        {% for subprovider in game_subprovider %}
+            {% if node.field_banner_game_launch.0.field_game_subprovider.0.target_id == subprovider.tid %}
+                data-game-subprovider = "{{ subprovider.name }}"
+            {% endif %}
+        {% endfor %}
+        {% if node.field_banner_game_launch.0.field_use_game_loader.0.value %}
+            data-game-loader = "true"
+        {% else %}
+            data-game-loader = "false"
+        {% endif %}
+        data-game-target = "{{ node.field_banner_game_launch.0.field_target.0.value }}"
+        {% if node.field_banner_game_launch.0.field_use_lobby.0.value %}
+            data-game-lobby = "true"
+        {% endif %}
+        {% if node.field_banner_game_launch.0.field_game_platform.0.value %}
+            data-game-platform = "{{ node.field_banner_game_launch.0.field_game_platform.0.value }}"
+        {% endif %}
+    >
+        {% if node.field_post_banner_image.0.url %}
+            <img src="{{ node.field_banner_image.0.url }}" alt="{{ node.field_banner_image.0.alt }}" class="w-100">
+        {% elseif node.field_post_banner_image.0.url %}
+            <img src="{{ node.field_post_banner_image.0.url }}" alt="{{ node.field_post_banner_image.0.alt }}" class="w-100">
+        {% endif %}
+    </a>
+{% endif %}
