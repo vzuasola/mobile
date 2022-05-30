@@ -63,20 +63,28 @@ class PromotionsComponent implements ComponentWidgetInterface
         }
 
         try {
+            $providers = [];
             $gameProviders = $this->views->getViewById('games_providers');
+            foreach ($gameProviders as $gameProvider) {
+                $providers[$gameProvider['tid']] = $gameProvider['field_provider_code'];
+            }
         } catch (\Exception $e) {
-            $gameProviders = [];
+            $providers = [];
         }
 
         try {
             $gameSubproviders = $this->views->getViewById('games_subproviders');
+            $subProviders = [];
+            foreach ($gameSubproviders as $subProvider) {
+                $subProviders[$subProvider['tid']] = $subProvider['name'];
+            }
         } catch (\Exception $e) {
-            $gameSubproviders = [];
+            $subProviders = [];
         }
 
         $data['is_login'] = $this->playerSession->isLogin();
-        $data['game_provider'] = $gameProviders;
-        $data['game_subprovider'] = $gameSubproviders;
+        $data['game_provider'] = $providers;
+        $data['game_subprovider'] = $subProviders;
         return $data;
     }
 }

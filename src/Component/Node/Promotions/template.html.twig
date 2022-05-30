@@ -6,7 +6,10 @@
         </svg>
     </a>
 </div>
-{% include '@component/Node/Promotions/templates/slider.html.twig' %}
+{%- set gameWidget -%}
+    {% include '@component/Node/Promotions/templates/multiple-games.html.twig' %}
+{%- endset -%}
+
 {% if is_login %}
     <div class="promotions-body-banner">
         {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
@@ -37,7 +40,9 @@
         </div>
 
         <div class="container page-promotion-inner">
-            {{ node.field_post_body.0.value|raw }}
+            {% set content = node.field_post_body.0.value %}
+            {% set content = content|replace({'[[promotion_game_widget]]': gameWidget }) %}
+            {{ content|raw }}
         </div>
 {% else %}
     <div class="promotions-body-banner">
@@ -70,7 +75,9 @@
     </div>
 
     <div class="container page-promotion-inner">
-        {{ node.body.0.value|raw }}
+        {% set content = node.body.0.value %}
+        {% set content = content|replace({'[[promotion_game_widget]]': gameWidget }) %}
+        {{ content|raw }}
     </div>
 {% endif %}
 
