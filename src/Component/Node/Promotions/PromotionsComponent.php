@@ -103,8 +103,8 @@ class PromotionsComponent implements ComponentWidgetInterface
             $data['casino_preferred'] = 'mobile-casino';
             if ($isProvisioned) {
                 $preferredCasino = $this->preference->getPreferences($this->playerSession->getUsername());
-                $data['casino_preferred'] = ($preferredCasino['casino.preferred'] == 'casino_gold') ? 'mobile-casino-gold'
-                    : 'mobile-casino';
+                $data['casino_preferred'] = ($preferredCasino['casino.preferred'] == 'casino_gold')
+                    ? 'mobile-casino-gold' : 'mobile-casino';
             }
 
             $data['game_provider'] = $providers;
