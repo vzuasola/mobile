@@ -7,7 +7,11 @@
                     {% if is_login %}
                         data-game-launch="true"
                     {% endif %}
-                    data-game-product = "{{ game_list.field_product.0.value }}"
+                    {% set product = game_list.field_product.0.value %}
+                    {% if product == 'mobile-casino' %}
+                        {% set product = casino_preferred %}
+                    {% endif %}
+                    data-game-product = "{{ product }}"
                     data-game-code = "{{ game_list.field_game_code.0.value }}"
                     {% if game_provider[game_list.field_game_provider.0.target_id] is defined %}
                         data-game-provider = "{{ game_provider[game_list.field_game_provider.0.target_id] }}"
