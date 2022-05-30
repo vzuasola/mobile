@@ -3,7 +3,11 @@
         {% if is_login %}
             data-game-launch="true"
         {% endif %}
-        data-game-product = "{{ node.field_banner_game_launch.0.field_product.0.value }}"
+        {% set product = node.field_banner_game_launch.0.field_product.0.value %}
+        {% if product == 'mobile-casino' %}
+            {% set product = casino_preferred %}
+        {% endif %}
+        data-game-product = "{{ product }}"
         data-game-code = "{{ node.field_banner_game_launch.0.field_game_code.0.value }}"
         data-game-keywords = "{{ node.keywords.0.keywords.0.value }}"
         {% if game_provider[node.field_banner_game_launch.0.field_game_provider.0.target_id] is defined %}
