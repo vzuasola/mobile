@@ -65,7 +65,7 @@ class PromotionsComponent implements ComponentWidgetInterface
         try {
             $providers = [];
             $gameProviders = $this->views->getViewById('games_providers');
-            foreach($gameProviders as $gameProvider) {
+            foreach ($gameProviders as $gameProvider) {
                 $providers[$gameProvider['tid']] = $gameProvider['field_provider_code'];
             }
         } catch (\Exception $e) {
@@ -75,7 +75,7 @@ class PromotionsComponent implements ComponentWidgetInterface
         try {
             $gameSubproviders = $this->views->getViewById('games_subproviders');
             $subProviders = [];
-            foreach($gameSubproviders as $subProvider) {
+            foreach ($gameSubproviders as $subProvider) {
                 $subProviders[$subProvider['tid']] = $subProvider['name'];
             }
         } catch (\Exception $e) {
