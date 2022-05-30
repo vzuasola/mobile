@@ -69,47 +69,48 @@ class PromotionsComponent implements ComponentWidgetInterface
             $data['node'] = [];
         }
 
-        try {
-            $providers = [];
-            $gameProviders = $this->views->getViewById('games_providers');
-            foreach ($gameProviders as $gameProvider) {
-                $providers[$gameProvider['tid']] = $gameProvider['field_provider_code'];
+        if (!empty($data['node']['field_banner_game_launch']) || count($data['node']['field_games_list'])) {
+            try {
+                $providers = [];
+                $gameProviders = $this->views->getViewById('games_providers');
+                foreach ($gameProviders as $gameProvider) {
+                    $providers[$gameProvider['tid']] = $gameProvider['field_provider_code'];
+                }
+            } catch (\Exception $e) {
+                $providers = [];
             }
-        } catch (\Exception $e) {
-            $providers = [];
-        }
 
-        try {
-            $gameSubproviders = $this->views->getViewById('games_subproviders');
-            $subProviders = [];
-            foreach ($gameSubproviders as $subProvider) {
-                $subProviders[$subProvider['tid']] = $subProvider['name'];
+            try {
+                $gameSubproviders = $this->views->getViewById('games_subproviders');
+                $subProviders = [];
+                foreach ($gameSubproviders as $subProvider) {
+                    $subProviders[$subProvider['tid']] = $subProvider['name'];
+                }
+            } catch (\Exception $e) {
+                $subProviders = [];
             }
-        } catch (\Exception $e) {
-            $subProviders = [];
-        }
 
-        // check if player is casino gold provisioned
-        try {
-            $isProvisioned = false;
-            if ($this->playerSession->isLogin()) {
-                $isProvisioned = $this->provisioned->hasAccount('casino-gold', $this->playerSession->getUsername());
+            // check if player is casino gold provisioned
+            try {
+                $isProvisioned = false;
+                if ($this->playerSession->isLogin()) {
+                    $isProvisioned = $this->provisioned->hasAccount('casino-gold', $this->playerSession->getUsername());
+                }
+            } catch (\Exception $e) {
+                $isProvisioned = false;
             }
-        } catch (\Exception $e) {
-            $isProvisioned = false;
+
+            $data['casino_preferred'] = 'mobile-casino';
+            if ($isProvisioned) {
+                $preferredCasino = $this->preference->getPreferences($this->playerSession->getUsername());
+                $data['casino_preferred'] = ($preferredCasino['casino.preferred'] == 'casino_gold') ? 'mobile-casino-gold'
+                    : 'mobile-casino';
+            }
+
+            $data['game_provider'] = $providers;
+            $data['game_subprovider'] = $subProviders;
         }
-
-        $data['casino_preferred'] = 'mobile-casino';
-        if ($isProvisioned) {
-            $preferredCasino = $this->preference->getPreferences($this->playerSession->getUsername());
-            $data['casino_preferred'] = ($preferredCasino['casino.preferred'] == 'casino_gold') ? 'mobile-casino-gold'
-                : 'mobile-casino';
-        }
-
-
         $data['is_login'] = $this->playerSession->isLogin();
-        $data['game_provider'] = $providers;
-        $data['game_subprovider'] = $subProviders;
         return $data;
     }
 }
