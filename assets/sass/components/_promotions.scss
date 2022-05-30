@@ -226,6 +226,7 @@
     .promotions-games-container {
         height: 100%;
         min-height: 10rem;
+        overflow: hidden;
 
         .promotions-games-listing {
             padding: 0;

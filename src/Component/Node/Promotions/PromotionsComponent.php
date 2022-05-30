@@ -21,6 +21,9 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     private $views;
 
+    private $provisioned;
+    private $preference;
+
     /**
      *
      */
@@ -29,18 +32,22 @@ class PromotionsComponent implements ComponentWidgetInterface
         return new static(
             $container->get('player_session'),
             $container->get('config_fetcher'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('accounts_service'),
+            $container->get('preferences_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $views)
+    public function __construct($playerSession, $config, $views, $provisioned, $preference)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
         $this->views = $views;
+        $this->provisioned = $provisioned;
+        $this->preference = $preference;
     }
 
     /**
@@ -81,6 +88,24 @@ class PromotionsComponent implements ComponentWidgetInterface
         } catch (\Exception $e) {
             $subProviders = [];
         }
+
+        // check if player is casino gold provisioned
+        try {
+            $isProvisioned = false;
+            if ($this->playerSession->isLogin()) {
+                $isProvisioned = $this->provisioned->hasAccount('casino-gold', $this->playerSession->getUsername());
+            }
+        } catch (\Exception $e) {
+            $isProvisioned = false;
+        }
+
+        $data['casino_preferred'] = 'mobile-casino';
+        if ($isProvisioned) {
+            $preferredCasino = $this->preference->getPreferences($this->playerSession->getUsername());
+            $data['casino_preferred'] = ($preferredCasino['casino.preferred'] == 'casino_gold') ? 'mobile-casino-gold'
+                : 'mobile-casino';
+        }
+
 
         $data['is_login'] = $this->playerSession->isLogin();
         $data['game_provider'] = $providers;
