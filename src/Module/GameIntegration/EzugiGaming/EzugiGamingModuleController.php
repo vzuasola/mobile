@@ -74,7 +74,8 @@ class EzugiGamingModuleController
             $responseData = $this->ezugi->getLobby('icore_ezugi', [
                 'options' => [
                     'languageCode' =>  $this->languageCode($request),
-                    'gameName' => $requestData['gameCode']
+                    'gameName' => $requestData['gameCode'],
+                    'tableName' => $requestData['tableName']
                 ]
             ]);
             if ($responseData) {
