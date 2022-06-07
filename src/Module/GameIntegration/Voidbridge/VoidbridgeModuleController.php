@@ -108,7 +108,7 @@ class VoidbridgeModuleController
             'providerProduct' => $params[1] ?? null,
             'languageCode' => $this->languageCode($request),
             'userAgent' => $requestData['userAgent'],
-            'view' => $requestData['view'] ?? null,
+            'view' => $requestData['tableName'] ?? null,
           ]
         ];
 
