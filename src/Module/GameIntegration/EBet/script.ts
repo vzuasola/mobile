@@ -58,7 +58,6 @@ export class EBetModule implements ModuleInterface, GameInterface {
                 subprovider: options.subprovider || undefined,
                 lang,
                 playMode: true,
-                tableName: options.tablename,
             },
         }).then((response) => {
             if (response.gameurl) {
