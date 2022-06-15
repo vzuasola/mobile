@@ -79,8 +79,7 @@ class EBetModuleController
         try {
             $responseData = $this->eBet->getLobby('icore_ebet', [
                 'options' => [
-                    'languageCode' => $this->languageCode($request),
-                    'tableName' => $requestData['tableName'] ?? null
+                    'languageCode' => $this->languageCode($request)
                 ]
             ]);
             if ($responseData) {
