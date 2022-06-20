@@ -413,20 +413,7 @@
                 }
             }
 
-            &.featured {
-                .game-listing {
-                    width: 50%;
-                    padding: 0 0 1% 0;
-
-                    &-maintenance:after {
-                        left: 1%;
-                        right: 1%;
-                        bottom: 2.5%;
-                    }
-                }
-            }
-
-            &.providers {
+            &.providers, &.featured {
                 .game-listing {
                     width: 33.33333333%;
                     padding: 0 0.2% 1% 0.2%;

@@ -114,11 +114,11 @@ class LiveDealerLobbyComponentController
                 }
 
                 if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
-                    $preview_mode = $this->getFieldValue($game, 'field_preview_mode') === 'true' ? 1 : 0;
+                    $preview_mode = $this->getFieldValue($game, 'field_preview_mode');
                     if (!$this->checkSupportedCurrency($game)) {
                         continue;
                     }
-                    if (!$isPreview && $preview_mode) {
+                    if (!$isPreview && ($preview_mode === 'true' || $preview_mode === true)) {
                         continue;
                     }
                     $gamesList[] = $this->gamesListVersion
