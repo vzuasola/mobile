@@ -70,6 +70,7 @@ export class  ProductLanguage {
             "bu",
             "lo",
             "km",
+            "jp",
         ],
         "live-dealer" : [
             "en",
