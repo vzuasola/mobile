@@ -9,7 +9,6 @@ use App\Utils\Host;
  */
 class IDDomain
 {
-    
     const LANG = 'ID';
     /**
      * Current language
@@ -60,3 +59,4 @@ class IDDomain
         return false;
     }
 }
+
