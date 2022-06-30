@@ -15,8 +15,6 @@ class FooterComponentController
 
     private $asset;
 
-    private $idDomain;
-
     private $product;
 
     private $currentLanguage;
@@ -43,14 +41,12 @@ class FooterComponentController
         $menus,
         $rest,
         $asset,
-        $idDomain,
         $product,
         $currentLanguage
     ) {
         $this->menus = $menus;
         $this->rest = $rest;
         $this->asset = $asset;
-        $this->idDomain = $idDomain;
         $this->product = $product;
         $this->currentLanguage = $currentLanguage;
     }
@@ -66,7 +62,6 @@ class FooterComponentController
 
         try {
             $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
-            $data['languageVisibility'] = $this->idDomain->isLangSelectorHidden();
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
         }
@@ -85,8 +80,7 @@ class FooterComponentController
                             !empty($link['uri'])) ? $link['uri'] : '/' .  $this->currentLanguage;
                 }
 
-                if (($this->idDomain->isLangSelectorHidden()) &&
-                    strpos($link['attributes']['class'], 'language-trigger') !== false
+                if (strpos($link['attributes']['class'], 'language-trigger') !== false
                 ) {
                     unset($footerMenu[$key]);
                 }
