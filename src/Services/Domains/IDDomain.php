@@ -48,14 +48,4 @@ class IDDomain
     {
         return $this->request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '';
     }
-
-    /**
-     * Check if domain used is ID
-     *
-     * @return bool
-     */
-    public function isLangSelectorHidden()
-    {
-        return false;
-    }
 }
