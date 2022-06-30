@@ -84,12 +84,6 @@ class FooterComponentController
                         $footerMenu[$key]['uri'] =  (isset($link['uri']) &&
                             !empty($link['uri'])) ? $link['uri'] : '/' .  $this->currentLanguage;
                 }
-
-                if (($this->idDomain->isLangSelectorHidden()) &&
-                    strpos($link['attributes']['class'], 'language-trigger') !== false
-                ) {
-                    unset($footerMenu[$key]);
-                }
             }
         }
     }
