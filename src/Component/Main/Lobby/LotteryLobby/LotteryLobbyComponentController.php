@@ -133,9 +133,12 @@ class LotteryLobbyComponentController
             $definition['landscape_size'] = $sizeLandscape[$game['field_game_landscape_size'][0]['value']];
             $definition['title'] = $game['title'][0]['value'] ?? '';
             $definition['game_provider'] = $game['field_game_provider'][0]['field_game_provider_key'][0]['value'] ?? '';
+            $definition['game_code'] = $game['field_game_code'][0]['value'] ?? '';
             $definition['target'] = $game['field_target'][0]['value'] ?? '';
             $definition['use_game_loader'] = isset($game['field_use_game_loader'][0]['value'])
                 ? $game['field_use_game_loader'][0]['value'] : "false";
+            $definition['use_lobby'] = isset($game['field_use_lobby'][0]['value'])
+                ? $game['field_use_lobby'][0]['value'] : "true";
             $definition['game_maintenance_text'] = null;
             $definition['game_maintenance'] = false;
             $definition['is_native_app'] = !empty($game['field_native_app'][0]['value']) ?: '';
