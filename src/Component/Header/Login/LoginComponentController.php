@@ -28,19 +28,21 @@ class LoginComponentController
             $container->get('rest'),
             $container->get('player_session'),
             $container->get('settings')['product'],
-            $container->get('cookie_service')
+            $container->get('cookie_service'),
+            $container->get('cookie_session')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $playerSession, $product, $cookieService)
+    public function __construct($rest, $playerSession, $product, $cookieService, $cookieSession)
     {
         $this->rest = $rest;
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->cookieService = $cookieService;
+        $this->cookieSession = $cookieSession;
     }
 
     /**
@@ -81,6 +83,12 @@ class LoginComponentController
                     'currency' =>  $this->playerSession->getDetails()['currency'] ?? '',
                     'country' => $request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '',
                 ];
+                $this->cookieSession->set(
+                    $username,
+                    $data['user']['playerId'],
+                    $data['token'],
+                    $data['user']['currency']
+                );
                 // Set the authentication cookies
                 $this->setAuthCookies();
             } catch (\Exception $e) {
