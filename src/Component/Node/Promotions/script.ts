@@ -6,7 +6,6 @@ import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/ass
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import PopupWindow from "@app/assets/script/components/popup";
-import Xlider from "@app/assets/script/components/xlider";
 
 /**
  *
@@ -31,7 +30,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.listenToLaunchGameLoader();
         this.response = null;
-        this.activateSlider();
     }
 
     onReload(element: HTMLElement, attachments: {countdown: string, authenticated: boolean}) {
@@ -39,7 +37,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
         this.componentFinish(element);
         this.element = element;
         this.isLogin = attachments.authenticated;
-        this.activateSlider();
         if (!this.element) {
             this.listenClickGameTile();
             this.listenGameLaunch();
@@ -170,82 +167,4 @@ export class PromotionsNodeComponent implements ComponentInterface {
             }
         });
     }
-
-    /**
-     * Display slider
-     */
-    private activateSlider() {
-        const slider: HTMLElement = this.element.querySelector("#main-slider");
-
-        if (slider && slider.querySelectorAll(".xlide-item").length > 0) {
-            // tslint:disable-next-line:no-unused-expression
-            const sliderObj = new Xlider({
-                selector: "#main-slider",
-                loop: true,
-                duration: 300,
-                controls: false,
-                onInit: () => {
-                    setTimeout(() => {
-                        sliderObj.addIndicators();
-                        sliderObj.updateIndicators();
-                    }, 10);
-                },
-                onChange: (slide, $this) => {
-                    this.onChangeHandler(slide, $this);
-                    sliderObj.updateIndicators();
-                },
-            });
-            setTimeout(() => {
-                utility.addClass(slider.querySelectorAll(".xlide-item")[1].parentElement, "fade");
-            }, 10);
-            setInterval(() => {
-                sliderObj.next();
-            }, 5000);
-        }
-    }
-
-    private onChangeHandler(slide, $this) {
-        const classAdded = "fade";
-
-        const slideItem = slide.parentElement;
-        const firstSlide = $this.innerElements[0].parentElement;
-        const lastSlide = $this.innerElements[$this.innerElements.length - 1].parentElement;
-        const prevSlide = slideItem.previousElementSibling;
-        const nextSlide = slideItem.nextElementSibling;
-
-        if (utility.hasClass(prevSlide, classAdded)) {
-            utility.removeClass(prevSlide, classAdded);
-        }
-
-        if (utility.hasClass(nextSlide, classAdded)) {
-            utility.removeClass(nextSlide, classAdded);
-        }
-
-        if (utility.hasClass(slideItem, classAdded)) {
-            utility.removeClass(slideItem, classAdded);
-        }
-
-        if (utility.hasClass(firstSlide, classAdded)) {
-            utility.removeClass(firstSlide, classAdded);
-        }
-
-        if (utility.hasClass(lastSlide, classAdded)) {
-            utility.removeClass(lastSlide, classAdded);
-        }
-        utility.addClass(slideItem, classAdded);
-
-        // First Slide
-        if ($this.currentSlide === 0) {
-            utility.removeClass(slideItem, classAdded);
-            utility.addClass(firstSlide, classAdded);
-        }
-
-        // Last Slide
-        if ($this.currentSlide === $this.innerElements.length - 1) {
-            utility.removeClass(slideItem, classAdded);
-            utility.addClass(lastSlide, classAdded);
-        }
-
-    }
-
 }
