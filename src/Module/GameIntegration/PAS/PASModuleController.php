@@ -185,6 +185,9 @@ class PASModuleController
                     $param = str_replace($search, $replacements, $value);
                     $queryString[] = $key . "=" . urlencode($this->parser->processTokens($param));
                 }
+                if ($requestData['product'] == 'mobile-live-dealer' && !empty($requestData['launchAlias'])) {
+                    $queryString[] = "launch_alias=" . urlencode($requestData['launchAlias']);
+                }
                 $url = $url . '?' . implode('&', $queryString);
 
                 $data['gameurl'] = $url;
