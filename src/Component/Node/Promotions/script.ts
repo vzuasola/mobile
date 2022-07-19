@@ -97,10 +97,13 @@ export class PromotionsNodeComponent implements ComponentInterface {
      * Event listener for game item click
      */
     private listenGameLaunch() {
-        ComponentManager.subscribe("game.launch", (event, src, data) => {
+        ComponentManager.subscribe("game.promo.launch", (event, src, data) => {
             const el = utility.hasClass(data.src, "game-list", true);
             if (el) {
-                const gameProduct = el.getAttribute("data-game-product");
+                let gameProduct = el.getAttribute("data-game-product");
+                if (gameProduct === "mobile-casino-gold") {
+                    gameProduct = "mobile-casino";
+                }
                 if (gameProduct) {
                     ComponentManager.broadcast("clickstream.game.launch", {
                         srcEl: data.src,
@@ -133,7 +136,7 @@ export class PromotionsNodeComponent implements ComponentInterface {
      * Event listener for launching pop up loader
      */
     private listenToLaunchGameLoader() {
-        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
+        ComponentManager.subscribe("game.launch.promo.loader", (event, src, data) => {
             const gameProduct = data.options.product;
             if (gameProduct) {
                 // Pop up loader with all data

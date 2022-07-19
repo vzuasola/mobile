@@ -2,6 +2,7 @@
     <a class="game-list game-listing-item"
         {% if is_login %}
             data-game-launch="true"
+            data-game-launchpromo = "true"
         {% endif %}
         {% set product = node.field_banner_game_launch.0.field_product.0.value %}
         {% if product == 'mobile-casino' %}
