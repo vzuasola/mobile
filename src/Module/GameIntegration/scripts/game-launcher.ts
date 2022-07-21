@@ -140,10 +140,18 @@ class GameLauncher {
         }
     }
 
-    private sendGameLaunchEvents(el, event, redirect, loader) {
+    private sendGameLaunchEvents(el, event, redirect, loader, data = {response: {}}) {
         let eventLaunch = "game.launch";
         let eventLoader = "game.launch.loader";
         const options = this.getOptionsByElement(el);
+        const params = {
+            src: el,
+            response: {},
+        };
+
+        if (data.hasOwnProperty("response")) {
+            params.response = data.response;
+        }
         if (redirect) {
             ComponentManager.broadcast("game.redirect", {
                 options,
@@ -158,9 +166,7 @@ class GameLauncher {
              options.currentProduct = options.product;
         }
 
-        ComponentManager.broadcast(eventLaunch, {
-            src: el,
-        });
+        ComponentManager.broadcast(eventLaunch, params);
         if (!loader) {
             event.preventDefault();
             const provider = el.getAttribute("data-game-provider");
@@ -198,7 +204,7 @@ class GameLauncher {
         });
 
         if (el) {
-            this.sendGameLaunchEvents(el, e, redirect, loader);
+            this.sendGameLaunchEvents(el, e, redirect, loader, data);
         }
     }
 }

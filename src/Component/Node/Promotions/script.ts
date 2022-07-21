@@ -35,7 +35,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {countdown: string, authenticated: boolean}) {
         this.getCountdown(element, attachments.countdown);
         this.componentFinish(element);
-        this.element = element;
         this.isLogin = attachments.authenticated;
         if (!this.element) {
             this.listenClickGameTile();
@@ -43,6 +42,7 @@ export class PromotionsNodeComponent implements ComponentInterface {
             this.listenToLaunchGameLoader();
             this.response = null;
         }
+        this.element = element;
     }
 
     private getCountdown(element, countdownFormat) {
