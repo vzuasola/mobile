@@ -4,9 +4,9 @@
         {% for game_list in node.field_games_list %}
             <li class="game-listing">
                 <a class="game-list game-listing-item"
+                    data-game-launchpromo = "true"
                     {% if is_login %}
                         data-game-launch="true"
-                        data-game-launchpromo = "true"
                     {% endif %}
                     {% set product = game_list.field_product.0.value %}
                     {% if product == 'mobile-casino' %}
