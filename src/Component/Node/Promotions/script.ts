@@ -7,13 +7,15 @@ import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/ass
  */
 export class PromotionsNodeComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {countdown: string}) {
-       this.getCountdown(element, attachments.countdown);
-       this.componentFinish(element);
+        this.getCountdown(element, attachments.countdown);
+        this.componentFinish(element);
+        this.refreshPreviousPage();
     }
 
     onReload(element: HTMLElement, attachments: {countdown: string}) {
         this.getCountdown(element, attachments.countdown);
         this.componentFinish(element);
+        this.refreshPreviousPage();
     }
 
     private getCountdown(element, countdownFormat) {
@@ -48,5 +50,15 @@ export class PromotionsNodeComponent implements ComponentInterface {
             method: "parseLink",
             selector: "[href*=ticket\\.token]",
         });
+    }
+
+    private refreshPreviousPage() {
+        const button = document.getElementById("refreshButton");
+        button.onclick = () => {
+            window.history.go(-1);
+            setTimeout(() => {
+                window.location.reload();
+            }, 200);
+        };
     }
 }
