@@ -1,5 +1,6 @@
 {% if node.field_banner_image.0.url %}
     <a class="game-list game-listing-item"
+        data-game-title = "{{ game_list.field_game_title.0.value }}"
         data-game-launchpromo = "true"
         {% if is_login %}
             data-game-launch="true"
@@ -25,6 +26,8 @@
         data-game-target = "{{ node.field_banner_game_launch.0.field_target.0.value }}"
         {% if node.field_banner_game_launch.0.field_use_lobby.0.value %}
             data-game-lobby = "true"
+        {% else %}
+            data-game-lobby = "false"
         {% endif %}
         {% if node.field_banner_game_launch.0.field_game_platform.0.value %}
             data-game-platform = "{{ node.field_banner_game_launch.0.field_game_platform.0.value }}"
