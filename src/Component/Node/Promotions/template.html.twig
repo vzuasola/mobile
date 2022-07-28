@@ -12,30 +12,34 @@
 
 {% if is_login %}
     <div class="promotions-body-banner">
-        {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
-            <a
-                href="{{ url(node.field_post_banner_link.0.uri) }}"
-                target="{{node.field_post_banner_link_target.0.value }}"
-                
-                data-router="true"
-                data-router-refresh="main"
-            >
-        {% endif %}
-        {% if node.field_post_banner_image.0.url %}
+        {% if node.field_banner_game_launch.0.field_product.0.value %}
             {% include '@component/Node/Promotions/templates/single-game.html.twig' %}
-        {% endif %}
+        {% else %}
+            {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
+                <a
+                    href="{{ url(node.field_post_banner_link.0.uri) }}"
+                    target="{{node.field_post_banner_link_target.0.value }}"
+                    
+                    data-router="true"
+                    data-router-refresh="main"
+                >
+            {% endif %}
+            {% if node.field_post_banner_image.0.url %}
+                <img src="{{ node.field_post_banner_image.0.url }}" alt="{{ node.field_post_banner_image.0.alt }}" class="w-100">
+            {% endif %}
 
-        {% if not node.field_hide_countdown.0.value %}
-            <div class="promotions-body-banner-scheduler hidden">
-                <svg class="clock" viewBox="0 120 24 24">
-                    <use xlink:href="#clock" />
-                </svg>
-                <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
-            </div>
-        {% endif %}
+            {% if not node.field_hide_countdown.0.value %}
+                <div class="promotions-body-banner-scheduler hidden">
+                    <svg class="clock" viewBox="0 120 24 24">
+                        <use xlink:href="#clock" />
+                    </svg>
+                    <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
+                </div>
+            {% endif %}
 
-        {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
-            </a>
+            {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
+                </a>
+            {% endif %}
         {% endif %}
         </div>
 
@@ -46,31 +50,35 @@
         </div>
 {% else %}
     <div class="promotions-body-banner">
-        {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
-            <a
-                href="{{ url(node.field_banner_link.0.uri) }}"
-                target="{{ node.field_banner_link_target.0.value }}"
-
-                data-router="true"
-                data-router-refresh="main"
-            >
-        {% endif %}
-
-        {% if node.field_banner_image.0.url %}
+        {% if node.field_banner_game_launch.0.field_product.0.value %}
             {% include '@component/Node/Promotions/templates/single-game.html.twig' %}
-        {% endif %}
+        {% else %}
+            {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
+                <a
+                    href="{{ url(node.field_banner_link.0.uri) }}"
+                    target="{{ node.field_banner_link_target.0.value }}"
 
-        {% if not node.field_hide_countdown.0.value %}
-            <div class="promotions-body-banner-scheduler hidden">
-                <svg class="clock" viewBox="0 120 24 24">
-                    <use xlink:href="#clock" />
-                </svg>
-                <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
-            </div>
-        {% endif %}
+                    data-router="true"
+                    data-router-refresh="main"
+                >
+            {% endif %}
 
-        {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
-            </a>
+           {% if node.field_banner_image.0.url %}
+                <img src="{{ node.field_banner_image.0.url }}" alt="{{ node.field_banner_image.0.alt }}" class="w-100">
+            {% endif %}
+
+            {% if not node.field_hide_countdown.0.value %}
+                <div class="promotions-body-banner-scheduler hidden">
+                    <svg class="clock" viewBox="0 120 24 24">
+                        <use xlink:href="#clock" />
+                    </svg>
+                    <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
+                </div>
+            {% endif %}
+
+            {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
+                </a>
+            {% endif %}
         {% endif %}
     </div>
 
