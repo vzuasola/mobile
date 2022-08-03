@@ -93,4 +93,37 @@ class FooterComponentController
             }
         }
     }
+
+    /**
+     *
+     */
+    public function homecontact($request, $response)
+    {
+        $data = [];
+        try {
+            $contact_menu  = $this->menus->getMultilingualMenu('mobile-contact-us');
+            foreach ($contact_menu as $menu) {
+                if (isset($menu['attributes']['dataRouter']) &&
+                    $menu['attributes']['dataRouter'] == "disabled") {
+                    continue;
+                }
+                unset($menu["external"]);
+                unset($menu["alias"]);
+                $data['contact_menu'][] = $menu;
+            }
+
+            $url = $request->getUri()->getBaseUrl();
+            $svg = "/images/svg/contacts/contact-icons.svg";
+            if (strpos($url, 'https') !== false) {
+                $data['svg_file'] = $url.$svg;
+            } else {
+                $data['svg_file'] = preg_replace("/^http:/i", "https:", $url.$svg);
+            }
+        } catch (\Exception $e) {
+            $data['contact_menu'] = [];
+        }
+
+
+        return $this->rest->output($response, $data);
+    }
 }
