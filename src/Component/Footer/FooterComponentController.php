@@ -66,7 +66,7 @@ class FooterComponentController
 
         try {
             $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
-            $data['languageVisibility'] = false;
+            $data['languageVisibility'] = $this->idDomain->isLangSelectorHidden();
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
         }
@@ -83,6 +83,12 @@ class FooterComponentController
                 if ($footerMenu[$key]['uri'] === '') {
                         $footerMenu[$key]['uri'] =  (isset($link['uri']) &&
                             !empty($link['uri'])) ? $link['uri'] : '/' .  $this->currentLanguage;
+                }
+
+                if (($this->idDomain->isLangSelectorHidden()) &&
+                    strpos($link['attributes']['class'], 'language-trigger') !== false
+                ) {
+                    unset($footerMenu[$key]);
                 }
             }
         }
