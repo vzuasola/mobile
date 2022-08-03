@@ -136,31 +136,48 @@ class GameLauncher {
         });
 
         if (el) {
-            const options = this.getOptionsByElement(el);
-            if (redirect) {
-                ComponentManager.broadcast("game.redirect", {
-                    options,
-                });
-            } else {
-                ComponentManager.broadcast("game.launch", {
-                    src: el,
-                });
-                if (!loader) {
-                    e.preventDefault();
+           this.sendGameLaunchEvents(el, e, redirect, loader);
+        }
+    }
 
-                    const provider = el.getAttribute("data-game-provider");
+    private sendGameLaunchEvents(el, event, redirect, loader, data = {response: {}}) {
+        let eventLaunch = "game.launch";
+        let eventLoader = "game.launch.loader";
+        const options = this.getOptionsByElement(el);
+        const params = {
+            src: el,
+            response: {},
+        };
 
-                    options.provider = provider;
-                    this.invoke(provider, "prelaunch", [options]);
-                    this.invoke(provider, "launch", [options]);
-                }
+        if (data.hasOwnProperty("response")) {
+            params.response = data.response;
+        }
+        if (redirect) {
+            ComponentManager.broadcast("game.redirect", {
+                options,
+            });
 
-                if (loader) {
-                    ComponentManager.broadcast("game.launch.loader", {
-                        options,
-                    });
-                }
-            }
+            return;
+        }
+
+        if (options.hasOwnProperty("launchpromo") && options.launchpromo === "true") {
+             eventLoader = "game.launch.promo.loader";
+             eventLaunch = "game.promo.launch";
+             options.currentProduct = options.product;
+        }
+
+        ComponentManager.broadcast(eventLaunch, params);
+        if (!loader) {
+            event.preventDefault();
+            const provider = el.getAttribute("data-game-provider");
+
+            options.provider = provider;
+            this.invoke(provider, "prelaunch", [options]);
+            this.invoke(provider, "launch", [options]);
+        } else {
+            ComponentManager.broadcast(eventLoader, {
+                options,
+            });
         }
     }
 
@@ -187,31 +204,7 @@ class GameLauncher {
         });
 
         if (el) {
-            const options = this.getOptionsByElement(el);
-            if (redirect) {
-                ComponentManager.broadcast("game.redirect", {
-                    options,
-                });
-            } else {
-                ComponentManager.broadcast("game.launch", {
-                    src: el,
-                    response: data.response,
-                });
-                if (!loader) {
-                    e.preventDefault();
-
-                    const provider = el.getAttribute("data-game-provider");
-                    options.provider = provider;
-
-                    this.launch(provider, options);
-                }
-
-                if (loader) {
-                    ComponentManager.broadcast("game.launch.loader", {
-                        options,
-                    });
-                }
-            }
+            this.sendGameLaunchEvents(el, e, redirect, loader, data);
         }
     }
 }
