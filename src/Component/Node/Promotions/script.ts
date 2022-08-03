@@ -30,6 +30,7 @@ export class PromotionsNodeComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.listenToLaunchGameLoader();
         this.response = null;
+        this.refreshPreviousPage();
     }
 
     onReload(element: HTMLElement, attachments: {countdown: string, authenticated: boolean}) {
@@ -43,6 +44,7 @@ export class PromotionsNodeComponent implements ComponentInterface {
             this.response = null;
         }
         this.element = element;
+        this.refreshPreviousPage();
     }
 
     private getCountdown(element, countdownFormat) {
@@ -169,5 +171,15 @@ export class PromotionsNodeComponent implements ComponentInterface {
                 }
             }
         });
+    }
+
+    private refreshPreviousPage() {
+        const button = document.getElementById("refreshButton");
+        button.onclick = () => {
+            window.history.go(-1);
+            setTimeout(() => {
+                window.location.reload();
+            }, 200);
+        };
     }
 }
