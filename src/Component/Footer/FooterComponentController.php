@@ -103,7 +103,7 @@ class FooterComponentController
         try {
             $contact_menu  = $this->menus->getMultilingualMenu('mobile-contact-us');
             foreach ($contact_menu as $menu) {
-                if (isset($menu['attributes']['dataRouter']) && 
+                if (isset($menu['attributes']['dataRouter']) &&
                     $menu['attributes']['dataRouter'] == "disabled") {
                     continue;
                 }
