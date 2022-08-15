@@ -114,11 +114,11 @@ class LiveDealerLobbyComponentController
                 }
 
                 if (PublishingOptions::checkDuration($publishOn, $unpublishOn) && $status) {
-                    $preview_mode = $this->getFieldValue($game, 'field_preview_mode') === 'true' ? 1 : 0;
+                    $preview_mode = $this->getFieldValue($game, 'field_preview_mode');
                     if (!$this->checkSupportedCurrency($game)) {
                         continue;
                     }
-                    if (!$isPreview && $preview_mode) {
+                    if (!$isPreview && ($preview_mode === 'true' || $preview_mode === true)) {
                         continue;
                     }
                     $gamesList[] = $this->gamesListVersion
@@ -205,6 +205,7 @@ class LiveDealerLobbyComponentController
             $definition['title'] = $game['publish_on'] ?? "";
             $definition['title'] = $game['title'] ?? "";
             $definition['game_code'] = $game['field_game_code'] ?? "";
+            $definition['table_id'] = $game['field_table_id'] ?? "";
             $definition['game_provider'] = $game['field_game_provider'] ?? "";
             $definition['game_subprovider'] = $subprovider['name'] ?? "";
             $definition['game_platform'] = $game['field_game_platform'] ?? "";
@@ -378,6 +379,7 @@ class LiveDealerLobbyComponentController
             $definition['title'] = $game['title'][0]['value'] ?? "";
             $definition['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $definition['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";
+            $definition['table_id'] = $game['field_table_id'][0]['value'] ?? "";
             $definition['game_subprovider'] = $subprovider['name'][0]['value'] ?? "";
             $definition['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
             $definition['lobby_tab'] = $game['field_lobby_tab'][0]['field_alias'][0]['value'] ?? "";

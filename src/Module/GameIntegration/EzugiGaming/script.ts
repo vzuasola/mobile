@@ -56,8 +56,9 @@ export class EzugiGamingModule implements ModuleInterface, GameInterface {
             data: {
                 product,
                 lang,
-                gameCode: options.gameCode,
+                gameCode: options.code,
                 subprovider: options.subprovider || undefined,
+                tableName: options.tablename,
             },
         }).then((response) => {
             if (response.gameurl) {

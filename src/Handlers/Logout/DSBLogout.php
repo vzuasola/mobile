@@ -22,5 +22,6 @@ class DSBLogout
 
         Cookies::remove('extToken', $options);
         Cookies::remove('extCurrency', $options);
+        Cookies::remove('wbcToken', $options);
     }
 }

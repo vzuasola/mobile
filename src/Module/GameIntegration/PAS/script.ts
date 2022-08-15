@@ -291,6 +291,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                         options,
                         currency: this.currency,
                         productMap: product,
+                        launchAlias: options.tablename,
                     },
                 }).then(async (response) => {
                     if (this.pasLoginResponse.errorCode === 2 && !response.currency && !response.gameurl) {
