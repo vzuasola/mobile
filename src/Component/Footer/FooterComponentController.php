@@ -66,7 +66,7 @@ class FooterComponentController
 
         try {
             $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
-            $data['languageVisibility'] = $this->idDomain->isLangSelectorHidden();
+            $data['languageVisibility'] = false;
         } catch (\Exception $e) {
             $data['footer_menu'] = [];
         }
@@ -84,13 +84,36 @@ class FooterComponentController
                         $footerMenu[$key]['uri'] =  (isset($link['uri']) &&
                             !empty($link['uri'])) ? $link['uri'] : '/' .  $this->currentLanguage;
                 }
-
-                if (($this->idDomain->isLangSelectorHidden()) &&
-                    strpos($link['attributes']['class'], 'language-trigger') !== false
-                ) {
-                    unset($footerMenu[$key]);
-                }
             }
         }
+    }
+
+    /**
+     *
+     */
+    public function homecontact($request, $response)
+    {
+        $data = [];
+        try {
+            $contact_menu  = $this->menus->getMultilingualMenu('mobile-contact-us');
+            foreach ($contact_menu as $menu) {
+                unset($menu["external"]);
+                unset($menu["alias"]);
+                $data['contact_menu'][] = $menu;
+            }
+
+            $url = $request->getUri()->getBaseUrl();
+            $svg = "/images/svg/contacts/contact-icons.svg";
+            if (strpos($url, 'https') !== false) {
+                $data['svg_file'] = $url.$svg;
+            } else {
+                $data['svg_file'] = preg_replace("/^http:/i", "https:", $url.$svg);
+            }
+        } catch (\Exception $e) {
+            $data['contact_menu'] = [];
+        }
+
+
+        return $this->rest->output($response, $data);
     }
 }

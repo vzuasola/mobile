@@ -1,0 +1,50 @@
+<div class="promotions-games-container">
+{% if node.field_games_list|length > 0 %}
+    <ul class="promotions-games-listing">
+        {% for game_list in node.field_games_list %}
+            <li class="game-listing">
+                <a class="game-list game-listing-item"
+                    data-game-title = "{{ game_list.field_game_title.0.value }}"
+                    data-game-launchpromo = "true"
+                    {% if is_login %}
+                        data-game-launch="true"
+                    {% endif %}
+                    {% set product = game_list.field_product.0.value %}
+                    {% if product == 'mobile-casino' %}
+                        {% set product = casino_preferred %}
+                    {% endif %}
+                    data-game-product = "{{ product }}"
+                    data-game-code = "{{ game_list.field_game_code.0.value }}"
+                    {% if game_provider[game_list.field_game_provider.0.target_id] is defined %}
+                        data-game-provider = "{{ game_provider[game_list.field_game_provider.0.target_id] }}"
+                    {% endif %}
+                    {% if game_subprovider[game_list.field_game_subprovider.0.target_id] is defined %}
+                        data-game-subprovider = "{{ game_subprovider[game_list.field_game_subprovider.0.target_id] }}"
+                    {% endif %}
+                    {% if game_list.field_use_game_loader.0.value %}
+                        data-game-loader = "true"
+                    {% else %}
+                        data-game-loader = "false"
+                    {% endif %}
+                    data-game-target = "{{ game_list.field_target.0.value }}"
+                    {% if game_list.field_use_lobby.0.value %}
+                        data-game-lobby = "true"
+                    {% else %}
+                        data-game-lobby = "false"
+                    {% endif %}
+                    {% if game_list.field_game_platform.0.value %}
+                        data-game-platform = "{{ game_list.field_game_platform.0.value }}"
+                    {% endif %}
+                >
+                    <img
+                            src="{{ game_list.field_game_image.0.url }}"
+                            alt="{{ game_list.field_game_image.alt }}"
+                            class="w-100"
+                    >
+                    {{ providers.game_list.field_game_provider.0.target_id }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+</div>

@@ -6,71 +6,86 @@
         </svg>
     </a>
 </div>
+{%- set gameWidget -%}
+    {% include '@component/Node/Promotions/templates/multiple-games.html.twig' %}
+{%- endset -%}
 
 {% if is_login %}
     <div class="promotions-body-banner">
-        {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
-            <a
-                href="{{ url(node.field_post_banner_link.0.uri) }}"
-                target="{{node.field_post_banner_link_target.0.value }}"
+        {% if node.field_banner_game_launch.0.field_product.0.value %}
+            {% include '@component/Node/Promotions/templates/single-game.html.twig' %}
+        {% else %}
+            {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
+                <a
+                    href="{{ url(node.field_post_banner_link.0.uri) }}"
+                    target="{{node.field_post_banner_link_target.0.value }}"
+                    
+                    data-router="true"
+                    data-router-refresh="main"
+                >
+            {% endif %}
+            {% if node.field_post_banner_image.0.url %}
+                <img src="{{ node.field_post_banner_image.0.url }}" alt="{{ node.field_post_banner_image.0.alt }}" class="w-100">
+            {% endif %}
 
-                data-router="true"
-                data-router-refresh="main"
-            >
-        {% endif %}
-        {% if node.field_post_banner_image.0.url %}
-            <img src="{{ node.field_post_banner_image.0.url }}" alt="{{ node.field_post_banner_image.0.alt }}" class="w-100">
-        {% endif %}
+            {% if not node.field_hide_countdown.0.value %}
+                <div class="promotions-body-banner-scheduler hidden">
+                    <svg class="clock" viewBox="0 120 24 24">
+                        <use xlink:href="#clock" />
+                    </svg>
+                    <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
+                </div>
+            {% endif %}
 
-        {% if not node.field_hide_countdown.0.value %}
-            <div class="promotions-body-banner-scheduler hidden">
-                <svg class="clock" viewBox="0 120 24 24">
-                    <use xlink:href="#clock" />
-                </svg>
-                <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
-            </div>
-        {% endif %}
-
-        {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
-            </a>
+            {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
+                </a>
+            {% endif %}
         {% endif %}
         </div>
 
         <div class="container page-promotion-inner">
-            {{ node.field_post_body.0.value|raw }}
+            {% set content = node.field_post_body.0.value %}
+            {% set content = content|replace({'[[promotion_game_widget]]': gameWidget }) %}
+            {{ content|raw }}
         </div>
 {% else %}
     <div class="promotions-body-banner">
-        {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
-            <a
-                href="{{ url(node.field_banner_link.0.uri) }}"
-                target="{{ node.field_banner_link_target.0.value }}"
+        {% if node.field_banner_game_launch.0.field_product.0.value %}
+            {% include '@component/Node/Promotions/templates/single-game.html.twig' %}
+        {% else %}
+            {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
+                <a
+                    href="{{ url(node.field_banner_link.0.uri) }}"
+                    target="{{ node.field_banner_link_target.0.value }}"
 
-                data-router="true"
-                data-router-refresh="main"
-            >
-        {% endif %}
+                    data-router="true"
+                    data-router-refresh="main"
+                >
+            {% endif %}
 
-        {% if node.field_banner_image.0.url %}
-            <img src="{{ node.field_banner_image.0.url }}" alt="{{ node.field_banner_image.0.alt }}" class="w-100">
-        {% endif %}
+           {% if node.field_banner_image.0.url %}
+                <img src="{{ node.field_banner_image.0.url }}" alt="{{ node.field_banner_image.0.alt }}" class="w-100">
+            {% endif %}
 
-        {% if not node.field_hide_countdown.0.value %}
-            <div class="promotions-body-banner-scheduler hidden">
-                <svg class="clock" viewBox="0 120 24 24">
-                    <use xlink:href="#clock" />
-                </svg>
-                <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
-            </div>
-        {% endif %}
+            {% if not node.field_hide_countdown.0.value %}
+                <div class="promotions-body-banner-scheduler hidden">
+                    <svg class="clock" viewBox="0 120 24 24">
+                        <use xlink:href="#clock" />
+                    </svg>
+                    <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
+                </div>
+            {% endif %}
 
-        {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
-            </a>
+            {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
+                </a>
+            {% endif %}
         {% endif %}
     </div>
 
     <div class="container page-promotion-inner">
-        {{ node.body.0.value|raw }}
+        {% set content = node.body.0.value %}
+        {% set content = content|replace({'[[promotion_game_widget]]': gameWidget }) %}
+        {{ content|raw }}
     </div>
 {% endif %}
 
