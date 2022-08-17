@@ -40,11 +40,10 @@ class PtplusTournamentModuleScripts implements ComponentAttachmentInterface
             $settings =  $this->config->withProduct('mobile-ptplus')
                 ->getConfig('webcomposer_config.tournament_api_configuration');
             $api['url'] = $settings['api_url'] ?? "https://ptplus-b.hotspin88.com/loginFromGame?data=";
-            $api['casino'] = $settings['api_casino'] ?? 'goldencircle'; 
-
+            $api['casino'] = $settings['api_casino'] ?? 'goldencircle';
         } catch (\Exception $e) {
             $api['url'] = "https://ptplus-b.hotspin88.com/loginFromGame?data=";
-            $api['casino'] = $settings['api_casino'] ?? 'goldencircle'; 
+            $api['casino'] = $settings['api_casino'] ?? 'goldencircle';
         }
 
         return [
