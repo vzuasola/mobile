@@ -211,6 +211,59 @@
                 min-height: 86px;
             }
         }
+
+        .rectangular-tournament-banner-item {
+            display: inline-block;
+            margin: 3px 3px 0 3px;
+            background-repeat:no-repeat;
+            -webkit-background-size:cover;
+            -moz-background-size:cover;
+            -o-background-size:cover;
+            background-size:cover;
+            background-position:center center;
+            min-width: 30rem;
+            min-height: 8.6rem;
+            border-radius: .5rem;
+            position: relative;
+    
+           
+            .tournament-blurb {
+                right: 0;
+                width: 100%;
+                height: 75%;
+                padding: 0.5rem;
+                opacity: 1;
+                position: absolute;
+    
+                &.bottom {
+                    background: rgba(0,0,0,0.6);
+                    padding-bottom: 2rem;
+                    margin-bottom: -2rem;
+                    bottom: 0rem;
+                    transform: translateY(0);
+                }
+    
+                &.t-none {
+                    transition: none;
+                    transition-delay: 0s;
+                }
+        
+                &.t-1s {
+                    transition: bottom 2s ease-in-out, opacity 1s ease-in-out;
+                    transition-delay: .5s;
+                }
+        
+                &.t-2s {
+                    transition: bottom 2s ease-in-out, opacity 1s ease-in-out;
+                    transition-delay: 1s;
+                }
+        
+                &.t-3s {
+                    transition: bottom 2s ease-in-out, opacity 1s ease-in-out;
+                    transition-delay: 2s;
+                }
+            }
+        }
     }
 
     @media (orientation: landscape){
