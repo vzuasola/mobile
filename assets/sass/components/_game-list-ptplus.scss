@@ -308,12 +308,17 @@
         .rectangular-banner-tile-item {
             .tournament-content {
                 height: 25vw;
-                .btn-container {
-                    margin-top: 3rem;
+                .btn-white, .btn-yellow {
+                    min-height: 6.8rem !important;
+                    font-size: 16px !important;
                 }
 
                 .btn-white {
-                    padding-top: 1rem !important;
+                    padding-top: 1.3rem !important;
+                }
+
+                .btn-yellow {
+                    padding-top: 2rem !important;
                 }
             }
         }
