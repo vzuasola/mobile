@@ -15,7 +15,6 @@ export class TournamentBanners {
         this.element = element;
         this.settings = settings;
         this.response = undefined;
-        console.log(this.settings);
     }
 
     /**
