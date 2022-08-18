@@ -1,7 +1,7 @@
 <div class="rectangular-game">  
     <ul class="rectangular-game-tile">
     {{#each banners}}
-        <li class="rectangular-banner-tile-item"
+        <li class="rectangular-banner-tile-item {{../listClass}}"
             style="background-image: url({{this.field_banner_image.0.value.url}})" 
             role="img" aria-label="{{this.field_banner_image.0.value.alt}}">
             <div class="tournament-content">

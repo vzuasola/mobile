@@ -29,6 +29,7 @@ export class TournamentBanners {
             const template = tournamentBannerTemplate({
                 banners: response,
                 settings: this.settings,
+                listClass: response.length > 1 ? "three-quarter" : "full",
             });
 
             if (bannersEl) {
