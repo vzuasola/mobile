@@ -2,8 +2,8 @@
     <ul class="rectangular-game-tile">
     {{#each banners}}
         <li class="rectangular-banner-tile-item {{../listClass}}"
-            style="background-image: url({{this.field_banner_image.0.value.url}})" 
-            role="img" aria-label="{{this.field_banner_image.0.value.alt}}">
+            style="background-image: url({{this.image.url}})" 
+            role="img" aria-label="{{this.image.alt}}">
             <div class="tournament-content">
                 <div class="tournament-blurb bottom t-1s{{../settings.blurb_annimation}}">
                     <p class="tournament-title">{{this.field_title.0.value}}</p>
