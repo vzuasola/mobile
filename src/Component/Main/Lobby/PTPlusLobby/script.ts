@@ -15,6 +15,7 @@ import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/ass
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import {GamesSearch} from "./scripts/games-search";
+import {TournamentBanners} from "./scripts/tournament-banners";
 import {GamesFilter} from "@app/assets/script/components/games-filter";
 
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
@@ -42,6 +43,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private pageData: any[];
     private groupedGames: any;
     private productMenu: string = "product-ptplus";
+    private tournamentBanners: TournamentBanners;
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -63,6 +65,11 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         pageData: any[],
         infinite_scroll: boolean,
+        tournamentSettings: {
+            button_learn_more: string,
+            button_join: string,
+            blurb_animation: string,
+        },
     }) {
         this.groupedGames = undefined;
         this.response = null;
@@ -77,6 +84,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.listenFavoriteClick();
         this.listenToLaunchGameLoader();
+        console.log(attachments.tournamentSettings);
+        this.tournamentBanners = new TournamentBanners(this.element,
+            attachments.tournamentSettings);
+        this.tournamentBanners.renderTournamentBanners();
         this.generateLobby(() => {
             this.lobby();
         });
@@ -105,6 +116,11 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         pageData: any[],
         infinite_scroll: boolean,
+        tournamentSettings: {
+            button_learn_more: string,
+            button_join: string,
+            blurb_animation: string,
+        },
     }) {
         if (!this.element) {
             this.listenClickGameTile();
@@ -123,6 +139,9 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pageData = attachments.pageData;
         this.pager = 0;
         this.load = true;
+        this.tournamentBanners = new TournamentBanners(this.element,
+            attachments.tournamentSettings);
+        this.tournamentBanners.renderTournamentBanners();
         this.generateLobby(() => {
             this.lobby();
         });

@@ -225,6 +225,35 @@ class PTPlusLobbyComponentController
         }
     }
 
+    public function banners($request, $response)
+    {
+        try {
+            $data = [];
+            $banners = $this->views->getViewById('tournament_banners');
+            foreach ($banners as $banner) {
+                // check if tournament duration is not yet expired
+                if (PublishingOptions::checkDuration(
+                    $banner['field_tournament_start_date'][0]['value'],
+                    $banner['field_tournament_end_date'][0]['value']
+                )) {
+                    $banner['image'] = [
+                        'alt' => $banner['field_banner_image'][0]['value']['alt'],
+                        'url' =>
+                            $this->asset->generateAssetUri(
+                                $banner['field_banner_image'][0]['value']['url'],
+                                ['product' => self::PRODUCT]
+                            )
+                    ];
+                    $data[] = $banner;
+                }
+            }
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
     private function getSpecialCategoriesGameList($categories)
     {
         $definitions = [];
