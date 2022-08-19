@@ -33,7 +33,8 @@ class PtplusTournamentModuleController
     {
         try {
             $config =  $this->config->withProduct('mobile-ptplus')
-                ->getConfig('webcomposer_config.tournament_api_configuration');
+                ->getConfig('webcomposer_config.tournament_settings');
+
             $data['title'] = $config['title'] ?? '';
             $data['message'] = $config['message']['value'] ?? '';
             $data['button'] = $config['button_text'] ?? '';
