@@ -72,9 +72,13 @@ export class PtplusTournamentModule implements ModuleInterface {
                 }
                 const balanceKey = response.map["mobile-ptplus"];
                 const playerId = "W2W" + this.playerId;
-                if (typeof response.balances === "undefined"
-                    || !response.balances.hasOwnProperty(balanceKey)
-                    || typeof response.balances[balanceKey] === "undefined" || currency !== "") {
+                let balance = "undefined";
+                if (typeof response.balances !== "undefined") {
+                    balance = response.balances.hasOwnProperty(balanceKey) ?
+                        response.balances[balanceKey] : "undefined";
+                }
+
+                if (balance === "undefined" || currency === "") {
                     this.messageLightbox.showMessage(
                         "ptplus_tournament",
                         "unsupported",
