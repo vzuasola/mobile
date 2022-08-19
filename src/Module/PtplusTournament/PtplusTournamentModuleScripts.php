@@ -45,7 +45,6 @@ class PtplusTournamentModuleScripts implements ComponentAttachmentInterface
             $api['url'] = "https://ptplus-b.hotspin88.com/loginFromGame?data=";
             $api['casino'] = $settings['api_casino'] ?? 'goldencircle';
         }
- 
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'playerId' =>  $this->playerSession->getDetails()['playerId'] ?? '',
