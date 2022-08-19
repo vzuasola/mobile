@@ -84,7 +84,7 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
 
         try {
             $settings =  $this->configs->withProduct('mobile-ptplus')
-                ->getConfig('webcomposer_config.tournament_api_configuration');
+                ->getConfig('webcomposer_config.tournament_settings');
             $tournament['button_learn_more'] = $settings['button_learn_more'] ?? 'Learn More';
             $tournament['button_join'] = $settings['button_join'] ?? 'Join';
             $tournament['blurb_animation'] = $settings['enable_transition_api'] ?? 't-none';
