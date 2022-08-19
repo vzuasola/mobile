@@ -39,7 +39,15 @@ export class PtplusTournamentModule implements ModuleInterface {
         });
 
         ComponentManager.subscribe("session.login", (event, src, data) => {
-            this.prelaunchTournament();
+            const el = utility.find(data.src, (element) => {
+                if (element.getAttribute("data-game-login-tournament")) {
+                    return true;
+                }
+            });
+
+            if (el) {
+                this.prelaunchTournament();
+            }
         });
     }
 
