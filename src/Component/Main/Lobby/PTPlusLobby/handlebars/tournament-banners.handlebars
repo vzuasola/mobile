@@ -4,8 +4,8 @@
         <li class="rectangular-banner-tile-item {{../listClass}}"
             style="background-image: url({{this.image.url}})" 
             role="img" aria-label="{{this.image.alt}}">
-            <div class="tournament-content">
-                <div class="tournament-blurb bottom t-1s{{../settings.blurb_annimation}}">
+            <div class="tournament-content" data-game-login-tournament="true"></div>
+            <div class="tournament-blurb bottom t-1s{{../settings.blurb_annimation}}">
                     <p class="tournament-title">{{this.field_title.0.value}}</p>
                     <div class="btn-container">
                         <a class="btn btn-white btn-small" href="#">
@@ -16,7 +16,6 @@
                         </a>
                     </div>>
                 </div>
-            </div>
         </li>
     {{/each}}
     </ul>
