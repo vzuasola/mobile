@@ -84,7 +84,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.listenFavoriteClick();
         this.listenToLaunchGameLoader();
-        console.log(attachments.tournamentSettings);
         this.tournamentBanners = new TournamentBanners(this.element,
             attachments.tournamentSettings);
         this.tournamentBanners.renderTournamentBanners();
