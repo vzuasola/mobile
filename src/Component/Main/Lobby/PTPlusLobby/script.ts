@@ -44,6 +44,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private groupedGames: any;
     private productMenu: string = "product-ptplus";
     private tournamentBanners: TournamentBanners;
+    private tournamentSettings;
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -80,13 +81,11 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pageData = attachments.pageData;
         this.pager = 0;
         this.load = true;
+        this.tournamentSettings = attachments.tournamentSettings;
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
         this.listenToLaunchGameLoader();
-        this.tournamentBanners = new TournamentBanners(this.element,
-            attachments.tournamentSettings);
-        this.tournamentBanners.renderTournamentBanners();
         this.generateLobby(() => {
             this.lobby();
         });
@@ -138,9 +137,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pageData = attachments.pageData;
         this.pager = 0;
         this.load = true;
-        this.tournamentBanners = new TournamentBanners(this.element,
-            attachments.tournamentSettings);
-        this.tournamentBanners.renderTournamentBanners();
+        this.tournamentSettings = attachments.tournamentSettings;
         this.generateLobby(() => {
             this.lobby();
         });
@@ -478,6 +475,10 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 favEl.parentElement.setAttribute("style", "display: none");
             }
         }
+
+        this.tournamentBanners = new TournamentBanners(this.element,
+            this.attachments.tournamentSettings);
+        this.tournamentBanners.renderTournamentBanners();
     }
 
     /**

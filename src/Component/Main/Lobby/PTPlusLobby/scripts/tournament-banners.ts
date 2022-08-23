@@ -33,7 +33,7 @@ export class TournamentBanners {
             });
 
             if (bannersEl) {
-                bannersEl.innerHTML += template;
+                bannersEl.innerHTML = template + bannersEl.innerHTML;
             }
 
         }).fail((error, message) => {
