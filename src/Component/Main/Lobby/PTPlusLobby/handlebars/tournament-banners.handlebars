@@ -1,0 +1,22 @@
+<div class="rectangular-game">  
+    <ul class="rectangular-game-tile">
+    {{#each banners}}
+        <li class="rectangular-banner-tile-item {{../listClass}}"
+            style="background-image: url({{this.image.url}})" 
+            role="img" aria-label="{{this.image.alt}}">
+            <div class="tournament-content" data-game-login-tournament="true"></div>
+            <div class="tournament-blurb bottom t-1s{{../settings.blurb_annimation}}">
+                    <p class="tournament-title">{{this.field_title.0.value}}</p>
+                    <div class="btn-container">
+                        <a class="btn btn-white btn-small" href="#">
+                                {{../settings.button_learn_more}}
+                        </a>
+                        <a class="btn btn-yellow btn-small" data-game-login-tournament="true">
+                            {{../settings.button_join}}
+                        </a>
+                    </div>>
+                </div>
+        </li>
+    {{/each}}
+    </ul>
+</div>

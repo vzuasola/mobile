@@ -269,6 +269,8 @@ class SliderComponentController
                     $slider['banner_blurb'] = $slide['field_post_banner_blurb'][0]['value'] ?? '';
                 }
 
+                $slider['pt_tournament_page'] = $slide['field_pt_tournament_page'][0]['value'] ?? '';
+
                 $sliders[] = $slider;
             }
         } catch (\Exception $e) {
