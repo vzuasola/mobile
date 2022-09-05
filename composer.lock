@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d8c8cdf7abe09c9e1a7071f4f97e4d25",
+    "content-hash": "9d8a6e89f0c90fbb5affbd3cb1bce0cf",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1324,16 +1324,6 @@
                 "nosql",
                 "predis",
                 "redis"
-            ],
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/tillkruss",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/tillkruss",
-                    "type": "github"
-                }
             ],
             "time": "2016-06-16T16:22:20+00:00"
         },
@@ -3043,6 +3033,7 @@
                 "idna",
                 "punycode"
             ],
+            "abandoned": true,
             "time": "2016-11-16T10:37:54+00:00"
         },
         {
@@ -3114,11 +3105,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.226.2",
+            "version": "dev-feature-logout-fix",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "3644e59f6550147f02bc57609a026b1eece9ba95"
+                "reference": "2a4e0a474f138bf5fe1184f7137dfad9134522ea"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3169,7 +3160,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2022-03-15T01:57:57+00:00"
+            "time": "2022-09-05T11:06:20+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -4803,5 +4794,6 @@
     "platform": {
         "php": ">=7.1.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
