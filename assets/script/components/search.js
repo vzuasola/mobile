@@ -42,15 +42,6 @@ export default function Search(options) {
      * Constructor
      */
     function construct() {
-        setOptions();
-    }
-
-    construct();
-
-    /**
-     * Initialize options variable
-     */
-    function setOptions() {
         $this.options = options || {};
         for (var name in defaults) {
             if ($this.options[name] === undefined) {
@@ -58,6 +49,8 @@ export default function Search(options) {
             }
         }
     }
+
+    construct();
 
     /**
      * Trigger before callback
