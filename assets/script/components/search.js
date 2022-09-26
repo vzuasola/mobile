@@ -97,15 +97,15 @@ export default function Search(options) {
             fields = $this.options.fields;
 
         if (data) {
+            var sanitizedKeyword = sanitizeField(keyword);
             var filteredData = utility.arrayFilter(data, function (item) {
                 var hasMatch = false;
 
                 utility.forEach(fields, function (field, index) {
                     if (item[field]) {
-                        var fieldValue = sanitizeField(item[field]),
-                            query = sanitizeField(keyword);
+                        var fieldValue = sanitizeField(item[field]);
 
-                        if (fieldValue.indexOf(query) !== -1) {
+                        if (fieldValue.indexOf(sanitizedKeyword) !== -1) {
                             hasMatch = true;
                             return;
                         }
