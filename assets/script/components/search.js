@@ -31,7 +31,7 @@ export default function Search(options) {
 
     // default variables
     var defaults = {
-        data: null, // array of data to be searched
+        data: [], // array of data to be searched
         fields: null, // array of properties to be searched
         onSuccess: null, // callback function after searching
         onFail: null, // callback function if the search fails
@@ -91,37 +91,31 @@ export default function Search(options) {
     /**
      * Actual filtering of data
      * @param string keyword [description]
+     * @return array
      */
     function filterData(keyword) {
-        var data = utility.clone($this.options.data),
-            fields = $this.options.fields;
+        var data = utility.clone($this.options.data);
+        var fields = $this.options.fields;
+        var sanitizedKeyword = sanitizeField(keyword);
 
-        if (data) {
-            var sanitizedKeyword = sanitizeField(keyword);
-            var filteredData = utility.arrayFilter(data, function (item) {
-                var hasMatch = false;
+        var filteredData = utility.arrayFilter(data, function (item) {
+            var hasMatch = false;
 
-                utility.forEach(fields, function (field, index) {
-                    if (item[field]) {
-                        var fieldValue = sanitizeField(item[field]);
+            utility.forEach(fields, function (field, index) {
+                if (item[field]) {
+                    var fieldValue = sanitizeField(item[field]);
 
-                        if (fieldValue.indexOf(sanitizedKeyword) !== -1) {
-                            hasMatch = true;
-                            return;
-                        }
+                    if (fieldValue.indexOf(sanitizedKeyword) !== -1) {
+                        hasMatch = true;
+                        return;
                     }
-                });
-
-                return hasMatch;
+                }
             });
 
-            if (filteredData.length > 0) {
-                executeSuccess(filteredData, keyword);
-                return;
-            }
-        }
+            return hasMatch;
+        });
 
-        executeFailed(keyword);
+        return filteredData;
     }
 
     /**
@@ -151,7 +145,6 @@ export default function Search(options) {
     /**
      * Find all objects that has the keyword provided
      * @param  string keyword
-     * @return array
      */
     function search(keyword) {
         if (keyword) {
@@ -163,8 +156,12 @@ export default function Search(options) {
 
         if (keyword) {
             executeBefore();
-            if ($this.options.data) {
-                filterData(keyword);
+            var filteredData = filterData(keyword);
+
+            if (filteredData.length > 0) {
+                executeSuccess(filteredData, keyword);
+            } else {
+                executeFailed(keyword);
             }
         }
     }
