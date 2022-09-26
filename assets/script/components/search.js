@@ -97,7 +97,6 @@ export default function Search(options) {
             fields = $this.options.fields;
 
         if (data) {
-            // Look for exact keyword matches first
             var filteredData = utility.arrayFilter(data, function (item) {
                 var hasMatch = false;
 
@@ -115,46 +114,6 @@ export default function Search(options) {
 
                 return hasMatch;
             });
-
-            // look for per word matches
-            var keywords = utility.clone(keyword).split(' ');
-            var tokenMatches = utility.arrayFilter(data, function (item) {
-                var hasMatch = false;
-
-                utility.forEach(fields, function (field, index) {
-                    utility.forEach(keywords, function (token, index) {
-                        if (item[field]) {
-                            var fieldValue = sanitizeField(item[field]),
-                                query = sanitizeField(token);
-
-                            if (fieldValue.indexOf(query) !== -1) {
-                                hasMatch = true;
-                                return;
-                            }
-                        }
-                    });
-
-                    if (hasMatch) {
-                        return;
-                    }
-                });
-
-                // look for existning objects from exact keyword matches
-                var duplicate = utility.arrayFilter(filteredData, function (existingItem) {
-                    if (JSON.stringify(existingItem) === JSON.stringify(item)) {
-                        return true;
-                    }
-                });
-
-                // if dupe found do not include it again
-                if (duplicate.length > 0) {
-                    return false;
-                }
-
-                return hasMatch;
-            });
-
-            filteredData = filteredData.concat(tokenMatches);
 
             if (filteredData.length > 0) {
                 executeSuccess(filteredData, keyword);
