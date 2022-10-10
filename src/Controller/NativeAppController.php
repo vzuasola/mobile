@@ -37,6 +37,6 @@ class NativeAppController extends BaseController
             "status" => "success",
             "countries" => $data
         ]);
-
     }
 }
+
