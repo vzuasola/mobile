@@ -39,4 +39,3 @@ class NativeAppController extends BaseController
         ]);
     }
 }
-
