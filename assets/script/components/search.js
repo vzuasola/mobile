@@ -31,7 +31,7 @@ export default function Search(options) {
 
     // default variables
     var defaults = {
-        data: null, // array of data to be searched
+        data: [], // array of data to be searched
         fields: null, // array of properties to be searched
         onSuccess: null, // callback function after searching
         onFail: null, // callback function if the search fails
@@ -42,15 +42,6 @@ export default function Search(options) {
      * Constructor
      */
     function construct() {
-        setOptions();
-    }
-
-    construct();
-
-    /**
-     * Initialize options variable
-     */
-    function setOptions() {
         $this.options = options || {};
         for (var name in defaults) {
             if ($this.options[name] === undefined) {
@@ -58,6 +49,8 @@ export default function Search(options) {
             }
         }
     }
+
+    construct();
 
     /**
      * Trigger before callback
@@ -91,78 +84,31 @@ export default function Search(options) {
     /**
      * Actual filtering of data
      * @param string keyword [description]
+     * @return array
      */
     function filterData(keyword) {
-        var data = utility.clone($this.options.data),
-            fields = $this.options.fields;
+        var data = utility.clone($this.options.data);
+        var fields = $this.options.fields;
+        var sanitizedKeyword = sanitizeField(keyword);
 
-        if (data) {
-            // Look for exact keyword matches first
-            var filteredData = utility.arrayFilter(data, function (item) {
-                var hasMatch = false;
+        var filteredData = utility.arrayFilter(data, function (item) {
+            var hasMatch = false;
 
-                utility.forEach(fields, function (field, index) {
-                    if (item[field]) {
-                        var fieldValue = sanitizeField(item[field]),
-                            query = sanitizeField(keyword);
+            utility.forEach(fields, function (field, index) {
+                if (item[field]) {
+                    var fieldValue = sanitizeField(item[field]);
 
-                        if (fieldValue.indexOf(query) !== -1) {
-                            hasMatch = true;
-                            return;
-                        }
-                    }
-                });
-
-                return hasMatch;
-            });
-
-            // look for per word matches
-            var keywords = utility.clone(keyword).split(' ');
-            var tokenMatches = utility.arrayFilter(data, function (item) {
-                var hasMatch = false;
-
-                utility.forEach(fields, function (field, index) {
-                    utility.forEach(keywords, function (token, index) {
-                        if (item[field]) {
-                            var fieldValue = sanitizeField(item[field]),
-                                query = sanitizeField(token);
-
-                            if (fieldValue.indexOf(query) !== -1) {
-                                hasMatch = true;
-                                return;
-                            }
-                        }
-                    });
-
-                    if (hasMatch) {
+                    if (fieldValue.indexOf(sanitizedKeyword) !== -1) {
+                        hasMatch = true;
                         return;
                     }
-                });
-
-                // look for existning objects from exact keyword matches
-                var duplicate = utility.arrayFilter(filteredData, function (existingItem) {
-                    if (JSON.stringify(existingItem) === JSON.stringify(item)) {
-                        return true;
-                    }
-                });
-
-                // if dupe found do not include it again
-                if (duplicate.length > 0) {
-                    return false;
                 }
-
-                return hasMatch;
             });
 
-            filteredData = filteredData.concat(tokenMatches);
+            return hasMatch;
+        });
 
-            if (filteredData.length > 0) {
-                executeSuccess(filteredData, keyword);
-                return;
-            }
-        }
-
-        executeFailed(keyword);
+        return filteredData;
     }
 
     /**
@@ -192,7 +138,6 @@ export default function Search(options) {
     /**
      * Find all objects that has the keyword provided
      * @param  string keyword
-     * @return array
      */
     function search(keyword) {
         if (keyword) {
@@ -204,8 +149,12 @@ export default function Search(options) {
 
         if (keyword) {
             executeBefore();
-            if ($this.options.data) {
-                filterData(keyword);
+            var filteredData = filterData(keyword);
+
+            if (filteredData.length > 0) {
+                executeSuccess(filteredData, keyword);
+            } else {
+                executeFailed(keyword);
             }
         }
     }
