@@ -254,6 +254,12 @@ routes:
         attributes:
             product: mobile-arcade
 
+    /api/plugins/native/app/get-restricted-countries:
+        method: GET
+        action: App\MobileEntry\Controller\NativeAppController:getRestrictedCountries
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+
     # Definition of component controllers for cache control
 
     /api/plugins/component/route/promotions/promotions:
