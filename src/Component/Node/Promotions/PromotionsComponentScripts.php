@@ -43,6 +43,7 @@ class PromotionsComponentScripts implements ComponentAttachmentInterface
 
         try {
             $promoConfigs = $this->config->getConfig('mobile_promotions.promotions_configuration');
+            $faqConfigs = $this->config->getConfig('mobile_promotions.promotions_configuration');
         } catch (\Exception $e) {
             $promoConfigs = [];
         }
