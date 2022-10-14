@@ -11,11 +11,11 @@ import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/ass
 export class NodeComponent implements ComponentInterface {
     private element: HTMLElement;
 
-    onLoad(element: HTMLElement, attachments: {}) {
+    onLoad(element: HTMLElement, attachments: {faqdomain: string}) {
         this.element = element;
         this.equalizeStickyHeight();
         this.accordion(element);
-        this.parseOptin(element);
+        this.parseOptin(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {}) {
@@ -32,10 +32,10 @@ export class NodeComponent implements ComponentInterface {
         const accordion = new Accordion(element, { openByDefault: 0 });
     }
 
-    private parseOptin(main) {
+    private parseOptin(main, attachments) {
         const regex = new RegExp(/\{webform:([^}]+)\}/g);
         main.innerHTML.replace(regex, (match, id) => {
-            main.innerHTML = this.buildIframe(main, id);
+            main.innerHTML = this.buildIframe(main, id, attachments);
         });
 
         const iframes = main.querySelectorAll("[class^='optin-form']");
@@ -53,8 +53,8 @@ export class NodeComponent implements ComponentInterface {
         }
     }
 
-    private buildIframe(main, id) {
-        const src = window.location.origin + "/opt-in/" + id;
+    private buildIframe(main, id, attachments) {
+        const src = attachments.faqdomain + "/opt-in/" + id;
         const iframe = "<iframe src='" + src + "' class='optin-form' scrolling='no'></iframe>";
 
         return main.innerHTML.replace("{webform:" + id + "}", iframe);
