@@ -42,7 +42,7 @@ class NodeComponentScripts implements ComponentAttachmentInterface
         try {
             $faqConfigs = $this->config->getConfig('mobile_entrypage.entrypage_configuration');
         } catch (\Exception $e) {
-            $promoConfigs = [];
+            $faqConfigs = [];
         }
 
         $data['faqdomain'] = $faqConfigs['faqUrl'] ?? "https://www.dafabet.com/en/faqs";
