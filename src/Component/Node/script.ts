@@ -18,9 +18,10 @@ export class NodeComponent implements ComponentInterface {
         this.parseOptin(element, attachments);
     }
 
-    onReload(element: HTMLElement, attachments: {}) {
+    onReload(element: HTMLElement, attachments: {faqdomain: string}) {
         this.equalizeStickyHeight();
         this.accordion(element);
+        this.parseOptin(element, attachments);
     }
 
     private equalizeStickyHeight() {
