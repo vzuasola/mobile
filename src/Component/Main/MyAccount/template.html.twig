@@ -3,6 +3,7 @@
         <ul class="tab-menu">
             <li class="active"><a href="#my-profile-content">{{ myProfileTab }}</a></li>
             <li><a href="#change-password-content">{{ changePasswordTab }}</a></li>
+            <li><a href="#bonuses-content">Bonuses</a></li>
         </ul>
         <div class="container">
             <div class="tab-content" id="my-profile-content">
@@ -13,6 +14,9 @@
             </div>
             <div class="tab-content" id="change-password-content">
                 {{ widget('change_password') }}
+            </div>
+            <div class="tab-content" id="bonuses-content">
+                {{ widget('bonuses') }}
             </div>
         </div>
     </div>

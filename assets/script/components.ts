@@ -42,6 +42,7 @@ import {ContactUsFormComponent} from "@app/src/Component/Main/ContactUsForm/scri
 import {MyAccountProfileComponent} from "@app/src/Component/Main/MyAccount/Profile/script";
 import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/MyAccount/Profile/VerifyPassword/script";
 import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
+import {BonusesComponent} from "@app/src/Component/Main/MyAccount/Bonuses/script";
 import {FooterComponent} from "@app/src/Component/Footer/script";
 import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
@@ -92,6 +93,7 @@ ComponentManager.setComponents({
     profile: new MyAccountProfileComponent(),
     profile_verify_password: new MyAccountProfileVerifyPasswordComponent(),
     change_password: new MyAccountChangePasswordComponent(),
+    bonuses: new BonusesComponent(),
     footer: new FooterComponent(),
     game_loader: new GameLoaderComponent(),
     ucp: new UnsupportedCurrencyComponent(),

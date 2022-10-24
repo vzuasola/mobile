@@ -89,7 +89,7 @@ class LoginComponentController
                     $data['user']['currency']
                 );
                 // Set the authentication cookies
-                $this->setAuthCookies();
+                //$this->setAuthCookies();
             } catch (\Exception $e) {
                 if ($e instanceof AccountLockedException) {
                     $response = $response->withStatus(403);

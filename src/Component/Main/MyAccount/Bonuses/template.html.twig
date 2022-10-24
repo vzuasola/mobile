@@ -1,0 +1,25 @@
+<div class="row">
+    <div class = "col-sm-5">
+        <label for="bonus-code" class="form-label form-label-bonus">
+            <span class="form-label-text">Bonus</span><span class="required-field">*</span>
+        </label>
+    </div>
+    <div class="col-sm-7 col-centered">
+        <div class="input-group">
+    <form action="" id="bonus-form">
+        <input type="text" class="form-control form-input-bonus" placeholder="Bonus code" required="required" />
+        <span class="input-group-btn">
+            <button class="btn btn-bonus" type="submit" id="redeem-btn">Submit</button>
+        </span>
+    </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="api-success-message mt-25 mb-20 hidden">
+    {{ successMessage|raw }}
+</div>
+<div class="api-failed-message mt-25 mb-20 hidden">
+    {{ fialedMessage|raw }}
+</div>
