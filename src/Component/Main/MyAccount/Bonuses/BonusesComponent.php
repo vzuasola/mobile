@@ -3,8 +3,7 @@
 namespace App\MobileEntry\Component\Main\MyAccount\Bonuses;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
-use App\MobileEntry\Form\MyProfileForm;
-use App\MobileEntry\Form\SmsVerificationForm;
+use App\MobileEntry\Form\BonusCodeForm;
 
 class BonusesComponent implements ComponentWidgetInterface
 {
@@ -52,6 +51,10 @@ class BonusesComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        return [];
+        $formBonusCode = $this->formManager->getForm(BonusCodeForm::class);
+
+        return [
+            'formBonusCode' => $formBonusCode->createView()
+        ];
     }
 }
