@@ -415,7 +415,7 @@ class MyAccountComponentController
         $bonusType = $request->getParam('bonus_type');
 
         try {
-            if($bonusType == "BonusPromoCode") {
+            if ($bonusType == "BonusPromoCode") {
                 $this->userFetcher->setRedeemCoupon($bonusCode);
             } else {
                 $this->userFetcher->addCouponExtenal($bonusCode);
