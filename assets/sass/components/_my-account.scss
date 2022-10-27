@@ -250,9 +250,10 @@ form.bonus-code-form {
 
         .form-label {
             position: absolute;
+            background: rgb(42, 40, 41);
+            z-index: 1;
             left: 20px;
             top: -4px;
-            background-color: #2a2829;
             padding: 0 10px;
             z-index: 10;
             font-size: 14px;
@@ -266,14 +267,22 @@ form.bonus-code-form {
         #BonusCodeForm_submit {
             border-radius: 25px;
             font-weight: bold;
+            text-transform: uppercase;
             margin-top: 10px;
             padding: 5px 10px;
         }
     }
 
-    .validation-icon {
-        left: 62%;
-        top: 38%;
+    // hide validation icon
+    .icon-validation {
+        position: absolute;
+        top: 17px;
+        right: 5px;
+    }
+
+    .form-help-block.tag-color-apple-red {
+        margin-top: 10px;
+        font-weight: bold;
     }
 
     .clear-text {
@@ -282,14 +291,14 @@ form.bonus-code-form {
         position: absolute;
         background-color: $light-gray;
         z-index: 1;
-        top: 38%;
+        top: 17px;
         border-radius: 50%;
         text-align: center;
         color: rgb(255, 255, 255);
         font-weight: 900;
         font-size: 15px;
         text-decoration: none;
-        left: 55%;
+        right: 27px;
     }
 
     .bonus-code-error-message {

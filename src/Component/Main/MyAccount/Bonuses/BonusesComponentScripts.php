@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MobileEntry\Component\Main\MyAccount\Profile;
+namespace App\MobileEntry\Component\Main\MyAccount\Bonuses;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 use App\Drupal\Config;
@@ -28,7 +28,7 @@ class BonusesComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($userFetcher, $playerSubscription, $configFetcher, $tokenParser, $playerSession)
+    public function __construct($configFetcher)
     {
         $this->configFetcher = $configFetcher->withProduct('account');
     }

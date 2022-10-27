@@ -15,7 +15,7 @@ export class Bonuses extends FormBase {
     private bonusCodeField: HTMLFormElement;
     private bonusCodeContainer: HTMLElement;
     private bonusType: any;
-
+    private bonusClearButton: HTMLElement;
     private validator: any;
     private loader: Loader;
 
@@ -35,6 +35,32 @@ export class Bonuses extends FormBase {
 
             this.loader = new Loader(utility.hasClass(this.bonusCodeContainer, "form-item", true), false, 0);
             this.validator = this.validateForm(this.form);
+            if (!this.bonusClearButton) {
+                const clearTextIcon = document.createElement("a");
+                clearTextIcon.href = "#";
+                clearTextIcon.innerHTML = "x";
+                clearTextIcon.classList.add("clear-text");
+                document.querySelector(".BonusCodeForm_BonusCode").querySelector(".form-field").append(clearTextIcon);
+                clearTextIcon.style.display = "none";
+                utility.addEventListener(this.form.BonusCodeForm_BonusCode, "input", (e) => {
+                    if (this.form.BonusCodeForm_BonusCode.value.length >= 1) {
+                        clearTextIcon.style.display = "block";
+                    } else {
+                        clearTextIcon.style.display = "none";
+                    }
+                    const submitButton = document.getElementById("#BonusCodeForm_submit");
+                    if (utility.hasClass(this.bonusCodeField, "has-error", true)) {
+                        console.log(submitButton);
+                    } else if (utility.hasClass(this.bonusCodeField, "has-success", true)) {
+                        console.log(submitButton);
+                    }
+                });
+                utility.addEventListener(clearTextIcon, "click", (e) => {
+                    e.preventDefault();
+                    this.bonusCodeField.value = "";
+                    clearTextIcon.style.display = "none";
+                });
+            }
             this.bindEvent();
         }
     }
