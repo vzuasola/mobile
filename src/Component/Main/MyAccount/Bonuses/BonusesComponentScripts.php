@@ -11,14 +11,9 @@ use App\Drupal\Config;
 class BonusesComponentScripts implements ComponentAttachmentInterface
 {
     /**
-     * User Manager Object.
+     * Fetcher
      */
-    private $user;
-
-    /**
-     * Player Subscription Manager Object.
-     */
-    private $playerSubscription;
+    private $configFetcher;
 
     /**
      *

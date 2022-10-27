@@ -23,6 +23,7 @@ export class Bonuses extends FormBase {
         super(element, attachments);
         this.element = element;
         this.attachments = attachments;
+        console.log(this.attachments);
     }
 
     init() {
@@ -67,12 +68,7 @@ export class Bonuses extends FormBase {
         .then((resp) => {
             this.bonusType = resp.data.type;
             if (resp.data.statusCode === "Success") {
-                const claimResponse = this.claimBonus(this.bonusType);
-                if (claimResponse) {
-                    this.showSuccessMessage(this.bonusCodeContainer, this.attachments.bonus_code_success);
-                } else {
-                    this.showMessage(this.bonusCodeContainer, this.attachments.invalid_bonus_code);
-                }
+                this.claimBonus(this.bonusType);
             } else {
                 this.showMessage(this.bonusCodeContainer, this.attachments.invalid_bonus_code);
             }
@@ -87,7 +83,6 @@ export class Bonuses extends FormBase {
     }
 
     private claimBonus(bonusType) {
-        let isSuccess = false;
         xhr({
             url: Router.generateRoute("my_account", "claimbonuscode"),
             type: "json",
@@ -99,16 +94,14 @@ export class Bonuses extends FormBase {
         })
         .then((resp) => {
             if (resp.status === "CLAIM_BONUS_SUCCESS") {
-                isSuccess = true;
+                this.showSuccessMessage(this.bonusCodeContainer, this.attachments.bonus_code_success);
             } else {
-                isSuccess = false;
+                this.showMessage(this.bonusCodeContainer, this.attachments.invalid_bonus_code);
             }
         })
         .fail((err, msg) => {
-            isSuccess = false;
+            this.showMessage(this.bonusCodeContainer, this.attachments.invalid_bonus_code);
         });
-        return isSuccess;
-
     }
 
     private onFormReset(form) {
@@ -122,9 +115,9 @@ export class Bonuses extends FormBase {
 
     private showSuccessMessage(parentElem, msg) {
         const msgContainer = document.createElement("div");
-        utility.addClass(msgContainer, "api-success-message mt-25 mb-20");
-
+        utility.addClass(msgContainer, "api-success-message");
         msgContainer.appendChild(document.createTextNode(msg));
+        console.log(msgContainer);
 
         parentElem.appendChild(msgContainer);
 
