@@ -69,16 +69,16 @@ export class Bonuses extends FormBase {
             if (resp.data.statusCode === "Success") {
                 const claimResponse = this.claimBonus(this.bonusType);
                 if (claimResponse) {
-                    this.showConfirmationMessage(this.form, ".api-success-message");
+                    this.showSuccessMessage(this.bonusCodeContainer, this.attachments.bonus_code_success);
                 } else {
-                    this.showConfirmationMessage(this.form, ".api-failed-message");
+                    this.showMessage(this.bonusCodeContainer, this.attachments.invalid_bonus_code);
                 }
             } else {
-                this.showMessage(this.bonusCodeContainer, "Invalid Bonus code");
+                this.showMessage(this.bonusCodeContainer, this.attachments.invalid_bonus_code);
             }
         })
         .fail((err, msg) => {
-            this.showMessage(this.bonusCodeContainer, "Error retrieving data...");
+            this.showMessage(this.bonusCodeContainer, this.attachments.default_error_message);
         })
         .always((resp) => {
             this.loader.hide();
@@ -118,5 +118,16 @@ export class Bonuses extends FormBase {
         utility.forEach(form.elements, (input) => {
             input.readOnly = false;
         });
+    }
+
+    private showSuccessMessage(parentElem, msg) {
+        const msgContainer = document.createElement("div");
+        utility.addClass(msgContainer, "api-success-message mt-25 mb-20");
+
+        msgContainer.appendChild(document.createTextNode(msg));
+
+        parentElem.appendChild(msgContainer);
+
+        return msgContainer;
     }
 }
