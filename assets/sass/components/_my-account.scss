@@ -285,6 +285,11 @@ form.bonus-code-form {
         font-weight: bold;
     }
 
+    .error-message {
+        margin-top: 1rem;
+        font-weight: bold;
+    }
+
     .clear-text {
         width: 20px;
         height: 20px;
@@ -321,5 +326,4 @@ form.bonus-code-form {
         margin-right: 5%;
         margin-top: -10px;
     }
-    
 }

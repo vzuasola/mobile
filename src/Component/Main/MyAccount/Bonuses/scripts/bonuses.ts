@@ -31,9 +31,9 @@ export class Bonuses extends FormBase {
         this.successMessage = this.element.querySelector(".bonus-success-message");
 
         if (this.form) {
+            this.form.BonusCodeForm_submit.disabled = true;
             this.bonusCodeField = this.form.BonusCodeForm_BonusCode;
             this.bonusCodeContainer = utility.hasClass(this.bonusCodeField, "form-item", true);
-
             this.loader = new Loader(utility.hasClass(this.bonusCodeContainer, "form-item", true), false, 0);
             this.validator = this.validateForm(this.form);
             if (!this.bonusClearButton) {
@@ -49,16 +49,24 @@ export class Bonuses extends FormBase {
                     } else {
                         clearTextIcon.style.display = "none";
                     }
-                    const submitButton = document.getElementById("#BonusCodeForm_submit");
-                    if (utility.hasClass(this.bonusCodeField, "has-error", true)) {
-                        console.log(submitButton);
-                    } else if (utility.hasClass(this.bonusCodeField, "has-success", true)) {
-                        console.log(submitButton);
+                    if (!this.validator.hasError) {
+                        this.form.BonusCodeForm_submit.disabled = false;
+                    } else {
+                        this.form.BonusCodeForm_submit.disabled = true;
+                    }
+                    if (!utility.hasClass(this.successMessage, "hidden")) {
+                        utility.addClass(this.successMessage, "hidden");
+                    }
+
+                    if (document.querySelector(".error-message")) {
+                        document.querySelector(".error-message").remove();
                     }
                 });
+
                 utility.addEventListener(clearTextIcon, "click", (e) => {
                     e.preventDefault();
                     this.bonusCodeField.value = "";
+                    this.form.BonusCodeForm_submit.disabled = true;
                     clearTextIcon.style.display = "none";
                 });
             }
@@ -122,6 +130,7 @@ export class Bonuses extends FormBase {
         .then((resp) => {
             if (resp.status === "CLAIM_BONUS_SUCCESS") {
                 this.showSuccessMessage();
+                this.form.BonusCodeForm_submit.disabled = true;
             } else {
                 this.showMessage(this.bonusCodeContainer, this.attachments.invalid_bonus_code);
             }
