@@ -1,12 +1,14 @@
-<div class="bonus-code-container">
-    {% form_theme formBonusCode '@base/form/standard.html.twig' %}
-        {{ form_start(formBonusCode, {'attr': {'class': 'pure-form bonus-code-form'}}) }}
-    {{ form_end(formBonusCode) }}
-</div>
+ {% if enableBonusCode %}
+    <div class="bonus-code-container">
+        {% form_theme formBonusCode '@base/form/standard.html.twig' %}
+            {{ form_start(formBonusCode, {'attr': {'class': 'pure-form bonus-code-form'}}) }}
+        {{ form_end(formBonusCode) }}
+    </div>
 
-<div class="api-success-message mt-25 mb-20 hidden">
-    {{ successMessage|raw }}
-</div>
-<div class="api-failed-message mt-25 mb-20 hidden">
-    {{ fialedMessage|raw }}
-</div>
+    <div class="api-success-message mt-25 mb-20 hidden">
+        {{ successMessage|raw }}
+    </div>
+    <div class="api-failed-message mt-25 mb-20 hidden">
+        {{ failedMessage|raw }}
+    </div>
+{% endif %}

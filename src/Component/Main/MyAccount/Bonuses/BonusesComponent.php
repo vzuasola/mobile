@@ -52,9 +52,16 @@ class BonusesComponent implements ComponentWidgetInterface
     public function getData()
     {
         $formBonusCode = $this->formManager->getForm(BonusCodeForm::class);
+        $config = $this->configFetcher->getConfig('webcomposer_config.bonus_code_configuration');
+        $isEnable = ($config['enabled'] === 1 ? true : false);
+        $successMessage = $config['success_messsage']['value'] ?? '';
+        $failedMessage = $config['invalid_code'];
 
         return [
-            'formBonusCode' => $formBonusCode->createView()
+            'formBonusCode' => $formBonusCode->createView(),
+            'enableBonusCode' => $isEnable,
+            'successMessage' => $successMessage,
+            'failedMessage' => $failedMessage
         ];
     }
 }
