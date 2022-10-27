@@ -396,10 +396,7 @@ class MyAccountComponentController
             ];
         } catch (\Exception $e) {
             $data = [
-                "data" => [
-                    "success" => false,
-                    "statusCode" => "CouponCodeNotFound"
-                ]
+                "data" => $result
             ];
         }
 
