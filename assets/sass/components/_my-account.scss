@@ -298,7 +298,7 @@ form.bonus-code-form {
         font-weight: 900;
         font-size: 15px;
         text-decoration: none;
-        right: 27px;
+        right: 30px;
     }
 
     .bonus-code-error-message {
@@ -306,18 +306,20 @@ form.bonus-code-form {
         color: $error-text-color;
         margin-left: 3%;
     }
+}
 
-    .bonus-code-feedback {
+.bonus-code-container {
+    .bonus-success-message {
         float: left;
         padding-left: 5%;
-        width: 50%;
-
-        .feedback-message {
-            display: none;
-            width: 100%;
-            background-color: #ffec7d;
-            padding: 4%;
-            border-radius: 20px;
-        }
+        width: 90%;
+        background-color: #ffec7d;
+        padding: 4%;
+        border-radius: 10px;
+        color: $black;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top: -10px;
     }
+    
 }
