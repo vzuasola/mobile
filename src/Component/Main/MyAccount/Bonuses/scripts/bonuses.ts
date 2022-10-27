@@ -16,6 +16,7 @@ export class Bonuses extends FormBase {
     private bonusCodeContainer: HTMLElement;
     private bonusType: any;
     private bonusClearButton: HTMLElement;
+    private successMessage: HTMLElement;
     private validator: any;
     private loader: Loader;
 
@@ -23,11 +24,11 @@ export class Bonuses extends FormBase {
         super(element, attachments);
         this.element = element;
         this.attachments = attachments;
-        console.log(this.attachments);
     }
 
     init() {
         this.form = this.element.querySelector(".bonus-code-form");
+        this.successMessage = this.element.querySelector(".bonus-success-message");
 
         if (this.form) {
             this.bonusCodeField = this.form.BonusCodeForm_BonusCode;
@@ -120,7 +121,7 @@ export class Bonuses extends FormBase {
         })
         .then((resp) => {
             if (resp.status === "CLAIM_BONUS_SUCCESS") {
-                this.showSuccessMessage(this.bonusCodeContainer, this.attachments.bonus_code_success);
+                this.showSuccessMessage();
             } else {
                 this.showMessage(this.bonusCodeContainer, this.attachments.invalid_bonus_code);
             }
@@ -137,16 +138,10 @@ export class Bonuses extends FormBase {
         utility.forEach(form.elements, (input) => {
             input.readOnly = false;
         });
+        utility.addClass(this.successMessage, "hidden");
     }
 
-    private showSuccessMessage(parentElem, msg) {
-        const msgContainer = document.createElement("div");
-        utility.addClass(msgContainer, "api-success-message");
-        msgContainer.appendChild(document.createTextNode(msg));
-        console.log(msgContainer);
-
-        parentElem.appendChild(msgContainer);
-
-        return msgContainer;
+    private showSuccessMessage() {
+        utility.removeClass(this.successMessage, "hidden");
     }
 }

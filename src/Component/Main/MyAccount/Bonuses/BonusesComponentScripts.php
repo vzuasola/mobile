@@ -41,7 +41,6 @@ class BonusesComponentScripts implements ComponentAttachmentInterface
         $config = $this->configFetcher->getConfig('webcomposer_config.bonus_code_configuration');
         return [
             'invalid_bonus_code' => $config['invalid_code'],
-            'bonus_code_success' => $config['success_messsage']['value'],
             'default_error_message' => $config['default_error_message'],
         ];
     }
