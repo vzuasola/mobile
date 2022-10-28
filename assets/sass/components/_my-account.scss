@@ -216,3 +216,114 @@ form.verify-password-form {
         text-align: left;
     }
 }
+
+form.bonus-code-form {
+    display: flex;
+    .BonusCodeForm_BonusCode>label {
+        display: inline;
+    }
+    float: left;
+    position: relative;
+    width: 100%;
+
+    .form-field {
+        position: relative;
+    }
+
+    #BonusCodeForm_BonusCode {
+        padding: 20px 13px;
+        border: 1px solid #FFFFFF;
+        border-radius: 10px;
+        font-weight: 900;
+        margin-right: 10px;
+        width: 100%;
+
+        // form field elements with error
+        &.has-error {
+            border: 1px solid $fire-red;
+        }
+    }
+
+    .BonusCodeForm_BonusCode {
+        float: left;
+        padding: 10px 5px;
+
+        .form-label {
+            position: absolute;
+            background: rgb(42, 40, 41);
+            z-index: 1;
+            left: 20px;
+            top: -4px;
+            padding: 0 10px;
+            z-index: 10;
+            font-size: 14px;
+        }
+    }
+
+    .BonusCodeForm_submit {
+        float: left;
+        padding: 10px;
+
+        #BonusCodeForm_submit {
+            border-radius: 25px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 10px;
+            padding: 5px 10px;
+        }
+    }
+
+    // hide validation icon
+    .icon-validation {
+        position: absolute;
+        top: 17px;
+        right: 5px;
+    }
+
+    .form-help-block.tag-color-apple-red {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    .error-message {
+        margin-top: 1rem;
+        font-weight: bold;
+    }
+
+    .clear-text {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        background-color: $light-gray;
+        z-index: 1;
+        top: 17px;
+        border-radius: 50%;
+        text-align: center;
+        color: rgb(255, 255, 255);
+        font-weight: 900;
+        font-size: 15px;
+        text-decoration: none;
+        right: 30px;
+    }
+
+    .bonus-code-error-message {
+        font-weight: 700;
+        color: $error-text-color;
+        margin-left: 3%;
+    }
+}
+
+.bonus-code-container {
+    .bonus-success-message {
+        float: left;
+        padding-left: 5%;
+        width: 90%;
+        background-color: #ffec7d;
+        padding: 4%;
+        border-radius: 10px;
+        color: $black;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top: -10px;
+    }
+}

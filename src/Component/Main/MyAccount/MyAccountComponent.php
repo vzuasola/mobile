@@ -52,6 +52,7 @@ class MyAccountComponent implements ComponentWidgetInterface
     public function getData()
     {
         $myProfileConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
+        $bonusConfig = $this->configFetcher->getConfig('webcomposer_config.bonus_code_configuration');
         $user = $this->userFetcher->getPlayerDetails();
         $flashMessage = "";
         $isFastReg = false;
@@ -59,6 +60,7 @@ class MyAccountComponent implements ComponentWidgetInterface
         $fname = substr($user['firstName'], 0, 5);
         $lname = substr($user['lastName'], 0, 5);
         $bdate = $user['dateOfBirth'];
+        $isenableBonusCode = ($bonusConfig['enabled'] === 1 ? true : false);
 
         if (strtoupper($fname) == "DFRFN" ||
             strtoupper($lname) == "DFRLN" ||
@@ -75,6 +77,7 @@ class MyAccountComponent implements ComponentWidgetInterface
             'changePasswordTab' => $myProfileConfig['change_password_tab'] ?? 'Change Password',
             'isFastReg' => $isFastReg,
             'flashMessage' => $flashMessage,
+            'enableBonusCode' => $isenableBonusCode,
         ];
     }
 }
