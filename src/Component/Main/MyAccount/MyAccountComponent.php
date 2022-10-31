@@ -75,6 +75,7 @@ class MyAccountComponent implements ComponentWidgetInterface
         return [
             'myProfileTab' => $myProfileConfig['my_profile_tab'] ?? 'My Profile',
             'changePasswordTab' => $myProfileConfig['change_password_tab'] ?? 'Change Password',
+            'bonusTabLabel' => $bonusConfig['mobile_tab_label'] ?? 'Bonuses',
             'isFastReg' => $isFastReg,
             'flashMessage' => $flashMessage,
             'enableBonusCode' => $isenableBonusCode,
