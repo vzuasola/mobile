@@ -2,7 +2,8 @@ import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Loader} from "@app/assets/script/components/loader";
-import {FormBase, resetForm} from "@app/assets/script/components/form-base";
+import {FormBase} from "@app/assets/script/components/form-base";
+import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 
 /**
  * Bonus Code
@@ -88,7 +89,8 @@ export class Bonuses extends FormBase {
     private checkField() {
         // Remove/hide error message & Show loader
         this.loader.show();
-
+        const load = this.element.querySelector(".loader-container");
+        load.setAttribute("style", "top: 100%; position: relative; margin-top:4rem");
         // Disable fields
         this.disableFields(this.form);
 
@@ -140,17 +142,13 @@ export class Bonuses extends FormBase {
         });
     }
 
-    private onFormReset(form) {
-        resetForm(form);
-
-        // enable fields
-        utility.forEach(form.elements, (input) => {
-            input.readOnly = false;
-        });
-        utility.addClass(this.successMessage, "hidden");
-    }
-
     private showSuccessMessage() {
-        utility.removeClass(this.successMessage, "hidden");
+        ComponentManager.broadcast("bonus.code.redeem");
+        ComponentManager.refreshComponent(
+            ["header"],
+            () => {
+                utility.removeClass(this.successMessage, "hidden");
+            },
+        );
     }
 }
