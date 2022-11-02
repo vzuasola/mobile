@@ -219,12 +219,13 @@ form.verify-password-form {
 
 form.bonus-code-form {
     display: flex;
-    .BonusCodeForm_BonusCode>label {
-        display: inline;
-    }
     float: left;
     position: relative;
     width: 100%;
+
+    .BonusCodeForm_BonusCode>label {
+        display: inline;
+    }
 
     .form-field {
         position: relative;

@@ -18,6 +18,7 @@ export class Bonuses extends FormBase {
     private bonusType: any;
     private bonusClearButton: HTMLElement;
     private successMessage: HTMLElement;
+    private isLogin: boolean;
     private validator: any;
     private loader: Loader;
 
@@ -28,6 +29,7 @@ export class Bonuses extends FormBase {
     }
 
     init() {
+        this.isLogin = this.attachments.authenticated;
         this.form = this.element.querySelector(".bonus-code-form");
         this.successMessage = this.element.querySelector(".bonus-success-message");
 
@@ -89,7 +91,8 @@ export class Bonuses extends FormBase {
     private checkField() {
         // Remove/hide error message & Show loader
         this.loader.show();
-
+        const load = this.element.querySelector(".loader-container");
+        load.setAttribute("style", "top: 100%; position: relative; margin-top:4rem");
         // Disable fields
         this.disableFields(this.form);
 
@@ -142,12 +145,12 @@ export class Bonuses extends FormBase {
     }
 
     private showSuccessMessage() {
+        ComponentManager.broadcast("bonus.code.redeem");
         ComponentManager.refreshComponent(
             ["header"],
             () => {
                 utility.removeClass(this.successMessage, "hidden");
             },
         );
-
     }
 }
