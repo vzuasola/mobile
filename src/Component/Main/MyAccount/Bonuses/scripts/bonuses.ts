@@ -18,7 +18,6 @@ export class Bonuses extends FormBase {
     private bonusType: any;
     private bonusClearButton: HTMLElement;
     private successMessage: HTMLElement;
-    private isLogin: boolean;
     private validator: any;
     private loader: Loader;
 
@@ -29,7 +28,6 @@ export class Bonuses extends FormBase {
     }
 
     init() {
-        this.isLogin = this.attachments.authenticated;
         this.form = this.element.querySelector(".bonus-code-form");
         this.successMessage = this.element.querySelector(".bonus-success-message");
 
