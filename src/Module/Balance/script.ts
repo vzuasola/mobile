@@ -74,6 +74,10 @@ export class BalanceModule implements ModuleInterface {
                 }
             }
         });
+
+        ComponentManager.subscribe("bonus.code.redeem", (event, src, data) => {
+           this.balanceResponse = undefined;
+        });
     }
 
     /**

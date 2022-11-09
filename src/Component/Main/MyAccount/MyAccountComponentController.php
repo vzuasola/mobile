@@ -380,4 +380,50 @@ class MyAccountComponentController
             'status' => $status
         ]);
     }
+
+    /**
+     * Ajax - validatebonuscode
+     */
+    public function validatebonuscode($request, $response)
+    {
+        $bonusCode = $request->getParam('bonus_code');
+
+        try {
+            $result = $this->userFetcher->validateCouponCode($bonusCode);
+
+            $data = [
+                "data" => $result
+            ];
+        } catch (\Exception $e) {
+            $data = [
+                "data" => $result
+            ];
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    /**
+     * Ajax - claimbonuscode
+     */
+    public function claimbonuscode($request, $response)
+    {
+        $bonusCode = $request->getParam('bonus_code');
+        $bonusType = $request->getParam('bonus_type');
+
+        try {
+            if ($bonusType == "BonusPromoCode") {
+                $this->userFetcher->setRedeemCoupon($bonusCode);
+            } else {
+                $this->userFetcher->addCouponExtenal($bonusCode);
+            }
+            $status = 'CLAIM_BONUS_SUCCESS';
+        } catch (\Exception $e) {
+            $status = 'CLAIM_BONUS_FAILED';
+        }
+
+        return $this->rest->output($response, [
+            'status' => $status,
+        ]);
+    }
 }

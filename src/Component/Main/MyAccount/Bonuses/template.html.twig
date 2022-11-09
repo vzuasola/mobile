@@ -1,0 +1,11 @@
+{% if enableBonusCode %}
+    <div class="bonus-code-container">
+        {% form_theme formBonusCode '@base/form/standard.html.twig' %}
+            {{ form_start(formBonusCode, {'attr': {'class': 'pure-form bonus-code-form'}}) }}
+        {{ form_end(formBonusCode) }}
+        <div class="bonus-success-message mb-20 hidden">
+            {{ successMessage|raw }}
+        </div>
+    </div>
+    <div class="clearfix"></div>
+{% endif %}
