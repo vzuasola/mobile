@@ -107,7 +107,11 @@ export class Bonuses extends FormBase {
             if (resp.data.statusCode === "Success") {
                 this.claimBonus(this.bonusType);
             } else {
-                this.showMessage(this.bonusCodeContainer, this.attachments.invalid_bonus_code);
+                let errorMessage = this.attachments.invalid_bonus_code;
+                if (resp.data.statusCode === "RATELIMIT") {
+                    errorMessage = this.attachments.rate_limit_error;
+                }
+                this.showMessage(this.bonusCodeContainer, errorMessage);
             }
         })
         .fail((err, msg) => {
