@@ -127,7 +127,6 @@ class BalanceModuleController
 
             try {
                 $ids = self::SPECIAL_BALANCE_BEHAVIORS;
-                
                 if ($matrix) {
                     $ids = self::PARTNER_MATRIX_BEHAVIORS;
                 }
