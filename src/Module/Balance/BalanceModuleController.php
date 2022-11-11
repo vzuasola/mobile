@@ -19,7 +19,6 @@ class BalanceModuleController
         // 'fish_hunter' => 7,
         'opus_live_dealer' => 8,
         // 'opus_keno' => 9,
-        'exchange' => 10,
         // 'esports' => 11,
         'soda_casino' => 13,
         'ptplus' => 15,
@@ -36,7 +35,6 @@ class BalanceModuleController
         'mobile-casino' => 1,
         'mobile-casino-gold' => 2,
         'mobile-live-dealer' => 5,
-        'mobile-exchange' => 10,
         'mobile-lottery' => 5,
         'mobile-arcade' => 5,
         'mobile-soda-casino' => 13,
@@ -129,10 +127,7 @@ class BalanceModuleController
 
             try {
                 $ids = self::SPECIAL_BALANCE_BEHAVIORS;
-                if (strtolower($currency) !== "inr") {
-                    unset($ids['exchange']);
-                }
-
+                
                 if ($matrix) {
                     $ids = self::PARTNER_MATRIX_BEHAVIORS;
                 }
