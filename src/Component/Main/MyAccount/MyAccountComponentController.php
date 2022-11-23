@@ -386,6 +386,25 @@ class MyAccountComponentController
      */
     public function validatebonuscode($request, $response)
     {
+        $config = $this->configFetcher->getConfigById('rate_limit');
+        $rateLimitEnabled = $config['rate_limit_bonus_code_enable'] ?? 0;
+
+        if ($rateLimitEnabled) {
+            $interval = $config['rate_limit_bonus_code_interval'] ?? 60;
+            $operation = $config['rate_limit_bonus_code_operation'] ?? 1;
+
+            $isLimitExceeded = $this->rateLimit->checkLimit("bonus_code", $operation, $interval);
+
+            if ($isLimitExceeded) {
+                $data = [
+                    "statusCode" => 'RATELIMIT'
+                ];
+                return $this->rest->output($response, [
+                    'data' => $data,
+                ]);
+            }
+        }
+
         $bonusCode = $request->getParam('bonus_code');
 
         try {

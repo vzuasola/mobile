@@ -10,9 +10,7 @@
         <li class="{{ liClass }} spt-list-menu-item">
             <a href="#" class="spt-item-links games-provider main">
                 {{ provider_tab }}
-                <svg viewBox="0 0 20 20">
-                    <use xlink:href="#product-arcade" />
-                </svg>
+                {% include '@app/web/images/svg/lobby/providers.svg' %}
             </a>
         </li>
         {% if authenticated and transfer_url %}

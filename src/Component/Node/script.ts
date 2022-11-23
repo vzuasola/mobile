@@ -56,7 +56,7 @@ export class NodeComponent implements ComponentInterface {
 
     private buildIframe(main, id, attachments) {
         const src = attachments.faqdomain + "/opt-in/" + id;
-        const iframe = "<iframe src='" + src + "' class='optin-form' scrolling='no'></iframe>";
+        const iframe = "<iframe src='" + src + "' class='optin-form'></iframe>";
 
         return main.innerHTML.replace("{webform:" + id + "}", iframe);
     }
