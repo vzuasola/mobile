@@ -76,6 +76,7 @@ class LoginComponentController
                 session_regenerate_id(true);
                 $data['hash'] = md5($this->playerSession->getToken());
                 $data['token'] = $this->playerSession->getToken();
+                $data['authenticated'] = $this->playerSession->isLogin();
                 $data['matrix'] = $this->playerSession->getDetails()['isPlayerCreatedByAgent'] ?? false;
                 $data['user'] = [
                     'playerId' =>  $this->playerSession->getDetails()['playerId'] ?? '',
