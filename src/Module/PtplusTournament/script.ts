@@ -132,7 +132,6 @@ export class PtplusTournamentModule implements ModuleInterface {
             if (target.getAttribute("data-tournament-learn-more") === "learn-more") {
                 utility.preventDefault(event);
                 // Trigger the MODAL here
-                console.log("it is learn more");
                 // Check if the player is eligible!
                 if (target.getAttribute("data-tournament-option")) {
                     const status = target.getAttribute("data-tournament-status")
@@ -148,9 +147,6 @@ export class PtplusTournamentModule implements ModuleInterface {
     }
 
     private tournamentAPI(type, status) {
-        console.log(type);
-        console.log(status);
-        console.log(utility.url("/api-tournament/tournament-options"));
         xhr({
             url: utility.url("/api-tournament/tournament-options"),
             type: "json",
@@ -161,8 +157,6 @@ export class PtplusTournamentModule implements ModuleInterface {
             },
         }).then((response) => {
             // Handle the response
-            console.log("patasxan");
-            console.log(response);
         });
     }
 
