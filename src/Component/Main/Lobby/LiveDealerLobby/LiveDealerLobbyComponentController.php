@@ -206,6 +206,7 @@ class LiveDealerLobbyComponentController
             $definition['title'] = $game['title'] ?? "";
             $definition['game_code'] = $game['field_game_code'] ?? "";
             $definition['table_id'] = $game['field_table_id'] ?? "";
+            $definition['extgame_id'] = $game['field_external_game_id'] ?? "";
             $definition['game_provider'] = $game['field_game_provider'] ?? "";
             $definition['game_subprovider'] = $subprovider['name'] ?? "";
             $definition['game_platform'] = $game['field_game_platform'] ?? "";
@@ -380,6 +381,7 @@ class LiveDealerLobbyComponentController
             $definition['game_code'] = $game['field_game_code'][0]['value'] ?? "";
             $definition['game_provider'] = $game['field_game_provider'][0]['value'] ?? "";
             $definition['table_id'] = $game['field_table_id'][0]['value'] ?? "";
+            $definition['extgame_id'] = $game['field_external_game_id'][0]['value'] ?? "";
             $definition['game_subprovider'] = $subprovider['name'][0]['value'] ?? "";
             $definition['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
             $definition['lobby_tab'] = $game['field_lobby_tab'][0]['field_alias'][0]['value'] ?? "";
