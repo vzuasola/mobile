@@ -71,6 +71,11 @@ export class  ProductLanguage {
             "lo",
             "km",
             "jp",
+            "hi",
+            "in",
+            "te",
+            "bn",
+            "pk",
         ],
         "live-dealer" : [
             "en",
@@ -88,6 +93,8 @@ export class  ProductLanguage {
             "bn",
             "pk",
             "jp",
+            "es",
+            "pt",
         ],
         "games" : [
             "en",

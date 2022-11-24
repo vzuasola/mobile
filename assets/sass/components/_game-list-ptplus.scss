@@ -211,6 +211,93 @@
                 min-height: 86px;
             }
         }
+
+        .rectangular-banner-tile-item {
+            display: inline-block;
+            margin: 3px 3px 0 3px;
+            background-repeat:no-repeat;
+            -webkit-background-size:cover;
+            -moz-background-size:cover;
+            -o-background-size:cover;
+            background-size:cover;
+            background-position:center center;
+            border-radius: .5rem;
+
+            &.full {
+                min-width: 356px;
+            }
+
+            &.three-quarter {
+                min-width: 290px;
+            }
+
+            .tournament-content {
+                padding: 0;
+                width: 100%;
+                min-height: 86px;
+                position: relative;
+                z-index: 1;
+            }
+
+            .tournament-blurb {
+                right: 0;
+                width: 100%;
+                height: 4rem;
+                padding: 0rem 0.5rem;
+                opacity: 1;
+                position: relative;
+                border-bottom-left-radius: 0.5rem;
+                border-bottom-right-radius: 0.5rem;
+                z-index: 2;
+
+    
+                &.bottom {
+                    background: rgba(0,0,0,0.6);
+                    padding-bottom: 2rem;
+                    padding-right: 0;
+                    bottom: 0;
+                }
+                .tournament-title {
+                    display: inline-block;
+                    font-weight: 600;
+                    color: $yellow;
+                    font-size: 12px;
+                    width: 50%;
+                    padding: 0.5rem 0.2rem 0;
+                    margin: 0 auto 0.5rem;
+                }
+
+                .btn-container {
+                    width: 50%;
+                    float: right;
+
+                    .btn-white {
+                        background-color: $white;
+                        border-color: $white;
+                        color: $black;
+                    }
+
+                    .btn-yellow, .btn-white {
+                        border-radius: 0;
+                        font-size: 2.4vw;
+                        white-space: normal;
+                        width: 50%;
+                        min-height: 4rem;
+                        line-height: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
+                        float:left;
+                    }
+
+                    .btn-yellow {
+                        color: $red;
+                        border-bottom-right-radius: .5rem;
+                    }
+                }
+            }
+        }
     }
 
     @media (orientation: landscape){
@@ -223,6 +310,35 @@
 
         .rectangular-game-tile-item {
             width: 40vw;
+        }
+
+        .rectangular-banner-tile-item {
+            width: 75vw;
+            height: 25vw;
+        }
+
+        .rectangular-banner-tile-item {
+            .tournament-content {
+                height: 15vw;
+            }
+            .tournament-blurb {
+                min-height: 7.8rem !important;
+
+                .tournament-title {
+                    width: 65% !important;
+                    font-size: 14px !important;
+                }
+
+                .btn-container {
+                    width: 35% !important;
+
+                    .btn-white,
+                    .btn-yellow {
+                        min-height: 7.8rem !important;
+                        font-size: 12px !important;
+                    }
+                }
+            }
         }
     }
 
@@ -246,8 +362,15 @@
             } 
             
             .rectangular-game-tile {
-                .rectangular-game-tile-item {    
+                .rectangular-game-tile-item {
                     .game-listing-item {
+                        min-height: 172px;
+                        min-width: 278px;
+                    }
+                }
+
+                .rectangular-banner-tile-item {
+                    .tournament-content {
                         min-height: 172px;
                         min-width: 278px;
                     }
@@ -271,6 +394,15 @@
                     width: 40%;
 
                     .game-listing-item {
+                        height: 25vw;
+                    }
+                }
+
+                .rectangular-banner-tile-item {
+                    width: 75%;
+                    background-position-y: 80%;
+
+                    .tournament-content {
                         height: 25vw;
                     }
                 }

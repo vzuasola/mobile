@@ -4,6 +4,9 @@
         {% for game_list in node.field_games_list %}
             <li class="game-listing">
                 <a class="game-list game-listing-item"
+                    data-game-title = "{{ game_list.field_game_title.0.value }}"
+                    data-game-tablename = "{{ game_list.field_table_id.0.value }}"
+                    data-game-launchpromo = "true"
                     {% if is_login %}
                         data-game-launch="true"
                     {% endif %}
@@ -27,6 +30,8 @@
                     data-game-target = "{{ game_list.field_target.0.value }}"
                     {% if game_list.field_use_lobby.0.value %}
                         data-game-lobby = "true"
+                    {% else %}
+                        data-game-lobby = "false"
                     {% endif %}
                     {% if game_list.field_game_platform.0.value %}
                         data-game-platform = "{{ game_list.field_game_platform.0.value }}"

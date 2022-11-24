@@ -135,6 +135,8 @@ class LoginComponentController
             session_unset();
             session_destroy();
             session_write_close();
+            session_start();
+            session_regenerate_id(true);
         } catch (\Exception $e) {
             $data['message'] = $e->getMessage();
         }

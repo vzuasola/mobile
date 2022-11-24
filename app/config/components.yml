@@ -185,6 +185,10 @@ components:
     class: App\MobileEntry\Component\Main\MyAccount\ChangePassword\ChangePasswordComponent
     parent: my_account
 
+  bonuses:
+    class: App\MobileEntry\Component\Main\MyAccount\Bonuses\BonusesComponent
+    parent: my_account
+
   seo:
     class: App\MobileEntry\Component\SEO\SEOComponent
 

@@ -1,38 +1,41 @@
-{% if node.field_banner_image.0.url %}
-    <a class="game-list game-listing-item"
-        {% if is_login %}
-            data-game-launch="true"
-        {% endif %}
-        {% set product = node.field_banner_game_launch.0.field_product.0.value %}
-        {% if product == 'mobile-casino' %}
-            {% set product = casino_preferred %}
-        {% endif %}
-        data-game-product = "{{ product }}"
-        data-game-code = "{{ node.field_banner_game_launch.0.field_game_code.0.value }}"
-        data-game-keywords = "{{ node.keywords.0.keywords.0.value }}"
-        {% if game_provider[node.field_banner_game_launch.0.field_game_provider.0.target_id] is defined %}
-            data-game-provider = "{{ game_provider[node.field_banner_game_launch.0.field_game_provider.0.target_id] }}"
-        {% endif %}
-        {% if game_subprovider[node.field_banner_game_launch.0.field_game_subprovider.0.target_id] is defined %}
-            data-game-subprovider = "{{ game_subprovider[node.field_banner_game_launch.0.field_game_subprovider.0.target_id] }}"
-        {% endif %}
-        {% if node.field_banner_game_launch.0.field_use_game_loader.0.value %}
-            data-game-loader = "true"
-        {% else %}
-            data-game-loader = "false"
-        {% endif %}
-        data-game-target = "{{ node.field_banner_game_launch.0.field_target.0.value }}"
-        {% if node.field_banner_game_launch.0.field_use_lobby.0.value %}
-            data-game-lobby = "true"
-        {% endif %}
-        {% if node.field_banner_game_launch.0.field_game_platform.0.value %}
-            data-game-platform = "{{ node.field_banner_game_launch.0.field_game_platform.0.value }}"
-        {% endif %}
-    >
-        {% if node.field_post_banner_image.0.url %}
-            <img src="{{ node.field_banner_image.0.url }}" alt="{{ node.field_banner_image.0.alt }}" class="w-100">
-        {% elseif node.field_post_banner_image.0.url %}
-            <img src="{{ node.field_post_banner_image.0.url }}" alt="{{ node.field_post_banner_image.0.alt }}" class="w-100">
-        {% endif %}
-    </a>
-{% endif %}
+<a class="game-list game-listing-item"
+    data-game-title = "{{ node.field_banner_game_launch.0.field_game_title.0.value }}"
+    data-game-tablename = "{{ node.field_banner_game_launch.0.field_field_table_id.0.value }}"
+    data-game-launchpromo = "true"
+    {% if is_login %}
+        data-game-launch="true"
+    {% endif %}
+    {% set product = node.field_banner_game_launch.0.field_product.0.value %}
+    {% if product == 'mobile-casino' %}
+        {% set product = casino_preferred %}
+    {% endif %}
+    data-game-product = "{{ product }}"
+    data-game-code = "{{ node.field_banner_game_launch.0.field_game_code.0.value }}"
+    data-game-keywords = "{{ node.keywords.0.keywords.0.value }}"
+    {% if game_provider[node.field_banner_game_launch.0.field_game_provider.0.target_id] is defined %}
+        data-game-provider = "{{ game_provider[node.field_banner_game_launch.0.field_game_provider.0.target_id] }}"
+    {% endif %}
+    {% if game_subprovider[node.field_banner_game_launch.0.field_game_subprovider.0.target_id] is defined %}
+        data-game-subprovider = "{{ game_subprovider[node.field_banner_game_launch.0.field_game_subprovider.0.target_id] }}"
+    {% endif %}
+    {% if node.field_banner_game_launch.0.field_use_game_loader.0.value %}
+        data-game-loader = "true"
+    {% else %}
+        data-game-loader = "false"
+    {% endif %}
+    data-game-target = "{{ node.field_banner_game_launch.0.field_target.0.value }}"
+    {% if node.field_banner_game_launch.0.field_use_lobby.0.value %}
+        data-game-lobby = "true"
+    {% else %}
+        data-game-lobby = "false"
+    {% endif %}
+    {% if node.field_banner_game_launch.0.field_game_platform.0.value %}
+        data-game-platform = "{{ node.field_banner_game_launch.0.field_game_platform.0.value }}"
+    {% endif %}
+>
+    {% if is_login and node.field_post_banner_image.0.url %}
+        <img src="{{ node.field_post_banner_image.0.url }}" alt="{{ node.field_post_banner_image.0.alt }}" class="w-100">
+    {% elseif node.field_banner_image.0.url %}
+        <img src="{{ node.field_banner_image.0.url }}" alt="{{ node.field_banner_image.0.alt }}" class="w-100">
+    {% endif %}
+</a>
