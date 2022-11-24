@@ -21,9 +21,10 @@ export class Login {
     private sync: SyncEvents;
     private productCheckPreference: any = ["mobile-casino", "mobile-casino-gold"];
     private products: any = [];
-
     private isLogin: boolean;
     private element: HTMLElement;
+    private logip: string;
+    private metricsEndpoint: string;
 
     // stores the array of promises callbacks
     private loginEvents = [];
@@ -41,9 +42,14 @@ export class Login {
         this.listenLoginEvents();
     }
 
-    handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean}) {
+    handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean,
+            logip: string,
+            metricsEndpoint: string,
+        }) {
         this.element = element;
         this.isLogin = attachments.authenticated;
+        this.logip = attachments.logip;
+        this.metricsEndpoint = attachments.metricsEndpoint;
 
         this.listenLogin();
         this.listenLogout();
@@ -53,12 +59,17 @@ export class Login {
         this.updateLoginLayout();
     }
 
-    handleOnReload(element: HTMLElement, attachments: {authenticated: boolean}) {
+    handleOnReload(element: HTMLElement, attachments: {authenticated: boolean,
+            logip: string,
+            metricsEndpoint: string,
+        }) {
         if (this.isLogin && !attachments.authenticated) {
             ComponentManager.broadcast("session.logout");
         }
-        this.isLogin = attachments.authenticated;
         this.element = element;
+        this.isLogin = attachments.authenticated;
+        this.logip = attachments.logip;
+        this.metricsEndpoint = attachments.metricsEndpoint;
 
         this.activateLogin(element);
         this.bindLoginForm(element, attachments);
@@ -181,6 +192,30 @@ export class Login {
             data,
         }).then((response) => {
             if (response && response.success) {
+                const timeOrigin = performance.timeOrigin;
+                const entry = performance.getEntriesByType("navigation")[0];
+                const startTime = performance.now();
+                const account = {
+                    country: response.user.country,
+                    currency: response.user.currency,
+                    endTime: timeOrigin + startTime + entry.duration,
+                    is_logged_in: response.authenticated,
+                    logip: this.logip,
+                    name: document.title,
+                    path: location.protocol + "//" + location.host + location.pathname,
+                    playerId: response.user.playerId,
+                    startTime: timeOrigin + startTime + entry.startTime,
+                    username: data.username.toUpperCase(),
+                };
+                const headers = {
+                    type: "text/plain;charset=utf-8",
+                };
+                const blob = new Blob([JSON.stringify(account)], headers);
+                const metricUrl = this.metricsEndpoint;
+                const sendMessage = navigator.sendBeacon(metricUrl, blob);
+                if (!sendMessage) {
+                    console.log("Passing request data failed", response);
+                }
                 const remember = src.querySelector('[name="remember"]');
 
                 if (remember) {
@@ -234,7 +269,6 @@ export class Login {
             Modal.open("#login-lightbox");
 
             ComponentManager.broadcast("session.failed", {error, form});
-
             this.loader.hide();
         });
     }

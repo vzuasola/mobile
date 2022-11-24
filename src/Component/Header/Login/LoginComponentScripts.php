@@ -2,6 +2,8 @@
 
 namespace App\MobileEntry\Component\Header\Login;
 
+use App\Utils\IP;
+
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 
 /**
@@ -39,6 +41,7 @@ class LoginComponentScripts implements ComponentAttachmentInterface
         $this->playerSession = $playerSession;
     }
 
+
     /**
      * @{inheritdoc}
      */
@@ -50,7 +53,16 @@ class LoginComponentScripts implements ComponentAttachmentInterface
             $config = [];
         }
 
+        try {
+            $Entrypageconfig = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
+        } catch (\Exception $e) {
+            $Entrypageconfig = [];
+        }
+
         return [
+            'logip' => IP::getIpAddress(),
+            'metricsEndpoint' => $Entrypageconfig['metricsEndpoint']
+            ?? 'https://cashier-custom-end-user-monitoring-api-001-v433up62aa-de.a.run.app/api/v1/push',
             'authenticated' => $this->playerSession->isLogin(),
 
             'error_messages' => [

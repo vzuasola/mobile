@@ -492,7 +492,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 if (key === catKey) {
                     const catName = category.name;
                     const templateType = "category-game-content";
-                    const backUrlHash = key;
+                    const backUrlHash = localStorage.getItem("customBackUrl");
                     const pageContent = this.catPageData(catName, 0, false, 0, templateType, backUrlHash);
                     const gameActiveEl = document.querySelector('[data-name="games"]');
                     this.makeActive(gameActiveEl);
@@ -896,9 +896,14 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     }
 
     private updateFavoritesData(data) {
+        let catName = "";
+        for (const categoryItem of this.response.categories) {
+            if (categoryItem.hasOwnProperty("field_games_alias") && categoryItem.field_games_alias === "favorites") {
+                catName = categoryItem.name;
+            }
+        }
         const temp = [];
         const category = {
-            name: "Favorites",
             key: "favorites",
         };
         const categoriesEl = document.querySelector("[data-category-id=" + category.key + "]");
@@ -914,7 +919,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             games: temp,
             favorites: this.response.favorite_list,
             isLogin: this.isLogin,
-            categoryName: category.name,
+            categoryName: catName,
             categoryUrl: category.key,
             displayShowAllText: "",
             enableAllText: "",
@@ -973,10 +978,12 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 this.currentPage = 0;
                 let key;
                 const locHref = utility.getHash(window.location.href);
-                let backUrlHash = utility.getHash(event.oldURL);
-                if (!event.oldURL.includes("#")) {
-                    backUrlHash = "";
+                if (locHref === "") {
+                    localStorage.setItem("customBackUrl", locHref);
+                } else if ( locHref === "game-categories") {
+                    localStorage.setItem("customBackUrl", locHref);
                 }
+                const backUrlHash = localStorage.getItem("customBackUrl");
                 const gamesEl = this.element.querySelector("#game-container");
                 for (const category of this.response.categories) {
                     if (category.hasOwnProperty("field_games_alias")) {
@@ -989,6 +996,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                         }
                     }
                 }
+                const homeActiveEl = document.querySelector('[data-name="home"]');
+                const gameActiveEl = document.querySelector('[data-name="games"]');
                 if (locHref === "game-categories") {
                     document.querySelector(".game-container").setAttribute("style", "display: none");
                     document.querySelector(".category-page").setAttribute("style", "display: block");
@@ -1007,6 +1016,8 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     this.homePageContent(key);
                     this.gamesSearch.clearSearchResult();
                     this.gamesSearch.clearSearchBlurbPreview();
+                    this.makeInactive(gameActiveEl);
+                    this.makeActive(homeActiveEl);
                 } else {
                     document.querySelector(".game-container").setAttribute("style", "display: block");
                     document.querySelector(".category-page").setAttribute("style", "display: none");
