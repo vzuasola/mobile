@@ -65,20 +65,18 @@ trait ProviderTrait
     public function getGameUrlByGeneralLobby($request, $requestData)
     {
         // Gets specific game URL
-        if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
-        $requestData['lobby'] === "false"
-      ) {
-        $data = $this->getGameUrl($request, $requestData);
-      }
+        if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined')
+            && $requestData['lobby'] === "false") {
+            $data = $this->getGameUrl($request, $requestData);
+        }
 
-      // Gets provider game lobby (live-dealer)
-      if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
-        $requestData['lobby'] === "true"
-      ) {
-        $data = $this->getGameLobby($request, $requestData);
-      }
+        // Gets provider game lobby (live-dealer)
+        if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined')
+            || $requestData['lobby'] === "true") {
+            $data = $this->getGameLobby($request, $requestData);
+        }
 
-      return $data;
+        return $data;
     }
 
     /**
@@ -102,7 +100,7 @@ trait ProviderTrait
             'playMode' => true
         ];
 
-        if(count($extraParams)) {
+        if (count($extraParams)) {
             $options['options']['properties'] = $extraParams;
         }
 
@@ -124,7 +122,8 @@ trait ProviderTrait
         return $data;
     }
 
-    public function getPlayerGameExtraParams() {
+    public function getPlayerGameExtraParams()
+    {
         return [];
     }
 

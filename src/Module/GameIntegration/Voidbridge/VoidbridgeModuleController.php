@@ -104,7 +104,8 @@ class VoidbridgeModuleController
         return $data;
     }
 
-    public function getPlayerGameExtraParams($requestData) {
+    public function getPlayerGameExtraParams($requestData)
+    {
         $gameCode = explode('|', $requestData['gameCode']);
         $params[] = [
             'Key' => 'UserAgent',
