@@ -40,6 +40,7 @@ class PTPlusController extends BaseController
             $status = $data['status'] ?? 2;
             $generalConfiguration = $this->tournamentConfiguration($data);
             $entityName = 'W2W' . $generalConfiguration['currency'];
+            $lang = $generalConfiguration['language'];
             $client = new Client();
             $res = $client->request(
                 'POST',
@@ -49,7 +50,7 @@ class PTPlusController extends BaseController
                         'entity_name' => $entityName,
                         'entity_key' => $generalConfiguration['key_mapping'][$entityName],
                         'isMobile' => false,
-                        'language' => strtoupper($this->get('lang')),
+                        'language' => $lang,
                         'currency' => $generalConfiguration['currency'],
                         'status' => $status
                     ],
@@ -64,15 +65,13 @@ class PTPlusController extends BaseController
                     'message' => $res->message,
                     'status' => 200
                 ]);
-            } else {
-                return $this->get('rest')->output($response, [
-                    'data' => [],
-                    'message' => $res->message,
-                    'status' => 'failed'
-                ]);
             }
         } catch (\Exception $e) {
-            //throw $e;
+            return $this->get('rest')->output($response, [
+                'data' => [],
+                'message' => $e->getMessage(),
+                'status' => 'failed'
+            ]);
         }
     }
 
@@ -83,8 +82,7 @@ class PTPlusController extends BaseController
      */
     public function tournamentConfiguration($data)
     {
-        $settings =  $this->get('config_fetcher')->withProduct('mobile-ptplus')
-        ->getConfig('webcomposer_config.tournament_settings');
+        $settings = $this->get('config_fetcher')->getGeneralConfigById('tournament_settings');
 
         $urlMapping = [
             'leaderboard' => $settings['leaderboards_api'],
@@ -93,7 +91,10 @@ class PTPlusController extends BaseController
 
         $data['key_mapping'] = Config::parseMultidimensional($settings['key_mapping']);
         $data['url'] = $urlMapping[$data['type']];
-        $data['currency'] = 'CNY';
+        $data['default_key_name'] = Config::parseMultidimensional($settings['default_key_name_mapping']);
+        $data['currency'] = $data['default_key_name'][strtolower($this->get('lang'))];
+        $lang = Config::parseMultidimensional($settings['api_language_mapping']);
+        $data['language'] = $lang[$this->get('lang')];
 
         if ($this->get('player_session')->isLogin()) {
             $playerConfig = $this->get('player');
@@ -102,10 +103,10 @@ class PTPlusController extends BaseController
             $data['currency']  = $playerConfig->getCurrency();
             $data['productId'] = $playerConfig->getProductId();
             $data['regLang']   = (string)$playerConfig->getLocale();
+        }
 
-            if ($data['currency'] === 'RMB') {
-                $data['currency'] = 'CNY';
-            }
+        if ($data['currency'] === 'RMB') {
+            $data['currency'] = 'CNY';
         }
 
         return $data;
