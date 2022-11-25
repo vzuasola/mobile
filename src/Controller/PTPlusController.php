@@ -82,7 +82,8 @@ class PTPlusController extends BaseController
      */
     public function tournamentConfiguration($data)
     {
-        $settings = $this->get('config_fetcher')->getGeneralConfigById('tournament_settings');
+        $settings =  $this->get('config_fetcher')->withProduct('mobile-ptplus')
+        ->getConfig('webcomposer_config.tournament_settings');
 
         $urlMapping = [
             'leaderboard' => $settings['leaderboards_api'],
