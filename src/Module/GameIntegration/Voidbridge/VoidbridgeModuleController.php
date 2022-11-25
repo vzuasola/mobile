@@ -113,7 +113,8 @@ class VoidbridgeModuleController
         ];
 
         // extra parameters for Direct Table launch
-        if (isset($requestData['tableName']) && $requestData['tableName'] !== "undefined") {
+        if (isset($requestData['tableName']) && $requestData['tableName'] !== "undefined"
+            && $requestData['tableName']) {
             $params[] = [
                 'Key' => 'View',
                 'Value' => $requestData['tableName'] ?? null

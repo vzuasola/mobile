@@ -90,7 +90,8 @@ trait ProviderTrait
         $extGameId = $params[0] ?? '';
 
         //override extGameId for Direct table launch
-        if (isset($requestData['extGameId']) && $requestData['extGameId'] !== 'undefined') {
+        if (isset($requestData['extGameId']) && $requestData['extGameId']
+            && $requestData['extGameId'] !== 'undefined') {
             $extGameId = $requestData['extGameId'];
         }
 
