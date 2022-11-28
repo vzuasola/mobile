@@ -148,7 +148,7 @@ export class PtplusTournamentModule implements ModuleInterface {
 
     private tournamentAPI(type, status) {
         xhr({
-            url: utility.url("/api-tournament/tournament-options"),
+            url: Router.generateModuleRoute("ptplus_tournament", "tournamentAPI"),
             type: "json",
             method: "post",
             data: {
