@@ -105,6 +105,8 @@ trait ProviderTrait
             $options['options']['properties'] = $extraParams;
         }
 
+        $playerErrors = $this->getPlayerErrorMessages($request);
+
         try {
             $responseData =  $this->playerGameFetcher->getGameUrlByExtGameId(
                 $portalName,
@@ -115,6 +117,7 @@ trait ProviderTrait
                 $data['gameurl'] = $responseData['body']['url'];
             } else {
                 // placeholder for error code mapping
+                $data['errors'] = $this->mappingGameErrors($playerErrors, $responseData);
             }
         } catch (\Exception $e) {
             $data['currency'] = true;
@@ -243,5 +246,39 @@ trait ProviderTrait
             // Do nothing
         }
         return false;
+    }
+
+    /**
+     * Get Player Error Messages
+     */
+    public function getPlayerErrorMessages($request)
+    {
+        $params = $request->getParsedBody();
+        $conf = $this->config;
+
+        if (isset($params['product'])) {
+            $conf = $this->config->withProduct($params['product']);
+        }
+
+        return $conf->getConfig('webcomposer_config.playergame_error_handling') ?? [];
+    }
+
+    /**
+     * Mapping error messages.
+     */
+    public function mappingGameErrors($playerErrorsConfig, $responseData)
+    {
+        $errorMessage = [];
+        $playerErrors = Config::parse($playerErrorsConfig['playergame_error_message']) ?? '';
+
+        if (in_array($responseData['responseCode'], $playerErrors)) {
+            $errorMessage['errorCode'] = $playerErrors[$responseData['responseCode']];
+            $errorMessage['errorButton'] = $playerErrorsConfig['playergame_error_button'];
+        } else {
+            $errorMessage['errorCode'] = $playerErrors['500'];
+            $errorMessage['errorButton'] = $playerErrorsConfig['playergame_error_button'];
+        }
+
+        return $errorMessage;
     }
 }
