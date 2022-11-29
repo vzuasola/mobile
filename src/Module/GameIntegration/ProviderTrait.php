@@ -113,6 +113,7 @@ trait ProviderTrait
                 $extGameId,
                 $options
             );
+
             if (isset($responseData['body']['url'])) {
                 $data['gameurl'] = $responseData['body']['url'];
             } else {
@@ -121,6 +122,9 @@ trait ProviderTrait
             }
         } catch (\Exception $e) {
             $data['currency'] = true;
+            if ($playerErrors) {
+                $data['errors'] = $this->mappingGameErrors($playerErrors, []);
+            }
         }
 
         return $data;
@@ -269,9 +273,9 @@ trait ProviderTrait
     public function mappingGameErrors($playerErrorsConfig, $responseData)
     {
         $errorMessage = [];
-        $playerErrors = Config::parse($playerErrorsConfig['playergame_error_message']) ?? '';
+        $playerErrors = Config::parse($playerErrorsConfig['playergame_error_message']) ?? [];
 
-        if (in_array($responseData['responseCode'], $playerErrors)) {
+        if ($responseData && array_key_exists($responseData['responseCode'], $playerErrors)) {
             $errorMessage['errorCode'] = $playerErrors[$responseData['responseCode']];
             $errorMessage['errorButton'] = $playerErrorsConfig['playergame_error_button'];
         } else {
