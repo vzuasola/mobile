@@ -48,7 +48,8 @@ trait ProviderTrait
             $isLobbyLaunch = ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
             $requestData['lobby'] === "true");
             $directTableLaunch = ($requestData['lobby'] === "true" &&
-             ($requestData['gameCode'] !== 'undefined' && $requestData['tableName'] !== 'undefined'));
+             ($requestData['gameCode'] !== 'undefined'  && $requestData['extGameId'] && $requestData['extGameId'] !== 'undefined'));
+
             if ($this->isPlayerGame($requestData) && (!$isLobbyLaunch || $directTableLaunch)) {
                 $data = $this->getGameUrlByPlayerGame($request, $requestData);
             } else {
