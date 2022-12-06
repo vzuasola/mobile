@@ -7,6 +7,9 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import {ErrorMessageLightbox} from "../scripts/error-message-lightbox";
+import * as messageTemplate from "@app/src/Module/GameIntegration/handlebars/unsupported.handlebars";
+import {Modal} from "@app/assets/script/components/modal";
 
 export class VoidbridgeModule implements ModuleInterface, GameInterface {
     private key: string = "voidbridge";
@@ -14,9 +17,12 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
+    private errorMessageLightbox: ErrorMessageLightbox;
+    private message: string;
 
     onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
+        this.errorMessageLightbox = new ErrorMessageLightbox();
     }
 
     init() {
@@ -59,6 +65,7 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                     lang,
                     userAgent: navigator.userAgent,
                     tableName: options.tablename || undefined,
+                    extGameId: options.extgameid || undefined,
                 },
             }).then((response) => {
                 if (response.gameurl) {
@@ -68,6 +75,12 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                         this.launchGame(options.target);
                         this.updatePopupWindow(response.gameurl);
                     }
+                }
+
+                if (response.errors) {
+                    this.errorMessageLightbox.showMessage(
+                        response,
+                    );
                 }
 
                 if (!response.currency) {

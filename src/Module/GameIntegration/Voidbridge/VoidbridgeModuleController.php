@@ -19,6 +19,8 @@ class VoidbridgeModuleController
 
     private $player;
 
+    private $playerGameFetcher;
+
     /**
      * @var ViewsFetcher $viewsFetcher
      */
@@ -34,46 +36,22 @@ class VoidbridgeModuleController
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('player_game_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $voidbridge, $config, $player, $viewsFetcher)
+    public function __construct($rest, $voidbridge, $config, $player, $viewsFetcher, $playerGameFetcher)
     {
         $this->rest = $rest;
         $this->voidbridge = $voidbridge;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
-    }
-
-    /**
-     * @{inheritdoc}
-     */
-    public function launch($request, $response)
-    {
-        $data['gameurl'] = false;
-        $data['currency'] = false;
-
-        if ($this->checkCurrency($request)) {
-            $requestData = $request->getParsedBody();
-
-            if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
-              $requestData['lobby'] === "false"
-            ) {
-                $data = $this->getGameUrl($request, $requestData);
-            }
-            if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
-              $requestData['lobby'] === "true"
-            ) {
-                $data = $this->getGameLobby($request, $requestData);
-            }
-        }
-
-        return $this->rest->output($response, $data);
+        $this->playerGameFetcher = $playerGameFetcher;
     }
 
     private function getGameUrl($request, $requestData)
@@ -88,6 +66,7 @@ class VoidbridgeModuleController
                 'providerProduct' => $params[1] ?? null,
               ]
             ]);
+
             if ($responseData['url']) {
                 $data['gameurl'] = $responseData['url'];
             }
@@ -123,5 +102,29 @@ class VoidbridgeModuleController
         }
 
         return $data;
+    }
+
+    public function getPlayerGameExtraParams($requestData)
+    {
+        $gameCode = explode('|', $requestData['gameCode']);
+        $params[] = [
+            'Key' => 'UserAgent',
+            'Value' => $requestData['userAgent'] ?? ''
+        ];
+
+        // extra parameters for Direct Table launch
+        if (isset($requestData['tableName']) && $requestData['tableName'] !== "undefined"
+            && $requestData['tableName']) {
+            $params[] = [
+                'Key' => 'View',
+                'Value' => $requestData['tableName'] ?? null
+            ];
+            $params[] = [
+                'Key' => 'Gateway',
+                'Value' => $gameCode[0] ?? $requestData['gameCode']
+            ];
+        }
+
+        return $params;
     }
 }

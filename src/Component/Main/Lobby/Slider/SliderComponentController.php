@@ -228,6 +228,7 @@ class SliderComponentController
                 $slider['use_game_loader'] = $slide['field_slider_use_game_loader'][0]['value'] ?? 'false';
                 $slider['forced_game_launch'] = $slide['field_slider_enable_game_launch'][0]['value'] ?? false;
                 $slider['table_id'] = $slide['field_table_id'][0]['value'] ?? "";
+                $slider['extgame_id'] = $slide['field_external_game_id'][0]['value'] ?? "";
                 $slider['lobby'] = false;
 
                 if (!empty($options) && $options['product'] === 'mobile-live-dealer') {

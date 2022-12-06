@@ -3,6 +3,8 @@ import * as utility from "@core/assets/js/components/utility";
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
 import PopupWindow from "@app/assets/script/components/popup";
 import {ProviderMessageLightbox} from "../GameIntegration/scripts/provider-message-lightbox";
+import * as xhr from "@core/assets/js/vendor/reqwest";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 export class PtplusTournamentModule implements ModuleInterface {
     private attachments: any;
@@ -27,6 +29,7 @@ export class PtplusTournamentModule implements ModuleInterface {
         this.url = attachments.apiUrl;
         this.casinoInstance = attachments.apiCasino;
 
+        this.listenLearnMore();
         this.redirectPtplusTornamentPage();
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
@@ -120,4 +123,41 @@ export class PtplusTournamentModule implements ModuleInterface {
        const url = this.url + options;
        this.windowObject = PopupWindow(url, "gameWindow", prop);
     }
+
+    private listenLearnMore() {
+        utility.addEventListener(document, "click", (event, src) => {
+            event = event || window.event;
+            const target = event.target || event.srcElement;
+
+            if (target.getAttribute("data-tournament-learn-more") === "learn-more") {
+                utility.preventDefault(event);
+                // Trigger the MODAL here
+                // Check if the player is eligible!
+                if (target.getAttribute("data-tournament-option")) {
+                    const status = target.getAttribute("data-tournament-status")
+                        ? target.getAttribute("data-tournament-status") : 2;
+                    const type = target.getAttribute("data-tournament-option");
+                    this.tournamentAPI(type, status);
+                } else {
+                    console.log("Options are missing!");
+                }
+            }
+        });
+
+    }
+
+    private tournamentAPI(type, status) {
+        xhr({
+            url: Router.generateModuleRoute("ptplus_tournament", "tournamentAPI"),
+            type: "json",
+            method: "post",
+            data: {
+                status,
+                type,
+            },
+        }).then((response) => {
+            // Handle the response
+        });
+    }
+
 }

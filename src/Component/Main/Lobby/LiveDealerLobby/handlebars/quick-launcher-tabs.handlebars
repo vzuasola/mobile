@@ -30,6 +30,9 @@
                     {{#if this.table_id }}
                         data-game-tablename="{{this.table_id}}"
                     {{/if}}
+                    {{#if this.extgame_id }}
+                        data-game-extgameid="{{this.extgame_id}}"
+                    {{/if}}
                     data-game-platform="{{this.game_platform}}"
                     data-game-title="{{this.title}}"
                     data-game-target="{{this.target}}"
@@ -83,6 +86,9 @@
                             data-game-code="{{this.game_code}}"
                             {{#if this.table_id }}
                                 data-game-tablename="{{this.table_id}}"
+                            {{/if}}
+                            {{#if this.extgame_id }}
+                                data-game-extgameid="{{this.extgame_id}}"
                             {{/if}}
                             data-game-platform="{{this.game_platform}}"
                             data-game-title="{{this.title}}"
