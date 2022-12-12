@@ -1,6 +1,9 @@
 <a class="game-list game-listing-item"
     data-game-title = "{{ node.field_banner_game_launch.0.field_game_title.0.value }}"
     data-game-tablename = "{{ node.field_banner_game_launch.0.field_field_table_id.0.value }}"
+    {% if node.field_external_game_id.0.value %}
+        data-game-extgameid="{{ node.field_external_game_id.0.value }}"
+    {% endif %}
     data-game-launchpromo = "true"
     {% if is_login %}
         data-game-launch="true"
