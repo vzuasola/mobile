@@ -48,11 +48,16 @@ class Modal {
     private listenOnClose(selector: string, element: HTMLElement) {
         utility.listen(element, "click", (event, src) => {
             if (utility.hasClass(src, "modal-overlay") || utility.hasClass(src, "modal-close")) {
-                this.close(selector);
+                const loaderContent = document.querySelector("[class='component-widget-wrapper']");
+                if (loaderContent.getAttribute("data-component-widget-class") === "game_loader") {
+                    event.preventDefault();
+                } else {
+                    this.close(selector);
 
-                event.preventDefault();
-                ComponentManager.broadcast("modal.closed", { element, selector });
-                ComponentManager.broadcast("login.update.layout.component", { element: "#login-lightbox" });
+                    event.preventDefault();
+                    ComponentManager.broadcast("modal.closed", { element, selector });
+                    ComponentManager.broadcast("login.update.layout.component", { element: "#login-lightbox" });
+                }
             }
         });
     }
