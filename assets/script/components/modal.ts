@@ -49,7 +49,9 @@ class Modal {
         utility.listen(element, "click", (event, src) => {
             if (utility.hasClass(src, "modal-overlay") || utility.hasClass(src, "modal-close")) {
                 const loaderContent = document.querySelector("[class='component-widget-wrapper']");
-                if (loaderContent.getAttribute("data-component-widget-class") === "game_loader") {
+                const errorMsgLightbox = document.querySelector("[id='error-message-lightbox']");
+                if (loaderContent.getAttribute("data-component-widget-class") === "game_loader" &&
+                    errorMsgLightbox.classList.contains("modal-active") === true) {
                     event.preventDefault();
                 } else {
                     this.close(selector);
