@@ -34,7 +34,7 @@ export class NodeComponent implements ComponentInterface {
     }
 
     private parseOptin(main, attachments) {
-        const regex = new RegExp(/\{webform:([^}]+)\}/g);
+        const regex = new RegExp(/\{webformfaq:([^}]+)\}/g);
         main.innerHTML.replace(regex, (match, id) => {
             main.innerHTML = this.buildIframe(main, id, attachments);
         });
@@ -58,7 +58,7 @@ export class NodeComponent implements ComponentInterface {
         const src = attachments.faqdomain + "/opt-in/" + id;
         const iframe = "<iframe src='" + src + "' class='optin-form'></iframe>";
 
-        return main.innerHTML.replace("{webform:" + id + "}", iframe);
+        return main.innerHTML.replace("{webformfaq:" + id + "}", iframe);
     }
 
     private setDimensions(iframe, form) {
