@@ -258,15 +258,15 @@ class PTPlusLobbyComponentController
                     $statusBoard = $banner['field_status_board'][0]['value'] ?? '';
 
                     // filtering request for leaderboard and dailymission
-                    $banner['lightbox_games'] = $this->filterGamesByTypeStatus(
-                        $banner['banner_id'],$bannerDailymissionApi);
+                    $banner['lightbox_games'] =
+                        $this->filterGamesByTypeStatus($banner['banner_id'], $bannerDailymissionApi);
                     if ($typeBoard === 'leaderboard') {
                         if ($statusBoard === '1') {
-                            $banner['lightbox_games'] = $this->filterGamesByTypeStatus(
-                                $banner['banner_id'],$bannerLeaderboardApiProcessing);
+                            $banner['lightbox_games'] =
+                                $this->filterGamesByTypeStatus($banner['banner_id'], $bannerLeaderboardApiProcessing);
                         } elseif ($statusBoard === '2') {
-                            $banner['lightbox_games'] = $this->filterGamesByTypeStatus(
-                                $banner['banner_id'],$bannerLeaderboardApiPrepare);
+                            $banner['lightbox_games'] =
+                                $this->filterGamesByTypeStatus($banner['banner_id'], $bannerLeaderboardApiPrepare);
                         }
                     }
                     // end filter
@@ -311,7 +311,7 @@ class PTPlusLobbyComponentController
     public function filterGamesByTypeStatus($id, $apiList)
     {
         foreach ($apiList->data as $value) {
-            if ( $value->id == trim($id) ) {
+            if ($value->id == trim($id)) {
                 return json_encode($value->games);
             }
         }
@@ -344,7 +344,6 @@ class PTPlusLobbyComponentController
             );
 
             return json_decode($res->getBody()->getContents());
-
         } catch (\Exception $e) {
             return [];
         }

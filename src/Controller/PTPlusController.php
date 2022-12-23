@@ -25,5 +25,4 @@ class PTPlusController extends BaseController
 
         return $this->widgets->render($response, '@site/page.html.twig', $data);
     }
-
 }
