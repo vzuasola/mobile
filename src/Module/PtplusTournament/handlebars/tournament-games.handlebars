@@ -1,0 +1,21 @@
+<ul class="game-lobby-container">
+    {{#each games}}
+        <li class="game-listing"
+            style="background-image: url({{convURL this.image}})"
+            role="img" aria-label="{{this.name}}">
+            <a class="game-list game-listing-item"
+               {{#if ../isLogin}}
+               data-game-launch="true"
+               {{/if}}
+               data-tournament-launch="true"
+               data-game-code="{{this.code}}|{{ifIn this.type}}"
+               data-game-title="{{this.name}}"
+               data-game-keywords =""
+               data-game-provider="ptplus"
+               data-game-loader="true"
+               data-game-target="popup"
+            >
+            </a>
+        </li>
+    {{/each}}
+</ul>
