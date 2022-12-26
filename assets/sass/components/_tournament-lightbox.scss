@@ -51,7 +51,7 @@
 
     h2 {
         color: $white;
-        font-size: 1.6rem;
+        font-size: 1.6rem !important;
         background: $dark-red;
         margin: 0;
         padding: 0.5rem 0;
@@ -101,7 +101,7 @@
         }
 
         ol {
-            padding-left: 1.5rem;
+            padding-left: 5%;
         }
 
         ul {
@@ -170,7 +170,6 @@
         position: relative;
         float: left;
         display: inline-block;
-        min-height: 0.1rem;
         width: calc(33.33333333% - 6px);
         margin: 3px;
         background-repeat: no-repeat;
@@ -182,6 +181,7 @@
         min-height: 86px;
         border-radius: 0.5rem;
         padding: 0;
+        cursor: pointer;
 
         a {
             float: none;
@@ -189,6 +189,7 @@
             padding: 0;
             width: 100%;
             min-height: 86px;
+            cursor: pointer;
         }
     }
 
