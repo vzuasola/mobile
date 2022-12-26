@@ -8,6 +8,7 @@ use App\MobileEntry\Services\PublishingOptions\PublishingOptions;
 use App\Async\Async;
 use App\Async\DefinitionCollection;
 use GuzzleHttp\Client;
+use GuzzleHttp\Promise;
 
 class PTPlusLobbyComponentController
 {
@@ -32,6 +33,10 @@ class PTPlusLobbyComponentController
     private $player;
     private $lang;
 
+    private $dailymissionApi;
+    private $leaderboardApiProcessing;
+    private $leaderboardApiPrepare;
+
     /**
      *
      */
@@ -49,8 +54,7 @@ class PTPlusLobbyComponentController
             $container->get('views_fetcher_async'),
             $container->get('redis_cache_adapter'),
             $container->get('lang'),
-            $container->get('player'),
-            $container->get('lang')
+            $container->get('player')
         );
     }
 
@@ -69,8 +73,7 @@ class PTPlusLobbyComponentController
         $viewsAsync,
         $cacher,
         $currentLanguage,
-        $player,
-        $lang
+        $player
     ) {
         $this->playerSession = $playerSession;
         $this->views = $views->withProduct(self::PRODUCT);
@@ -84,7 +87,6 @@ class PTPlusLobbyComponentController
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
         $this->player = $player;
-        $this->lang = $lang;
     }
 
     public function lobby($request, $response)
@@ -237,12 +239,7 @@ class PTPlusLobbyComponentController
 
     public function banners($request, $response)
     {
-        // sending requests for leaderboard and dailymission
-        $bannerDailymissionApi = $this->tournamentAPI('dailymission');
-        $bannerLeaderboardApiProcessing = $this->tournamentAPI('leaderboard', 1);
-        $bannerLeaderboardApiPrepare = $this->tournamentAPI('leaderboard', 2);
-        // end requests
-
+        $this->getAllTournaments();
         try {
             $data = [];
             $banners = $this->views->getViewById('tournament_banners');
@@ -259,14 +256,14 @@ class PTPlusLobbyComponentController
 
                     // filtering request for leaderboard and dailymission
                     $banner['lightbox_games'] =
-                        $this->filterGamesByTypeStatus($banner['banner_id'], $bannerDailymissionApi);
+                        $this->filterGamesByTypeStatus($banner['banner_id'], $this->dailymissionApi);
                     if ($typeBoard === 'leaderboard') {
                         if ($statusBoard === '1') {
                             $banner['lightbox_games'] =
-                                $this->filterGamesByTypeStatus($banner['banner_id'], $bannerLeaderboardApiProcessing);
+                                $this->filterGamesByTypeStatus($banner['banner_id'], $this->leaderboardApiProcessing);
                         } elseif ($statusBoard === '2') {
                             $banner['lightbox_games'] =
-                                $this->filterGamesByTypeStatus($banner['banner_id'], $bannerLeaderboardApiPrepare);
+                                $this->filterGamesByTypeStatus($banner['banner_id'], $this->leaderboardApiPrepare);
                         }
                     }
                     // end filter
@@ -310,25 +307,49 @@ class PTPlusLobbyComponentController
      */
     public function filterGamesByTypeStatus($id, $apiList)
     {
-        foreach ($apiList->data as $value) {
-            if ($value->id == trim($id)) {
-                return json_encode($value->games);
+        foreach ($apiList['data'] as $value) {
+            if ($value['id'] === intval($id)) {
+                return json_encode($value['games']);
             }
         }
     }
 
+    public function getAllTournaments()
+    {
+        $promises = [
+            'daily' => $this->tournamentAPIAsync('dailymission'),
+            'leader1' => $this->tournamentAPIAsync('leaderboard', 1),
+            'leader2' => $this->tournamentAPIAsync('leaderboard'),
+        ];
+
+        try {
+            $responses = Promise\settle(Promise\unwrap($promises))->wait();
+
+            $this->dailymissionApi =
+                json_decode($responses['daily']['value']->getBody()->getContents(), true);
+            $this->leaderboardApiProcessing =
+                json_decode($responses['leader1']['value']->getBody()->getContents(), true);
+            $this->leaderboardApiPrepare =
+                json_decode($responses['leader2']['value']->getBody()->getContents(), true);
+
+        } catch (\Exception $e) {
+            $this->dailymissionApi = [];
+            $this->leaderboardApiProcessing = [];
+            $this->leaderboardApiPrepare = [];
+        }
+    }
+
     /**
-     * Send request To Tournament Side
+     * Send Async Request To Tournament Side
      */
-    public function tournamentAPI($type, $status = null)
+    public function tournamentAPIAsync($type, $status = 2)
     {
         try {
-            $status = $status ?? 2;
             $generalConfiguration = $this->tournamentConfiguration($type);
             $entityName = 'W2W' . $generalConfiguration['currency'];
             $lng = $generalConfiguration['language'];
             $client = new Client();
-            $res = $client->request(
+            return $client->requestAsync(
                 'POST',
                 $generalConfiguration['url'],
                 [
@@ -342,8 +363,6 @@ class PTPlusLobbyComponentController
                     ],
                 ]
             );
-
-            return json_decode($res->getBody()->getContents());
         } catch (\Exception $e) {
             return [];
         }
@@ -366,9 +385,9 @@ class PTPlusLobbyComponentController
         $data['key_mapping'] = Config::parseMultidimensional($settings['key_mapping']);
         $data['url'] = $urlMapping[$type];
         $data['default_key_name'] = Config::parseMultidimensional($settings['default_key_name_mapping']);
-        $data['currency'] = $data['default_key_name'][strtolower($this->lang)];
+        $data['currency'] = $data['default_key_name'][strtolower($this->currentLanguage)];
         $langs = Config::parseMultidimensional($settings['api_language_mapping']);
-        $data['language'] = $langs[$this->lang];
+        $data['language'] = $langs[$this->currentLanguage];
         $data['lang_mapping'] = $langs;
         $data['test'] = $langs;
         if ($this->playerSession->isLogin()) {
