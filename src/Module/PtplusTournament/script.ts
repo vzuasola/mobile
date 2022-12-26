@@ -159,6 +159,7 @@ export class PtplusTournamentModule implements ModuleInterface {
             if (target.getAttribute("data-tournament-learn-more") === "learn-more") {
                 utility.preventDefault(event);
 
+                let lightboxGamesData = [];
                 const parentClass = target.closest(".rectangular-banner-tile-item");
                 this.bannerId = parentClass.getAttribute("data-tournament-id");
                 const lightboxTag = parentClass.getAttribute("data-tournament-lightbox");
@@ -169,7 +170,10 @@ export class PtplusTournamentModule implements ModuleInterface {
                         'url("', "").replace('")', "");
 
                 const lightboxData = JSON.parse(lightboxTag);
-                const lightboxGamesData = JSON.parse(lightboxGames);
+
+                if (lightboxGames) {
+                    lightboxGamesData = JSON.parse(lightboxGames);
+                }
 
                 // Trigger the MODAL here
                 const template = tournamentTemplate({

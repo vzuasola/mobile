@@ -282,13 +282,13 @@ class PTPlusLobbyComponentController
 
                     if ($banner['lightbox_status']) {
                         $banner['lightbox'] = json_encode([
-                            'lightbox_games_title' => $banner['field_lightbox_games_title'][0]['value'],
-                            'lightbox_intro' => $banner['field_lightbox_intro'][0]['value'],
-                            'lightbox_join_button' => $banner['field_lightbox_join_button'][0]['value'],
-                            'lightbox_mechanics' => $banner['field_lightbox_mechanics'][0]['value'],
-                            'lightbox_mechanics_title' => $banner['field_lightbox_mechanics_title'][0]['value'],
-                            'lightbox_rewards' => $banner['field_lightbox_rewards'][0]['value'],
-                            'lightbox_rewards_title' => $banner['field_lightbox_rewards_title'][0]['value'],
+                            'lightbox_games_title' => $banner['field_lightbox_games_title'][0]['value'] ?? '',
+                            'lightbox_intro' => $banner['field_lightbox_intro'][0]['value'] ?? '',
+                            'lightbox_join_button' => $banner['field_lightbox_join_button'][0]['value'] ?? '',
+                            'lightbox_mechanics' => $banner['field_lightbox_mechanics'][0]['value'] ?? '',
+                            'lightbox_mechanics_title' => $banner['field_lightbox_mechanics_title'][0]['value'] ?? '',
+                            'lightbox_rewards' => $banner['field_lightbox_rewards'][0]['value'] ?? '',
+                            'lightbox_rewards_title' => $banner['field_lightbox_rewards_title'][0]['value'] ?? '',
                         ]);
                     }
 
