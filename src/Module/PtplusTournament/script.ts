@@ -5,6 +5,10 @@ import PopupWindow from "@app/assets/script/components/popup";
 import {ProviderMessageLightbox} from "../GameIntegration/scripts/provider-message-lightbox";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Router} from "@plugins/ComponentWidget/asset/router";
+import {Modal} from "@app/assets/script/components/modal";
+import * as tournamentTemplate from "./handlebars/tournament-lightbox.handlebars";
+import * as tournamentGamesTemplate from "./handlebars/tournament-games.handlebars";
+import * as Handlebars from "handlebars/runtime";
 
 export class PtplusTournamentModule implements ModuleInterface {
     private attachments: any;
@@ -15,6 +19,28 @@ export class PtplusTournamentModule implements ModuleInterface {
     private url: string;
     private casinoInstance: string;
     private messageLightbox: ProviderMessageLightbox;
+    private bannerId: string;
+
+    constructor() {
+        const listTypes = [
+            "Slot Machines",
+            "Progressive Slot Machines",
+            "POP Slots",
+            "POP Jackpot Slots",
+            "POP Arcade",
+        ];
+
+        Handlebars.registerHelper("ifIn", (elem) => {
+            if (listTypes.indexOf(elem) > -1) {
+                return "Slot";
+            }
+            return "";
+        });
+
+        Handlebars.registerHelper("convURL", (str) => {
+            return encodeURI(str);
+        });
+    }
 
     onLoad(attachments: {
         authenticated: boolean,
@@ -28,9 +54,10 @@ export class PtplusTournamentModule implements ModuleInterface {
         this.playerId = attachments.playerId;
         this.url = attachments.apiUrl;
         this.casinoInstance = attachments.apiCasino;
-
         this.listenLearnMore();
         this.redirectPtplusTornamentPage();
+        this.listenTournamentGames();
+
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
             this.playerId = data.response.user.playerId;
@@ -131,33 +158,66 @@ export class PtplusTournamentModule implements ModuleInterface {
 
             if (target.getAttribute("data-tournament-learn-more") === "learn-more") {
                 utility.preventDefault(event);
+
+                const parentClass = target.closest(".rectangular-banner-tile-item");
+                this.bannerId = parentClass.getAttribute("data-tournament-id");
+                const lightboxTag = parentClass.getAttribute("data-tournament-lightbox");
+                const lightboxGames = parentClass.getAttribute("data-tournament-games");
+                const lightboxTitle = parentClass.getAttribute("aria-label");
+                const bannerImage =
+                    parentClass.style.backgroundImage.replace(
+                        'url("', "").replace('")', "");
+
+                const lightboxData = JSON.parse(lightboxTag);
+                const lightboxGamesData = JSON.parse(lightboxGames);
+
                 // Trigger the MODAL here
-                // Check if the player is eligible!
-                if (target.getAttribute("data-tournament-option")) {
-                    const status = target.getAttribute("data-tournament-status")
-                        ? target.getAttribute("data-tournament-status") : 2;
-                    const type = target.getAttribute("data-tournament-option");
-                    this.tournamentAPI(type, status);
-                } else {
-                    console.log("Options are missing!");
-                }
+                const template = tournamentTemplate({
+                    lightbox_intro: lightboxData.lightbox_intro,
+                    lightbox_games_title: lightboxData.lightbox_games_title,
+                    lightbox_join_button: lightboxData.lightbox_join_button,
+                    lightbox_mechanics: lightboxData.lightbox_mechanics,
+                    lightbox_mechanics_title: lightboxData.lightbox_mechanics_title,
+                    lightbox_rewards: lightboxData.lightbox_rewards,
+                    lightbox_rewards_title: lightboxData.lightbox_rewards_title,
+                    lightbox_status: lightboxData.lightbox_status,
+                    lightbox_title: lightboxTitle,
+                    lightbox_banner: bannerImage,
+                });
+
+                const modalEl = document.querySelector("#tournament-lightbox-banner");
+                modalEl.innerHTML = template;
+
+                this.getGamesTilesForLightbox(lightboxGamesData);
+
+                Modal.open("#tournament-lightbox-banner");
             }
         });
-
     }
 
-    private tournamentAPI(type, status) {
-        xhr({
-            url: Router.generateModuleRoute("ptplus_tournament", "tournamentAPI"),
-            type: "json",
-            method: "post",
-            data: {
-                status,
-                type,
-            },
-        }).then((response) => {
-            // Handle the response
+    private listenTournamentGames() {
+        utility.addEventListener(document, "click", (event, src) => {
+            event = event || window.event;
+            const target = event.target || event.srcElement;
+
+            if (target.getAttribute("data-game-login-tournament") || target.getAttribute("data-tournament-launch")
+                && !this.isLogin) {
+                utility.preventDefault(event);
+                Modal.close("#tournament-lightbox-banner");
+            }
         });
+    }
+
+    private getGamesTilesForLightbox(games) {
+
+        const gamesEl = document.querySelector("#tournament-lightbox-games");
+
+        const template = tournamentGamesTemplate({
+            games,
+            isLogin : this.isLogin,
+        });
+
+        gamesEl.innerHTML = template;
     }
 
 }
