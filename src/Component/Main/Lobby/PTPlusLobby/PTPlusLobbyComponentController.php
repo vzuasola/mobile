@@ -331,7 +331,6 @@ class PTPlusLobbyComponentController
                 json_decode($responses['leader1']['value']->getBody()->getContents(), true);
             $this->leaderboardApiPrepare =
                 json_decode($responses['leader2']['value']->getBody()->getContents(), true);
-
         } catch (\Exception $e) {
             $this->dailymissionApi = [];
             $this->leaderboardApiProcessing = [];
