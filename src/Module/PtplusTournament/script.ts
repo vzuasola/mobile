@@ -164,7 +164,7 @@ export class PtplusTournamentModule implements ModuleInterface {
                 this.bannerId = parentClass.getAttribute("data-tournament-id");
                 const lightboxTag = parentClass.getAttribute("data-tournament-lightbox");
                 const lightboxGames = parentClass.getAttribute("data-tournament-games");
-                const lightboxTitle = parentClass.getAttribute("aria-label");
+                const lightboxTitle = parentClass.getAttribute("data-title");
                 const bannerImage =
                     parentClass.style.backgroundImage.replace(
                         'url("', "").replace('")', "");
