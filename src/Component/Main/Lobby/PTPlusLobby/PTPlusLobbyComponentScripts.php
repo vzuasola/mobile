@@ -88,6 +88,10 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
             $tournament['button_learn_more'] = $settings['button_learn_more'] ?? 'Learn More';
             $tournament['button_join'] = $settings['button_join'] ?? 'Join';
             $tournament['blurb_animation'] = $settings['enable_transition_api'] ?? 't-none';
+            $tournament['ends_in'] = $settings['label_ends_in'] ?? 'Ends in';
+            $tournament['days'] = $settings['label_days'] ?? 'Days';
+            $tournament['hours'] = $settings['label_hours'] ?? 'Hours';
+            $tournament['minutes'] = $settings['label_minutes'] ?? 'Minutes';
         } catch (\Exception $e) {
             $tournament = [];
         }
