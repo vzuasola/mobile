@@ -1,0 +1,37 @@
+<div class="modal-content tournament-lightbox-content">
+    <div class="modal-inner-container">
+        <div class="modal-inner-container">
+            <h2>{{{ lightbox_title }}}</h2>
+            <svg data-name="closed" viewBox="0 0 70.24 70.24" class="modal-close modal-close-button">
+                <rect class="modal-close"/>
+                <path class="modal-close" d="M39.53 35.12L53 21.17a3.18 3.18 0 0 0-.09-4.49 3.18 3.18 0 0 0-4.49.09l-13.3 13.78-13.26-13.78a3.18 3.18 0 0 0-4.49-.09 3.18 3.18 0 0 0-.08 4.49l13.43 13.95-13.43 14a3.17 3.17 0 1 0 4.57 4.4L35.12 39.7l13.26 13.77a3.18 3.18 0 0 0 4.49.09 3.18 3.18 0 0 0 .13-4.49z"/>
+            </svg>
+            <div>
+                <img class="tournament-lightbox-src" src="{{ lightbox_banner }}">
+                <a class="tournament-lightbox-join-now btn btn-yellow btn-small" data-game-login-tournament="true">
+                    {{{ lightbox_join_button }}}
+                </a>
+            </div>
+            </img>
+            <div class="modal-body tournament-lightbox-body clearfix">
+                <div class="tournament-lightbox-intro col-12">
+                    {{{ lightbox_intro }}}
+                </div>
+                <div class="tournament-lightbox-mechanics col-12">
+                    <h3>{{{ lightbox_mechanics_title }}}</h3>
+                    {{{ lightbox_mechanics }}}
+                </div>
+                <div class="tournament-lightbox-rewards col-12">
+                    <h3>{{{ lightbox_rewards_title }}}</h3>
+                    <div class="col-sm-12 col-md-4">
+                        {{{ lightbox_rewards }}}
+                    </div>
+                    <div class="col-sm-12 col-md-8">
+                        <h3>{{{ lightbox_games_title }}}</h3>
+                        <div id="tournament-lightbox-games"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

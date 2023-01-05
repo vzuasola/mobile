@@ -1,0 +1,195 @@
+.tournament-modal-styles {
+    z-index: 1020;
+
+    &-content {
+        @include translate(0, 50%);
+        position: absolute;
+        top: 20%;
+        left: 1.5rem;
+        right: 1.5rem;
+        width: auto;
+        max-width: none;
+        min-width: 0;
+        max-height: 95%;
+        margin: 0;
+        padding: 0;
+        border-radius: 0.5rem;
+        background-color: #e6e7e9;
+
+        svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            top: 0.5rem;
+            fill: $white;
+
+            path {
+                fill: #e6e7e9;
+            }
+
+            rect {
+                fill: $dark-red;
+            }
+        }
+    }
+
+    .modal-body {
+
+        p {
+            color: $dark-gray;
+            padding: 0 1rem;
+            font-size: 1.4rem;
+        }
+
+        a {
+            margin-top: 3%;
+        }
+    }
+
+    .modal-close-button {
+        border: 0 solid #900000;
+    }
+
+    h2 {
+        color: $white;
+        font-size: 1.6rem !important;
+        background: $dark-red;
+        margin: 0;
+        padding: 0.5rem 0;
+        text-align: center;
+        font: normal normal bold 18px/17px Roboto;
+        letter-spacing: 0.9px;
+
+    }
+
+    .tournament-lightbox-src {
+        width: 100%;
+        max-height: 160px;
+    }
+
+    .tournament-lightbox-join-now {
+        margin-top: -5%;
+        border: 2px solid #FFE000;
+        border-radius: 33px;
+        opacity: 1;
+        text-align: left;
+        font: normal normal medium 30px/35px Roboto;
+        letter-spacing: 0px;
+        color: #313131;
+    }
+
+    .tournament-lightbox-intro {
+        text-align: left;
+        font: normal normal normal 12px/18px Roboto;
+        letter-spacing: 0.9px;
+        color: #313131;
+        margin: 1.5rem 0 1.5rem 0;
+    }
+
+    .tournament-lightbox-mechanics {
+        text-align: left;
+        font: normal normal normal 12px/18px Roboto;
+        letter-spacing: 0.9px;
+        color: #313131;
+        margin: 0;
+
+        h3 {
+            text-align: left;
+            font: normal normal bold 12px/18px Roboto;
+            letter-spacing: 0.9px;
+            color: #AF0000;
+            margin-bottom: 1%;
+        }
+
+        ol {
+            padding-left: 5%;
+        }
+
+        ul {
+            padding-left: 0px;
+            list-style-type: none;
+        }
+    }
+
+    .tournament-lightbox-rewards {
+        text-align: left;
+        font: normal normal normal 12px/18px Roboto;
+        letter-spacing: 0.9px;
+        color: #313131;
+        margin: 0;
+
+        h3 {
+            text-align: left;
+            font: normal normal bold 12px/18px Roboto;
+            letter-spacing: 0.9px;
+            color: #AF0000;
+            margin-bottom: 1%;
+        }
+
+        ol {
+            padding-left: 1.5rem;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+        }
+    }
+
+    .tournament-lightbox-content {
+        position: absolute;
+        top: 50%;
+        left: 0rem;
+        right: 0rem;
+        width: auto;
+        max-width: none;
+        min-width: 0;
+        max-height: 100%;
+        margin: 0;
+        padding: 0;
+        border-radius: 0rem;
+        height: 100vh;
+    }
+
+    .tournament-lightbox-content svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        top: 0.5rem;
+        fill: #fff;
+        right: .9rem;
+    }
+
+    .tournament-lightbox-content svg path {
+        fill: #e6e7e9;
+    }
+
+    .tournament-lightbox-content svg rect {
+        fill: #900000;
+    }
+
+    .game-listing {
+        position: relative;
+        float: left;
+        display: inline-block;
+        width: calc(33.33333333% - 6px);
+        margin: 3px;
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-position: center center;
+        min-height: 86px;
+        border-radius: 0.5rem;
+        padding: 0;
+        cursor: pointer;
+
+        a {
+            float: none;
+            display: block;
+            padding: 0;
+            width: 100%;
+            min-height: 86px;
+            cursor: pointer;
+        }
+    }
+
+}
