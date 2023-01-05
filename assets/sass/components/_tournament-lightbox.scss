@@ -58,7 +58,6 @@
         text-align: center;
         font: normal normal bold 18px/17px Roboto;
         letter-spacing: 0.9px;
-
     }
 
     .tournament-lightbox-src {
@@ -131,6 +130,12 @@
 
         ul {
             padding-left: 1.5rem;
+        }
+    }
+
+    .tournament-lightbox-games {
+        ul {
+            padding-left: 0;
         }
     }
 

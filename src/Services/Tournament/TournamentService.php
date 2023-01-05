@@ -4,6 +4,7 @@ namespace App\MobileEntry\Services\Tournament;
 
 use App\Drupal\Config;
 use GuzzleHttp\Client;
+use DateTime;
 
 /**
  * Service for Tournament
@@ -121,8 +122,28 @@ class TournamentService
                     'games' => json_encode($value['games']),
                     'start_time' => $value['start_time'],
                     'end_time' => $value['end_time']
-                    ];
+                ];
             }
+        }
+    }
+
+    /**
+     * Get End Time by days, hours, minutes
+     */
+    public function getEndTime($dateEnd)
+    {
+        try {
+            $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone(date_default_timezone_get()));
+            $dateInterval = $endDate->diff($currentDate);
+
+            return [
+                'days' => $dateInterval->d,
+                'hours' => $dateInterval->h,
+                'minutes' => $dateInterval->i
+            ];
+        } catch (\Exception $e) {
+            return [];
         }
     }
 }

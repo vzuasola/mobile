@@ -257,27 +257,32 @@ class PTPlusLobbyComponentController
                     $statusBoard = $banner['field_status_board'][0]['value'] ?? '';
 
                     // filtering request for leaderboard and dailymission
-                    $bannerData =
-                        $this->tournamentService->filterGamesByTypeStatus($banner['banner_id'],
-                            $this->dailymissionApi);
+                    $bannerData = $this->tournamentService->filterGamesByTypeStatus(
+                        $banner['banner_id'],
+                        $this->dailymissionApi
+                    );
                     $banner['lightbox_games'] = $bannerData['games'] ?? '';
                     $banner['end_time'] = $bannerData['end_time'] ?? '';
                     if ($typeBoard === 'leaderboard') {
                         if ($statusBoard === '1') {
-                            $bannerData =
-                                $this->tournamentService->filterGamesByTypeStatus($banner['banner_id'],
-                                    $this->leaderboardApiProcessing);
+                            $bannerData = $this->tournamentService->filterGamesByTypeStatus(
+                                $banner['banner_id'],
+                                $this->leaderboardApiProcessing
+                            );
                             $banner['lightbox_games'] = $bannerData['games'] ?? '';
                             $banner['end_time'] = $bannerData['end_time'] ?? '';
                         } elseif ($statusBoard === '2') {
-                            $bannerData = $this->tournamentService->filterGamesByTypeStatus($banner['banner_id'],
-                                    $this->leaderboardApiPrepare);
+                            $bannerData = $this->tournamentService->filterGamesByTypeStatus(
+                                $banner['banner_id'],
+                                $this->leaderboardApiPrepare
+                            );
                             $banner['lightbox_games'] = $bannerData['games'] ?? '';
                             $banner['end_time'] = $bannerData['end_time'] ?? '';
                         }
                     }
                     // end filter
 
+                    $banner['date_time'] = $this->tournamentService->getEndTime($banner['end_time']) ?? '';
                     $banner['image'] = [
                         'alt' => $banner['field_banner_image'][0]['value']['alt'],
                         'url' =>

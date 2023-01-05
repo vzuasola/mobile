@@ -116,7 +116,7 @@
                         right: 1.5%;
                         z-index: 1;
                         margin: 0;
-                        color: #ffe000;
+                        color: #FFE032;
                         text-align: center;
                         font-size: 1.6rem;
                         font-weight: 600;
@@ -222,19 +222,22 @@
             background-size:cover;
             background-position:center center;
             border-radius: .5rem;
+            min-width: 314px;
+            max-width: 315px;
+            max-height: 130px;
 
             &.full {
                 min-width: 356px;
             }
 
-            &.three-quarter {
-                min-width: 290px;
-            }
+            //&.three-quarter {
+            //    min-width: 290px;
+            //}
 
             .tournament-content {
                 padding: 0;
                 width: 100%;
-                min-height: 86px;
+                min-height: 7rem;
                 position: relative;
                 z-index: 1;
             }
@@ -242,58 +245,105 @@
             .tournament-blurb {
                 right: 0;
                 width: 100%;
-                height: 4rem;
-                padding: 0rem 0.5rem;
+                max-height: 4rem;
+                overflow: hidden;
                 opacity: 1;
                 position: relative;
-                border-bottom-left-radius: 0.5rem;
-                border-bottom-right-radius: 0.5rem;
                 z-index: 2;
 
-    
-                &.bottom {
+                .text-container {
+                    width: 65%;
+                    float: left;
                     background: rgba(0,0,0,0.6);
-                    padding-bottom: 2rem;
-                    padding-right: 0;
-                    bottom: 0;
+                    border-bottom-left-radius: 0.4rem;
+                    min-height: 4rem;
                 }
+
+                &.bottom {
+                    //background: rgba(0,0,0,0.6);
+                    //padding-bottom: 2rem;
+                    //padding-right: 0;
+                    //bottom: 0;
+                }
+
                 .tournament-title {
                     display: inline-block;
-                    font-weight: 600;
-                    color: $yellow;
+                    width: 100%;
+                    margin: 0;
+                    color: #FFE000;
                     font-size: 12px;
-                    width: 50%;
-                    padding: 0.5rem 0.2rem 0;
-                    margin: 0 auto 0.5rem;
+                    text-align: left;
+                    line-height: 14px;
+                    font-weight: 600;
+                    padding: 2% 0 0 4%;
+                }
+
+                .tournament-countdown {
+                    float: left;
+                    display: inline-block;
+                    width: 100%;
+                    margin: 0;
+                    color: $white;
+                    font-size: 9px;
+                    text-align: left;
+                    line-height: 10px;
+                    padding: 0 0 3% 4%;
+
+                    .days-value, .hours-value, .minutes-value {
+                        padding-left: 1px;
+                    }
                 }
 
                 .btn-container {
-                    width: 50%;
+                    width: 35%;
                     float: right;
+                    max-height: 4rem;
 
                     .btn-white {
-                        background-color: $white;
-                        border-color: $white;
-                        color: $black;
-                    }
-
-                    .btn-yellow, .btn-white {
-                        border-radius: 0;
-                        font-size: 2.4vw;
-                        white-space: normal;
+                        float: left;
                         width: 50%;
-                        min-height: 4rem;
-                        line-height: 1;
+                        height: 4rem;
+
+                        border-radius: 0;
+                        border-color: $white;
+                        background-color: $white;
+                        border: 0;
+                        white-space: normal;
+
+                        color: $black;
+                        font-size: 10px;
+                        text-align: center;
+                        line-height: 12px;
+                        font-weight: 600;
+
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         flex-direction: column;
-                        float:left;
                     }
 
                     .btn-yellow {
-                        color: $red;
-                        border-bottom-right-radius: .5rem;
+                        float: right;
+                        width: 50%;
+                        height: 4rem;
+
+                        border-radius: 0;
+                        border-bottom-right-radius: .4rem;
+                        border-color: #FFE000;
+                        border: 0;
+                        background-color: #FFE000;
+                        white-space: normal;
+
+                        color: #AF050F;
+                        font-size: 10px;
+                        text-align: center;
+                        line-height: 12px;
+                        font-weight: 600;
+
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
                     }
                 }
             }
