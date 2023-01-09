@@ -134,7 +134,7 @@ class TournamentService
     {
         try {
             $currentDate = new \DateTime(date("Y-m-d H:i:s"));
-            $endDate = new \DateTime($dateEnd, new \DateTimeZone(date_default_timezone_get()));
+            $endDate = new \DateTime($dateEnd);
             $dateInterval = $endDate->diff($currentDate);
 
             return [
