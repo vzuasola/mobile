@@ -138,12 +138,16 @@ class TournamentService
             $dateInterval = $endDate->diff($currentDate);
 
             return [
-                'days' => $dateInterval->d,
-                'hours' => $dateInterval->h,
-                'minutes' => $dateInterval->i
+                'days' => $dateInterval->d ?? '0',
+                'hours' => $dateInterval->h ?? '0',
+                'minutes' => $dateInterval->i ?? '0'
             ];
         } catch (\Exception $e) {
-            return [];
+            return [
+                'days' => 'x',
+                'hours' => 'x',
+                'minutes' => 'x'
+            ];
         }
     }
 }

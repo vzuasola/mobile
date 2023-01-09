@@ -276,6 +276,9 @@
                     line-height: 14px;
                     font-weight: 600;
                     padding: 2% 0 0 4%;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
                 }
 
                 .tournament-countdown {
@@ -372,7 +375,7 @@
                 height: 15vw;
             }
             .tournament-blurb {
-                min-height: 7.8rem !important;
+                min-height: 4rem !important;
 
                 .tournament-title {
                     width: 65% !important;
@@ -384,7 +387,7 @@
 
                     .btn-white,
                     .btn-yellow {
-                        min-height: 7.8rem !important;
+                        min-height: 4rem !important;
                         font-size: 12px !important;
                     }
                 }
@@ -421,7 +424,7 @@
 
                 .rectangular-banner-tile-item {
                     .tournament-content {
-                        min-height: 172px;
+                        min-height: 85px;
                         min-width: 278px;
                     }
                 }
@@ -453,7 +456,7 @@
                     background-position-y: 80%;
 
                     .tournament-content {
-                        height: 25vw;
+                        height: 8vw;
                     }
                 }
             }

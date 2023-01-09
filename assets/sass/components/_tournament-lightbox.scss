@@ -70,7 +70,7 @@
         border: 2px solid #FFE000;
         border-radius: 33px;
         opacity: 1;
-        text-align: left;
+        text-align: center;
         font: normal normal medium 30px/35px Roboto;
         letter-spacing: 0px;
         color: #313131;
@@ -133,7 +133,7 @@
         }
     }
 
-    .tournament-lightbox-games {
+    #tournament-lightbox-games {
         ul {
             padding-left: 0;
         }

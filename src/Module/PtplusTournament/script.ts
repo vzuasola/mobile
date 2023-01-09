@@ -39,7 +39,7 @@ export class PtplusTournamentModule implements ModuleInterface {
         });
 
         Handlebars.registerHelper("convURL", (str) => {
-            return encodeURI(str);
+            return encodeURI(str).replace(/[!'()*]/g, escape);
         });
     }
 
@@ -58,9 +58,6 @@ export class PtplusTournamentModule implements ModuleInterface {
         this.listenLearnMore();
         this.redirectPtplusTornamentPage();
         this.listenTournamentGames();
-        setInterval(() => {
-            this.updateCountdown();
-        }, 6000);
 
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
@@ -226,39 +223,5 @@ export class PtplusTournamentModule implements ModuleInterface {
         });
 
         gamesEl.innerHTML = template;
-    }
-
-    private updateCountdown() {
-        this.countdowns = document.getElementsByClassName("tournament-countdown");
-        for (const countdownContainer of this.countdowns) {
-            const expiry = new Date(countdownContainer.getAttribute("data-tournament-expires"));
-            const now = new Date();
-            const diff = expiry.getTime() - now.getTime();
-            // if the difference is less than 0 then the tournament has expired
-            if (diff < 0) {
-                countdownContainer.getElementsByClassName("days-value")[0].innerHTML = "0";
-                countdownContainer.getElementsByClassName("hours-value")[0].innerHTML = "0";
-                countdownContainer.getElementsByClassName("minutes-value")[0].innerHTML = "0";
-                continue;
-            }
-            // calculate the difference in days, hours, minutes
-            const days = Math.floor(diff / 1000 / 60 / 60 / 24);
-            const hours = Math.floor(diff / 1000 / 60 / 60) % 24;
-            const minutes = Math.floor(diff / 1000 / 60) % 60;
-
-            countdownContainer.getElementsByClassName("days-value")[0].innerHTML = days.toString();
-            countdownContainer.getElementsByClassName("hours-value")[0].innerHTML = hours.toString();
-            countdownContainer.getElementsByClassName("minutes-value")[0].innerHTML = minutes.toString();
-        }
-    }
-
-    private changeTimeZone(date, timeZone = "Asia/Manila") {
-        if (typeof date === "string") {
-            return new Date(
-                new Date(date).toLocaleString("en-US", {
-                    timeZone,
-                }),
-            );
-        }
     }
 }
