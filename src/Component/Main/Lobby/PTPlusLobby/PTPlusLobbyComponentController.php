@@ -241,7 +241,8 @@ class PTPlusLobbyComponentController
 
     public function banners($request, $response)
     {
-        $this->getAllTournaments();
+        $generalConfiguration = $this->tournamentService->tournamentConfiguration();
+        $this->getAllTournaments($generalConfiguration);
         try {
             $data = [];
             $banners = $this->views->getViewById('tournament_banners');
@@ -320,12 +321,12 @@ class PTPlusLobbyComponentController
     /**
      * Get All Tournaments In Promise
      */
-    public function getAllTournaments()
+    public function getAllTournaments($generalConfiguration)
     {
         $promises = [
-            'daily' => $this->tournamentService->tournamentAPIAsync('dailymission'),
-            'leader1' => $this->tournamentService->tournamentAPIAsync('leaderboard', 1),
-            'leader2' => $this->tournamentService->tournamentAPIAsync('leaderboard'),
+            'daily' => $this->tournamentService->tournamentAPIAsync($generalConfiguration, 'dailymission'),
+            'leader1' => $this->tournamentService->tournamentAPIAsync($generalConfiguration, 'leaderboard', 1),
+            'leader2' => $this->tournamentService->tournamentAPIAsync($generalConfiguration, 'leaderboard'),
         ];
 
         try {

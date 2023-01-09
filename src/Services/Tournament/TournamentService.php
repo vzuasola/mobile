@@ -48,16 +48,20 @@ class TournamentService
     /**
      * Send Async Request To Tournament Side
      */
-    public function tournamentAPIAsync($type, $status = 2)
+    public function tournamentAPIAsync($generalConfiguration, $type, $status = 2)
     {
         try {
-            $generalConfiguration = $this->tournamentConfiguration($type);
+            $url = $generalConfiguration['dailymissionUrl'];
+            if ($type === 'leaderboard') {
+                $url = $generalConfiguration['leaderboardUrl'];
+            }
             $entityName = 'W2W' . $generalConfiguration['currency'];
             $lng = $generalConfiguration['language'];
             $client = new Client();
+
             return $client->requestAsync(
                 'POST',
-                $generalConfiguration['url'],
+                $url,
                 [
                     'form_params' => [
                         'entity_name' => $entityName,
@@ -77,19 +81,15 @@ class TournamentService
     /**
      * Get Tournament Configuration
      */
-    public function tournamentConfiguration($type)
+    public function tournamentConfiguration()
     {
         $data = [];
         $settings =  $this->configs->withProduct('mobile-ptplus')
             ->getConfig('webcomposer_config.tournament_settings');
 
-        $urlMapping = [
-            'leaderboard' => $settings['leaderboards_api'],
-            'dailymission' => $settings['daily_mission_api'],
-        ];
-
         $data['key_mapping'] = Config::parseMultidimensional($settings['key_mapping']);
-        $data['url'] = $urlMapping[$type];
+        $data['leaderboardUrl'] = $settings['leaderboards_api'];
+        $data['dailymissionUrl'] = $settings['daily_mission_api'];
         $data['default_key_name'] = Config::parseMultidimensional($settings['default_key_name_mapping']);
         $data['currency'] = $data['default_key_name'][strtolower($this->currentLanguage)];
         $langs = Config::parseMultidimensional($settings['api_language_mapping']);
@@ -133,7 +133,7 @@ class TournamentService
     public function getEndTime($dateEnd)
     {
         try {
-            $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
+            $currentDate = new \DateTime(date("Y-m-d H:i:s"));
             $endDate = new \DateTime($dateEnd, new \DateTimeZone(date_default_timezone_get()));
             $dateInterval = $endDate->diff($currentDate);
 
