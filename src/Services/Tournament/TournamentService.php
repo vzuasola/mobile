@@ -135,8 +135,8 @@ class TournamentService
     public function getEndTime($dateEnd)
     {
         try {
-            $currentDate = new \DateTime(date("Y-m-d H:i:s"));
-            $endDate = new \DateTime($dateEnd);
+            $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone(date_default_timezone_get()));
+            $endDate = new \DateTime($dateEnd, new \DateTimeZone(date_default_timezone_get()));
             $dateInterval = $endDate->diff($currentDate);
 
             return [
