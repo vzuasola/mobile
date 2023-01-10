@@ -31,8 +31,7 @@ class PTPlusLobbyComponentController
     private $cacher;
     private $currentLanguage;
     private $player;
-    private $lang;
-
+    private $tournamentService;
     private $dailymissionApi;
     private $leaderboardApiProcessing;
     private $leaderboardApiPrepare;
@@ -54,7 +53,8 @@ class PTPlusLobbyComponentController
             $container->get('views_fetcher_async'),
             $container->get('redis_cache_adapter'),
             $container->get('lang'),
-            $container->get('player')
+            $container->get('player'),
+            $container->get('tournament_service')
         );
     }
 
@@ -73,7 +73,8 @@ class PTPlusLobbyComponentController
         $viewsAsync,
         $cacher,
         $currentLanguage,
-        $player
+        $player,
+        $tournamentService
     ) {
         $this->playerSession = $playerSession;
         $this->views = $views->withProduct(self::PRODUCT);
@@ -87,6 +88,7 @@ class PTPlusLobbyComponentController
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
         $this->player = $player;
+        $this->tournamentService = $tournamentService;
     }
 
     public function lobby($request, $response)
@@ -239,7 +241,8 @@ class PTPlusLobbyComponentController
 
     public function banners($request, $response)
     {
-        $this->getAllTournaments();
+        $generalConfiguration = $this->tournamentService->tournamentConfiguration();
+        $this->getAllTournaments($generalConfiguration);
         try {
             $data = [];
             $banners = $this->views->getViewById('tournament_banners');
@@ -255,19 +258,32 @@ class PTPlusLobbyComponentController
                     $statusBoard = $banner['field_status_board'][0]['value'] ?? '';
 
                     // filtering request for leaderboard and dailymission
-                    $banner['lightbox_games'] =
-                        $this->filterGamesByTypeStatus($banner['banner_id'], $this->dailymissionApi);
+                    $bannerData = $this->tournamentService->filterGamesByTypeStatus(
+                        $banner['banner_id'],
+                        $this->dailymissionApi
+                    );
+                    $banner['lightbox_games'] = $bannerData['games'] ?? '';
+                    $banner['end_time'] = $bannerData['end_time'] ?? '';
                     if ($typeBoard === 'leaderboard') {
                         if ($statusBoard === '1') {
-                            $banner['lightbox_games'] =
-                                $this->filterGamesByTypeStatus($banner['banner_id'], $this->leaderboardApiProcessing);
+                            $bannerData = $this->tournamentService->filterGamesByTypeStatus(
+                                $banner['banner_id'],
+                                $this->leaderboardApiProcessing
+                            );
+                            $banner['lightbox_games'] = $bannerData['games'] ?? '';
+                            $banner['end_time'] = $bannerData['end_time'] ?? '';
                         } elseif ($statusBoard === '2') {
-                            $banner['lightbox_games'] =
-                                $this->filterGamesByTypeStatus($banner['banner_id'], $this->leaderboardApiPrepare);
+                            $bannerData = $this->tournamentService->filterGamesByTypeStatus(
+                                $banner['banner_id'],
+                                $this->leaderboardApiPrepare
+                            );
+                            $banner['lightbox_games'] = $bannerData['games'] ?? '';
+                            $banner['end_time'] = $bannerData['end_time'] ?? '';
                         }
                     }
                     // end filter
 
+                    $banner['date_time'] = $this->tournamentService->getEndTime($banner['end_time']) ?? '';
                     $banner['image'] = [
                         'alt' => $banner['field_banner_image'][0]['value']['alt'],
                         'url' =>
@@ -303,23 +319,14 @@ class PTPlusLobbyComponentController
     }
 
     /**
-     * Filter Games By Type And Status
+     * Get All Tournaments In Promise
      */
-    public function filterGamesByTypeStatus($id, $apiList)
-    {
-        foreach ($apiList['data'] as $value) {
-            if ($value['id'] === intval($id)) {
-                return json_encode($value['games']);
-            }
-        }
-    }
-
-    public function getAllTournaments()
+    public function getAllTournaments($generalConfiguration)
     {
         $promises = [
-            'daily' => $this->tournamentAPIAsync('dailymission'),
-            'leader1' => $this->tournamentAPIAsync('leaderboard', 1),
-            'leader2' => $this->tournamentAPIAsync('leaderboard'),
+            'daily' => $this->tournamentService->tournamentAPIAsync($generalConfiguration, 'dailymission'),
+            'leader1' => $this->tournamentService->tournamentAPIAsync($generalConfiguration, 'leaderboard', 1),
+            'leader2' => $this->tournamentService->tournamentAPIAsync($generalConfiguration, 'leaderboard'),
         ];
 
         try {
@@ -336,73 +343,6 @@ class PTPlusLobbyComponentController
             $this->leaderboardApiProcessing = [];
             $this->leaderboardApiPrepare = [];
         }
-    }
-
-    /**
-     * Send Async Request To Tournament Side
-     */
-    public function tournamentAPIAsync($type, $status = 2)
-    {
-        try {
-            $generalConfiguration = $this->tournamentConfiguration($type);
-            $entityName = 'W2W' . $generalConfiguration['currency'];
-            $lng = $generalConfiguration['language'];
-            $client = new Client();
-            return $client->requestAsync(
-                'POST',
-                $generalConfiguration['url'],
-                [
-                    'form_params' => [
-                        'entity_name' => $entityName,
-                        'entity_key' => $generalConfiguration['key_mapping'][$entityName],
-                        'isMobile' => false,
-                        'language' => $lng,
-                        'currency' => $generalConfiguration['currency'],
-                        'status' => $status
-                    ],
-                ]
-            );
-        } catch (\Exception $e) {
-            return [];
-        }
-    }
-
-    /**
-     * Get Tournament Configuration
-     */
-    public function tournamentConfiguration($type)
-    {
-        $data = [];
-        $settings =  $this->configs->withProduct('mobile-ptplus')
-            ->getConfig('webcomposer_config.tournament_settings');
-
-        $urlMapping = [
-            'leaderboard' => $settings['leaderboards_api'],
-            'dailymission' => $settings['daily_mission_api'],
-        ];
-
-        $data['key_mapping'] = Config::parseMultidimensional($settings['key_mapping']);
-        $data['url'] = $urlMapping[$type];
-        $data['default_key_name'] = Config::parseMultidimensional($settings['default_key_name_mapping']);
-        $data['currency'] = $data['default_key_name'][strtolower($this->currentLanguage)];
-        $langs = Config::parseMultidimensional($settings['api_language_mapping']);
-        $data['language'] = $langs[$this->currentLanguage];
-        $data['lang_mapping'] = $langs;
-        $data['test'] = $langs;
-        if ($this->playerSession->isLogin()) {
-            $playerConfig = $this->player;
-
-            $data['playerId']  = $playerConfig->getPlayerId();
-            $data['currency']  = $playerConfig->getCurrency();
-            $data['productId'] = $playerConfig->getProductId();
-            $data['regLang']   = (string)$playerConfig->getLocale();
-        }
-
-        if ($data['currency'] === 'RMB') {
-            $data['currency'] = 'CNY';
-        }
-
-        return $data;
     }
 
     private function getSpecialCategoriesGameList($categories)
