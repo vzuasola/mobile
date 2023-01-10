@@ -88,8 +88,8 @@ class TournamentService
             ->getConfig('webcomposer_config.tournament_settings');
 
         $data['key_mapping'] = Config::parseMultidimensional($settings['key_mapping']);
-        $data['leaderboardUrl'] = $settings['leaderboards_api'];
-        $data['dailymissionUrl'] = $settings['daily_mission_api'];
+        $data['leaderboardUrl'] = $settings['leaderboards_api'] ?? '';
+        $data['dailymissionUrl'] = $settings['daily_mission_api'] ?? '';
         $data['default_key_name'] = Config::parseMultidimensional($settings['default_key_name_mapping']);
         $data['currency'] = $data['default_key_name'][strtolower($this->currentLanguage)];
         $langs = Config::parseMultidimensional($settings['api_language_mapping']);
