@@ -137,8 +137,6 @@ class TournamentService
         try {
             $currentDate = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone('Asia/Manila'));
             $endDate = new \DateTime($dateEnd);
-            var_dump($currentDate);
-            var_dump($endDate);die;
             $dateInterval = $endDate->diff($currentDate);
 
             return [
