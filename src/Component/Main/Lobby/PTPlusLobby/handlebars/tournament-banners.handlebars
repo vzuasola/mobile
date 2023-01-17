@@ -10,23 +10,34 @@
             data-tournament-id="{{this.banner_id}}">
             <div class="tournament-content" data-game-login-tournament="true"></div>
             <div class="tournament-blurb bottom t-1s{{../settings.blurb_annimation}}">
+                <div class="text-container">
                     <p class="tournament-title">{{this.field_title.0.value}}</p>
-                    <div class="btn-container">
+                    <p class="tournament-countdown" data-tournament-expires="{{this.end_time}}">
+                        <span class="end-in">{{../settings.ends_in}}</span>
+                        <span class="days-value">{{this.date_time.days}}</span>
+                        <span class="days">{{../settings.days}}</span>
+                        <span class="hours-value">{{this.date_time.hours}}</span>
+                        <span class="hours">{{../settings.hours}}</span>
+                        <span class="minutes-value">{{this.date_time.minutes}}</span>
+                        <span class="minutes">{{../settings.minutes}}</span>
+                    </p>
+                </div>
+                <div class="btn-container">
                     {{#if this.lightbox_status}}
                         <a class="btn btn-white btn-small" href="#"
-                         data-tournament-learn-more="learn-more">
-                                {{../settings.button_learn_more}}
+                           data-tournament-learn-more="learn-more">
+                            {{../settings.button_learn_more}}
                         </a>
                     {{/if}}
                     {{#if this.lightbox_status}}
-                        <a class="btn btn-yellow btn-small" data-game-login-tournament="true">
+                    <a class="btn btn-yellow btn-small" data-game-login-tournament="true">
                     {{else}}
-                        <a class="btn btn-yellow btn-small" data-game-login-tournament="true" style="width: 100%;">
+                    <a class="btn btn-yellow btn-small" data-game-login-tournament="true" style="width: 100%;">
                     {{/if}}
-                            {{../settings.button_join}}
-                        </a>
-                    </div>>
+                    {{../settings.button_join}}
+                    </a>
                 </div>
+            </div>
         </li>
     {{/each}}
     </ul>

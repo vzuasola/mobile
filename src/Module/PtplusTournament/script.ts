@@ -20,6 +20,7 @@ export class PtplusTournamentModule implements ModuleInterface {
     private casinoInstance: string;
     private messageLightbox: ProviderMessageLightbox;
     private bannerId: string;
+    private countdowns: any;
 
     constructor() {
         const listTypes = [
@@ -38,7 +39,7 @@ export class PtplusTournamentModule implements ModuleInterface {
         });
 
         Handlebars.registerHelper("convURL", (str) => {
-            return encodeURI(str);
+            return encodeURI(str).replace(/[!'()*]/g, escape);
         });
     }
 
@@ -223,5 +224,4 @@ export class PtplusTournamentModule implements ModuleInterface {
 
         gamesEl.innerHTML = template;
     }
-
 }

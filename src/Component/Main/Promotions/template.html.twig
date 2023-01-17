@@ -30,6 +30,7 @@
     <div class="promotions-body promotions-no-available hidden">
         <p>{{ no_available_promotions }}</p>
     </div>
+    {% if show_archive %}
     <span class="archive-btn-container">
         <a href="#archive" class="btn btn-yellow btn-small btn-archive">
             {{ btn_archive_title }}
@@ -38,6 +39,8 @@
 
     <div class="promotions-archive hidden">
     </div>
+    {% endif %}
+
 
      <div class="promotions-archive-no-available hidden" id="archive">
         <p>{{ no_archive_promotions }}</p>
