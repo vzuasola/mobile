@@ -134,6 +134,8 @@ class MyAccountComponentController
         if ($isLimitExceeded) {
             return $this->rest->output($response, [
                 'response_code' => 'SUCCESS1',
+                'message' => $config['rate_limit_sms_error_message']
+                    ?? 'You have exceeded the limit of sending verification code.',
             ]);
         }
 

@@ -276,10 +276,14 @@ export class SmsVerification extends FormBase {
                 data: this.subTypeId,
             },
         }).then((res) => {
-            if (res.response_code === "SMS_VERIFICATION_SUCCESS" || res.response_code === "SUCCESS1" ) {
+            if (res.response_code === "SMS_VERIFICATION_SUCCESS") {
                 utility.addClass(verificationError, "hidden");
                 utility.removeClass(verificationSuccess, "hidden");
                 verificationSuccess.innerHTML = res.message;
+            } else if (res.response_code === "SUCCESS1") {
+                utility.addClass(verificationSuccess, "hidden");
+                utility.removeClass(verificationError, "hidden");
+                verificationError.innerHTML = res.message;
             } else {
                 utility.addClass(verificationSuccess, "hidden");
                 utility.removeClass(verificationError, "hidden");
