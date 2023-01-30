@@ -114,6 +114,8 @@ export class  ProductLanguage {
             "bn",
             "pk",
             "jp",
+            "bg",
+            "bd",
         ],
         "exchange" : [
             "in",
