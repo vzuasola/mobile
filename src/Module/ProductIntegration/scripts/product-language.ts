@@ -59,6 +59,8 @@ export class  ProductLanguage {
             "km",
             "bn",
             "pk",
+            "bg",
+            "bd",
         ],
         "lottery" : [
             "en",
