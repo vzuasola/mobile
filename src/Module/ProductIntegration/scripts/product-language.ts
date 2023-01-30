@@ -36,6 +36,8 @@ export class  ProductLanguage {
             "km",
             "bn",
             "pk",
+            "bd",
+            "bg",
         ],
         "sports-df" : [
             "en",
