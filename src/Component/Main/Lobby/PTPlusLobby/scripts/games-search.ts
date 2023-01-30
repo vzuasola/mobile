@@ -170,16 +170,6 @@ export class GamesSearch {
     /**
      *
      */
-    private onSuccessSearchLobby(response, keyword) {
-        const groupedGames = this.groupGames(response);
-
-        // populate search results in games lobby search tab
-        ComponentManager.broadcast("games.search.success", {games: groupedGames, isRecommended: this.isRecommended});
-    }
-
-    /**
-     *
-     */
     private onBeforeSearch(data) {
         // placeholder
         this.isRecommended = false;
@@ -361,20 +351,8 @@ export class GamesSearch {
      */
     private listenChangeGameSearch() {
         ComponentManager.subscribe("keyup", (event, src) => {
-            const keyword =  this.element.querySelector(".games-search-input");
-
-            if (this.timer !== null) {
-                clearTimeout(this.timer);
-            }
-
-            this.timer = setTimeout(() => {
-                if (keyword && keyword.value) {
-                    this.searchObj.search(keyword.value);
-                } else {
-                    this.clearSearchResult();
-                    this.clearSearchBlurbPreview();
-                }
-            }, 1000);
+            event.preventDefault();
+            this.triggerNewGameSearch(true, event, src);
         });
     }
 
@@ -386,7 +364,7 @@ export class GamesSearch {
             const el = utility.hasClass(src, "games-search-form", true);
             if (el) {
                 event.preventDefault();
-                this.showResultInLobby();
+                this.triggerNewGameSearch(false, event, src);
             }
         });
     }
@@ -398,25 +376,43 @@ export class GamesSearch {
     private listenClickSearchButton() {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "games-search-submit", true);
-            const keyword = this.element.querySelector(".games-search-input");
-            if (el && keyword.value) {
-                keyword.blur();
+            if (el) {
                 event.preventDefault();
-                this.showResultInLobby();
+                this.triggerNewGameSearch(false, event, src);
             }
         });
     }
 
     /**
-     * Shows search result in games lobby.
+     * @param delaySearch Indicates whether we need to delay the search for a while. For example, in case
+     *                    the search has been triggered by some keystroke event, the user may still be
+     *                    typing. So, we need to wait for a little bit just to make sure the user has
+     *                    finished typing.
+     * @param event       The originally triggered event.
+     * @param src         The element the triggered the event.
      */
-    private showResultInLobby() {
-        this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
-            { count: this.searchResult.length, keyword: this.searchKeyword });
-        if (this.searchResult.length) {
-            this.onSuccessSearchLobby(this.searchResult, this.searchKeyword);
+    private triggerNewGameSearch(delaySearch, event, src) {
+        const keywordElement = this.element.querySelector(".games-search-input");
+
+        if (this.timer !== null) {
+            clearTimeout(this.timer);
+        }
+
+        if (delaySearch) {
+            this.timer = setTimeout(() => {
+                this.searchGameKeyword(keywordElement);
+            }, 1000);
         } else {
-            this.element.querySelector("#game-container").innerHTML = "";
+            this.searchGameKeyword(keywordElement);
+        }
+    }
+
+    private searchGameKeyword(keywordElement) {
+        if (keywordElement && keywordElement.value) {
+            this.searchObj.search(keywordElement.value);
+        } else {
+            this.clearSearchResult();
+            this.clearSearchBlurbPreview();
         }
     }
 
