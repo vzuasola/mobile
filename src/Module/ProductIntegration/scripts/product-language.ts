@@ -38,8 +38,8 @@ export class  ProductLanguage {
             "km",
             "bn",
             "pk",
-            "bg",
             "bd",
+            "bg",
         ],
         "sports-df" : [
             "en",
