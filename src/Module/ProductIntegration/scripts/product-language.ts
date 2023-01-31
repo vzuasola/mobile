@@ -173,6 +173,7 @@ export class  ProductLanguage {
             "id",
             "in",
             "jp",
+            "bg",
         ],
     };
 
