@@ -3026,3 +3026,66 @@
         fill: url(#CMYK_Red_Gradient-2);
     }
 }
+
+#sponsor-paar-royals {
+    .cls-1 {
+        fill: #e0188d;
+    }
+
+    .cls-2,
+    .cls-3,
+    .cls-4 {
+        fill: #fff;
+    }
+
+    .cls-5,
+    .cls-6,
+    .cls-4 {
+        opacity: .2;
+    }
+
+    .cls-5,
+    .cls-3,
+    .cls-4 {
+        mix-blend-mode: multiply;
+    }
+
+    .cls-7 {
+        isolation: isolate;
+    }
+
+    .cls-3 {
+        opacity: .1;
+    }
+}
+
+#sponsor-pretoria-capital {
+    .cls-1 {
+        fill: #fff;
+    }
+
+    .cls-2 {
+        fill-rule: evenodd;
+    }
+
+    .cls-2,
+    .cls-3 {
+        fill: #db222a;
+    }
+
+    .cls-4 {
+        fill: #fcaf17;
+    }
+
+    .cls-5 {
+        fill: none;
+    }
+
+    .cls-6 {
+        fill: url(#linear-gradient);
+    }
+
+    .cls-7 {
+        fill: #d51317;
+    }
+}
