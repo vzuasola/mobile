@@ -121,7 +121,9 @@
     .in a:before,
     a.in:before,
     .te a:before,
-    a.te:before {
+    a.te:before,
+    .bg a:before,
+    a.bg:before {
         background-position: 0 -17.8rem;
     }
     .el a:before,
@@ -153,7 +155,9 @@
         background-position: 0 -31.7rem;
     }
     .bn a:before,
-    a.bn :before {
+    a.bn :before,
+    .bd a:before,
+    a.bd :before {
         background-position: 0 -38.2rem;
     }
     .pk a:before,

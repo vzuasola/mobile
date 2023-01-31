@@ -16,6 +16,8 @@ export class  ProductLanguage {
             "bu",
             "km",
             "jp",
+            "bg",
+            "bd",
         ],
         "sports" : [
             "en",
@@ -36,6 +38,8 @@ export class  ProductLanguage {
             "km",
             "bn",
             "pk",
+            "bg",
+            "bd",
         ],
         "sports-df" : [
             "en",
@@ -97,6 +101,8 @@ export class  ProductLanguage {
             "jp",
             "es",
             "pt",
+            "bg",
+            "bd",
         ],
         "games" : [
             "en",
@@ -116,6 +122,8 @@ export class  ProductLanguage {
             "bn",
             "pk",
             "jp",
+            "bg",
+            "bd",
         ],
         "exchange" : [
             "in",
@@ -140,6 +148,8 @@ export class  ProductLanguage {
             "bn",
             "pk",
             "jp",
+            "bg",
+            "bd",
         ],
         "virtual-sports" : [
             "en",
@@ -151,6 +161,8 @@ export class  ProductLanguage {
             "kr",
             "pt",
             "es",
+            "bg",
+            "bd",
         ],
         "soda-casino" : [
             "en",
