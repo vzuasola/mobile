@@ -3060,32 +3060,33 @@
 }
 
 #sponsor-pretoria-capital {
-    .cls-1 {
-        fill: #fff;
+    .st0 {
+        fill: #FFFFFF;
     }
 
-    .cls-2 {
-        fill-rule: evenodd;
+    .st1 {
+        fill: #FCAF17;
     }
 
-    .cls-2,
-    .cls-3 {
-        fill: #db222a;
+    .st2 {
+        fill: #292761;
     }
 
-    .cls-4 {
-        fill: #fcaf17;
+    .st3 {
+        fill: #D51317;
     }
 
-    .cls-5 {
+    .st4 {
         fill: none;
     }
 
-    .cls-6 {
-        fill: url(#linear-gradient-pretoria-capital);
+    .st5 {
+        fill-rule: evenodd;
+        clip-rule: evenodd;
+        fill: #DB222A;
     }
 
-    .cls-7 {
-        fill: #d51317;
+    .st6 {
+        fill: #DB222A;
     }
 }
