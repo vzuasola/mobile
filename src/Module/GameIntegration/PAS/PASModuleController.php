@@ -157,7 +157,9 @@ class PASModuleController
 
                 // Check if game is blocked (dafabetgames only)
                 if (in_array($productKey, self::BLOCKED_PRODUCTS)) {
-                    $playtechGameCode = $this->getGameUrlParams($requestData);
+                    $iCoreData = $this->getGameUrlFromICore($request, $requestData);
+                    $playtechGameCode = $this->extractExtGameIdFromGameUrl($iCoreData);
+
                     if (!$playtechGameCode) {
                         throw new \Exception("Blocked");
                     }
@@ -199,10 +201,11 @@ class PASModuleController
         return $this->rest->output($response, $data);
     }
 
-    private function getGameUrlParams($requestData)
+    private function getGameUrl($request, $requestData)
     {
+        $data['currency'] = true;
+
         try {
-            // Setup params
             $options['languageCode'] = $requestData['language'];
             $options['playMode']  = 1;
             $gameId = $requestData['gameCode'];
@@ -215,13 +218,24 @@ class PASModuleController
             ]);
 
             if ($responseData['url']) {
-                $params = [];
-                parse_str(parse_url($responseData['url'])['query'], $params);
-
-                return $params['ExtGameId'];
+                if ($responseData['url']) {
+                    $data['gameurl'] = $responseData['url'];
+                }
             }
         } catch (\Exception $e) {
-            return [];
+            $data['currency'] = true;
+        }
+
+        return $data;
+    }
+
+    private function extractExtGameIdFromGameUrl($iCoreData)
+    {
+        if ($iCoreData['gameurl']) {
+            $params = [];
+            parse_str(parse_url($iCoreData['gameurl'])['query'], $params);
+
+            return $params['ExtGameId'];
         }
     }
 
