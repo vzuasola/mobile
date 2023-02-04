@@ -153,7 +153,7 @@ class PASModuleController
                 $productKey = $requestData['productMap'];
                 $casino = self::CASINO_MAP[$productKey];
 
-                $playtechGameCode = $requestData['options']['code'];
+                $playtechGameCode = $requestData['gameCode'];
 
                 // Check if game is blocked (dafabetgames only)
                 if (in_array($productKey, self::BLOCKED_PRODUCTS)) {
@@ -164,7 +164,7 @@ class PASModuleController
                 }
 
                 $url = $this->parser->processTokens(
-                    $iapiConfigs[$casino][$requestData['options']['platform'] . '_client_url']
+                    $iapiConfigs[$casino][$requestData['platform'] . '_client_url']
                 );
 
                 $search = [
@@ -181,7 +181,7 @@ class PASModuleController
                 $url = str_replace($search, $replacements, $url);
 
                 $queryString = [];
-                foreach ($iapiConfigs[$casino][$requestData['options']['platform'] . '_param'] as $key => $value) {
+                foreach ($iapiConfigs[$casino][$requestData['platform'] . '_param'] as $key => $value) {
                     $param = str_replace($search, $replacements, $value);
                     $queryString[] = $key . "=" . urlencode($this->parser->processTokens($param));
                 }
@@ -205,7 +205,7 @@ class PASModuleController
             // Setup params
             $options['languageCode'] = $requestData['language'];
             $options['playMode']  = 1;
-            $gameId = $requestData['options']['code'];
+            $gameId = $requestData['gameCode'];
             if (!is_numeric($gameId)) {
                 $options['gameName'] = $gameId;
             }

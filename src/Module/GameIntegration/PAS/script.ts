@@ -289,9 +289,23 @@ export class PASModule implements ModuleInterface, GameInterface {
                         lang,
                         language,
                         options,
+                        provider: options.provider || "",
+                        launch: options.launch || false,
+                        platform: options.platform || "",
+                        lobby: options.lobby || false,
+                        gameCode: options.code || "",
+                        keywords: options.keywords || "",
+                        title: options.title || "",
+                        target: options.target || "",
+                        filters: options.filters || "",
+                        sort: options.sort || "",
+                        loader: options.loader || false,
+                        currentProduct: options.currentProduct || "",
+                        loaderFlag: options.loaderFlag || false,
                         currency: this.currency,
                         productMap: product,
                         launchAlias: options.tablename,
+
                     },
                 }).then(async (response) => {
                     if (this.pasLoginResponse.errorCode === 2 && !response.currency && !response.gameurl) {
