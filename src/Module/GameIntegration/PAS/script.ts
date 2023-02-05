@@ -280,33 +280,34 @@ export class PASModule implements ModuleInterface, GameInterface {
                 const configProduct = options.hasOwnProperty("currentProduct") ? options.currentProduct
                     : ComponentManager.getAttribute("product");
 
+                const launchUrl = Router.generateModuleRoute(this.moduleName, "launch");
+                const launchData = {
+                    product: configProduct,
+                    lang,
+                    language,
+                    provider: options.provider || "",
+                    launch: options.launch || false,
+                    platform: options.platform || "",
+                    lobby: options.lobby || false,
+                    gameCode: options.code || "",
+                    keywords: options.keywords || "",
+                    title: options.title || "",
+                    target: options.target || "",
+                    filters: options.filters || "",
+                    sort: options.sort || "",
+                    loader: options.loader || false,
+                    currentProduct: options.currentProduct || "",
+                    loaderFlag: options.loaderFlag || false,
+                    currency: this.currency,
+                    productMap: product,
+                    launchAlias: options.tablename,
+                };
+
                 xhr({
-                    url: Router.generateModuleRoute(this.moduleName, "launch"),
+                    url: launchUrl,
                     type: "json",
                     method: "post",
-                    data: {
-                        product: configProduct,
-                        lang,
-                        language,
-                        options,
-                        provider: options.provider || "",
-                        launch: options.launch || false,
-                        platform: options.platform || "",
-                        lobby: options.lobby || false,
-                        gameCode: options.code || "",
-                        keywords: options.keywords || "",
-                        title: options.title || "",
-                        target: options.target || "",
-                        filters: options.filters || "",
-                        sort: options.sort || "",
-                        loader: options.loader || false,
-                        currentProduct: options.currentProduct || "",
-                        loaderFlag: options.loaderFlag || false,
-                        currency: this.currency,
-                        productMap: product,
-                        launchAlias: options.tablename,
-
-                    },
+                    data: launchData,
                 }).then(async (response) => {
                     if (this.pasLoginResponse.errorCode === 2 && !response.currency && !response.gameurl) {
                         await this.messageLightbox.showMessage(
