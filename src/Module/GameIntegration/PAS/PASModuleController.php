@@ -51,6 +51,8 @@ class PASModuleController
      */
     private $viewsFetcher;
 
+    private $playerGameFetcher;
+
     /**
      *
      */
@@ -64,7 +66,8 @@ class PASModuleController
             $container->get('player'),
             $container->get('player_session'),
             $container->get('game_provider_fetcher'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('player_game_fetcher')
         );
     }
 
@@ -79,7 +82,8 @@ class PASModuleController
         $player,
         $playerSession,
         $provider,
-        $viewsFetcher
+        $viewsFetcher,
+        $playerGameFetcher
     ) {
         $this->rest = $rest;
         $this->accountService = $accountService;
@@ -89,6 +93,7 @@ class PASModuleController
         $this->playerSession = $playerSession;
         $this->provider = $provider;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-casino');
+        $this->playerGameFetcher = $playerGameFetcher;
     }
 
     public function updateToken($request, $response)
