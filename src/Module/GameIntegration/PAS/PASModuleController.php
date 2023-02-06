@@ -11,7 +11,7 @@ class PASModuleController
 {
     use ProviderTrait;
 
-    const KEY = 'ptplus';
+    const KEY = 'pas';
 
     const CASINO_MAP = [
         'mobile-casino' => 'dafa888',
