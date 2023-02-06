@@ -82,6 +82,8 @@ export class  ProductLanguage {
             "te",
             "bn",
             "pk",
+            "bg",
+            "bd",
         ],
         "live-dealer" : [
             "en",
