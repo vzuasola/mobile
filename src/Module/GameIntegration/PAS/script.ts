@@ -290,6 +290,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     platform: options.platform || "",
                     lobby: options.lobby || false,
                     gameCode: options.code || "",
+                    extGameId: options.extgameid || "",
                     keywords: options.keywords || "",
                     title: options.title || "",
                     target: options.target || "",

@@ -384,6 +384,7 @@ class GamesLobbyComponentController
             $processGame['filters'] = $game['field_game_filter'];
             $processGame['title'] = $game['title'] ?? "";
             $processGame['game_code'] = $game['field_game_code'] ?? "";
+            $processGame['external_game_id'] = $game['field_external_game_id'] ?? "";
             $processGame['game_provider'] = $this->parseProvider($game['field_game_provider'] ?? "");
             $processGame['game_subprovider'] = $game['field_games_subprovider'] ?? "";
             $processGame['game_platform'] = $game['field_game_platform'] ?? "";
@@ -731,6 +732,7 @@ class GamesLobbyComponentController
 
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
+            $processGame['external_game_id'] = $game['field_external_game_id'][0]['value'] ?? "";
             $processGame['game_provider'] = $this->parseProvider($game['field_game_provider'][0]['value'] ?? "");
             $processGame['game_subprovider'] = $game['field_games_subprovider'][0]['name'][0]['value'] ?? "";
             $processGame['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
