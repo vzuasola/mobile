@@ -10,6 +10,24 @@ use App\Player\PlayerInvalidException;
  */
 trait ProviderTrait
 {
+
+    /**
+     * Gets the launch URL from ICore
+     * Can be overidden per provider
+     */
+    public function launch($request, $response)
+    {
+        $data['gameurl'] = false;
+        $data['currency'] = false;
+
+        if ($this->checkCurrency($request)) {
+            $requestData = $request->getParsedBody();
+            $data = $this->getGameUrlFromICore($request, $requestData);
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
     /**
      * Get the equivalent langCode
      * of current language from iCore
