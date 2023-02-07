@@ -35,30 +35,22 @@ trait ProviderTrait
         return $langCode;
     }
 
-    /**
-     * Game launching
-     */
-    public function launch($request, $response)
+    public function getGameUrlFromICore($request, $requestData)
     {
-        $data['gameurl'] = false;
-        $data['currency'] = false;
-
-        if ($this->checkCurrency($request)) {
-            $requestData = $request->getParsedBody();
-            $isLobbyLaunch = ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
+        $isLobbyLaunch = ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
             $requestData['lobby'] === "true");
-            $directTableLaunch = ($requestData['lobby'] === "true" &&
-             ($requestData['gameCode'] !== 'undefined' &&
-             $requestData['extGameId'] && $requestData['extGameId'] !== 'undefined'));
 
-            if ($this->isPlayerGame($requestData) && (!$isLobbyLaunch || $directTableLaunch)) {
-                $data = $this->getGameUrlByPlayerGame($request, $requestData);
-            } else {
-                $data = $this->getGameUrlByGeneralLobby($request, $requestData);
-            }
+        $directTableLaunch = ($requestData['lobby'] === "true" &&
+            ($requestData['gameCode'] !== 'undefined' &&
+                $requestData['extGameId'] && $requestData['extGameId'] !== 'undefined'));
+
+        if ($this->isPlayerGame($requestData) && (!$isLobbyLaunch || $directTableLaunch)) {
+            $data = $this->getGameUrlByPlayerGame($request, $requestData);
+        } else {
+            $data = $this->getGameUrlByGeneralLobby($request, $requestData);
         }
 
-        return $this->rest->output($response, $data);
+        return $data;
     }
 
     /**
