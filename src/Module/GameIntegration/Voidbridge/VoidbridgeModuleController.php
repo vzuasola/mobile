@@ -54,19 +54,6 @@ class VoidbridgeModuleController
         $this->playerGameFetcher = $playerGameFetcher;
     }
 
-    public function launch($request, $response)
-    {
-        $data['gameurl'] = false;
-        $data['currency'] = false;
-
-        if ($this->checkCurrency($request)) {
-            $requestData = $request->getParsedBody();
-            $data = $this->getGameUrlFromICore($request, $requestData);
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
     private function getGameUrl($request, $requestData)
     {
         $data['currency'] = true;
