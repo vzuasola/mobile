@@ -163,6 +163,11 @@ class PASModuleController
                 // Check if game is blocked (dafabetgames only)
                 if (in_array($productKey, self::BLOCKED_PRODUCTS)) {
                     $iCoreData = $this->getGameUrlFromICore($request, $requestData);
+
+                    if (isset($iCoreData['errors'])) {
+                        return $this->rest->output($response, $iCoreData);
+                    }
+
                     $playtechGameCode = $this->extractExtGameIdFromGameUrl($iCoreData);
 
                     if (!$playtechGameCode) {

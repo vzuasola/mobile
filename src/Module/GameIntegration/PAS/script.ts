@@ -16,6 +16,7 @@ import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
 import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import {ErrorMessageLightbox} from "../scripts/error-message-lightbox";
 
 /**
  * Combined class implementation for the PAS module and the
@@ -54,6 +55,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private pasLoginResponse: any;
     private messageLightbox: ProviderMessageLightbox;
+    private errorMessageLightbox: ErrorMessageLightbox;
 
     onLoad(attachments: {
         asset: any,
@@ -91,6 +93,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         }
         this.token = attachments.token;
         this.messageLightbox = new ProviderMessageLightbox();
+        this.errorMessageLightbox = new ErrorMessageLightbox();
     }
 
     init() {
@@ -326,6 +329,13 @@ export class PASModule implements ModuleInterface, GameInterface {
                                 this.updatePopupWindow(response.gameurl);
                             }
                         }
+
+                        if (response.errors) {
+                            this.errorMessageLightbox.showMessage(
+                                response,
+                            );
+                        }
+
                         options.currency = this.currency;
                         if (!response.currency) {
                             await this.messageLightbox.showMessage(
@@ -338,6 +348,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     resolve();
                 }).fail((error, message) => {
                     // Do nothing
+                    console.log("FAILED: ", error, message);
                     resolve();
                 });
             }
