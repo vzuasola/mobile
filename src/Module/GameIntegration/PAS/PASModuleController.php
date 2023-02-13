@@ -211,6 +211,19 @@ class PASModuleController
         return $this->rest->output($response, $data);
     }
 
+    /**
+     * Override ProviderTrait Game launching via GeneralLobby
+     */
+    public function getGameUrlByGeneralLobby($request, $requestData)
+    {
+        // Gets specific game URL
+        if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined')) {
+            $data = $this->getGameUrl($request, $requestData);
+        }
+
+        return $data;
+    }
+
     private function getGameUrl($request, $requestData)
     {
         $data['currency'] = true;
