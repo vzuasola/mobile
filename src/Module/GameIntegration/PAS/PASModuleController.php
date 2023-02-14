@@ -51,6 +51,8 @@ class PASModuleController
      */
     private $viewsFetcher;
 
+    private $playerGameFetcher;
+
     /**
      *
      */
@@ -64,7 +66,8 @@ class PASModuleController
             $container->get('player'),
             $container->get('player_session'),
             $container->get('game_provider_fetcher'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('player_game_fetcher')
         );
     }
 
@@ -79,7 +82,8 @@ class PASModuleController
         $player,
         $playerSession,
         $provider,
-        $viewsFetcher
+        $viewsFetcher,
+        $playerGameFetcher
     ) {
         $this->rest = $rest;
         $this->accountService = $accountService;
@@ -89,6 +93,7 @@ class PASModuleController
         $this->playerSession = $playerSession;
         $this->provider = $provider;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-casino');
+        $this->playerGameFetcher = $playerGameFetcher;
     }
 
     public function updateToken($request, $response)
@@ -153,18 +158,25 @@ class PASModuleController
                 $productKey = $requestData['productMap'];
                 $casino = self::CASINO_MAP[$productKey];
 
-                $playtechGameCode = $requestData['options']['code'];
+                $playtechGameCode = $requestData['gameCode'];
 
                 // Check if game is blocked (dafabetgames only)
                 if (in_array($productKey, self::BLOCKED_PRODUCTS)) {
-                    $playtechGameCode = $this->getGameUrlParams($requestData);
+                    $iCoreData = $this->getGameUrlFromICore($request, $requestData);
+
+                    if (isset($iCoreData['errors'])) {
+                        return $this->rest->output($response, $iCoreData);
+                    }
+
+                    $playtechGameCode = $this->extractExtGameIdFromGameUrl($iCoreData);
+
                     if (!$playtechGameCode) {
                         throw new \Exception("Blocked");
                     }
                 }
 
                 $url = $this->parser->processTokens(
-                    $iapiConfigs[$casino][$requestData['options']['platform'] . '_client_url']
+                    $iapiConfigs[$casino][$requestData['platform'] . '_client_url']
                 );
 
                 $search = [
@@ -181,7 +193,7 @@ class PASModuleController
                 $url = str_replace($search, $replacements, $url);
 
                 $queryString = [];
-                foreach ($iapiConfigs[$casino][$requestData['options']['platform'] . '_param'] as $key => $value) {
+                foreach ($iapiConfigs[$casino][$requestData['platform'] . '_param'] as $key => $value) {
                     $param = str_replace($search, $replacements, $value);
                     $queryString[] = $key . "=" . urlencode($this->parser->processTokens($param));
                 }
@@ -199,13 +211,27 @@ class PASModuleController
         return $this->rest->output($response, $data);
     }
 
-    private function getGameUrlParams($requestData)
+    /**
+     * Override ProviderTrait Game launching via GeneralLobby
+     */
+    public function getGameUrlByGeneralLobby($request, $requestData)
     {
+        // Gets specific game URL
+        if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined')) {
+            $data = $this->getGameUrl($request, $requestData);
+        }
+
+        return $data;
+    }
+
+    private function getGameUrl($request, $requestData)
+    {
+        $data['currency'] = true;
+
         try {
-            // Setup params
             $options['languageCode'] = $requestData['language'];
             $options['playMode']  = 1;
-            $gameId = $requestData['options']['code'];
+            $gameId = $requestData['gameCode'];
             if (!is_numeric($gameId)) {
                 $options['gameName'] = $gameId;
             }
@@ -215,13 +241,24 @@ class PASModuleController
             ]);
 
             if ($responseData['url']) {
-                $params = [];
-                parse_str(parse_url($responseData['url'])['query'], $params);
-
-                return $params['ExtGameId'];
+                if ($responseData['url']) {
+                    $data['gameurl'] = $responseData['url'];
+                }
             }
         } catch (\Exception $e) {
-            return [];
+            $data['currency'] = true;
+        }
+
+        return $data;
+    }
+
+    private function extractExtGameIdFromGameUrl($iCoreData)
+    {
+        if ($iCoreData['gameurl']) {
+            $params = [];
+            parse_str(parse_url($iCoreData['gameurl'])['query'], $params);
+
+            return $params['ExtGameId'];
         }
     }
 

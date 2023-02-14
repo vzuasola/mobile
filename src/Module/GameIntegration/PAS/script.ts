@@ -16,6 +16,7 @@ import * as uclTemplate from "../handlebars/unsupported.handlebars";
 
 import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import {ErrorMessageLightbox} from "../scripts/error-message-lightbox";
 
 /**
  * Combined class implementation for the PAS module and the
@@ -54,6 +55,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private pasLoginResponse: any;
     private messageLightbox: ProviderMessageLightbox;
+    private errorMessageLightbox: ErrorMessageLightbox;
 
     onLoad(attachments: {
         asset: any,
@@ -91,6 +93,7 @@ export class PASModule implements ModuleInterface, GameInterface {
         }
         this.token = attachments.token;
         this.messageLightbox = new ProviderMessageLightbox();
+        this.errorMessageLightbox = new ErrorMessageLightbox();
     }
 
     init() {
@@ -280,19 +283,35 @@ export class PASModule implements ModuleInterface, GameInterface {
                 const configProduct = options.hasOwnProperty("currentProduct") ? options.currentProduct
                     : ComponentManager.getAttribute("product");
 
+                const launchUrl = Router.generateModuleRoute(this.moduleName, "launch");
+                const launchData = {
+                    product: configProduct,
+                    lang,
+                    language,
+                    provider: options.provider || "",
+                    launch: options.launch || false,
+                    platform: options.platform || "",
+                    lobby: options.lobby || false,
+                    gameCode: options.code || "",
+                    extGameId: options.extgameid || "",
+                    keywords: options.keywords || "",
+                    title: options.title || "",
+                    target: options.target || "",
+                    filters: options.filters || "",
+                    sort: options.sort || "",
+                    loader: options.loader || false,
+                    currentProduct: options.currentProduct || "",
+                    loaderFlag: options.loaderFlag || false,
+                    currency: this.currency,
+                    productMap: product,
+                    launchAlias: options.tablename,
+                };
+
                 xhr({
-                    url: Router.generateModuleRoute(this.moduleName, "launch"),
+                    url: launchUrl,
                     type: "json",
                     method: "post",
-                    data: {
-                        product: configProduct,
-                        lang,
-                        language,
-                        options,
-                        currency: this.currency,
-                        productMap: product,
-                        launchAlias: options.tablename,
-                    },
+                    data: launchData,
                 }).then(async (response) => {
                     if (this.pasLoginResponse.errorCode === 2 && !response.currency && !response.gameurl) {
                         await this.messageLightbox.showMessage(
@@ -310,6 +329,13 @@ export class PASModule implements ModuleInterface, GameInterface {
                                 this.updatePopupWindow(response.gameurl);
                             }
                         }
+
+                        if (response.errors) {
+                            this.errorMessageLightbox.showMessage(
+                                response,
+                            );
+                        }
+
                         options.currency = this.currency;
                         if (!response.currency) {
                             await this.messageLightbox.showMessage(
@@ -322,6 +348,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                     resolve();
                 }).fail((error, message) => {
                     // Do nothing
+                    console.log("FAILED: ", error, message);
                     resolve();
                 });
             }
