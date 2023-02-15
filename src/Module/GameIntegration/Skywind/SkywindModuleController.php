@@ -60,17 +60,7 @@ class SkywindModuleController
 
         if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
-            if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
-                $requestData['lobby'] === "false"
-            ) {
-                $data = $this->getGameUrl($request);
-            }
-
-            if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
-                $requestData['lobby'] === "true"
-            ) {
-                $data = $this->getGameLobby($request);
-            }
+            $data = $this->getGameUrlFromICore($request, $requestData);
         }
 
         return $this->rest->output($response, $data);
