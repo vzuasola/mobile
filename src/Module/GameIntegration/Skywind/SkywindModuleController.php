@@ -50,22 +50,6 @@ class SkywindModuleController
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
     }
 
-    /**
-     * @{inheritdoc}
-     */
-    public function launch($request, $response)
-    {
-        $data['gameurl'] = false;
-        $data['currency'] = false;
-
-        if ($this->checkCurrency($request)) {
-            $requestData = $request->getParsedBody();
-            $data = $this->getGameUrlFromICore($request, $requestData);
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
     private function getGameLobby($request)
     {
         $data['currency'] = true;
