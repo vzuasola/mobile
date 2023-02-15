@@ -19,6 +19,8 @@ class SkywindModuleController
 
     private $player;
 
+    private $playerGameFetcher;
+
     /**
      * @var ViewsFetcher $viewsFetcher
      */
@@ -34,20 +36,22 @@ class SkywindModuleController
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('player_game_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $skywind, $config, $player, $viewsFetcher)
+    public function __construct($rest, $skywind, $config, $player, $viewsFetcher, $playerGameFetcher)
     {
         $this->rest = $rest;
         $this->skywind = $skywind;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
+        $this->playerGameFetcher = $playerGameFetcher;
     }
 
     private function getGameLobby($request)
