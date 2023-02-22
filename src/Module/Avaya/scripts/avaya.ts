@@ -21,7 +21,7 @@ export class Avaya {
 
     constructor(options) {
         const defaults = {
-            apiUrl: "https://www.cs-livechat.com/s/jwt",
+            apiUrl: this.options.apiUrl,
             validity: 1800,
             timeout: 5000,
             nonce: false,
