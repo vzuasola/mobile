@@ -48,7 +48,7 @@ export class WebRtcModule implements ModuleInterface {
         };
 
         // Instantiate the webrtc library
-        this.webRtcClass = new WebRtc(this.options);
+        this.webRtcClass = new WebRtc(this.options, attachments);
          // Add listen to everything
         ComponentManager.subscribe("click", (event, src) => {
             this.getWebRtcToken(event, src);

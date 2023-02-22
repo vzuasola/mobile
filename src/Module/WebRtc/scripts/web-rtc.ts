@@ -5,6 +5,7 @@ import Storage from "@core/assets/js/components/utils/storage";
  *
  */
 export class WebRtc {
+    attachments: any;
     private store = new Storage();
     private flag = 0;
     private webrtcStorage = "webrtc.storage";
@@ -15,9 +16,10 @@ export class WebRtc {
         token: "",
     };
 
-    constructor(options) {
+    constructor(options, attachments: {}) {
+        this.attachments = attachments;
         const defaults = {
-            apiUrl: this.options.apiUrl,
+            apiUrl: this.attachments.urlPost,
             validity: 1800,
             timeout: 5000,
             nonce: false,
