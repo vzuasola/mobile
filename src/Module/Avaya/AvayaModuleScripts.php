@@ -44,6 +44,15 @@ class AvayaModuleScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         $data = [];
+
+        try {
+            $webRtc = $this->configFetcher->getConfig('webcomposer_config.avaya_configuration');
+
+            $data['urlPost'] = $webRtc['url_post'] ?? '';
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
         return $data;
     }
 }

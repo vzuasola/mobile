@@ -77,7 +77,7 @@ export class AvayaModule implements ModuleInterface {
                 });
 
                  // Instantiate the avaya library
-                this.avayaClass = new Avaya(this.options);
+                this.avayaClass = new Avaya(this.options, attachments);
                 this.getAvayaToken(event, target);
             }
         });
