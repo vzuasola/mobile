@@ -9,6 +9,7 @@ import Storage from "@core/assets/js/components/utils/storage";
  *
  */
 export class Avaya {
+    attachments: any;
     private store = new Storage();
     private flag = 0;
     private avayaStorage = "avaya.storage";
@@ -19,9 +20,10 @@ export class Avaya {
         token: "",
     };
 
-    constructor(options) {
+    constructor(options, attachments: {}) {
+        this.attachments = attachments;
         const defaults = {
-            apiUrl: "https://www.cs-livechat.com/s/jwt",
+            apiUrl: this.attachments.urlPost,
             validity: 1800,
             timeout: 5000,
             nonce: false,

@@ -58,6 +58,7 @@ class WebRtcModuleScripts implements ComponentAttachmentInterface
 
             $data['baseUrl'] =  $webRtc['base_url'] ?? '';
             $data['urlPost'] = $webRtc['url_post'] ?? '';
+            $data['webrtcUrl'] = $webRtc['web_rtc_url'] ?? '';
             $data['postTimeout'] = $webRtc['url_post_timout'] ?? '';
             $data['jwtKey'] = false;
             $data['validity'] = $validityTime ?? $webRtc['validity_time'];

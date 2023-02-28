@@ -26,6 +26,7 @@ export class WebRtcModule implements ModuleInterface {
     onLoad(attachments: {
         baseUrl: string,
         urlPost: string,
+        webrtcUrl: string,
         postTimeout: number,
         jwtKey: string,
         validity: number,
@@ -35,6 +36,7 @@ export class WebRtcModule implements ModuleInterface {
             validity: attachments.validity,
             nonce: attachments.jwtKey || false,
             timeout: attachments.postTimeout || 5000,
+            webrtcUrl: attachments.webrtcUrl,
             onSuccess: (token) => {
                 // Add the token to the base url
                 this.updatePopupWindow(utility.addQueryParam(this.callUrl, "s", token));
@@ -46,7 +48,7 @@ export class WebRtcModule implements ModuleInterface {
         };
 
         // Instantiate the webrtc library
-        this.webRtcClass = new WebRtc(this.options);
+        this.webRtcClass = new WebRtc(this.options, attachments);
          // Add listen to everything
         ComponentManager.subscribe("click", (event, src) => {
             this.getWebRtcToken(event, src);
@@ -159,7 +161,7 @@ export class WebRtcModule implements ModuleInterface {
                 const href = el.getAttribute("href");
 
                 if (href) {
-                    return href.indexOf("www.cs-livechat.com") !== -1;
+                    return href.indexOf(this.options.webrtcUrl) !== -1;
                 }
             }
         });
