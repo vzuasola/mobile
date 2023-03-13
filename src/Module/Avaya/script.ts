@@ -100,16 +100,22 @@ export class AvayaModule implements ModuleInterface {
             url: Router.generateModuleRoute("avaya", "jwt"),
             type: "json",
         }).then((response) => {
+            let baseUrl = response.baseUrl;
             this.avayaClass.setToken(response.jwt);
+
+            // Add VIP level to base url
+            if (response.vipLevel) {
+                baseUrl = utility.addQueryParam(baseUrl, "level", response.vipLevel);
+            }
 
             // Add the token to the base url
             this.avayaClass.setOnSuccess((token) => {
-                this.updatePopupWindow(utility.addQueryParam(response.baseUrl, "s", token));
+                this.updatePopupWindow(utility.addQueryParam(baseUrl, "s", token));
             });
 
             // Use the default avaya base url
             this.avayaClass.setOnFail((error) => {
-                this.updatePopupWindow(response.baseUrl);
+                this.updatePopupWindow(baseUrl);
             });
 
             if (callback) {
