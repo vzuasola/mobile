@@ -145,7 +145,12 @@ class MyAccountComponentController
             $smsVerificationStatus = $this->sms->sendSmsVerificationCode($subTypeId);
         } catch (ServerDownException $e) {
             $status = 'ERROR_MID_DOWN';
-            $config = $this->configFetcher->getConfigById('my_account_header');
+            $myAccountConfigV2 = $this->configFetcher->getConfig('my_account_config.general_configuration');
+            if ($myAccountConfigV2 && $myAccountConfigV2['enabled']) {
+                $config = $myAccountConfigV2;
+            } else {
+                $config = $this->configFetcher->getConfigById('my_account_header');
+            }
 
             return $this->rest->output($response, [
                 'response_code' => $status,
@@ -256,7 +261,12 @@ class MyAccountComponentController
      */
     private function getErrorMessage($status)
     {
-        $smsVerification = $this->configFetcher->getConfigById('my_account_sms_verification');
+        $myAccountConfigV2 = $this->configFetcher->getConfig('my_account_config.general_configuration');
+        if ($myAccountConfigV2 && $myAccountConfigV2['enabled']) {
+            $smsVerification = $myAccountConfigV2;
+        } else {
+            $smsVerification = $this->configFetcher->getConfigById('my_account_sms_verification');
+        }
         $smsVerificationErrorMessage = $smsVerification['verification_code_response'];
         $smsVerificationErrorMessages = explode(PHP_EOL, $smsVerificationErrorMessage);
         $smsVerificationErrorMessageList = array();
