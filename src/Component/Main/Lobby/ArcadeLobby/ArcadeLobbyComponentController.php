@@ -435,6 +435,7 @@ class ArcadeLobbyComponentController
             $processGame['filters'] = $game['field_game_filter_export'][0]['value'] ?? [];
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
+            $processGame['external_game_id'] = $game['field_external_game_id'][0]['value'] ?? "";
             $processGame['game_provider'] = $provider;
             $processGame['game_subprovider'] = $subProvider['name'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
@@ -677,6 +678,7 @@ class ArcadeLobbyComponentController
 
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
+            $processGame['external_game_id'] = $game['field_external_game_id'][0]['value'] ?? "";
             $processGame['game_provider'] = $provider;
             $processGame['game_subprovider'] = $subprovider['name'][0]['value'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
