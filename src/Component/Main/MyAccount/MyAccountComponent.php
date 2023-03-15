@@ -6,6 +6,12 @@ use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 
 class MyAccountComponent implements ComponentWidgetInterface
 {
+
+    /**
+     * Form Fetcher Object
+     */
+    private $formManager;
+
     /**
      * Config Fetcher object.
      */
@@ -51,7 +57,14 @@ class MyAccountComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $myProfileConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
+        $myAccountConfigV2 = $this->configFetcher->getConfig('my_account_config.general_configuration');
+
+        if ($myAccountConfigV2 && $myAccountConfigV2['enabled']) {
+            $config = $myAccountConfigV2;
+        } else {
+            $config = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
+        }
+
         $bonusConfig = $this->configFetcher->getConfig('webcomposer_config.bonus_code_configuration');
         $user = $this->userFetcher->getPlayerDetails();
         $flashMessage = "";
@@ -68,13 +81,13 @@ class MyAccountComponent implements ComponentWidgetInterface
             strtoupper($lname) == "DFRFN" ||
             $bdate  === "1/12/1900"
         ) {
-            $flashMessage = $myProfileConfig['fast_reg_flash_message']['value'] ?? "";
+            $flashMessage = $config['fast_reg_flash_message']['value'] ?? "";
             $isFastReg = true;
         }
 
         return [
-            'myProfileTab' => $myProfileConfig['my_profile_tab'] ?? 'My Profile',
-            'changePasswordTab' => $myProfileConfig['change_password_tab'] ?? 'Change Password',
+            'myProfileTab' => $config['my_profile_tab'] ?? 'My Profile',
+            'changePasswordTab' => $config['change_password_tab'] ?? 'Change Password',
             'bonusTabLabel' => $bonusConfig['mobile_tab_label'] ?? 'Bonuses',
             'isFastReg' => $isFastReg,
             'flashMessage' => $flashMessage,

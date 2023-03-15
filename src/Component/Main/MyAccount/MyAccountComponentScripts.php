@@ -39,20 +39,28 @@ class MyAccountComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        $general_config = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
-        $modal_config = $this->configFetcher->getConfigById('my_account_profile_modal_preview');
-        $message_config = $this->configFetcher->getConfigById('my_account_profile_server_side_mapping');
+        $myAccountConfigV2 = $this->configFetcher->getConfig('my_account_config.general_configuration');
+
+        if ($myAccountConfigV2 && $myAccountConfigV2['enabled']) {
+            $config = $myAccountConfigV2;
+            $config['server_side_mapping'] = $config['server_side_validation'];
+        } else {
+            $general_config = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
+            $modal_config = $this->configFetcher->getConfigById('my_account_profile_modal_preview');
+            $message_config = $this->configFetcher->getConfigById('my_account_profile_server_side_mapping');
+            $config = array_merge($general_config, $modal_config, $message_config);
+        }
 
         return [
-            'primaryLabel' => $general_config['primary_label'] ?? '',
-            'noUpdateDetected' => $general_config['no_changed_detected_message'] ?? '',
-            'messageTimeout' => $general_config['message_timeout'] ?? 5,
-            'messages' => Config::parse($message_config['server_side_mapping']) ?? '',
-            'modalHeader' => $modal_config['modal_preview_header'] ?? '',
-            'modalTopBlurb' => $modal_config['modal_preview_top_blurb'] ?? '',
-            'modalCurrentLabel' => $modal_config['modal_preview_current_label'] ?? '',
-            'modalNewLabel' => $modal_config['modal_preview_new_label'] ?? '',
-            'modalBottomBlurb' => $modal_config['modal_preview_bottom_blurb'] ?? ''
+            'primaryLabel' => $config['primary_label'] ?? '',
+            'noUpdateDetected' => $config['no_changed_detected_message'] ?? '',
+            'messageTimeout' => $config['message_timeout'] ?? 5,
+            'messages' => Config::parse($config['server_side_mapping']) ?? '',
+            'modalHeader' => $config['modal_preview_header'] ?? '',
+            'modalTopBlurb' => $config['modal_preview_top_blurb'] ?? '',
+            'modalCurrentLabel' => $config['modal_preview_current_label'] ?? '',
+            'modalNewLabel' => $config['modal_preview_new_label'] ?? '',
+            'modalBottomBlurb' => $config['modal_preview_bottom_blurb'] ?? ''
         ];
     }
 }
