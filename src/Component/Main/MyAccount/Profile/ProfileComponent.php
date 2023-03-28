@@ -54,20 +54,26 @@ class ProfileComponent implements ComponentWidgetInterface
     {
         $formMyProfile = $this->formManager->getForm(MyProfileForm::class);
         $SmsVerificationForm = $this->formManager->getForm(SmsVerificationForm::class);
-        $myProfileConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
-        $smsConfig = $this->configFetcher->getConfigById('my_account_sms_verification');
+        $accountConfig = $this->configFetcher->getConfig('my_account_config.general_configuration');
+        if ($accountConfig && $accountConfig['enabled']) {
+            $config = $accountConfig;
+        } else {
+            $myProfileConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
+            $smsConfig = $this->configFetcher->getConfigById('my_account_sms_verification');
+            $config = array_merge($myProfileConfig, $smsConfig);
+        }
 
         return [
-            'title' => 'My Account',
+            'title' => $config['mp_page_title'] ?? 'My Profileee',
             'formMyProfile' => $formMyProfile->createView(),
             'SmsVerificationForm' => $SmsVerificationForm->createView(),
-            'addMobileLabel' => $myProfileConfig['add_mobile_label'] ?? 'Add Mobile',
-            'modalVerifyHeaderText' => $smsConfig['modal_verify_header_text'] ?? 'Verify Number',
-            'modalVerifyBodyText' => $smsConfig['modal_verify_body_text'] ?? 'Verify your mobile number',
-            'modalVerificationCodePlaceholder' => $smsConfig['modal_verification_code_placeholder'] ?? 'Code',
-            'modalVerificationResendCodeText' => $smsConfig['modal_verification_resend_code_text'] ?? 'Resend',
-            'modalVerificationSubmitText' => $smsConfig['modal_verification_submit_text'] ?? 'Submit',
-            'verifyText' => $smsConfig['verify_text'] ?? 'Verify',
+            'addMobileLabel' => $config['add_mobile_label'] ?? 'Add Mobile',
+            'modalVerifyHeaderText' => $config['modal_verify_header_text'] ?? 'Verify Number',
+            'modalVerifyBodyText' => $config['modal_verify_body_text'] ?? 'Verify your mobile number',
+            'modalVerificationCodePlaceholder' => $config['modal_verification_code_placeholder'] ?? 'Code',
+            'modalVerificationResendCodeText' => $config['modal_verification_resend_code_text'] ?? 'Resend',
+            'modalVerificationSubmitText' => $config['modal_verification_submit_text'] ?? 'Submit',
+            'verifyText' => $config['verify_text'] ?? 'Verify',
         ];
     }
 }

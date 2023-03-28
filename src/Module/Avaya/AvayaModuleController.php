@@ -15,6 +15,8 @@ class AvayaModuleController
 
     private $configFetcher;
 
+    private $userFetcher;
+
     /**
      *
      */
@@ -23,18 +25,20 @@ class AvayaModuleController
         return new static(
             $container->get('rest'),
             $container->get('player_session'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('user_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $playerSession, $configFetcher)
+    public function __construct($rest, $playerSession, $configFetcher, $userFetcher)
     {
         $this->rest = $rest;
         $this->playerSession = $playerSession;
         $this->configFetcher = $configFetcher;
+        $this->userFetcher = $userFetcher;
     }
 
     /**
@@ -47,6 +51,15 @@ class AvayaModuleController
             $isLogin = $this->playerSession->isLogin();
         } catch (\Exception $e) {
             $isLogin = false;
+        }
+
+        try {
+            if ($isLogin) {
+                $playerDetails = $this->userFetcher->getPlayerDetails();
+                $data['vipLevel'] = $playerDetails['vipLevel'] ?? 0;
+            }
+        } catch (\Exception $e) {
+            $data['vipLevel'] = 0;
         }
 
         try {

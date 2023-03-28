@@ -51,13 +51,20 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
      */
     public function getAttachments()
     {
-        $smsConfig = $this->configFetcher->getConfigById('my_account_sms_verification');
-        $messageConfig = $this->configFetcher->getConfigById('my_account_profile_server_side_mapping');
-        $generalConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
-        $modalConfig = $this->configFetcher->getConfigById('my_account_profile_modal_preview');
-        $labelConfig = $this->configFetcher->getConfigById('my_account_profile_labels');
+        $myAccountConfigV2 = $this->configFetcher->getConfig('my_account_config.general_configuration');
+        if ($myAccountConfigV2 && $myAccountConfigV2['enabled']) {
+            $config = $myAccountConfigV2;
+            $config['server_side_mapping'] = $config['server_side_validation'];
+        } else {
+            $smsConfig = $this->configFetcher->getConfigById('my_account_sms_verification');
+            $messageConfig = $this->configFetcher->getConfigById('my_account_profile_server_side_mapping');
+            $generalConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
+            $modalConfig = $this->configFetcher->getConfigById('my_account_profile_modal_preview');
+            $labelConfig = $this->configFetcher->getConfigById('my_account_profile_labels');
+            $config = array_merge($smsConfig, $messageConfig, $generalConfig, $modalConfig, $labelConfig);
+        }
 
-        $fastRegUrlToken = $generalConfig['fastreg_mobile_redirect'] ?? '';
+        $fastRegUrlToken = $config['fastreg_mobile_redirect'] ?? '';
         $fastRegRedirect = $this->tokenParser->processTokens($fastRegUrlToken);
 
         $userDetail = $this->user->getPlayerDetails();
@@ -78,24 +85,24 @@ class ProfileComponentScripts implements ComponentAttachmentInterface
 
         return [
             'user' => $this->getFormValues(),
-            'verification_code_min_length_message' => $smsConfig['verification_code_min_length_message'],
-            'verification_code_max_length_message' => $smsConfig['verification_code_max_length_message'],
-            'verification_code_required_message' => $smsConfig['verification_code_required_message'],
-            'messages' => Config::parse($messageConfig['server_side_mapping']) ?? '',
-            'noUpdateDetected' => $generalConfig['no_changed_detected_message'] ?? '',
-            'modalHeader' => $modalConfig['modal_preview_header'] ?? '',
-            'modalTopBlurb' => $modalConfig['modal_preview_top_blurb'] ?? '',
-            'modalCurrentLabel' => $modalConfig['modal_preview_current_label'] ?? '',
-            'modalNewLabel' => $modalConfig['modal_preview_new_label'] ?? '',
-            'modalBottomBlurb' => $modalConfig['modal_preview_bottom_blurb'] ?? '',
-            'messageTimeout' => $generalConfig['message_timeout'] ?? 5,
-            'contactPreferenceYes' => $labelConfig['contact_preference_yes'] ?? 'yes',
-            'contactPreferenceNo' => $labelConfig['contact_preference_no'] ?? 'no',
+            'verification_code_min_length_message' => $config['verification_code_min_length_message'],
+            'verification_code_max_length_message' => $config['verification_code_max_length_message'],
+            'verification_code_required_message' => $config['verification_code_required_message'],
+            'messages' => Config::parse($config['server_side_mapping']) ?? '',
+            'noUpdateDetected' => $config['no_changed_detected_message'] ?? '',
+            'modalHeader' => $config['modal_preview_header'] ?? '',
+            'modalTopBlurb' => $config['modal_preview_top_blurb'] ?? '',
+            'modalCurrentLabel' => $config['modal_preview_current_label'] ?? '',
+            'modalNewLabel' => $config['modal_preview_new_label'] ?? '',
+            'modalBottomBlurb' => $config['modal_preview_bottom_blurb'] ?? '',
+            'messageTimeout' => $config['message_timeout'] ?? 5,
+            'contactPreferenceYes' => $config['contact_preference_yes_label'] ?? 'yes',
+            'contactPreferenceNo' => $config['contact_preference_no_label'] ?? 'no',
             'fastRegRedirect' => $fastRegRedirect,
-            'fastRegTimeout' => $generalConfig['fastreg_timeout_redirect'] ?? 4,
+            'fastRegTimeout' => $config['fastreg_timeout_redirect'] ?? 4,
             'sessionToken' => $this->playerSession->getToken(),
             'isFastReg' => $isFastReg,
-            'enableMobileAnnotation' => $generalConfig['enable_mobile_number_annotation'] ?? 0,
+            'enableMobileAnnotation' => $config['enable_mobile_number_annotation'] ?? 0,
         ];
     }
 
