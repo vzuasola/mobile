@@ -184,7 +184,7 @@ class LoginComponentController
         try {
             $playerDetails = $this->playerSession->getDetails();
             $options = [
-                'expire' => strtotime( '+1 year' ),
+                'expire' => strtotime('+1 year'),
                 'path' => '/',
                 'domain' => Host::getDomain(),
             ];
