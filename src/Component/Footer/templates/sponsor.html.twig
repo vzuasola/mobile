@@ -11,23 +11,29 @@
                 {% if sponsor.field_sponsor_link[0].uri %}
                 <a href="{{ url(sponsor.field_sponsor_link[0].uri) }}" target="{{ sponsor.field_link_target[0].value }}">
                 {% endif %}
-                <svg viewBox="0 0 20 20">
-                    {% if sponsor.field_sponsor_svg_class[0].value == "burnley" %}
-                    <defs>
-                        <linearGradient id="burnley-grd1" gradientUnits="userSpaceOnUse" x1="17.468" y1="18.203" x2="9.055"
-                            y2="6.595">
-                            <stop offset="0" stop-color="#241d10" />
-                            <stop offset="1" stop-color="#fff30d" />
-                        </linearGradient>
-                        <linearGradient id="burnley-grd2" gradientUnits="userSpaceOnUse" x1="-10217.293" y1="3413.212"
-                            x2="-10209.218" y2="3413.212">
-                            <stop offset="0" stop-color="#241d10" />
-                            <stop offset="1" stop-color="#fff30d" />
-                        </linearGradient>
-                    </defs>
-                    {% endif %}
-                    <use xlink:href="#sponsor-{{ sponsor.field_sponsor_svg_class[0].value }}" />
-                </svg>
+                {% if sponsor.field_sponsor_image[0].url != '' %}
+                    <svg viewBox="0 0 60 60">
+                        <image xlink:href="{{sponsor.field_sponsor_image[0].url}}" width="60px" height="60px" />    
+                    </svg>
+                {% else %}
+                    <svg viewBox="0 0 20 20">
+                        {% if sponsor.field_sponsor_svg_class[0].value == "burnley" %}
+                        <defs>
+                            <linearGradient id="burnley-grd1" gradientUnits="userSpaceOnUse" x1="17.468" y1="18.203" x2="9.055"
+                                y2="6.595">
+                                <stop offset="0" stop-color="#241d10" />
+                                <stop offset="1" stop-color="#fff30d" />
+                            </linearGradient>
+                            <linearGradient id="burnley-grd2" gradientUnits="userSpaceOnUse" x1="-10217.293" y1="3413.212"
+                                x2="-10209.218" y2="3413.212">
+                                <stop offset="0" stop-color="#241d10" />
+                                <stop offset="1" stop-color="#fff30d" />
+                            </linearGradient>
+                        </defs>
+                        {% endif %}
+                        <use xlink:href="#sponsor-{{ sponsor.field_sponsor_svg_class[0].value }}" />
+                    </svg>
+                {% endif %}
                 <span class="hidden">{{ sponsor.field_title[0].value }}</span>
                 </a>
                 {% endif %}
