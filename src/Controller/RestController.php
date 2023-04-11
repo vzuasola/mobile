@@ -614,9 +614,13 @@ class RestController extends BaseController
         // Try to get default lang from path or 'en' by default
         $lang = $this->get('lang') ?? 'en';
 
-        $sponsorView = $this->get('views_fetcher')
-                            ->setLanguage($lang)
-                            ->getViewById('mobile_sponsor_list_v2');
+        try {
+            $sponsorView = $this->get('views_fetcher')
+                                ->setLanguage($lang)
+                                ->getViewById('mobile_sponsor_list_v2');
+        } catch (\Exception $e) {
+            $sponsorView = [];
+        }
 
 
         // We don't need to return everything, cherrypick only required fields
