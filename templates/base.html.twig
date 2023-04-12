@@ -8,7 +8,7 @@
 
     <title>{{ title }}</title>
     {% block seo %}{% endblock %}
-    {% block marketing %}{% endblock %}
+    {% block marketing_header %}{% endblock %}
     {% block script_header %}{% endblock %}
     {% block css %}{% endblock %}
 </head>
@@ -33,5 +33,6 @@
     {% block script %}
         {{ module_scripts() }}
     {% endblock %}
+    {% block marketing_footer %}{% endblock %}
 </body>
 </html>
