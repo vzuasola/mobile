@@ -57,7 +57,6 @@ class MarketingComponent implements ComponentWidgetInterface
             $marketing = $this->views->getViewById('marketing_scripts');
             $result = [];
             if ($marketing) {
-                
                 foreach ($marketing as $listing) {
                     $visibilty = $listing['field_per_page_configuratiion'][0]['value'] ?? 0;
                     $listPos = $listing['field_position'][0]['value'] ?? 'header';
