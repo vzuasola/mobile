@@ -55,6 +55,20 @@
 } %}
 
 <div class="copyright clear">
-    <p class="container text-center">{{ copy[app.lang] }} &copy; {{ now | date('Y') }} {{ iam[app.lang] }} | Dafabet | {{ all_rights_reserved[app.lang] }}</p>
+    <p class="container text-center">
+    {% if use_cms_copyright %}
+	    {{ copyright }}
+	    &copy;
+	    {{ now | date('Y') }}
+	    | Dafabet |
+	    {{ all_rights_translation }}
+	{% else %}
+		{{ copy[app.lang] }}
+		&copy;
+		{{ now | date('Y') }}
+		| Dafabet |
+		{{ all_rights_reserved[app.lang] }}
+	{% endif %}
+    </p>
 </div>
 
