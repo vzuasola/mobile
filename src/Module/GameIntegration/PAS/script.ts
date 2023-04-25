@@ -352,6 +352,8 @@ export class PASModule implements ModuleInterface, GameInterface {
                     resolve();
                 });
             }
+
+            resolve();
         });
     }
 
