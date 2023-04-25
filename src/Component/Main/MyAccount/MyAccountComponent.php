@@ -65,6 +65,41 @@ class MyAccountComponent implements ComponentWidgetInterface
             $config = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
         }
 
+
+        try {
+            /**
+             * Fetches the documents configuration
+             * @var array $documentsConfig
+             */
+            $documentsConfig = $this->configFetcher->getConfig('my_account_config.documents_configuration');
+            $documentsEnabled = $documentsConfig['enabled'] ?? 0;
+            /**
+             * If the @var integer $documentsConfig['enabled'] is 1
+             * Continue to fetching of the document status from iCore
+             */
+            if ($documentsEnabled) {
+                /**
+                 * Fetches the document status from iCore
+                 * @var array $documentStatus
+                 * @var string $documentStatus['Status']
+                 * 1 - No Action Required
+                 * 2 - Pending Upload
+                 * 3 - Under Review
+                 * 4 - Verified
+                 * 5 - Rejected
+                 */
+                $documentStatus = $this->userFetcher->getDocumentStatus();
+                /**
+                 * If the status is 2 (Pending Upload) OR
+                 * @var integer $documentsConfig['force_enable'] is 1, the documents feature is enabled and
+                 * it will override the status from iCore in order to display the tab
+                 */
+                $documentsEnabled = $documentStatus['Status'] == 2 || $documentsConfig['force_enable'];
+            }
+        } catch (\Throwable $th) {
+            $documentsEnabled = false;
+        }
+
         $bonusConfig = $this->configFetcher->getConfig('webcomposer_config.bonus_code_configuration');
         $user = $this->userFetcher->getPlayerDetails();
         $flashMessage = "";
@@ -92,6 +127,8 @@ class MyAccountComponent implements ComponentWidgetInterface
             'isFastReg' => $isFastReg,
             'flashMessage' => $flashMessage,
             'enableBonusCode' => $isenableBonusCode,
+            'documentsEnabled' => $documentsEnabled ?? 0,
+            'documentsTabLabel' => $documentsConfig['label'] ?? 'Documents',
         ];
     }
 }
