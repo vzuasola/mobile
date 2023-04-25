@@ -53,7 +53,6 @@ class LoginComponentController
         $data = [];
         $body = $request->getParsedBody();
 
-
         if (!empty($body['username']) && !empty($body['password'])) {
             $username = trim($body['username']);
             $password = $body['password'];
@@ -148,6 +147,8 @@ class LoginComponentController
     {
         // Set DSB Cookies for Nextbet sports
         $this->setDsbCookies();
+        // Set 3rd party user cookies
+        $this->setUserCookies();
     }
 
     /**
@@ -170,6 +171,26 @@ class LoginComponentController
 
             Cookies::set('extToken', $result['jwt'], $options);
             Cookies::set('extCurrency', $playerDetails['currency'], $options);
+        } catch (\Exception $e) {
+            // do nothing
+        }
+    }
+
+    /**
+     * Sets gtm user cookies
+     */
+    private function setUserCookies()
+    {
+        try {
+            $playerDetails = $this->playerSession->getDetails();
+            $options = [
+                'expire' => strtotime('+1 year'),
+                'path' => '/',
+                'domain' => Host::getDomain(),
+            ];
+            Cookies::set('gtm-username', $playerDetails['username'], $options);
+            Cookies::set('gtm-userid', $playerDetails['playerId'], $options);
+            Cookies::set('gtm-currency', $playerDetails['currency'], $options);
         } catch (\Exception $e) {
             // do nothing
         }

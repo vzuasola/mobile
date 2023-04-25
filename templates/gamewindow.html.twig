@@ -4,8 +4,8 @@
     {{ widget('seo') }}
 {% endblock %}
 
-{% block marketing %}
-    {{ widget('marketing') }}
+{% block marketing_header %}
+    {{ widget('marketing', {'position': 'header'}) }}
 {% endblock %}
 
 {% block script_header %}
@@ -30,7 +30,10 @@
     {% endblock main %}
 {% endblock body %}
 
-
 {% block script %}
     {{ parent() }}
+{% endblock %}
+
+{% block marketing_footer %}
+    {{ widget('marketing', {'position': 'footer'}) }}
 {% endblock %}

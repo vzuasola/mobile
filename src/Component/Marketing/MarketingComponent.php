@@ -39,7 +39,7 @@ class MarketingComponent implements ComponentWidgetInterface
     /**
      *
      */
-    public function getTemplate()
+    public function getTemplate($options = [])
     {
         return '@component/Marketing/template.html.twig';
     }
@@ -47,8 +47,10 @@ class MarketingComponent implements ComponentWidgetInterface
     /**
      *
      */
-    public function getData()
+    public function getData($options = [])
     {
+        // Get from which position we are going to render scripts
+        $position = $options['position'] ?? 'header';
         $data = [];
 
         try {
@@ -57,8 +59,9 @@ class MarketingComponent implements ComponentWidgetInterface
             if ($marketing) {
                 foreach ($marketing as $listing) {
                     $visibilty = $listing['field_per_page_configuratiion'][0]['value'] ?? 0;
-
-                    if ($this->blockUtils->isVisibleOn($visibilty)) {
+                    $listPos = $listing['field_position'][0]['value'] ?? 'header';
+                    if ($this->blockUtils->isVisibleOn($visibilty) &&
+                        $position === $listPos) {
                         $result[] = $listing;
                     }
                 }
