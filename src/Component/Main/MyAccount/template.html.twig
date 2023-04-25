@@ -6,6 +6,9 @@
             {% if enableBonusCode %}
                 <li><a href="#bonuses-content">{{ bonusTabLabel }}</a></li>
             {% endif %}
+            {% if documentsEnabled %}
+                <li><a href="#documents-content">{{ documentsTabLabel }}</a></li>
+            {% endif %}
         </ul>
         <div class="container">
             <div class="tab-content" id="my-profile-content">
@@ -20,6 +23,12 @@
             {% if enableBonusCode %}
                 <div class="tab-content" id="bonuses-content">
                     {{ widget('bonuses') }}
+                </div>
+            {% endif %}
+            {% if documentsEnabled %}
+                <div class="tab-content" id="documents-content">
+                    {# {{ widget('documents') }} #}
+                    <h1>Documents Form</h1>
                 </div>
             {% endif %}
         </div>
