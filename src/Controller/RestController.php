@@ -595,4 +595,63 @@ class RestController extends BaseController
 
         return $formatted;
     }
+
+
+    /**
+     * Fetch Sponsor data as configured in mobile_sponsor_list drupal view
+     *
+     * @see \Slim\Handlers\Strategies\RequestResponse
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * @param array $args [] - No args passed
+     *
+     * @return \App\Slim\Response Sponsor List formatted as JSON
+     */
+    public function getSponsorList($request, $response, $args)
+    {
+
+        // Try to get default lang from path or 'en' by default
+        $lang = $this->get('lang') ?? 'en';
+
+        try {
+            $sponsorView = $this->get('views_fetcher')
+                                ->setLanguage($lang)
+                                ->getViewById('mobile_sponsor_list_v2');
+        } catch (\Exception $e) {
+            $sponsorView = [];
+        }
+
+
+        // We don't need to return everything, cherrypick only required fields
+        $sponsorView = array_map(
+            function ($sponsorRow) {
+
+                $absImageUrl = '';
+                if (isset($sponsorRow['field_sponsor_image'][0])) {
+                    $absImageUrl = $this->get('asset')
+                                        ->generateAssetUri(
+                                            $sponsorRow['field_sponsor_image'][0]['url'],
+                                            [
+                                                'product' => 'mobile-entrypage',
+                                                'absolute' => true,
+                                            ]
+                                        );
+                }
+
+                return
+                [
+                    'id' => $sponsorRow['id'][0]['value'],
+                    'field_title' => $sponsorRow['field_title'][0]['value'],
+                    'field_sponsor_image' => $absImageUrl,
+                    'field_sponsor_link' => $sponsorRow['field_sponsor_link'][0]['uri'] ?? '',
+                    'field_sponsor_enable' => $sponsorRow['field_sponsor_enable'][0]['value'] ?? '',
+                    'field_sponsor_svg_class' => $sponsorRow['field_sponsor_svg_class'][0]['value'] ?? '',
+                ];
+            },
+            $sponsorView
+        );
+
+        return $this->rest->output($response, $sponsorView);
+    }
 }
