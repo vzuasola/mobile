@@ -59,7 +59,7 @@ class DocumentsComponent implements ComponentWidgetInterface
         return [
             'formDocuments' => $formDocuments->createView(),
             'successMessage' => 'Submitted successfully',
-            'fialedMessage' => 'Failed to submit'
+            'failedMessage' => 'Failed to submit'
         ];
     }
 }

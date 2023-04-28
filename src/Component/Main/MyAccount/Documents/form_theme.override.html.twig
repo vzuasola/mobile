@@ -1,0 +1,30 @@
+{% extends '@base/form/standard.html.twig' %}
+{%- block label_markup -%}
+    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+    <div class="document_upload_label_text">
+        {{ translation_domain is same as(false) ? label|raw : label|trans({}, translation_domain)|raw }}
+    </div>
+    <div class="document_upload_icon"></div>
+    </label>
+{%- endblock label_markup -%}
+
+
+{# <ol>
+    {% for key, value in form  %}
+      <li>
+      {{ key }}
+        <ul>
+        {% for vkey, vvalue in value  %}
+             <li>
+            {{ vkey }}
+                <ul>
+                {% for skey, svalue in vvalue  %}
+                <li>{{ skey }}</li>
+                {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ol> #}

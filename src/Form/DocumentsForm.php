@@ -10,6 +10,7 @@ use App\Extensions\Form\ConfigurableForm\FormBase;
 class DocumentsForm extends FormBase implements FormInterface
 {
     protected $product = 'account';
+    protected $user;
 
     /**
      * @{inheritdoc}
@@ -42,6 +43,7 @@ class DocumentsForm extends FormBase implements FormInterface
         }
 
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-lower-case";
+        $definition['purpose_markup']['options']['attr']['class'] = "field_required";
 
         // Select Language Field
         $choice = $definition['purpose']['options']['choices'];
@@ -50,6 +52,7 @@ class DocumentsForm extends FormBase implements FormInterface
         $definition['purpose']['options']['choices'] = $choices;
         $definition['purpose']['options']['placeholder'] = false;
 
+        
         return $definition;
     }
 

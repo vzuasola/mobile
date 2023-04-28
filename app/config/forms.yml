@@ -44,6 +44,7 @@ types:
       submit: App\Extensions\Form\ConfigurableForm\Fields\Submit
       hidden: App\Extensions\Form\ConfigurableForm\Fields\Hidden
       button: App\Extensions\Form\ConfigurableForm\Fields\Button
+      file: App\Extensions\Form\ConfigurableForm\Fields\File
     validation:
       - App\Extensions\Form\ConfigurableForm\Fields\Text
       - App\Extensions\Form\ConfigurableForm\Fields\Password

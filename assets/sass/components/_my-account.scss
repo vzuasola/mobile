@@ -1,3 +1,5 @@
+@import "my-account-documents";
+
 form.profile-form,
 form.change-password-form,
 form.verify-password-form,
@@ -50,32 +52,6 @@ form.sms-verification-code-form {
     }
 }
 
-form.documents-form {
-    .DocumentsForm_purpose_markup {
-        text-align: left;
-        font-weight: bold;
-        hr {
-            display: block;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-    }
-
-    .DocumentsForm_comment_markup {
-        text-align: left;
-        font-weight: bold;
-        hr {
-            display: block;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-    }
-
-    #DocumentsForm_comment {
-        //background-color: white;
-        margin: 5px;
-    }
-}
 
 // Individual form items =======================================================
 form.profile-form {
