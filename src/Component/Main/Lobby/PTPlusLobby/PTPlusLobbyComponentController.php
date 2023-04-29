@@ -274,7 +274,8 @@ class PTPlusLobbyComponentController
                     }
 
                     if (array_key_exists($bannerData['banner_id'], $activeTounaments)) {
-                        $bannerData['date_time'] = $activeTounaments[$bannerData['banner_id']]['end_time'];
+                        $bannerData['date_time'] =
+                            $this->getEndTime($activeTounaments[$bannerData['banner_id']]['end_time']);
                         $bannerData['lightbox_games'] = $activeTounaments[$bannerData['banner_id']]['games'];
                     }
 
@@ -286,6 +287,29 @@ class PTPlusLobbyComponentController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    /**
+     * Get End Time by days, hours, minutes
+     */
+    public function getEndTime($dateEnd)
+    {
+        try {
+            $now = new \DateTime();
+            $dateEnd = new \DateTime('@' . $dateEnd);
+            $interval = $dateEnd->diff($now);
+            return [
+                'days' => $interval->d,
+                'hours' => $interval->h,
+                'minutes' => $interval->i
+            ];
+        } catch (\Exception $e) {
+            return [
+                'days' => 'x',
+                'hours' => 'x',
+                'minutes' => 'x'
+            ];
+        }
     }
 
     /**
