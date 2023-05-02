@@ -8,9 +8,10 @@ use App\Drupal\Config;
 /**
  *
  */
-class DocumentsComponentScripts implements ComponentAttachmentInterface {
+class DocumentsComponentScripts implements ComponentAttachmentInterface
+{
 
- 
+
     /**
      * Config Fetcher Object.
      */

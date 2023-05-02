@@ -52,9 +52,6 @@ class DocumentsComponent implements ComponentWidgetInterface
     public function getData()
     {
         $formDocuments = $this->formManager->getForm(DocumentsForm::class);
-//        $config = $this->configFetcher->getConfigById('my_account_change_password');
-//        $successMessage = $config['change_password_mobile_success_message']['value'] ?? '';
-//        $fialedMessage = $config['change_password_mobile_failed_message']['value'] ?? '';
 
         return [
             'formDocuments' => $formDocuments->createView(),

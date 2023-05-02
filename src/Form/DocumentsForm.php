@@ -40,7 +40,20 @@ class DocumentsForm extends FormBase implements FormInterface
             ) {
                 $this->moveAttribute($definition, $key, 'placeholder', 'placeholder');
             }
+
+            // Add custom field settings as data values to fields
+            $dataAtts = array_filter(
+                array_keys($formField['options']),
+                function ($el) {
+                    return strpos($el, 'data-') !== false;
+                }
+            );
+
+            foreach ($dataAtts as $fieldKey) {
+                $this->moveAttribute($definition, $key, $fieldKey, $fieldKey);
+            }
         }
+
 
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-lower-case";
         $definition['purpose_markup']['options']['attr']['class'] = "field_required";
@@ -52,7 +65,7 @@ class DocumentsForm extends FormBase implements FormInterface
         $definition['purpose']['options']['choices'] = $choices;
         $definition['purpose']['options']['placeholder'] = false;
 
-        
+
         return $definition;
     }
 
