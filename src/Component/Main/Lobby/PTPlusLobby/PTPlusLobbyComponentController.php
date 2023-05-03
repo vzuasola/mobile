@@ -273,6 +273,7 @@ class PTPlusLobbyComponentController
                         ]);
                     }
 
+                    $bannerData['date_time'] = ['days' => 0, 'hours' => 0, 'minutes' => 0];
                     if (array_key_exists($bannerData['banner_id'], $activeTounaments)) {
                         $bannerData['date_time'] =
                             $this->getEndTime($activeTounaments[$bannerData['banner_id']]['end_time']);
