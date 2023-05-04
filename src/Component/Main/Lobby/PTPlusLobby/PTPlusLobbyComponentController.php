@@ -331,12 +331,12 @@ class PTPlusLobbyComponentController
         $langMapping = Config::parseMultidimensional($settings['api_language_mapping']);
         $tournamentSettings['language'] = $langMapping[$this->currentLanguage];
 
-        if ($tournamentSettings['currency'] === 'RMB') {
-            $tournamentSettings['currency'] = 'CNY';
-        }
-
         if ($this->playerSession->isLogin()) {
             $tournamentSettings['currency']  = $this->player->getCurrency();
+        }
+
+        if ($tournamentSettings['currency'] === 'RMB') {
+            $tournamentSettings['currency'] = 'CNY';
         }
 
         return $tournamentSettings;
