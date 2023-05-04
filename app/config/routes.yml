@@ -483,13 +483,6 @@ routes:
         headers:
             Cache-Control: public, max-age=300
 
-    /api-fe/sponsors:
-        method: ANY
-        action: App\MobileEntry\Controller\RestController:getSponsorList
-        headers:
-            Cache-Control: public, max-age=300
-
-
     /api-fe/owsports/parameters:
         method: ANY
         action: App\MobileEntry\Controller\RestController:getOWSportsParams
