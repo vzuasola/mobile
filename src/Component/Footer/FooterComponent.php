@@ -123,9 +123,6 @@ class FooterComponent implements ComponentWidgetInterface
             $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
             $data['cookie_notification'] = $footerConfigs['cookie_notification']['value'] ?? 'cookie notification';
             $data['country_codes'] = $footerConfigs['country_codes'] ?? '';
-            $data['use_cms_copyright'] = $footerConfigs['use_cms_copyright_label'] ?? 0;
-            $data['copyright'] = $footerConfigs['copyright'] ?? '';
-            $data['all_rights_translation'] = $footerConfigs['all_rights_reserved'] ?? '';
 
             if (!empty($footerConfigs['back_to_top_title'])) {
                 $data['back_to_top'] = !$this->blockUtils->isVisibleOn($footerConfigs['back_to_top_title']);
