@@ -630,13 +630,7 @@ class RestController extends BaseController
                 $absImageUrl = '';
                 if (isset($sponsorRow['field_sponsor_image'][0])) {
                     $absImageUrl = $this->get('asset')
-                                        ->generateAssetUri(
-                                            $sponsorRow['field_sponsor_image'][0]['url'],
-                                            [
-                                                'product' => 'mobile-entrypage',
-                                                'absolute' => true,
-                                            ]
-                                        );
+                                        ->generateAssetUri($sponsorRow['field_sponsor_image'][0]['url']);
                 }
 
                 return
