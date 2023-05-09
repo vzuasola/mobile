@@ -57,7 +57,6 @@ const updateCountdownTimer = (element) => {
     let now = new Date().getTime();
     now = Math.floor(now / 1000);
     const distance = endDate - now;
-    console.log(distance, endDate, now);
 
     // Time calculations for days, hours, minutes and seconds
     const days = Math.floor(distance / (60 * 60 * 24));
