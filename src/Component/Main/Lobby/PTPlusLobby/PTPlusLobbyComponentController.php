@@ -278,6 +278,10 @@ class PTPlusLobbyComponentController
                         $bannerData['date_time'] =
                             $this->getEndTime($activeTounaments[$bannerData['banner_id']]['end_time']);
                         $bannerData['lightbox_games'] = $activeTounaments[$bannerData['banner_id']]['games'];
+                    } else {
+                        $now  = new \DateTime();
+                        $now = $now->sub(new \DateInterval('P1D'));
+                        $bannerData['date_time'] = $now->getTimestamp();
                     }
 
                     $data[] = $bannerData;
@@ -296,20 +300,13 @@ class PTPlusLobbyComponentController
     public function getEndTime($dateEnd)
     {
         try {
-            $now = new \DateTime();
             $dateEnd = new \DateTime('@' . $dateEnd);
-            $interval = $dateEnd->diff($now);
-            return [
-                'days' => $interval->d,
-                'hours' => $interval->h,
-                'minutes' => $interval->i
-            ];
+            return $dateEnd->getTimestamp();
         } catch (\Exception $e) {
-            return [
-                'days' => 'x',
-                'hours' => 'x',
-                'minutes' => 'x'
-            ];
+            $now = new \DateTime();
+            // substract 1 day to current date
+            // $now->sub(new \DateInterval('P1D'));
+            return $now->getTimestamp();
         }
     }
 
