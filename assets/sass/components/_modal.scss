@@ -92,6 +92,20 @@
     }
 }
 
+// Browsers which fully support CSS Environment variables (iOS 11.2+).
+@supports (padding-top: env(safe-area-inset-top)) and (-webkit-touch-callout: none) {
+  .modal-content {
+    --safe-area-inset-top: env(safe-area-inset-top);
+    height: calc(100% + var(--safe-area-inset-top));
+  }
+  .login-content {
+    -webkit-background-size: auto !important;
+        -moz-background-size: auto !important;
+        -o-background-size: auto !important;
+        background-size: auto !important;
+  }
+}
+
 // Standard modal
 .modal-standard {
     .modal-content {
