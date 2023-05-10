@@ -98,12 +98,6 @@
     --safe-area-inset-top: env(safe-area-inset-top);
     height: calc(100% + var(--safe-area-inset-top));
   }
-  .login-content {
-    -webkit-background-size: auto !important;
-        -moz-background-size: auto !important;
-        -o-background-size: auto !important;
-        background-size: auto !important;
-  }
 }
 
 // Standard modal
