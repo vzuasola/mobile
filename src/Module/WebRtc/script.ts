@@ -74,6 +74,10 @@ export class WebRtcModule implements ModuleInterface {
         }).then((response) => {
             this.webRtcClass.setToken(response.jwt);
 
+            // Add VIP level to base url
+            if (response.vipLevel) {
+                this.callUrl = utility.addQueryParam(this.callUrl, "level", response.vipLevel);
+            }
             // Add the token to the base url
             this.webRtcClass.setOnSuccess((token) => {
                 this.updatePopupWindow(utility.addQueryParam(this.callUrl, "s", token));
