@@ -242,7 +242,6 @@ class PTPlusLobbyComponentController
                 )) {
                     $bannerData['banner_id'] = $banner['field_banner_id'][0]['value'] ?? '';
                     $bannerData['type_board'] = $banner['field_type_board'][0]['value'] ?? '';
-                    $bannerData['status_board'] = $banner['field_status_board'][0]['value'] ?? '';
                     $bannerData['image'] = [
                         'alt' => $banner['field_banner_image'][0]['value']['alt'],
                         'url' =>
