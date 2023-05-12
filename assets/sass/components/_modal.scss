@@ -98,15 +98,6 @@
         --safe-area-inset-top: env(safe-area-inset-top);
         height: calc(100% + var(--safe-area-inset-top));
     }
-  .modal-content {
-        -webkit-transform: translateY(-43vh) !important;
-        -moz-transform: translateY(-43vh) !important;
-        -ms-transform: translateY(-43vh) !important;
-        -o-transform: translateY(-43vh) !important;
-        transform: translateY(-43vh) !important;
-        margin-top: 2vh;
-        z-index: 1023;
-    }
 }
 
 // Standard modal
