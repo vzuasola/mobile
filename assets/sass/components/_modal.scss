@@ -92,6 +92,31 @@
     }
 }
 
+// Browsers which fully support CSS Environment variables (iOS 11.2+).
+@supports (padding-top: env(safe-area-inset-top)) and (-webkit-touch-callout: none) {
+    .modal-overlay {
+        --safe-area-inset-top: env(safe-area-inset-top);
+        height: calc(100% + var(--safe-area-inset-top));
+    }
+
+    .modal-content.login-content {
+        -webkit-transform: translateY(0) !important;
+      -moz-transform: translateY(0) !important;
+      -ms-transform: translateY(0) !important;
+      -o-transform: translateY(0) !important;
+      transform: translateY(0) !important;
+      margin-top: 1vh;
+      top: 0 !important;
+    }
+
+    #login-lightbox .modal-overlay,
+    #login-lightbox .login:before,
+    .modal-overlay {
+      height: 100vh;
+      overflow: hidden;
+    }
+}
+
 // Standard modal
 .modal-standard {
     .modal-content {
