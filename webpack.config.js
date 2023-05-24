@@ -17,7 +17,9 @@ module.exports = function(env, argv) {
 
         entry: {
             app: path.resolve(__dirname, "./assets/script/app.ts"),
-            sw: path.resolve(__dirname, "./assets/script/worker.ts")
+            sw: path.resolve(__dirname, "./assets/script/worker.ts"),
+            home: path.resolve(__dirname, "./assets/script/home.ts"),
+            late: path.resolve(__dirname, "./assets/script/late.ts")
         },
 
         output: {
