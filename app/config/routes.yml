@@ -10,6 +10,14 @@ routes:
             enabled: true
             expires: 1800
 
+    /my-homepage:
+        method: GET
+        action: App\MobileEntry\Controller\MyHomeController:view
+        components:
+            main: lobby
+        headers:
+            Cache-Control: public, max-age=300
+
     /manifest.json:
         method: GET
         action: App\MobileEntry\Controller\ManifestController:view
