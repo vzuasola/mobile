@@ -65,30 +65,30 @@ class AsiaGamingModuleController
     /**
      * @{inheritdoc}
      */
-    // public function launch($request, $response)
-    // {
-    //     $data['gameurl'] = false;
-    //     $data['currency'] = false;
-    //     $requestData = $request->getParsedBody();
-    //     $isLobby = $requestData['lobby'] ?? 'false';
+    public function launch($request, $response)
+    {
+        $data['gameurl'] = false;
+        $data['currency'] = false;
+        $requestData = $request->getParsedBody();
+        $isLobby = $requestData['lobby'] ?? 'false';
 
-    //     if ($this->checkCurrency($request)) {
-    //         if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined' &&
-    //            $isLobby === 'false') {
-    //             $data = $this->getGameUrl($request, $response);
-    //         }
+        if ($this->checkCurrency($request)) {
+            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined' &&
+               $isLobby === 'false') {
+                $data = $this->getGameUrl($request, $response);
+            }
 
-    //         if ($isLobby === 'true') {
-    //             $data = $this->getGameLobby($request, $response);
-    //         }
-    //     }
+            if ($isLobby === 'true') {
+                $data = $this->getGameLobby($request, $response);
+            }
+        }
 
-    //     if ($data && $data['gameurl']) {
-    //         $data['customLobby'] = $this->getCustomLobby($requestData);
-    //     }
+        if ($data && $data['gameurl']) {
+            $data['customLobby'] = $this->getCustomLobby($requestData);
+        }
 
-    //     return $this->rest->output($response, $data);
-    // }
+        return $this->rest->output($response, $data);
+    }
 
     private function getGameLobby($request, $response)
     {
@@ -156,7 +156,8 @@ class AsiaGamingModuleController
         return $customLobby;
     }
 
-    public function getPlayerGameExtraParams($requestData) {
+    public function getPlayerGameExtraParams($requestData)
+    {
         $gameCode = explode('|', $requestData['gameCode']);
         $params[] = [
             'Key' => 'UserAgent',
