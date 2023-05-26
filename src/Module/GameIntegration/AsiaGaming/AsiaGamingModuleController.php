@@ -20,6 +20,8 @@ class AsiaGamingModuleController
 
     private $player;
 
+    private $playerGameFetcher;
+
     /**
      * @var ViewsFetcher $viewsFetcher
      */
@@ -40,6 +42,7 @@ class AsiaGamingModuleController
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
+            $container->get('player_game_fetcher'),
             $container->get('views_fetcher'),
             $container->get('token_parser')
         );
@@ -48,43 +51,44 @@ class AsiaGamingModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $asiaGaming, $config, $player, $viewsFetcher, Parser $parser)
+    public function __construct($rest, $asiaGaming, $config, $player, $viewsFetcher, $playerGameFetcher, Parser $parser)
     {
         $this->rest = $rest;
         $this->asiaGaming = $asiaGaming;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
+        $this->playerGameFetcher = $playerGameFetcher;
         $this->parser = $parser;
     }
 
     /**
      * @{inheritdoc}
      */
-    public function launch($request, $response)
-    {
-        $data['gameurl'] = false;
-        $data['currency'] = false;
-        $requestData = $request->getParsedBody();
-        $isLobby = $requestData['lobby'] ?? 'false';
+    // public function launch($request, $response)
+    // {
+    //     $data['gameurl'] = false;
+    //     $data['currency'] = false;
+    //     $requestData = $request->getParsedBody();
+    //     $isLobby = $requestData['lobby'] ?? 'false';
 
-        if ($this->checkCurrency($request)) {
-            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined' &&
-               $isLobby === 'false') {
-                $data = $this->getGameUrl($request, $response);
-            }
+    //     if ($this->checkCurrency($request)) {
+    //         if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined' &&
+    //            $isLobby === 'false') {
+    //             $data = $this->getGameUrl($request, $response);
+    //         }
 
-            if ($isLobby === 'true') {
-                $data = $this->getGameLobby($request, $response);
-            }
-        }
+    //         if ($isLobby === 'true') {
+    //             $data = $this->getGameLobby($request, $response);
+    //         }
+    //     }
 
-        if ($data && $data['gameurl']) {
-            $data['customLobby'] = $this->getCustomLobby($requestData);
-        }
+    //     if ($data && $data['gameurl']) {
+    //         $data['customLobby'] = $this->getCustomLobby($requestData);
+    //     }
 
-        return $this->rest->output($response, $data);
-    }
+    //     return $this->rest->output($response, $data);
+    // }
 
     private function getGameLobby($request, $response)
     {
@@ -150,5 +154,27 @@ class AsiaGamingModuleController
             // nothing to do
         }
         return $customLobby;
+    }
+
+    public function getPlayerGameExtraParams($requestData) {
+        $gameCode = explode('|', $requestData['gameCode']);
+        $params[] = [
+            'Key' => 'UserAgent',
+            'Value' => $requestData['userAgent'] ?? ''
+        ];
+
+        // extra parameters for Direct Table launch
+        if (isset($requestData['tableName']) && $requestData['tableName'] !== "undefined") {
+            $params[] = [
+                'Key' => 'View',
+                'Value' => $requestData['tableName'] ?? null
+            ];
+            $params[] = [
+                'Key' => 'Gateway',
+                'Value' => $gameCode[0] ?? $requestData['gameCode']
+            ];
+        }
+
+        return $params;
     }
 }
