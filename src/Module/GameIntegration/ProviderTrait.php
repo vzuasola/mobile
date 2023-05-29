@@ -88,6 +88,10 @@ trait ProviderTrait
             $data = $this->getGameLobby($request, $requestData);
         }
 
+        if ($data && $data['gameurl']) {
+            $data['customLobby'] = $this->getCustomLobby($requestData);
+        }
+
         return $data;
     }
 
