@@ -108,53 +108,11 @@ class AsiaGamingModuleController
     }
 
     /**
-     * ovverdide ProviderTrait Game launching via custom lobby
+     * ovverdide ProviderTrait IcoreGameURL via custom lobby URL
      */
-    public function getGameUrlByPlayerGame($request, $requestData)
+
+    public function getGameUrlFromICore($request, $requestData)
     {
-        $data['currency'] = true;
-        $params = explode('|', $requestData['gameCode']);
-        $portalName = $requestData['product'];
-        $extGameId = $params[0] ?? '';
-
-        //override extGameId for Direct table launch
-        if (isset($requestData['extGameId']) && $requestData['extGameId']
-            && $requestData['extGameId'] !== 'undefined') {
-            $extGameId = $requestData['extGameId'];
-        }
-
-        $extraParams = $this->getPlayerGameExtraParams($requestData);
-        $options['options'] = [
-            'languageCode' => $this->languageCode($request),
-            'playMode' => true
-        ];
-
-        if (count($extraParams)) {
-            $options['options']['properties'] = $extraParams;
-        }
-
-        $playerErrors = $this->getPlayerErrorMessages($request);
-
-        try {
-            $responseData =  $this->playerGameFetcher->getGameUrlByExtGameId(
-                $portalName,
-                $extGameId,
-                $options
-            );
-
-            if (isset($responseData['body']['url'])) {
-                $data['gameurl'] = $responseData['body']['url'];
-            } else {
-                // placeholder for error code mapping
-                $data['errors'] = $this->mappingGameErrors($playerErrors, $responseData);
-            }
-        } catch (\Exception $e) {
-            $data['currency'] = true;
-            if ($playerErrors) {
-                $data['errors'] = $this->mappingGameErrors($playerErrors, []);
-            }
-        }
-
         if ($data && $data['gameurl']) {
             $data['customLobby'] = $this->getCustomLobby($requestData);
         }
