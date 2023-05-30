@@ -113,8 +113,20 @@ class AsiaGamingModuleController
 
     public function getGameUrlFromICore($request, $requestData)
     {
-        if ($data && $data['gameurl']) {
-            $data['customLobby'] = $this->getCustomLobby($requestData);
+        $isLobbyLaunch = ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
+            $requestData['lobby'] === "true");
+
+        $directTableLaunch = ($requestData['lobby'] === "true" &&
+            ($requestData['gameCode'] !== 'undefined' &&
+                $requestData['extGameId'] && $requestData['extGameId'] !== 'undefined'));
+
+        if ($this->isPlayerGame($requestData) && (!$isLobbyLaunch || $directTableLaunch)) {
+            $data = $this->getGameUrlByPlayerGame($request, $requestData);
+            if ($data && $data['gameurl']) {
+                $data['customLobby'] = $this->getCustomLobby($requestData);
+            }
+        } else {
+            $data = $this->getGameUrlByGeneralLobby($request, $requestData);
         }
 
         return $data;
