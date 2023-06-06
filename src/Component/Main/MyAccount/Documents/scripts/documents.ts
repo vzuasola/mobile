@@ -4,6 +4,7 @@ import * as iconAtt from "@app/templates/handlebars/icon-att.handlebars";
 import * as iconOk from "@app/templates/handlebars/icon-ok.handlebars";
 import validators from "@app/assets/script/components/validation/rules";
 import * as loader from "../handlebars/loader.handlebars";
+import CustomSelect from "@core/assets/js/components/custom-select";
 
 type TGenericEvent<T> = Event & { target: T };
 
@@ -36,6 +37,8 @@ export class Documents extends FormBase {
         this.purposeField = this.form.querySelector("#DocumentsForm_purpose");
         this.commentField = this.form.querySelector("#DocumentsForm_comment");
         this.validators = validators;
+        // Initialise custom select UI
+        CustomSelect();
 
         const loaderTemplate = loader({});
 
@@ -142,9 +145,9 @@ export class Documents extends FormBase {
         this.commentField.placeholder = "";
     }
 
-    // Check if user selected the default option in purpose dropdown
+    // Check if user selected the placeholder option in purpose dropdown
     private purposeFieldRequiredCallback(el: HTMLSelectElement) {
-        if (el.value === "select") {
+        if (el.value === "") {
             this.validatorErrors.DocumentsForm_purpose = { purposeRequired: el.dataset.required_error };
             return;
         }

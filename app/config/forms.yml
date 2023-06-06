@@ -36,6 +36,7 @@ types:
       textfield: App\Extensions\Form\ConfigurableForm\Fields\Text
       password: App\Extensions\Form\ConfigurableForm\Fields\Password
       select: App\Extensions\Form\ConfigurableForm\Fields\Select
+      custom_select: App\Extensions\Form\ConfigurableForm\Fields\CustomSelect
       textarea: App\Extensions\Form\ConfigurableForm\Fields\Textarea
       radios: App\Extensions\Form\ConfigurableForm\Fields\Radios
       checkbox: App\Extensions\Form\ConfigurableForm\Fields\Checkbox

@@ -42,6 +42,7 @@ class DocumentsForm extends FormBase implements FormInterface
             }
 
             // Add custom field settings as data values to fields
+            // Grab all field attributes containing the "data-" prefix
             $dataAtts = array_filter(
                 array_keys($formField['options']),
                 function ($el) {
@@ -49,21 +50,21 @@ class DocumentsForm extends FormBase implements FormInterface
                 }
             );
 
+            // For each one of those, add them as attributes to the field
             foreach ($dataAtts as $fieldKey) {
                 $this->moveAttribute($definition, $key, $fieldKey, $fieldKey);
             }
         }
 
-
+        // Append styling classed to specific elements
         $definition['submit']['options']['attr']['class'] = "btn btn-small btn-yellow btn-lower-case";
         $definition['purpose_markup']['options']['attr']['class'] = "field_required";
 
-        // Select Language Field
+        // Set Purpose select Field options
         $choice = $definition['purpose']['options']['choices'];
         unset($definition['purpose']['options']['choices']);
         $choices = $this->pipeToChoices($choice);
         $definition['purpose']['options']['choices'] = $choices;
-        $definition['purpose']['options']['placeholder'] = false;
 
 
         return $definition;
