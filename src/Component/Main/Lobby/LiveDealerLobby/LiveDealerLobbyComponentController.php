@@ -156,7 +156,7 @@ class LiveDealerLobbyComponentController
             $subProviderSupportedCurrency = isset($subprovider['supported_currencies'])
                 ? $subprovider['supported_currencies'] : $subprovider['field_supported_currencies'][0]['value'];
             $subProviderCurrency = (isset($subProviderSupportedCurrency))
-                ? preg_split("/\r\n|\n|\r/", $subProviderSupportedCurrency)
+                ? preg_split("/\r\n|\n|\r|<br\W*?\/>\r\n/", $subProviderSupportedCurrency)
                 : [];
         } catch (\Exception $e) {
             return [];

@@ -20,6 +20,8 @@ class AsiaGamingModuleController
 
     private $player;
 
+    private $playerGameFetcher;
+
     /**
      * @var ViewsFetcher $viewsFetcher
      */
@@ -41,6 +43,7 @@ class AsiaGamingModuleController
             $container->get('config_fetcher'),
             $container->get('player'),
             $container->get('views_fetcher'),
+            $container->get('player_game_fetcher'),
             $container->get('token_parser')
         );
     }
@@ -48,42 +51,15 @@ class AsiaGamingModuleController
     /**
      * Public constructor
      */
-    public function __construct($rest, $asiaGaming, $config, $player, $viewsFetcher, Parser $parser)
+    public function __construct($rest, $asiaGaming, $config, $player, $viewsFetcher, $playerGameFetcher, Parser $parser)
     {
         $this->rest = $rest;
         $this->asiaGaming = $asiaGaming;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
+        $this->playerGameFetcher = $playerGameFetcher;
         $this->parser = $parser;
-    }
-
-    /**
-     * @{inheritdoc}
-     */
-    public function launch($request, $response)
-    {
-        $data['gameurl'] = false;
-        $data['currency'] = false;
-        $requestData = $request->getParsedBody();
-        $isLobby = $requestData['lobby'] ?? 'false';
-
-        if ($this->checkCurrency($request)) {
-            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined' &&
-               $isLobby === 'false') {
-                $data = $this->getGameUrl($request, $response);
-            }
-
-            if ($isLobby === 'true') {
-                $data = $this->getGameLobby($request, $response);
-            }
-        }
-
-        if ($data && $data['gameurl']) {
-            $data['customLobby'] = $this->getCustomLobby($requestData);
-        }
-
-        return $this->rest->output($response, $data);
     }
 
     private function getGameLobby($request, $response)
@@ -126,6 +102,31 @@ class AsiaGamingModuleController
             }
         } catch (\Exception $e) {
             $data['currency'] = true;
+        }
+
+        return $data;
+    }
+
+    /**
+     * ovverdide ProviderTrait IcoreGameURL via custom lobby URL
+     */
+
+    public function getGameUrlFromICore($request, $requestData)
+    {
+        $isLobbyLaunch = ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
+            $requestData['lobby'] === "true");
+
+        $directTableLaunch = ($requestData['lobby'] === "true" &&
+            ($requestData['gameCode'] !== 'undefined' &&
+                $requestData['extGameId'] && $requestData['extGameId'] !== 'undefined'));
+
+        if ($this->isPlayerGame($requestData) && (!$isLobbyLaunch || $directTableLaunch)) {
+            $data = $this->getGameUrlByPlayerGame($request, $requestData);
+            if ($data && $data['gameurl']) {
+                $data['customLobby'] = $this->getCustomLobby($requestData);
+            }
+        } else {
+            $data = $this->getGameUrlByGeneralLobby($request, $requestData);
         }
 
         return $data;
