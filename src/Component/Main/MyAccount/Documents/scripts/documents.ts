@@ -8,6 +8,20 @@ import CustomSelect from "@core/assets/js/components/custom-select";
 
 type TGenericEvent<T> = Event & { target: T };
 
+/**
+ * ValidationErrors contains an object of the form
+ *
+ *  {
+ *      field_key: { ruleA: "Error message", ruleB: "Error message two" },
+ *  }
+ *
+ * For example
+ *
+ *  {
+ *      DocumentsForm_first_upload: {uploadFieldRequired: "Please select a file"},
+ *      DocumentsForm_purpose: {purposeRequired: "Please select an opt…"}
+ *  }
+ */
 interface ValidationErrors {
     [key: string]: {
         [key: string]: string;
@@ -72,15 +86,13 @@ export class Documents extends FormBase {
 
         // Configure Purpose field logic
         // Change Comment Field P/holder depending on selection
+        /// Check if an actual selection has been made
         this.purposeField.addEventListener(
             "change",
-            (e: TGenericEvent<HTMLSelectElement>) => { this.commentFieldPlaceholderCallback(e.target); },
-        );
-
-        // Check if an actual selection has been made
-        this.purposeField.addEventListener(
-            "change",
-            (e: TGenericEvent<HTMLSelectElement>) => { this.purposeFieldRequiredCallback(e.target); },
+            (e: TGenericEvent<HTMLSelectElement>) => {
+                this.commentFieldPlaceholderCallback(e.target);
+                this.purposeFieldRequiredCallback(e.target);
+            },
         );
 
         // Commend field logic
@@ -105,13 +117,7 @@ export class Documents extends FormBase {
 
                 if (Object.keys(this.validatorErrors).length > 0) {
                     e.preventDefault();
-                    /* Replace below lines with logic handling error display
-                    this.validatorErrors contains an object of the form
-                    {
-                        DocumentsForm_first_upload: {uploadFieldRequired: "Please select a file"}
-                        DocumentsForm_purpose: {purposeRequired: "Please select an opt…"}
-                    }
-                    */
+                    // Replace below lines with logic handling error display
                     setTimeout(() => {
                        this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
                        console.log(this.validatorErrors);
@@ -217,6 +223,10 @@ export class Documents extends FormBase {
         // listen(inputField, "change", (e: TGenericEvent<HTMLInputElement>) => {
         inputField.addEventListener("change", (e: TGenericEvent<HTMLInputElement>) => {
 
+            if (!this.validatorErrors[selector]) {
+                this.validatorErrors[selector] = {};
+            }
+
             // Validate file extensions
             const allowedExtensions = e.target.dataset.allowed_file_extensions.split(",");
             const currExtension = e.target.files[0].name.split(".").pop();
@@ -225,10 +235,10 @@ export class Documents extends FormBase {
                 statusIconFIeld.innerHTML = iconAtt();
                 const error = e.target.dataset.error_extension + " " + e.target.dataset.allowed_file_extensions;
                 labelText.textContent = error;
-                this.validatorErrors[selector] = { fileExtensionError: error };
+                this.validatorErrors[selector].fileExtensionError = error ;
                 return;
             }
-            // Validation didn"t fail, delete previous errors
+            // Validation didn't fail, delete previous errors
             if (this.validatorErrors[selector]) {
                 delete this.validatorErrors[selector].fileExtensionError;
             }
@@ -243,10 +253,10 @@ export class Documents extends FormBase {
                 statusIconFIeld.innerHTML = iconAtt();
                 const error = e.target.dataset.error_size + " " + e.target.dataset.maximumImageSize;
                 labelText.textContent = error;
-                this.validatorErrors[selector] = { fileSizeError: error};
+                this.validatorErrors[selector].fileSizeError = error;
                 return;
             }
-            // Validation didn"t fail, delete previous errors
+            // Validation didn't fail, delete previous errors
             if (this.validatorErrors[selector]) {
                 delete this.validatorErrors[selector].fileSizeError;
             }
@@ -303,7 +313,7 @@ export class Documents extends FormBase {
                             return;
 
                         }
-                        // Validation didn"t fail, delete previous errors
+                        // Validation didn't fail, delete previous errors
                         if (this.validatorErrors[key]) {
                             delete this.validatorErrors[key][callbackName];
                         }
