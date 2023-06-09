@@ -2,7 +2,6 @@
 
 namespace App\MobileEntry\Component\GameIFrame;
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
-
 /**
  *
  */
@@ -30,7 +29,6 @@ class GameIFrameComponentScripts implements ComponentAttachmentInterface
     {
         $this->playerSession = $playerSession;
     }
-
 
     /**
      * @{inheritdoc}

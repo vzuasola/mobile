@@ -37,4 +37,5 @@ class HeaderGameIFrameComponentScripts implements ComponentAttachmentInterface
             'authenticated' => $this->playerSession->isLogin(),
         ];
     }
+
 }
