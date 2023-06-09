@@ -99,8 +99,8 @@ export class HeaderGameIFrameComponent implements ComponentInterface {
     }
 
     /**
-     * Listens for click event on search button.
-     * Shows games search result in games lobby.
+     * Listens for click event on logo.
+     * Redirect to product lobby
      */
      private listenClickLogo() {
         ComponentManager.subscribe("click", (event, src) => {
