@@ -69,7 +69,7 @@ class CasinoLobbyComponentScripts implements ComponentAttachmentInterface
             'keywords_weight' => $config['keywords_weight'] ?? 0,
             'product' => $this->getProductIntegration(),
             'infinite_scroll' => $casinoGeneralConfig['lobby_infinite_scroll'] ?? true,
-            'launch_via_iframe' => $casinoGeneralConfig['launch_via_iframe'] ?? true
+            'launch_via_iframe' => $casinoGeneralConfig['launch_via_iframe'] ?? false
         ];
     }
 
