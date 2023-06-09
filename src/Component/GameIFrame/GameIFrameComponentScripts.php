@@ -1,7 +1,9 @@
 <?php
 
 namespace App\MobileEntry\Component\GameIFrame;
+
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
+
 /**
  *
  */

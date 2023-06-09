@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\HeaderGameIFrame;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
+
 /**
  *
  */
@@ -37,5 +38,4 @@ class HeaderGameIFrameComponentScripts implements ComponentAttachmentInterface
             'authenticated' => $this->playerSession->isLogin(),
         ];
     }
-
 }
