@@ -208,6 +208,13 @@ components:
     class: App\MobileEntry\Component\Main\Lobby\PTPlusLobby\PTPlusLobbyComponent
     parent: lobby
 
+  header_game_iframe:
+    class: App\MobileEntry\Component\HeaderGameIFrame\HeaderGameIFrameComponent
+
+  game_iframe:
+    class: App\MobileEntry\Component\GameIFrame\GameIFrameComponent
+
+
 # Define modules
 modules:
   session:

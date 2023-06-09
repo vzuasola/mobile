@@ -1,0 +1,38 @@
+{% extends '@site/gameiframebase.html.twig' %}
+
+{% block seo %}
+    {{ widget('seo') }}
+{% endblock %}
+
+{% block marketing_header %}
+    {{ widget('marketing', {'position': 'header'}) }}
+{% endblock %}
+
+{% block script_header %}
+    <script async src="{{ asset('js/app.js') }}"></script>
+{% endblock %}
+
+{% block css %}
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+{{ widget('meta') }}
+<div class="game-iframe-wrapper">
+    {{ widget('header_game_iframe') }}
+</div>
+{% endblock header %}
+
+{% block body %}
+    {% block main %}
+    {{ widget('main') }}
+    {% endblock main %}
+{% endblock body %}
+
+{% block script %}
+    {{ parent() }}
+{% endblock %}
+
+{% block marketing_footer %}
+    {{ widget('marketing', {'position': 'footer'}) }}
+{% endblock %}

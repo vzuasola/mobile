@@ -38,6 +38,14 @@ routes:
             enabled: true
             expires: 1800
 
+    /{id:casino}/game/launch:
+        method: GET
+        action: App\MobileEntry\Controller\GameIFrameController:view
+        components:
+            main: game_iframe
+        headers:
+            Cache-Control: no-cache, no-store, must-revalidate
+        skip_page_cache: true
     /login:
         method: GET
         action: App\MobileEntry\Controller\HomeController:view

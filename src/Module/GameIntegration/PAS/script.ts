@@ -322,6 +322,11 @@ export class PASModule implements ModuleInterface, GameInterface {
                         resolve();
                     } else {
                         if (response.gameurl && this.pasLoginResponse.errorCode === 0) {
+                            if (typeof options.onSuccess === "function") {
+                                options.onSuccess.apply(null, [response, options.element]);
+                                return;
+                            }
+
                             if (options.loader === "true") {
                                 window.location.href = response.gameurl;
                             } else {
@@ -348,6 +353,10 @@ export class PASModule implements ModuleInterface, GameInterface {
                     resolve();
                 }).fail((error, message) => {
                     // Do nothing
+                    if (typeof options.onFail === "function") {
+                        options.onFail.apply(null, [options.element]);
+                        return;
+                    }
                     console.log("FAILED: ", error, message);
                     resolve();
                 });

@@ -1,5 +1,3 @@
-declare var navigator: any;
-
 import * as utility from "@core/assets/js/components/utility";
 import Swipe from "@app/assets/script/components/custom-touch/swipe";
 import * as Handlebars from "handlebars/runtime";
@@ -20,7 +18,7 @@ import {GamesSearch} from "./scripts/games-search";
 import {GamesFilter} from "@app/assets/script/components/games-filter";
 import {CasinoPreference} from "./scripts/casino-preference";
 import {Marker} from "@app/assets/script/components/marker";
-import PopupWindow from "@app/assets/script/components/popup";
+import {GameLauncherManager} from "@app/assets/script/components/game-launcher-manager";
 
 /**
  *
@@ -45,6 +43,8 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private windowObject: any;
     private gameLink: string;
     private productMenu = "product-casino";
+    private launchViaIframe: boolean;
+    private gameLauncherManager: GameLauncherManager;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -52,6 +52,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
         this.casinoPreference = new CasinoPreference();
+        this.gameLauncherManager = new GameLauncherManager();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -65,6 +66,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             msg_no_recommended: string,
             product: any[],
             infinite_scroll: boolean,
+            launch_via_iframe: boolean,
         }) {
         this.response = null;
         this.element = element;
@@ -74,6 +76,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
+        this.launchViaIframe = attachments.launch_via_iframe;
         this.checkLoginState();
         this.listenChangeCategory();
         this.listenHashChange();
@@ -98,7 +101,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
         this.listenOnCloseFilter();
         this.listenOnLogout();
-        this.listenToLaunchGameLoader();
+        this.gameLauncherManager.handleGameLaunch();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -112,8 +115,10 @@ export class CasinoLobbyComponent implements ComponentInterface {
             msg_no_recommended: string,
             product: any[],
             infinite_scroll: boolean,
+            launch_via_iframe: boolean,
         }) {
         this.isLogin = attachments.authenticated;
+        this.launchViaIframe = attachments.launch_via_iframe;
         if (!this.element) {
             this.checkLoginState();
             this.listenChangeCategory();
@@ -148,7 +153,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        this.listenToLaunchGameLoader();
+        this.gameLauncherManager.handleGameLaunch();
     }
 
     private initMarker() {
@@ -429,6 +434,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             isLogin: this.isLogin,
             isRecommended: isRecommend,
             isAllGames: activeCategory === "all-games",
+            launchViaIframe: this.launchViaIframe,
         });
 
         if (this.currentPage > page) {
@@ -439,6 +445,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                     favorites: this.response.favorite_list,
                     isLogin: this.isLogin,
                     isAllGames: activeCategory === "all-games",
+                    launchViaIframe: this.launchViaIframe,
                 });
             }
         }
@@ -753,6 +760,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                             favorites: this.response.favorite_list,
                             isLogin: this.isLogin,
                             isAllGames: hash === "all-games",
+                            launchViaIframe: this.launchViaIframe,
                         });
                         const loader = gameLoader.querySelector(".mobile-game-loader");
                         utility.removeClass(loader, "hidden");
@@ -910,78 +918,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
         }
 
         return filteredCategory;
-    }
-
-    /**
-     * Event listener for launching pop up loader
-     */
-    private listenToLaunchGameLoader() {
-        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            // Pop up loader with all data
-            const prop = {
-                width: 360,
-                height: 720,
-                scrollbars: 1,
-                scrollable: 1,
-                resizable: 1,
-            };
-
-            let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-            const source = utility.getParameterByName("source");
-
-            for (const key in data.options) {
-                if (data.options.hasOwnProperty(key)) {
-                    const param = data.options[key];
-                    url = utility.addQueryParam(url, key, param);
-                }
-            }
-
-            url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
-            url = utility.addQueryParam(url, "loaderFlag", "true");
-            if (data.options.target === "popup") {
-                this.windowObject = PopupWindow(url, "gameWindow", prop);
-            }
-
-            if (!this.windowObject && data.options.target === "popup") {
-                return;
-            }
-
-            // handle redirects if we are on a PWA standalone
-            if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                source === "pwa" ||
-                data.options.target !== "popup"
-            ) {
-                window.location.href = url;
-                return;
-            }
-
-            this.windowObject = PopupWindow("", "gameWindow", prop);
-
-            this.updatePopupWindow(url);
-        });
-    }
-
-    private updatePopupWindow(url) {
-        try {
-            if (this.windowObject.location.href !== "about:blank" &&
-                url === this.gameLink &&
-                !this.windowObject.closed
-            ) {
-                this.windowObject.focus();
-            } else {
-                this.gameLink = url;
-                this.windowObject.location.href = url;
-            }
-        } catch (e) {
-            if (url !== this.gameLink) {
-                this.gameLink = url;
-                this.windowObject.location.href = url;
-            }
-
-            if (this.windowObject) {
-                this.windowObject.focus();
-            }
-        }
     }
 
 }

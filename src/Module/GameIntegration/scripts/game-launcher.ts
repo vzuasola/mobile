@@ -140,6 +140,16 @@ class GameLauncher {
         }
     }
 
+    /**
+     * Send events based on
+     * game launching point of entry (ie promotions, game loader or game iframe)
+     * @param el
+     * @param event
+     * @param redirect
+     * @param loader
+     * @param data
+     * @returns
+     */
     private sendGameLaunchEvents(el, event, redirect, loader, data = {response: {}}) {
         let eventLaunch = "game.launch";
         let eventLoader = "game.launch.loader";
@@ -152,6 +162,7 @@ class GameLauncher {
         if (data.hasOwnProperty("response")) {
             params.response = data.response;
         }
+
         if (redirect) {
             ComponentManager.broadcast("game.redirect", {
                 options,
@@ -160,6 +171,7 @@ class GameLauncher {
             return;
         }
 
+        // Send launch event for game launch from promotions
         if (options.hasOwnProperty("launchpromo") && options.launchpromo === "true") {
              eventLoader = "game.launch.promo.loader";
              eventLaunch = "game.promo.launch";
@@ -167,6 +179,16 @@ class GameLauncher {
         }
 
         ComponentManager.broadcast(eventLaunch, params);
+
+        // Send launch event for game launch using Game Iframe Launcher
+        if (options.hasOwnProperty("iframe") && options.iframe === "true") {
+            options.currentProduct = ComponentManager.getAttribute("product");
+            ComponentManager.broadcast("game.launch.iframe", {
+                options,
+            });
+            return;
+        }
+
         if (!loader) {
             event.preventDefault();
             const provider = el.getAttribute("data-game-provider");
@@ -175,6 +197,7 @@ class GameLauncher {
             this.invoke(provider, "prelaunch", [options]);
             this.invoke(provider, "launch", [options]);
         } else {
+            // Send launch event for game launch using Game Loader Launcher
             ComponentManager.broadcast(eventLoader, {
                 options,
             });
