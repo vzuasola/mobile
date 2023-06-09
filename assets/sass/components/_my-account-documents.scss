@@ -1,0 +1,139 @@
+.documents-form {
+    .field_required::after {
+        content: "*";
+        color: red;
+    }
+    > *::after {
+        content: "";
+        width: 5px;
+    }
+
+    .sk-fading-circle .sk-circle::before {
+        background-color: black;
+    }
+
+    .comment_blurb {
+        display: inline-block;
+        font-size: 9pt;
+        font-style: italic;
+    }
+    
+    > .DocumentsForm{
+
+
+        &_first_upload,
+        &_second_upload,
+        &_third_upload,
+        &_purpose {
+            display: flex;
+            .field_status_icon{
+                width: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        &_first_upload,
+        &_second_upload,
+        &_third_upload {
+
+            label{
+                width: 100%;
+                background: white;
+                color: black;
+                padding: 10px 15px;
+                border-radius: 10px;
+                display: flex;
+                justify-content: space-between;
+            }
+            .form-field{
+                display: none;
+            }
+
+            .field_label_icon {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                }
+
+        }
+
+        &_comment_markup,
+        &_purpose_markup,
+        &_title_markup{
+            border-bottom: 1px solid white;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            font-size: 13pt;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        &_purpose select{
+            border-radius: 5px;
+            background: white;
+            color: black;
+            width: 100%;
+        }
+
+        &_submit{
+            .form-field{
+                display: flex;
+                justify-content: center;
+
+                .btn{
+                    width: 50%;
+                }
+            }
+        }
+
+        &_upload_reminder_markup {
+            color: red;
+            font-size: 10pt;
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        &_comment_markup {
+            text-align: left;
+            font-weight: bold;
+            hr {
+                display: block;
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+        }
+
+        &_comment {
+            .form-field {
+                padding: 3px; 
+
+                textarea{
+                    height: 75pt;
+                    border-radius: 16px;
+                    background: white;
+                    color: black;
+                    padding: 10px;
+                }
+            }
+        }
+
+
+        &_description_blurb_markup > ul {
+
+            list-style-type: '- ';
+            margin-top: 10px;
+            margin-bottom: 10px;
+
+            li {
+                margin: 5px 0;
+            }
+        }
+
+        &_footer_instructions_markup {
+            text-align: center;
+        }
+
+    }
+}
