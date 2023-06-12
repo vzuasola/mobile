@@ -189,6 +189,10 @@ components:
     class: App\MobileEntry\Component\Main\MyAccount\Bonuses\BonusesComponent
     parent: my_account
 
+  documents:
+    class: App\MobileEntry\Component\Main\MyAccount\Documents\DocumentsComponent
+    parent: my_account
+
   seo:
     class: App\MobileEntry\Component\SEO\SEOComponent
 

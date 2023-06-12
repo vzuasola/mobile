@@ -123,6 +123,7 @@ class MyAccountComponent implements ComponentWidgetInterface
         return [
             'myProfileTab' => $config['my_profile_tab'] ?? 'My Profile',
             'changePasswordTab' => $config['change_password_tab'] ?? 'Change Password',
+            'documentsTab' => $config['documents_tab'] ?? 'Documents',
             'bonusTabLabel' => $bonusConfig['mobile_tab_label'] ?? 'Bonuses',
             'isFastReg' => $isFastReg,
             'flashMessage' => $flashMessage,

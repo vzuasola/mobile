@@ -1,3 +1,5 @@
+@import "my-account-documents";
+
 form.profile-form,
 form.change-password-form,
 form.verify-password-form,
@@ -49,6 +51,7 @@ form.sms-verification-code-form {
         @extend %form-item-two-cols-bottom;
     }
 }
+
 
 // Individual form items =======================================================
 form.profile-form {
