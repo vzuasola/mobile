@@ -1,0 +1,32 @@
+<div class="game-iframe-loader-container">
+  <div class="game-iframe-loader-container-content">
+    <p>
+      <img src="{{ asset('images/dafabet_logo.png') }}" alt="{{ logo_title }}">
+    </p>
+    <div class="game-iframe-loader-container-loader loader">
+      <div class="loader" id="loader-0"></div>
+      <div class="loader" id="loader-1"></div>
+      <div class="loader" id="loader-2"></div>
+      <div class="loader" id="loader-3"></div>
+      <div class="loader" id="loader-4"></div>
+      <div class="loader" id="loader-5"></div>
+      <div class="loader" id="loader-6"></div>
+      <div class="loader" id="loader-7"></div>
+      <div class="loader" id="loader-8"></div>
+      <div class="loader" id="loader-9"></div>
+    </div>
+    <div class="message hidden">
+      An unexpected error occurred.
+      <br>
+      This window will close in few seconds.
+      <br>
+      <br>
+      Please try again soon.
+    </div>
+  </div>
+</div>
+<div class="game-iframe-container hidden">
+    <iframe id="gameframe" width="360" height="630" scrolling="no" class="hidden"></iframe>
+</div>
+{{ include('@app/src/Module/GameIntegration/templates/ucl.html.twig') }}
+{{ include('@app/src/Module/GameIntegration/templates/errmessage.html.twig') }}
