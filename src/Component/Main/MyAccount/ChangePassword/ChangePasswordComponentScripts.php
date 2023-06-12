@@ -52,7 +52,6 @@ class ChangePasswordComponentScripts implements ComponentAttachmentInterface
             $passMeter['strong'] = $config['password_strong'] ?? 'Strong';
         }
 
-        
         $integrationError = Config::parse($config['integration_error']) ?? '';
 
         return [
