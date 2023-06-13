@@ -18,8 +18,18 @@
         font-style: italic;
     }
     
+    .select-items div:active {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
     > .DocumentsForm{
-
+        
+        &_comment .comment_charcount {
+            text-align: right;
+        }
+    
+        &_purpose .field_status_icon {
+            display: none !important;
+        }
 
         &_first_upload,
         &_second_upload,
