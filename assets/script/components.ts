@@ -49,6 +49,8 @@ import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
 import {VirtualsLobbyComponent} from "@app/src/Component/Main/Lobby/VirtualsLobby/script";
 import {PTPlusLobbyComponent} from "@app/src/Component/Main/Lobby/PTPlusLobby/script";
+import {HeaderGameIFrameComponent} from "@app/src/Component/HeaderGameIFrame/script";
+import {GameIFrameComponent} from "@app/src/Component/GameIFrame/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -100,4 +102,6 @@ ComponentManager.setComponents({
     game_loader: new GameLoaderComponent(),
     ucp: new UnsupportedCurrencyComponent(),
     ptplus_lobby: new PTPlusLobbyComponent(),
+    game_iframe: new GameIFrameComponent(),
+    header_game_iframe: new HeaderGameIFrameComponent(),
 });
