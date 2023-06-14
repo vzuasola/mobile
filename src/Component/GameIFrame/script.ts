@@ -3,7 +3,7 @@ import * as utility from "@core/assets/js/components/utility";
 import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-
+import {Loader} from "@app/assets/script/components/loader";
 /**
  *
  */
@@ -11,10 +11,16 @@ export class GameIFrameComponent implements ComponentInterface {
 
     private element: HTMLElement;
     private isLogin: boolean;
+    private loader: Loader;
+
+    constructor() {
+        this.loader = new Loader(document.body, true);
+    }
 
     onLoad(element: HTMLElement, attachments: {isLogin: boolean}) {
         this.element = element;
         this.isLogin = attachments.isLogin;
+        this.loader.remove();
         this.initMessage();
         this.launchGame();
     }
@@ -22,6 +28,7 @@ export class GameIFrameComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {isLogin: boolean}) {
         this.element = element;
         this.isLogin = attachments.isLogin;
+        this.loader.remove();
         this.initMessage();
         this.launchGame();
     }
