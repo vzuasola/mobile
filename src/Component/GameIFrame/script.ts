@@ -94,9 +94,14 @@ export class GameIFrameComponent implements ComponentInterface {
             element.querySelector(".game-iframe-loader-container").remove();
 
             // resize iframe
+            const defaultHeight = 660;
+            let height =  window.innerHeight - 50;
+            if (height < defaultHeight) {
+                height = defaultHeight;
+            }
             iframe.setAttribute("width", 360);
-            iframe.setAttribute("height", 660);
-            iframeWrapper.style.height = "625px";
+            iframe.setAttribute("height", height);
+            iframeWrapper.style.height = height + "px";
             iframe.setAttribute("src", response.gameurl);
 
         }
