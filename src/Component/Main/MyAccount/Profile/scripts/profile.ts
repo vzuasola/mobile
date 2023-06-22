@@ -375,7 +375,7 @@ export class Profile extends FormBase {
 
     private createErrorMessage(elem, msg) {
         const parentElem = utility.findParent(elem, "div");
-        const parentFormItem = utility.findParent(parentElem, "div");
+        const parentFormItem = utility.findParent(parentElem, ".form-item");
         utility.addClass(parentFormItem, "has-error");
         utility.removeClass(parentFormItem, "has-success");
         const element = utility.createElem("span", "form-help-block", parentElem);
