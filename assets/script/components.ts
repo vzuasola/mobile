@@ -43,11 +43,14 @@ import {MyAccountProfileComponent} from "@app/src/Component/Main/MyAccount/Profi
 import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/MyAccount/Profile/VerifyPassword/script";
 import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
 import {BonusesComponent} from "@app/src/Component/Main/MyAccount/Bonuses/script";
+import {DocumentsComponent} from "@app/src/Component/Main/MyAccount/Documents/script";
 import {FooterComponent} from "@app/src/Component/Footer/script";
 import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
 import {VirtualsLobbyComponent} from "@app/src/Component/Main/Lobby/VirtualsLobby/script";
 import {PTPlusLobbyComponent} from "@app/src/Component/Main/Lobby/PTPlusLobby/script";
+import {HeaderGameIFrameComponent} from "@app/src/Component/HeaderGameIFrame/script";
+import {GameIFrameComponent} from "@app/src/Component/GameIFrame/script";
 
 ComponentManager.setComponents({
     access_denied: new AccessDeniedComponent(),
@@ -94,8 +97,11 @@ ComponentManager.setComponents({
     profile_verify_password: new MyAccountProfileVerifyPasswordComponent(),
     change_password: new MyAccountChangePasswordComponent(),
     bonuses: new BonusesComponent(),
+    documents: new DocumentsComponent(),
     footer: new FooterComponent(),
     game_loader: new GameLoaderComponent(),
     ucp: new UnsupportedCurrencyComponent(),
     ptplus_lobby: new PTPlusLobbyComponent(),
+    game_iframe: new GameIFrameComponent(),
+    header_game_iframe: new HeaderGameIFrameComponent(),
 });

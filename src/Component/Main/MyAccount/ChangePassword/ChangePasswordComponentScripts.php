@@ -44,6 +44,14 @@ class ChangePasswordComponentScripts implements ComponentAttachmentInterface
     {
         $passMeter = $this->translationManager->getTranslation('password-strength-meter');
         $config = $this->configFetcher->getConfigById('my_account_change_password');
+
+        if ($config['use_cms_password_strength'] ?? false) {
+            $passMeter['label'] = $config['password_label'] ?? 'Password Strength';
+            $passMeter['weak'] = $config['password_weak'] ?? 'Weak';
+            $passMeter['average'] = $config['password_average'] ?? 'Average';
+            $passMeter['strong'] = $config['password_strong'] ?? 'Strong';
+        }
+
         $integrationError = Config::parse($config['integration_error']) ?? '';
 
         return [

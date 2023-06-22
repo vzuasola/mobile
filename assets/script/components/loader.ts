@@ -53,4 +53,11 @@ export class Loader {
             utility.addClass(this.loader, "hidden");
         }
     }
+
+    remove() {
+        if (this.overlay) {
+            utility.removeClass(this.target, "loader-overlay");
+        }
+
+    }
 }

@@ -24,6 +24,9 @@
         data-game-lobby="false"
         data-game-sort="{{@index}}"
         data-game-location="search"
+        {{#if ../launchViaIframe }}
+            data-game-iframe="true"
+        {{/if}}
         >
         <div class="games-search-result-left" data-game-code="{{this.game_code}}">
             {{!-- {{#if this.ribbon}}

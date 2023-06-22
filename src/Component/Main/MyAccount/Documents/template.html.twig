@@ -1,0 +1,10 @@
+{% form_theme formDocuments '@component/Main/MyAccount/Documents/form_theme.override.html.twig' %}
+{{ form_start(formDocuments, {'attr': {'class': 'pure-form documents-form'}}) }}
+{{ form_end(formDocuments) }}
+
+<span class="hidden">
+    {% include '@app/web/images/svg/upload.svg' ignore missing %}
+    {% include '@app/web/images/svg/att-icon.svg' ignore missing %}
+    {% include '@app/web/images/svg/ok-icon.svg' ignore missing %}
+
+</span>

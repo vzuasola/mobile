@@ -189,6 +189,10 @@ components:
     class: App\MobileEntry\Component\Main\MyAccount\Bonuses\BonusesComponent
     parent: my_account
 
+  documents:
+    class: App\MobileEntry\Component\Main\MyAccount\Documents\DocumentsComponent
+    parent: my_account
+
   seo:
     class: App\MobileEntry\Component\SEO\SEOComponent
 
@@ -207,6 +211,13 @@ components:
   ptplus_lobby:
     class: App\MobileEntry\Component\Main\Lobby\PTPlusLobby\PTPlusLobbyComponent
     parent: lobby
+
+  header_game_iframe:
+    class: App\MobileEntry\Component\HeaderGameIFrame\HeaderGameIFrameComponent
+
+  game_iframe:
+    class: App\MobileEntry\Component\GameIFrame\GameIFrameComponent
+
 
 # Define modules
 modules:
