@@ -38,7 +38,7 @@ routes:
             enabled: true
             expires: 1800
 
-    /{id:casino}/game/launch:
+    /{id:casino|casino-gold}/game/launch:
         method: GET
         action: App\MobileEntry\Controller\GameIFrameController:view
         components:
