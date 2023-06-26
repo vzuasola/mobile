@@ -108,6 +108,16 @@
         &_comment_markup {
             text-align: left;
             font-weight: bold;
+            display: flex;
+            min-height: 36px;
+            align-items: center;
+
+            > span,
+            > .field_status_icon > svg {
+                margin-right: 5px;
+            }
+
+
             hr {
                 display: block;
                 margin-top: 5px;
