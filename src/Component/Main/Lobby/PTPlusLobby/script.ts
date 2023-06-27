@@ -104,7 +104,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenHashChange();
         this.setPlaceholder();
         this.gamesSearch.handleOnLoad(this.element, attachments);
-        this.gameLauncherManager.handleGameLaunch();
+        this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
         /*this.gamesFilter.handleOnLoad(this.element, attachments);*/
     }
 
@@ -132,7 +132,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             this.listenClickGameTile();
             this.listenGameLaunch();
             this.listenToLaunchGameLoader();
-            this.gameLauncherManager.handleGameLaunch();
+            this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
             this.listenFavoriteClick();
             this.listenClickTab();
             this.listenHashChange();
