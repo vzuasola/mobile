@@ -54,6 +54,8 @@ export class Documents extends FormBase {
         // Initialise custom select UI
         CustomSelect();
 
+        this.handleCustomValidation();
+
         const loaderTemplate = loader({});
 
         // Configure upload field logic
@@ -78,11 +80,18 @@ export class Documents extends FormBase {
         );
 
         // Add blurb next to comment title
+        const commentMarkup = this.form.querySelector(".DocumentsForm_comment_markup");
+        commentMarkup.innerHTML = "<span>" + commentMarkup.innerHTML + "<span>";
 
         const blurbDiv = document.createElement("div");
         blurbDiv.classList.add("comment_blurb");
         blurbDiv.innerText = "(" + this.commentField.dataset.blurb + ")";
-        this.form.querySelector(".DocumentsForm_comment_markup").appendChild(blurbDiv);
+        commentMarkup.appendChild(blurbDiv);
+
+            // Add success/error icon to comment markup
+        const commentMarkupErrorDiv = document.createElement("div");
+        commentMarkupErrorDiv.classList.add("field_status_icon");
+        commentMarkup.prepend(commentMarkupErrorDiv);
 
         // Configure Purpose field logic
         // Change Comment Field P/holder depending on selection
@@ -92,14 +101,19 @@ export class Documents extends FormBase {
             (e: TGenericEvent<HTMLSelectElement>) => {
                 this.commentFieldPlaceholderCallback(e.target);
                 this.purposeFieldRequiredCallback(e.target);
+                this.commentFieldRequiredCallback(this.commentField);
+                this.handleCommentFieldIcon();
             },
         );
 
         // Commend field logic
         // Checks if comment field is required and if yes if it contains text
         this.commentField.addEventListener(
-            "change",
-            (e: TGenericEvent<HTMLTextAreaElement>) => { this.commentFieldRequiredCallback(e.target); },
+            "input",
+            (e: TGenericEvent<HTMLTextAreaElement>) => {
+                this.commentFieldRequiredCallback(e.target);
+                this.handleCommentFieldIcon();
+            },
         );
 
         // Submission Logic
@@ -135,7 +149,6 @@ export class Documents extends FormBase {
             },
         );
 
-        this.handleCustomValidation();
     }
 
     // Check if user selected "Change Information" and add the place holder and required * in the comment field
@@ -185,6 +198,17 @@ export class Documents extends FormBase {
         this.form.querySelector(".comment_charcount").innerHTML = charactersLeft + " " + currCount + "/" + limit;
     }
 
+    private handleCommentFieldIcon() {
+        // Change icon
+        const keyErrors = this.validatorErrors.DocumentsForm_comment;
+        const iconDiv = this.form.querySelector(".DocumentsForm_comment_markup .field_status_icon");
+        if (keyErrors && Object.keys(keyErrors).length !== 0) {
+            iconDiv.innerHTML = iconAtt();
+            return;
+        }
+        iconDiv.innerHTML = "";
+    }
+
     // Check if user has uploaded a file
     private uploadFieldRequired(el: HTMLInputElement) {
         if (el.value === "") {
@@ -205,6 +229,12 @@ export class Documents extends FormBase {
         if (keyErrors && Object.keys(keyErrors).length === 0) {
             delete this.validatorErrors[fieldKey];
         }
+    }
+
+    private cleanupAllValidations() {
+        Object.keys(this.validatorErrors).forEach((fieldKey) => {
+            this.cleanupValidation(fieldKey);
+        });
     }
 
     // Used to loop through multiple upload fields and attach logic to them
@@ -228,7 +258,12 @@ export class Documents extends FormBase {
             }
 
             // Validate file extensions
-            const allowedExtensions = e.target.dataset.allowed_file_extensions.split(",");
+            const allowedExtensions = e.target.dataset
+                .allowed_file_extensions
+                .split(",")
+                .map((ext) => {
+                    return ext.trim();
+                });
             const currExtension = e.target.files[0].name.split(".").pop();
 
             if (allowedExtensions.indexOf(currExtension) === -1) {
@@ -298,7 +333,7 @@ export class Documents extends FormBase {
 
                 // Add an onChange event listener for the specific element and callback
                 element.addEventListener(
-                    "change",
+                    "input",
                     (e: TGenericEvent<HTMLInputElement>) => {
 
                         // Run the validator using the changed value, the arguments as set by the CMS
@@ -317,7 +352,7 @@ export class Documents extends FormBase {
                         if (this.validatorErrors[key]) {
                             delete this.validatorErrors[key][callbackName];
                         }
-                        this.cleanupValidation(key);
+                        this.cleanupAllValidations();
                     },
                 );
 

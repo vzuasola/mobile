@@ -7,18 +7,22 @@ import PopupWindow from "@app/assets/script/components/popup";
 export class GameLauncherManager {
     private gameLink: string;
 
-    handleGameLaunch() {
-        this.listenToGameLaunchEvents();
+    handleGameLaunch(product) {
+        this.listenToGameLaunchEvents(product);
     }
 
     /** Listen to game launch events */
-    private listenToGameLaunchEvents() {
+    private listenToGameLaunchEvents(product) {
         ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            this.launchByLauncherType("games.launch.loader", data);
+            if (ComponentManager.getAttribute("product") === product) {
+                this.launchByLauncherType("games.launch.loader", data);
+            }
         });
 
         ComponentManager.subscribe("game.launch.iframe", (event, src, data) => {
-            this.launchByLauncherType("game.launch.iframe", data);
+            if (ComponentManager.getAttribute("product") === product) {
+                this.launchByLauncherType("game.launch.iframe", data);
+            }
         });
     }
 
