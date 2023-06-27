@@ -79,6 +79,8 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
                 $recommendedAvailable = $value['name'][0]['value'];
             } elseif ('msg_no_recommended' === $key) {
                 $noRecommended = $value['name'][0]['value'];
+            } elseif ('launch_via_iframe' === $key) {
+                $launchViaIFrame = $value['name'][0]['value'] ?? false;
             }
         }
 
@@ -111,6 +113,7 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
             'configs' => $ptplusGeneralConfig ?? [],
             'pageData' => $pageContents ?? [],
             'tournamentSettings' => $tournament ?? [],
+            'launch_via_iframe' => $launchViaIFrame ?? false
         ];
     }
 }
