@@ -1,9 +1,9 @@
 import * as utility from "@core/assets/js/components/utility";
 
-import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
+import { GameLauncher } from "@app/src/Module/GameIntegration/scripts/game-launcher";
 
-import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Loader} from "@app/assets/script/components/loader";
+import { ComponentInterface, ComponentManager } from "@plugins/ComponentWidget/asset/component";
+import { Loader } from "@app/assets/script/components/loader";
 /**
  *
  */
@@ -17,7 +17,7 @@ export class GameIFrameComponent implements ComponentInterface {
         this.loader = new Loader(document.body, true);
     }
 
-    onLoad(element: HTMLElement, attachments: {isLogin: boolean}) {
+    onLoad(element: HTMLElement, attachments: { isLogin: boolean }) {
         this.element = element;
         this.isLogin = attachments.isLogin;
         this.loader.remove();
@@ -25,7 +25,7 @@ export class GameIFrameComponent implements ComponentInterface {
         this.launchGame();
     }
 
-    onReload(element: HTMLElement, attachments: {isLogin: boolean}) {
+    onReload(element: HTMLElement, attachments: { isLogin: boolean }) {
         this.element = element;
         this.isLogin = attachments.isLogin;
         this.loader.remove();
@@ -40,20 +40,20 @@ export class GameIFrameComponent implements ComponentInterface {
 
         const message = {
             en: "The connection has timed out.<br />" +
-            "Please try again in a few moments.",
+                "Please try again in a few moments.",
             sc: "连接超时<br />请稍后重试",
             ch: "連接超時<br />請稍後重試",
             th: "หมดเวลาเชื่อมต่อ<br />กรุณาลองใหม่ในอีกสักครู่",
             kr: "연결 시간이 초과되었습니다.<br />" +
-            "잠시 후에 다시 시도하십시오. ",
+                "잠시 후에 다시 시도하십시오. ",
             vn: "Thời gian kết nối đã hết.<br />" +
-            "Vui lòng thử lại sau vài phút.<br />",
+                "Vui lòng thử lại sau vài phút.<br />",
             id: "Waktu koneksi telah habis.<br />" +
-            "Silakan coba lagi beberapa saat lagi.",
+                "Silakan coba lagi beberapa saat lagi.",
             pt: "A conexão expirou. <br />" +
-            "Por favor, tente novamente em alguns instantes.",
+                "Por favor, tente novamente em alguns instantes.",
             es: "La conexión ha expirado. <br />" +
-            "Por favor, inténtalo de nuevo en unos minutos.",
+                "Por favor, inténtalo de nuevo en unos minutos.",
         };
 
         let lang = ComponentManager.getAttribute("language");
@@ -94,14 +94,9 @@ export class GameIFrameComponent implements ComponentInterface {
             element.querySelector(".game-iframe-loader-container").remove();
 
             // resize iframe
-            const defaultHeight = 660;
-            let height =  window.innerHeight - 50;
-            if (height < defaultHeight) {
-                height = defaultHeight;
-            }
             iframe.setAttribute("width", 360);
-            iframe.setAttribute("height", height);
-            iframeWrapper.style.height = height + "px";
+            iframe.setAttribute("height", "auto");
+            iframeWrapper.style.height = "calc(100vh - 50px)";
             iframe.setAttribute("src", response.gameurl);
 
         }
