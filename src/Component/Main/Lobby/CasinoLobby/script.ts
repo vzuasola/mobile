@@ -101,7 +101,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
         this.listenOnCloseFilter();
         this.listenOnLogout();
-        this.gameLauncherManager.handleGameLaunch();
+        this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -153,7 +153,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.currentPage = 0;
         this.load = true;
-        this.gameLauncherManager.handleGameLaunch();
+        this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
     }
 
     private initMarker() {
