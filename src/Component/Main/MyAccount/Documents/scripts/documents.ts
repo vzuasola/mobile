@@ -81,17 +81,17 @@ export class Documents extends FormBase {
 
         // Add blurb next to comment title
         const commentMarkup = this.form.querySelector(".DocumentsForm_comment_markup");
-        commentMarkup.innerHTML = "<span>" + commentMarkup.innerHTML + "<span>";
+        commentMarkup.innerHTML = "<span class='comment_field_title'>" + commentMarkup.innerHTML + "</span>";
 
         const blurbDiv = document.createElement("div");
         blurbDiv.classList.add("comment_blurb");
         blurbDiv.innerText = "(" + this.commentField.dataset.blurb + ")";
         commentMarkup.appendChild(blurbDiv);
 
-            // Add success/error icon to comment markup
+        // Add success/error icon to comment markup
         const commentMarkupErrorDiv = document.createElement("div");
         commentMarkupErrorDiv.classList.add("field_status_icon");
-        commentMarkup.prepend(commentMarkupErrorDiv);
+        commentMarkup.append(commentMarkupErrorDiv);
 
         // Configure Purpose field logic
         // Change Comment Field P/holder depending on selection
@@ -102,7 +102,12 @@ export class Documents extends FormBase {
                 this.commentFieldPlaceholderCallback(e.target);
                 this.purposeFieldRequiredCallback(e.target);
                 this.commentFieldRequiredCallback(this.commentField);
-                this.handleCommentFieldIcon();
+                if (e.target.value !== "") {
+                    this.form.querySelector(".select-selected").classList.add("text-bold");
+                } else {
+                    this.form.querySelector(".select-selected").classList.remove("text-bold");
+                }
+                // this.handleCommentFieldIcon();
             },
         );
 
@@ -153,7 +158,7 @@ export class Documents extends FormBase {
 
     // Check if user selected "Change Information" and add the place holder and required * in the comment field
     private commentFieldPlaceholderCallback(el: HTMLSelectElement) {
-        const commentFieldMarkup = this.form.querySelector(".DocumentsForm_comment_markup");
+        const commentFieldMarkup = this.form.querySelector(".DocumentsForm_comment_markup > .comment_field_title");
         if (el.value === "change") {
             this.commentField.placeholder = this.commentField.dataset.placeholder;
             commentFieldMarkup.classList.add("field_required");
@@ -194,7 +199,7 @@ export class Documents extends FormBase {
     private commentCharCountCallback(el: HTMLTextAreaElement) {
         const limit = el.dataset.character_count_limit;
         const charactersLeft = el.dataset.character_count_text;
-        const currCount = el.value.length;
+        const currCount = +limit - el.value.length;
         this.form.querySelector(".comment_charcount").innerHTML = charactersLeft + " " + currCount + "/" + limit;
     }
 
