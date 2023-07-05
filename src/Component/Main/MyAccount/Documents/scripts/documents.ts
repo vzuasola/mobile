@@ -5,6 +5,8 @@ import * as iconOk from "@app/templates/handlebars/icon-ok.handlebars";
 import validators from "@app/assets/script/components/validation/rules";
 import * as loader from "../handlebars/loader.handlebars";
 import CustomSelect from "@core/assets/js/components/custom-select";
+import {Router} from "@plugins/ComponentWidget/asset/router";
+import * as xhr from "@core/assets/js/vendor/reqwest";
 
 type TGenericEvent<T> = Event & { target: T };
 
@@ -125,6 +127,7 @@ export class Documents extends FormBase {
         this.form.addEventListener(
             "submit",
             (e: TGenericEvent<HTMLFormElement>) => {
+                e.preventDefault();
                 const prevContent = this.form.querySelector("#DocumentsForm_submit").innerHTML;
                 this.form.querySelector("#DocumentsForm_submit").innerHTML = loaderTemplate;
 
@@ -135,7 +138,6 @@ export class Documents extends FormBase {
                 this.uploadFieldRequired(this.form.querySelector("#DocumentsForm_first_upload"));
 
                 if (Object.keys(this.validatorErrors).length > 0) {
-                    e.preventDefault();
                     // Replace below lines with logic handling error display
                     setTimeout(() => {
                        this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
@@ -144,13 +146,52 @@ export class Documents extends FormBase {
                     return;
                 }
 
-                // Replace below lines with actual submission logic
-                e.preventDefault();
-                setTimeout(() => {
-                    this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
-                    console.log("success");
-                }, 5000);
+                const formData = new FormData();
+                formData.append(
+                    "DocumentsForm_first_upload",
+                    (document.querySelector("#DocumentsForm_first_upload") as HTMLInputElement).files[0],
+                );
+                formData.append(
+                    "DocumentsForm_second_upload",
+                    (document.querySelector("#DocumentsForm_second_upload") as HTMLInputElement).files[0],
+                );
+                formData.append(
+                    "DocumentsForm_third_upload",
+                    (document.querySelector("#DocumentsForm_third_upload") as HTMLInputElement).files[0],
+                );
+                formData.append(
+                    "DocumentsForm_purpose",
+                    (document.querySelector("#DocumentsForm_purpose") as HTMLInputElement).value,
+                );
+                formData.append(
+                    "DocumentsForm_comment",
+                    (document.querySelector("#DocumentsForm_comment") as HTMLInputElement).value,
+                );
 
+                xhr({
+                    url: Router.generateRoute("documents", "documentUpload"),
+                    type: "json",
+                    method: "post",
+                    crossOrigin: true,
+                    processData: false,
+                    data: formData,
+                })
+                .then((resp) => {
+                    /* Replace below line with success logic
+                     * Response body will be of the form
+                     * { 'status': 'success|failure', 'message': 'Some status message'}
+                     */
+                    console.log("success");
+                    console.log(resp);
+                })
+                .fail((err, msg) => {
+                    // Replace below line with failure logic
+                    console.log("failure");
+                    console.log(err, msg);
+                }).
+                always((err, msg) => {
+                    this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
+                });
             },
         );
 
