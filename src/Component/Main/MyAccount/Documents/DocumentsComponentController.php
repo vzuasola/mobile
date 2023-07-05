@@ -120,7 +120,10 @@ class DocumentsComponentController
         }
 
         // Current Date formatted as required for first line of ticket
-        $currentDate = (new \DateTime())->format('d.m.y');
+        $currentDate = (new \DateTime(
+            date("Y-m-d"),
+            new \DateTimeZone(date_default_timezone_get())
+        ))->format('d.m.y');
 
         // Jira Ticket Content. Each row is a paragraph in the ticket
         $paragraphs =[
@@ -160,9 +163,10 @@ class DocumentsComponentController
 
         // Format the ticket title.
         $title = strtr(
-            "{username} - Brand[DF] - Currency[{currency}] - VIP Level[{vip}] - Purpose[{purpose}]",
+            "{username} - Brand[{brand}] - Currency[{currency}] - VIP Level[{vip}] - Purpose[{purpose}]",
             [
                 '{username}' => $playerDetails['username'],
+                '{brand}' => 'DF',
                 '{currency}' => $playerDetails['currency'],
                 '{vip}' => $vip,
                 '{purpose}' => $purpose,
@@ -195,7 +199,7 @@ class DocumentsComponentController
 
         return $this->rest->output($response, [
             'status' => 'success',
-            'message' => 'Ticket Created'
+            'message' => 'Ticket Created',
         ]);
     }
 
@@ -240,9 +244,9 @@ class DocumentsComponentController
         $formConfig = $this->formFetcher->getDataById('documents_form');
         $purposeMap = [];
         $mapLines = explode(PHP_EOL, $formConfig['fields']['purpose']['field_settings']['choices']);
-        foreach ($mapLines as $mapLine) {
-            [$mapLineKey, $mapLineValue] = explode("|", $mapLine);
-            $purposeMap[$mapLineKey] = $mapLineValue;
+        foreach ($mapLines as $el) {
+            $expl = explode("|", $el);
+            $purposeMap[$expl[0]] = $expl[1];
         };
 
         if (!array_key_exists($key, $purposeMap)) {
