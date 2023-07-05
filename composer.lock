@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c753da6c73be16b05a90de209c4dfec7",
+    "content-hash": "28ed0abcf6027cab5bb73044a299eafc",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3105,11 +3105,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.241.0",
+            "version": "dev-release-v1.242.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "fd46096dfeb4cd954b773b547f61ce531ac5a0c5"
+                "reference": "2b2c1d131c4ef0385bedace4b0272fea314af9f2"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3160,7 +3160,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2023-06-06T11:21:00+00:00"
+            "time": "2023-07-07T10:15:58+00:00"
         },
         {
             "name": "willdurand/negotiation",
