@@ -82,14 +82,14 @@ class LoginComponentController
                     'currency' =>  $this->playerSession->getDetails()['currency'] ?? '',
                     'country' => $request->getHeader('X-Custom-LB-GeoIP-Country')[0] ?? '',
                 ];
-                $this->cookieSession->set(
-                    $username,
-                    $data['user']['playerId'],
-                    $data['token'],
-                    $data['user']['currency']
-                );
-                // Set the authentication cookies
-                $this->setAuthCookies();
+                // $this->cookieSession->set(
+                //     $username,
+                //     $data['user']['playerId'],
+                //     $data['token'],
+                //     $data['user']['currency']
+                // );
+                // // Set the authentication cookies
+                // $this->setAuthCookies();
             } catch (\Exception $e) {
                 if ($e instanceof AccountLockedException) {
                     $response = $response->withStatus(403);
