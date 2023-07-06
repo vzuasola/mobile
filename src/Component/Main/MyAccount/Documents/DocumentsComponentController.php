@@ -7,8 +7,8 @@ namespace App\MobileEntry\Component\Main\MyAccount\Documents;
  */
 class DocumentsComponentController
 {
-    CONST BRAND = 'Dafabet';
-    CONST DRIVE_FOLDER_ID = '1XLeA0iy28Ron14DUt78XPzmYnDQIQk-9';
+    const BRAND = 'Dafabet';
+    const DRIVE_FOLDER_ID = '1XLeA0iy28Ron14DUt78XPzmYnDQIQk-9';
 
     /**
      * @var \App\Rest\Resource $rest Rest Object.
@@ -118,7 +118,7 @@ class DocumentsComponentController
             );
         }
 
-        Fetch Player input from form
+        // Fetch Player input from form
         try {
             $playerComments = $request->getParam('DocumentsForm_comment') ?? '';
             $purpose = $request->getParam('DocumentsForm_purpose');
