@@ -27,3 +27,9 @@
         left: 7rem !important;
     }
 }
+.game-iframe-container {
+    height: calc(100vh - 50px);
+    height: -webkit-calc(100vh - 50px);
+    height: -moz-calc(100vh - 50px);
+    height: -o-calc(100vh - 50px);
+}
