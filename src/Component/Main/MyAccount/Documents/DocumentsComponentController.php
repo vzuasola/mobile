@@ -7,6 +7,9 @@ namespace App\MobileEntry\Component\Main\MyAccount\Documents;
  */
 class DocumentsComponentController
 {
+    CONST BRAND = 'Dafabet';
+    CONST DRIVE_FOLDER_ID = '1XLeA0iy28Ron14DUt78XPzmYnDQIQk-9';
+
     /**
      * @var \App\Rest\Resource $rest Rest Object.
      */
@@ -33,6 +36,11 @@ class DocumentsComponentController
     private $jiraService;
 
     /**
+     * @var \App\Fetcher\Integration\GoogleStorageFetcher $googleService
+     */
+    private $googleService;
+
+    /**
      *
      */
     public static function create($container)
@@ -42,7 +50,8 @@ class DocumentsComponentController
             $container->get('config_fetcher'),
             $container->get('user_fetcher'),
             $container->get('config_form_fetcher'),
-            $container->get('jira_service')
+            $container->get('jira_service'),
+            $container->get('google_storage_fetcher')
         );
     }
 
@@ -54,19 +63,22 @@ class DocumentsComponentController
      * @param \App\Fetcher\Integration\UserFetcher $userFetcher User Fetcher Object
      * @param \App\Fetcher\Drupal\ConfigFormFetcher $formFetcher Form Fetcher
      * @param \App\Fetcher\Integration\JIRAFetcher $jiraService
+     * @param \App\Fetcher\Integration\GoogleStorageFetcher $googleService
      */
     public function __construct(
         $rest,
         $configFetcher,
         $userFetcher,
         $formFetcher,
-        $jiraService
+        $jiraService,
+        $googleService
     ) {
         $this->rest = $rest;
         $this->configFetcher = $configFetcher->withProduct('account');
         $this->userFetcher = $userFetcher;
         $this->formFetcher = $formFetcher->withProduct('account');
         $this->jiraService = $jiraService;
+        $this->googleService = $googleService;
     }
 
     /**
@@ -93,7 +105,9 @@ class DocumentsComponentController
 
         // Upload Documents to Google Drive
         try {
-            $uploadReturn = $this->uploadDocs($request->getUploadedFiles());
+            $purpose = $request->getParam('DocumentsForm_purpose');
+            $purpose = $this->documentPurposeMap($purpose);
+            $uploadReturn = $this->uploadDocs($request->getUploadedFiles(), $purpose, $documentsConfig);
         } catch (\Throwable $e) {
             return $this->rest->output(
                 $response,
@@ -104,7 +118,7 @@ class DocumentsComponentController
             );
         }
 
-        // Fetch Player input from form
+        Fetch Player input from form
         try {
             $playerComments = $request->getParam('DocumentsForm_comment') ?? '';
             $purpose = $request->getParam('DocumentsForm_purpose');
@@ -274,17 +288,55 @@ class DocumentsComponentController
      *      ]
      *  ];
      */
-    protected function uploadDocs(array $uploadedFiles) : array
+    protected function uploadDocs(array $uploadedFiles, $purpose, $documentsConfig) : array
     {
-
+        $driveFolderId = $documentsConfig['folder_id'] ?? self::DRIVE_FOLDER_ID;
+        $brand = $documentsConfig['brand'] ?? self::BRAND;
+        $uniqueId = \mt_rand(100000, 999999);
+        $data['UniqueID'] = $uniqueId;
+        $docNum = 1;
         $uploadReturn = [
-            "Success" => true,
-            "UniqueID" => uniqid(),
-            "Documents" => [
-              "Document1" => "https://drive.google.com/file/d/1yNYxeEKrsArcVULCu-d3K-3k2vkEwQlH/view?usp=drivesdk",
-              "Document2" => "https://drive.google.com/file/d/1w5NbqUp-sOIs462X7wbdqXSkBCpOh33c/view?usp=drivesdk"
-            ]
+            'Success' => true,
+            'UniqueID' => $uniqueId,
         ];
+
+        try {
+            $playerDetails = $this->userFetcher->getPlayerDetails();
+            $vip = $this->vipLevelMap($playerDetails['vipLevel']);
+        } catch (\Exception $e) {
+            throw new \Exception('Could not upload documents');
+        }
+
+        try {
+            $fileNameFormat = strtr(
+                "{username}-{brand}-{curency}-{vip}-{purpose}-{uniqueId}",
+                [
+                    '{username}' => $playerDetails['username'],
+                    '{brand}' => 'DF',
+                    '{currency}' => $playerDetails['currency'],
+                    '{vip}' => $vip,
+                    '{purpose}' => $purpose,
+                    '{uniqueId}' => $uniqueId,
+                ]
+            );
+
+            foreach ($uploadedFiles as $document) {
+                if (!empty($document->getClientFilename())) {
+                    $fileNameFormat = strtoupper($fileNameFormat . "-[$docNum]");
+
+                    $uploadReturn["Documents"]["Document$docNum"] = $this->googleService->storeUsingServiceAccount(
+                        $driveFolderId,
+                        $document->getStream()->getMetadata('uri'),
+                        $fileNameFormat,
+                        $document->getClientMediaType()
+                    );
+
+                    $docNum++;
+                }
+            }
+        } catch (\Exception $e) {
+            $uploadReturn['Success'] = false;
+        }
 
         if ($uploadReturn['Success'] !== true) {
             throw new \Exception('Could not upload documents');
