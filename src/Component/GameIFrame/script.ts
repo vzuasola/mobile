@@ -96,7 +96,6 @@ export class GameIFrameComponent implements ComponentInterface {
             // resize iframe
             iframe.setAttribute("width", 360);
             iframe.setAttribute("height", "auto");
-            iframeWrapper.style.height = "calc(100vh - 50px)";
             iframe.setAttribute("src", response.gameurl);
 
         }
