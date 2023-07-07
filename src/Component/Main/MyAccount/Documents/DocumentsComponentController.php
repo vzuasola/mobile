@@ -309,10 +309,10 @@ class DocumentsComponentController
 
         try {
             $fileNameFormat = strtr(
-                "{username}-{brand}-{curency}-{vip}-{purpose}-{uniqueId}",
+                "{username}-{brand}-{currency}-{vip}-{purpose}-{uniqueId}",
                 [
                     '{username}' => $playerDetails['username'],
-                    '{brand}' => 'DF',
+                    '{brand}' => self::BRAND,
                     '{currency}' => $playerDetails['currency'],
                     '{vip}' => $vip,
                     '{purpose}' => $purpose,
@@ -324,12 +324,16 @@ class DocumentsComponentController
                 if (!empty($document->getClientFilename())) {
                     $fileNameFormat = strtoupper($fileNameFormat . "-[$docNum]");
 
-                    $uploadReturn["Documents"]["Document$docNum"] = $this->googleService->storeUsingServiceAccount(
+                    $response = $this->googleService->storeUsingServiceAccount(
                         $driveFolderId,
                         $document->getStream()->getMetadata('uri'),
                         $fileNameFormat,
                         $document->getClientMediaType()
                     );
+
+                    if ($response['status'] === 'success') {
+                        $uploadReturn["Documents"]["Document$docNum"] = $response['data'];
+                    }
 
                     $docNum++;
                 }
