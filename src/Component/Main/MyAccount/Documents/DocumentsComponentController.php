@@ -241,8 +241,8 @@ class DocumentsComponentController
         $purposeMap = [];
         $mapLines = explode(PHP_EOL, $formConfig['fields']['purpose']['field_settings']['choices']);
         foreach ($mapLines as $mapLine) {
-            [$key, $value] = explode("|", $mapLine);
-            $purposeMap[$key] = $value;
+            [$mapLineKey, $mapLineValue] = explode("|", $mapLine);
+            $purposeMap[$mapLineKey] = $mapLineValue;
         };
 
         if (!array_key_exists($key, $purposeMap)) {
