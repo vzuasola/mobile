@@ -302,19 +302,18 @@ class DocumentsComponentController
 
         try {
             $playerDetails = $this->userFetcher->getPlayerDetails();
-            $vip = $this->vipLevelMap($playerDetails['vipLevel']);
         } catch (\Exception $e) {
             throw new \Exception('Could not upload documents');
         }
 
         try {
             $fileNameFormat = strtr(
-                "{username}-{brand}-{currency}-{vip}-{purpose}-{uniqueId}",
+                "{username} - {brand} - {currency} - {vip} - {purpose} - {uniqueId}",
                 [
                     '{username}' => $playerDetails['username'],
                     '{brand}' => self::BRAND,
                     '{currency}' => $playerDetails['currency'],
-                    '{vip}' => $vip,
+                    '{vip}' => $playerDetails['vipLevel'],
                     '{purpose}' => $purpose,
                     '{uniqueId}' => $uniqueId,
                 ]
@@ -322,7 +321,7 @@ class DocumentsComponentController
 
             foreach ($uploadedFiles as $document) {
                 if (!empty($document->getClientFilename())) {
-                    $fileNameFormat = strtoupper($fileNameFormat . "-[$docNum]");
+                    $fileNameFormat = strtoupper($fileNameFormat . " - [$docNum]");
 
                     $response = $this->googleService->storeUsingServiceAccount(
                         $driveFolderId,
