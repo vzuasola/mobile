@@ -23,6 +23,7 @@ export class GameIFrameComponent implements ComponentInterface {
         this.loader.remove();
         this.initMessage();
         this.launchGame();
+        this.listenOnResize();
     }
 
     onReload(element: HTMLElement, attachments: { isLogin: boolean }) {
@@ -31,6 +32,7 @@ export class GameIFrameComponent implements ComponentInterface {
         this.loader.remove();
         this.initMessage();
         this.launchGame();
+        this.listenOnResize();
     }
 
     /**
@@ -94,11 +96,29 @@ export class GameIFrameComponent implements ComponentInterface {
             element.querySelector(".game-iframe-loader-container").remove();
 
             // resize iframe
+            const headerElement = document.querySelector(".header-mobile-entrypage") as HTMLElement;
+            const headerHeight = headerElement.offsetHeight;
+            const documentHeight = document.documentElement.clientHeight - headerHeight;
+            iframeWrapper.style.height = documentHeight + "px";
             iframe.setAttribute("width", 360);
             iframe.setAttribute("height", "auto");
             iframe.setAttribute("src", response.gameurl);
 
         }
+    }
+
+    /**
+     * Event listener on screen resize
+     */
+    private listenOnResize() {
+        window.addEventListener("resize", () => {
+            const iframeWrapper = document.querySelector(".game-iframe-container") as HTMLElement;
+            const headerElement = document.querySelector(".header-mobile-entrypage") as HTMLElement;
+            const headerHeight = headerElement.offsetHeight;
+            const documentHeight = document.documentElement.clientHeight - headerHeight;
+            iframeWrapper.style.height = documentHeight + "px";
+        });
+
     }
 
     /**
