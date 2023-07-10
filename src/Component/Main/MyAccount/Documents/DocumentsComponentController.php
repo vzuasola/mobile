@@ -40,6 +40,12 @@ class DocumentsComponentController
      */
     private $googleService;
 
+    /*
+     * @var \App\Configuration\YamlConfiguration $configManager
+     */
+    private $configManager;
+
+
     /**
      *
      */
@@ -51,7 +57,8 @@ class DocumentsComponentController
             $container->get('user_fetcher'),
             $container->get('config_form_fetcher'),
             $container->get('jira_service'),
-            $container->get('google_storage_fetcher')
+            $container->get('google_storage_fetcher'),
+            $container->get('configuration_manager')
         );
     }
 
@@ -64,6 +71,7 @@ class DocumentsComponentController
      * @param \App\Fetcher\Drupal\ConfigFormFetcher $formFetcher Form Fetcher
      * @param \App\Fetcher\Integration\JIRAFetcher $jiraService
      * @param \App\Fetcher\Integration\GoogleStorageFetcher $googleService
+     * @param \App\Configuration\YamlConfiguration $configManager
      */
     public function __construct(
         $rest,
@@ -71,7 +79,8 @@ class DocumentsComponentController
         $userFetcher,
         $formFetcher,
         $jiraService,
-        $googleService
+        $googleService,
+        $configManager
     ) {
         $this->rest = $rest;
         $this->configFetcher = $configFetcher->withProduct('account');
@@ -79,6 +88,7 @@ class DocumentsComponentController
         $this->formFetcher = $formFetcher->withProduct('account');
         $this->jiraService = $jiraService;
         $this->googleService = $googleService;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -107,7 +117,8 @@ class DocumentsComponentController
         try {
             $purpose = $request->getParam('DocumentsForm_purpose') ?? '';
             $purpose = $this->documentPurposeMap($purpose);
-            $uploadReturn = $this->uploadDocs($request->getUploadedFiles(), $purpose, $documentsConfig);
+            $uploadedFiles = $request->getUploadedFiles();
+            $uploadReturn = $this->uploadDocs($uploadedFiles, $purpose, $documentsConfig);
         } catch (\Throwable $e) {
             return $this->rest->output(
                 $response,
@@ -129,6 +140,38 @@ class DocumentsComponentController
                 [
                     'status' => 'failure',
                     'message' => 'Could not create ticket. User input error',
+                ]
+            );
+        }
+        // Validate Form Input
+        $fields = [
+            'first_upload' => $uploadedFiles['DocumentsForm_first_upload']->file ?? '',
+            'second_upload' => $uploadedFiles['DocumentsForm_second_upload']->file ?? '',
+            'third_upload' => $uploadedFiles['DocumentsForm_third_upload']->file ?? '',
+            'purpose' => $purpose,
+            'comment' => $playerComments,
+        ];
+
+        $validationErrors = [];
+
+        try {
+            $validationErrors = $this->validate($fields);
+        } catch (\Throwable $e) {
+            return $this->rest->output(
+                $response,
+                [
+                    'status' => 'failure',
+                    'message' => 'Could not create ticket. Validation Error',
+                ]
+            );
+        }
+
+        if (count($validationErrors) > 0) {
+            return $this->rest->output(
+                $response,
+                [
+                    'status' => 'failure',
+                    'message' => 'Could not create ticket. Validation Failed',
                 ]
             );
         }
@@ -393,5 +436,77 @@ class DocumentsComponentController
         }
 
         return $errors;
+    }
+
+    /*
+     * Validate Webcomposer Configurable Form data
+     *
+     * @param array $submission An array containing the form values
+     *
+     * @return array Validation Errors
+     */
+    private function validate(array $submission): array
+    {
+        $validators = $this->configManager->getConfiguration('forms')['validations'];
+        $settings = $this->formFetcher->getDataById('documents_form');
+
+        $errors = [];
+        $fields = $settings['fields'];
+
+
+        foreach ($submission as $key => $value) {
+            foreach ($validators as $index => $validator) {
+                if (isset($fields[$key]['field_validations'][$index]['enable']) &&
+                    $fields[$key]['field_validations'][$index]['enable']
+                ) {
+                    $error = $this->doValidate($fields[$key], $key, $value, $index, $validator);
+
+                    if ($error) {
+                        $errors[$key][] = $error;
+                    }
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Validate a specific field
+     *
+     * @param array $field Field Definition
+     * @param string $key Field key
+     * @param string $dat Field value
+     * @param string $method Validator name
+     * @param string $class Validator Class
+     */
+    private function doValidate($field, $key, $data, $method, $class)
+    {
+        $arguments = [];
+
+        if (isset($field['field_validations'][$method]['parameters'])) {
+            $arguments = array_values($field['field_validations'][$method]['parameters']);
+        }
+
+        $options = [$data, $arguments, $field];
+        $result = $this->executeValidator($class, $options);
+
+        if (empty($result)) {
+            $defaultMessage = "The $method validation has failed for field $key";
+            $message = $field['field_validations'][$method]['error_message'] ?? $defaultMessage;
+            return $message;
+        }
+    }
+
+    /**
+     * Executes the validator base on class definition
+     */
+    private function executeValidator($definition, $options)
+    {
+        list($class, $method) = explode(':', $definition);
+
+        $instance = new $class;
+
+        return $instance->$method(...$options);
     }
 }
