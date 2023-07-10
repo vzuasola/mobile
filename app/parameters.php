@@ -22,3 +22,5 @@ $parameters['sunplus.vendor.id'] = 'cl62AmDS5oU';
 $parameters['sunplus.server'] = '%env(SUNPLUS_AUTH_SERVER)%';
 $parameters['env(SUNPLUS_AUTH_SERVER)'] = 'http://tsa.dafabet.com';
 $parameters['sunplus.login.url'] = '/api/Login';
+
+$parameters['google.service.key'] = BASE_ROOT . 'app/credentials/gdrive.json';

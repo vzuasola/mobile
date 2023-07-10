@@ -105,7 +105,7 @@ class DocumentsComponentController
 
         // Upload Documents to Google Drive
         try {
-            $purpose = $request->getParam('DocumentsForm_purpose');
+            $purpose = $request->getParam('DocumentsForm_purpose') ?? '';
             $purpose = $this->documentPurposeMap($purpose);
             $uploadReturn = $this->uploadDocs($request->getUploadedFiles(), $purpose, $documentsConfig);
         } catch (\Throwable $e) {
