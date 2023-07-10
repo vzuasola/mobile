@@ -113,22 +113,6 @@ class DocumentsComponentController
             );
         }
 
-        // Upload Documents to Google Drive
-        try {
-            $purpose = $request->getParam('DocumentsForm_purpose') ?? '';
-            $purpose = $this->documentPurposeMap($purpose);
-            $uploadedFiles = $request->getUploadedFiles();
-            $uploadReturn = $this->uploadDocs($uploadedFiles, $purpose, $documentsConfig);
-        } catch (\Throwable $e) {
-            return $this->rest->output(
-                $response,
-                [
-                    'status' => 'failure',
-                    'message' => 'Could not create ticket. Could not upload documents',
-                ]
-            );
-        }
-
         // Fetch Player input from form
         try {
             $playerComments = $request->getParam('DocumentsForm_comment') ?? '';
@@ -143,6 +127,21 @@ class DocumentsComponentController
                 ]
             );
         }
+
+        // Upload Documents to Google Drive
+        try {
+            $uploadedFiles = $request->getUploadedFiles();
+            $uploadReturn = $this->uploadDocs($uploadedFiles, $purpose, $documentsConfig);
+        } catch (\Throwable $e) {
+            return $this->rest->output(
+                $response,
+                [
+                    'status' => 'failure',
+                    'message' => 'Could not create ticket. Could not upload documents',
+                ]
+            );
+        }
+
         // Validate Form Input
         $fields = [
             'first_upload' => $uploadedFiles['DocumentsForm_first_upload']->file ?? '',
