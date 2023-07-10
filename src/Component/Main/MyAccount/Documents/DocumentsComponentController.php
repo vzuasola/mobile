@@ -302,6 +302,10 @@ class DocumentsComponentController
             throw new \Exception('Could not upload documents');
         }
 
+        if (count($this->validateFiles($uploadedFiles))) {
+            throw new \Exception('Some files have Invalid Type');
+        }
+
         try {
             $fileNameFormat = strtr(
                 "{username} - {brand} - {currency} - {vip} - {purpose} - {uniqueId}",
@@ -342,5 +346,37 @@ class DocumentsComponentController
         }
 
         return $uploadReturn;
+    }
+
+    /**
+     * Validates file type of uploaded files
+     * 
+     * @param array $uploadedFiles The contents of $request->getUploadedFiles()
+     * @return array Array of fields that has error
+     */
+    protected function validateFiles(array $uploadedFiles) {
+        $errors = [];
+        $formConfig = $this->formFetcher->getDataById('documents_form')['fields'];
+        $uploadFields = [
+            'DocumentsForm_first_upload' => 'first_upload',
+            'DocumentsForm_second_upload' => 'second_upload',
+            'DocumentsForm_third_upload' => 'third_upload'
+        ];
+
+        foreach ($uploadedFiles as $key => $document) {
+            if (empty($document->getClientFilename())) {
+                continue;
+            }
+            $field = $uploadFields[$key];
+            $validExt = $formConfig[$field]['field_settings']['data-allowed_file_extensions'];
+            $validExtArr =  array_map('trim', explode(',', $validExt));
+            
+            $fileExt = pathinfo($document->getClientFilename(), PATHINFO_EXTENSION);
+            if (!in_array(strtolower($fileExt), $validExtArr)) {
+                $errors[$key] = "Invalid File Type";
+            }
+        }
+
+        return $errors;
     }
 }
