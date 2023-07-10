@@ -63,7 +63,7 @@ Router.setOption(
         "announcement"],
 );
 
-ComponentManager.init();
+ComponentManager.init(true);
 Router.init();
 
 Modal.listen(".modal-trigger");
