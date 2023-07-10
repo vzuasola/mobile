@@ -49,10 +49,8 @@ const lateComponents = {
     ptplus_lobby: new PTPlusLobbyComponent(),
 };
 
-console.log("BEFORE");
-console.log(componentManager.logComponents("BEFORE"));
+componentManager.logComponents("BEFORE");
 
 componentManager.setAndInitLateComponent(lateComponents);
 
-console.log("AFTER");
-console.log(componentManager.logComponents("AFTER"));
+componentManager.logComponents("AFTER");
