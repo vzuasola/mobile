@@ -350,11 +350,12 @@ class DocumentsComponentController
 
     /**
      * Validates file type of uploaded files
-     * 
+     *
      * @param array $uploadedFiles The contents of $request->getUploadedFiles()
      * @return array Array of fields that has error
      */
-    protected function validateFiles(array $uploadedFiles) {
+    protected function validateFiles(array $uploadedFiles)
+    {
         $errors = [];
         $formConfig = $this->formFetcher->getDataById('documents_form')['fields'];
         $uploadFields = [
@@ -367,11 +368,12 @@ class DocumentsComponentController
             if (empty($document->getClientFilename())) {
                 continue;
             }
+
             $field = $uploadFields[$key];
             $validExt = $formConfig[$field]['field_settings']['data-allowed_file_extensions'];
             $validExtArr =  array_map('trim', explode(',', $validExt));
-            
             $fileExt = pathinfo($document->getClientFilename(), PATHINFO_EXTENSION);
+
             if (!in_array(strtolower($fileExt), $validExtArr)) {
                 $errors[$key] = "Invalid File Type";
             }
