@@ -303,7 +303,7 @@ class DocumentsComponentController
         }
 
         if (count($this->validateFiles($uploadedFiles))) {
-            throw new \Exception('Some files have Invalid Type');
+            throw new \Exception('File Validation Failed');
         }
 
         try {
@@ -369,13 +369,26 @@ class DocumentsComponentController
                 continue;
             }
 
+            // Check supported file type
             $field = $uploadFields[$key];
             $validExt = $formConfig[$field]['field_settings']['data-allowed_file_extensions'];
             $validExtArr =  array_map('trim', explode(',', $validExt));
             $fileExt = pathinfo($document->getClientFilename(), PATHINFO_EXTENSION);
-
+            $fileExt = 'mp2';
             if (!in_array(strtolower($fileExt), $validExtArr)) {
-                $errors[$key] = "Invalid File Type";
+                $errors[$key][] = "Invalid File Type";
+            }
+
+            // Get maximum size
+            $maxSize = $formConfig[$field]['field_settings']['data-maximum-image-size'] ?? '6MB';
+            $max = preg_replace("/[^0-9]/", '', $maxSize);
+
+            // Convert MB to bytes
+            $maxSizeBytes = (int) $max * 1024 * 1024;
+
+            // Check file size
+            if ($document->getSize() > $maxSizeBytes) {
+                $errors[$key][] = "File is greater than maximum size allowed";
             }
         }
 
