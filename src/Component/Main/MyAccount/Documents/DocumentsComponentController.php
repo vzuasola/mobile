@@ -391,7 +391,7 @@ class DocumentsComponentController
     }
 
     /**
-     * Validates file type of uploaded files
+     * Validates file type and max size of uploaded files
      *
      * @param array $uploadedFiles The contents of $request->getUploadedFiles()
      * @return array Array of fields that has error
@@ -416,7 +416,7 @@ class DocumentsComponentController
             $validExt = $formConfig[$field]['field_settings']['data-allowed_file_extensions'];
             $validExtArr =  array_map('trim', explode(',', $validExt));
             $fileExt = pathinfo($document->getClientFilename(), PATHINFO_EXTENSION);
-            $fileExt = 'mp2';
+
             if (!in_array(strtolower($fileExt), $validExtArr)) {
                 $errors[$key][] = "Invalid File Type";
             }
