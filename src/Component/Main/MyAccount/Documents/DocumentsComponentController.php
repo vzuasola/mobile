@@ -280,7 +280,7 @@ class DocumentsComponentController
     {
 
         // Fetch purpose field mapping
-        $formConfig = $this->formFetcher->getDataById('documents_form');
+        $formConfig = $this->formFetcher->setLanguage('en')->getDataById('documents_form');
         $purposeMap = [];
         $mapLines = explode(PHP_EOL, $formConfig['fields']['purpose']['field_settings']['choices']);
         foreach ($mapLines as $mapLine) {
