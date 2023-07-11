@@ -7,6 +7,9 @@ namespace App\MobileEntry\Component\Main\MyAccount\Documents;
  */
 class DocumentsComponentController
 {
+    const BRAND = 'Dafabet';
+    const DRIVE_FOLDER_ID = '1XLeA0iy28Ron14DUt78XPzmYnDQIQk-9';
+
     /**
      * @var \App\Rest\Resource $rest Rest Object.
      */
@@ -33,6 +36,11 @@ class DocumentsComponentController
     private $jiraService;
 
     /**
+     * @var \App\Fetcher\Integration\GoogleStorageFetcher $googleService
+     */
+    private $googleService;
+
+    /*
      * @var \App\Configuration\YamlConfiguration $configManager
      */
     private $configManager;
@@ -49,6 +57,7 @@ class DocumentsComponentController
             $container->get('user_fetcher'),
             $container->get('config_form_fetcher'),
             $container->get('jira_service'),
+            $container->get('google_storage_fetcher'),
             $container->get('configuration_manager')
         );
     }
@@ -61,6 +70,7 @@ class DocumentsComponentController
      * @param \App\Fetcher\Integration\UserFetcher $userFetcher User Fetcher Object
      * @param \App\Fetcher\Drupal\ConfigFormFetcher $formFetcher Form Fetcher
      * @param \App\Fetcher\Integration\JIRAFetcher $jiraService
+     * @param \App\Fetcher\Integration\GoogleStorageFetcher $googleService
      * @param \App\Configuration\YamlConfiguration $configManager
      */
     public function __construct(
@@ -69,6 +79,7 @@ class DocumentsComponentController
         $userFetcher,
         $formFetcher,
         $jiraService,
+        $googleService,
         $configManager
     ) {
         $this->rest = $rest;
@@ -76,6 +87,7 @@ class DocumentsComponentController
         $this->userFetcher = $userFetcher;
         $this->formFetcher = $formFetcher->withProduct('account');
         $this->jiraService = $jiraService;
+        $this->googleService = $googleService;
         $this->configManager = $configManager;
     }
 
@@ -101,20 +113,6 @@ class DocumentsComponentController
             );
         }
 
-        // Upload Documents to Google Drive
-        try {
-            $uploadedFiles = $request->getUploadedFiles();
-            $uploadReturn = $this->uploadDocs($uploadedFiles);
-        } catch (\Throwable $e) {
-            return $this->rest->output(
-                $response,
-                [
-                    'status' => 'failure',
-                    'message' => 'Could not create ticket. Could not upload documents',
-                ]
-            );
-        }
-
         // Fetch Player input from form
         try {
             $playerComments = $request->getParam('DocumentsForm_comment') ?? '';
@@ -129,6 +127,21 @@ class DocumentsComponentController
                 ]
             );
         }
+
+        // Upload Documents to Google Drive
+        try {
+            $uploadedFiles = $request->getUploadedFiles();
+            $uploadReturn = $this->uploadDocs($uploadedFiles, $purpose, $documentsConfig);
+        } catch (\Throwable $e) {
+            return $this->rest->output(
+                $response,
+                [
+                    'status' => 'failure',
+                    'message' => 'Could not create ticket. Could not upload documents',
+                ]
+            );
+        }
+
         // Validate Form Input
         $fields = [
             'first_upload' => $uploadedFiles['DocumentsForm_first_upload']->file ?? '',
@@ -238,7 +251,7 @@ class DocumentsComponentController
 
         return $this->rest->output($response, [
             'status' => 'success',
-            'message' => 'Ticket Created'
+            'message' => 'Ticket Created',
         ]);
     }
 
@@ -313,17 +326,62 @@ class DocumentsComponentController
      *      ]
      *  ];
      */
-    protected function uploadDocs(array $uploadedFiles) : array
+    protected function uploadDocs(array $uploadedFiles, $purpose, $documentsConfig) : array
     {
-
+        $driveFolderId = $documentsConfig['folder_id'] ?? self::DRIVE_FOLDER_ID;
+        $brand = $documentsConfig['brand'] ?? self::BRAND;
+        $uniqueId = \mt_rand(100000, 999999);
+        $data['UniqueID'] = $uniqueId;
+        $docNum = 1;
         $uploadReturn = [
-            "Success" => true,
-            "UniqueID" => uniqid(),
-            "Documents" => [
-              "Document1" => "https://drive.google.com/file/d/1yNYxeEKrsArcVULCu-d3K-3k2vkEwQlH/view?usp=drivesdk",
-              "Document2" => "https://drive.google.com/file/d/1w5NbqUp-sOIs462X7wbdqXSkBCpOh33c/view?usp=drivesdk"
-            ]
+            'Success' => true,
+            'UniqueID' => $uniqueId,
         ];
+
+        try {
+            $playerDetails = $this->userFetcher->getPlayerDetails();
+        } catch (\Exception $e) {
+            throw new \Exception('Could not upload documents');
+        }
+
+        if (count($this->validateFiles($uploadedFiles))) {
+            throw new \Exception('File Validation Failed');
+        }
+
+        try {
+            $fileNameFormat = strtr(
+                "{username} - {brand} - {currency} - {vip} - {purpose} - {uniqueId}",
+                [
+                    '{username}' => $playerDetails['username'],
+                    '{brand}' => $brand,
+                    '{currency}' => $playerDetails['currency'],
+                    '{vip}' => $playerDetails['vipLevel'],
+                    '{purpose}' => $purpose,
+                    '{uniqueId}' => $uniqueId,
+                ]
+            );
+
+            foreach ($uploadedFiles as $document) {
+                if (!empty($document->getClientFilename())) {
+                    $fileNameFormat = strtoupper($fileNameFormat . " - [$docNum]");
+
+                    $response = $this->googleService->storeUsingServiceAccount(
+                        $driveFolderId,
+                        $document->getStream()->getMetadata('uri'),
+                        $fileNameFormat,
+                        $document->getClientMediaType()
+                    );
+
+                    if ($response['status'] === 'success') {
+                        $uploadReturn["Documents"]["Document$docNum"] = $response['data'];
+                    }
+
+                    $docNum++;
+                }
+            }
+        } catch (\Exception $e) {
+            $uploadReturn['Success'] = false;
+        }
 
         if ($uploadReturn['Success'] !== true) {
             throw new \Exception('Could not upload documents');
@@ -333,6 +391,53 @@ class DocumentsComponentController
     }
 
     /**
+     * Validates file type and max size of uploaded files
+     *
+     * @param array $uploadedFiles The contents of $request->getUploadedFiles()
+     * @return array Array of fields that has error
+     */
+    protected function validateFiles(array $uploadedFiles)
+    {
+        $errors = [];
+        $formConfig = $this->formFetcher->getDataById('documents_form')['fields'];
+        $uploadFields = [
+            'DocumentsForm_first_upload' => 'first_upload',
+            'DocumentsForm_second_upload' => 'second_upload',
+            'DocumentsForm_third_upload' => 'third_upload'
+        ];
+
+        foreach ($uploadedFiles as $key => $document) {
+            if (empty($document->getClientFilename())) {
+                continue;
+            }
+
+            // Check supported file type
+            $field = $uploadFields[$key];
+            $validExt = $formConfig[$field]['field_settings']['data-allowed_file_extensions'];
+            $validExtArr =  array_map('trim', explode(',', $validExt));
+            $fileExt = pathinfo($document->getClientFilename(), PATHINFO_EXTENSION);
+
+            if (!in_array(strtolower($fileExt), $validExtArr)) {
+                $errors[$key][] = "Invalid File Type";
+            }
+
+            // Get maximum size
+            $maxSize = $formConfig[$field]['field_settings']['data-maximum-image-size'] ?? '6MB';
+            $max = preg_replace("/[^0-9]/", '', $maxSize);
+
+            // Convert MB to bytes
+            $maxSizeBytes = (int) $max * 1024 * 1024;
+
+            // Check file size
+            if ($document->getSize() > $maxSizeBytes) {
+                $errors[$key][] = "File is greater than maximum size allowed";
+            }
+        }
+
+        return $errors;
+    }
+
+    /*
      * Validate Webcomposer Configurable Form data
      *
      * @param array $submission An array containing the form values
