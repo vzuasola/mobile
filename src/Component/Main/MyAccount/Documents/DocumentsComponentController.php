@@ -363,12 +363,12 @@ class DocumentsComponentController
 
             foreach ($uploadedFiles as $document) {
                 if (!empty($document->getClientFilename())) {
-                    $fileNameFormat = strtoupper($fileNameFormat . " - [$docNum]");
+                    $currentFileName = strtoupper($fileNameFormat . " - [$docNum]");
 
                     $response = $this->googleService->storeUsingServiceAccount(
                         $driveFolderId,
                         $document->getStream()->getMetadata('uri'),
-                        $fileNameFormat,
+                        $currentFileName,
                         $document->getClientMediaType()
                     );
 
