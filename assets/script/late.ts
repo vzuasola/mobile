@@ -19,6 +19,7 @@ import {MyAccountProfileVerifyPasswordComponent} from "@app/src/Component/Main/M
 import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccount/ChangePassword/script";
 import {VirtualsLobbyComponent} from "@app/src/Component/Main/Lobby/VirtualsLobby/script";
 import {PTPlusLobbyComponent} from "@app/src/Component/Main/Lobby/PTPlusLobby/script";
+import {LanguageComponent} from "@app/src/Component/Language/script";
 
 console.log("Late script is loaded!");
 // @ts-ignore
@@ -47,10 +48,12 @@ const lateComponents = {
     profile_verify_password: new MyAccountProfileVerifyPasswordComponent(),
     change_password: new MyAccountChangePasswordComponent(),
     ptplus_lobby: new PTPlusLobbyComponent(),
+    language: new LanguageComponent(),
 };
 
 componentManager.logComponents("BEFORE");
 
+componentManager.setLateScriptStatus("loaded");
 componentManager.setAndInitLateComponent(lateComponents);
 
 componentManager.logComponents("AFTER");

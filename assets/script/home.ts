@@ -22,6 +22,7 @@ import "./notify";
 
 // @ts-ignore
 window.myComponentManager = ComponentManager;
+ComponentManager.setLateScriptStatus("pending");
 
 // whenever the bootstrap AJAX receives a redirect, follow it
 ComponentManager.setOption("module-response-handle-redirect", (request: XMLHttpRequest) => {
@@ -63,7 +64,7 @@ Router.setOption(
         "announcement"],
 );
 
-ComponentManager.init(true);
+ComponentManager.init();
 Router.init();
 
 Modal.listen(".modal-trigger");
