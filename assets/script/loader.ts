@@ -10,7 +10,7 @@ if (Router.route() !== "/game/loader") {
     loader.show();
 }
 
-ComponentManager.subscribe("components.finish", () => {
+ComponentManager.subscribe("components.early.finish", () => {
     loader.hide();
 });
 
