@@ -68,6 +68,7 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
         } catch (\Exception $e) {
             $pageContents = [];
         }
+
         foreach ($pageContents as $value) {
             $key =  $value['field_page_content_key'][0]['value'];
 
@@ -79,6 +80,8 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
                 $recommendedAvailable = $value['name'][0]['value'];
             } elseif ('msg_no_recommended' === $key) {
                 $noRecommended = $value['name'][0]['value'];
+            } elseif ('launch_via_iframe' === $key) {
+                $launchViaIFrame = $value['name'][0]['value'] === "1" ? true : false;
             }
         }
 
@@ -111,6 +114,7 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
             'configs' => $ptplusGeneralConfig ?? [],
             'pageData' => $pageContents ?? [],
             'tournamentSettings' => $tournament ?? [],
+            'launch_via_iframe' => $launchViaIFrame ?? false
         ];
     }
 }

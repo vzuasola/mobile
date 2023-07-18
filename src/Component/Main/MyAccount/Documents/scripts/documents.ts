@@ -5,6 +5,8 @@ import * as iconOk from "@app/templates/handlebars/icon-ok.handlebars";
 import validators from "@app/assets/script/components/validation/rules";
 import * as loader from "../handlebars/loader.handlebars";
 import CustomSelect from "@core/assets/js/components/custom-select";
+import {Router} from "@plugins/ComponentWidget/asset/router";
+import * as xhr from "@core/assets/js/vendor/reqwest";
 
 type TGenericEvent<T> = Event & { target: T };
 
@@ -81,17 +83,17 @@ export class Documents extends FormBase {
 
         // Add blurb next to comment title
         const commentMarkup = this.form.querySelector(".DocumentsForm_comment_markup");
-        commentMarkup.innerHTML = "<span>" + commentMarkup.innerHTML + "<span>";
+        commentMarkup.innerHTML = "<span class='comment_field_title'>" + commentMarkup.innerHTML + "</span>";
 
         const blurbDiv = document.createElement("div");
         blurbDiv.classList.add("comment_blurb");
         blurbDiv.innerText = "(" + this.commentField.dataset.blurb + ")";
         commentMarkup.appendChild(blurbDiv);
 
-            // Add success/error icon to comment markup
+        // Add success/error icon to comment markup
         const commentMarkupErrorDiv = document.createElement("div");
         commentMarkupErrorDiv.classList.add("field_status_icon");
-        commentMarkup.prepend(commentMarkupErrorDiv);
+        commentMarkup.append(commentMarkupErrorDiv);
 
         // Configure Purpose field logic
         // Change Comment Field P/holder depending on selection
@@ -102,7 +104,12 @@ export class Documents extends FormBase {
                 this.commentFieldPlaceholderCallback(e.target);
                 this.purposeFieldRequiredCallback(e.target);
                 this.commentFieldRequiredCallback(this.commentField);
-                this.handleCommentFieldIcon();
+                if (e.target.value !== "") {
+                    this.form.querySelector(".select-selected").classList.add("text-bold");
+                } else {
+                    this.form.querySelector(".select-selected").classList.remove("text-bold");
+                }
+                // this.handleCommentFieldIcon();
             },
         );
 
@@ -120,6 +127,7 @@ export class Documents extends FormBase {
         this.form.addEventListener(
             "submit",
             (e: TGenericEvent<HTMLFormElement>) => {
+                e.preventDefault();
                 const prevContent = this.form.querySelector("#DocumentsForm_submit").innerHTML;
                 this.form.querySelector("#DocumentsForm_submit").innerHTML = loaderTemplate;
 
@@ -130,7 +138,6 @@ export class Documents extends FormBase {
                 this.uploadFieldRequired(this.form.querySelector("#DocumentsForm_first_upload"));
 
                 if (Object.keys(this.validatorErrors).length > 0) {
-                    e.preventDefault();
                     // Replace below lines with logic handling error display
                     setTimeout(() => {
                        this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
@@ -139,13 +146,52 @@ export class Documents extends FormBase {
                     return;
                 }
 
-                // Replace below lines with actual submission logic
-                e.preventDefault();
-                setTimeout(() => {
-                    this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
-                    console.log("success");
-                }, 5000);
+                const formData = new FormData();
+                formData.append(
+                    "DocumentsForm_first_upload",
+                    (document.querySelector("#DocumentsForm_first_upload") as HTMLInputElement).files[0],
+                );
+                formData.append(
+                    "DocumentsForm_second_upload",
+                    (document.querySelector("#DocumentsForm_second_upload") as HTMLInputElement).files[0],
+                );
+                formData.append(
+                    "DocumentsForm_third_upload",
+                    (document.querySelector("#DocumentsForm_third_upload") as HTMLInputElement).files[0],
+                );
+                formData.append(
+                    "DocumentsForm_purpose",
+                    (document.querySelector("#DocumentsForm_purpose") as HTMLInputElement).value,
+                );
+                formData.append(
+                    "DocumentsForm_comment",
+                    (document.querySelector("#DocumentsForm_comment") as HTMLInputElement).value,
+                );
 
+                xhr({
+                    url: Router.generateRoute("documents", "documentUpload"),
+                    type: "json",
+                    method: "post",
+                    crossOrigin: true,
+                    processData: false,
+                    data: formData,
+                })
+                .then((resp) => {
+                    /* Replace below line with success logic
+                     * Response body will be of the form
+                     * { 'status': 'success|failure', 'message': 'Some status message'}
+                     */
+                    console.log("success");
+                    console.log(resp);
+                })
+                .fail((err, msg) => {
+                    // Replace below line with failure logic
+                    console.log("failure");
+                    console.log(err, msg);
+                }).
+                always((err, msg) => {
+                    this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
+                });
             },
         );
 
@@ -153,7 +199,7 @@ export class Documents extends FormBase {
 
     // Check if user selected "Change Information" and add the place holder and required * in the comment field
     private commentFieldPlaceholderCallback(el: HTMLSelectElement) {
-        const commentFieldMarkup = this.form.querySelector(".DocumentsForm_comment_markup");
+        const commentFieldMarkup = this.form.querySelector(".DocumentsForm_comment_markup > .comment_field_title");
         if (el.value === "change") {
             this.commentField.placeholder = this.commentField.dataset.placeholder;
             commentFieldMarkup.classList.add("field_required");
@@ -194,7 +240,7 @@ export class Documents extends FormBase {
     private commentCharCountCallback(el: HTMLTextAreaElement) {
         const limit = el.dataset.character_count_limit;
         const charactersLeft = el.dataset.character_count_text;
-        const currCount = el.value.length;
+        const currCount = +limit - el.value.length;
         this.form.querySelector(".comment_charcount").innerHTML = charactersLeft + " " + currCount + "/" + limit;
     }
 
