@@ -248,7 +248,9 @@ export class Documents extends FormBase {
         // Change icon
         const keyErrors = this.validatorErrors.DocumentsForm_comment;
         const iconDiv = this.form.querySelector(".DocumentsForm_comment_markup .field_status_icon");
-        if (keyErrors && Object.keys(keyErrors).length !== 0) {
+        // The icon for the comment field should only
+        // be shown if the regex validation (Only specific chars allowed) fails
+        if (keyErrors && keyErrors.regex) {
             iconDiv.innerHTML = iconAtt();
             return;
         }
