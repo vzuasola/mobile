@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28ed0abcf6027cab5bb73044a299eafc",
+    "content-hash": "1fcae51aaf5753d16043b393321ebc08",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -253,7 +253,7 @@
                 "shasum": ""
             },
             "require": {
-                "psr/container": "^1.0"
+                "psr/container": "1.0"
             },
             "type": "library",
             "autoload": {
@@ -1579,6 +1579,20 @@
                 "twofish",
                 "x.509",
                 "x509"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/terrafrost",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/phpseclib",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
+                    "type": "tidelift"
+                }
             ],
             "time": "2023-07-09T15:24:48+00:00"
         },
@@ -3460,11 +3474,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.242.0",
+            "version": "dev-release-v1.243.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "a72624875a46acfadcfcd7cbacc3fe614e8f0c37"
+                "reference": "69e274e75d47529496c93428f7d399a973fe1b9d"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3516,7 +3530,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2023-07-11T06:57:40+00:00"
+            "time": "2023-07-19T07:51:36+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -5150,5 +5164,6 @@
     "platform": {
         "php": ">=7.1.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
