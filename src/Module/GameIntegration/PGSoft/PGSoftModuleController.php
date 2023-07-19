@@ -80,7 +80,7 @@ class PGSoftModuleController
         }
 
         // override gameURL
-        if(isset($data['gameurl']) && $data['gameurl']) {
+        if (isset($data['gameurl']) && $data['gameurl']) {
             $data['gameurl'] = $this->overrideGameUrl($request, $data["gameurl"]);
         }
 
