@@ -5,7 +5,7 @@
     "require": {
         "php": ">=7.1.0",
         "oomphinc/composer-installers-extender": "^1.1",
-        "webcomposer/fe-core": "dev-WEBSITE-2900-feature",
+        "webcomposer/fe-core": "dev-release-v1.242.0",
         "nikolaposa/rate-limit": "^2.2"
     },
     "autoload": {

@@ -20,6 +20,7 @@ import {GamesFilter} from "@app/assets/script/components/games-filter";
 
 import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
 import PopupWindow from "@app/assets/script/components/popup";
+import {GameLauncherManager} from "@app/assets/script/components/game-launcher-manager";
 
 /**
  * PTPlusLobbyComponent Class
@@ -45,12 +46,15 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private productMenu: string = "product-ptplus";
     private tournamentBanners: TournamentBanners;
     private tournamentSettings;
+    private launchViaIframe: boolean;
+    private gameLauncherManager: GameLauncherManager;
 
     constructor() {
         this.gameLauncher = GameLauncher;
         this.gamesSearch = new GamesSearch();
         /*this.gamesFilter = new GamesFilter();*/
         this.gamesCollectionSort = new GamesCollectionSorting();
+        this.gameLauncherManager = new GameLauncherManager();
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -71,6 +75,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             button_join: string,
             blurb_animation: string,
         },
+        launch_via_iframe: boolean,
     }) {
         this.groupedGames = undefined;
         this.response = null;
@@ -82,6 +87,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.load = true;
         this.tournamentSettings = attachments.tournamentSettings;
+        this.launchViaIframe = attachments.launch_via_iframe;
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
@@ -98,6 +104,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenHashChange();
         this.setPlaceholder();
         this.gamesSearch.handleOnLoad(this.element, attachments);
+        this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
         /*this.gamesFilter.handleOnLoad(this.element, attachments);*/
     }
 
@@ -119,11 +126,13 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             button_join: string,
             blurb_animation: string,
         },
+        launch_via_iframe: boolean,
     }) {
         if (!this.element) {
             this.listenClickGameTile();
             this.listenGameLaunch();
             this.listenToLaunchGameLoader();
+            this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
             this.listenFavoriteClick();
             this.listenClickTab();
             this.listenHashChange();
@@ -138,6 +147,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pager = 0;
         this.load = true;
         this.tournamentSettings = attachments.tournamentSettings;
+        this.launchViaIframe = attachments.launch_via_iframe;
         this.generateLobby(() => {
             this.lobby();
         });
@@ -540,6 +550,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             gameCatCount: pageContent[`gameCount`],
             pageTemplate: pageContent[`templateType`],
             backUrl: pageContent[`backUrl`],
+            launchViaIframe: this.launchViaIframe,
         });
 
         if (this.currentPage > page) {
@@ -556,6 +567,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     gameCatCount: pageContent[`gameCount`],
                     pageTemplate: pageContent[`templateType`],
                     backUrl: pageContent[`backUrl`],
+                    launchViaIframe: this.launchViaIframe,
                 });
             }
         }
@@ -843,6 +855,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             favorites: this.response.favorite_list,
             categoryName: categoryTitle,
             isLogin: this.isLogin,
+            launchViaIframe: this.launchViaIframe,
         });
 
         if (rectGameEl) {
@@ -926,6 +939,7 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             gameCatCount: "",
             pageTemplate: "home-page-content",
             backUrl: "",
+            launchViaIframe: this.launchViaIframe,
         });
 
         if (categoriesEl) {

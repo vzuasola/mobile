@@ -21,6 +21,15 @@
     .select-items div:active {
         background-color: rgba(0, 0, 0, 0.1);
     }
+
+    .select-selected{
+        font-weight: normal;
+
+        &.text-bold{
+            font-weight: bold;
+        }
+    }
+
     > .DocumentsForm{
         
         &_comment .comment_charcount {
@@ -113,7 +122,7 @@
             align-items: center;
 
             > span,
-            > .field_status_icon > svg {
+            > .comment_blurb{
                 margin-right: 5px;
             }
 
