@@ -142,6 +142,9 @@ trait ProviderTrait
         return $data;
     }
 
+    /**
+     * To be overriden by controllers that has Properties parameter.
+     */
     public function getPlayerGameExtraParams()
     {
         return [];
