@@ -51,7 +51,16 @@ class DocumentsComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $formDocuments = $this->formManager->getForm(DocumentsForm::class);
+        $documentConfig = $this->configFetcher->getConfig('my_account_config.documents_configuration');
+        $formDocuments = $this->formManager->getForm(
+            DocumentsForm::class,
+            [
+                'custom_attributes' => [
+                    'submit_success' => $documentConfig['submit_success'],
+                    'submit_error' => $documentConfig['submit_error'],
+                ]
+            ]
+        );
 
         return [
             'formDocuments' => $formDocuments->createView(),

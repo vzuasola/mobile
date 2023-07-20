@@ -7,6 +7,7 @@ import * as loader from "../handlebars/loader.handlebars";
 import CustomSelect from "@core/assets/js/components/custom-select";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 import * as xhr from "@core/assets/js/vendor/reqwest";
+import Storage from "@core/assets/js/components/utils/storage";
 
 type TGenericEvent<T> = Event & { target: T };
 
@@ -42,6 +43,7 @@ export class Documents extends FormBase {
     private purposeField: HTMLSelectElement;
     private commentField: HTMLTextAreaElement;
     private validators;
+    private storage: Storage;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
@@ -53,6 +55,8 @@ export class Documents extends FormBase {
         this.purposeField = this.form.querySelector("#DocumentsForm_purpose");
         this.commentField = this.form.querySelector("#DocumentsForm_comment");
         this.validators = validators;
+        this.storage = new Storage();
+
         // Initialise custom select UI
         CustomSelect();
 
@@ -128,6 +132,10 @@ export class Documents extends FormBase {
             "submit",
             (e: TGenericEvent<HTMLFormElement>) => {
                 e.preventDefault();
+                // Cleanup Previous error message
+                this.resetValidatorErrorMessage();
+
+                // Show loader icon in submit button
                 const prevContent = this.form.querySelector("#DocumentsForm_submit").innerHTML;
                 this.form.querySelector("#DocumentsForm_submit").innerHTML = loaderTemplate;
 
@@ -138,11 +146,11 @@ export class Documents extends FormBase {
                 this.uploadFieldRequired(this.form.querySelector("#DocumentsForm_first_upload"));
 
                 if (Object.keys(this.validatorErrors).length > 0) {
-                    // Replace below lines with logic handling error display
-                    setTimeout(() => {
-                       this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
-                       console.log(this.validatorErrors);
-                    }, 5000);
+
+                    this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
+
+                    this.showValidationErrorMessage();
+
                     return;
                 }
 
@@ -181,13 +189,17 @@ export class Documents extends FormBase {
                      * Response body will be of the form
                      * { 'status': 'success|failure', 'message': 'Some status message'}
                      */
-                    console.log("success");
-                    console.log(resp);
+                    if (resp.status === "failure") {
+                        this.showValidationErrorMessage();
+                        return;
+                    }
+
+                    this.storage.set("DocUploadSuccessMessage", this.form.dataset.submit_success);
+                    Router.navigate("", ["*"]);
                 })
                 .fail((err, msg) => {
                     // Replace below line with failure logic
-                    console.log("failure");
-                    console.log(err, msg);
+                    this.showValidationErrorMessage();
                 }).
                 always((err, msg) => {
                     this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
@@ -195,6 +207,27 @@ export class Documents extends FormBase {
             },
         );
 
+    }
+
+    private resetValidatorErrorMessage() {
+        const prevErrorMsgElement = this.form.querySelector(".DocumentsForm_comment_error");
+        if (prevErrorMsgElement) {
+            prevErrorMsgElement.remove();
+        }
+    }
+
+    private showValidationErrorMessage() {
+
+        const commentErrormsg = document.createElement("div");
+        commentErrormsg.classList.add("DocumentsForm_comment_error");
+
+        const commentErrorMsgContent = document.createElement("span");
+        commentErrorMsgContent.classList.add("DocumentsForm_comment_error_text");
+        commentErrorMsgContent.innerHTML = this.form.dataset.submit_error;
+
+        commentErrormsg.appendChild(commentErrorMsgContent);
+
+        this.form.querySelector(".DocumentsForm_comment").after(commentErrormsg);
     }
 
     // Check if user selected "Change Information" and add the place holder and required * in the comment field

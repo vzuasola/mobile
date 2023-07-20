@@ -8,6 +8,7 @@ import {Loader} from "@app/assets/script/components/loader";
 import {ComponentManager} from "@core/src/Plugins/ComponentWidget/asset/component";
 import Tooltip from "@app/assets/script/components/tooltip";
 import {DatePicker} from "./date-picker";
+import Storage from "@core/assets/js/components/utils/storage";
 
 /**
  * Profile
@@ -24,11 +25,13 @@ export class Profile extends FormBase {
     private loader: Loader;
     private mobiles: any;
     private datepicker: DatePicker;
+    private storage: Storage;
 
     constructor(element: HTMLElement, attachments: {}) {
         super(element, attachments);
         this.loader = new Loader(document.body, true);
         this.datepicker = new DatePicker(element, attachments);
+        this.storage = new Storage();
     }
 
     init() {
@@ -42,6 +45,17 @@ export class Profile extends FormBase {
             this.attachments.messageTimeout,
         );
         this.contactPreference();
+
+        const docUploadSuccMessage = this.storage.get("DocUploadSuccessMessage");
+        if (docUploadSuccMessage) {
+            new Notification(
+                document.body,
+                "notification-success",
+                true,
+                this.attachments.messageTimeout,
+            ).show(docUploadSuccMessage);
+            this.storage.remove("DocUploadSuccessMessage");
+        }
 
         const mobileField1: HTMLFormElement = this.form.querySelector("#MyProfileForm_mobile_number_1");
         const mobileField2: HTMLFormElement = this.form.querySelector("#MyProfileForm_mobile_number_2");
