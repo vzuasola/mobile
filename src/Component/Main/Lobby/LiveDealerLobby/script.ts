@@ -1,15 +1,15 @@
 declare var navigator: any;
 
-import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router, RouterClass} from "@core/src/Plugins/ComponentWidget/asset/router";
-import {QuickLauncher} from "./scripts/quick-launcher";
-import {LazyLoader} from "./scripts/lazy-loader";
-import PopupWindow from "@app/assets/script/components/popup";
+import { ComponentManager, ComponentInterface } from "@plugins/ComponentWidget/asset/component";
+import { Router, RouterClass } from "@core/src/Plugins/ComponentWidget/asset/router";
+import { QuickLauncher } from "./scripts/quick-launcher";
+import { LazyLoader } from "./scripts/lazy-loader";
 import * as Handlebars from "handlebars/runtime";
 import * as tabTemplate from "./handlebars/lobby-tabs.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import { resetForm } from "@app/assets/script/components/form-base";
+import { GameLauncherManager } from "@app/assets/script/components/game-launcher-manager";
 
 /**
  *
@@ -31,17 +31,21 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private lazyLoader: LazyLoader;
     private currentPage: number;
     private pager: number;
+    private launchViaIframe: boolean;
+    private gameLauncherManager: GameLauncherManager;
 
     constructor() {
         this.lazyLoader = new LazyLoader();
+        this.gameLauncherManager = new GameLauncherManager();
     }
 
     onLoad(element: HTMLElement, attachments: {
-            authenticated: boolean,
-            product: any[],
-            tabs: any[],
-            configs: any[],
-        }) {
+        authenticated: boolean,
+        product: any[],
+        tabs: any[],
+        configs: any[],
+        launch_via_iframe: boolean,
+    }) {
         this.groupedGames = undefined;
         this.attachments = attachments;
         this.element = element;
@@ -49,6 +53,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.tabs = attachments.tabs;
         this.configs = attachments.configs;
+        this.launchViaIframe = attachments.launch_via_iframe;
         this.liveDealerXhrRequest("maintenance", (response) => {
             this.providers = response.game_providers;
             ComponentManager.broadcast("provider.maintenance", {
@@ -64,23 +69,24 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.listenClickTab();
         this.listenClickGameTile();
         this.listenClickLauncherTab();
-        this.listenToLaunchGameLoader();
+        this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
         this.listenToScroll();
     }
 
     onReload(element: HTMLElement, attachments: {
-            authenticated: boolean,
-            product: any[],
-            tabs: any[],
-            configs: any[],
-        }) {
+        authenticated: boolean,
+        product: any[],
+        tabs: any[],
+        configs: any[],
+        launch_via_iframe: boolean,
+    }) {
         if (!this.element) {
             this.listenHashChange();
             this.listenToScroll();
             this.listenClickTab();
             this.listenClickGameTile();
             this.listenClickLauncherTab();
-            this.listenToLaunchGameLoader();
+            this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
         }
         this.groupedGames = undefined;
         this.attachments = attachments;
@@ -89,6 +95,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.tabs = attachments.tabs;
         this.configs = attachments.configs;
+        this.launchViaIframe = attachments.launch_via_iframe;
         this.liveDealerXhrRequest("maintenance", (response) => {
             this.providers = response.game_providers;
             ComponentManager.broadcast("provider.maintenance", {
@@ -260,6 +267,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             this.element.querySelector("#game-container"),
             activeTab,
             enableLazyLoad,
+            this.launchViaIframe,
         );
     }
 
@@ -396,56 +404,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         if (this.getActiveTab() === "providers") {
             utility.addClass(document.querySelectorAll(".providers-tab")[0], "active");
         }
-    }
-
-    /**
-     * Event listener for launching pop up loader
-     */
-    private listenToLaunchGameLoader() {
-        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === "mobile-live-dealer") {
-                // Pop up loader with all data
-                const prop = {
-                    width: 360,
-                    height: 720,
-                    scrollbars: 1,
-                    scrollable: 1,
-                    resizable: 1,
-                };
-
-                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-                const source = utility.getParameterByName("source");
-
-                for (const key in data.options) {
-                    if (data.options.hasOwnProperty(key)) {
-                        const param = data.options[key];
-                        url = utility.addQueryParam(url, key, param);
-                    }
-                }
-
-                url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
-                url = utility.addQueryParam(url, "loaderFlag", "true");
-                if (data.options.target === "popup" || data.options.target === "_blank") {
-                    this.windowCounter++;
-                    this.windowObject = window.open(url, "gameWindow" + this.windowCounter, "width=360,height=720");
-                    return;
-                }
-
-                // Nothing happens if window is blocked and is popup
-                if (data.options.target === "popup" || data.options.target === "_blank") {
-                    return;
-                }
-
-                // handle redirects if we are on a PWA standalone
-                if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                    source === "pwa" || data.options.target === "_self" &&
-                    (data.options.target !== "popup" || data.options.target !== "_blank")
-                ) {
-                    window.location.href = url;
-                    return;
-                }
-            }
-        });
     }
 
     /**
