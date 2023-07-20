@@ -155,6 +155,10 @@ $form-border-color: #515151;
             line-height: 3.2rem;
         }
 
+        .verify-mobile.hidden {
+            display: none;
+        }
+
         .icon-verified-mobile {
             display: block;
             min-width: 6.3rem;
