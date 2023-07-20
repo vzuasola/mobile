@@ -58,6 +58,11 @@ export class GPIModule implements ModuleInterface, GameInterface {
                     playMode: true,
                 },
             }).then((response) => {
+                if (typeof options.onSuccess === "function") {
+                    options.onSuccess.apply(null, [response, options.element]);
+                    return;
+                }
+
                 if (response.gameurl) {
                     if (options.loader === "true") {
                         window.location.href = response.gameurl;
@@ -76,6 +81,10 @@ export class GPIModule implements ModuleInterface, GameInterface {
                 }
             }).fail((error, message) => {
                 // Do nothing
+                if (typeof options.onFail === "function") {
+                    options.onFail.apply(null, [options.element]);
+                    return;
+                }
             });
         }
     }

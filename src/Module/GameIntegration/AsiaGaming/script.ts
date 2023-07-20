@@ -62,6 +62,11 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
+                    if (typeof options.onSuccess === "function") {
+                        options.onSuccess.apply(null, [response, options.element]);
+                        return;
+                    }
+
                     if (response.customLobby) {
                         response.gameurl = response.gameurl
                             .replace(/(lobbyUrl=).*?(&)/,
@@ -90,6 +95,10 @@ export class AsiaGamingModule implements ModuleInterface, GameInterface {
                 }
             }).fail((error, message) => {
                 // Do nothing
+                if (typeof options.onFail === "function") {
+                    options.onFail.apply(null, [options.element]);
+                    return;
+                }
             });
         }
     }
