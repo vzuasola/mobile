@@ -11,6 +11,7 @@ export class LazyLoader {
     private lazyLoad: boolean;
     private authenticated: boolean;
     private activeTab: string;
+    private launchViaIframe: boolean;
 
     /**
      * Initialize lazy loader.
@@ -19,8 +20,9 @@ export class LazyLoader {
      * @param gameContainer HTMLElement
      * @param activeTab String
      * @param lazyLoad Boolean
+     * @param launchViaIframe Boolean
      */
-    init(data, authenticated, configs, gameContainer, activeTab, lazyLoad) {
+    init(data, authenticated, configs, gameContainer, activeTab, lazyLoad, launchViaIframe) {
         this.loaded = true;
         this.currentBatch = 0;
         this.data = data;
@@ -28,12 +30,14 @@ export class LazyLoader {
         this.authenticated = authenticated;
         this.activeTab = activeTab;
         this.configs = configs;
+        this.launchViaIframe = launchViaIframe;
         const batch = this.getBatch();
         const template = gameTemplate({
             games: batch[this.startBatch],
             isLogin: this.authenticated,
             configs: this.configs,
             activeTabClass: activeTab,
+            launchViaIframe: this.launchViaIframe,
         });
 
         if (gameContainer) {
@@ -63,6 +67,7 @@ export class LazyLoader {
                     isLogin: this.authenticated,
                     configs: this.configs,
                     activeTabClass: this.activeTab,
+                    launchViaIframe: this.launchViaIframe,
                 });
                 this.showItems(template, gameLoader, gameContainer);
             }

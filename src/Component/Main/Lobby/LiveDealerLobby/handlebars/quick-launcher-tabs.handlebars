@@ -38,6 +38,9 @@
                     data-game-target="{{this.target}}"
                     data-game-loader="{{this.use_game_loader}}"
                     data-game-lobby="true"
+                    {{#if ../launchViaIframe }}
+                        data-game-iframe="true"
+                    {{/if}}
                     >
                         <img src="{{this.provider_image.url}}" alt="{{this.provider_image.alt}}">
                     </a>
@@ -95,6 +98,9 @@
                             data-game-target="{{this.target}}"
                             data-game-loader="{{this.use_game_loader}}"
                             data-game-lobby="true"
+                            {{#if ../launchViaIframe }}
+                                data-game-iframe="true"
+                            {{/if}}
                         >
                             <img src="{{this.provider_image.url}}" alt="{{this.provider_image.alt}}">
                             <p class="close-drawer">{{this.title}}</p>
