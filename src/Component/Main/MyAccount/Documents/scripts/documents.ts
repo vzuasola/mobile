@@ -194,7 +194,7 @@ export class Documents extends FormBase {
                         return;
                     }
 
-                    this.storage.set("DocUploadSuccessMessage", this.form.dataset.submit_success);
+                    this.storage.set("DocUploadSuccessMessage", this.attachments.submit_success);
                     Router.navigate("", ["*"]);
                 })
                 .fail((err, msg) => {
@@ -223,7 +223,7 @@ export class Documents extends FormBase {
 
         const commentErrorMsgContent = document.createElement("span");
         commentErrorMsgContent.classList.add("DocumentsForm_comment_error_text");
-        commentErrorMsgContent.innerHTML = this.form.dataset.submit_error;
+        commentErrorMsgContent.innerHTML = this.attachments.submit_error;
 
         commentErrormsg.appendChild(commentErrorMsgContent);
 

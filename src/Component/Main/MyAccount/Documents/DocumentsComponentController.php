@@ -132,6 +132,7 @@ class DocumentsComponentController
         // Fetch Player input from form
         try {
             $playerComments = $request->getParam('DocumentsForm_comment') ?? '';
+            $playerComments = $playerComments !== '' ? $playerComments : 'User did not provide a comment';
             $purpose = $request->getParam('DocumentsForm_purpose');
             $purpose = $this->documentPurposeMap($purpose);
         } catch (\Exception $e) {
@@ -227,7 +228,7 @@ class DocumentsComponentController
         $currentDate = (new \DateTime())->format('d.m.y');
 
         // Jira Ticket Content. Each row is a paragraph in the ticket
-        $paragraphs =[
+        $paragraphs = [
             [
                 "content" => 'Player Comments',
                 "type" => 'panel'

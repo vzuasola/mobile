@@ -14,28 +14,21 @@ class DocumentsComponent implements ComponentWidgetInterface
     private $formManager;
 
     /**
-     * Config Fetcher object.
-     */
-    private $configFetcher;
-
-    /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('form_manager'),
-            $container->get('config_fetcher')
+            $container->get('form_manager')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($formManager, $configFetcher)
+    public function __construct($formManager)
     {
         $this->formManager = $formManager;
-        $this->configFetcher = $configFetcher->withProduct('account');
     }
 
     /**
@@ -51,16 +44,7 @@ class DocumentsComponent implements ComponentWidgetInterface
      */
     public function getData()
     {
-        $documentConfig = $this->configFetcher->getConfig('my_account_config.documents_configuration');
-        $formDocuments = $this->formManager->getForm(
-            DocumentsForm::class,
-            [
-                'custom_attributes' => [
-                    'submit_success' => $documentConfig['submit_success'],
-                    'submit_error' => $documentConfig['submit_error'],
-                ]
-            ]
-        );
+        $formDocuments = $this->formManager->getForm(DocumentsForm::class);
 
         return [
             'formDocuments' => $formDocuments->createView(),
