@@ -155,7 +155,8 @@ trait ProviderTrait
     /**
      * To be overriden by controllers that has game URL post processing feature.
      */
-    protected function postProcessGameUrlData($data) {
+    protected function postProcessGameUrlData($data)
+    {
         return $data;
     }
 
