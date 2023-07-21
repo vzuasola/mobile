@@ -65,19 +65,6 @@ class PGSoftModuleController
         $this->playerGameFetcher = $playerGameFetcher;
     }
 
-     /**
-     * Override ProviderTrait Game launching via GeneralLobby
-     */
-    public function getGameUrlByGeneralLobby($request, $requestData)
-    {
-        // Gets specific game URL
-        if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined')) {
-            $data = $this->getGameUrl($request, $requestData);
-        }
-
-        return $data;
-    }
-
     /**
      * Get game URL via GetGeneralLobby
      */
