@@ -14,28 +14,21 @@ class DocumentsComponent implements ComponentWidgetInterface
     private $formManager;
 
     /**
-     * Config Fetcher object.
-     */
-    private $configFetcher;
-
-    /**
      *
      */
     public static function create($container)
     {
         return new static(
-            $container->get('form_manager'),
-            $container->get('config_fetcher')
+            $container->get('form_manager')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($formManager, $configFetcher)
+    public function __construct($formManager)
     {
         $this->formManager = $formManager;
-        $this->configFetcher = $configFetcher->withProduct('account');
     }
 
     /**
