@@ -11,6 +11,7 @@ class PGSoftModuleController
 
     const KEY = 'pgsoft';
     const GEOIP_HEADER = 'x-custom-lb-geoip-country';
+    const BET_TYPE = '1';
 
     private $rest;
 
@@ -26,6 +27,11 @@ class PGSoftModuleController
     private $viewsFetcher;
 
     /**
+     * @var PlayerGameFetcher $playerGameFetcher
+     */
+    private $playerGameFetcher;
+
+    /**
      *
      */
     public static function create($container)
@@ -35,53 +41,79 @@ class PGSoftModuleController
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('player_game_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $pgSoft, $config, $player, $viewsFetcher)
-    {
+    public function __construct(
+        $rest,
+        $pgSoft,
+        $config,
+        $player,
+        $viewsFetcher,
+        $playerGameFetcher
+    ) {
         $this->rest = $rest;
         $this->pgSoft = $pgSoft;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
+        $this->playerGameFetcher = $playerGameFetcher;
     }
 
     /**
-     * @{inheritdoc}
+     * Get game URL via GetGeneralLobby
      */
-    public function launch($request, $response)
+    private function getGameUrl($request, $requestData)
     {
+        $data['currency'] = true;
         $data['gameurl'] = false;
-        $data['currency'] = false;
-        if ($this->checkCurrency($request)) {
-            $data['currency'] = true;
-            $requestData = $request->getParsedBody();
-
-            try {
-                $responseData = $this->pgSoft->getGameUrlById('icore_pgs', $requestData['gameCode'], [
-                    'options' => [
-                        'languageCode' => $this->languageCode($request),
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $url = $this->overrideGameUrl($request, $responseData['url']);
-                    $data['gameurl'] = $url ?? $responseData['url'];
-                }
-            } catch (\Exception $e) {
-                $data['currency'] = true;
+        try {
+            $responseData = $this->pgSoft->getGameUrlById('icore_pgs', $requestData['gameCode'], [
+                'options' => [
+                    'languageCode' => $this->languageCode($request),
+                ]
+            ]);
+            if ($responseData['url']) {
+                $data['gameurl'] = $responseData['url'];
             }
+        } catch (\Exception $e) {
+            $data['currency'] = true;
+            $data['gameurl'] = false;
         }
 
-        return $this->rest->output($response, $data);
+        return $data;
     }
 
-        /**
-     *
+    /**
+     * Override ProviderTrait to PGSoft Property BetType
+     */
+    public function getPlayerGameExtraParams($requestData)
+    {
+        return [
+            'Key' => 'BetType',
+            'Value' => self::BET_TYPE,
+        ];
+    }
+
+    /**
+     * Override ProviderTrait to apply PGSoft GameUrl override
+     */
+    protected function postProcessGameUrlData($request, $data)
+    {
+        if (isset($data['gameurl']) && $data['gameurl']) {
+            $data['gameurl'] = $this->overrideGameUrl($request, $data["gameurl"]);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Override GameURL based on GEOIP
      */
     private function overrideGameUrl($request, $baseUrl)
     {
