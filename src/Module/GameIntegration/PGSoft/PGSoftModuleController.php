@@ -66,28 +66,6 @@ class PGSoftModuleController
     }
 
      /**
-     * Override ProviderTrait to apply URL overriding feature by GeoIP
-     */
-    public function getGameUrlFromICore($request, $requestData)
-    {
-        $hasGameCode = (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') ||
-                ($requestData['extGameId'] && $requestData['extGameId'] !== 'undefined'));
-
-        if ($this->isPlayerGame($requestData) && $hasGameCode) {
-            $data = $this->getGameUrlByPlayerGame($request, $requestData);
-        } else {
-            $data = $this->getGameUrlByGeneralLobby($request, $requestData);
-        }
-
-        // override gameURL
-        if (isset($data['gameurl']) && $data['gameurl']) {
-            $data['gameurl'] = $this->overrideGameUrl($request, $data["gameurl"]);
-        }
-
-        return $data;
-    }
-
-     /**
      * Override ProviderTrait Game launching via GeneralLobby
      */
     public function getGameUrlByGeneralLobby($request, $requestData)
@@ -133,6 +111,18 @@ class PGSoftModuleController
             'Key' => 'BetType',
             'Value' => self::BET_TYPE,
         ];
+    }
+
+    /**
+     * Override ProviderTrait to apply PGSoft GameUrl override
+     */
+    protected function postProcessGameUrlData($request, $data)
+    {
+        if (isset($data['gameurl']) && $data['gameurl']) {
+            $data['gameurl'] = $this->overrideGameUrl($request, $data["gameurl"]);
+        }
+
+        return $data;
     }
 
     /**
