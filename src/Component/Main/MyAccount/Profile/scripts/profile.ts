@@ -79,7 +79,7 @@ export class Profile extends FormBase {
         this.validateForm(this.form);
         this.handleSubmission();
 
-        if (this.attachments.enableMobileAnnotation === 0) {
+        if (this.attachments.enableMobileAnnotation === 1) {
             this.activateTooltip();
         }
     }
