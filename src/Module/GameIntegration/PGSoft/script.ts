@@ -60,6 +60,7 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
                     gameCode: options.code,
                     extGameId: options.extgameid || "",
                     subprovider: options.subprovider || undefined,
+                    lobby: options.lobby,
                     lang,
                 },
             }).then((response) => {
