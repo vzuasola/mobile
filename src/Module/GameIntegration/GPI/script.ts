@@ -58,12 +58,12 @@ export class GPIModule implements ModuleInterface, GameInterface {
                     playMode: true,
                 },
             }).then((response) => {
-                if (typeof options.onSuccess === "function") {
-                    options.onSuccess.apply(null, [response, options.element]);
-                    return;
-                }
-
                 if (response.gameurl) {
+                    if (typeof options.onSuccess === "function") {
+                        options.onSuccess.apply(null, [response, options.element]);
+                        return;
+                    }
+
                     if (options.loader === "true") {
                         window.location.href = response.gameurl;
                     } else {
