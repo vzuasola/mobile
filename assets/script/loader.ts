@@ -14,6 +14,10 @@ ComponentManager.subscribe("components.early.finish", () => {
     loader.hide();
 });
 
+ComponentManager.subscribe("components.finish", () => {
+    loader.hide();
+});
+
 Router.on(RouterClass.beforeNavigate, (event) => {
     loader.show();
 });
