@@ -79,7 +79,7 @@ class PGSoftModuleController
                 ]
             ]);
             if ($responseData['url']) {
-                $data['gameurl'] = $responseData['url'];
+                $data['gameurl'] = $this->overrideGameUrl($request, $responseData['url']);
             }
         } catch (\Exception $e) {
             $data['currency'] = true;
