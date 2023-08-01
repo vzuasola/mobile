@@ -1,5 +1,3 @@
-declare var navigator: any;
-
 import * as Promise from "promise-polyfill";
 
 import * as utility from "@core/assets/js/components/utility";
@@ -13,21 +11,21 @@ import * as gameTemplate from "@app/assets/script/components/handlebars/games.ha
 import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
 import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
 
-import {GameLauncher} from "@app/src/Module/GameIntegration/scripts/game-launcher";
-import {ComponentManager, ComponentInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
+import { GameLauncher } from "@app/src/Module/GameIntegration/scripts/game-launcher";
+import { ComponentManager, ComponentInterface } from "@plugins/ComponentWidget/asset/component";
+import { Router } from "@core/src/Plugins/ComponentWidget/asset/router";
 
-import {Loader} from "@app/assets/script/components/loader";
-import {GamesSearch} from "./scripts/games-search";
-import {GamesFilter} from "@app/assets/script/components/games-filter";
-import {Marker} from "@app/assets/script/components/marker";
+import { Loader } from "@app/assets/script/components/loader";
+import { GamesSearch } from "./scripts/games-search";
+import { GamesFilter } from "@app/assets/script/components/games-filter";
+import { Marker } from "@app/assets/script/components/marker";
 import EqualHeight from "@app/assets/script/components/equal-height";
 
-import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
-import {GraphyteClickStream} from "@app/assets/script/components/graphyte/graphyte-clickstream";
-import {GraphyteRecommends} from "@app/assets/script/components/graphyte/graphyte-recommends";
+import { GamesCollectionSorting } from "./scripts/games-collection-sorting";
+import { GraphyteClickStream } from "@app/assets/script/components/graphyte/graphyte-clickstream";
+import { GraphyteRecommends } from "@app/assets/script/components/graphyte/graphyte-recommends";
 import { ProviderDrawer } from "./scripts/provider-drawer";
-import PopupWindow from "@app/assets/script/components/popup";
+import { GameLauncherManager } from "@app/assets/script/components/game-launcher-manager";
 /**
  *
  */
@@ -53,39 +51,46 @@ export class GamesLobbyComponent implements ComponentInterface {
     private gameLink: string;
     private gameCategories: any;
     private productMenu: string = "product-games";
-    private bannerWidgets: { [key: string]:
-            { widget: string, link: string, target: string, height: string, width: string}; } = {};
+    private launchViaIframe: boolean;
+    private gameLauncherManager: GameLauncherManager;
+    private bannerWidgets: {
+        [key: string]:
+        { widget: string, link: string, target: string, height: string, width: string };
+    } = {};
 
     constructor() {
         this.gameLauncher = GameLauncher;
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
         this.gamesCollectionSort = new GamesCollectionSorting();
+        this.gameLauncherManager = new GameLauncherManager();
         Handlebars.registerHelper("getIndex", (offset, parentIndex, index, options) => {
             return (parseInt(parentIndex, 10) * 3) + offset + index;
         });
     }
 
     onLoad(element: HTMLElement, attachments: {
-            authenticated: boolean,
-            title_weight: number,
-            keywords_weight: 0,
-            search_no_result_msg: string,
-            filter_no_result_msg: string,
-            search_blurb: string,
-            msg_recommended_available: string,
-            msg_no_recommended: string,
-            product: any[],
-            configs: any[],
-            pagerConfig: any[],
-            infinite_scroll: boolean,
-            user,
-        }) {
+        authenticated: boolean,
+        title_weight: number,
+        keywords_weight: 0,
+        search_no_result_msg: string,
+        filter_no_result_msg: string,
+        search_blurb: string,
+        msg_recommended_available: string,
+        msg_no_recommended: string,
+        product: any[],
+        configs: any[],
+        pagerConfig: any[],
+        infinite_scroll: boolean,
+        launch_via_iframe: boolean,
+        user,
+    }) {
         this.response = null;
         this.element = element;
         this.attachments = attachments;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
+        this.launchViaIframe = attachments.launch_via_iframe;
         this.pager = 0;
         this.load = true;
         this.graphyteRecommends = new GraphyteRecommends(this.attachments);
@@ -123,25 +128,26 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.listenOnCloseFilter();
         this.activateProviderDrawer();
         this.equalizeProviderHeight();
-        this.listenToLaunchGameLoader();
+        this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
         this.componentFinish();
     }
 
     onReload(element: HTMLElement, attachments: {
-            authenticated: boolean,
-            title_weight: number,
-            keywords_weight: 0,
-            search_no_result_msg: string,
-            filter_no_result_msg: string,
-            search_blurb: string,
-            msg_recommended_available: string,
-            msg_no_recommended: string,
-            product: any[],
-            configs,
-            pagerConfig: any[],
-            infinite_scroll: boolean,
-            user,
-        }) {
+        authenticated: boolean,
+        title_weight: number,
+        keywords_weight: 0,
+        search_no_result_msg: string,
+        filter_no_result_msg: string,
+        search_blurb: string,
+        msg_recommended_available: string,
+        msg_no_recommended: string,
+        product: any[],
+        configs,
+        pagerConfig: any[],
+        infinite_scroll: boolean,
+        launch_via_iframe: boolean,
+        user,
+    }) {
         const enableClickStream = (attachments.configs.graphyte.hasOwnProperty("enabled")) ?
             attachments.configs.graphyte.enabled : false;
         this.graphyteRecommends = new GraphyteRecommends(attachments);
@@ -156,7 +162,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             this.listenOnSearch();
             this.listenOnFilter();
             this.listenOnCloseFilter();
-            this.listenToLaunchGameLoader();
+            this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
             if (enableClickStream) {
                 this.graphyteAi = new GraphyteClickStream(
                     ComponentManager.getAttribute("product"),
@@ -169,6 +175,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.attachments = attachments;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
+        this.launchViaIframe = attachments.launch_via_iframe;
         this.pager = 0;
         this.load = true;
         this.generateLobby(() => {
@@ -267,7 +274,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         promises.push("recent");
         promises.push("fav");
         promises.push("games-collection");
-        const recommendsPromises: any =  this.graphyteRecommends.getPagePromises();
+        const recommendsPromises: any = this.graphyteRecommends.getPagePromises();
         if (typeof recommendsPromises !== "undefined" && recommendsPromises.length) {
             promises = promises.concat(recommendsPromises);
         }
@@ -369,7 +376,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         const games = [];
         for (const id of gamesList) {
             if (allGames.hasOwnProperty(id)) {
-               games.push(allGames[id]);
+                games.push(allGames[id]);
             }
         }
 
@@ -383,7 +390,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         const games = [];
         for (const game of gamesList) {
             if (allGames.hasOwnProperty("id:" + game.game_code)) {
-               games["id:" + game.game_code] = allGames["id:" + game.game_code];
+                games["id:" + game.game_code] = allGames["id:" + game.game_code];
             }
         }
 
@@ -519,7 +526,7 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.setCategories(this.response.categories, key);
         this.setGames(this.response.games[key], key);
         this.setBannerWidget(key);
-        ComponentManager.broadcast("clickstream.category.change",  {
+        ComponentManager.broadcast("clickstream.category.change", {
             category: this.getCategoryName(key),
             product: ComponentManager.getAttribute("product"),
             title: document.title,
@@ -606,6 +613,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             isRecommended: isRecommend,
             isAllGames: activeCategory === "all-games",
             offset: page,
+            launchViaIframe: this.launchViaIframe,
         });
 
         if (this.currentPage > page) {
@@ -617,6 +625,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     isLogin: this.isLogin,
                     isAllGames: activeCategory === "all-games",
                     offset: ctr * 12,
+                    launchViaIframe: this.launchViaIframe,
                 });
             }
         }
@@ -658,7 +667,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     this.filterFlag = "general";
                     window.location.hash = "";
                     ComponentManager.broadcast("category.change");
-                    ComponentManager.broadcast("clickstream.category.change",  {
+                    ComponentManager.broadcast("clickstream.category.change", {
                         category: this.getCategoryName(key),
                         product: ComponentManager.getAttribute("product"),
                         title: document.title,
@@ -729,11 +738,11 @@ export class GamesLobbyComponent implements ComponentInterface {
                             const prevActive = prevActives[previd];
                             utility.removeClass(prevActive, "active");
                             utility.removeClass(prevActive.parentElement, "active");
-                       }
+                        }
                     }
                     break;
                 }
-           }
+            }
         }
 
         utility.removeClass(categoriesEl.querySelector(".game-category-more"), "active");
@@ -780,25 +789,25 @@ export class GamesLobbyComponent implements ComponentInterface {
                     response: data.response,
                 });
                 if (el) {
-                const gameCode = el.getAttribute("data-game-code");
-                xhr({
-                    url: Router.generateRoute("games_lobby", "recent"),
-                    type: "json",
-                    method: "post",
-                    data: {
-                        gameCode,
-                    },
-                }).then((result) => {
-                    if (result.success) {
-                        this.response = null;
-                        this.doRequest(() => {
-                            this.gamesSearch.setGamesList(this.response);
-                            this.gamesFilter.setGamesList(this.response);
-                        });
-                    }
-                }).fail((error, message) => {
-                    console.log(error);
-                });
+                    const gameCode = el.getAttribute("data-game-code");
+                    xhr({
+                        url: Router.generateRoute("games_lobby", "recent"),
+                        type: "json",
+                        method: "post",
+                        data: {
+                            gameCode,
+                        },
+                    }).then((result) => {
+                        if (result.success) {
+                            this.response = null;
+                            this.doRequest(() => {
+                                this.gamesSearch.setGamesList(this.response);
+                                this.gamesFilter.setGamesList(this.response);
+                            });
+                        }
+                    }).fail((error, message) => {
+                        console.log(error);
+                    });
 
                 }
             }
@@ -890,7 +899,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                         }
                         break;
                     }
-               }
+                }
             }
 
             categoryScroll.scrollLeft = scroll;
@@ -1017,6 +1026,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                             isLogin: this.isLogin,
                             isAllGames: hash === "all-games",
                             offset: this.currentPage * 12,
+                            launchViaIframe: this.launchViaIframe,
                         });
 
                         const loader = gameLoader.querySelector(".mobile-game-loader");
@@ -1035,11 +1045,11 @@ export class GamesLobbyComponent implements ComponentInterface {
     }
 
     private listenOnSearch() {
-         ComponentManager.subscribe("games.search.success", (event, src, data) => {
-             this.searchResults = data.games;
-             this.setGames(data.games, "", 0, data.isRecommended);
-         });
-     }
+        ComponentManager.subscribe("games.search.success", (event, src, data) => {
+            this.searchResults = data.games;
+            this.setGames(data.games, "", 0, data.isRecommended);
+        });
+    }
 
     private activateSearchTab(active?: string) {
         const categoriesEl = document.querySelector("#game-categories");
@@ -1227,53 +1237,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("games.reload", (event: Event, src, data) => {
             this.setLobby();
             ComponentManager.broadcast("category.change");
-        });
-    }
-
-    /**
-     * Event listener for launching pop up loader
-     */
-    private listenToLaunchGameLoader() {
-        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === "mobile-games") {
-                // Pop up loader with all data
-                const prop = {
-                    width: 360,
-                    height: 720,
-                    scrollbars: 1,
-                    scrollable: 1,
-                    resizable: 1,
-                };
-
-                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-                const source = utility.getParameterByName("source");
-
-                for (const key in data.options) {
-                    if (data.options.hasOwnProperty(key)) {
-                        const param = data.options[key];
-                        url = utility.addQueryParam(url, key, param);
-                    }
-                }
-
-                url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
-                url = utility.addQueryParam(url, "loaderFlag", "true");
-                if (data.options.target === "popup" || data.options.target === "_blank") {
-                    this.windowObject = PopupWindow(url, "gameWindow", prop);
-                }
-
-                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
-                    return;
-                }
-
-                // handle redirects if we are on a PWA standalone
-                if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                    source === "pwa" || data.options.target === "_self" || data.options.target === "_top" &&
-                    (data.options.target !== "popup" || data.options.target !== "_blank")
-                ) {
-                    window.location.href = url;
-                    return;
-                }
-            }
         });
     }
 
