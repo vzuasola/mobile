@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "28ed0abcf6027cab5bb73044a299eafc",
+    "content-hash": "1fcae51aaf5753d16043b393321ebc08",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3460,11 +3460,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.242.0",
+            "version": "dev-release-v1.243.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "a72624875a46acfadcfcd7cbacc3fe614e8f0c37"
+                "reference": "a4911b41fd0fd2639daed994585a38e33b3785d5"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3516,7 +3516,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2023-07-11T06:57:40+00:00"
+            "time": "2023-07-21T10:54:59+00:00"
         },
         {
             "name": "willdurand/negotiation",

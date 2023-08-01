@@ -160,6 +160,15 @@
             }
         }
 
+        &_comment_error {
+          width: 80%;
+          margin: 0 auto;
+          text-align: center;
+          margin-bottom: 30px;
+          color: $red;
+        }
+        
+
         &_footer_instructions_markup {
             text-align: center;
         }

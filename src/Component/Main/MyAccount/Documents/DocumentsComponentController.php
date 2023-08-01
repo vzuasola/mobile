@@ -40,11 +40,15 @@ class DocumentsComponentController
      */
     private $googleService;
 
-    /*
+    /**
      * @var \App\Configuration\YamlConfiguration $configManager
      */
     private $configManager;
 
+    /**
+     * @var \Psr\Log\LoggerInterface $logger
+     */
+    private $logger;
 
     /**
      *
@@ -58,7 +62,8 @@ class DocumentsComponentController
             $container->get('config_form_fetcher'),
             $container->get('jira_service'),
             $container->get('google_storage_fetcher'),
-            $container->get('configuration_manager')
+            $container->get('configuration_manager'),
+            $container->get('logger')
         );
     }
 
@@ -72,6 +77,7 @@ class DocumentsComponentController
      * @param \App\Fetcher\Integration\JIRAFetcher $jiraService
      * @param \App\Fetcher\Integration\GoogleStorageFetcher $googleService
      * @param \App\Configuration\YamlConfiguration $configManager
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         $rest,
@@ -80,7 +86,8 @@ class DocumentsComponentController
         $formFetcher,
         $jiraService,
         $googleService,
-        $configManager
+        $configManager,
+        $logger
     ) {
         $this->rest = $rest;
         $this->configFetcher = $configFetcher->withProduct('account');
@@ -89,6 +96,7 @@ class DocumentsComponentController
         $this->jiraService = $jiraService;
         $this->googleService = $googleService;
         $this->configManager = $configManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -104,6 +112,14 @@ class DocumentsComponentController
             $jiraProjectId = $documentsConfig['jira_project_id'];
             $jiraIssueTypeId = $documentsConfig['jira_issue_type_id'];
         } catch (\Throwable $e) {
+            $this->logger->error('DOCUMENT.UPLOADTO.CONFERROR', [
+                'status_code' => 'NOT OK',
+                'request' => '',
+                'others' => [
+                    'exception' => $e->getMessage(),
+                ],
+            ]);
+
             return $this->rest->output(
                 $response,
                 [
@@ -116,9 +132,18 @@ class DocumentsComponentController
         // Fetch Player input from form
         try {
             $playerComments = $request->getParam('DocumentsForm_comment') ?? '';
+            $playerComments = $playerComments !== '' ? $playerComments : 'User did not provide a comment';
             $purpose = $request->getParam('DocumentsForm_purpose');
             $purpose = $this->documentPurposeMap($purpose);
         } catch (\Exception $e) {
+            $this->logger->error('DOCUMENT.UPLOADTO.USERINPUTERROR', [
+                'status_code' => 'NOT OK',
+                'request' => '',
+                'others' => [
+                    'exception' => $e->getMessage(),
+                ],
+            ]);
+
             return $this->rest->output(
                 $response,
                 [
@@ -133,6 +158,14 @@ class DocumentsComponentController
             $uploadedFiles = $request->getUploadedFiles();
             $uploadReturn = $this->uploadDocs($uploadedFiles, $purpose, $documentsConfig);
         } catch (\Throwable $e) {
+            $this->logger->error('DOCUMENT.UPLOADTO.GDRIVEERROR', [
+                'status_code' => 'NOT OK',
+                'request' => '',
+                'others' => [
+                    'exception' => $e->getMessage(),
+                ],
+            ]);
+
             return $this->rest->output(
                 $response,
                 [
@@ -156,6 +189,14 @@ class DocumentsComponentController
         try {
             $validationErrors = $this->validate($fields);
         } catch (\Throwable $e) {
+            $this->logger->error('DOCUMENT.UPLOADTO.VALIDATIONERROR', [
+                'status_code' => 'NOT OK',
+                'request' => '',
+                'others' => [
+                    'exception' => $e->getMessage(),
+                ],
+            ]);
+
             return $this->rest->output(
                 $response,
                 [
@@ -166,6 +207,14 @@ class DocumentsComponentController
         }
 
         if (count($validationErrors) > 0) {
+            $this->logger->error('DOCUMENT.UPLOADTO.VALIDATIONRULEERROR', [
+                'status_code' => 'NOT OK',
+                'request' => '',
+                'others' => [
+                    'exception' => json_encode($validationErrors),
+                ],
+            ]);
+
             return $this->rest->output(
                 $response,
                 [
@@ -179,7 +228,7 @@ class DocumentsComponentController
         $currentDate = (new \DateTime())->format('d.m.y');
 
         // Jira Ticket Content. Each row is a paragraph in the ticket
-        $paragraphs =[
+        $paragraphs = [
             [
                 "content" => 'Player Comments',
                 "type" => 'panel'
@@ -233,6 +282,14 @@ class DocumentsComponentController
                 $paragraphs
             );
         } catch (\Throwable $e) {
+            $this->logger->error('DOCUMENT.UPLOADTO.JIRAERROR', [
+                'status_code' => 'NOT OK',
+                'request' => '',
+                'others' => [
+                    'exception' => $e->getMessage(),
+                ],
+            ]);
+
             return $this->rest->output(
                 $response,
                 [
@@ -243,12 +300,37 @@ class DocumentsComponentController
         }
 
         if ($data['status'] !== 'success') {
+            $this->logger->error('DOCUMENT.UPLOADTO.JIRAFAILED', [
+                'status_code' => 'NOT OK',
+                'request' => '',
+                'others' => [
+                    'exception' => json_encode($data),
+                ],
+            ]);
+
             return $this->rest->output($response, [
                 'status' => 'failure',
                 'message' => 'Could not create ticket.',
             ]);
         }
 
+        try {
+            // Set user status to "Under Review" which is ID 3
+            $this->userFetcher->setDocumentStatus(3);
+        } catch (\Throwable $e) {
+            $this->logger->error('DOCUMENT.UPLOADTO.ICORESTATUS', [
+                'status_code' => 'NOT OK',
+                'request' => '',
+                'others' => [
+                    'exception' => json_encode($data),
+                ],
+            ]);
+
+            return $this->rest->output($response, [
+                'status' => 'failure',
+                'message' => 'Could not update user document status.',
+            ]);
+        }
         return $this->rest->output($response, [
             'status' => 'success',
             'message' => 'Ticket Created',
@@ -302,7 +384,7 @@ class DocumentsComponentController
         };
 
         if (!array_key_exists($key, $purposeMap)) {
-            throw new \Exception('Unrecognised level');
+            throw new \Exception('Unrecognised purpose');
         }
 
         return $purposeMap[$key];

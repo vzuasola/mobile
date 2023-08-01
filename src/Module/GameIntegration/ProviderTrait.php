@@ -55,10 +55,10 @@ trait ProviderTrait
 
     public function getGameUrlFromICore($request, $requestData)
     {
-        $isLobbyLaunch = ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
-            $requestData['lobby'] === "true");
+        $isLobby = (isset($requestData['lobby']) && $requestData['lobby'] === "true");
+        $isLobbyLaunch = ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') || $isLobby);
 
-        $directTableLaunch = ($requestData['lobby'] === "true" &&
+        $directTableLaunch = ($isLobby &&
             ($requestData['gameCode'] !== 'undefined' &&
                 $requestData['extGameId'] && $requestData['extGameId'] !== 'undefined'));
 
@@ -67,6 +67,8 @@ trait ProviderTrait
         } else {
             $data = $this->getGameUrlByGeneralLobby($request, $requestData);
         }
+
+        $data = $this->postProcessGameUrlData($request, $data);
 
         return $data;
     }
@@ -142,9 +144,20 @@ trait ProviderTrait
         return $data;
     }
 
+    /**
+     * To be overriden by controllers that has Properties parameter.
+     */
     public function getPlayerGameExtraParams()
     {
         return [];
+    }
+
+    /**
+     * To be overriden by controllers that has game URL post processing feature.
+     */
+    protected function postProcessGameUrlData($request, $data)
+    {
+        return $data;
     }
 
     /**

@@ -68,6 +68,7 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
             'pagerConfig' => $pager ?? [],
             'tabs' => $tabs,
             'configs' => $liveDealerGeneralConfig ?? [],
+            'launch_via_iframe' => $liveDealerGeneralConfig['launch_via_iframe'] ?? false
         ];
     }
 

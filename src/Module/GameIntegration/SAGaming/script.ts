@@ -62,6 +62,11 @@ export class SAGamingModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
+                    if (typeof options.onSuccess === "function") {
+                        options.onSuccess.apply(null, [response, options.element]);
+                        return;
+                    }
+
                     if (options.loader === "true") {
                         window.location.href = response.gameurl;
                     } else {
@@ -79,6 +84,10 @@ export class SAGamingModule implements ModuleInterface, GameInterface {
                 }
             }).fail((error, message) => {
                 // Do nothing
+                if (typeof options.onFail === "function") {
+                    options.onFail.apply(null, [options.element]);
+                    return;
+                }
             });
         }
     }

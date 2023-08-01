@@ -14,11 +14,15 @@ import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
 import {Modal} from "./components/modal";
 
-import "./components";
+import "./main-components";
 import "./modules";
 import "./loader";
 import "./worker-registration";
 import "./notify";
+
+// @ts-ignore
+window.myComponentManager = ComponentManager;
+ComponentManager.setLateScriptStatus("pending");
 
 // whenever the bootstrap AJAX receives a redirect, follow it
 ComponentManager.setOption("module-response-handle-redirect", (request: XMLHttpRequest) => {
