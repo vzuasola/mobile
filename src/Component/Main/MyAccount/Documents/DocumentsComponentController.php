@@ -274,12 +274,24 @@ class DocumentsComponentController
             ]
         );
 
+        $additionalFields = [
+            // VIP Level
+            'customfield_14576' => $vip,
+            // Purpose
+            'customfield_14498' => $purpose,
+            // Currency
+            'customfield_14148' => $playerDetails['currency'],
+            // Username
+            'customfield_14354' => $playerDetails['username'],
+        ];
+
         try {
             $data = $this->jiraService->createTicket(
                 $jiraProjectId,
                 $jiraIssueTypeId,
                 $title,
-                $paragraphs
+                $paragraphs,
+                $additionalFields
             );
         } catch (\Throwable $e) {
             $this->logger->error('DOCUMENT.UPLOADTO.JIRAERROR', [
