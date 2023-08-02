@@ -101,7 +101,8 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
             'product' => $this->getProductIntegration(),
             'configs' => $gtsGeneralConfig ?? [],
             'pagerConfig' => $pager ?? [],
-            'infinite_scroll' => $gtsGeneralConfig['gts_lobby_infinite_scroll'] ?? true
+            'infinite_scroll' => $gtsGeneralConfig['gts_lobby_infinite_scroll'] ?? true,
+            'launch_via_iframe' => $gtsGeneralConfig['launch_via_iframe'] ?? false
         ];
     }
 
