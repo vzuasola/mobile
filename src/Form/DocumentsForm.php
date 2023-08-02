@@ -41,6 +41,10 @@ class DocumentsForm extends FormBase implements FormInterface
                 $this->moveAttribute($definition, $key, 'placeholder', 'placeholder');
             }
 
+            if ($definition['footer_instructions_markup']['options']['show_footer_markup'] == 0) {
+                $definition['footer_instructions_markup']['options']['markup'] = "";
+            }
+
             // Add custom field settings as data values to fields
             // Grab all field attributes containing the "data-" prefix
             $dataAtts = array_filter(
