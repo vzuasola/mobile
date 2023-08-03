@@ -343,9 +343,12 @@ export class Documents extends FormBase {
                 .allowed_file_extensions
                 .split(",")
                 .map((ext) => {
-                    return ext.trim();
+                    return ext.trim().toLowerCase();
                 });
-            const currExtension = e.target.files[0].name.split(".").pop();
+            const currExtension = e.target.files[0].name
+                .split(".")
+                .pop()
+                .toLocaleLowerCase();
 
             if (allowedExtensions.indexOf(currExtension) === -1) {
                 statusIconFIeld.innerHTML = iconAtt();
