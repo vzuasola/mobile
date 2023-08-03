@@ -508,7 +508,9 @@ class DocumentsComponentController
             // Check supported file type
             $field = $uploadFields[$key];
             $validExt = $formConfig[$field]['field_settings']['data-allowed_file_extensions'];
-            $validExtArr =  array_map('trim', explode(',', $validExt));
+            $validExtArr =  explode(',', $validExt);
+            $validExtArr =  array_map('trim', $validExtArr);
+            $validExtArr =  array_map('strtolower', $validExtArr);
             $fileExt = pathinfo($document->getClientFilename(), PATHINFO_EXTENSION);
 
             if (!in_array(strtolower($fileExt), $validExtArr)) {
