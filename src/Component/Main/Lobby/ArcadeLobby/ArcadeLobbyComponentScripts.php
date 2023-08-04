@@ -105,7 +105,7 @@ class ArcadeLobbyComponentScripts implements ComponentAttachmentInterface
             'msg_no_recommended' => $searchConfig['msg_no_recommended'] ?? "",
             'title_weight' => $searchConfig['title_weight'] ?? 0,
             'keywords_weight' => $searchConfig['keywords_weight'] ?? 0,
-
+            'launch_via_iframe' => $arcadeConfigs['launch_via_iframe'] ?? false
         ];
     }
 

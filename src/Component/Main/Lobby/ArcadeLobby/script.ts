@@ -1,19 +1,18 @@
-declare var navigator: any;
-
 import * as utility from "@core/assets/js/components/utility";
 import * as Handlebars from "handlebars/runtime";
-import {LazyLoader} from "./scripts/lazy-loader";
-import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
+import { LazyLoader } from "./scripts/lazy-loader";
+import { ComponentInterface, ComponentManager } from "@plugins/ComponentWidget/asset/component";
+import { Router, RouterClass } from "@plugins/ComponentWidget/asset/router";
 
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import { GamesCategory } from "./scripts/games-category";
-import {GamesCollectionSorting} from "./scripts/games-collection-sorting";
-import {GamesSearch} from "./scripts/games-search";
-import {GamesFilter} from "@app/assets/script/components/games-filter";
-import {Marker} from "@app/assets/script/components/marker";
-import {GraphyteClickStream} from "@app/assets/script/components/graphyte/graphyte-clickstream";
-import {GraphyteRecommends} from "@app/assets/script/components/graphyte/graphyte-recommends";
+import { GamesCollectionSorting } from "./scripts/games-collection-sorting";
+import { GamesSearch } from "./scripts/games-search";
+import { GamesFilter } from "@app/assets/script/components/games-filter";
+import { Marker } from "@app/assets/script/components/marker";
+import { GraphyteClickStream } from "@app/assets/script/components/graphyte/graphyte-clickstream";
+import { GraphyteRecommends } from "@app/assets/script/components/graphyte/graphyte-recommends";
+import { GameLauncherManager } from "@app/assets/script/components/game-launcher-manager";
 
 import * as iconCheckedTemplate from "./handlebars/icon-checked.handlebars";
 import * as iconUnCheckedTemplate from "./handlebars/icon-unchecked.handlebars";
@@ -36,12 +35,15 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private graphyteRecommends: GraphyteRecommends;
     private productMenu: string = "product-arcade";
     private recommendationAlias: any = [];
+    private launchViaIframe: boolean;
+    private gameLauncherManager: GameLauncherManager;
 
     constructor() {
         this.lazyLoader = new LazyLoader();
         this.gamesCollectionSort = new GamesCollectionSorting();
         this.gamesSearch = new GamesSearch();
         this.gamesFilter = new GamesFilter();
+        this.gameLauncherManager = new GameLauncherManager();
         Handlebars.registerHelper("inc", (value, incrementVal, options) => {
             return parseInt(value, 10) + incrementVal;
         });
@@ -53,10 +55,12 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         configs: any[],
         user,
+        launch_via_iframe: boolean,
     }) {
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
+        this.launchViaIframe = attachments.launch_via_iframe;
         this.graphyteRecommends = new GraphyteRecommends(this.attachments);
         const enableClickStream = (this.attachments.configs.graphyte.hasOwnProperty("enabled")) ?
             this.attachments.configs.graphyte.enabled : false;
@@ -68,14 +72,13 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.highlightMenu();
             this.setLobby();
         });
-
         this.listenHashChange();
         this.listenProviderMoreEvent();
         this.listenToScroll();
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
-        this.listenToLaunchGameLoader();
+        this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
         this.listenOnLogin();
         this.listenOnLogout();
         this.listenOnResize();
@@ -100,6 +103,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         configs,
         user,
+        launch_via_iframe: boolean,
     }) {
         const enableClickStream = (attachments.configs.graphyte.hasOwnProperty("enabled")) ?
             attachments.configs.graphyte.enabled : false;
@@ -111,7 +115,8 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenClickGameTile();
             this.listenGameLaunch();
             this.listenFavoriteClick();
-            this.listenToLaunchGameLoader();
+            this.launchViaIframe = attachments.launch_via_iframe;
+            this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
             this.listenOnLogin();
             this.listenOnLogout();
             this.listenOnResize();
@@ -178,10 +183,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         const activeCategory = this.gameCategories.getActiveCategory();
         this.populateGames(activeCategory);
         this.gamesSearch.setGamesList(this.groupedGames, this.response, activeCategory);
-        this.gamesFilter.setGamesList({games: this.groupedGames});
+        this.gamesFilter.setGamesList({ games: this.groupedGames });
 
         if (isCatChange) {
-            ComponentManager.broadcast("clickstream.category.change",  {
+            ComponentManager.broadcast("clickstream.category.change", {
                 category: this.gameCategories.getCategoryNameByAlias(activeCategory),
                 product: ComponentManager.getAttribute("product"),
                 title: document.title,
@@ -299,7 +304,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         promises.push("recent");
         promises.push("fav");
         promises.push("games-collection");
-        const recommendsPromises =  this.graphyteRecommends.getPagePromises();
+        const recommendsPromises = this.graphyteRecommends.getPagePromises();
         if (typeof recommendsPromises !== "undefined" && recommendsPromises.length) {
             promises = promises.concat(recommendsPromises);
         }
@@ -371,7 +376,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         const games = [];
         for (const id of gamesList) {
             if (allGames.hasOwnProperty(id)) {
-               games.push(allGames[id]);
+                games.push(allGames[id]);
             }
         }
 
@@ -384,7 +389,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private populateGames(activeCategory, games?) {
         /* tslint:disable:no-string-literal */
         const enableLazyLoad = (this.attachments.configs.hasOwnProperty("arcade_lobby_infinite_scroll")) ?
-        this.attachments.configs["arcade_lobby_infinite_scroll"] : false;
+            this.attachments.configs["arcade_lobby_infinite_scroll"] : false;
         const gamesList: any[] = (games) ? games : this.groupedGames[activeCategory];
         /* tslint:disable:no-string-literal */
         this.lazyLoader.init(
@@ -395,9 +400,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.favoritesList,
             activeCategory,
             enableLazyLoad,
+            this.launchViaIframe,
         );
 
-        ComponentManager.broadcast("clickstream.category.change",  {
+        ComponentManager.broadcast("clickstream.category.change", {
             category: this.gameCategories.getCategoryNameByAlias(activeCategory),
             title: document.title,
             url: window.location.href,
@@ -412,7 +418,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         const gamesList: any = [];
         gamesList["all-games"] = [];
         gamesList["recently-played"] = [];
-        gamesList["favorites"]  = [];
+        gamesList["favorites"] = [];
         const allGames = this.response["games"]["all-games"];
         for (const gameId in allGames) {
             if (allGames.hasOwnProperty(gameId)) {
@@ -450,7 +456,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                     filterCategory.hasOwnProperty("field_games_alias")) {
                     this.recommendationAlias.push(filterCategory.field_games_alias);
                     gamesList[filterCategory.field_games_alias] = this.graphyteRecommends
-                    .getRecommendedByCategory(recommendedResponse, allGames);
+                        .getRecommendedByCategory(recommendedResponse, allGames);
                 }
             });
         }
@@ -532,7 +538,7 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                     window.location.hash = activeCategory;
                 }
                 ComponentManager.broadcast("category.change");
-                ComponentManager.broadcast("clickstream.category.change",  {
+                ComponentManager.broadcast("clickstream.category.change", {
                     category: this.gameCategories.getCategoryNameByAlias(activeCategory),
                     product: ComponentManager.getAttribute("product"),
                     title: document.title,
@@ -640,45 +646,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
                         product: ComponentManager.getAttribute("product"),
                         response: data.response,
                     });
-                }
-            }
-        });
-    }
-
-    /**
-     * Event listener for launching pop up loader
-     */
-    private listenToLaunchGameLoader() {
-        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === "mobile-arcade") {
-                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-                const source = utility.getParameterByName("source");
-
-                for (const key in data.options) {
-                    if (data.options.hasOwnProperty(key)) {
-                        const param = data.options[key];
-                        url = utility.addQueryParam(url, key, param);
-                    }
-                }
-
-                url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
-                url = utility.addQueryParam(url, "loaderFlag", "true");
-                if (data.options.target === "popup" || data.options.target === "_blank") {
-                    window.open(url);
-                    return;
-                }
-
-                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
-                    return;
-                }
-
-                // handle redirects if we are on a PWA standalone
-                if (((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                    source === "pwa") ||
-                    (data.options.target !== "popup" || data.options.target !== "_blank")
-                ) {
-                    window.location.href = url;
-                    return;
                 }
             }
         });
