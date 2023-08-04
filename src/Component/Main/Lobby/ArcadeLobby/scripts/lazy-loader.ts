@@ -12,6 +12,7 @@ export class LazyLoader {
     private authenticated: boolean;
     private activeTab: string;
     private favorites: any[];
+    private launchViaIframe: boolean;
 
     /**
      * Initialize lazy loader.
@@ -21,8 +22,9 @@ export class LazyLoader {
      * @param favoritesList Array
      * @param activeTab String
      * @param lazyLoad Boolean
+     * @param launchViaIframe Boolean
      */
-    init(data, authenticated, configs, gameContainer, favoritesList, activeTab, lazyLoad) {
+    init(data, authenticated, configs, gameContainer, favoritesList, activeTab, lazyLoad, launchViaIframe) {
         this.loaded = true;
         this.currentBatch = 0;
         this.data = data;
@@ -31,6 +33,7 @@ export class LazyLoader {
         this.activeTab = activeTab;
         this.configs = configs;
         this.favorites = favoritesList;
+        this.launchViaIframe = launchViaIframe;
         const batch = this.getBatch();
         const template = gameTemplate({
             games: batch[this.startBatch],
@@ -39,6 +42,7 @@ export class LazyLoader {
             isAllGames: activeTab === "all-games",
             favorites: favoritesList,
             offset: this.currentBatch,
+            launchViaIframe: this.launchViaIframe,
         });
 
         if (gameContainer) {
@@ -70,6 +74,7 @@ export class LazyLoader {
                     isAllGames: this.activeTab === "all-games",
                     favorites: this.favorites,
                     offset: this.currentBatch * 12,
+                    launchViaIframe: this.launchViaIframe,
                 });
                 this.showItems(template, gameLoader, gameContainer);
             }
