@@ -99,6 +99,19 @@ class DocumentsComponentController
         $this->logger = $logger;
     }
 
+    private function getErrorMessages($documentsConfigErrorMessage)
+    {
+        $documentsConfigErrorMessages = explode(PHP_EOL, $documentsConfigErrorMessage);
+        $documentsConfigErrorMessageList = array();
+
+        foreach ($documentsConfigErrorMessages as $value) {
+            [$newKey, $newValue] = explode("|", $value);
+            $documentsConfigErrorMessageList[$newKey] = $newValue;
+        }
+
+        return $documentsConfigErrorMessageList;
+    }
+
     /**
      * Document Upload handler
      *
@@ -111,6 +124,8 @@ class DocumentsComponentController
             $documentsConfig = $this->configFetcher->getConfig('my_account_config.documents_configuration');
             $jiraProjectId = $documentsConfig['jira_project_id'];
             $jiraIssueTypeId = $documentsConfig['jira_issue_type_id'];
+            $documentsConfigErrorMessage = $documentsConfig['submit_error'];
+            $documentsConfigErrorMessageList = $this->getErrorMessages($documentsConfigErrorMessage);
         } catch (\Throwable $e) {
             $this->logger->error('DOCUMENT.UPLOADTO.CONFERROR', [
                 'status_code' => 'NOT OK',
@@ -169,8 +184,9 @@ class DocumentsComponentController
             return $this->rest->output(
                 $response,
                 [
-                    'status' => 'failure',
-                    'message' => 'Could not create ticket. Could not upload documents',
+                    'status' => 'gdrive_error',
+                    'message' => $documentsConfigErrorMessageList['gdrive_error']
+                    ?? 'Something went wrong. Please try again later: Error code (MDU02)',
                 ]
             );
         }
@@ -305,8 +321,9 @@ class DocumentsComponentController
             return $this->rest->output(
                 $response,
                 [
-                    'status' => 'failure',
-                    'message' => 'Could not create ticket.',
+                    'status' => 'jira_error',
+                    'message' => $documentsConfigErrorMessageList['jira_error']
+                    ?? 'Something went wrong. Please try again later: Error code (MDU03)',
                 ]
             );
         }
@@ -321,8 +338,9 @@ class DocumentsComponentController
             ]);
 
             return $this->rest->output($response, [
-                'status' => 'failure',
-                'message' => 'Could not create ticket.',
+                'status' => 'jira_error',
+                'message' => $documentsConfigErrorMessageList['jira_error']
+                ?? 'Something went wrong. Please try again later: Error code (MDU03)',
             ]);
         }
 
@@ -339,8 +357,9 @@ class DocumentsComponentController
             ]);
 
             return $this->rest->output($response, [
-                'status' => 'failure',
-                'message' => 'Could not update user document status.',
+                'status' => 'icore_status_error',
+                'message' => $documentsConfigErrorMessageList['icore_status_error']
+                ?? 'Something went wrong. Please try again later: Error code (MDU04)',
             ]);
         }
         return $this->rest->output($response, [
