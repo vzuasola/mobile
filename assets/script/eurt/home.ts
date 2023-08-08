@@ -1,7 +1,7 @@
-import "../sass/app.scss";
+import "../../sass/app.scss";
 
 import * as versioning from "@app/web/version.json";
-import {Semver} from "./components/semver";
+import {Semver} from "../components/semver";
 
 const version = versioning.version;
 
@@ -12,13 +12,13 @@ import "pwacompat";
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 
-import {Modal} from "./components/modal";
+import {Modal} from "../components/modal";
 
 import "./main-components";
-import "./modules";
-import "./loader";
-import "./worker-registration";
-import "./notify";
+import "../modules";
+import "../loader";
+import "../worker-registration";
+import "../notify";
 
 // @ts-ignore
 window.myComponentManager = ComponentManager;
