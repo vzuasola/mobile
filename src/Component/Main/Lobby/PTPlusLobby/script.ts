@@ -91,7 +91,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
-        this.listenToLaunchGameLoader();
         this.generateLobby(() => {
             this.lobby();
         });
@@ -131,7 +130,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         if (!this.element) {
             this.listenClickGameTile();
             this.listenGameLaunch();
-            this.listenToLaunchGameLoader();
             this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
             this.listenFavoriteClick();
             this.listenClickTab();
@@ -629,53 +627,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                 }).fail((error, message) => {
                     console.log(error);
                 });
-            }
-        });
-    }
-
-    /**
-     * Event listener for launching pop up loader
-     */
-    private listenToLaunchGameLoader() {
-        ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === "mobile-ptplus") {
-                // Pop up loader with all data
-                const prop = {
-                    width: 360,
-                    height: 720,
-                    scrollbars: 1,
-                    scrollable: 1,
-                    resizable: 1,
-                };
-
-                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-                const source = utility.getParameterByName("source");
-
-                for (const key in data.options) {
-                    if (data.options.hasOwnProperty(key)) {
-                        const param = data.options[key];
-                        url = utility.addQueryParam(url, key, param);
-                    }
-                }
-
-                url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
-                url = utility.addQueryParam(url, "loaderFlag", "true");
-                if (data.options.target === "popup" || data.options.target === "_blank") {
-                    this.windowObject = PopupWindow(url, "gameWindow", prop);
-                }
-
-                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
-                    return;
-                }
-
-                // handle redirects if we are on a PWA standalone
-                if ((navigator.standalone || window.matchMedia("(display-mode: standalone)").matches) ||
-                    source === "pwa" || data.options.target === "_self" || data.options.target === "_top" &&
-                    (data.options.target !== "popup" || data.options.target !== "_blank")
-                ) {
-                    window.location.href = url;
-                    return;
-                }
             }
         });
     }
