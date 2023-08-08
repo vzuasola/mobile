@@ -457,7 +457,7 @@ class DocumentsComponentController
             throw new \Exception('Could not upload documents');
         }
 
-        if (count($this->validateFiles($uploadedFiles))) {
+        if (count($this->validateFiles($uploadedFiles)) > 0) {
             throw new \Exception('File Validation Failed');
         }
 
@@ -493,6 +493,10 @@ class DocumentsComponentController
                 }
             }
         } catch (\Exception $e) {
+            $uploadReturn['Success'] = false;
+        }
+
+        if (count($uploadReturn["Documents"]) === 0) {
             $uploadReturn['Success'] = false;
         }
 
