@@ -20,10 +20,8 @@ import {MyAccountChangePasswordComponent} from "@app/src/Component/Main/MyAccoun
 import {VirtualsLobbyComponent} from "@app/src/Component/Main/Lobby/VirtualsLobby/script";
 import {PTPlusLobbyComponent} from "@app/src/Component/Main/Lobby/PTPlusLobby/script";
 
-console.log("Late script is loaded!");
 // @ts-ignore
 const componentManager = window.myComponentManager;
-componentManager.logComponents();
 
 const lateComponents = {
     access_denied: new AccessDeniedComponent(),
@@ -49,9 +47,5 @@ const lateComponents = {
     ptplus_lobby: new PTPlusLobbyComponent(),
 };
 
-componentManager.logComponents("BEFORE");
-
 componentManager.setLateScriptStatus("loaded");
 componentManager.setAndInitLateComponent(lateComponents);
-
-componentManager.logComponents("AFTER");
