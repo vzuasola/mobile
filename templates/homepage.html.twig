@@ -1,0 +1,51 @@
+{% extends '@site/base.html.twig' %}
+
+{% block seo %}
+    {{ widget('seo') }}
+{% endblock %}
+
+{% block marketing_header %}
+    {{ widget('marketing', {'position': 'header'}) }}
+{% endblock %}
+
+{% block script_header %}
+    <script async src="{{ asset('js/home.js') }}"></script>
+{% endblock %}
+
+{% block css %}
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+    {{ widget('meta') }}
+    {{ widget('header') }}
+    {{ widget('menu') }}
+    {{ widget('announcement') }}
+{% endblock header %}
+
+{% block body %}
+    {% block main %}
+        {{ widget('tab_navigation') }}
+        {{ widget('main') }}
+    {% endblock main %}
+
+    {{ widget('language') }}
+    {{ widget('push_notification') }}
+{% endblock body %}
+
+{% block footer %}
+    {{ widget('footer') }}
+    <div class="profiler"></div>
+{% endblock footer %}
+
+{% block script %}
+    {{ parent() }}
+{% endblock %}
+
+{% block marketing_footer %}
+    {{ widget('marketing', {'position': 'footer'}) }}
+{% endblock %}
+
+{% block late_script %}
+    <div id="lateScriptDiv" data-script="{{ asset('js/late.js') }}"></div>
+{% endblock %}
