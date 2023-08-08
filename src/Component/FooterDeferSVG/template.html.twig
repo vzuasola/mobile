@@ -1,0 +1,25 @@
+<footer class="footer footer-{{ app.product_resolver.getProduct }}">
+        {{ include('@component/FooterDeferSVG/templates/sponsor.html.twig') }}
+        <div class="footer-mobile-menu" id="footer-menu"></div>
+        {{ include('@component/Footer/templates/copyright.html.twig') }}
+        <div class="floating-section"></div>
+</footer>
+<div class="floating-{{ app.product_resolver.getProduct }}">
+        {% if app.product_resolver.getProduct == "mobile-ptplus" and floatingFooter %}
+                {{ include('@component/Footer/templates/footer-menu.html.twig') }}
+        {% endif %}
+</div>
+<div class="cookie-notif hidden" data-country-codes="{{ country_codes }}">
+    {{ cookie_notification|raw }}
+    <span class="cookie-notif-close">x</span>
+</div>
+{% if back_to_top %}
+<span class="back-to-top hide">
+    <svg viewBox="0 30 24 44.999">
+        <use xlink:href="#arrow" />
+    </svg>
+</span>
+{% endif %}
+<span class="hidden">
+    {% include '@app/web/images/svg/backtotop/dafabet-backtotop.svg' ignore missing %}
+</span>
