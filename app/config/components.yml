@@ -26,6 +26,9 @@ components:
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
 
+  footer_defer_svg:
+    class: App\MobileEntry\Component\FooterDeferSVG\FooterComponent
+
   profiler:
     class: App\MobileEntry\Component\Profiler\ProfilerComponent
 
@@ -123,6 +126,12 @@ components:
 
   announcement:
     class: App\MobileEntry\Component\Announcement\AnnouncementComponent
+    headers:
+      Cache-Control: public, max-age=300
+
+  footer_icons:
+    class: App\MobileEntry\Component\FooterDeferSVG\FooterIcons\FooterIconsComponent
+    parent: footer_defer_svg
     headers:
       Cache-Control: public, max-age=300
 

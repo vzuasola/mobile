@@ -31,6 +31,7 @@ $settings['settings']['components']['render']['mode'] = 'prerender';
 $settings['settings']['components']['render']['preload'] = [
     'profiler',
     'footer',
+    'footer_defer_svg',
     'marketing',
     'seo',
     'meta'

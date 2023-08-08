@@ -23,9 +23,10 @@ import {PromotionsNodeComponent} from "@app/src/Component/Node/Promotions/script
 import {BlankPageComponent} from "@app/src/Component/Node/BlankPage/script";
 import {InnerPageComponent} from "@app/src/Component/Node/InnerPage/script";
 import {BonusesComponent} from "@app/src/Component/Main/MyAccount/Bonuses/script";
-import {FooterComponent} from "@app/src/Component/Footer/script";
+import {FooterComponent} from "@app/src/Component/FooterDeferSVG/script";
 import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
+import { FooterIcons } from "@app/src/Component/FooterDeferSVG/FooterIcons/script";
 
 ComponentManager.setComponents({
     header: new HeaderComponent(),
@@ -51,7 +52,8 @@ ComponentManager.setComponents({
     node_blank_page: new BlankPageComponent(),
     node_inner_page: new InnerPageComponent(),
     bonuses: new BonusesComponent(),
-    footer: new FooterComponent(),
+    footer_defer_svg: new FooterComponent(),
     game_loader: new GameLoaderComponent(),
     ucp: new UnsupportedCurrencyComponent(),
+    footer_icons: new FooterIcons(),
 });
