@@ -1,9 +1,41 @@
+.mobile-menu-header {
+    .logo {
+        position: absolute;
+        @include translateX(-50%);
+        top: 1rem;
+        left: 50%;
+        margin: 0;
+        a,
+        span {
+            position: relative;
+            width: 13rem;
+            height: 3.1rem;
+            display: inline-block;
+            margin-right: 1.5rem;
+            .sc &,
+            .ch & {
+                width: 14.8rem;
+                margin-right: 0;
+            }
+        }
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+    }
+}
+
+.header-dafabet {
+    .logo {
+        left: 5rem;
+        margin-top: 1rem;
+        position: relative;
+    }
+}
+
 .logo {
-    position: absolute;
-    @include translateX(-50%);
-    top: 1rem;
-    left: 50%;
-    margin: 0;
     a,
     span {
         position: relative;

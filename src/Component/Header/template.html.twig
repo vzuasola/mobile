@@ -25,8 +25,11 @@
     </div>
     {% else %}
     <span class="mobile-action-button mobile-action-button-{{ app.lang }}">
-        <a href="#" class="login-trigger btn btn-yellow btn-small btn-mobile-login">
-            {{ mobile_login_reg }}
+        <a href="#" class="login-trigger mobile-action-button-join-now">
+        {{ mobile_login_reg }}
+        </a>
+        <a href="{{ url(join_now_link) }}" class="btn btn-yellow btn-small btn-mobile-login">
+            {{ login_join_now_text }}
         </a>
     </span>
     {% endif %}
