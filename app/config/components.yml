@@ -26,6 +26,9 @@ components:
   footer:
     class: App\MobileEntry\Component\Footer\FooterComponent
 
+  footer_remove_svg:
+    class: App\MobileEntry\Component\FooterRemoveSVG\FooterComponent
+
   profiler:
     class: App\MobileEntry\Component\Profiler\ProfilerComponent
 
