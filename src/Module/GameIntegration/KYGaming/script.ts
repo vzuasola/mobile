@@ -2,11 +2,11 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import * as utility from "@core/assets/js/components/utility";
 import PopupWindow from "@app/assets/script/components/popup";
 
-import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import { ComponentManager, ModuleInterface } from "@plugins/ComponentWidget/asset/component";
+import { Router } from "@plugins/ComponentWidget/asset/router";
 
-import {GameInterface} from "../scripts/game.interface";
-import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import { GameInterface } from "../scripts/game.interface";
+import { ProviderMessageLightbox } from "../scripts/provider-message-lightbox";
 
 export class KYGamingModule implements ModuleInterface, GameInterface {
     private key: string = "ky_gaming";
@@ -73,6 +73,11 @@ export class KYGamingModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
+                    if (typeof options.onSuccess === "function") {
+                        options.onSuccess.apply(null, [response, options.element]);
+                        return;
+                    }
+
                     if (options.loader === "true") {
                         window.location.href = response.gameurl;
                     } else {
@@ -90,6 +95,10 @@ export class KYGamingModule implements ModuleInterface, GameInterface {
                 }
             }).fail((error, message) => {
                 // Do nothing
+                if (typeof options.onFail === "function") {
+                    options.onFail.apply(null, [options.element]);
+                    return;
+                }
             });
         }
     }

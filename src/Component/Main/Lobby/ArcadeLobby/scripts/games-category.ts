@@ -14,10 +14,12 @@ export class GamesCategory {
     private providers: any[] = [];
     private games: any[];
     private sync: SyncEvents = new SyncEvents();
+    private launchViaIframe: boolean;
 
     constructor(attachments) {
         this.configs = attachments.configs;
         this.isLogin = attachments.isLogin;
+        this.launchViaIframe = attachments.launch_via_iframe;
     }
 
     render(isProviderTab, callback?) {
@@ -28,6 +30,7 @@ export class GamesCategory {
             configs: this.configs,
             active: activeCategory,
             isLogin: this.isLogin,
+            launchViaIframe: this.launchViaIframe,
             moreProviders: (isProviderTab) ? this.providers : this.getFilteredCategories(),
         });
 

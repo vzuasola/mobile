@@ -3,10 +3,10 @@ import * as Handlebars from "handlebars/runtime";
 import * as gamesSearchTemplate from "@app/assets/script/components/handlebars/games-search-result.handlebars";
 import * as utility from "@core/assets/js/components/utility";
 
-import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
-import {Loader} from "@app/assets/script/components/loader";
-import {Modal} from "@app/assets/script/components/modal";
-import {RecommendedGames} from "./recommended-games";
+import { ComponentManager } from "@plugins/ComponentWidget/asset/component";
+import { Loader } from "@app/assets/script/components/loader";
+import { Modal } from "@app/assets/script/components/modal";
+import { RecommendedGames } from "./recommended-games";
 /**
  *
  */
@@ -26,6 +26,7 @@ export class GamesSearch {
     private timer;
     private hasResult;
     private activeCategory: string;
+    private launchViaIframe: boolean;
 
     constructor() {
         this.searchObj = new Search({
@@ -42,18 +43,21 @@ export class GamesSearch {
         });
     }
 
-    handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean,
-            title_weight: number,
-            keywords_weight: 0,
-            search_no_result_msg: string,
-            search_blurb: string,
-            msg_recommended_available: string,
-            msg_no_recommended: string,
-            product: any[],
-        }) {
+    handleOnLoad(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        title_weight: number,
+        keywords_weight: 0,
+        search_no_result_msg: string,
+        search_blurb: string,
+        msg_recommended_available: string,
+        msg_no_recommended: string,
+        product: any[],
+        launch_via_iframe: boolean,
+    }) {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
+        this.launchViaIframe = attachments.launch_via_iframe;
         this.listenActivateSearchLightbox();
         this.listenActivateSearchFilterLightbox();
         this.listenChangeGameSearch();
@@ -66,15 +70,17 @@ export class GamesSearch {
         this.listenSubmitGameSearch();
     }
 
-    handleOnReLoad(element: HTMLElement, attachments: {authenticated: boolean,
-            title_weight: number,
-            keywords_weight: 0,
-            search_no_result_msg: string,
-            search_blurb: string,
-            msg_recommended_available: string,
-            msg_no_recommended: string,
-            product: any[],
-        }) {
+    handleOnReLoad(element: HTMLElement, attachments: {
+        authenticated: boolean,
+        title_weight: number,
+        keywords_weight: 0,
+        search_no_result_msg: string,
+        search_blurb: string,
+        msg_recommended_available: string,
+        msg_no_recommended: string,
+        product: any[],
+        launch_via_iframe: boolean,
+    }) {
         if (!this.element) {
             this.listenActivateSearchLightbox();
             this.listenActivateSearchFilterLightbox();
@@ -90,6 +96,7 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
+        this.launchViaIframe = attachments.launch_via_iframe;
     }
 
     setGamesList(gamesList, response, activeCategory) {
@@ -113,7 +120,7 @@ export class GamesSearch {
                 const active = actives[id];
                 utility.removeClass(active, "active");
                 utility.removeClass(utility.findParent(active, "li"), "active");
-           }
+            }
         }
 
         utility.addClass(this.element.querySelector(".search-tab"), "active");
@@ -200,10 +207,10 @@ export class GamesSearch {
      * @param {[int]} count   [number of results found]
      * @param {[string]} keyword [search query]
      */
-    private updateSearchBlurb(blurb, blurbEl, data: { count: number, keyword: string}) {
-         if (blurb && blurbEl) {
+    private updateSearchBlurb(blurb, blurbEl, data: { count: number, keyword: string }) {
+        if (blurb && blurbEl) {
             blurbEl.innerHTML = blurb.replace("{count}", data.count)
-                   .replace("{keyword}", data.keyword);
+                .replace("{keyword}", data.keyword);
         }
     }
 
@@ -216,6 +223,7 @@ export class GamesSearch {
             favorites: this.favoritesList,
             isLogin: this.isLogin,
             isRecommended: this.isRecommended,
+            launchViaIframe: this.launchViaIframe,
         });
 
         const gamesPreview = this.element.querySelector(".games-search-result");
@@ -335,7 +343,7 @@ export class GamesSearch {
      */
     private listenChangeGameSearch() {
         ComponentManager.subscribe("keyup", (event, src) => {
-            const keyword =  this.element.querySelector(".games-search-input");
+            const keyword = this.element.querySelector(".games-search-input");
             if (this.timer !== null) {
                 clearTimeout(this.timer);
                 this.hasResult = false;
@@ -388,7 +396,7 @@ export class GamesSearch {
         const resultCount: number = (this.searchResult) ? this.searchResult.length : 0;
         this.activateSearchTab();
         this.updateSearchBlurb(this.searchBlurb, this.element.querySelector("#blurb-lobby"),
-                { count: resultCount, keyword: this.searchKeyword });
+            { count: resultCount, keyword: this.searchKeyword });
         if (resultCount) {
             this.onSuccessSearchLobby(this.searchResult);
         } else {
@@ -453,7 +461,7 @@ export class GamesSearch {
     /**
      * Closes games search lightbox when login lightbox is triggered.
      */
-     private listenOnLogin() {
+    private listenOnLogin() {
         ComponentManager.subscribe("header.login", (event, src, data) => {
             const el = utility.hasClass(data.src, "game-listing-item", true);
             if (el && utility.hasClass(this.element.querySelector("#games-search-lightbox"),

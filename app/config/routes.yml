@@ -1,578 +1,577 @@
 routes:
-    /:
-        method: GET
-        action: App\MobileEntry\Controller\HomeController:view
-        components:
-            main: lobby
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /my-homepage:
-        method: GET
-        action: App\MobileEntry\Controller\MyHomeController:view
-        components:
-            main: lobby
-        headers:
-            Cache-Control: public, max-age=300
-
-    /manifest.json:
-        method: GET
-        action: App\MobileEntry\Controller\ManifestController:view
-        headers:
-            Cache-Control: public, max-age=1800
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /game/loader:
-        method: GET
-        action: App\MobileEntry\Controller\GameLoaderController:view
-        components:
-            main: game_loader
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /{id:casino|casino-gold|ptplus|live-dealer}/game/launch:
-        method: GET
-        action: App\MobileEntry\Controller\GameIFrameController:view
-        components:
-            main: game_iframe
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /login:
-        method: GET
-        action: App\MobileEntry\Controller\HomeController:view
-        components:
-            main: lobby
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /logout:
-        method: GET
-        action: App\MobileEntry\Controller\LogoutController:view
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /promotions:
-        method: GET
-        action: App\MobileEntry\Controller\PromotionsController:view
-        components:
-            main: promotions
-        headers:
-            Cache-Control: public, max-age=900
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /cant-login:
-        method: GET
-        action: App\MobileEntry\Controller\CantLoginController:view
-        components:
-          main: cant_login
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /contact-us:
-        method: GET
-        action: App\MobileEntry\Controller\ContactUsController:view
-        components:
-          main: contact_us
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /my-account:
-        method: GET
-        action: App\MobileEntry\Controller\MyAccountController:view
-        components:
-          main: my_account
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /{id:games|slots|flashgames|laohuji|playflash|spinwin}:
-        method: GET
-        action: App\MobileEntry\Controller\GamesController:view
-        components:
-            main: lobby
-            lobby_content: games_lobby
-        headers:
-            Cache-Control: public, max-age=900
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-games
-
-    /{id:casino|dafa888|888|yulechang|xuanzhuan|duchang|daebak}:
-        method: GET
-        action: App\MobileEntry\Controller\CasinoController:view
-        components:
-            main: lobby
-            lobby_content: casino_lobby
-        headers:
-            Cache-Control: public, max-age=900
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-casino
-
-    /{id:casino-gold|gold|jin|elite|vip|exclusive}:
-        method: GET
-        action: App\MobileEntry\Controller\CasinoGoldController:view
-        components:
-            main: lobby
-            lobby_content: casino_lobby
-        headers:
-            Cache-Control: public, max-age=900
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-casino-gold
-
-    /{id:virtual-sports|virtual-world|virtualsports|virtual-network|virtual-sports-coupon|virtuals}:
-        method: GET
-        action: App\MobileEntry\Controller\VirtualsController:view
-        components:
-            main: lobby
-            lobby_content: virtuals_lobby
-        headers:
-            Cache-Control: public, max-age=900
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-virtuals
-
-    /{id:sports|football|soccer|goal|cup|match168}:
-        method: GET
-        action: App\MobileEntry\Controller\HomeController:view
-        components:
-            main: lobby
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-sports
-
-    /{id:sports-df|dffootball|dfsoccer|dfgoal|dfcup|dfmatch168}:
-        method: GET
-        action: App\MobileEntry\Controller\HomeController:view
-        components:
-            main: lobby
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-        attributes:
-            product: mobile-sports-df
-
-    /{id:sports-df|dffootball|dfsoccer|dfgoal|dfcup|dfmatch168}/*.*:
-        method: GET
-        action: App\MobileEntry\Controller\HomeController:view
-        components:
-            main: lobby
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-        attributes:
-            product: mobile-sports-df
-
-    /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}:
-        method: GET
-        action: App\MobileEntry\Controller\LotteryController:view
-        components:
-            main: lobby
-            lobby_content: lottery_lobby
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-lottery
-
-    /{id:soda-casino|suda|soda|sodabt|sodfa|sda}:
-        method: GET
-        action: App\MobileEntry\Controller\SodaCasinoController:view
-        components:
-            main: lobby
-            lobby_content: soda_casino_lobby
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-soda-casino
-
-    /{id:soda-casino|suda|soda|sodabt|sodfa|sda}/*.*:
-        method: GET
-        action: App\MobileEntry\Controller\NodeController:view
-        components:
-            main: node
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-soda-casino
-
-    /{id:ptplus|playtechplus|casinoplus|slotsplus|slots-tournament|casino-gamification}:
-        method: GET
-        action: App\MobileEntry\Controller\PTPlusController:view
-        components:
-            main: lobby
-            lobby_content: ptplus_lobby
-        headers:
-            Cache-Control: public, max-age=900
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-ptplus
-
-    /{id:live-dealer|macau|live|live-games|xianchang|zhenren}:
-        method: GET
-        action: App\MobileEntry\Controller\LiveDealerController:view
-        components:
-            main: lobby
-            lobby_content: live_dealer_lobby
-        headers:
-            Cache-Control: public, max-age=900
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-live-dealer
-
-    /{id:arcade|xiaoyouxi|youxi|fun|amusement|arcade-room|fish-hunter|fish|fishing|buyu|buyuwang|buyudaren}:
-        method: GET
-        action: App\MobileEntry\Controller\ArcadeController:view
-        components:
-            main: lobby
-            lobby_content: arcade_lobby
-        headers:
-            Cache-Control: public, max-age=900
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-arcade
-
-    /api/plugins/native/app/get-restricted-countries:
-        method: GET
-        action: App\MobileEntry\Controller\NativeAppController:getRestrictedCountries
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    # Definition of component controllers for cache control
-
-    /api/plugins/component/route/promotions/promotions:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/footer/footer:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/language/language:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: public, max-age=300
-
-    /api/plugins/component/route/announcement/announcements:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/lobby_slider/sliders:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: public, max-age=300
-
-    /api/plugins/component/route/tab_navigation/quicknav:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: public, max-age=300
-
-    /api/plugins/component/route/promotions/archive:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/casino_lobby/lobby:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/exchange_lobby/lobby:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/games_lobby/lobby:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/games_lobby/collection:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/live_dealer_lobby/lobby:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/lottery_lobby/lobby:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/arcade_lobby/lobby:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/arcade_lobby/getGamesCollection:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/ptplus_lobby/banners:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: private, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-
-    /api/plugins/component/route/header/logout:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/component/route/my_account/updateprofile:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/component/route/my_account/verifypassword:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/component/route/my_account/changepassword:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/component/route/my_account/sendverificationcode:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/component/route/my_account/submitverificationcode:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/component/route/my_account/checksmsstatus:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/component/route/cant_login/forgotpassword:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/component/route/cant_login/forgotusername:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/component/route/cant_login/resetforgottenpassword:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    # Standard component controllers
-
-    /api/plugins/component/route/{id}/{method}:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:route
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/module/route/{id}/{method}:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:module
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api/plugins/module:
-        method: ANY
-        action: App\Plugins\ComponentWidget\ComponentWidgetController:moduleList
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-
-    /api-fe/components:
-        method: ANY
-        action: App\MobileEntry\Controller\RestController:getJson
-        headers:
-            Cache-Control: public, max-age=300
-
-    /api-fe/sponsors:
-        method: ANY
-        action: App\MobileEntry\Controller\RestController:getSponsorList
-        headers:
-            Cache-Control: public, max-age=300
-
-
-    /api-fe/owsports/parameters:
-        method: ANY
-        action: App\MobileEntry\Controller\RestController:getOWSportsParams
-        headers:
-            Cache-Control: public, max-age=300
-
-    /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}/launch/lottoland:
-        method: GET
-        action: App\MobileEntry\Controller\GameWindowController:view
-        components:
-            main: game_window
-        headers:
-            Cache-Control: no-cache, no-store, must-revalidate
-        attributes:
-            product: mobile-lottery
-
-    /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}/*.*:
-        method: GET
-        action: App\MobileEntry\Controller\NodeController:view
-        components:
-            main: node
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-lottery
-
-    /{id:exchange|cricket|indiabet|cric-exchange|betting-exchange}/*.*:
-        method: GET
-        action: App\MobileEntry\Controller\NodeController:view
-        components:
-            main: node
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-exchange
-
-    /{id:virtual-sports|virtuals}/*.*:
-        method: GET
-        action: App\MobileEntry\Controller\NodeController:view
-        components:
-            main: node
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
-        attributes:
-            product: mobile-virtuals
-
-    # Sitemap
-    /sitemap.xml:
-        method: GET
-        action: App\MobileEntry\Controller\SitemapController:showXML
-
-    /*.*:
-        method: ANY
-        action: App\MobileEntry\Controller\NodeController:view
-        components:
-            main: node
-        headers:
-            Cache-Control: public, max-age=300
-        page_cache:
-            enabled: true
-            expires: 1800
+  /:
+    method: GET
+    action: App\MobileEntry\Controller\HomeController:view
+    components:
+      main: lobby
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /my-homepage:
+    method: GET
+    action: App\MobileEntry\Controller\MyHomeController:view
+    components:
+      main: lobby
+    headers:
+      Cache-Control: public, max-age=300
+
+  /manifest.json:
+    method: GET
+    action: App\MobileEntry\Controller\ManifestController:view
+    headers:
+      Cache-Control: public, max-age=1800
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /game/loader:
+    method: GET
+    action: App\MobileEntry\Controller\GameLoaderController:view
+    components:
+      main: game_loader
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /{id:casino|casino-gold|ptplus|live-dealer|games|arcade}/game/launch:
+    method: GET
+    action: App\MobileEntry\Controller\GameIFrameController:view
+    components:
+      main: game_iframe
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /login:
+    method: GET
+    action: App\MobileEntry\Controller\HomeController:view
+    components:
+      main: lobby
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /logout:
+    method: GET
+    action: App\MobileEntry\Controller\LogoutController:view
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /promotions:
+    method: GET
+    action: App\MobileEntry\Controller\PromotionsController:view
+    components:
+      main: promotions
+    headers:
+      Cache-Control: public, max-age=900
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /cant-login:
+    method: GET
+    action: App\MobileEntry\Controller\CantLoginController:view
+    components:
+      main: cant_login
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /contact-us:
+    method: GET
+    action: App\MobileEntry\Controller\ContactUsController:view
+    components:
+      main: contact_us
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /my-account:
+    method: GET
+    action: App\MobileEntry\Controller\MyAccountController:view
+    components:
+      main: my_account
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /{id:games|slots|flashgames|laohuji|playflash|spinwin}:
+    method: GET
+    action: App\MobileEntry\Controller\GamesController:view
+    components:
+      main: lobby
+      lobby_content: games_lobby
+    headers:
+      Cache-Control: public, max-age=900
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-games
+
+  /{id:casino|dafa888|888|yulechang|xuanzhuan|duchang|daebak}:
+    method: GET
+    action: App\MobileEntry\Controller\CasinoController:view
+    components:
+      main: lobby
+      lobby_content: casino_lobby
+    headers:
+      Cache-Control: public, max-age=900
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-casino
+
+  /{id:casino-gold|gold|jin|elite|vip|exclusive}:
+    method: GET
+    action: App\MobileEntry\Controller\CasinoGoldController:view
+    components:
+      main: lobby
+      lobby_content: casino_lobby
+    headers:
+      Cache-Control: public, max-age=900
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-casino-gold
+
+  /{id:virtual-sports|virtual-world|virtualsports|virtual-network|virtual-sports-coupon|virtuals}:
+    method: GET
+    action: App\MobileEntry\Controller\VirtualsController:view
+    components:
+      main: lobby
+      lobby_content: virtuals_lobby
+    headers:
+      Cache-Control: public, max-age=900
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-virtuals
+
+  /{id:sports|football|soccer|goal|cup|match168}:
+    method: GET
+    action: App\MobileEntry\Controller\HomeController:view
+    components:
+      main: lobby
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-sports
+
+  /{id:sports-df|dffootball|dfsoccer|dfgoal|dfcup|dfmatch168}:
+    method: GET
+    action: App\MobileEntry\Controller\HomeController:view
+    components:
+      main: lobby
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+    attributes:
+      product: mobile-sports-df
+
+  /{id:sports-df|dffootball|dfsoccer|dfgoal|dfcup|dfmatch168}/*.*:
+    method: GET
+    action: App\MobileEntry\Controller\HomeController:view
+    components:
+      main: lobby
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+    attributes:
+      product: mobile-sports-df
+
+  /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}:
+    method: GET
+    action: App\MobileEntry\Controller\LotteryController:view
+    components:
+      main: lobby
+      lobby_content: lottery_lobby
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-lottery
+
+  /{id:soda-casino|suda|soda|sodabt|sodfa|sda}:
+    method: GET
+    action: App\MobileEntry\Controller\SodaCasinoController:view
+    components:
+      main: lobby
+      lobby_content: soda_casino_lobby
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-soda-casino
+
+  /{id:soda-casino|suda|soda|sodabt|sodfa|sda}/*.*:
+    method: GET
+    action: App\MobileEntry\Controller\NodeController:view
+    components:
+      main: node
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-soda-casino
+
+  /{id:ptplus|playtechplus|casinoplus|slotsplus|slots-tournament|casino-gamification}:
+    method: GET
+    action: App\MobileEntry\Controller\PTPlusController:view
+    components:
+      main: lobby
+      lobby_content: ptplus_lobby
+    headers:
+      Cache-Control: public, max-age=900
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-ptplus
+
+  /{id:live-dealer|macau|live|live-games|xianchang|zhenren}:
+    method: GET
+    action: App\MobileEntry\Controller\LiveDealerController:view
+    components:
+      main: lobby
+      lobby_content: live_dealer_lobby
+    headers:
+      Cache-Control: public, max-age=900
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-live-dealer
+
+  /{id:arcade|xiaoyouxi|youxi|fun|amusement|arcade-room|fish-hunter|fish|fishing|buyu|buyuwang|buyudaren}:
+    method: GET
+    action: App\MobileEntry\Controller\ArcadeController:view
+    components:
+      main: lobby
+      lobby_content: arcade_lobby
+    headers:
+      Cache-Control: public, max-age=900
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-arcade
+
+  /api/plugins/native/app/get-restricted-countries:
+    method: GET
+    action: App\MobileEntry\Controller\NativeAppController:getRestrictedCountries
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  # Definition of component controllers for cache control
+
+  /api/plugins/component/route/promotions/promotions:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/footer/footer:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/language/language:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: public, max-age=300
+
+  /api/plugins/component/route/announcement/announcements:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/lobby_slider/sliders:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: public, max-age=300
+
+  /api/plugins/component/route/tab_navigation/quicknav:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: public, max-age=300
+
+  /api/plugins/component/route/promotions/archive:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/casino_lobby/lobby:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/exchange_lobby/lobby:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/games_lobby/lobby:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/games_lobby/collection:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/live_dealer_lobby/lobby:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/lottery_lobby/lobby:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/arcade_lobby/lobby:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/arcade_lobby/getGamesCollection:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/ptplus_lobby/banners:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+
+  /api/plugins/component/route/header/logout:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/component/route/my_account/updateprofile:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/component/route/my_account/verifypassword:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/component/route/my_account/changepassword:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/component/route/my_account/sendverificationcode:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/component/route/my_account/submitverificationcode:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/component/route/my_account/checksmsstatus:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/component/route/cant_login/forgotpassword:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/component/route/cant_login/forgotusername:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/component/route/cant_login/resetforgottenpassword:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  # Standard component controllers
+
+  /api/plugins/component/route/{id}/{method}:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:route
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/module/route/{id}/{method}:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:module
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/module:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:moduleList
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api-fe/components:
+    method: ANY
+    action: App\MobileEntry\Controller\RestController:getJson
+    headers:
+      Cache-Control: public, max-age=300
+
+  /api-fe/sponsors:
+    method: ANY
+    action: App\MobileEntry\Controller\RestController:getSponsorList
+    headers:
+      Cache-Control: public, max-age=300
+
+  /api-fe/owsports/parameters:
+    method: ANY
+    action: App\MobileEntry\Controller\RestController:getOWSportsParams
+    headers:
+      Cache-Control: public, max-age=300
+
+  /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}/launch/lottoland:
+    method: GET
+    action: App\MobileEntry\Controller\GameWindowController:view
+    components:
+      main: game_window
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+    attributes:
+      product: mobile-lottery
+
+  /{id:lottery|keno|lotto-numbers|numbers|draw|live-draws}/*.*:
+    method: GET
+    action: App\MobileEntry\Controller\NodeController:view
+    components:
+      main: node
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-lottery
+
+  /{id:exchange|cricket|indiabet|cric-exchange|betting-exchange}/*.*:
+    method: GET
+    action: App\MobileEntry\Controller\NodeController:view
+    components:
+      main: node
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-exchange
+
+  /{id:virtual-sports|virtuals}/*.*:
+    method: GET
+    action: App\MobileEntry\Controller\NodeController:view
+    components:
+      main: node
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
+    attributes:
+      product: mobile-virtuals
+
+  # Sitemap
+  /sitemap.xml:
+    method: GET
+    action: App\MobileEntry\Controller\SitemapController:showXML
+
+  /*.*:
+    method: ANY
+    action: App\MobileEntry\Controller\NodeController:view
+    components:
+      main: node
+    headers:
+      Cache-Control: public, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800

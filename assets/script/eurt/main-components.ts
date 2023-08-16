@@ -27,8 +27,6 @@ import {FooterComponent} from "@app/src/Component/Footer/script";
 import {GameLoaderComponent} from "@app/src/Component/GameLoader/script";
 import {UnsupportedCurrencyComponent} from "@app/src/Component/Main/UnsupportedCurrency/script";
 
-console.log("====> main-components.ts");
-
 ComponentManager.setComponents({
     header: new HeaderComponent(),
     menu: new MenuComponent(),

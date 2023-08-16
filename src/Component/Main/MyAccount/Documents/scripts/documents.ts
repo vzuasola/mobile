@@ -64,6 +64,9 @@ export class Documents extends FormBase {
 
         const loaderTemplate = loader({});
 
+        // Generic Error Message
+        const documentGenericError = this.attachments.genericError;
+
         // Configure upload field logic
         const uploadFieldSelectors = [
             "DocumentsForm_first_upload",
@@ -113,7 +116,6 @@ export class Documents extends FormBase {
                 } else {
                     this.form.querySelector(".select-selected").classList.remove("text-bold");
                 }
-                // this.handleCommentFieldIcon();
             },
         );
 
@@ -149,7 +151,7 @@ export class Documents extends FormBase {
 
                     this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
 
-                    this.showValidationErrorMessage();
+                    this.errorMessage(documentGenericError);
 
                     return;
                 }
@@ -185,12 +187,8 @@ export class Documents extends FormBase {
                     data: formData,
                 })
                 .then((resp) => {
-                    /* Replace below line with success logic
-                     * Response body will be of the form
-                     * { 'status': 'success|failure', 'message': 'Some status message'}
-                     */
-                    if (resp.status === "failure") {
-                        this.showValidationErrorMessage();
+                    if (resp.status !== "success") {
+                        this.errorMessage(resp.message);
                         return;
                     }
 
@@ -198,8 +196,7 @@ export class Documents extends FormBase {
                     Router.navigate("", ["*"]);
                 })
                 .fail((err, msg) => {
-                    // Replace below line with failure logic
-                    this.showValidationErrorMessage();
+                    this.errorMessage(documentGenericError);
                 }).
                 always((err, msg) => {
                     this.form.querySelector("#DocumentsForm_submit").innerHTML = prevContent;
@@ -216,14 +213,13 @@ export class Documents extends FormBase {
         }
     }
 
-    private showValidationErrorMessage() {
-
+    private errorMessage(documentGenericError) {
         const commentErrormsg = document.createElement("div");
         commentErrormsg.classList.add("DocumentsForm_comment_error");
 
         const commentErrorMsgContent = document.createElement("span");
         commentErrorMsgContent.classList.add("DocumentsForm_comment_error_text");
-        commentErrorMsgContent.innerHTML = this.attachments.submit_error;
+        commentErrorMsgContent.innerHTML = documentGenericError;
 
         commentErrormsg.appendChild(commentErrorMsgContent);
 
@@ -343,9 +339,12 @@ export class Documents extends FormBase {
                 .allowed_file_extensions
                 .split(",")
                 .map((ext) => {
-                    return ext.trim();
+                    return ext.trim().toLowerCase();
                 });
-            const currExtension = e.target.files[0].name.split(".").pop();
+            const currExtension = e.target.files[0].name
+                .split(".")
+                .pop()
+                .toLocaleLowerCase();
 
             if (allowedExtensions.indexOf(currExtension) === -1) {
                 statusIconFIeld.innerHTML = iconAtt();

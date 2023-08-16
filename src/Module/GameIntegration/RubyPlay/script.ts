@@ -7,6 +7,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import {ErrorMessageLightbox} from "../scripts/error-message-lightbox";
 
 export class RubyPlayModule implements ModuleInterface, GameInterface {
     private key: string = "ruby_play";
@@ -14,9 +15,11 @@ export class RubyPlayModule implements ModuleInterface, GameInterface {
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
+    private errorMessageLightbox: ErrorMessageLightbox;
 
     onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
+        this.errorMessageLightbox = new ErrorMessageLightbox();
     }
 
     init() {
@@ -54,17 +57,30 @@ export class RubyPlayModule implements ModuleInterface, GameInterface {
                 data: {
                     product,
                     gameCode: options.code,
+                    extGameId: options.extgameid || "",
                     subprovider: options.subprovider || undefined,
                     lang,
+                    lobby: options.lobby,
                 },
             }).then((response) => {
                 if (response.gameurl) {
+                    if (typeof options.onSuccess === "function") {
+                        options.onSuccess.apply(null, [response, options.element]);
+                        return;
+                    }
+
                     if (options.loader === "true") {
                         window.location.href = response.gameurl;
                     } else {
                         this.launchGame(options.target);
                         this.updatePopupWindow(response.gameurl);
                     }
+                }
+
+                if (response.errors) {
+                    this.errorMessageLightbox.showMessage(
+                        response,
+                    );
                 }
 
                 if (!response.currency) {
@@ -76,6 +92,10 @@ export class RubyPlayModule implements ModuleInterface, GameInterface {
                 }
             }).fail((error, message) => {
                 // Do nothing
+                if (typeof options.onFail === "function") {
+                    options.onFail.apply(null, [options.element]);
+                    return;
+                }
             });
         }
     }

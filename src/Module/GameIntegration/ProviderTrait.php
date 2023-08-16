@@ -78,16 +78,21 @@ trait ProviderTrait
      */
     public function getGameUrlByGeneralLobby($request, $requestData)
     {
-        // Gets specific game URL
-        if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined')
-            && $requestData['lobby'] === "false") {
-            $data = $this->getGameUrl($request, $requestData);
-        }
+        try {
+            // Gets specific game URL
+            if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined')
+                && $requestData['lobby'] === "false") {
+                $data = $this->getGameUrl($request, $requestData);
+            }
 
-        // Gets provider game lobby (live-dealer)
-        if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined')
-            || $requestData['lobby'] === "true") {
-            $data = $this->getGameLobby($request, $requestData);
+            // Gets provider game lobby (live-dealer)
+            if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined')
+                || $requestData['lobby'] === "true") {
+                $data = $this->getGameLobby($request, $requestData);
+            }
+        } catch (\Throwable $e) {
+            $data['currency'] = true;
+            $data['gameurl'] = false;
         }
 
         return $data;

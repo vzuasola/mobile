@@ -99,6 +99,19 @@ class DocumentsComponentController
         $this->logger = $logger;
     }
 
+    private function getErrorMessages($documentsConfigErrorMessage)
+    {
+        $documentsConfigErrorMessages = explode(PHP_EOL, $documentsConfigErrorMessage);
+        $documentsConfigErrorMessageList = array();
+
+        foreach ($documentsConfigErrorMessages as $value) {
+            [$newKey, $newValue] = explode("|", $value);
+            $documentsConfigErrorMessageList[$newKey] = $newValue;
+        }
+
+        return $documentsConfigErrorMessageList;
+    }
+
     /**
      * Document Upload handler
      *
@@ -111,6 +124,8 @@ class DocumentsComponentController
             $documentsConfig = $this->configFetcher->getConfig('my_account_config.documents_configuration');
             $jiraProjectId = $documentsConfig['jira_project_id'];
             $jiraIssueTypeId = $documentsConfig['jira_issue_type_id'];
+            $documentsConfigErrorMessage = $documentsConfig['submit_error'];
+            $documentsConfigErrorMessageList = $this->getErrorMessages($documentsConfigErrorMessage);
         } catch (\Throwable $e) {
             $this->logger->error('DOCUMENT.UPLOADTO.CONFERROR', [
                 'status_code' => 'NOT OK',
@@ -169,8 +184,9 @@ class DocumentsComponentController
             return $this->rest->output(
                 $response,
                 [
-                    'status' => 'failure',
-                    'message' => 'Could not create ticket. Could not upload documents',
+                    'status' => 'gdrive_error',
+                    'message' => $documentsConfigErrorMessageList['gdrive_error']
+                    ?? 'Something went wrong. Please try again later: Error code (MDU02)',
                 ]
             );
         }
@@ -274,12 +290,24 @@ class DocumentsComponentController
             ]
         );
 
+        $additionalFields = [
+            // VIP Level
+            'customfield_14576' => $vip,
+            // Purpose
+            'customfield_14498' => $purpose,
+            // Currency
+            'customfield_14148' => $playerDetails['currency'],
+            // Username
+            'customfield_14354' => $playerDetails['username'],
+        ];
+
         try {
             $data = $this->jiraService->createTicket(
                 $jiraProjectId,
                 $jiraIssueTypeId,
                 $title,
-                $paragraphs
+                $paragraphs,
+                $additionalFields
             );
         } catch (\Throwable $e) {
             $this->logger->error('DOCUMENT.UPLOADTO.JIRAERROR', [
@@ -293,8 +321,9 @@ class DocumentsComponentController
             return $this->rest->output(
                 $response,
                 [
-                    'status' => 'failure',
-                    'message' => 'Could not create ticket.',
+                    'status' => 'jira_error',
+                    'message' => $documentsConfigErrorMessageList['jira_error']
+                    ?? 'Something went wrong. Please try again later: Error code (MDU03)',
                 ]
             );
         }
@@ -309,8 +338,9 @@ class DocumentsComponentController
             ]);
 
             return $this->rest->output($response, [
-                'status' => 'failure',
-                'message' => 'Could not create ticket.',
+                'status' => 'jira_error',
+                'message' => $documentsConfigErrorMessageList['jira_error']
+                ?? 'Something went wrong. Please try again later: Error code (MDU03)',
             ]);
         }
 
@@ -327,8 +357,9 @@ class DocumentsComponentController
             ]);
 
             return $this->rest->output($response, [
-                'status' => 'failure',
-                'message' => 'Could not update user document status.',
+                'status' => 'icore_status_error',
+                'message' => $documentsConfigErrorMessageList['icore_status_error']
+                ?? 'Something went wrong. Please try again later: Error code (MDU04)',
             ]);
         }
         return $this->rest->output($response, [
@@ -426,7 +457,7 @@ class DocumentsComponentController
             throw new \Exception('Could not upload documents');
         }
 
-        if (count($this->validateFiles($uploadedFiles))) {
+        if (count($this->validateFiles($uploadedFiles)) > 0) {
             throw new \Exception('File Validation Failed');
         }
 
@@ -465,6 +496,10 @@ class DocumentsComponentController
             $uploadReturn['Success'] = false;
         }
 
+        if (count($uploadReturn["Documents"]) === 0) {
+            $uploadReturn['Success'] = false;
+        }
+
         if ($uploadReturn['Success'] !== true) {
             throw new \Exception('Could not upload documents');
         }
@@ -496,7 +531,9 @@ class DocumentsComponentController
             // Check supported file type
             $field = $uploadFields[$key];
             $validExt = $formConfig[$field]['field_settings']['data-allowed_file_extensions'];
-            $validExtArr =  array_map('trim', explode(',', $validExt));
+            $validExtArr =  explode(',', $validExt);
+            $validExtArr =  array_map('trim', $validExtArr);
+            $validExtArr =  array_map('strtolower', $validExtArr);
             $fileExt = pathinfo($document->getClientFilename(), PATHINFO_EXTENSION);
 
             if (!in_array(strtolower($fileExt), $validExtArr)) {

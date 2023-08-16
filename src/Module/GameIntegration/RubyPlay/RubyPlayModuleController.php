@@ -31,6 +31,8 @@ class RubyPlayModuleController
      */
     private $viewsFetcher;
 
+    private $playerGameFetcher;
+
     /**
      *
      */
@@ -41,55 +43,72 @@ class RubyPlayModuleController
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('player_game_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $rubyPlay, $config, $player, $viewsFetcher)
-    {
+    public function __construct(
+        $rest,
+        $rubyPlay,
+        $config,
+        $player,
+        $viewsFetcher,
+        $playerGameFetcher
+    ) {
         $this->rest = $rest;
         $this->rubyPlay = $rubyPlay;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
+        $this->playerGameFetcher = $playerGameFetcher;
     }
 
     /**
-     * @{inheritdoc}
+     * Get GameURL via GetGeneralLobby
      */
-    public function launch($request, $response)
+    public function getGameUrl($request, $requestData)
     {
         $data['gameurl'] = false;
-        $data['currency'] = false;
-        if ($this->checkCurrency($request)) {
-            $data['currency'] = true;
-            $requestData = $request->getParsedBody();
-            $params = explode('|', $requestData['gameCode']);
+        $data['currency'] = true;
+        $params = explode('|', $requestData['gameCode']);
 
-            try {
-                $responseData = $this->rubyPlay->getGameUrlById('icore_rp', $params[0], [
-                    'options' => [
-                        'languageCode' => $this->languageCode($request),
-                        'providerProduct' => $params[1] ?? null,
-                    ]
-                ]);
-                if ($responseData['url']) {
-                    $url = $this->overrideGameUrl($request, $responseData['url']);
-                    $data['gameurl'] = $url ?? $responseData['url'];
-                }
-            } catch (\Exception $e) {
-                $data['currency'] = true;
+        try {
+            $responseData = $this->rubyPlay->getGameUrlById('icore_rp', $params[0], [
+                'options' => [
+                    'languageCode' => $this->languageCode($request),
+                    'providerProduct' => $params[1] ?? null,
+                ]
+            ]);
+
+            if ($responseData['url']) {
+                $data['gameurl'] = $this->overrideGameUrl($request, $responseData['url']);
             }
+        } catch (\Exception $e) {
+            $data['currency'] = true;
+            $data['gameurl'] = false;
         }
 
-        return $this->rest->output($response, $data);
+        return $data;
+    }
+
+     /**
+     * Override ProviderTrait to apply PGSoft GameUrl override
+     */
+    protected function postProcessGameUrlData($request, $data)
+    {
+        if (isset($data['gameurl']) && $data['gameurl']) {
+            $data['gameurl'] = $this->overrideGameUrl($request, $data["gameurl"]);
+        }
+
+        return $data;
     }
 
     /**
-     *
+     * Overrides gameUrl depending on configured gameURL per GEOIP
      */
     private function overrideGameUrl($request, $baseUrl)
     {

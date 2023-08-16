@@ -19,6 +19,9 @@
         data-game-loader="{{this.use_game_loader}}"
         data-game-lobby="false"
         data-game-sort="{{inc ../offset @index}}"
+        {{#if ../launchViaIframe }}
+            data-game-iframe="true"
+        {{/if}}
         >
             {{#if ../this.isAllGames}}
                 {{#if this.all_games_ribbon}}

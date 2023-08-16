@@ -21,6 +21,6 @@ class HomeController extends BaseController
         $data['title'] = $config["lobby_page_title"] ?? $this->get('translation_manager')->getTranslation('home');
         $data['is_front'] = true;
 
-        return $this->widgets->render($response, '@site/page.html.twig', $data);
+        return $this->widgets->render($response, '@site/homepage.html.twig', $data);
     }
 }
