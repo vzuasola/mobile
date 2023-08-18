@@ -7,6 +7,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 import { ProviderMessageLightbox } from "../scripts/provider-message-lightbox";
+import { RestrictedCountryLightbox } from "../scripts/restricted-country-lightbox";
 
 export class VideoRacingModule implements ModuleInterface, GameInterface {
     private key: string = "video_racing";
@@ -14,9 +15,11 @@ export class VideoRacingModule implements ModuleInterface, GameInterface {
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
+    private restrictedCountryLightbox: RestrictedCountryLightbox;
 
     onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
+        this.restrictedCountryLightbox = new RestrictedCountryLightbox();
     }
 
     init() {
@@ -58,6 +61,13 @@ export class VideoRacingModule implements ModuleInterface, GameInterface {
                     lang,
                 },
             }).then((response) => {
+                if (typeof response.restricted_country !== "undefined" ) {
+                    this.restrictedCountryLightbox.showMessage(
+                        response.restricted_country,
+                    );
+                    return;
+                }
+
                 if (response.gameurl) {
                     if (options.loader === "true") {
                         window.location.href = response.gameurl;

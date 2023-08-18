@@ -58,6 +58,13 @@ class VideoRacingModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
+        $countryRestriction = $this->checkCountryRestriction($request);
+
+        if ($countryRestriction['restricted']) {
+            $data['restricted_country'] = $countryRestriction;
+            return $this->rest->output($response, $data);
+        }
+
         if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
             if ($requestData['gameCode'] || $requestData['gameCode'] !== 'undefined') {
