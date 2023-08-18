@@ -1,11 +1,7 @@
 .mobile-menu-header,
-.header-post-login {
+.header-post-login,
+.header-pre-login {
     .logo {
-        position: absolute;
-        @include translateX(-50%);
-        top: 1rem;
-        left: 50%;
-        margin: 0;
         a,
         span {
             position: relative;
@@ -25,6 +21,17 @@
             left: 0;
             width: 100%;
         }
+    }
+}
+
+.mobile-menu-header,
+.header-post-login {
+    .logo {
+        position: absolute;
+        @include translateX(-50%);
+        top: 1rem;
+        left: 50%;
+        margin: 0;
     }
 }
 
