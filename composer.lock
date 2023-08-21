@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1cdbd146ceb6835d011867033b3e631e",
+    "content-hash": "ed554ae9480d492b284201d58cd47270",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -253,7 +253,7 @@
                 "shasum": ""
             },
             "require": {
-                "psr/container": "1.0"
+                "psr/container": "^1.0"
             },
             "type": "library",
             "autoload": {
@@ -1579,20 +1579,6 @@
                 "twofish",
                 "x.509",
                 "x509"
-            ],
-            "funding": [
-                {
-                    "url": "https://github.com/terrafrost",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/phpseclib",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
-                    "type": "tidelift"
-                }
             ],
             "time": "2023-07-09T15:24:48+00:00"
         },
@@ -3474,11 +3460,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.244.0",
+            "version": "dev-release-v1.245.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "e35293246074f44f55c4147c69cb6804d57c2536"
+                "reference": "6024a8fcabe827de7b99d6c6d3f55e63f2560c5c"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3530,7 +3516,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2023-08-08T06:40:17+00:00"
+            "time": "2023-08-21T08:10:42+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -5164,6 +5150,5 @@
     "platform": {
         "php": ">=7.1.0"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }

@@ -12,7 +12,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
 
-    private $loginConfig;
+    private $configs;
 
     private $views;
 
@@ -31,10 +31,10 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $loginConfig, $views)
+    public function __construct($playerSession, $configs, $views)
     {
         $this->playerSession = $playerSession;
-        $this->loginConfig = $loginConfig;
+        $this->configs = $configs;
         $this->views = $views;
     }
 
@@ -44,13 +44,18 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
     public function getAttachments()
     {
         try {
-            $config = $this->loginConfig->getConfig('webcomposer_config.login_configuration');
+            $config = $this->configs->getConfig('webcomposer_config.login_configuration');
+            $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+            $playerInfo = $this->playerSession->getDetails();
         } catch (\Exception $e) {
             $config = [];
         }
 
-        return [
-            'authenticated' => $this->playerSession->isLogin(),
+        $isLoggedIn = $this->playerSession->isLogin();
+        $useDafacoinBalanceMenu = $headerConfigs['dafacoin_balance_toggle'];
+
+        $data = [
+            'authenticated' => $isLoggedIn,
             'error_message_blank_username' => $config['error_message_blank_username'],
             'error_message_blank_password' => $config['error_message_blank_password'],
             'error_message_blank_passname' => $config['error_message_blank_passname'],
@@ -58,8 +63,15 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
             'error_message_service_not_available' => $config['error_message_service_not_available'],
             'error_message_account_suspended' => $config['error_message_account_suspended'],
             'error_message_account_locked' => $config['error_message_account_locked'],
-            'products' => $this->getProducts()
+            'products' => $this->getProducts(),
+            'useDafacoinBalanceMenu' => $useDafacoinBalanceMenu
         ];
+
+        if ($isLoggedIn && $useDafacoinBalanceMenu) {
+            $data['currency'] = $playerInfo['currency'];
+        }
+
+        return $data;
     }
 
     private function getProducts()
