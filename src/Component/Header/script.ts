@@ -210,7 +210,8 @@ export class HeaderComponent implements ComponentInterface {
         const dafacoinSavedPopup = this.element.querySelector("#dafacoin-saved-overlay");
         utility.removeClass(dafacoinSavedPopup, "hidden");
 
-        setTimeout(this.closeSavedPopup.bind(this), 3000);
+        const popupDisplayTime = this.attachments.dafacoin_popup_display_time * 1000;
+        setTimeout(this.closeSavedPopup.bind(this), popupDisplayTime);
     }
 
     private closeSavedPopup() {
