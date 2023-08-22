@@ -69,6 +69,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 
         if ($isLoggedIn && $useDafacoinBalanceMenu) {
             $data['currency'] = $playerInfo['currency'];
+            $data['dafacoin_popup_display_time'] = $headerConfigs['dafacoin_notification_popup_display_time'];
         }
 
         return $data;
