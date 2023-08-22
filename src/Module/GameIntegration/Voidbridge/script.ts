@@ -86,6 +86,7 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                     this.errorMessageLightbox.showMessage(
                         response,
                     );
+                    return;
                 }
 
                 if (!response.currency) {
@@ -94,6 +95,13 @@ export class VoidbridgeModule implements ModuleInterface, GameInterface {
                         "unsupported",
                         options,
                     );
+                }
+
+                // connection timeout handling when launching via iframe
+                const isConnectionTimeout: boolean = (!response.gameurl &&
+                    (typeof options.onFail === "function"));
+                if (isConnectionTimeout) {
+                    options.onFail.apply(null, [options.element]);
                 }
             }).fail((error, message) => {
                 // Do nothing

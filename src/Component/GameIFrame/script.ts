@@ -76,7 +76,7 @@ export class GameIFrameComponent implements ComponentInterface {
         if (this.isLogin && options.provider) {
             options.element = this.element;
             options.onSuccess = this.loadGameFrame;
-            options.onFail = this.showErrorMessage;
+            options.onFail = this.showTimeoutError;
             GameLauncher.launch(options.provider, options);
         } else {
             this.showErrorMessage(this.element);
@@ -103,7 +103,6 @@ export class GameIFrameComponent implements ComponentInterface {
             iframe.setAttribute("width", 360);
             iframe.setAttribute("height", "auto");
             iframe.setAttribute("src", response.gameurl);
-
         }
     }
 
@@ -128,6 +127,20 @@ export class GameIFrameComponent implements ComponentInterface {
         utility.addClass(element.querySelector(".loader"), "hidden");
         utility.removeClass(element.querySelector(".message"), "hidden");
         this.closeOnTimeout();
+    }
+
+    /**
+     * Show connection error message to the user on failed launch after 30 seconds
+     */
+    private showTimeoutError(element) {
+        setTimeout(() => {
+            utility.addClass(element.querySelector(".loader"), "hidden");
+            utility.removeClass(element.querySelector(".message"), "hidden");
+            setTimeout(() => {
+                window.close();
+                window.history.back();
+            }, 5 * 1000);
+        }, 30 * 1000);
     }
 
     /**

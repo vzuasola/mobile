@@ -90,6 +90,13 @@ export class CQ9Module implements ModuleInterface, GameInterface {
                         options,
                     );
                 }
+
+                // connection timeout handling when launching via iframe
+                const isConnectionTimeout: boolean = (!response.gameurl &&
+                     (typeof options.onFail === "function"));
+                if (isConnectionTimeout) {
+                    options.onFail.apply(null, [options.element]);
+                }
             }).fail((error, message) => {
                 // Do nothing
                 if (typeof options.onFail === "function") {

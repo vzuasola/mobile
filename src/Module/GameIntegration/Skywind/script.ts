@@ -83,6 +83,7 @@ export class SkywindModule implements ModuleInterface, GameInterface {
                     this.errorMessageLightbox.showMessage(
                         response,
                     );
+                    return;
                 }
 
                 if (!response.currency) {
@@ -91,6 +92,10 @@ export class SkywindModule implements ModuleInterface, GameInterface {
                         "unsupported",
                         options,
                     );
+                }
+
+                if (!response.gameurl && (typeof options.onFail === "function")) {
+                    options.onFail.apply(null, [options.element]);
                 }
             }).fail((error, message) => {
                 // Do nothing
