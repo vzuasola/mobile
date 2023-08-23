@@ -234,9 +234,8 @@ export class HeaderComponent implements ComponentInterface {
                     const loader = coinWrapper.querySelector(".mobile-balance-loader");
 
                     if (balance) {
-                        const formattedBalance = this.formatBalance(Number(response.balance).toFixed(2));
-                        balance.innerHTML = formattedBalance;
-                        innerBalance.innerHTML = formattedBalance;
+                        balance.innerHTML = response.balance;
+                        innerBalance.innerHTML = response.balance;
                     }
 
                     utility.removeClass(cashierMenu, "hidden");
