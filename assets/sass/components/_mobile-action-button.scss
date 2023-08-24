@@ -46,6 +46,7 @@
         padding: 0.2rem 0.3rem;
         border-radius: 0.3rem;
         font-size: 1.2rem;
+        color: $red;
         @include media(">tablet") {
             max-width: 15.5rem;
         }
