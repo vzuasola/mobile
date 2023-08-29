@@ -57,6 +57,14 @@ class JSystemModuleController
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
+
+        $countryRestriction = $this->checkCountryRestriction($request);
+
+        if ($countryRestriction['restricted']) {
+            $data['restricted_country'] = $countryRestriction;
+            return $this->rest->output($response, $data);
+        }
+
         if ($this->checkCurrency($request)) {
             $data['currency'] = true;
             $requestData = $request->getParsedBody();

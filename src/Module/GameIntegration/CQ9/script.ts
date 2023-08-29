@@ -6,6 +6,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import {ErrorMessageLightbox} from "../scripts/error-message-lightbox";
 
 export class CQ9Module implements ModuleInterface, GameInterface {
     private key: string = "cq9";
@@ -13,9 +14,11 @@ export class CQ9Module implements ModuleInterface, GameInterface {
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
+    private errorMessageLightbox: ErrorMessageLightbox;
 
     onLoad(attachments: {}) {
         this.messageLightbox =  new ProviderMessageLightbox();
+        this.errorMessageLightbox = new ErrorMessageLightbox();
     }
 
     init() {
@@ -53,9 +56,11 @@ export class CQ9Module implements ModuleInterface, GameInterface {
                 data: {
                     product,
                     gameCode: options.code,
+                    extGameId: options.extgameid || "",
                     subprovider: options.subprovider || undefined,
                     lang,
                     playMode: true,
+                    lobby: options.lobby,
                 },
             }).then((response) => {
                 if (response.gameurl) {
@@ -72,12 +77,25 @@ export class CQ9Module implements ModuleInterface, GameInterface {
                     }
                 }
 
+                if (response.errors) {
+                    this.errorMessageLightbox.showMessage(
+                        response,
+                    );
+                }
+
                 if (!response.currency) {
                     this.messageLightbox.showMessage(
                         this.moduleName,
                         "unsupported",
                         options,
                     );
+                }
+
+                // connection timeout handling when launching via iframe
+                const isConnectionTimeout: boolean = (!response.gameurl &&
+                     (typeof options.onFail === "function"));
+                if (isConnectionTimeout) {
+                    options.onFail.apply(null, [options.element]);
                 }
             }).fail((error, message) => {
                 // Do nothing

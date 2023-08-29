@@ -30,3 +30,214 @@
         margin-top: 1rem;
     }
 }
+
+.coin-account-balance {
+    position: absolute;
+    top: 1.4rem;
+    right: $container-gutter-xs;
+    text-align: center;
+
+    a,
+    a:hover {
+        color: $white;
+    }
+
+    &-amount {
+        margin-top: 0.3rem;
+        margin-right: 0.3em;
+        font-size: 1.2rem;
+    }
+
+    // icon
+    svg {
+        width: 2.4rem;
+        vertical-align: middle;
+        fill: $white;
+    }
+
+    // loader
+    &-loader {
+        width: 1.6rem;
+        height: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    img {
+        border-radius: 5px;
+    }
+}
+
+#balance-menu-btn {
+    display: inline-block;
+}
+
+.up-arrowhead {
+    margin: 0px 5px 0px 0px;
+    position: relative;
+    top: 4px;
+}
+
+.down-arrowhead {
+    margin: 0px 5px 0px 0px;
+    position: relative;
+    top: -2px;
+}
+
+#balance-menu-div {
+    background-color: #2b2829;
+    border: 1px solid #5a4d4e;
+    padding: 5px;
+    width: 95%;
+    position: absolute;
+    top: -5px;
+    left: 2.5%;
+    z-index: 50;
+}
+
+#cashier-menu-top {
+    padding: 10px;
+}
+
+#cashier-menu-total {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#cashier-menu-msg {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#cashier-menu-buttons {
+    border-top: 1px solid #5a4d4e;
+    padding: 10px;
+}
+
+#balance-save-btn {
+    color: #2b2829;
+    background-color: #ffe000;
+    border: 1px solid #ffe000;
+}
+
+#balance-save-btn:disabled {
+    background-color: #968526;
+}
+
+#balance-close-btn {
+    color: white;
+    background-color: #2b2829;
+    border: 1px solid #D3D3D3;
+    margin-right: 12px;
+}
+
+.cashier-menu-yellow {
+    color: #FFE000;
+}
+
+.cashier-information-text {
+    color: #FFFFFF;
+}
+.balance-btn {
+    float: right;
+    border-radius: 3px;
+    padding:3px 7px;
+}
+
+.popup-btn {
+    font-weight: bold;
+    padding: 6px 40px;
+    border-radius: 15px;
+    display: inline-block;
+}
+
+#popup-no-btn {
+    color: #2b2829;
+    background-color: #ffe000;
+    border: 1px solid #ffe000;
+    margin-left: 20px;
+}
+
+#popup-yes-btn {
+    color: #cdcdcd;
+    background-color: #2b2829;
+    border: 1px solid #ffffff;
+}
+
+#dafacoin-warning {
+    background-color: #373737;
+    color: #cdcdcd;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 95%;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 100;
+}
+
+#dafacoin-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+}
+
+#dafacoin-warning-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 70;
+}
+
+.div-shade {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(1px);
+    z-index: 80;
+}
+
+#dafacoin-saved-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 70;
+}
+
+#dafacoin-saved {
+    background-color: #373737;
+    color: #cdcdcd;
+    font-weight: bold;
+    position: absolute;
+    top: 10rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 95%;
+    border-radius: 10px;
+    z-index: 100;
+    text-align: center;
+}
+
+.dcoin-menu-ok {
+    display: inline-block;
+    margin-right: 11px;
+}

@@ -63,6 +63,16 @@ class GPIThaiModuleController
         $data['gameurl'] = false;
         $data['currency'] = false;
 
+        $countryRestriction = $this->checkCountryRestriction(
+            $request,
+            'webcomposer_config.games_gpi_provider'
+        );
+
+        if ($countryRestriction['restricted']) {
+            $data['restricted_country'] = $countryRestriction;
+            return $this->rest->output($response, $data);
+        }
+
         if ($this->checkCurrency($request)) {
             $data = $this->getGameLobby($request, $response);
         }

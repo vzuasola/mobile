@@ -339,6 +339,7 @@ export class PASModule implements ModuleInterface, GameInterface {
                             this.errorMessageLightbox.showMessage(
                                 response,
                             );
+                            return;
                         }
 
                         options.currency = this.currency;
@@ -348,6 +349,13 @@ export class PASModule implements ModuleInterface, GameInterface {
                                 "unsupported",
                                 options,
                             );
+                        }
+
+                        // connection timeout handling when launching via iframe
+                        const isConnectionTimeout: boolean = (!response.gameurl &&
+                                (typeof options.onFail === "function"));
+                        if (isConnectionTimeout) {
+                            options.onFail.apply(null, [options.element]);
                         }
                     }
                     resolve();

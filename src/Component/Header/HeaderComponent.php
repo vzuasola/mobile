@@ -138,7 +138,13 @@ class HeaderComponent implements ComponentWidgetInterface
      */
     public function getTemplate()
     {
-        return '@component/Header/template.html.twig';
+        $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+        $useDafacoinMenu = $headerConfigs['dafacoin_balance_toggle'];
+        if ($useDafacoinMenu) {
+            return '@component/Header/coin-template.html.twig';
+        } else {
+            return '@component/Header/template.html.twig';
+        }
     }
 
     /**
@@ -201,6 +207,20 @@ class HeaderComponent implements ComponentWidgetInterface
         if ($isLogin && $username) {
             $data['username'] = $username;
             $data['cashier_link'] = $cashierMenu[0] ?? [];
+        }
+
+        $useDafacoinMenu = $headerConfigs['dafacoin_balance_toggle'];
+        if ($isLogin && $useDafacoinMenu) {
+            $data['cashier_menu'] = [
+                'dafacoin_total_balance_label' => strtoupper($headerConfigs['dafacoin_total_balance_label']),
+                'dafacoin_priority_switch_message' => $headerConfigs['dafacoin_priority_switch_message'],
+                'save_button_label' => $headerConfigs['save_button_label'],
+                'close_button_label' => $headerConfigs['close_button_label'],
+                'yes_button_label' => $headerConfigs['yes_button_label'],
+                'no_button_label' => $headerConfigs['no_button_label'],
+                'dafacoin_unsaved_changes_message' => $headerConfigs['dafacoin_unsaved_changes_message'],
+                'dafacoin_saved_popup_message' => $headerConfigs['dafacoin_saved_popup_message']
+            ];
         }
 
         return $data;

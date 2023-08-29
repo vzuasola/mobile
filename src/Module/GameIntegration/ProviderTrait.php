@@ -237,6 +237,9 @@ trait ProviderTrait
         return $this->rest->output($response, $data);
     }
 
+    /**
+     * Checks player's currency against supported currency per Game Provider
+     */
     public function checkCurrency($request, $key = 'webcomposer_config.icore_games_integration', $isConfigById = false)
     {
         try {
@@ -280,6 +283,55 @@ trait ProviderTrait
             // Do nothing
         }
         return false;
+    }
+
+    /**
+     * Checks player's GEOIP against restricted countries per Game Provider
+     * @param $request
+     * @param string $key Configuration ID to fetch
+     * @return array $data
+     */
+    public function checkCountryRestriction($request, $key = 'webcomposer_config.icore_games_integration')
+    {
+        $data['restricted'] = false;
+        try {
+            $params = $request->getParsedBody();
+            $productConfig = $this->config;
+
+            // Get config from specific product CMS
+            if (isset($params['product'])) {
+                $productConfig = $this->config->withProduct($params['product']);
+            }
+
+            $config = $productConfig->getConfig($key) ?? [];
+
+            if (empty($config[self::KEY . '_country'])) {
+                return $data;
+            }
+
+            $countries = explode("\r\n", $config[self::KEY . '_country']);
+
+            // Get player's GEOIP country code
+            $playerCountry = $request->getServerParams()['HTTP_X_CUSTOM_LB_GEOIP_COUNTRY'] ?? '';
+            if (in_array($playerCountry, $countries)) {
+                try {
+                    $rclConfig = $productConfig->getConfig('webcomposer_config.unsupported_country');
+                } catch (\Exception $e) {
+                    $rclConfig = [];
+                }
+
+                $data['restricted'] = true;
+                $data['title'] = $rclConfig['unsupported_country_title'] ?? 'Country not supported';
+                $data['message'] = $rclConfig['unsupported_country_message']['value'] ??
+                        'This game is not available for the country you are currently in.
+                         Please choose one of our other Lottery games.';
+                $data['button'] = $rclConfig['unsupported_country_button'] ?? 'OK';
+            }
+        } catch (\Exception $e) {
+            // Do nothing
+        }
+
+        return $data;
     }
 
     /**
