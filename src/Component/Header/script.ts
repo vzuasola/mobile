@@ -15,13 +15,15 @@ export class HeaderComponent implements ComponentInterface {
     private product: string;
     private logoData: any;
     private dafacoinMenuStatus = "closed";
+    private joinUrl: string;
 
     // This property should only be set through setUnsavedChangesStatus() method.
     private unsavedChangesExist = false;
 
-    onLoad(element: HTMLElement, attachments: { authenticated: boolean, products: any[] }) {
+    onLoad(element: HTMLElement, attachments: { authenticated: boolean, join_now_url: string, products: any[] }) {
         this.element = element;
         this.attachments = attachments;
+        this.joinUrl = attachments.join_now_url;
         this.attachProduct();
         this.refreshBalance();
         this.componentFinish();
@@ -45,9 +47,10 @@ export class HeaderComponent implements ComponentInterface {
         });
     }
 
-    onReload(element: HTMLElement, attachments: { authenticated: boolean, products: any[] }) {
+    onReload(element: HTMLElement, attachments: { authenticated: boolean, join_now_url: string, products: any[] }) {
         this.element = element;
         this.attachments = attachments;
+        this.joinUrl = attachments.join_now_url;
         this.attachProduct();
         this.refreshBalance();
         this.componentFinish();
@@ -279,12 +282,12 @@ export class HeaderComponent implements ComponentInterface {
     private attachProduct() {
         const product = ComponentManager.getAttribute("product");
         const loginButton = this.element.querySelector(".login-trigger");
+        const joinButton = this.element.querySelector(".join-btn");
 
-        if (loginButton) {
-            if (product !== "mobile-entrypage") {
-                if (this.attachments.products && this.attachments.products.hasOwnProperty(product)) {
-                    const currentProduct = this.attachments.products[product];
-
+        if (product !== "mobile-entrypage") {
+            if (this.attachments.products && this.attachments.products.hasOwnProperty(product)) {
+                const currentProduct = this.attachments.products[product];
+                if (loginButton) {
                     loginButton.setAttribute(
                         "data-product-login-via",
                         currentProduct.login_via,
@@ -294,7 +297,16 @@ export class HeaderComponent implements ComponentInterface {
                         currentProduct.reg_via,
                     );
                 }
-            } else {
+
+                if (joinButton) {
+                    joinButton.setAttribute(
+                        "href",
+                        currentProduct.reg_via,
+                    );
+                }
+            }
+        } else {
+            if (loginButton) {
                 loginButton.setAttribute(
                     "data-product-login-via",
                     "",
@@ -302,6 +314,13 @@ export class HeaderComponent implements ComponentInterface {
                 loginButton.setAttribute(
                     "data-product-reg-via",
                     "",
+                );
+            }
+
+            if (joinButton) {
+                joinButton.setAttribute(
+                    "href",
+                    this.joinUrl,
                 );
             }
         }

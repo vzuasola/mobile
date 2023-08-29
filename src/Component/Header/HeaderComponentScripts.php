@@ -16,6 +16,8 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 
     private $views;
 
+    private $menus;
+
     /**
      *
      */
@@ -24,18 +26,20 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
         return new static(
             $container->get('player_session'),
             $container->get('config_fetcher'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('menu_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $configs, $views)
+    public function __construct($playerSession, $configs, $views, $menus)
     {
         $this->playerSession = $playerSession;
         $this->configs = $configs;
         $this->views = $views;
+        $this->menus = $menus;
     }
 
     /**
@@ -51,6 +55,19 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
             $config = [];
         }
 
+        try {
+            $data['top_menu'] = $this->menus->getMultilingualMenu('mobile-pre-login');
+
+            foreach ($data['top_menu'] as $top_menu) {
+                if (stristr($top_menu['attributes']['class'], 'join-btn')) {
+                    $join_now_url = $top_menu['uri'];
+                    break;
+                }
+            }
+        } catch (\Exception $e) {
+            $data['top_menu'] = [];
+        }
+
         $isLoggedIn = $this->playerSession->isLogin();
         $useDafacoinBalanceMenu = $headerConfigs['dafacoin_balance_toggle'];
 
@@ -64,7 +81,8 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
             'error_message_account_suspended' => $config['error_message_account_suspended'],
             'error_message_account_locked' => $config['error_message_account_locked'],
             'products' => $this->getProducts(),
-            'useDafacoinBalanceMenu' => $useDafacoinBalanceMenu
+            'useDafacoinBalanceMenu' => $useDafacoinBalanceMenu,
+            'join_now_url' => $join_now_url ?? "",
         ];
 
         if ($isLoggedIn && $useDafacoinBalanceMenu) {
