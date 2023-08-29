@@ -28,10 +28,13 @@
         </div>
     {% else %}
         <span class="mobile-action-button mobile-action-button-{{ app.lang }}">
-        <a href="#" class="login-trigger btn btn-yellow btn-small btn-mobile-login">
-            {{ mobile_login_reg }}
+        <a href="#" class="login-trigger mobile-action-button-login-now">
+        {{ mobile_login_reg }}
         </a>
-    </span>
+        <a href="{{ url(join_now_link) }}" class="join-btn btn btn-yellow btn-small btn-mobile-login"
+            data-join-url="{{ url(join_now_link) }}">
+            {{ login_join_now_text }}
+        </a>
     {% endif %}
 
     {{ widget('header_login') }}
