@@ -15,15 +15,13 @@ export class HeaderComponent implements ComponentInterface {
     private product: string;
     private logoData: any;
     private dafacoinMenuStatus = "closed";
-    private joinUrl: string;
 
     // This property should only be set through setUnsavedChangesStatus() method.
     private unsavedChangesExist = false;
 
-    onLoad(element: HTMLElement, attachments: { authenticated: boolean, join_now_url: string, products: any[] }) {
+    onLoad(element: HTMLElement, attachments: { authenticated: boolean, products: any[] }) {
         this.element = element;
         this.attachments = attachments;
-        this.joinUrl = attachments.join_now_url;
         this.attachProduct();
         this.refreshBalance();
         this.componentFinish();
@@ -47,10 +45,9 @@ export class HeaderComponent implements ComponentInterface {
         });
     }
 
-    onReload(element: HTMLElement, attachments: { authenticated: boolean, join_now_url: string, products: any[] }) {
+    onReload(element: HTMLElement, attachments: { authenticated: boolean, products: any[] }) {
         this.element = element;
         this.attachments = attachments;
-        this.joinUrl = attachments.join_now_url;
         this.attachProduct();
         this.refreshBalance();
         this.componentFinish();
@@ -284,45 +281,31 @@ export class HeaderComponent implements ComponentInterface {
         const loginButton = this.element.querySelector(".login-trigger");
         const joinButton = this.element.querySelector(".join-btn");
 
+        if (loginButton) {
+
+        }
         if (product !== "mobile-entrypage") {
             if (this.attachments.products && this.attachments.products.hasOwnProperty(product)) {
                 const currentProduct = this.attachments.products[product];
-                if (loginButton) {
-                    loginButton.setAttribute(
-                        "data-product-login-via",
-                        currentProduct.login_via,
-                    );
-                    loginButton.setAttribute(
-                        "data-product-reg-via",
-                        currentProduct.reg_via,
-                    );
-                }
 
-                if (joinButton) {
-                    joinButton.setAttribute(
-                        "href",
-                        currentProduct.reg_via,
-                    );
-                }
-            }
-        } else {
-            if (loginButton) {
                 loginButton.setAttribute(
                     "data-product-login-via",
-                    "",
+                    currentProduct.login_via,
                 );
                 loginButton.setAttribute(
                     "data-product-reg-via",
-                    "",
+                    currentProduct.reg_via,
                 );
             }
-
-            if (joinButton) {
-                joinButton.setAttribute(
-                    "href",
-                    this.joinUrl,
-                );
-            }
+        } else {
+            loginButton.setAttribute(
+                "data-product-login-via",
+                "",
+            );
+            loginButton.setAttribute(
+                "data-product-reg-via",
+                "",
+            );
         }
     }
 
