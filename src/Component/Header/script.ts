@@ -15,13 +15,15 @@ export class HeaderComponent implements ComponentInterface {
     private product: string;
     private logoData: any;
     private dafacoinMenuStatus = "closed";
+    private joinUrl: string;
 
     // This property should only be set through setUnsavedChangesStatus() method.
     private unsavedChangesExist = false;
 
-    onLoad(element: HTMLElement, attachments: { authenticated: boolean, products: any[] }) {
+    onLoad(element: HTMLElement, attachments: { authenticated: boolean, join_now_url: string, products: any[] }) {
         this.element = element;
         this.attachments = attachments;
+        this.joinUrl = attachments.join_now_url;
         this.attachProduct();
         this.refreshBalance();
         this.componentFinish();
@@ -45,9 +47,10 @@ export class HeaderComponent implements ComponentInterface {
         });
     }
 
-    onReload(element: HTMLElement, attachments: { authenticated: boolean, products: any[] }) {
+    onReload(element: HTMLElement, attachments: { authenticated: boolean, join_now_url: string, products: any[] }) {
         this.element = element;
         this.attachments = attachments;
+        this.joinUrl = attachments.join_now_url;
         this.attachProduct();
         this.refreshBalance();
         this.componentFinish();
@@ -279,6 +282,11 @@ export class HeaderComponent implements ComponentInterface {
     private attachProduct() {
         const product = ComponentManager.getAttribute("product");
         const loginButton = this.element.querySelector(".login-trigger");
+        const joinButton = this.element.querySelector(".join-btn");
+
+        if (joinButton) {
+            joinButton.setAttribute("href", joinButton.getAttribute("data-join-url"));
+        }
 
         if (loginButton) {
             if (product !== "mobile-entrypage") {
@@ -293,6 +301,13 @@ export class HeaderComponent implements ComponentInterface {
                         "data-product-reg-via",
                         currentProduct.reg_via,
                     );
+
+                    if (joinButton) {
+                        joinButton.setAttribute(
+                            "href",
+                            currentProduct.reg_via,
+                        );
+                    }
                 }
             } else {
                 loginButton.setAttribute(
@@ -303,8 +318,16 @@ export class HeaderComponent implements ComponentInterface {
                     "data-product-reg-via",
                     "",
                 );
+
+                if (joinButton) {
+                    joinButton.setAttribute(
+                        "href",
+                        this.joinUrl,
+                    );
+                }
             }
         }
+
     }
 
     private refreshHeader() {
