@@ -64,7 +64,8 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
             'error_message_account_suspended' => $config['error_message_account_suspended'],
             'error_message_account_locked' => $config['error_message_account_locked'],
             'products' => $this->getProducts(),
-            'useDafacoinBalanceMenu' => $useDafacoinBalanceMenu
+            'useDafacoinBalanceMenu' => $useDafacoinBalanceMenu,
+            'join_now_url' => $headerConfigs['registration_link']
         ];
 
         if ($isLoggedIn && $useDafacoinBalanceMenu) {
