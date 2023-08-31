@@ -51,10 +51,26 @@
             max-width: 15.5rem;
         }
     }
+
+    .btn.join-btn {
+        color: $dark-gray;
+    }
+
     &-pl {
         .btn {
             font-size: 1rem;
         }
+    }
+
+    &-login-now {
+        color: $white;
+        margin-right: 0.1rem;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    &-login-now:hover {
+        color: $white;
     }
 }
 
