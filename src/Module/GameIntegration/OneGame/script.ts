@@ -7,6 +7,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 
 import {GameInterface} from "./../scripts/game.interface";
 import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
+import {ErrorMessageLightbox} from "../scripts/error-message-lightbox";
 
 export class OneGameModule implements ModuleInterface, GameInterface {
     private key: string = "onegame";
@@ -14,9 +15,11 @@ export class OneGameModule implements ModuleInterface, GameInterface {
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
+    private errorMessageLightbox: ErrorMessageLightbox;
 
     onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
+        this.errorMessageLightbox = new ErrorMessageLightbox();
     }
 
     init() {
@@ -54,7 +57,9 @@ export class OneGameModule implements ModuleInterface, GameInterface {
                 data: {
                     product,
                     gameCode: options.code,
+                    extGameId: options.extgameid || "",
                     subprovider: options.subprovider || undefined,
+                    lobby: options.lobby,
                     lang,
                 },
             }).then((response) => {
@@ -70,6 +75,13 @@ export class OneGameModule implements ModuleInterface, GameInterface {
                         this.launchGame(options.target);
                         this.updatePopupWindow(response.gameurl);
                     }
+                }
+
+                if (response.errors) {
+                    this.errorMessageLightbox.showMessage(
+                        response,
+                    );
+                    return;
                 }
 
                 if (!response.currency) {

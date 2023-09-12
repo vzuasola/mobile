@@ -24,6 +24,8 @@ class OneGameModuleController
      */
     private $viewsFetcher;
 
+    private $playerGameFetcher;
+
     /**
      *
      */
@@ -34,48 +36,31 @@ class OneGameModuleController
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('player_game_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $oneGame, $config, $player, $viewsFetcher)
+    public function __construct($rest, $oneGame, $config, $player, $viewsFetcher, $playerGameFetcher)
     {
         $this->rest = $rest;
         $this->oneGame = $oneGame;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
+        $this->playerGameFetcher = $playerGameFetcher;
     }
 
     /**
-     * @{inheritdoc}
-     */
-    public function launch($request, $response)
+     * Get GameURL via GetGeneralLobby
+    */
+    private function getGameUrl($request, $requestData)
     {
-        $data['gameurl'] = false;
-        $data['currency'] = false;
-
-        if ($this->checkCurrency($request)) {
-            $requestData = $request->getParsedBody();
-
-            if ($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') {
-                $data = $this->getGameUrl($request);
-            }
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
-    /**
-     * Get Game URL
-     */
-    private function getGameUrl($request)
-    {
-        $requestData = $request->getParsedBody();
         $data['currency'] = true;
+        $data['gameurl'] = false;
         $params = explode('|', $requestData['gameCode']);
         $providerProduct = $params[1] ?? 'games';
         try {
@@ -89,7 +74,7 @@ class OneGameModuleController
                 $data['gameurl'] = $responseData['url'];
             }
         } catch (\Exception $e) {
-            $data['currency'] = true;
+            // do nothing
         }
 
         return $data;
