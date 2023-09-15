@@ -1,0 +1,15 @@
+{% for url in preconnect_urls %}
+    <link rel="preconnect" href="{{ url }}">
+{% endfor %}
+
+{% for tag in preload_tags %}
+    <link rel="preload" href="{{ tag.url }}" as="{{ tag.assetType }}"
+            {% if (tag.priority != 'default') %}
+                fetchpriority="{{ tag.priority }}"
+            {% endif %}
+            {% if (tag.assetType == 'font') %}
+                type="{{ tag.fontType }}"
+            {%  endif %}
+    >
+{% endfor %}
+
