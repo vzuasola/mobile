@@ -169,4 +169,13 @@ class Products
         'mobile-games',
         'mobile-ptplus'
     ];
+
+    const IFRAME_TOGGLE = [
+        'mobile-casino' => 'casino.casino_configuration',
+        'mobile-casino-gold' => 'casino-gold.casino-gold_configuration',
+        'mobile-live-dealer' => 'live_dealer.live_dealer_configuration',
+        'mobile-games' => 'gts.gts_configuration',
+        'mobile-arcade' => 'arcade.arcade_configuration',
+        'mobile-ptplus' => 'page_content_list'
+    ];
 }
