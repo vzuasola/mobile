@@ -33,7 +33,8 @@ $settings['settings']['components']['render']['preload'] = [
     'footer',
     'marketing',
     'seo',
-    'meta'
+    'meta',
+    'pageload'
 ];
 
 $settings['settings']['components']['router']['widget_headers'] = [

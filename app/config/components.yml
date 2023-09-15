@@ -199,6 +199,9 @@ components:
   marketing:
     class: App\MobileEntry\Component\Marketing\MarketingComponent
 
+  pageload:
+    class: App\MobileEntry\Component\PageLoad\PageLoadComponent
+
   pwa_home_screen:
     class: App\MobileEntry\Component\PWA\PWAHomeScreenComponent
 
