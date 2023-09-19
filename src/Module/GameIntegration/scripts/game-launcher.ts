@@ -183,6 +183,9 @@ class GameLauncher {
         // Send launch event for game launch using Game Iframe Launcher
         if (options.hasOwnProperty("iframe") && options.iframe === "true") {
             options.currentProduct = ComponentManager.getAttribute("product");
+            if (options.hasOwnProperty("launchpromo") && options.launchpromo === "true") {
+                options.currentProduct = options.product;
+            }
             ComponentManager.broadcast("game.launch.iframe", {
                 options,
             });

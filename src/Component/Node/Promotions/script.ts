@@ -6,6 +6,7 @@ import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/ass
 import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import PopupWindow from "@app/assets/script/components/popup";
+import {GameLauncherManager} from "@app/assets/script/components/game-launcher-manager";
 
 /**
  *
@@ -16,35 +17,48 @@ export class PromotionsNodeComponent implements ComponentInterface {
     private gameLauncher;
     private windowObject: any;
     private response: any;
+    private launchViaIframe: boolean;
+    private gameLauncherManager: GameLauncherManager;
 
     constructor() {
         this.gameLauncher = GameLauncher;
+        this.gameLauncherManager = new GameLauncherManager();
     }
 
-    onLoad(element: HTMLElement, attachments: {countdown: string, authenticated: boolean}) {
+    onLoad(element: HTMLElement, attachments: {
+        countdown: string,
+        authenticated: boolean,
+        launch_via_iframe: boolean,
+    }) {
         this.getCountdown(element, attachments.countdown);
         this.componentFinish(element);
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.listenClickGameTile();
         this.listenGameLaunch();
-        this.listenToLaunchGameLoader();
         this.response = null;
         this.refreshPreviousPage();
+        this.launchViaIframe = attachments.launch_via_iframe;
+        this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
     }
 
-    onReload(element: HTMLElement, attachments: {countdown: string, authenticated: boolean}) {
+    onReload(element: HTMLElement, attachments: {
+        countdown: string,
+        authenticated: boolean,
+        launch_via_iframe: boolean,
+    }) {
         this.getCountdown(element, attachments.countdown);
         this.componentFinish(element);
         this.isLogin = attachments.authenticated;
         if (!this.element) {
             this.listenClickGameTile();
             this.listenGameLaunch();
-            this.listenToLaunchGameLoader();
             this.response = null;
+            this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
         }
         this.element = element;
         this.refreshPreviousPage();
+        this.launchViaIframe = attachments.launch_via_iframe;
     }
 
     private getCountdown(element, countdownFormat) {
@@ -130,45 +144,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
                 }).fail((error, message) => {
                     console.log(error);
                 });
-            }
-        });
-    }
-
-    /**
-     * Event listener for launching pop up loader
-     */
-    private listenToLaunchGameLoader() {
-        ComponentManager.subscribe("game.launch.promo.loader", (event, src, data) => {
-            const gameProduct = data.options.product;
-            if (gameProduct) {
-                // Pop up loader with all data
-                const prop = {
-                    width: 360,
-                    height: 720,
-                    scrollbars: 1,
-                    scrollable: 1,
-                    resizable: 1,
-                };
-
-                let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
-                const source = utility.getParameterByName("source");
-
-                for (const key in data.options) {
-                    if (data.options.hasOwnProperty(key)) {
-                        const param = data.options[key];
-                        url = utility.addQueryParam(url, key, param);
-                    }
-                }
-
-                url = utility.addQueryParam(url, "currentProduct", gameProduct);
-                url = utility.addQueryParam(url, "loaderFlag", "true");
-                if (data.options.target === "popup" || data.options.target === "_blank") {
-                    this.windowObject = PopupWindow(url, "gameWindow", prop);
-                }
-
-                if (!this.windowObject && (data.options.target === "popup" || data.options.target === "_blank")) {
-                    return;
-                }
             }
         });
     }
