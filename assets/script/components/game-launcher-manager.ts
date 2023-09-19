@@ -24,6 +24,12 @@ export class GameLauncherManager {
                 this.launchByLauncherType("game.launch.iframe", data);
             }
         });
+
+        ComponentManager.subscribe("game.launch.promo.loader", (event, src, data) => {
+            if (ComponentManager.getAttribute("product") === product) {
+                this.launchByLauncherType("games.launch.loader", data);
+            }
+        });
     }
 
      /**
