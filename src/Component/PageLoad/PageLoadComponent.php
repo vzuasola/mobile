@@ -71,11 +71,7 @@ class PageLoadComponent implements ComponentWidgetInterface
 
                 $tagInfo['url'] = $url;
                 $tagInfo['assetType'] = $assetType;
-                $tagInfo['priority'] = $preloadInfo[2];
-
-                if ($assetType == 'font') {
-                    $tagInfo['fontType'] = $preloadInfo[3];
-                }
+                $tagInfo['priority'] = (count($preloadInfo) > 2) ? $preloadInfo[2] : "default";
 
                 $preloadTags[] = $tagInfo;
             } catch (\Exception $ex) {

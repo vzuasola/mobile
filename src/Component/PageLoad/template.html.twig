@@ -7,9 +7,6 @@
             {% if (tag.priority != 'default') %}
                 fetchpriority="{{ tag.priority }}"
             {% endif %}
-            {% if (tag.assetType == 'font') %}
-                type="{{ tag.fontType }}"
-            {%  endif %}
     >
 {% endfor %}
 
