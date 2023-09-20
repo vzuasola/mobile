@@ -113,7 +113,11 @@ export class GameLauncherManager {
             }
         }
 
-        url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+        if (ComponentManager.getAttribute("product") === "mobile-entrypage") {
+            url = utility.addQueryParam(url, "currentProduct", data.options.currentProduct);
+        } else {
+            url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+        }
         url = utility.addQueryParam(url, "loaderFlag", "true");
 
         return url;
