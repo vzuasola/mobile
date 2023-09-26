@@ -24,6 +24,12 @@ export class GameLauncherManager {
                 this.launchByLauncherType("game.launch.iframe", data);
             }
         });
+
+        ComponentManager.subscribe("game.launch.promo.loader", (event, src, data) => {
+            if (ComponentManager.getAttribute("product") === product) {
+                this.launchByLauncherType("games.launch.loader", data);
+            }
+        });
     }
 
      /**
@@ -107,7 +113,11 @@ export class GameLauncherManager {
             }
         }
 
-        url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+        if (ComponentManager.getAttribute("product") === "mobile-entrypage") {
+            url = utility.addQueryParam(url, "currentProduct", data.options.currentProduct);
+        } else {
+            url = utility.addQueryParam(url, "currentProduct", ComponentManager.getAttribute("product"));
+        }
         url = utility.addQueryParam(url, "loaderFlag", "true");
 
         return url;

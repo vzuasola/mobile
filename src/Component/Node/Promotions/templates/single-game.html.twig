@@ -1,6 +1,8 @@
 <a class="game-list game-listing-item"
     data-game-title = "{{ node.field_banner_game_launch.0.field_game_title.0.value }}"
-    data-game-tablename = "{{ node.field_banner_game_launch.0.field_field_table_id.0.value }}"
+    {% if node.field_banner_game_launch.0.field_field_table_id.0.value %}
+        data-game-tablename = "{{ node.field_banner_game_launch.0.field_field_table_id.0.value }}"
+    {% endif %}
     {% if node.field_banner_game_launch.0.field_external_game_id.0.value %}
         data-game-extgameid="{{ node.field_banner_game_launch.0.field_external_game_id.0.value }}"
     {% endif %}
@@ -34,6 +36,9 @@
     {% endif %}
     {% if node.field_banner_game_launch.0.field_game_platform.0.value %}
         data-game-platform = "{{ node.field_banner_game_launch.0.field_game_platform.0.value }}"
+    {% endif %}
+    {% if launch_via_iframe %}
+        data-game-iframe="true"
     {% endif %}
 >
     {% if is_login and node.field_post_banner_image.0.url %}

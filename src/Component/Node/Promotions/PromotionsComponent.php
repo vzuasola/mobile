@@ -4,6 +4,7 @@ namespace App\MobileEntry\Component\Node\Promotions;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
 use Slim\Exception\NotFoundException;
+use App\MobileEntry\Services\Product\Products;
 
 class PromotionsComponent implements ComponentWidgetInterface
 {
@@ -23,6 +24,7 @@ class PromotionsComponent implements ComponentWidgetInterface
 
     private $provisioned;
     private $preference;
+    private $product;
 
     /**
      *
@@ -109,8 +111,36 @@ class PromotionsComponent implements ComponentWidgetInterface
 
             $data['game_provider'] = $providers;
             $data['game_subprovider'] = $subProviders;
+
+            $product = $data['node']['field_banner_game_launch'][0]['field_product'][0]['value'];
+            $data['launch_via_iframe'] = $this->getIframeToggle($product);
         }
         $data['is_login'] = $this->playerSession->isLogin();
         return $data;
+    }
+
+    private function getIframeToggle($product)
+    {
+        if (!array_key_exists($product, Products::IFRAME_TOGGLE)) {
+            return false;
+        }
+        $dataToggle = false;
+        $configParam = Products::IFRAME_TOGGLE[$product];
+
+        if ($product === 'mobile-ptplus') {
+            $pageContents = $this->views->withProduct($product)->getViewById($configParam);
+            foreach ($pageContents as $value) {
+                $key =  $value['field_page_content_key'][0]['value'];
+                if ('launch_via_iframe' === $key) {
+                    $dataToggle = $value['name'][0]['value'] === "1" ? true : false;
+                    break;
+                }
+            }
+        } else {
+            $iframeConfigs = $this->config->withProduct($product)->getConfig($configParam);
+            $dataToggle =$iframeConfigs['launch_via_iframe'] === 1 ? true : false;
+        }
+
+        return $dataToggle;
     }
 }

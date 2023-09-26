@@ -5,7 +5,9 @@
             <li class="game-listing">
                 <a class="game-list game-listing-item"
                     data-game-title = "{{ game_list.field_game_title.0.value }}"
-                    data-game-tablename = "{{ game_list.field_table_id.0.value }}"
+                    {% if game_list.field_table_id.0.value %}
+                        data-game-tablename = "{{ game_list.field_table_id.0.value }}"
+                    {% endif %}
                     {% if game_list.field_external_game_id.0.value %}
                         data-game-extgameid="{{ game_list.field_external_game_id.0.value }}"
                     {% endif %}
@@ -38,6 +40,9 @@
                     {% endif %}
                     {% if game_list.field_game_platform.0.value %}
                         data-game-platform = "{{ game_list.field_game_platform.0.value }}"
+                    {% endif %}
+                    {% if launch_via_iframe %}
+                        data-game-iframe="true"
                     {% endif %}
                 >
                     <img

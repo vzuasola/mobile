@@ -140,6 +140,8 @@ class SliderComponentController
 
         $data['enable_transition_slider'] = $sliderConfigs['enable_transition_slider'] ?? 'none';
 
+        $data['launch_via_iframe'] = $this->getIframeToggle($product);
+
         try {
             $data['is_login'] = $this->playerSession->isLogin();
         } catch (\Exception $e) {
@@ -350,5 +352,30 @@ class SliderComponentController
         });
 
         return count($publishedSlides) > 0;
+    }
+
+    private function getIframeToggle($product)
+    {
+        if (!array_key_exists($product, Products::IFRAME_TOGGLE)) {
+            return false;
+        }
+        $dataToggle = false;
+        $configParam = Products::IFRAME_TOGGLE[$product];
+
+        if ($product === 'mobile-ptplus') {
+            $pageContents = $this->viewsFetcher->withProduct($product)->getViewById($configParam);
+            foreach ($pageContents as $value) {
+                $key =  $value['field_page_content_key'][0]['value'];
+                if ('launch_via_iframe' === $key) {
+                    $dataToggle = $value['name'][0]['value'] === "1" ? true : false;
+                    break;
+                }
+            }
+        } else {
+            $iframeConfigs = $this->configs->withProduct($product)->getConfig($configParam);
+            $dataToggle =$iframeConfigs['launch_via_iframe'] === 1 ? true : false;
+        }
+
+        return $dataToggle;
     }
 }
