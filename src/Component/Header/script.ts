@@ -1,10 +1,8 @@
 import * as utility from "@core/assets/js/components/utility";
-import * as xhr from "@core/assets/js/vendor/reqwest";
 
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
-
-import * as logoTemplate from "./handlebars/logo.handlebars";
+import DafacoinMenu from "@core/assets/js/components/dafacoin-menu/dafacoin-menu";
 
 /**
  *
@@ -14,7 +12,6 @@ export class HeaderComponent implements ComponentInterface {
     private attachments: any;
     private product: string;
     private logoData: any;
-    private dafacoinMenuStatus = "closed";
     private joinUrl: string;
 
     // This property should only be set through setUnsavedChangesStatus() method.
@@ -58,80 +55,31 @@ export class HeaderComponent implements ComponentInterface {
 
     private componentFinish() {
         if (this.attachments.useDafacoinBalanceMenu) {
-            const balanceMenuBtn = this.element.querySelector("#balance-menu-btn");
-            const balanceMenuDiv = this.element.querySelector("#balance-menu-div");
-            const balanceArrowHead = this.element.querySelector("#cashier-arrowhead");
-            const saveButton = this.element.querySelector("#balance-save-btn");
-            const closeButton = this.element.querySelector("#balance-close-btn");
-            const popupYesButton = this.element.querySelector("#popup-yes-btn");
-            const popupNoButton = this.element.querySelector("#popup-no-btn");
-            const balanceMenuOverlay = this.element.querySelector("#dafacoin-overlay");
-            const popupOverlay = this.element.querySelector("#dafacoin-warning-overlay");
-            const dafacoinSavedCloseButton = this.element.querySelector("#dafacoin-saved-close-btn");
-
-            if (balanceMenuBtn) { // It exists if the user is logged in
-                balanceMenuBtn.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                    this.toggleDafacoinMenu();
-                });
-
-                saveButton.addEventListener("click", (event) => {
-                    this.closeDafacoinPopop();
-                    this.closeDafacoinMenu(balanceMenuDiv, balanceArrowHead);
-
-                    // TODO: save changes
-                    this.openSavedPopup();
-                });
-
-                closeButton.addEventListener("click", (event) => {
-                    if (this.unsavedChangesExist) {
-                        this.openDafacoinPopup();
-                    } else {
-                        this.closeDafacoinMenu(balanceMenuDiv, balanceArrowHead);
-                    }
-                });
-
-                balanceMenuDiv.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                });
-
-                popupOverlay.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                });
-
-                popupYesButton.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                    this.closeDafacoinPopop();
-                    this.closeDafacoinMenu(balanceMenuDiv, balanceArrowHead);
-
-                    // TODO: Clear any unsaved changes.
-                });
-
-                popupNoButton.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                    this.closeDafacoinPopop();
-                });
-
-                balanceMenuOverlay.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                    this.closeDafacoinMenu(balanceMenuDiv, balanceArrowHead);
-                });
-
-                utility.addEventListener(document, "click", (event, src) => {
-                    event = event || window.event;
-                    const target = event.target || event.srcElement;
-
-                    const clickedOutsideMenu = !balanceMenuDiv.contains(target) && !balanceMenuBtn.contains(target);
-                    if (clickedOutsideMenu && this.dafacoinMenuStatus === "open") {
-                        event.stopPropagation();
-                        this.closeDafacoinMenu(balanceMenuDiv, balanceArrowHead);
-                    }
-                });
-
-                dafacoinSavedCloseButton.addEventListener("click", (event) => {
-                    this.closeSavedPopup();
-                });
-            }
+            // Initialize
+            const customOptions = {
+                selectors: {
+                    header: "header",
+                    balanceMenuBtn: ".balance-menu-btn",
+                    balanceMenuDiv: "#balance-menu-div",
+                    balanceArrowHead: ".cashier-arrowhead",
+                    balanceRefreshIcon: ".tmp_balance_refresh_placeholder",
+                    saveButton: "#balance-save-btn",
+                    closeButton: "#balance-close-btn",
+                    popupYesButton: "#popup-yes-btn",
+                    popupNoButton: "#popup-no-btn",
+                    balanceMenuOverlay: "#dafacoin-overlay",
+                    popupOverlay: "#dafacoin-warning-overlay",
+                    savedCloseButton: "#dafacoin-saved-close-btn",
+                    overlay: "#dafacoin-overlay",
+                    cashierMenu: ".cashier-menu",
+                    cashierBalance: "#cashier-balance",
+                    cashierMenuLoader: ".cashier-menu-loader",
+                    cashierBalanceAnchorMobile: ".cashier-anchor-mobile",
+                    cashierBalanceAnchorDesktop: ".cashier-anchor-desktop",
+                },
+            };
+            const dafacoinMenu = new DafacoinMenu(customOptions);
+            dafacoinMenu.init();
         }
 
         ComponentManager.broadcast("token.parse", {
@@ -141,87 +89,6 @@ export class HeaderComponent implements ComponentInterface {
         });
     }
 
-    private setUnsavedChangesStatus(changesExist) {
-        this.unsavedChangesExist = changesExist;
-
-        // The conversion to HTMLButtonElement is needed because Typescript does not recognize the "disabled"
-        // property for any kind of HTMLElement
-        const saveButton = (this.element.querySelector("#balance-save-btn") as HTMLButtonElement);
-        if (changesExist) {
-            saveButton.disabled = false;
-        } else {
-            saveButton.disabled = true;
-        }
-    }
-
-    private toggleDafacoinMenu() {
-        const balanceMenuDiv = this.element.querySelector("#balance-menu-div");
-        const balanceArrowHead = this.element.querySelector("#cashier-arrowhead");
-
-        if (this.dafacoinMenuStatus === "closed") {
-            this.openDafacoinMenu(balanceMenuDiv, balanceArrowHead);
-        } else {
-            this.closeDafacoinMenu(balanceMenuDiv, balanceArrowHead);
-        }
-    }
-
-    private closeDafacoinMenu(balanceMenuDiv, balanceArrowHead) {
-        utility.addClass(balanceMenuDiv, "hidden");
-        balanceArrowHead.innerHTML = "&#8964;";
-        utility.removeClass(balanceArrowHead, "up-arrowhead");
-        utility.addClass(balanceArrowHead, "down-arrowhead");
-
-        const dafacoinOverlay = this.element.querySelector("#dafacoin-overlay");
-        utility.addClass(dafacoinOverlay, "hidden");
-
-        this.dafacoinMenuStatus = "closed";
-    }
-
-    private openDafacoinMenu(balanceMenuDiv, balanceArrowHead) {
-        utility.removeClass(balanceMenuDiv, "hidden");
-        balanceArrowHead.innerHTML = "&#8963;";
-        utility.removeClass(balanceArrowHead, "down-arrowhead");
-        utility.addClass(balanceArrowHead, "up-arrowhead");
-
-        const dafacoinOverlay = this.element.querySelector("#dafacoin-overlay");
-        utility.removeClass(dafacoinOverlay, "hidden");
-
-        this.dafacoinMenuStatus = "open";
-    }
-
-    private closeDafacoinPopop() {
-        const dafacoinWarning = this.element.querySelector("#dafacoin-warning");
-        const dafacoinWarningOverlay = this.element.querySelector("#dafacoin-warning-overlay");
-        const balanceMenuShade = this.element.querySelector("#balance-menu-shade");
-
-        utility.addClass(dafacoinWarning, "hidden");
-        utility.addClass(dafacoinWarningOverlay, "hidden");
-        utility.removeClass(balanceMenuShade, "div-shade");
-    }
-
-    private openDafacoinPopup() {
-        const dafacoinOverlay = this.element.querySelector("#dafacoin-warning");
-        const dafacoinWarningOverlay = this.element.querySelector("#dafacoin-warning-overlay");
-        const balanceMenuShade = this.element.querySelector("#balance-menu-shade");
-
-        utility.removeClass(dafacoinOverlay, "hidden");
-        utility.removeClass(dafacoinWarningOverlay, "hidden");
-        utility.addClass(balanceMenuShade, "div-shade");
-    }
-
-    private openSavedPopup() {
-        const dafacoinSavedPopup = this.element.querySelector("#dafacoin-saved-overlay");
-        utility.removeClass(dafacoinSavedPopup, "hidden");
-
-        const popupDisplayTime = this.attachments.dafacoin_popup_display_time * 1000;
-        setTimeout(this.closeSavedPopup.bind(this), popupDisplayTime);
-    }
-
-    private closeSavedPopup() {
-        const dafacoinSavedPopup = this.element.querySelector("#dafacoin-saved-overlay");
-        utility.addClass(dafacoinSavedPopup, "hidden");
-    }
-
     private refreshBalance() {
         ComponentManager.broadcast("balance.return", {
             success: (response) => {
@@ -229,22 +96,7 @@ export class HeaderComponent implements ComponentInterface {
                     return;
                 }
 
-                if (this.attachments.useDafacoinBalanceMenu) {
-                    const coinWrapper = this.element.querySelector(".coin-account-balance");
-                    const balance = coinWrapper.querySelector(".coin-account-balance-amount");
-                    const innerBalance = this.element.querySelector("#inner-total-balance");
-                    const cashierMenu = coinWrapper.querySelector("#cashier-menu");
-                    const loader = coinWrapper.querySelector(".mobile-balance-loader");
-
-                    if (balance) {
-                        balance.innerHTML = response.balance;
-                        innerBalance.innerHTML = response.balance;
-                    }
-
-                    utility.removeClass(cashierMenu, "hidden");
-                    utility.addClass(loader, "hidden");
-
-                } else {
+                if (!this.attachments.useDafacoinBalanceMenu) {
                     const wrapper = this.element.querySelector(".account-balance");
 
                     if (wrapper) {

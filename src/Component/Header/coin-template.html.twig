@@ -1,31 +1,10 @@
 <div class="header-dafabet header-{{ app.product_resolver.getProduct }} clearfix">
     {{ include('@component/Header/templates/coin-logo-image.html.twig') }}
     {% if is_login %}
-        <div class="coin-account-balance">
-            <div class="hidden" id="cashier-menu">
-                <div id="balance-menu-btn">
-                    <span class="coin-account-balance-amount"></span>
-                    <span id="cashier-arrowhead" class="down-arrowhead">&#8964;</span>
-                </div>
-                <a href="{{ url(cashier_link.uri) }}" target="{{ cashier_link.attributes.target }}">
-                    <img src="{{ asset('images/yellow-cashier.jpeg') }}" alt="Cashier Icon">
-                </a>
-            </div>
-            <div class="sk-fading-circle mobile-balance-loader">
-                <div class="sk-circle1 sk-circle"></div>
-                <div class="sk-circle2 sk-circle"></div>
-                <div class="sk-circle3 sk-circle"></div>
-                <div class="sk-circle4 sk-circle"></div>
-                <div class="sk-circle5 sk-circle"></div>
-                <div class="sk-circle6 sk-circle"></div>
-                <div class="sk-circle7 sk-circle"></div>
-                <div class="sk-circle8 sk-circle"></div>
-                <div class="sk-circle9 sk-circle"></div>
-                <div class="sk-circle10 sk-circle"></div>
-                <div class="sk-circle11 sk-circle"></div>
-                <div class="sk-circle12 sk-circle"></div>
-            </div>
+        <div class="container clearfix hidden-desktop">
+            {{ include('@responsive/components/dafacoin-menu/menu-mobile.html.twig') }}
         </div>
+        <div class="tmp_balance_refresh_placeholder"></div>
     {% else %}
         <span class="mobile-action-button mobile-action-button-{{ app.lang }}">
             <a href="#" class="login-trigger mobile-action-button-login-now">
@@ -45,17 +24,17 @@
 </span>
 
 {% if is_login %}
-    <div style="position: relative">
-        <div class="hidden" id="balance-menu-div">
+ <div id="cashier-balance">
+        <div id="balance-menu-div" class="hidden">
             <div id="cashier-menu-top">
-                <div id="cashier-menu-total" class="cashier-menu-yellow">{{ cashier_menu.dafacoin_total_balance_label }}
-                    &nbsp;&nbsp; <div id="inner-total-balance" style="display: inline-block"></div></div>
-                <div id="cashier-menu-msg"
-                     class="cashier-information-text">{{ cashier_menu.dafacoin_priority_switch_message }}</div>
+                <div id="cashier-menu-total" class="cashier-menu-yellow">{{ header.dafacoin_menu.total_balance_label }}
+                    &nbsp;&nbsp; <div id="inner-total-balance" style="display: inline-block">0.00</div>
+                </div>
+                <div id="cashier-menu-msg" class="cashier-information-text">{{ header.dafacoin_menu.priority_switch_message }}</div>
             </div>
             <div id="cashier-menu-buttons">
-                <button id="balance-save-btn" class="balance-btn" disabled>{{ cashier_menu.save_button_label }}</button>
-                <button id="balance-close-btn" class="balance-btn">{{ cashier_menu.close_button_label }}</button>
+                <button id="balance-save-btn" class="balance-btn" disabled>{{ header.dafacoin_menu.save_button_label }}</button>
+                <button id="balance-close-btn" class="balance-btn">{{ header.dafacoin_menu.close_button_label }}</button>
                 <div style="clear: both"></div>
             </div>
             <div id="balance-menu-shade"></div>
@@ -66,25 +45,25 @@
     <div id="dafacoin-warning-overlay" class="hidden">
         <div class="hidden" id="dafacoin-warning">
             <div>
-                <p>{{ cashier_menu.dafacoin_unsaved_changes_message }}</p>
-                <button id="popup-yes-btn" class="popup-btn">{{ cashier_menu.yes_button_label }}</button>
-                <button id="popup-no-btn" class="popup-btn">{{ cashier_menu.no_button_label }}</button>
+                <p>{{ header.dafacoin_menu.unsaved_changes_message }}</p>
+                <button id="popup-yes-btn" class="popup-btn">{{ header.dafacoin_menu.yes_button_label }}</button>
+                <button id="popup-no-btn" class="popup-btn">{{ header.dafacoin_menu.no_button_label }}</button>
             </div>
         </div>
     </div>
 
     <div id="dafacoin-saved-overlay" class="hidden">
         <div id="dafacoin-saved">
-            <div>
-                <div id="dafacoin-saved-close-btn" style="position: absolute; top: 10px; right: 15px; font-size: 20px">x</div>
-                <div style="clear: both"></div>
-                <div style="margin: 30px auto; display: flex; align-items: center; justify-content: center">
-                    <svg class="dcoin-menu-ok" width="17" height="17" viewBox="0 0 17 17">
-                        <use xlink:href="{{ asset('images/svg/ok-icon.svg') }}#ok-icon" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
-                    </svg>
-                    {{ cashier_menu.dafacoin_saved_popup_message }}
-                </div>
+            <div id="dafacoin-saved-close-btn">x</div>
+            <div style="clear: both"></div>
+            <div class="dafacoin-saved-text">
+                <svg class="dafacoin-menu-ok" width="17" height="17" viewBox="0 0 17 17">
+                    <use xlink:href="{{ asset('images/ok-icon.svg') }}#ok-icon" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+                </svg>
+                {{ header.dafacoin_menu.saved_popup_message }}
             </div>
         </div>
     </div>
+
+
 {% endif %}
