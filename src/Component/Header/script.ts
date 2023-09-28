@@ -77,6 +77,7 @@ export class HeaderComponent implements ComponentInterface {
                     cashierBalanceAnchorMobile: ".cashier-anchor-mobile",
                     cashierBalanceAnchorDesktop: ".cashier-anchor-desktop",
                 },
+                balanceUrl: "/api/plugins/component/route/balance/getdetailedbalances",
             };
             const dafacoinMenu = new DafacoinMenu(customOptions);
             dafacoinMenu.init();

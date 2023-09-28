@@ -472,7 +472,13 @@ routes:
     action: App\Plugins\ComponentWidget\ComponentWidgetController:routeStatic
     headers:
       Cache-Control: no-cache, no-store, must-revalidate
-
+      
+  # Dcoin balance endpoint
+  /api/plugins/component/route/balance/getdetailedbalances:
+    method: ANY
+    action: App\Controller\BalanceController:getDetailedTotalBalance
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
   # Standard component controllers
 
   /api/plugins/component/route/{id}/{method}:
