@@ -5,8 +5,10 @@ import {Semver} from "../components/semver";
 
 const version = versioning.version;
 
-import "promise-polyfill/src/polyfill";
+import "promise-polyfill";
 import "es6-shim";
+import "../promise-finally-polyfill";
+
 import "pwacompat";
 
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
