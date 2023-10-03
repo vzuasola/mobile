@@ -20,6 +20,7 @@ class LoginComponentController
     /** @var $cookieService CookieService */
     private $cookieService;
     private $tokenParser;
+    private $configFetcher;
 
     /**
      *
@@ -32,21 +33,27 @@ class LoginComponentController
             $container->get('settings')['product'],
             $container->get('cookie_service'),
             $container->get('cookie_session'),
-            $container->get('token_parser')
+            $container->get('token_parser'),
+            $container->get('config_fetcher')
         );
     }
 
-    /**
-     * Public constructor
-     */
-    public function __construct($rest, $playerSession, $product, $cookieService, $cookieSession, $tokenParser)
-    {
+    public function __construct(
+        $rest,
+        $playerSession,
+        $product,
+        $cookieService,
+        $cookieSession,
+        $tokenParser,
+        $configFetcher
+    ) {
         $this->rest = $rest;
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->cookieService = $cookieService;
         $this->cookieSession = $cookieSession;
         $this->tokenParser = $tokenParser;
+        $this->configFetcher = $configFetcher;
     }
 
     /**
@@ -143,7 +150,7 @@ class LoginComponentController
 
             $dsbCookiesAreSet = DsbCookieHelper::dSBCookiesExist();
             if ($dsbCookiesAreSet) {
-                $alsConfig = $this->get('config_fetcher')->getConfig('mobile_als.als_configuration');
+                $alsConfig = $this->configFetcher->getConfig('mobile_als.als_configuration');
                 $dsbCookieHelper = new DsbCookieHelper($this->tokenParser, $this->playerSession, $alsConfig);
                 $dsbCookieHelper->setDafaUrlCookies();
             }
