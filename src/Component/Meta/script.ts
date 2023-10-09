@@ -20,7 +20,7 @@ export class MetaComponent implements ComponentInterface {
     }
 
     private listenToHeader() {
-        ComponentManager.subscribe("components.finish", () => {
+        ComponentManager.subscribe("components.early.finish", () => {
             this.removeMetaElement();
         });
 
