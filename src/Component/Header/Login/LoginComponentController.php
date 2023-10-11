@@ -6,6 +6,7 @@ use App\Cookies\Cookies;
 use App\Fetcher\Integration\Exception\AccountLockedException;
 use App\Fetcher\Integration\Exception\AccountSuspendedException;
 use App\MobileEntry\Services\CookieService\CookieService;
+use App\MobileEntry\Tools\DsbCookieHelper;
 use App\Utils\Host;
 
 /**
@@ -18,6 +19,8 @@ class LoginComponentController
     private $product;
     /** @var $cookieService CookieService */
     private $cookieService;
+    private $tokenParser;
+    private $configFetcher;
 
     /**
      *
@@ -29,20 +32,28 @@ class LoginComponentController
             $container->get('player_session'),
             $container->get('settings')['product'],
             $container->get('cookie_service'),
-            $container->get('cookie_session')
+            $container->get('cookie_session'),
+            $container->get('token_parser'),
+            $container->get('config_fetcher')
         );
     }
 
-    /**
-     * Public constructor
-     */
-    public function __construct($rest, $playerSession, $product, $cookieService, $cookieSession)
-    {
+    public function __construct(
+        $rest,
+        $playerSession,
+        $product,
+        $cookieService,
+        $cookieSession,
+        $tokenParser,
+        $configFetcher
+    ) {
         $this->rest = $rest;
         $this->playerSession = $playerSession;
         $this->product = $product;
         $this->cookieService = $cookieService;
         $this->cookieSession = $cookieSession;
+        $this->tokenParser = $tokenParser;
+        $this->configFetcher = $configFetcher;
     }
 
     /**
@@ -136,6 +147,13 @@ class LoginComponentController
             session_write_close();
             session_start();
             session_regenerate_id(true);
+
+            $dsbCookiesAreSet = DsbCookieHelper::dSBCookiesExist();
+            if ($dsbCookiesAreSet) {
+                $alsConfig = $this->configFetcher->getConfig('mobile_als.als_configuration');
+                $dsbCookieHelper = new DsbCookieHelper($this->tokenParser, $this->playerSession, $alsConfig);
+                $dsbCookieHelper->setDafaUrlCookies();
+            }
         } catch (\Exception $e) {
             $data['message'] = $e->getMessage();
         }
