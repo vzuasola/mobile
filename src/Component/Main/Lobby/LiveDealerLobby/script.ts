@@ -228,6 +228,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.populateGames(activeTab);
         this.setActiveTab();
         this.quickLaunchActiveListener();
+        this.componentFinish();
     }
 
     /**
