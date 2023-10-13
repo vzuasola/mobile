@@ -24,13 +24,21 @@ export class MenuComponent implements ComponentInterface {
     private joinUrl: string;
     private product: string;
     private language: string;
+    private useDafacoinBalanceMenu: boolean;
 
     constructor() {
         this.pushNotification = new PushNotification();
         this.casinoOption = new CasinoOption();
     }
 
-    onLoad(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
+    onLoad(
+        element: HTMLElement,
+        attachments: {
+            authenticated: boolean,
+            join_now_url: string,
+            products: any[],
+            useDafacoinBalanceMenu: boolean,
+        }) {
         this.element = element;
         this.language = ComponentManager.getAttribute("language");
         this.equalizeProductHeight();
@@ -39,6 +47,7 @@ export class MenuComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.products = attachments.products;
         this.joinUrl = attachments.join_now_url;
+        this.useDafacoinBalanceMenu = attachments.useDafacoinBalanceMenu;
 
         this.activateMenu(element);
         this.attachProduct();
@@ -74,7 +83,14 @@ export class MenuComponent implements ComponentInterface {
 
     }
 
-    onReload(element: HTMLElement, attachments: {authenticated: boolean, join_now_url: string, products: any[]}) {
+    onReload(
+        element: HTMLElement,
+        attachments: {
+            authenticated: boolean,
+            join_now_url: string,
+            products: any[],
+            useDafacoinBalanceMenu: boolean,
+        }) {
         this.element = element;
         this.updateMenuRouter();
         this.updateLogoRouter();
@@ -82,6 +98,7 @@ export class MenuComponent implements ComponentInterface {
         this.equalizeQuicklinksHeight();
         this.products = attachments.products;
         this.joinUrl = attachments.join_now_url;
+        this.useDafacoinBalanceMenu = attachments.useDafacoinBalanceMenu;
 
         this.activateMenu(element);
         this.attachProduct();
@@ -162,6 +179,9 @@ export class MenuComponent implements ComponentInterface {
     }
 
     private reloadBalance() {
+        if (this.useDafacoinBalanceMenu) {
+            return;
+        }
         ComponentManager.broadcast("balance.return", {
             success: (response) => {
                 const headerBalance = this.element.querySelector(".mobile-menu-amount");

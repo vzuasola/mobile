@@ -62,22 +62,27 @@ export class HeaderComponent implements ComponentInterface {
                     balanceMenuBtn: ".balance-menu-btn",
                     balanceMenuDiv: "#balance-menu-div",
                     balanceArrowHead: ".cashier-arrowhead",
-                    balanceRefreshIcon: ".tmp_balance_refresh_placeholder",
+                    balanceMobileContainer: ".total-balance-container",
+                    balanceMenuOverlay: "#dafacoin-overlay",
                     saveButton: "#balance-save-btn",
                     closeButton: "#balance-close-btn",
                     popupYesButton: "#popup-yes-btn",
                     popupNoButton: "#popup-no-btn",
-                    balanceMenuOverlay: "#dafacoin-overlay",
                     popupOverlay: "#dafacoin-warning-overlay",
                     savedCloseButton: "#dafacoin-saved-close-btn",
-                    overlay: "#dafacoin-overlay",
                     cashierMenu: ".cashier-menu",
                     cashierBalance: "#cashier-balance",
                     cashierMenuLoader: ".cashier-menu-loader",
                     cashierBalanceAnchorMobile: ".cashier-anchor-mobile",
                     cashierBalanceAnchorDesktop: ".cashier-anchor-desktop",
+                    cashierBalanceAccountAmount: ".cashier-account-balance-amount",
+                    cashierBalanceAccountCurrency: ".cashier-account-balance-currency",
+                    cashierBalanceAccountFormatted: ".cashier-account-balance-formatted",
+                    toggleAllAnchor: ".cashier-menu-toggle-all-container .btn-holder",
                 },
+
                 balanceUrl: "/api/plugins/component/route/balance/getdetailedbalances",
+                attachments: this.attachments.dafacoin_menu,
             };
             const dafacoinMenu = new DafacoinMenu(customOptions);
             dafacoinMenu.init();
@@ -97,35 +102,36 @@ export class HeaderComponent implements ComponentInterface {
                     return;
                 }
 
-                if (!this.attachments.useDafacoinBalanceMenu) {
-                    const wrapper = this.element.querySelector(".account-balance");
+                if (this.attachments.useDafacoinBalanceMenu) {
+                    return;
+                }
+                const wrapper = this.element.querySelector(".account-balance");
 
-                    if (wrapper) {
-                        const balance = wrapper.querySelector(".account-balance-amount");
-                        const link = wrapper.querySelector("a");
-                        const loader = wrapper.querySelector("div");
+                if (wrapper) {
+                    const balance = wrapper.querySelector(".account-balance-amount");
+                    const link = wrapper.querySelector("a");
+                    const loader = wrapper.querySelector("div");
 
-                        if (balance) {
-                            balance.innerHTML = response.balance;
-                            const product = ComponentManager.getAttribute("product");
-                            let balanceFlag = false;
-                            if (response.map.hasOwnProperty(product) && response.map[product] !== 0) {
-                                let totalBalance = 0;
-                                if (typeof response.balances[response.map[product]] !== "undefined") {
-                                    balanceFlag = true;
-                                    totalBalance += response.balances[response.map[product]];
-                                }
+                    if (balance) {
+                        balance.innerHTML = response.balance;
+                        const product = ComponentManager.getAttribute("product");
+                        let balanceFlag = false;
+                        if (response.map.hasOwnProperty(product) && response.map[product] !== 0) {
+                            let totalBalance = 0;
+                            if (typeof response.balances[response.map[product]] !== "undefined") {
+                                balanceFlag = true;
+                                totalBalance += response.balances[response.map[product]];
+                            }
 
-                                balance.innerHTML = this.formatBalance(Number(totalBalance).toFixed(2));
-                                if (!balanceFlag) {
-                                    balance.innerHTML = response.err_message;
-                                }
+                            balance.innerHTML = this.formatBalance(Number(totalBalance).toFixed(2));
+                            if (!balanceFlag) {
+                                balance.innerHTML = response.err_message;
                             }
                         }
-
-                        utility.removeClass(link, "hidden");
-                        utility.addClass(loader, "hidden");
                     }
+
+                    utility.removeClass(link, "hidden");
+                    utility.addClass(loader, "hidden");
                 }
 
             },
