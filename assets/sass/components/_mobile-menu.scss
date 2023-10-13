@@ -130,6 +130,15 @@
             span {
                 font-weight: 600;
             }
+
+            > .cashier-account-balance-formatted {
+                font-size: 12px;
+            }
+    
+            > .cashier-total-balance-label {
+                font-size: 12px;
+                font-weight: 400
+            }
         }
 
         // Icon

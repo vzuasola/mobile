@@ -18,7 +18,12 @@
                     {{ username }}
                 </p>
                 <p class="mobile-menu-header-amount">
-                    {{ total_balance_label }} <span class="mobile-menu-amount"></span>
+                    {% if (dafacoin_menu) %}
+                        <span class="cashier-total-balance-label">{{ dafacoin_menu.total_balance_label }}</span>
+                        <span class="cashier-account-balance-formatted"></span>
+                    {% else %}
+                        {{ total_balance_label }} <span class="mobile-menu-amount"></span>
+                    {% endif %}
                 </p>
             </div>
             <span class="menu-content-button close-svg hidden">
