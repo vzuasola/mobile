@@ -62,8 +62,8 @@ class MenuComponentScripts implements ComponentAttachmentInterface
         } catch (\Exception $e) {
             $headerConfigs = [];
         }
-        $userCurrency= $this->playerSession->getDetails()['currency'] ?? 'n/a';
-        $useDafacoinBalanceMenu = \App\Utils\DCoin::isDafacoinEnabled($headerConfigs, $userCurrency);
+
+        $useDafacoinBalanceMenu = \App\Utils\DCoin::isDafacoinEnabled($headerConfigs, $this->playerSession);
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'products' => $this->getProducts(),

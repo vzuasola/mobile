@@ -111,9 +111,9 @@ class MenuComponent implements ComponentWidgetInterface
         $data['config_links_text'] = $headerConfigs['links_title'] ?? 'Links';
         $data['logo_link'] = $headerConfigs['mobile_logo_url'] ?? '/{lang}';
 
-        $playerCurrency = $this->playerSession->getDetails()['currency'] ?? 'n/a';
+
         $data['dafacoin_menu'] = false;
-        if (\App\Utils\DCoin::isDafacoinEnabled($headerConfigs, $playerCurrency)) {
+        if (\App\Utils\DCoin::isDafacoinEnabled($headerConfigs, $this->playerSession)) {
             $data['dafacoin_menu'] = \App\Utils\DCoin::getDafacoinData($headerConfigs);
         }
 

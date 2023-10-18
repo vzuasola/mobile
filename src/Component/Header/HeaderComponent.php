@@ -140,8 +140,7 @@ class HeaderComponent implements ComponentWidgetInterface
     public function getTemplate()
     {
         $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
-        $userCurrency= $this->playerSession->getDetails()['currency'] ?? 'n/a';
-        $useDafacoinMenu = Dcoin::isDafacoinEnabled($headerConfigs, $userCurrency);
+        $useDafacoinMenu = Dcoin::isDafacoinEnabled($headerConfigs, $this->playerSession);
         if ($useDafacoinMenu) {
             return '@component/Header/coin-template.html.twig';
         } else {
@@ -211,8 +210,8 @@ class HeaderComponent implements ComponentWidgetInterface
             $data['username'] = $username;
             $data['cashier_link'] = $cashierMenu[0] ?? [];
         }
-        $userCurrency= $this->playerSession->getDetails()['currency'] ?? 'n/a';
-        $useDafacoinMenu = DCoin::isDafacoinEnabled($headerConfigs, $userCurrency);
+
+        $useDafacoinMenu = DCoin::isDafacoinEnabled($headerConfigs, $this->playerSession);
         if ($isLogin && $useDafacoinMenu) {
             $data['header'] =
             [

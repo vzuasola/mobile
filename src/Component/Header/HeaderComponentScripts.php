@@ -53,8 +53,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
         }
 
         $isLoggedIn = $this->playerSession->isLogin();
-        $userCurrency= $playerInfo['currency'] ?? 'n/a';
-        $useDafacoinBalanceMenu = DCoin::isDafacoinEnabled($headerConfigs, $userCurrency);
+        $useDafacoinBalanceMenu = DCoin::isDafacoinEnabled($headerConfigs, $this->playerSession);
 
         $data = [
             'authenticated' => $isLoggedIn,
