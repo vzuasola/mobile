@@ -6,7 +6,6 @@ import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/ass
 
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 import { ProviderDrawer } from "../Main/Lobby/LiveDealerLobby/scripts/provider-drawer";
-import {Loader} from "@app/assets/script/components/loader";
 
 /**
  *
@@ -14,16 +13,11 @@ import {Loader} from "@app/assets/script/components/loader";
 export class GameLoaderComponent implements ComponentInterface {
 
     private element: HTMLElement;
-    private loader: Loader;
 
-    constructor() {
-        this.loader = new Loader(document.body, true);
-    }
     onLoad(element: HTMLElement, attachments: {}) {
         this.element = element;
         this.initMessage();
         this.launchGame();
-        this.loader.remove();
         this.showMessage();
     }
 
@@ -31,7 +25,6 @@ export class GameLoaderComponent implements ComponentInterface {
         this.element = element;
         this.initMessage();
         this.launchGame();
-        this.loader.remove();
         this.showMessage();
     }
 
