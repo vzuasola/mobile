@@ -3,6 +3,7 @@
 namespace App\MobileEntry\Component\Header;
 
 use App\Plugins\ComponentWidget\ComponentWidgetInterface;
+use App\Utils\DCoin;
 
 class HeaderComponent implements ComponentWidgetInterface
 {
@@ -139,7 +140,7 @@ class HeaderComponent implements ComponentWidgetInterface
     public function getTemplate()
     {
         $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
-        $useDafacoinMenu = $headerConfigs['dafacoin_balance_toggle'];
+        $useDafacoinMenu = Dcoin::isDafacoinEnabled($headerConfigs, $this->playerSession);
         if ($useDafacoinMenu) {
             return '@component/Header/coin-template.html.twig';
         } else {
@@ -210,19 +211,12 @@ class HeaderComponent implements ComponentWidgetInterface
             $data['cashier_link'] = $cashierMenu[0] ?? [];
         }
 
-        $useDafacoinMenu = $headerConfigs['dafacoin_balance_toggle'];
+        $useDafacoinMenu = DCoin::isDafacoinEnabled($headerConfigs, $this->playerSession);
         if ($isLogin && $useDafacoinMenu) {
             $data['header'] =
-            ['dafacoin_menu' => [
-                'total_balance_label' => strtoupper($headerConfigs['dafacoin_total_balance_label']),
-                'priority_switch_message' => $headerConfigs['dafacoin_priority_switch_message'],
-                'save_button_label' => $headerConfigs['save_button_label'],
-                'close_button_label' => $headerConfigs['close_button_label'],
-                'yes_button_label' => $headerConfigs['yes_button_label'],
-                'no_button_label' => $headerConfigs['no_button_label'],
-                'unsaved_changes_message' => $headerConfigs['dafacoin_unsaved_changes_message'],
-                'saved_popup_message' => $headerConfigs['dafacoin_saved_popup_message']
-            ]];
+            [
+                'dafacoin_menu' => DCoin::getDafacoinData($headerConfigs),
+            ];
         }
 
         return $data;

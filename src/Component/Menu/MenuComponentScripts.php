@@ -12,6 +12,8 @@ class MenuComponentScripts implements ComponentAttachmentInterface
 {
     private $menus;
     private $views;
+    private $configs;
+    private $playerSession;
 
     /**
      *
@@ -21,18 +23,20 @@ class MenuComponentScripts implements ComponentAttachmentInterface
         return new static(
             $container->get('player_session'),
             $container->get('views_fetcher'),
-            $container->get('menu_fetcher')
+            $container->get('menu_fetcher'),
+            $container->get('config_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $views, $menus)
+    public function __construct($playerSession, $views, $menus, $configs)
     {
         $this->playerSession = $playerSession;
         $this->views = $views;
         $this->menus = $menus;
+        $this->configs = $configs;
     }
 
     /**
@@ -53,10 +57,18 @@ class MenuComponentScripts implements ComponentAttachmentInterface
             $data['top_menu'] = [];
         }
 
+        try {
+            $headerConfigs = $this->configs->getConfig('webcomposer_config.header_configuration');
+        } catch (\Exception $e) {
+            $headerConfigs = [];
+        }
+
+        $useDafacoinBalanceMenu = \App\Utils\DCoin::isDafacoinEnabled($headerConfigs, $this->playerSession);
         return [
             'authenticated' => $this->playerSession->isLogin(),
             'products' => $this->getProducts(),
             'join_now_url' => $join_now_url ?? "",
+            'useDafacoinBalanceMenu' => $useDafacoinBalanceMenu,
         ];
     }
 

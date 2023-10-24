@@ -4,6 +4,7 @@ namespace App\MobileEntry\Component\Header;
 
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 use App\MobileEntry\Services\Product\Products;
+use App\Utils\DCoin;
 
 /**
  *
@@ -52,7 +53,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
         }
 
         $isLoggedIn = $this->playerSession->isLogin();
-        $useDafacoinBalanceMenu = $headerConfigs['dafacoin_balance_toggle'];
+        $useDafacoinBalanceMenu = DCoin::isDafacoinEnabled($headerConfigs, $this->playerSession);
 
         $data = [
             'authenticated' => $isLoggedIn,
@@ -69,8 +70,9 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
         ];
 
         if ($isLoggedIn && $useDafacoinBalanceMenu) {
+            $data['balanceExclusion'] = DCoin::getBalanceExclusions($headerConfigs);
             $data['currency'] = $playerInfo['currency'];
-            $data['dafacoin_popup_display_time'] = $headerConfigs['dafacoin_notification_popup_display_time'];
+            $data['dafacoin_menu'] = DCoin::getAttachmentData($headerConfigs);
         }
 
         return $data;
