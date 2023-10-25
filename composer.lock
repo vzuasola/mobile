@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ed3a005e61cde4ba8556bfbed90f905",
+    "content-hash": "c80fc8745c2debd2dd88c339b3308f70",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1580,6 +1580,20 @@
                 "x.509",
                 "x509"
             ],
+            "funding": [
+                {
+                    "url": "https://github.com/terrafrost",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/phpseclib",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2023-07-09T15:24:48+00:00"
         },
         {
@@ -1679,6 +1693,16 @@
                 "nosql",
                 "predis",
                 "redis"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/tillkruss",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tillkruss",
+                    "type": "github"
+                }
             ],
             "time": "2016-06-16T16:22:20+00:00"
         },
@@ -3460,11 +3484,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.249.0",
+            "version": "dev-release-v1.250.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "83a2a00f2bf2510c3c344e570c9ad4ae96083f19"
+                "reference": "47484b2d971129999628c3c7d181980f7c73c59f"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3516,7 +3540,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2023-10-18T07:35:45+00:00"
+            "time": "2023-10-25T10:54:51+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -3677,6 +3701,20 @@
             "keywords": [
                 "constructor",
                 "instantiate"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Finstantiator",
+                    "type": "tidelift"
+                }
             ],
             "time": "2017-07-22T11:58:36+00:00"
         },
