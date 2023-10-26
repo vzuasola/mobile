@@ -26,8 +26,6 @@ export class PASModule implements ModuleInterface, GameInterface {
     private key: string = "pas";
     private moduleName: string = "pas_integration";
     private asset: any;
-    private futurama: boolean;
-    private futuramaGold: boolean;
     private username: string;
     private currency: string;
     private playerId: string;
@@ -59,8 +57,6 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     onLoad(attachments: {
         asset: any,
-        futurama: boolean,
-        futuramaGold: boolean,
         authenticated: boolean,
         username: string,
         playerId: string,
@@ -75,8 +71,6 @@ export class PASModule implements ModuleInterface, GameInterface {
         pasErrorConfig: any,
     }) {
         this.asset = attachments.asset;
-        this.futurama = attachments.futurama;
-        this.futuramaGold = attachments.futuramaGold;
         this.isSessionAlive = attachments.authenticated;
         this.iapiconfOverride = attachments.iapiconfOverride;
         this.lang = attachments.lang;
@@ -110,70 +104,7 @@ export class PASModule implements ModuleInterface, GameInterface {
     }
 
     login(username, password) {
-        this.username = username;
-        this.isSessionAlive = true;
-        return new Promise((resolve, reject) => {
-            const user = username.toUpperCase();
-            const real = 1;
-            const language = this.getLanguageMap(this.lang);
-            const uri = Router.generateModuleRoute(this.moduleName, "subaccounts");
-
-            xhr({
-                url: utility.addQueryParam(uri, "username", user),
-            }).then((response) => {
-                let ctr = 0;
-                const promises = [];
-                for (const key in this.iapiConfs) {
-                    if (this.iapiConfs.hasOwnProperty(key)) {
-                        if (this.futurama && key !== "dafagold") {
-                            continue;
-                        }
-
-                        this.isGold = response.provisioned;
-
-                        if (this.futuramaGold && key === "dafagold") {
-                            break;
-                        }
-
-                        if (this.checkIapiConfig(key)) {
-                            continue;
-                        }
-
-                        ++ ctr;
-                        const promise = () => {
-                            return new Promise((resolvePromise, rejectPromise) => {
-                                setTimeout(() => {
-                                    iapiConf = this.iapiConfs[key];
-
-                                    // Set the callback for the PAS login
-                                    iapiSetCallout("Login", this.onLogin(user, resolvePromise));
-
-                                    iapiLogin(user, password, real, language);
-                                    // after n seconds, nothing still happen, I'll let the other
-                                    // hooks to proceed
-                                    setTimeout(() => {
-                                        resolvePromise();
-                                    }, 10 * 1000);
-                                }, 1.5 * 500 * ctr);
-                            });
-                        };
-                        promises.push(promise);
-                    }
-                }
-
-                const lastPromise = () => {
-                    return new Promise((prom, rej) => {
-                        resolve();
-                        prom();
-                    });
-                };
-
-                promises.push(lastPromise);
-
-                this.sync.executeWithArgs(promises, []);
-            });
-
-        });
+        // not implemented
     }
 
     prelaunch(options) {
@@ -199,44 +130,38 @@ export class PASModule implements ModuleInterface, GameInterface {
                     options,
                 );
             }
-            if (this.futurama || this.futuramaGold) {
-                const key = this.getKeyByProduct(product);
 
-                this.attachPTScript(key, () => {
-                    iapiConf = this.iapiConfs[key];
+            const key = this.getKeyByProduct(product);
 
-                    // Get Login if not login, login, then launch
-                    // Before login, check if there are cookies on PTs end
-                    iapiSetCallout("GetLoggedInPlayer", async (GetLoggedInPlayeResponse) => {
-                        // Set the callback for the PAS login
-                        iapiSetCallout("Login", this.onLogin(this.username.toUpperCase(), async () => {
-                            await this.pasLaunch(options);
-                            this.pasErrorMessage(options);
-                            return;
-                        }));
+            this.attachPTScript(key, () => {
+                iapiConf = this.iapiConfs[key];
 
-                        if (this.verifyGetLoggedIn(GetLoggedInPlayeResponse)) {
-                            await this.pasLaunch(options);
-                            this.pasErrorMessage(options);
-                            return;
+                // Get Login if not login, login, then launch
+                // Before login, check if there are cookies on PTs end
+                iapiSetCallout("GetLoggedInPlayer", async (GetLoggedInPlayeResponse) => {
+                    // Set the callback for the PAS login
+                    iapiSetCallout("Login", this.onLogin(this.username.toUpperCase(), async () => {
+                        await this.pasLaunch(options);
+                        this.pasErrorMessage(options);
+                        return;
+                    }));
+
+                    if (this.verifyGetLoggedIn(GetLoggedInPlayeResponse)) {
+                        await this.pasLaunch(options);
+                        this.pasErrorMessage(options);
+                        return;
+                    } else {
+                        if (key !== "dafabetgames") {
+                            iapiLoginUsernameExternalToken(this.username.toUpperCase(), this.token, 1, language);
                         } else {
-                            if (key !== "dafabetgames") {
-                                iapiLoginUsernameExternalToken(this.username.toUpperCase(), this.token, 1, language);
-                            } else {
-                                iapiLogin(this.username.toUpperCase(), this.token + "@" + this.playerId + "@mobile",
-                                    1, language);
-                            }
+                            iapiLogin(this.username.toUpperCase(), this.token + "@" + this.playerId + "@mobile",
+                                1, language);
                         }
-                    });
-
-                    this.doCheckSession();
+                    }
                 });
-            }
 
-            if (!this.futurama || (!this.futuramaGold && product === "mobile-casino-gold")) {
-                await this.pasLaunch(options);
-                this.pasErrorMessage(options);
-            }
+                this.doCheckSession();
+            });
 
         }
     }
@@ -263,122 +188,13 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private pasLaunch(options) {
         return new Promise(async (resolve) => {
-            const product = this.getProduct(options);
-            if (!this.futurama ||
-                (!this.futuramaGold && product === "mobile-casino-gold") ||
-                this.pasLoginResponse.errorCode === 0 ||
-                this.pasLoginResponse.errorCode === 2) {
-                if (options.maintenance === "true") {
-                    await this.messageLightbox.showMessage(
-                        this.moduleName,
-                        "maintenance",
-                        options,
-                    );
-                    resolve();
-                }
-
-                // remap language
-                const lang = Router.getLanguage();
-                const language = this.getLanguageMap(lang);
-                const configProduct = options.hasOwnProperty("currentProduct") ? options.currentProduct
-                    : ComponentManager.getAttribute("product");
-
-                const launchUrl = Router.generateModuleRoute(this.moduleName, "launch");
-                const launchData = {
-                    product: configProduct,
-                    lang,
-                    language,
-                    provider: options.provider || "",
-                    launch: options.launch || false,
-                    platform: options.platform || "",
-                    lobby: options.lobby || false,
-                    gameCode: options.code || "",
-                    extGameId: options.extgameid || "",
-                    keywords: options.keywords || "",
-                    title: options.title || "",
-                    target: options.target || "",
-                    filters: options.filters || "",
-                    sort: options.sort || "",
-                    loader: options.loader || false,
-                    currentProduct: options.currentProduct || "",
-                    loaderFlag: options.loaderFlag || false,
-                    currency: this.currency,
-                    productMap: product,
-                    launchAlias: options.tablename,
-                };
-
-                xhr({
-                    url: launchUrl,
-                    type: "json",
-                    method: "post",
-                    data: launchData,
-                }).then(async (response) => {
-                    if (this.pasLoginResponse.errorCode === 2 && !response.currency && !response.gameurl) {
-                        await this.messageLightbox.showMessage(
-                            this.moduleName,
-                            "unsupported",
-                            options,
-                        );
-                        resolve();
-                    } else {
-                        if (response.gameurl && this.pasLoginResponse.errorCode === 0) {
-                            if (typeof options.onSuccess === "function") {
-                                options.onSuccess.apply(null, [response, options.element]);
-                                return;
-                            }
-
-                            if (options.loader === "true") {
-                                window.location.href = response.gameurl;
-                            } else {
-                                this.launchGame(options.target);
-                                this.updatePopupWindow(response.gameurl);
-                            }
-                        }
-
-                        if (response.errors) {
-                            this.errorMessageLightbox.showMessage(
-                                response,
-                            );
-                            return;
-                        }
-
-                        options.currency = this.currency;
-                        if (!response.currency) {
-                            await this.messageLightbox.showMessage(
-                                this.moduleName,
-                                "unsupported",
-                                options,
-                            );
-                        }
-
-                        // connection timeout handling when launching via iframe
-                        const isConnectionTimeout: boolean = (!response.gameurl &&
-                                (typeof options.onFail === "function"));
-                        if (isConnectionTimeout) {
-                            options.onFail.apply(null, [options.element]);
-                        }
-                    }
-                    resolve();
-                }).fail((error, message) => {
-                    // Do nothing
-                    if (typeof options.onFail === "function") {
-                        options.onFail.apply(null, [options.element]);
-                        return;
-                    }
-                    console.log("FAILED: ", error, message);
-                    resolve();
-                });
-            }
-
             resolve();
         });
     }
 
     private pasErrorMessage(options) {
         const product = this.getProduct(options);
-        if ((((this.futurama && product !== "mobile-casino-gold") ||
-            (this.futuramaGold && product === "mobile-casino-gold")) &&
-            this.pasLoginResponse.errorCode !== 0)) {
+        if (this.pasLoginResponse.errorCode !== 0) {
             // Do Error mapping modal
             const errorMap = this.pasErrorConfig.errorMap;
             let body = errorMap.all;
@@ -477,26 +293,21 @@ export class PASModule implements ModuleInterface, GameInterface {
      */
     private listenSessionLogin() {
         ComponentManager.subscribe("session.login", (event, src, data) => {
-            if (this.futurama) {
-                xhr({
-                    url: Router.generateModuleRoute(this.moduleName, "updateToken"),
-                    type: "json",
-                    method: "post",
-                }).then((response) => {
-                    if (response.status) {
-                        this.username = response.username.toUpperCase();
-                        this.token = response.token;
-                        this.currency = response.currency;
-                        this.playerId = response.playerId;
-                    }
-                }).fail((error, message) => {
-                    // Do nothing
-                    this.username = null;
-                });
-            }
-            if (!this.futurama) {
-                this.sessionPersist();
-            }
+            xhr({
+                url: Router.generateModuleRoute(this.moduleName, "updateToken"),
+                type: "json",
+                method: "post",
+            }).then((response) => {
+                if (response.status) {
+                    this.username = response.username.toUpperCase();
+                    this.token = response.token;
+                    this.currency = response.currency;
+                    this.playerId = response.playerId;
+                }
+            }).fail((error, message) => {
+                // Do nothing
+                this.username = null;
+            });
         });
     }
 
@@ -505,48 +316,7 @@ export class PASModule implements ModuleInterface, GameInterface {
      * IMS default session timeout is configured to 30mins
      */
     private doKeepAlive() {
-        let ctr = 0;
-        const promises = [];
-        for (const key in this.iapiConfs) {
-            if (this.iapiConfs.hasOwnProperty(key)) {
-                if (this.futurama && key !== "dafagold") {
-                    continue;
-                }
-
-                if (this.checkIapiConfig(key)) {
-                    continue;
-                }
-
-                if (this.futuramaGold && key === "dafagold") {
-                    break;
-                }
-
-                ++ ctr;
-                const promise = () => {
-                    return new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            iapiConf = this.iapiConfs[key];
-                            // Set the callback for the PAS login
-                            iapiSetCallout("KeepAlive", (response) => {
-                                if (response.errorCode !== 0) {
-                                    clearTimeout(this.timer);
-                                }
-                                resolve();
-                            });
-                            iapiKeepAlive(1, this.keepSessionTime);
-
-                            // after n seconds, nothing still happen, I'll let the other
-                            // hooks to proceed
-                            setTimeout(() => {
-                                resolve();
-                            }, 10 * 1000);
-                        }, 1.5 * 500 * ctr);
-                    });
-                };
-                promises.push(promise);
-            }
-        }
-        this.sync.executeWithArgs(promises, []);
+        // not implemented
     }
 
     /**
@@ -774,7 +544,7 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private getKeyByProduct(product) {
         let key = "dafa888";
-        if (product === "mobile-casino-gold" && this.futuramaGold) {
+        if (product === "mobile-casino-gold") {
             key = "dafagold";
         }
 
