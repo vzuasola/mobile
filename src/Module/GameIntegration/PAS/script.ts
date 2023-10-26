@@ -188,6 +188,110 @@ export class PASModule implements ModuleInterface, GameInterface {
 
     private pasLaunch(options) {
         return new Promise(async (resolve) => {
+            const product = this.getProduct(options);
+            if (this.pasLoginResponse.errorCode === 0 || this.pasLoginResponse.errorCode === 2) {
+                if (options.maintenance === "true") {
+                    await this.messageLightbox.showMessage(
+                        this.moduleName,
+                        "maintenance",
+                        options,
+                    );
+                    resolve();
+                }
+
+                // remap language
+                const lang = Router.getLanguage();
+                const language = this.getLanguageMap(lang);
+                const configProduct = options.hasOwnProperty("currentProduct") ? options.currentProduct
+                    : ComponentManager.getAttribute("product");
+
+                const launchUrl = Router.generateModuleRoute(this.moduleName, "launch");
+                const launchData = {
+                    product: configProduct,
+                    lang,
+                    language,
+                    provider: options.provider || "",
+                    launch: options.launch || false,
+                    platform: options.platform || "",
+                    lobby: options.lobby || false,
+                    gameCode: options.code || "",
+                    extGameId: options.extgameid || "",
+                    keywords: options.keywords || "",
+                    title: options.title || "",
+                    target: options.target || "",
+                    filters: options.filters || "",
+                    sort: options.sort || "",
+                    loader: options.loader || false,
+                    currentProduct: options.currentProduct || "",
+                    loaderFlag: options.loaderFlag || false,
+                    currency: this.currency,
+                    productMap: product,
+                    launchAlias: options.tablename,
+                };
+
+                xhr({
+                    url: launchUrl,
+                    type: "json",
+                    method: "post",
+                    data: launchData,
+                }).then(async (response) => {
+                    if (this.pasLoginResponse.errorCode === 2 && !response.currency && !response.gameurl) {
+                        await this.messageLightbox.showMessage(
+                            this.moduleName,
+                            "unsupported",
+                            options,
+                        );
+                        resolve();
+                    } else {
+                        if (response.gameurl && this.pasLoginResponse.errorCode === 0) {
+                            if (typeof options.onSuccess === "function") {
+                                options.onSuccess.apply(null, [response, options.element]);
+                                return;
+                            }
+
+                            if (options.loader === "true") {
+                                window.location.href = response.gameurl;
+                            } else {
+                                this.launchGame(options.target);
+                                this.updatePopupWindow(response.gameurl);
+                            }
+                        }
+
+                        if (response.errors) {
+                            this.errorMessageLightbox.showMessage(
+                                response,
+                            );
+                            return;
+                        }
+
+                        options.currency = this.currency;
+                        if (!response.currency) {
+                            await this.messageLightbox.showMessage(
+                                this.moduleName,
+                                "unsupported",
+                                options,
+                            );
+                        }
+
+                        // connection timeout handling when launching via iframe
+                        const isConnectionTimeout: boolean = (!response.gameurl &&
+                            (typeof options.onFail === "function"));
+                        if (isConnectionTimeout) {
+                            options.onFail.apply(null, [options.element]);
+                        }
+                    }
+                    resolve();
+                }).fail((error, message) => {
+                    // Do nothing
+                    if (typeof options.onFail === "function") {
+                        options.onFail.apply(null, [options.element]);
+                        return;
+                    }
+                    console.log("FAILED: ", error, message);
+                    resolve();
+                });
+            }
+
             resolve();
         });
     }
