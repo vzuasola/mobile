@@ -91,6 +91,7 @@ export class HeaderComponent implements ComponentInterface {
             const dafacoinPopup = new DcoinPopup({
                 product: "mobile-entrypage",
                 language: ComponentManager.getAttribute("language"),
+                apiUrl: "/api/plugins/component/route/dafacoin/content-sliders",
             });
 
             if (!this.attachments.authenticated) {

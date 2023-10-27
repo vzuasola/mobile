@@ -480,7 +480,7 @@ routes:
     headers:
       Cache-Control: no-cache, no-store, must-revalidate
 
-  /ajax/content-sliders:
+  /api/plugins/component/route/dafacoin/content-sliders:
     method: ANY
     action: App\Controller\AjaxBannerController:getContentSliders
     headers:
