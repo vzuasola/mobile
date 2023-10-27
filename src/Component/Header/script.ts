@@ -3,6 +3,7 @@ import * as utility from "@core/assets/js/components/utility";
 import {ComponentInterface, ComponentManager} from "@plugins/ComponentWidget/asset/component";
 import {Router, RouterClass} from "@plugins/ComponentWidget/asset/router";
 import DafacoinMenu from "@core/assets/js/components/dafacoin-menu/dafacoin-menu";
+import DcoinPopup from "@core/assets/js/components/dafacoin-menu/dafacoin-popup";
 
 /**
  *
@@ -86,6 +87,20 @@ export class HeaderComponent implements ComponentInterface {
             };
             const dafacoinMenu = new DafacoinMenu(customOptions);
             dafacoinMenu.init();
+
+            const dafacoinPopup = new DcoinPopup({
+                product: "mobile-entrypage",
+                language: ComponentManager.getAttribute("language"),
+            });
+
+            if (!this.attachments.authenticated) {
+                dafacoinPopup.clearPopupStatus();
+            }
+
+            if (this.attachments.enableGuidedTour) {
+                dafacoinPopup.init();
+            }
+
         }
 
         ComponentManager.broadcast("token.parse", {

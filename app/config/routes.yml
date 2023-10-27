@@ -479,6 +479,15 @@ routes:
     action: App\Controller\BalanceController:getDetailedTotalBalance
     headers:
       Cache-Control: no-cache, no-store, must-revalidate
+
+  /ajax/content-sliders:
+    method: ANY
+    action: App\Controller\AjaxBannerController:getContentSliders
+    headers:
+      Cache-Control: private, max-age=300
+    page_cache:
+      enabled: true
+      expires: 1800
   # Standard component controllers
 
   /api/plugins/component/route/{id}/{method}:

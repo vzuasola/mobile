@@ -54,6 +54,7 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
 
         $isLoggedIn = $this->playerSession->isLogin();
         $useDafacoinBalanceMenu = DCoin::isDafacoinEnabled($headerConfigs, $this->playerSession);
+        $enableGuidedTour = $headerConfigs['dafacoin_guided_tour_toggle'] ?? false;
 
         $data = [
             'authenticated' => $isLoggedIn,
@@ -66,7 +67,8 @@ class HeaderComponentScripts implements ComponentAttachmentInterface
             'error_message_account_locked' => $config['error_message_account_locked'],
             'products' => $this->getProducts(),
             'useDafacoinBalanceMenu' => $useDafacoinBalanceMenu,
-            'join_now_url' => $headerConfigs['registration_link']
+            'join_now_url' => $headerConfigs['registration_link'],
+            'enableGuidedTour' => $useDafacoinBalanceMenu && $enableGuidedTour
         ];
 
         if ($isLoggedIn && $useDafacoinBalanceMenu) {
