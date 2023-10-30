@@ -36,3 +36,7 @@
 {% block marketing_footer %}
     {{ widget('marketing', {'position': 'footer'}) }}
 {% endblock %}
+
+{% block loader %}
+    {% include('@site/loader.html.twig') %}
+{% endblock %}
