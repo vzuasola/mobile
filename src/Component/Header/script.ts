@@ -99,7 +99,13 @@ export class HeaderComponent implements ComponentInterface {
             }
 
             if (this.attachments.enableGuidedTour) {
-                dafacoinPopup.init();
+                ComponentManager.subscribe("redirect.postlogin.casino-gold", (event, src, data) => {
+                    dafacoinPopup.clearPopupStatus();
+                });
+
+                setTimeout (() => {
+                    dafacoinPopup.init();
+                }, 1000);
             }
 
         }
