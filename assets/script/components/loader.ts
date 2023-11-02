@@ -1,4 +1,8 @@
 import * as utility from "@core/assets/js/components/utility";
+import * as Handlebars from "handlebars/runtime";
+
+import * as loaderTemplate from "@app/templates/components/loader.handlebars";
+import {Router} from "@plugins/ComponentWidget/asset/router";
 
 export class Loader {
     private loader;
@@ -10,8 +14,22 @@ export class Loader {
     }
 
     createLoader() {
-        const loader = document.querySelector(".loader");
-        const container = document.querySelector(".loader-container");
+        Handlebars.registerHelper("equals", function(value, compare, options) {
+            if (value === compare) {
+                return options.fn(this);
+            }
+
+            return options.inverse(this);
+        });
+        const loader = document.createElement("div");
+        const container = document.createElement("div");
+
+        container.innerHTML = loaderTemplate({lang: Router.getLanguage()});
+
+        utility.addClass(container, "loader-container");
+        utility.addClass(loader, "loader");
+
+        loader.appendChild(container);
 
         return loader;
     }
@@ -25,7 +43,6 @@ export class Loader {
         // set loader as overlay within component
         if (this.overlay) {
             utility.addClass(this.target, "loader-overlay");
-            utility.removeClass(this.target, "dafa-loader");
         }
 
         this.target.appendChild(this.loader);
@@ -40,7 +57,6 @@ export class Loader {
     remove() {
         if (this.overlay) {
             utility.removeClass(this.target, "loader-overlay");
-            utility.removeClass(this.target, "dafa-loader");
         }
 
     }
