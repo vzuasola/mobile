@@ -57,7 +57,7 @@ export class HeaderComponent implements ComponentInterface {
     private componentFinish() {
         if (this.attachments.useDafacoinBalanceMenu) {
             // Initialize
-            const customOptions = {
+            const dafacoinMenu = new DafacoinMenu({
                 selectors: {
                     header: "header",
                     balanceMenuBtn: ".balance-menu-btn",
@@ -81,11 +81,11 @@ export class HeaderComponent implements ComponentInterface {
                     cashierBalanceAccountFormatted: ".cashier-account-balance-formatted",
                     toggleAllAnchor: ".cashier-menu-toggle-all-container .btn-holder",
                 },
-
                 balanceUrl: "/api/plugins/component/route/balance/getdetailedbalances",
+                balancePriorityUrl: "/api/plugins/component/route/dafacoin/setwalletpriority",
+                language: ComponentManager.getAttribute("language"),
                 attachments: this.attachments.dafacoin_menu,
-            };
-            const dafacoinMenu = new DafacoinMenu(customOptions);
+            });
             dafacoinMenu.init();
 
             const dafacoinPopup = new DcoinPopup({
