@@ -20,20 +20,6 @@ export class CasinoPreference {
      * Otherwise, show casino preference lightbox when no preference is set.
      */
     checkCasinoPreference(isLogin, fromGameLaunch) {
-        ComponentManager.subscribe("session.login", (event, src, data) => {
-            let gameCode = false;
-            const currentProduct = ComponentManager.getAttribute("product");
-            const el = utility.hasClass(data.src, "game-list", true);
-            if (el) {
-                gameCode = el.getAttribute("data-game-code");
-            }
-            if (!gameCode && this.productCheckPreference.includes(currentProduct)) {
-                this.getCasinoPreference((response) => {
-                    this.redirectToPreferred(response);
-                });
-            }
-        });
-
         if (this.productCheckPreference.includes(ComponentManager.getAttribute("product"))
             && isLogin && !fromGameLaunch) {
             this.getCasinoPreference((response) => {
@@ -47,7 +33,7 @@ export class CasinoPreference {
         if (response.success) {
             if (response.redirect &&
                 response.preferredProduct !== this.casinoOptionMapping[currentProduct]) {
-                Router.navigate(response.redirect, ["*"]);
+                Router.navigate(response.redirect, ["header", "menu", "main"]);
                 this.loader.hide();
                 return;
             }
