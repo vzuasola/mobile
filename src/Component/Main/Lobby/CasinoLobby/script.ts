@@ -119,7 +119,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.launchViaIframe = attachments.launch_via_iframe;
         if (!this.element) {
-            this.checkLoginState();
             this.listenChangeCategory();
             this.listenHashChange();
             this.listenClickGameTile();
@@ -142,6 +141,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             this.highlightMenu();
             this.lobby();
         });
+        this.checkLoginState();
         this.listenToSwipe();
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);

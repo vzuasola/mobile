@@ -439,16 +439,19 @@ export class Login {
                 type: "json",
                 method: "get",
             }).always((response) => {
-                ComponentManager.refreshComponents(
-                    ["header", "menu", "main", "announcement", "push_notification", "language"],
-                    () => {
-                        ComponentManager.broadcast("session.logout.finished");
-                        if (ComponentManager.getAttribute("product") === "mobile-casino-gold") {
-                            Router.navigate("/" + ComponentManager.getAttribute("language"), ["main"]);
-                        }
-                        this.loader.hide();
-                    },
-                );
+                if (ComponentManager.getAttribute("product") === "mobile-casino-gold") {
+                    Router.navigate("/" + ComponentManager.getAttribute("language"), ["*"]);
+                    this.loader.hide();
+                } else {
+                    ComponentManager.refreshComponents(
+                        ["header", "menu", "main", "announcement", "push_notification", "language"],
+                        () => {
+                            ComponentManager.broadcast("session.logout.finished");
+                            this.loader.hide();
+                        },
+                    );
+
+                }
             });
         });
     }
