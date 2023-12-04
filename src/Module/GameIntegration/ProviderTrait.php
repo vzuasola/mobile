@@ -58,7 +58,6 @@ trait ProviderTrait
         $isLobby = (isset($requestData['lobby']) && $requestData['lobby'] === "true");
         $isLobbyLaunch = ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') || $isLobby);
         $requestData['launcherType'] = $this->getLauncherType($requestData);
-        
 
         $directTableLaunch = ($isLobby &&
             ($requestData['gameCode'] !== 'undefined' &&
@@ -199,7 +198,6 @@ trait ProviderTrait
 
             $icoreConfig = $productConfig->getConfig('webcomposer_config.icore_games_integration');
             $launcherType = $icoreConfig[self::KEY . '_use_html_param'] ? 'html' : 'redirect';
-            
         } catch (\Exception $e) {
             $launcherType = 'redirect';
         }
