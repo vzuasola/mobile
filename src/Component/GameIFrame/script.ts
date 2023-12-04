@@ -102,7 +102,14 @@ export class GameIFrameComponent implements ComponentInterface {
             iframeWrapper.style.height = documentHeight + "px";
             iframe.setAttribute("width", 360);
             iframe.setAttribute("height", "auto");
-            iframe.setAttribute("src", response.gameurl);
+            if (typeof response.type !== "undefined" && response.type === "html") {
+                iframe.contentDocument.open();
+                iframe.contentDocument.write(response.gameurl);
+                iframe.contentDocument.close();
+            } else {
+                console.log("chagning url");
+                iframe.setAttribute("src", response.gameurl);
+            }
         }
     }
 

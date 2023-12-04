@@ -76,6 +76,7 @@ class PGSoftModuleController
             $responseData = $this->pgSoft->getGameUrlById('icore_pgs', $requestData['gameCode'], [
                 'options' => [
                     'languageCode' => $this->languageCode($request),
+                    'htmlParam' => ($requestData['launcherType'] === 'html') ? 'true' : 'false',
                 ]
             ]);
             if ($responseData['url']) {
@@ -94,10 +95,17 @@ class PGSoftModuleController
      */
     public function getPlayerGameExtraParams($requestData)
     {
-        return [
+        $params[] = [
             'Key' => 'BetType',
             'Value' => self::BET_TYPE,
         ];
+
+        $params[] = [
+            'Key' => 'GetLaunchURLHTML',
+            'Value' => ($requestData['launcherType'] === 'html') ? 'true' : 'false',
+        ];
+
+        return $params;
     }
 
     /**
@@ -105,7 +113,7 @@ class PGSoftModuleController
      */
     protected function postProcessGameUrlData($request, $data)
     {
-        if (isset($data['gameurl']) && $data['gameurl']) {
+        if (isset($data['gameurl']) && $data['gameurl'] && $data['type'] === 'redirect') {
             $data['gameurl'] = $this->overrideGameUrl($request, $data["gameurl"]);
         }
 
