@@ -475,8 +475,14 @@ routes:
       
   # Dcoin balance endpoint
   /api/plugins/component/route/balance/getdetailedbalances:
-    method: ANY
+    method: GET
     action: App\Controller\BalanceController:getDetailedTotalBalance
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
+  /api/plugins/component/route/dafacoin/setwalletpriority:
+    method: POST
+    action: App\Controller\BalanceController:setWalletPriority
     headers:
       Cache-Control: no-cache, no-store, must-revalidate
 

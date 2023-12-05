@@ -57,35 +57,12 @@ export class HeaderComponent implements ComponentInterface {
     private componentFinish() {
         if (this.attachments.useDafacoinBalanceMenu) {
             // Initialize
-            const customOptions = {
-                selectors: {
-                    header: "header",
-                    balanceMenuBtn: ".balance-menu-btn",
-                    balanceMenuDiv: "#balance-menu-div",
-                    balanceArrowHead: ".cashier-arrowhead",
-                    balanceMobileContainer: ".total-balance-container",
-                    balanceMenuOverlay: "#dafacoin-overlay",
-                    saveButton: "#balance-save-btn",
-                    closeButton: "#balance-close-btn",
-                    popupYesButton: "#popup-yes-btn",
-                    popupNoButton: "#popup-no-btn",
-                    popupOverlay: "#dafacoin-warning-overlay",
-                    savedCloseButton: "#dafacoin-saved-close-btn",
-                    cashierMenu: ".cashier-menu",
-                    cashierBalance: "#cashier-balance",
-                    cashierMenuLoader: ".cashier-menu-loader",
-                    cashierBalanceAnchorMobile: ".cashier-anchor-mobile",
-                    cashierBalanceAnchorDesktop: ".cashier-anchor-desktop",
-                    cashierBalanceAccountAmount: ".cashier-account-balance-amount",
-                    cashierBalanceAccountCurrency: ".cashier-account-balance-currency",
-                    cashierBalanceAccountFormatted: ".cashier-account-balance-formatted",
-                    toggleAllAnchor: ".cashier-menu-toggle-all-container .btn-holder",
-                },
-
+            const dafacoinMenu = new DafacoinMenu({
                 balanceUrl: "/api/plugins/component/route/balance/getdetailedbalances",
+                balancePriorityUrl: "/api/plugins/component/route/dafacoin/setwalletpriority",
+                language: ComponentManager.getAttribute("language"),
                 attachments: this.attachments.dafacoin_menu,
-            };
-            const dafacoinMenu = new DafacoinMenu(customOptions);
+            });
             dafacoinMenu.init();
 
             const dafacoinPopup = new DcoinPopup({

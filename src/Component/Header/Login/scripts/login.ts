@@ -34,6 +34,7 @@ export class Login {
     private action: any = false;
     private logoData: any;
     private loginStyle: any;
+    private casinoResponse: any;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -50,6 +51,7 @@ export class Login {
         this.isLogin = attachments.authenticated;
         this.logip = attachments.logip;
         this.metricsEndpoint = attachments.metricsEndpoint;
+        this.casinoResponse = undefined;
 
         this.listenLogin();
         this.listenLogout();
@@ -66,6 +68,7 @@ export class Login {
         if (this.isLogin && !attachments.authenticated) {
             ComponentManager.broadcast("session.logout");
         }
+        this.casinoResponse = undefined;
         this.element = element;
         this.isLogin = attachments.authenticated;
         this.logip = attachments.logip;
@@ -145,18 +148,27 @@ export class Login {
         if (this.productCheckPreference.includes(ComponentManager.getAttribute("product"))
             && fromGameLaunch !== "true") {
             xhr({
-                url: Router.generateRoute("casino_option", "preferredProduct"),
+                url: Router.generateRoute("menu", "preferredProduct"),
                 method: "post",
                 data: {
                     username,
                 },
                 type: "json",
-            }).then((response) => {
-                if (response.preferredProduct) {
+            }).then((casinoResponse) => {
+                this.casinoResponse = {
+                    redirect: casinoResponse.redirect,
+                    preferredProduct: casinoResponse.preferredProduct,
+                };
+
+                if (casinoResponse.preferredProduct) {
                     this.productVia = "mobile-casino";
-                    if (response.preferredProduct === "casino_gold") {
+                    if (casinoResponse.preferredProduct === "casino_gold") {
                         this.productVia = "mobile-casino-gold";
                     }
+                }
+                // override after login action for casino gold provisioned
+                if (casinoResponse.isProvisioned) {
+                    this.action = this.redirectToPreferredAfterLogin;
                 }
                 resolve();
             }).fail((error, message) => {
@@ -240,15 +252,14 @@ export class Login {
                 // step
                 if (this.action) {
                     const handler = this.action;
-
-                    handler(this.srcElement, username, password);
-
+                    handler(this.srcElement, username, password, this.casinoResponse);
                     ComponentManager.broadcast("session.login", {
                         src: this.srcElement,
                         username,
                         password,
                         response,
                     });
+                    this.loader.hide();
                 } else {
                     ComponentManager.refreshComponents(
                         ["header", "menu", "main", "announcement", "push_notification", "language"],
@@ -428,13 +439,19 @@ export class Login {
                 type: "json",
                 method: "get",
             }).always((response) => {
-                ComponentManager.refreshComponents(
-                    ["header", "menu", "main", "announcement", "push_notification", "language"],
-                    () => {
-                        this.loader.hide();
-                        ComponentManager.broadcast("session.logout.finished");
-                    },
-                );
+                if (ComponentManager.getAttribute("product") === "mobile-casino-gold") {
+                    Router.navigate("/" + ComponentManager.getAttribute("language"), ["*"]);
+                    this.loader.hide();
+                } else {
+                    ComponentManager.refreshComponents(
+                        ["header", "menu", "main", "announcement", "push_notification", "language"],
+                        () => {
+                            ComponentManager.broadcast("session.logout.finished");
+                            this.loader.hide();
+                        },
+                    );
+
+                }
             });
         });
     }
@@ -500,11 +517,26 @@ export class Login {
     }
 
     private updateLoginLayout() {
-        ComponentManager.subscribe("login.update.layout.component", (event, src, data) => {
+        ComponentManager.subscribe("login.updaredirectToPreferredte.layout.component", (event, src, data) => {
             const loginModal: HTMLElement = this.element.querySelector("#login-lightbox");
             setTimeout(() => {
               utility.removeClass(loginModal, "mobile-soda-casino-modal");
             }, 300);
         });
+    }
+
+    /**
+     * Casino Gold Redirection callback after login
+     */
+    private redirectToPreferredAfterLogin(element, username, password, casinoResponse) {
+        if (casinoResponse.redirect) {
+            Router.navigate(casinoResponse.redirect, ["*"]);
+        }
+
+        if (!casinoResponse.preferredProduct) {
+            ComponentManager.refreshComponents(
+                ["header", "menu", "main", "announcement", "push_notification", "language"]);
+            ComponentManager.broadcast("casino.preference");
+        }
     }
 }

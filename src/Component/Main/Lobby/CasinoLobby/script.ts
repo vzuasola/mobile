@@ -100,7 +100,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.gamesFilter.handleOnLoad(this.element, attachments);
         this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
         this.listenOnCloseFilter();
-        this.listenOnLogout();
         this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
     }
 
@@ -120,7 +119,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.isLogin = attachments.authenticated;
         this.launchViaIframe = attachments.launch_via_iframe;
         if (!this.element) {
-            this.checkLoginState();
             this.listenChangeCategory();
             this.listenHashChange();
             this.listenClickGameTile();
@@ -130,9 +128,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             this.listenToScroll();
             this.listenOnSearch();
             this.listenOnFilter();
-            this.casinoPreference.checkCasinoPreference(this.isLogin, this.fromGameLaunch);
             this.listenOnCloseFilter();
-            this.listenOnLogout();
         }
         this.response = null;
         this.element = element;
@@ -145,6 +141,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             this.highlightMenu();
             this.lobby();
         });
+        this.checkLoginState();
         this.listenToSwipe();
         this.initMarker();
         this.gamesSearch.handleOnReLoad(this.element, attachments);
@@ -183,14 +180,20 @@ export class CasinoLobbyComponent implements ComponentInterface {
 
         return 1;
     }
+
+    /**
+     * Show login lightbox when casino gold lobby is accessed on prelogin
+     * @returns
+     */
     private checkLoginState() {
         if (ComponentManager.getAttribute("product") === "mobile-casino-gold" && !this.isLogin) {
             const lang = ComponentManager.getAttribute("language");
             const product = window.location.pathname.replace("/" + lang + "/", "");
-            this.loader.show();
             const params = utility.getParameters(window.location.search);
             let url = "/" + lang + "/login";
             url = utility.addQueryParam(url, "product", product);
+
+            this.loader.show();
             for (const key in params) {
                 if (key !== "" && params[key] !== "") {
                     url = utility.addQueryParam(url, key, params[key]);
@@ -803,15 +806,6 @@ export class CasinoLobbyComponent implements ComponentInterface {
         if (el) {
             return el.getBoundingClientRect().bottom <= window.innerHeight;
         }
-    }
-
-    private listenOnLogout() {
-        ComponentManager.subscribe("session.logout.finished", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === "mobile-casino-gold") {
-                Router.navigate("/" + ComponentManager.getAttribute("language"), ["*"]);
-                return;
-            }
-        });
     }
 
     private getPagedContent(data) {

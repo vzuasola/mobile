@@ -114,12 +114,16 @@ class MenuComponentController
     public function preferredProduct($request, $response)
     {
         $data['preferredProduct'] = false;
+        $data['isProvisioned'] = false;
         try {
             $param = $request->getParsedBody();
             if (isset($param['username'])) {
                 $data['preferredProduct'] = 'casino';
                 if ($this->isProvisioned('casino-gold', $param['username'])) {
-                    $data['preferredProduct'] = $this->getPreferenceProvisioned(['username' => $param['username']]);
+                    $data['isProvisioned'] = true;
+                    $data['preferredProduct'] = $this->getPreferenceProvisioned([
+                        'username' => strtolower($param['username'])]);
+                    $data['redirect'] = $this->getCasinoUrl($data['preferredProduct']);
                 }
             }
         } catch (\Exception $e) {
