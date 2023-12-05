@@ -70,11 +70,9 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
                         return;
                     }
 
-                    if (options.loader === "true") {
-                        window.location.href = response.gameurl;
-                    } else {
+                    if (options.loader !== "true") {
                         this.launchGame(options.target);
-                        this.updatePopupWindow(response.gameurl);
+                        this.updatePopupWindow(response);
                     }
                 }
 
@@ -141,24 +139,36 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
         }
     }
 
-    private updatePopupWindow(url) {
+    private updatePopupWindow(response) {
         try {
             if (this.windowObject.location.href !== "about:blank" &&
-                url === this.gameLink &&
+                response.gameurl === this.gameLink &&
                 !this.windowObject.closed
             ) {
                 this.windowObject.focus();
             } else {
                 setTimeout(() => {
-                    this.gameLink = url;
-                    this.windowObject.location.href = url;
+                    if (typeof response.type !== "undefined" && response.type === "html") {
+                        this.windowObject.document.open();
+                        this.windowObject.document.write(response.gameurl);
+                        this.windowObject.document.close();
+                    } else {
+                        this.windowObject.location.href = response.gameurl;
+                    }
+                    this.gameLink = response.gameurl;
                 }, 500);
             }
         } catch (e) {
-            if (url !== this.gameLink) {
+            if (response.gameurl !== this.gameLink) {
                 setTimeout(() => {
-                    this.gameLink = url;
-                    this.windowObject.location.href = url;
+                    if (typeof response.type !== "undefined" && response.type === "html") {
+                        this.windowObject.document.open();
+                        this.windowObject.document.write(response.gameurl);
+                        this.windowObject.document.close();
+                    } else {
+                        this.windowObject.location.href = response.gameurl;
+                    }
+                    this.gameLink = response.gameurl;
                 }, 500);
             }
 
