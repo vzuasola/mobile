@@ -65,15 +65,15 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
+                    // Handle game launching for game laoder and game iframe
                     if (typeof options.onSuccess === "function") {
                         options.onSuccess.apply(null, [response, options.element]);
                         return;
                     }
 
-                    if (options.loader !== "true") {
-                        this.launchGame(options.target, response.type);
-                        this.updatePopupWindow(response);
-                    }
+                    // Handle game launching if game loader is disabled
+                    this.launchGame(options.target, response.type);
+                    this.updatePopupWindow(response);
                 }
 
                 if (response.errors) {
