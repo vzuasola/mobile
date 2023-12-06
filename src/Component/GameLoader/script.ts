@@ -72,7 +72,7 @@ export class GameLoaderComponent implements ComponentInterface {
     }
 
     private handleSuccess(response, element) {
-        if ((typeof response.type !== "undefined" && response.type === "html") && response.gameurl) {
+        if ((response.type === "html") && response.gameurl) {
             document.open();
             document.write(response.gameurl);
             document.close();

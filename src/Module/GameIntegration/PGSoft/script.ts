@@ -71,7 +71,7 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
                     }
 
                     if (options.loader !== "true") {
-                        this.launchGame(options.target);
+                        this.launchGame(options.target, response.type);
                         this.updatePopupWindow(response);
                     }
                 }
@@ -111,7 +111,7 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
         // not implemented
     }
 
-    private launchGame(target) {
+    private launchGame(target, type) {
         if (target === "_self" || target === "_top") {
             this.windowObject = window;
         } else {
@@ -122,18 +122,23 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
                 scrollable: 1,
                 resizable: 1,
             };
+
             try {
                 if (this.windowObject &&
                     !this.windowObject.closed &&
-                    this.windowObject.location.href !== "about:blank"
+                    this.windowObject.location.href !== "about:blank" &&
+                    type !== "html"
                 ) {
                     this.windowObject.focus();
                 } else {
                     this.windowObject = PopupWindow("", "gameWindow", prop);
                 }
             } catch (e) {
-                if (this.windowObject) {
+                if (this.windowObject && type !== "html") {
                     this.windowObject.focus();
+                } else {
+                    this.windowObject.close();
+                    this.windowObject = PopupWindow("", "gameWindow", prop);
                 }
             }
         }
@@ -142,33 +147,33 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
     private updatePopupWindow(response) {
         try {
             if (this.windowObject.location.href !== "about:blank" &&
-                response.gameurl === this.gameLink &&
+                (response.gameurl === this.gameLink) &&
                 !this.windowObject.closed
             ) {
                 this.windowObject.focus();
             } else {
                 setTimeout(() => {
-                    if (typeof response.type !== "undefined" && response.type === "html") {
+                    if (response.type === "html") {
                         this.windowObject.document.open();
                         this.windowObject.document.write(response.gameurl);
                         this.windowObject.document.close();
                     } else {
                         this.windowObject.location.href = response.gameurl;
+                        this.gameLink = response.gameurl;
                     }
-                    this.gameLink = response.gameurl;
                 }, 500);
             }
         } catch (e) {
             if (response.gameurl !== this.gameLink) {
                 setTimeout(() => {
-                    if (typeof response.type !== "undefined" && response.type === "html") {
+                    if (response.type === "html") {
                         this.windowObject.document.open();
                         this.windowObject.document.write(response.gameurl);
                         this.windowObject.document.close();
                     } else {
                         this.windowObject.location.href = response.gameurl;
+                        this.gameLink = response.gameurl;
                     }
-                    this.gameLink = response.gameurl;
                 }, 500);
             }
 
