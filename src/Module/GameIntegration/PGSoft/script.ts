@@ -134,11 +134,16 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
                     this.windowObject = PopupWindow("", "gameWindow", prop);
                 }
             } catch (e) {
-                if (this.windowObject && type !== "html") {
-                    this.windowObject.focus();
-                } else {
-                    this.windowObject.close();
-                    this.windowObject = PopupWindow("", "gameWindow", prop);
+                if (this.windowObject) {
+                    if (type !== "html") {
+                        this.windowObject.focus();
+                    } else {
+                        // if launching via html is enabled, and game is already opened in a popup
+                        // we need to re-open a new popup to be able to change
+                        // content of popup
+                        this.windowObject.close();
+                        this.windowObject = PopupWindow("", "gameWindow", prop);
+                    }
                 }
             }
         }

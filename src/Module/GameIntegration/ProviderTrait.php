@@ -58,6 +58,8 @@ trait ProviderTrait
     {
         $isLobby = (isset($requestData['lobby']) && $requestData['lobby'] === "true");
         $isLobbyLaunch = ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') || $isLobby);
+        $launcherType = $this->getLauncherType($requestData);
+        $requestData['launcherType'] = $launcherType;
 
         $directTableLaunch = ($isLobby &&
             ($requestData['gameCode'] !== 'undefined' &&
@@ -68,6 +70,7 @@ trait ProviderTrait
             $data = $this->getGameUrlByGeneralLobby($request, $requestData);
         }
 
+        $data['type'] = $launcherType;
         $data = $this->postProcessGameUrlData($request, $data);
 
         return $data;
@@ -79,11 +82,10 @@ trait ProviderTrait
     public function getGameUrlByGeneralLobby($request, $requestData)
     {
         try {
-            $data['type'] = $this->getLauncherType($requestData);
             // Gets specific game URL
             if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined')
                 && $requestData['lobby'] === "false") {
-                $data = $this->getGameUrl($request, $requestData, $launcherType = 'redirect');
+                $data = $this->getGameUrl($request, $requestData);
             }
 
             // Gets provider game lobby (live-dealer)
@@ -92,7 +94,6 @@ trait ProviderTrait
                 $data = $this->getGameLobby($request, $requestData);
             }
         } catch (\Throwable $e) {
-            $data['type'] = 'redirect';
             $data['currency'] = true;
             $data['gameurl'] = false;
         }
@@ -106,8 +107,6 @@ trait ProviderTrait
     public function getGameUrlByPlayerGame($request, $requestData)
     {
         $data['currency'] = true;
-        $launcherType = $this->getLauncherType($requestData);
-        $data['type'] = $launcherType;
         $params = explode('|', $requestData['gameCode']);
         $portalName = $requestData['product'];
         $extGameId = $params[0] ?? '';
@@ -118,7 +117,7 @@ trait ProviderTrait
             $extGameId = $requestData['extGameId'];
         }
 
-        $extraParams = $this->getPlayerGameExtraParams($requestData, $launcherType);
+        $extraParams = $this->getPlayerGameExtraParams($requestData);
         $options['options'] = [
             'languageCode' => $this->languageCode($request),
             'playMode' => true

@@ -68,7 +68,7 @@ class PGSoftModuleController
     /**
      * Get game URL via GetGeneralLobby
      */
-    private function getGameUrl($request, $requestData, $launcherType)
+    private function getGameUrl($request, $requestData)
     {
         $data['currency'] = true;
         $data['gameurl'] = false;
@@ -76,7 +76,7 @@ class PGSoftModuleController
             $responseData = $this->pgSoft->getGameUrlById('icore_pgs', $requestData['gameCode'], [
                 'options' => [
                     'languageCode' => $this->languageCode($request),
-                    'htmlParam' => ($launcherType === 'html') ? 'true' : 'false',
+                    'htmlParam' => ($requestData['launcherType'] === 'html') ? 'true' : 'false',
                 ]
             ]);
             if ($responseData['url']) {
@@ -93,7 +93,7 @@ class PGSoftModuleController
     /**
      * Override ProviderTrait to PGSoft Property BetType
      */
-    public function getPlayerGameExtraParams($requestData, $launcherType)
+    public function getPlayerGameExtraParams($requestData)
     {
         $params = [
             [
@@ -102,7 +102,7 @@ class PGSoftModuleController
             ],
             [
                 'Key' => 'GetLaunchURLHTML',
-                'Value' => ($launcherType === 'html') ? 'true' : 'false',
+                'Value' => ($requestData['launcherType'] === 'html') ? 'true' : 'false',
             ]
         ];
 
