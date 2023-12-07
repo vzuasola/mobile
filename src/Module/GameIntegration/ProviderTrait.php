@@ -19,6 +19,7 @@ trait ProviderTrait
     {
         $data['gameurl'] = false;
         $data['currency'] = false;
+        $data['type'] = 'redirect';
 
         if ($this->checkCurrency($request)) {
             $requestData = $request->getParsedBody();
@@ -57,17 +58,19 @@ trait ProviderTrait
     {
         $isLobby = (isset($requestData['lobby']) && $requestData['lobby'] === "true");
         $isLobbyLaunch = ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') || $isLobby);
+        $launcherType = $this->getLauncherType($requestData);
+        $requestData['launcherType'] = $launcherType;
 
         $directTableLaunch = ($isLobby &&
             ($requestData['gameCode'] !== 'undefined' &&
                 $requestData['extGameId'] && $requestData['extGameId'] !== 'undefined'));
-
         if ($this->isPlayerGame($requestData) && (!$isLobbyLaunch || $directTableLaunch)) {
             $data = $this->getGameUrlByPlayerGame($request, $requestData);
         } else {
             $data = $this->getGameUrlByGeneralLobby($request, $requestData);
         }
 
+        $data['type'] = $launcherType;
         $data = $this->postProcessGameUrlData($request, $data);
 
         return $data;
@@ -181,7 +184,26 @@ trait ProviderTrait
         } catch (\Exception $e) {
             $usePlayerGame = false;
         }
-        return $usePlayerGame;
+        return true;
+    }
+
+    /**
+     * Get launcher type
+     */
+    private function getLauncherType($params)
+    {
+        try {
+            $productConfig = $this->config;
+            if (isset($params['product'])) {
+                $productConfig = $this->config->withProduct($params['product']);
+            }
+
+            $icoreConfig = $productConfig->getConfig('webcomposer_config.icore_games_integration');
+            $launcherType = $icoreConfig[self::KEY . '_use_html_param'] ? 'html' : 'redirect';
+        } catch (\Exception $e) {
+            $launcherType = 'redirect';
+        }
+        return $launcherType;
     }
 
     public function unsupported($request, $response)

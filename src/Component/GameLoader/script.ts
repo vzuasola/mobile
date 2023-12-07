@@ -66,7 +66,18 @@ export class GameLoaderComponent implements ComponentInterface {
     private launchGame() {
         const params = utility.getParameters(window.location.href);
         if (params.provider) {
+            params.onSuccess = this.handleSuccess;
             GameLauncher.launch(params.provider, params);
+        }
+    }
+
+    private handleSuccess(response, element) {
+        if ((response.type === "html") && response.gameurl) {
+            document.open();
+            document.write(response.gameurl);
+            document.close();
+        } else {
+            window.location.href = response.gameurl;
         }
     }
 

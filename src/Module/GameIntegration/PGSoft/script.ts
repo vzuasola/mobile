@@ -65,17 +65,15 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
                 },
             }).then((response) => {
                 if (response.gameurl) {
+                    // Handle game launching for game laoder and game iframe
                     if (typeof options.onSuccess === "function") {
                         options.onSuccess.apply(null, [response, options.element]);
                         return;
                     }
 
-                    if (options.loader === "true") {
-                        window.location.href = response.gameurl;
-                    } else {
-                        this.launchGame(options.target);
-                        this.updatePopupWindow(response.gameurl);
-                    }
+                    // Handle game launching if game loader is disabled
+                    this.launchGame(options.target, response.type);
+                    this.updatePopupWindow(response);
                 }
 
                 if (response.errors) {
@@ -113,7 +111,7 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
         // not implemented
     }
 
-    private launchGame(target) {
+    private launchGame(target, type) {
         if (target === "_self" || target === "_top") {
             this.windowObject = window;
         } else {
@@ -124,10 +122,12 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
                 scrollable: 1,
                 resizable: 1,
             };
+
             try {
                 if (this.windowObject &&
                     !this.windowObject.closed &&
-                    this.windowObject.location.href !== "about:blank"
+                    this.windowObject.location.href !== "about:blank" &&
+                    type !== "html"
                 ) {
                     this.windowObject.focus();
                 } else {
@@ -135,30 +135,50 @@ export class PGSoftModule implements ModuleInterface, GameInterface {
                 }
             } catch (e) {
                 if (this.windowObject) {
-                    this.windowObject.focus();
+                    if (type !== "html") {
+                        this.windowObject.focus();
+                    } else {
+                        // if launching via html is enabled, and game is already opened in a popup
+                        // we need to re-open a new popup to be able to change
+                        // content of popup
+                        this.windowObject.close();
+                        this.windowObject = PopupWindow("", "gameWindow", prop);
+                    }
                 }
             }
         }
     }
 
-    private updatePopupWindow(url) {
+    private updatePopupWindow(response) {
         try {
             if (this.windowObject.location.href !== "about:blank" &&
-                url === this.gameLink &&
+                (response.gameurl === this.gameLink) &&
                 !this.windowObject.closed
             ) {
                 this.windowObject.focus();
             } else {
                 setTimeout(() => {
-                    this.gameLink = url;
-                    this.windowObject.location.href = url;
+                    if (response.type === "html") {
+                        this.windowObject.document.open();
+                        this.windowObject.document.write(response.gameurl);
+                        this.windowObject.document.close();
+                    } else {
+                        this.windowObject.location.href = response.gameurl;
+                        this.gameLink = response.gameurl;
+                    }
                 }, 500);
             }
         } catch (e) {
-            if (url !== this.gameLink) {
+            if (response.gameurl !== this.gameLink) {
                 setTimeout(() => {
-                    this.gameLink = url;
-                    this.windowObject.location.href = url;
+                    if (response.type === "html") {
+                        this.windowObject.document.open();
+                        this.windowObject.document.write(response.gameurl);
+                        this.windowObject.document.close();
+                    } else {
+                        this.windowObject.location.href = response.gameurl;
+                        this.gameLink = response.gameurl;
+                    }
                 }, 500);
             }
 
