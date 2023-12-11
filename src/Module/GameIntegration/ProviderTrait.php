@@ -184,7 +184,7 @@ trait ProviderTrait
         } catch (\Exception $e) {
             $usePlayerGame = false;
         }
-        return true;
+        return $usePlayerGame;
     }
 
     /**
