@@ -1,19 +1,19 @@
 import * as utility from "@core/assets/js/components/utility";
-import DateTimeTimeout from "@core/assets/js/components/utils/dateTimeTimeout";
+import Counter from "@core/assets/js/components/utils/counter";
 
 import {Console} from "@core/assets/js/components/utils/console";
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 export class Session {
     private timeout: number;
-    private counter: DateTimeTimeout;
+    private counter: Counter;
 
     constructor(timeout: number = 300) {
         this.timeout = timeout;
 
-        this.counter = new DateTimeTimeout(timeout, {
-            onCount: (counter: DateTimeTimeout, timeoutDate: Date) => {
-                this.onCounterCount(counter, timeoutDate);
+        this.counter = new Counter(timeout, {
+            onCount: (counter: Counter, time: number) => {
+                this.onCounterCount(counter, time);
             },
             onRestart: () => {
                 this.onCounterRestart();
@@ -52,7 +52,7 @@ export class Session {
         Console.push("Session Module", "Session has been terminated");
     }
 
-    private onCounterCount(counter: DateTimeTimeout, timeoutDate: Date) {
+    private onCounterCount(counter: Counter, time: number) {
         // placeholder for logs
     }
 
