@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81cc3a6e958c01b314c2099705dc56fb",
+    "content-hash": "e4b881485049583457a8e29d9e69449e",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3484,11 +3484,11 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.252.0",
+            "version": "dev-release-v1.253.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git",
-                "reference": "e081119ec62c563757621db3080defba218fcd02"
+                "reference": "bae8bf1a487082aa71d7c2db5f4964c92a06ef5c"
             },
             "require": {
                 "bryanjhv/slim-session": "^3.6",
@@ -3540,7 +3540,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2023-12-13T00:48:15+00:00"
+            "time": "2023-12-21T03:29:49+00:00"
         },
         {
             "name": "willdurand/negotiation",
