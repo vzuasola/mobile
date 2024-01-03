@@ -4,20 +4,8 @@ variables:
 stages:
   - tests
   - package
-  - deploy-dev
-  - integration-tests-development
-  - performance-tests-development
-  - security-tests-development
   - deploy-test
-  - integration-tests-test
-  - performance-tests-test
-  - security-tests-test
-  - testing-signoff
   - deploy-staging
-  - integration-tests-staging
-  - performance-tests-staging
-  - security-tests-staging
-  - staging-signoff
   - deploy-production
 
 before_script:
@@ -26,120 +14,58 @@ before_script:
   - export DEPLOY_RESULT_URL="$DEPLOY_URL/lastBuild/logText/progressiveText?start=0"
   - export GITLAB_EMAIL="$GITLAB_USER_EMAIL"
 
-.static code analysis:
+phpcs checker:
   stage: tests
+  tags: [build, docker]
+  image: registry.gitlab.com/sportion/marketing/websites/websites-commons/shared-images/phpcs:latest
   script:
-    - python -u automation/run.py --stage phpunit-sonarqube
-  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
-  cache:
-    key: v2
-    paths:
-      - .composer-cache/
-  allow_failure: true
-
-php code sniffer:
-  stage: tests
-  script:
-    - python -u automation/run.py --stage phpcs
+    - phpcs src/
+  allow_failure: false
 
 es linter:
   stage: tests
+  tags: [build, docker]
+  image: registry.gitlab.com/sportion/marketing/websites/websites-commons/shared-images/eslint:node-6.9
   script:
-    - python -u automation/run.py --stage eslinter
+    - eslint assets/script
 
 ts linter:
   stage: tests
+  tags: [build, docker]
+  image: registry.gitlab.com/sportion/marketing/websites/websites-commons/shared-images/tslint:node-6.9
   script:
-    - python -u automation/run.py --stage tslinter
+    - tslint -c tslint.json '**/*.ts'
 
-.sensiolabs security checker:
+php vulnerability checker:
   stage: tests
+  tags: [build, docker]
+  image: registry.gitlab.com/sportion/marketing/websites/websites-commons/shared-images/php_vulnerability:latest
   script:
-    - python -u automation/run.py --stage sensiolab-security-checker
+    - /tmp/vendor/bin/local-php-security-checker
   allow_failure: true
+
 
 create package:
   stage: package
-  script:
-    - python -u automation/run.py --stage package-v2
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
   when: manual
-  cache:
-    key: v2
-    paths:
-      - .node-cache/
-      - .composer-cache/
-      - .yarn-cache/
-  tags:
-    - devrunner
+  tags: [build, dind]
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/docker:dind
+  needs: [php vulnerability checker, es linter, ts linter, phpcs checker]
+  script:
+    - eval $(ssh-agent -s)
+    - echo "$FECORE_DEPLOY_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - touch ~/.ssh/config
+    - touch ~/.ssh/known_hosts
+    - chmod -R 400 ~/.ssh
+    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - DOCKER_BUILDKIT=1 docker build --build-arg PACKAGE_VERSION=$PACKAGE_VERSION --build-arg CI_PROJECT_NAME=$CI_PROJECT_NAME --build-arg ARTIFACTORY_URL=$ARTIFACTORY_URL --build-arg ARTIFACTORY_PASSWORD=$ARTIFACTORY_PASSWORD --ssh default --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA -f automation/Dockerfile.create-package .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker rmi $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker rmi $CI_REGISTRY_IMAGE:latest
 
-qa1:
-  stage: deploy-test
-  environment:
-    name: testing
-  variables:
-    env: tst
-  script:
-    - export DEPLOY_TOKEN DEPLOY_URL
-    - bash automation/jenkins_deploy.sh
-  when: manual
-  dependencies:
-    - create package
-  tags:
-    - ipvg-stg-02
-
-.selenium tests qa1:
-  stage: integration-tests-test
-  script:
-    - python -u automation/run.py --stage integration-tests-test
-  when: manual
-  dependencies:
-    - qa1
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-
-.hp fortify scan qa1:
-  stage: security-tests-test
-  script:
-    - python -u automation/run.py --stage code-scan-testing
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  allow_failure: true
-  when: manual
-
-.jmeter qa1:
-  stage: performance-tests-test
-  script:
-    - python -u automation/run.py --stage performance-tests-test
-  when: manual
-  dependencies:
-    - qa1
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  tags:
-    - jmeter
-
-lighthouse qa1:
-  stage: integration-tests-test
-  when: manual
-  script:
-    - python -u automation/run.py --stage lighthouse-test
-  artifacts:
-    when: always
-    paths:
-      - automation/deployed/*.html
-    expire_in: 1 month
-  tags:
-    - tstrunner
 
 tct:
   stage: deploy-test
@@ -148,151 +74,14 @@ tct:
   variables:
     env: tct
   script:
+    - apk add --no-cache bash curl
     - export DEPLOY_TOKEN DEPLOY_URL
     - bash automation/jenkins_deploy.sh
   when: manual
-  dependencies:
-    - create package
-  tags:
-    - ipvg-stg-02
+  needs: [create package]
+  tags: [build, docker]
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine
 
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-
-tct_o:
-  stage: deploy-test
-  environment:
-    name: tct
-  script:
-    - DEPLOY_TCT=$DEPLOY_TCT_O
-    - DEPLOY_TCT_TOWER_HOST=$DEPLOY_TCT_O_TOWER_HOST
-    - python -u automation/run.py --stage deploy-tct
-  when: manual
-  dependencies:
-    - create package
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  tags:
-    - stgrunner_ipvg
-
-.selenium tests tct:
-  stage: integration-tests-test
-  script:
-    - python -u automation/run.py --stage integration-tests-tct
-  when: manual
-  dependencies:
-    - tct
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-
-.jmeter tct:
-  stage: performance-tests-test
-  script:
-    - python -u automation/run.py --stage performance-tests-tct
-  when: manual
-  dependencies:
-    - tct
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  tags:
-    - jmeter
-
-lighthouse tct:
-  stage: integration-tests-test
-  when: manual
-  script:
-    - python -u automation/run.py --stage lighthouse-tct
-  artifacts:
-    when: always
-    paths:
-      - automation/deployed/*.html
-    expire_in: 1 month
-  tags:
-    - intrunner
-
-testing signoff:
-  stage: testing-signoff
-  script:
-    - python -u automation/run.py --stage testing-signoff
-  when: manual
-  dependencies:
-    - qa1
-    - tct
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  only:
-    - /^release-.*$/
-    - tags
-
-uat:
-  stage: deploy-staging
-  environment:
-    name: uat
-  variables:
-    env: uat
-  script:
-    - export DEPLOY_TOKEN DEPLOY_URL
-    - bash automation/jenkins_deploy.sh
-  when: manual
-  dependencies:
-    - testing signoff
-  tags:
-    - ipvg-stg-02
-
-.selenium tests uat:
-  stage: integration-tests-staging
-  script:
-    - python -u automation/run.py --stage integration-tests-uat
-  when: manual
-  dependencies:
-    - uat
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  only:
-    - /^release-.*$/
-    - tags
-
-.jmeter uat:
-  stage: performance-tests-staging
-  script:
-    - python -u automation/run.py --stage performance-tests-uat
-  when: manual
-  dependencies:
-    - uat
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  only:
-    - /^release-.*$/
-    - tags
-  tags:
-    - jmeter
-
-lighthouse uat:
-  stage: integration-tests-staging
-  when: manual
-  script:
-    - python -u automation/run.py --stage lighthouse-uat
-  artifacts:
-    when: always
-    paths:
-      - automation/deployed/*.html
-    expire_in: 1 month
-  tags:
-    - uatrunner
 
 staging:
   stage: deploy-staging
@@ -301,110 +90,13 @@ staging:
   variables:
     env: stg
   script:
+    - apk add --no-cache bash curl
     - export DEPLOY_TOKEN DEPLOY_URL
     - bash automation/jenkins_deploy.sh
   when: manual
-  dependencies:
-    - testing signoff
-  tags:
-    - ipvg-stg-02
-
-staging_o:
-  stage: deploy-staging
-  environment:
-    name: staging
-  script:
-    - DEPLOY_STG=$DEPLOY_STG_O
-    - DEPLOY_STG_TOWER_HOST=$DEPLOY_STG_O_TOWER_HOST
-    - python -u automation/run.py --stage deploy-staging
-  when: manual
-  dependencies:
-    - testing signoff
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  only:
-    - /^release-.*$/
-    - tags
-  tags:
-    - stgrunner_ipvg
-
-.selenium tests staging:
-  stage: integration-tests-staging
-  script:
-    - python -u automation/run.py --stage integration-tests-stg
-  when: manual
-  dependencies:
-    - staging
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  only:
-    - /^release-.*$/
-    - tags
-
-.jmeter staging:
-  stage: performance-tests-staging
-  script:
-    - python -u automation/run.py --stage performance-tests-staging
-  when: manual
-  dependencies:
-    - staging
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  only:
-    - /^release-.*$/
-    - tags
-  tags:
-    - jmeter
-
-lighthouse stg:
-  stage: integration-tests-staging
-  when: manual
-  script:
-    - python -u automation/run.py --stage lighthouse-stg
-  artifacts:
-    when: always
-    paths:
-      - automation/deployed/*.html
-    expire_in: 1 month
-  tags:
-    - stgrunner
-
-.acunetix staging:
-  stage: security-tests-staging
-  script:
-    - python -u automation/run.py --stage acunetix-scan
-  when: manual
-  dependencies:
-    - staging
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  only:
-    - /^release-.*$/
-    - tags
-
-staging signoff:
-  stage: staging-signoff
-  script:
-    - python -u automation/run.py --stage staging-signoff
-  when: manual
-  dependencies:
-    - staging
-    - uat
-  artifacts:
-    paths:
-      - automation/deployed/*.jsonl
-    expire_in: 1 month
-  only:
-    - /^release-.*$/
-    - tags
+  needs: [create package]
+  tags: [build, docker]
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine
 
 production:
   stage: deploy-production
@@ -413,19 +105,17 @@ production:
   variables:
     env: prd
   script:
-    - DEPLOY_TOKEN=$DEPLOY_PRD_TOKEN
-    - DEPLOY_URL=$DEPLOY_PRD_URL
-    - export DEPLOY_TOKEN DEPLOY_URL
+    - apk add --no-cache bash curl
+    - export DEPLOY_URL="$PROD_DEPLOY_URL"
     - export DEPLOY_STATUS_URL="$DEPLOY_URL/lastBuild/api/json"
     - export DEPLOY_RESULT_URL="$DEPLOY_URL/lastBuild/logText/progressiveText?start=0"
+    - export DEPLOY_TOKEN="$PROD_DEPLOY_TOKEN"
     - bash automation/jenkins_deploy.sh
   when: manual
-  dependencies:
-    - create package
-    - staging
+  needs: [create package]
+  tags: [build, docker]
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine
   only:
     - /^release-.*$/
     - tags
-    - /^jenkins/
-  tags:
-    - taiwan-prd-01
+
