@@ -3488,12 +3488,12 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:sportion/marketing/websites/websites-commons/fe-core.git",
-                "reference": "e275605024ce58865876a6e64462da2224673d47"
+                "reference": "f54f46e33b4426b4c79006f1e433b7d051a403a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=e275605024ce58865876a6e64462da2224673d47",
-                "reference": "e275605024ce58865876a6e64462da2224673d47",
+                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=f54f46e33b4426b4c79006f1e433b7d051a403a3",
+                "reference": "f54f46e33b4426b4c79006f1e433b7d051a403a3",
                 "shasum": ""
             },
             "require": {
@@ -3549,7 +3549,7 @@
             "support": {
                 "issues": "https://gitlab.com/api/v4/projects/48796472/issues"
             },
-            "time": "2024-01-04T05:14:09+00:00"
+            "time": "2024-01-09T07:28:02+00:00"
         },
         {
             "name": "willdurand/negotiation",
