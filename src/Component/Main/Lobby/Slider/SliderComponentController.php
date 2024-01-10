@@ -148,6 +148,12 @@ class SliderComponentController
             $data['is_login'] = false;
         }
 
+        try {
+            $data['uglConfig'] = $this->configs->getConfig('webcomposer_config.games_playtech_provider')['ugl_switch'];
+        } catch (\Exception $e) {
+            $data['uglConfig'] = '';
+        }
+
         return $this->rest->output($response, $data);
     }
 
