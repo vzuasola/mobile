@@ -8,6 +8,7 @@ import {TokenParserModule} from "@app/src/Module/TokenParser/script";
 
 import {GameIntegrationModule} from "@app/src/Module/GameIntegration/script";
 import {PASModule} from "@app/src/Module/GameIntegration/PAS/script";
+import {UGLModule} from "@app/src/Module/GameIntegration/UGL/script";
 import {VoidbridgeModule} from "@app/src/Module/GameIntegration/Voidbridge/script";
 import {MicroGamingModule} from "@app/src/Module/GameIntegration/MicroGaming/script";
 import {SkywindModule} from "@app/src/Module/GameIntegration/Skywind/script";
@@ -61,6 +62,7 @@ ComponentManager.setModules({
     token_parser: new TokenParserModule(),
     game_integration: new GameIntegrationModule(),
     pas_integration: new PASModule(),
+    ugl_integration: new UGLModule(),
     voidbridge_integration: new VoidbridgeModule(),
     skywind_integration: new SkywindModule(),
     solidgaming_integration: new SolidGamingModule(),

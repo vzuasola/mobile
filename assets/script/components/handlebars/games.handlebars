@@ -5,7 +5,18 @@
         {{#if ../../isLogin}}
         data-game-launch="true"
         {{/if}}
-        data-game-provider="{{this.game_provider}}"
+
+        data-game-ugl="{{ ../../uglConfig}}"
+
+        {{#if ../../uglConfig}}
+            {{#equals this.game_provider 'pas'}}
+                data-game-provider="ugl"
+            {{else}}
+                data-game-provider="{{this.game_provider}}"
+            {{/equals}}
+        {{else}}
+           data-game-provider="{{this.game_provider}}"
+        {{/if}}
         data-game-code="{{this.game_code}}"
         data-game-extgameid="{{this.external_game_id}}"
         data-game-platform="{{this.game_platform}}"

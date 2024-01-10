@@ -263,6 +263,9 @@ modules:
   pas_integration:
     class: App\MobileEntry\Module\GameIntegration\PAS\PASModule
 
+  ugl_integration:
+    class: App\MobileEntry\Module\GameIntegration\UGL\UGLModule
+
   microgaming_integration:
     class: App\MobileEntry\Module\GameIntegration\MicroGaming\MicroGamingModule
 

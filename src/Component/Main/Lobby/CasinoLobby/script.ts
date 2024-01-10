@@ -45,6 +45,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
     private productMenu = "product-casino";
     private launchViaIframe: boolean;
     private gameLauncherManager: GameLauncherManager;
+    private uglConfig: boolean;
 
     constructor() {
         this.loader = new Loader(document.body, true);
@@ -53,6 +54,14 @@ export class CasinoLobbyComponent implements ComponentInterface {
         this.gamesFilter = new GamesFilter();
         this.casinoPreference = new CasinoPreference();
         this.gameLauncherManager = new GameLauncherManager();
+
+        Handlebars.registerHelper("equals", function(value, compare, options) {
+            if (value === compare) {
+                return options.fn(this);
+            }
+
+            return options.inverse(this);
+        });
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -67,7 +76,9 @@ export class CasinoLobbyComponent implements ComponentInterface {
             product: any[],
             infinite_scroll: boolean,
             launch_via_iframe: boolean,
+            uglConfig: boolean,
         }) {
+        this.uglConfig = attachments.uglConfig;
         this.response = null;
         this.element = element;
         this.attachments = attachments;
@@ -115,7 +126,9 @@ export class CasinoLobbyComponent implements ComponentInterface {
             product: any[],
             infinite_scroll: boolean,
             launch_via_iframe: boolean,
+            uglConfig: boolean,
         }) {
+        this.uglConfig = attachments.uglConfig;
         this.isLogin = attachments.authenticated;
         this.launchViaIframe = attachments.launch_via_iframe;
         if (!this.element) {
@@ -438,6 +451,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             isRecommended: isRecommend,
             isAllGames: activeCategory === "all-games",
             launchViaIframe: this.launchViaIframe,
+            uglConfig: Boolean(this.uglConfig),
         });
 
         if (this.currentPage > page) {
@@ -449,6 +463,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                     isLogin: this.isLogin,
                     isAllGames: activeCategory === "all-games",
                     launchViaIframe: this.launchViaIframe,
+                    uglConfig: Boolean(this.uglConfig),
                 });
             }
         }
@@ -764,6 +779,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                             isLogin: this.isLogin,
                             isAllGames: hash === "all-games",
                             launchViaIframe: this.launchViaIframe,
+                            uglConfig: Boolean(this.uglConfig),
                         });
                         const loader = gameLoader.querySelector(".mobile-game-loader");
                         utility.removeClass(loader, "hidden");

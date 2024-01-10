@@ -25,6 +25,7 @@ export class GamesSearch {
     private recommendedGames;
     private timer;
     private launchViaIframe: boolean;
+    private uglConfig: boolean;
 
     constructor() {
         this.searchObj = new Search({
@@ -39,6 +40,14 @@ export class GamesSearch {
                 return this.onBeforeSearch(data);
             },
         });
+
+        Handlebars.registerHelper("equals", function(value, compare, options) {
+            if (value === compare) {
+                return options.fn(this);
+            }
+
+            return options.inverse(this);
+        });
     }
 
     handleOnLoad(element: HTMLElement, attachments: {authenticated: boolean,
@@ -50,7 +59,9 @@ export class GamesSearch {
             msg_no_recommended: string,
             product: any[],
             launch_via_iframe: boolean,
+            uglConfig: boolean,
         }) {
+        this.uglConfig = attachments.uglConfig;
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
@@ -76,6 +87,7 @@ export class GamesSearch {
             msg_no_recommended: string,
             product: any[],
             launch_via_iframe: boolean,
+            uglConfig: boolean,
         }) {
         if (!this.element) {
             this.listenActivateSearchLightbox();
@@ -89,6 +101,7 @@ export class GamesSearch {
             this.listenOnLogin();
             this.listenSubmitGameSearch();
         }
+        this.uglConfig = attachments.uglConfig;
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
@@ -216,6 +229,7 @@ export class GamesSearch {
             isLogin: this.isLogin,
             isRecommended: this.isRecommended,
             launchViaIframe: this.launchViaIframe,
+            uglConfig: Boolean(this.uglConfig),
         });
 
         const gamesPreview = this.element.querySelector(".games-search-result");

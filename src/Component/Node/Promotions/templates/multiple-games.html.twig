@@ -21,8 +21,22 @@
                     {% endif %}
                     data-game-product = "{{ product }}"
                     data-game-code = "{{ game_list.field_game_code.0.value }}"
-                    {% if game_provider[game_list.field_game_provider.0.target_id] is defined %}
-                        data-game-provider = "{{ game_provider[game_list.field_game_provider.0.target_id] }}"
+                    data-game-ugl = "{{ uglConfig }}"
+                    {% if uglConfig %}
+                        {% if game_provider[game_list.field_game_provider.0.target_id] is defined %}
+                            {% set provider = game_provider[game_list.field_game_provider.0.target_id] %}
+                            {% if provider == "pas" %}
+                                data-game-provider = "ugl"
+                            {% else %}
+                                {% if game_provider[game_list.field_game_provider.0.target_id] is defined %}
+                                    data-game-provider = "{{ game_provider[game_list.field_game_provider.0.target_id] }}"
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% if game_provider[game_list.field_game_provider.0.target_id] is defined %}
+                            data-game-provider = "{{ game_provider[game_list.field_game_provider.0.target_id] }}"
+                        {% endif %}
                     {% endif %}
                     {% if game_subprovider[game_list.field_game_subprovider.0.target_id] is defined %}
                         data-game-subprovider = "{{ game_subprovider[game_list.field_game_subprovider.0.target_id] }}"

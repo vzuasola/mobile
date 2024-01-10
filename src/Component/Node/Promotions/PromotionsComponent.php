@@ -114,6 +114,7 @@ class PromotionsComponent implements ComponentWidgetInterface
 
             $product = $data['node']['field_banner_game_launch'][0]['field_product'][0]['value'];
             $data['launch_via_iframe'] = $this->getIframeToggle($product);
+            $data['uglConfig'] = $this->getUglConfig($product);
         }
         $data['is_login'] = $this->playerSession->isLogin();
         return $data;
@@ -142,5 +143,19 @@ class PromotionsComponent implements ComponentWidgetInterface
         }
 
         return $dataToggle;
+    }
+
+    private function getUglConfig($product)
+    {
+        $uglConfig = false;
+
+        try {
+            $perProduct = $this->config->withProduct($product);
+            $uglConfig = $perProduct->getConfig('webcomposer_config.games_playtech_provider')['ugl_switch'];
+        } catch (\Exception $e) {
+            $uglConfig = false;
+        }
+
+        return $uglConfig;
     }
 }
