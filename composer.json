@@ -5,7 +5,7 @@
     "require": {
         "php": ">=7.1.0",
         "oomphinc/composer-installers-extender": "^1.1",
-        "webcomposer/fe-core": "dev-release-v1.253.0",
+        "webcomposer/fe-core": "dev-release-v1.254.0",
         "nikolaposa/rate-limit": "^2.2"
     },
     "autoload": {
@@ -20,7 +20,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@gitlab.ph.esl-asia.com:CMS/fe-core.git"
+            "url": "git@gitlab.com:sportion/marketing/websites/websites-commons/fe-core.git"
         }
     ],
     "scripts": {
