@@ -195,6 +195,7 @@ class HeaderComponent implements ComponentWidgetInterface
         $productRoute = $params['route'] ?? '/';
         $data['logo_link'] = $headerConfigs['mobile_logo_url'] ?? '/{lang}';
         $data['login_join_now_text'] = $headerConfigs['login_join_now_text'] ?? 'Join';
+        $data['dafacoin_cms_toggle'] = $headerConfigs['dafacoin_balance_toggle'] ?? 0;
 
         try {
             $isLogin = $this->playerSession->isLogin();
