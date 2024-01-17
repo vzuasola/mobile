@@ -2,7 +2,6 @@
 
 namespace App\MobileEntry\Module\GameIntegration\UGL;
 
-use App\Drupal\Config;
 use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 
 /**
@@ -11,8 +10,6 @@ use App\Plugins\ComponentWidget\ComponentAttachmentInterface;
 class UGLModuleScripts implements ComponentAttachmentInterface
 {
     private $playerSession;
-
-    private $config;
 
     private $lang;
 
@@ -25,7 +22,6 @@ class UGLModuleScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('player_session'),
-            $container->get('config_fetcher'),
             $container->get('lang'),
             $container->get('player')
         );
@@ -34,10 +30,9 @@ class UGLModuleScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $lang, $player)
+    public function __construct($playerSession, $lang, $player)
     {
         $this->playerSession = $playerSession;
-        $this->config = $config;
         $this->lang = $lang;
         $this->player = $player;
     }
@@ -49,15 +44,14 @@ class UGLModuleScripts implements ComponentAttachmentInterface
     {
         $currency = null;
         $playerId = null;
-        try {
-            $ptConfig = $this->config->getConfig('webcomposer_config.games_playtech_provider');
 
+        try {
             if ($this->playerSession->isLogin()) {
                 $currency = $this->player->getCurrency();
                 $playerId = $this->player->getPlayerID();
             }
         } catch (\Exception $e) {
-            $ptConfig = [];
+            // Do nothing
         }
 
         return [
@@ -66,8 +60,7 @@ class UGLModuleScripts implements ComponentAttachmentInterface
             'token' => $this->playerSession->getToken(),
             'playerId' => $playerId,
             'currency' => $currency,
-            'lang' => $this->lang ?? 'en',
-            'langguageMap' => Config::parse($ptConfig['languages']),
+            'lang' => $this->lang ?? 'en'
         ];
     }
 }
