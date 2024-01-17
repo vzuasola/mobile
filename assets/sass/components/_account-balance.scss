@@ -35,4 +35,18 @@
     .cashier-account-balance-amount{
         font-size: 14px;
     }
+
+    @include media(">=desktop") {
+        .cashier-account-balance {
+            position: absolute;
+            top: 0;
+            right: $container-gutter-xs;
+        }
+    }
+}
+
+@include media(">=desktop") {
+    .coin-logo ~ .hidden-desktop {
+        display: inherit !important;
+    }
 }
