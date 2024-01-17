@@ -217,6 +217,8 @@ class HeaderComponent implements ComponentWidgetInterface
             $data['header'] =
             [
                 'dafacoin_menu' => DCoin::getDafacoinData($headerConfigs),
+                'logo_title' => $headerConfigs['logo_title'],
+                'logo_uri' => $headerConfigs['mobile_logo_url'],
             ];
         }
 
