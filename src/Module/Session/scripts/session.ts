@@ -1,20 +1,17 @@
 import * as utility from "@core/assets/js/components/utility";
-import DateTimeTimeout from "@core/assets/js/components/utils/dateTimeTimeout";
+import AutoLogout from "@core/assets/js/components/utils/autologout";
 
 import {Console} from "@core/assets/js/components/utils/console";
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
 
 export class Session {
     private timeout: number;
-    private counter: DateTimeTimeout;
+    private autologout: AutoLogout;
 
     constructor(timeout: number = 300) {
         this.timeout = timeout;
 
-        this.counter = new DateTimeTimeout(timeout, {
-            onCount: (counter: DateTimeTimeout, timeoutDate: Date) => {
-                this.onCounterCount(counter, timeoutDate);
-            },
+        this.autologout = new AutoLogout(timeout, {
             onRestart: () => {
                 this.onCounterRestart();
             },
@@ -25,16 +22,16 @@ export class Session {
     }
 
     init() {
-        this.counter.start();
+        this.autologout.start();
         this.attachEvents();
     }
 
     restart() {
-        this.counter.restart();
+        this.autologout.restart();
     }
 
     stop() {
-        this.counter.kill();
+        this.autologout.kill();
     }
 
     /**
@@ -52,10 +49,6 @@ export class Session {
         Console.push("Session Module", "Session has been terminated");
     }
 
-    private onCounterCount(counter: DateTimeTimeout, timeoutDate: Date) {
-        // placeholder for logs
-    }
-
     /**
      * Listener events
      *
@@ -63,31 +56,31 @@ export class Session {
 
     private attachEvents() {
         utility.ready(() => {
-            this.counter.restart();
+            this.autologout.restart();
         });
 
         ComponentManager.subscribe("session.login", (event) => {
-            this.counter.restart();
+            this.autologout.restart();
         });
 
         ComponentManager.subscribe("session.logout", (event) => {
-            this.counter.kill();
+            this.autologout.kill();
         });
 
         ComponentManager.subscribe("click", (event) => {
-            this.counter.reset();
+            this.autologout.onUserActivity();
         });
 
         ComponentManager.subscribe("scroll", (event) => {
-            this.counter.reset();
+            this.autologout.onUserActivity();
         });
 
         ComponentManager.subscribe("keypress", (event) => {
-            this.counter.reset();
+            this.autologout.resonUserActivityet();
         });
 
         ComponentManager.subscribe("touchstart", (event) => {
-            this.counter.reset();
+            this.autologout.onUserActivity();
         });
     }
 }

@@ -57,6 +57,12 @@ routes:
       enabled: true
       expires: 1800
 
+  /is-logged-in:
+    method: POST
+    action: App\Controller\LoginController:isLoggedIn
+    headers:
+      Cache-Control: no-cache, no-store, must-revalidate
+
   /logout:
     method: GET
     action: App\MobileEntry\Controller\LogoutController:view
