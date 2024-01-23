@@ -372,14 +372,14 @@ class SliderComponentController
             $pageContents = $this->viewsFetcher->withProduct($product)->getViewById($configParam);
             foreach ($pageContents as $value) {
                 $key =  $value['field_page_content_key'][0]['value'];
-                if ('launch_via_iframe' === $key) {
-                    $dataToggle = $value['name'][0]['value'] === "1" ? true : false;
+                if ($key === 'launch_via_iframe') {
+                    $dataToggle = ($value['name'][0]['value'] ?? 0) === "1";
                     break;
                 }
             }
         } else {
             $iframeConfigs = $this->configs->withProduct($product)->getConfig($configParam);
-            $dataToggle =$iframeConfigs['launch_via_iframe'] === 1 ? true : false;
+            $dataToggle = ($iframeConfigs['launch_via_iframe'] ?? 0) === 1;
         }
 
         return $dataToggle;
