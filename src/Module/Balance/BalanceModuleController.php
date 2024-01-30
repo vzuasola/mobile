@@ -98,7 +98,7 @@ class BalanceModuleController
     {
         $data = [];
         $isLogin = $this->playerSession->isLogin();
-
+        $matrix = false;
         $data['is_login'] = $isLogin;
 
         if ($isLogin) {

@@ -4,8 +4,6 @@ namespace App\MobileEntry\Module\GameIntegration\UGL;
 
 use App\MobileEntry\Module\GameIntegration\ProviderTrait;
 use App\Drupal\Config;
-use App\Fetcher\Drupal\ViewsFetcher;
-use App\MobileEntry\Services\Accounts\Accounts;
 
 class UGLModuleController
 {
@@ -63,6 +61,7 @@ class UGLModuleController
         $productKey = $requestData['productMap'];
         $configPerProd = $this->config->withProduct($productKey);
         $ptConfig = $configPerProd->getConfig('webcomposer_config.games_playtech_provider');
+        $language = $this->getLanguageMapUGL($requestData['lang'], $ptConfig);
 
         $data['gameurl'] = false;
         $data['currency'] = false;
@@ -70,27 +69,20 @@ class UGLModuleController
         if ($this->checkCurrencyUGL($request, $ptConfig)) {
             $data['currency'] = true;
             try {
-                $uglConfigs = $ptConfig['ugl_parameters'] ?? [];
-
-                if ($uglConfigs) {
-                    $uglConfigs = Config::parse($uglConfigs);
-                    foreach ($uglConfigs as $key => $config) {
-                        $uglConfigs[$key] = $config;
-                    }
-                }
+                $uglConfigs = $this->getParameters($ptConfig);
 
                 $playtechGameCode = $requestData['gameCode'];
 
-                $url = $ptConfig['ugl_url'];
+                $url = $ptConfig['ugl_url'] ?? '';
 
                 $search = [
-                    '{username}', '{gameCodeName}', '{ptLanguage}', '{externalToken}'
+                    '{username}', '{gameCodeName}', '{language}', '{externalToken}'
                 ];
 
                 $replacements = [
                     $this->playerSession->getUsername(),
                     $playtechGameCode,
-                    $requestData['language'],
+                    $language,
                     $this->playerSession->getToken()
                 ];
 
@@ -116,6 +108,26 @@ class UGLModuleController
     /**
      * @{inheritdoc}
      */
+    private function getParameters($ptConfig)
+    {
+        $params = $ptConfig['ugl_parameters'] ?? '';
+
+        if (trim($params) === '') {
+            return [];
+        }
+
+        $params = Config::parse($params);
+
+        foreach ($params as $key => $param) {
+            $params[$key] = $param;
+        }
+
+        return $params;
+    }
+
+    /**
+     * @{inheritdoc}
+     */
     private function checkCurrencyUGL($request, $ptConfig)
     {
         try {
@@ -132,9 +144,33 @@ class UGLModuleController
                 return true;
             }
         } catch (\Exception $e) {
-            // Do nothing
+            return false;
         }
 
         return false;
+    }
+
+    /**
+     * @{inheritdoc}
+     */
+    private function getLanguageMapUGL($lang, $ptConfig)
+    {
+        try {
+            $languageMap = [];
+            $lines = explode("\r\n", $ptConfig['ugl_languages']);
+
+            foreach ($lines as $line) {
+                if (trim($line) === '') {
+                    continue;
+                }
+
+                list($code, $value) = explode('|', $line);
+                $languageMap[$code] = $value;
+            }
+
+            return $languageMap[$lang] ?? $lang;
+        } catch (\Exception $e) {
+            return $lang;
+        }
     }
 }

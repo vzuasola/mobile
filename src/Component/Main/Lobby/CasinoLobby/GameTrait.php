@@ -183,12 +183,11 @@ trait GameTrait
             }
 
             $processGame['image'] = [
-                'alt' => $game['field_games_list_thumb_img_small'][0]['alt'],
-                'url' =>
-                    $this->asset->generateAssetUri(
-                        $game['field_games_list_thumb_img_small'][0]['url'],
-                        ['product' => $product]
-                    )
+                'alt' => $game['field_games_list_thumb_img_small'][0]['alt'] ?? '',
+                'url' => $this->asset->generateAssetUri(
+                    $game['field_games_list_thumb_img_small'][0]['url'] ?? '',
+                    ['product' => $product]
+                )
             ];
 
             if (count($game['field_game_filter']) > 0) {

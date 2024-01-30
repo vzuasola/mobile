@@ -1,4 +1,3 @@
-import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import PopupWindow from "@app/assets/script/components/popup";
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
@@ -11,7 +10,6 @@ import {ErrorMessageLightbox} from "../scripts/error-message-lightbox";
  * UGL class implementation
  */
 export class UGLModule implements ModuleInterface, GameInterface {
-    private key: string = "ugl";
     private moduleName: string = "ugl_integration";
     private username: string;
     private currency: string;
@@ -19,7 +17,6 @@ export class UGLModule implements ModuleInterface, GameInterface {
     private token: string;
     private windowObject: any;
     private gameLink: string;
-    private languageMap: any;
     private lang: string;
 
     private messageLightbox: ProviderMessageLightbox;
@@ -32,10 +29,8 @@ export class UGLModule implements ModuleInterface, GameInterface {
         currency: string,
         token: string,
         lang: string,
-        langguageMap: {[name: string]: string},
     }) {
         this.lang = attachments.lang;
-        this.languageMap = attachments.langguageMap;
         this.token = attachments.token;
         if (attachments.username) {
             this.username = attachments.username.toUpperCase();
@@ -66,14 +61,12 @@ export class UGLModule implements ModuleInterface, GameInterface {
     launch(options) {
         const product = this.getProduct(options);
         const lang = Router.getLanguage();
-        const language = this.getLanguageMap(lang);
         const configProduct = options.hasOwnProperty("currentProduct") ? options.currentProduct
             : ComponentManager.getAttribute("product");
         const launchUrl = Router.generateModuleRoute(this.moduleName, "launch");
         const launchData = {
             product: configProduct,
             lang,
-            language,
             provider: options.provider || "",
             launch: options.launch || false,
             platform: options.platform || "",
@@ -121,13 +114,6 @@ export class UGLModule implements ModuleInterface, GameInterface {
                     }
                 }
 
-                if (response.errors) {
-                    this.errorMessageLightbox.showMessage(
-                        response,
-                    );
-                    return;
-                }
-
                 options.currency = this.currency;
                 if (!response.currency) {
                     this.messageLightbox.showMessage(
@@ -157,15 +143,6 @@ export class UGLModule implements ModuleInterface, GameInterface {
         }
 
         return product;
-    }
-
-    /**
-     * Gets the language mapping
-     */
-    private getLanguageMap(lang) {
-        const map = this.languageMap;
-
-        return map && typeof map[lang] !== "undefined" ? map[lang] : lang;
     }
 
     private launchGame(target) {

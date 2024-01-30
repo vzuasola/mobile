@@ -136,13 +136,11 @@ class LiveDealerLobbyComponentController
      */
     private function getFieldValue($game, $key)
     {
-        try {
-            $value = $this->gamesListVersion ? $game[$key] : $game[$key][0]['value'];
-        } catch (\Exception $e) {
-            return '';
+        if (!$this->gamesListVersion) {
+            return $game[$key][0]['value'] ?? '';
         }
 
-        return $value;
+        return $game[$key] ?? '';
     }
 
     /**
