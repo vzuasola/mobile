@@ -59,7 +59,9 @@ class EvolutionGamingModuleController
         $data['currency'] = false;
 
         if ($this->checkCurrency($request)) {
+            $data['currency'] = true;
             $requestData = $request->getParsedBody();
+
             if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
                 $requestData['lobby'] === "false"
             ) {
@@ -76,7 +78,6 @@ class EvolutionGamingModuleController
 
     private function getGameLobby($request)
     {
-        $data['currency'] = true;
         $requestData = $request->getParsedBody();
 
         try {
@@ -104,7 +105,6 @@ class EvolutionGamingModuleController
 
     private function getGameUrl($request)
     {
-        $data['currency'] = true;
         $requestData = $request->getParsedBody();
 
         try {
