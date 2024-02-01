@@ -23,6 +23,6 @@
 </span>
 
 {% if is_login %}
-     {{ include('@responsive/components/dafacoin-menu/cashier-balance.html.twig') }}
+     {{ include('@responsive/components/dafacoin-menu/cashier-balance.html.twig', { 'device' : 'mobile' }) }}
      {{ include('@responsive/components/dafacoin-menu/dafacoin-popup.html.twig') }}
 {% endif %}
