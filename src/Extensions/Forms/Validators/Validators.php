@@ -33,4 +33,19 @@ class Validators
     {
         return true;
     }
+
+    public function requireCapitalLetterValue()
+    {
+        return true;
+    }
+
+    public function requireLowerLetterValue()
+    {
+        return true;
+    }
+
+    public function requiredNumberValue()
+    {
+        return true;
+    }
 }

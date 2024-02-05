@@ -41,9 +41,11 @@ class ResetPasswordComponentScripts implements ComponentAttachmentInterface
 
         $config = $this->configFetcher->getConfigById('cant_login');
         $integrationError = Config::parse($config['cant_login_response_mapping']) ?? '';
+        $usePasswordChecklist = $config['use_password_checklist'] ?? false;
 
         return [
-            'messages' => $integrationError
+            'messages' => $integrationError,
+            'usePasswordChecklist' => $usePasswordChecklist
         ];
     }
 }
