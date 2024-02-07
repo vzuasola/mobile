@@ -18,6 +18,8 @@ class ChangePasswordComponentScripts implements ComponentAttachmentInterface
 
     private $configFetcher;
 
+    private $user;
+
     /**
      *
      */
@@ -25,23 +27,29 @@ class ChangePasswordComponentScripts implements ComponentAttachmentInterface
     {
         return new static(
             $container->get('translation_manager'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('user_fetcher')
         );
     }
 
     /**
      * Public constructor
+     * @param \App\Plugins\Translation\TranslationManager $translationManager
+     * @param \App\Fetcher\Drupal\ConfigFetcher $configFetcher
+     * @param \App\Fetcher\Integration\UserFetcher $userFetcher
      */
-    public function __construct($translationManager, $configFetcher)
+    public function __construct($translationManager, $configFetcher, $userFetcher)
     {
         $this->translationManager = $translationManager;
         $this->configFetcher = $configFetcher->withProduct('account');
+        $this->user = $userFetcher;
     }
     /**
      * @{inheritdoc}
      */
     public function getAttachments()
     {
+        $username =  $this->user->getPlayerDetails()['username'];
         $passMeter = $this->translationManager->getTranslation('password-strength-meter');
         $config = $this->configFetcher->getConfigById('my_account_change_password');
 
@@ -53,10 +61,13 @@ class ChangePasswordComponentScripts implements ComponentAttachmentInterface
         }
 
         $integrationError = Config::parse($config['integration_error']) ?? '';
+        $usePasswordChecklist = $config['use_password_checklist'] ?? false;
 
         return [
             'messages' => $integrationError,
-            'passwordStrengthMeter' => $passMeter
+            'passwordStrengthMeter' => $passMeter,
+            'usePasswordChecklist' => $usePasswordChecklist,
+            'username' => $username,
         ];
     }
 }

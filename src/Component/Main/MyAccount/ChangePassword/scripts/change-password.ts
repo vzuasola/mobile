@@ -4,6 +4,7 @@ import {Router} from "@plugins/ComponentWidget/asset/router";
 import {Loader} from "@app/assets/script/components/loader";
 import {FormBase, resetForm} from "@app/assets/script/components/form-base";
 import PasswordMeter from "@app/assets/script/components/password-meter";
+import PasswordChecklist from "@app/assets/script/components/password-validation-box";
 
 /**
  * Reset Password
@@ -38,7 +39,32 @@ export class ChangePassword extends FormBase {
 
             this.loader = new Loader(utility.hasClass(this.passwordVerifyContainer, "form-item", true), false, 0);
             this.validator = this.validateForm(this.form);
-            this.activatePasswordMeter();
+            if (this.attachments.usePasswordChecklist) {
+                const formNameFromDrupal = "ChangePasswordForm";
+                const newPasswordFieldName = "new_password";
+                const verifyPasswordFieldName = "verify_password";
+
+                // Aggregate all rules to be used in checklist box
+                const validations = JSON.parse(this.form.getAttribute("data-validations"));
+                const passwordValidations = validations[formNameFromDrupal][newPasswordFieldName].rules;
+                const passwordVerifyFieldValidations = validations[formNameFromDrupal][verifyPasswordFieldName].rules;
+                Object.keys(passwordVerifyFieldValidations).forEach((ruleKey) => {
+                    const ruleConfig = passwordVerifyFieldValidations[ruleKey];
+
+                    if (!passwordValidations[ruleKey]) {
+                        passwordValidations[ruleKey] = ruleConfig;
+                    }
+                });
+                this.newPasswordField.dataset.username = this.attachments.username;
+                new PasswordChecklist({
+                    passwordFieldId: "ChangePasswordForm_new_password",
+                    passwordVerifyFieldId: "ChangePasswordForm_verify_password",
+                    submitButtonId: "ChangePasswordForm_submit",
+                    pwdValidations: passwordValidations,
+                });
+            } else {
+                this.activatePasswordMeter();
+            }
             this.bindEvent();
             this.tryAgain(this.form);
         }
