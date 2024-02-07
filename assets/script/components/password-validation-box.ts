@@ -21,13 +21,14 @@ export default class PasswordChecklist {
         this.submitButton = document.getElementById(this.options.submitButtonId);
         this.passwordContainer = utility.findParent(this.verifyPasswordField, ".form-item");
         this.checklistRulesConfig = {};
-
         this.customRules = {
             verify_password: this.verifyBothPasswordFieldsAreEqual,
+            not_match_username: this.verifyPasswordNotSameAsUsername,
         };
 
         this.ruleConcatenations = {
             max_length: "min_length",
+            not_match_username: "invalid_words",
         };
 
         if (this.newPasswordField && this.verifyPasswordField && this.submitButton) {
@@ -66,36 +67,16 @@ export default class PasswordChecklist {
     }
 
     private orderRulesByWeight(enabledRulesConfig) {
-        const arrayOfRules = [];
 
-        Object.keys(enabledRulesConfig).forEach((ruleKey) => {
-            const ruleConfiguration = enabledRulesConfig[ruleKey];
-
-            arrayOfRules.push({
-                weight: parseInt(ruleConfiguration.weight, 10),
-                ruleKey,
-                ruleConfig: ruleConfiguration,
-            });
-        });
-
-        arrayOfRules.sort(this.compare);
+        const arrayOfRules = Object.keys(enabledRulesConfig)
+                                .sort((a, b) => enabledRulesConfig[a].weight - enabledRulesConfig[b].weight);
 
         const sortedRules = {};
-        arrayOfRules.forEach((rulesObj) => {
-            sortedRules[rulesObj.ruleKey] = rulesObj.ruleConfig;
+        arrayOfRules.forEach((ruleKey) => {
+            sortedRules[ruleKey] = enabledRulesConfig[ruleKey];
         });
 
         return sortedRules;
-    }
-
-    private compare( a, b ) {
-        if ( a.weight < b.weight ) {
-            return -1;
-        }
-        if ( a.weight > b.weight ) {
-            return 1;
-        }
-        return 0;
     }
 
     private generateMarkup() {
@@ -208,5 +189,9 @@ export default class PasswordChecklist {
 
     private verifyBothPasswordFieldsAreEqual(passwordChecklistObj) {
         return (passwordChecklistObj.newPasswordField.value === passwordChecklistObj.verifyPasswordField.value);
+    }
+
+    private verifyPasswordNotSameAsUsername(passwordChecklistObj) {
+        return (passwordChecklistObj.newPasswordField.value !== passwordChecklistObj.newPasswordField.dataset.username);
     }
 }
