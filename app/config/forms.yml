@@ -20,6 +20,9 @@ validations:
   invalid_words: App\MobileEntry\Extensions\Forms\Validators\Validators:invalidWords
   verify_password: App\MobileEntry\Extensions\Forms\Validators\Validators:verifyPassword
   not_match_username: App\MobileEntry\Extensions\Forms\Validators\Validators:notMatchUsername
+  capital_letter_required: App\MobileEntry\Extensions\Forms\Validators\Validators:requireCapitalLetterValue
+  lower_letter_required: App\MobileEntry\Extensions\Forms\Validators\Validators:requireLowerLetterValue
+  number_required: App\MobileEntry\Extensions\Forms\Validators\Validators:requiredNumberValue
 
 # Form type mapping
 #

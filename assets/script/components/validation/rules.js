@@ -318,4 +318,36 @@ validators.allowed_date = {
     },
 };
 
+validators.number_required = {
+    callback: function (value, param, field) {
+        var numberValue = new RegExp(/\d/);
+        return numberValue.test(value);
+    }
+};
+
+validators.capital_letter_required = {
+    callback: function (value, param, field) {
+        var capitalLetterValue = new RegExp(/[A-Z]/);
+        return capitalLetterValue.test(value);
+    },
+};
+
+validators.lower_letter_required = {
+    callback: function (value, param, field) {
+        var lowercaseLetterValue = new RegExp(/[a-z]/);
+        return lowercaseLetterValue.test(value);
+    },
+};
+
+validators.invalid_words = {
+    callback: function (value, param, field) {
+        var obj = param[0].split("\n");
+        obj = obj.map(function (x) {
+            return x.toUpperCase().trim();
+        });
+
+        return (obj.indexOf(value.toUpperCase()) === -1);
+    },
+};
+
 export default validators;

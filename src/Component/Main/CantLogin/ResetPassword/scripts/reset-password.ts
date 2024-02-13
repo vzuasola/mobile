@@ -3,6 +3,7 @@ import * as xhr from "@core/assets/js/vendor/reqwest";
 import {Loader} from "@app/assets/script/components/loader";
 import {FormBase} from "@app/assets/script/components/form-base";
 import PasswordMeter from "@app/assets/script/components/password-meter";
+import PasswordChecklist from "@app/assets/script/components/password-validation-box";
 import {Router} from "@plugins/ComponentWidget/asset/router";
 
 /**
@@ -26,15 +27,40 @@ export class ResetPassword extends FormBase {
 
     init() {
         this.form = this.element.querySelector(".reset-password-form");
-
         if (this.form) {
-            this.passwordField = this.form.ResetPasswordForm_new_password;
-            this.passwordFieldVerify = this.form.ResetPasswordForm_verify_password;
+            this.passwordField = this.form[this.form.name + "_new_password"];
+            this.passwordFieldVerify = this.form[this.form.name + "_verify_password"];
             this.passwordVerifyContainer = utility.hasClass(this.passwordFieldVerify, "form-item", true);
             this.token = utility.getParameterByName("sbfpw");
             this.loader = new Loader(utility.hasClass(this.passwordVerifyContainer, "form-item", true), false, 0);
             this.validator = this.validateForm(this.form);
-            this.activatePasswordMeter();
+            if (this.attachments.usePasswordChecklist) {
+                const formNameFromDrupal = "ResetPasswordForm";
+                const newPasswordFieldName = "new_password";
+                const verifyPasswordFieldName = "verify_password";
+
+                // Aggregate all rules to be used in checklist box
+                const validations = JSON.parse(this.form.getAttribute("data-validations"));
+                const passwordValidations = validations[formNameFromDrupal][newPasswordFieldName].rules;
+                const passwordVerifyFieldValidations = validations[formNameFromDrupal][verifyPasswordFieldName].rules;
+                Object.keys(passwordVerifyFieldValidations).forEach((ruleKey) => {
+                    const ruleConfig = passwordVerifyFieldValidations[ruleKey];
+
+                    if (!passwordValidations[ruleKey]) {
+                        passwordValidations[ruleKey] = ruleConfig;
+                    }
+                });
+
+                new PasswordChecklist({
+                    passwordFieldId: "ResetPasswordForm_new_password",
+                    passwordVerifyFieldId: "ResetPasswordForm_verify_password",
+                    submitButtonId: "ResetPasswordForm_submit",
+                    pwdValidations: passwordValidations,
+                });
+            } else {
+                this.activatePasswordMeter();
+            }
+
             this.bindEvent();
         }
     }

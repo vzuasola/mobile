@@ -76,7 +76,7 @@ export class Session {
         });
 
         ComponentManager.subscribe("keypress", (event) => {
-            this.autologout.resonUserActivityet();
+            this.autologout.onUserActivity();
         });
 
         ComponentManager.subscribe("touchstart", (event) => {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bea92e4ab058a351dd6ca28ac56ce7ca",
+    "content-hash": "f5e949199cbc33d1acd239e833da3d83",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3460,16 +3460,16 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.256.0",
+            "version": "dev-release-v1.257.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:sportion/marketing/websites/websites-commons/fe-core.git",
-                "reference": "10e25f9011fb2ecc8e100b6786141ac04841a51e"
+                "reference": "483bd4ed007b493428a7457178e2512fab6206e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=10e25f9011fb2ecc8e100b6786141ac04841a51e",
-                "reference": "10e25f9011fb2ecc8e100b6786141ac04841a51e",
+                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=483bd4ed007b493428a7457178e2512fab6206e4",
+                "reference": "483bd4ed007b493428a7457178e2512fab6206e4",
                 "shasum": ""
             },
             "require": {
@@ -3522,10 +3522,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2024-01-23T10:12:22+00:00",
-            "support": {
-                "issues": "https://gitlab.com/api/v4/projects/48796472/issues"
-            }
+            "time": "2024-02-05T08:18:10+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -4834,12 +4831,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/object-enumerator.git",
-                "reference": "a8902a18eb1b358394afeffb91b6dea5475a7b84"
+                "reference": "7cfd9e65d11ffb5af41198476395774d4c8a84c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/object-enumerator/zipball/a8902a18eb1b358394afeffb91b6dea5475a7b84",
-                "reference": "a8902a18eb1b358394afeffb91b6dea5475a7b84",
+                "url": "https://api.github.com/repos/sebastianbergmann/object-enumerator/zipball/7cfd9e65d11ffb5af41198476395774d4c8a84c5",
+                "reference": "7cfd9e65d11ffb5af41198476395774d4c8a84c5",
                 "shasum": ""
             },
             "require": {
