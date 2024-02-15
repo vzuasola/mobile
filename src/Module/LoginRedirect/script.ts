@@ -39,6 +39,20 @@ export class LoginRedirectModule implements ModuleInterface {
             }
         });
 
+        /**
+         * Event listener on click of .btn-login-trigger which invokes login lightbox
+         */
+        ComponentManager.subscribe("click", (event, src) => {
+            if (!this.isLogin) {
+                const el = utility.hasClass(src, "btn-login-trigger", true);
+                if (el && !this.isLogin) {
+                    ComponentManager.broadcast("header.login", {
+                        src: el,
+                    });
+                }
+            }
+        });
+
         ComponentManager.subscribe("session.prelogin", (event, src, data) => {
             this.isLogin = true;
         });
