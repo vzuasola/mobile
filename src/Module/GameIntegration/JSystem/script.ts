@@ -1,12 +1,13 @@
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import PopupWindow from "@app/assets/script/components/popup";
 
-import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
-import {Router} from "@plugins/ComponentWidget/asset/router";
+import { ComponentManager, ModuleInterface } from "@plugins/ComponentWidget/asset/component";
+import { Router } from "@plugins/ComponentWidget/asset/router";
 
-import {GameInterface} from "./../scripts/game.interface";
-import {ProviderMessageLightbox} from "../scripts/provider-message-lightbox";
-import {RestrictedCountryLightbox} from "../scripts/restricted-country-lightbox";
+import { GameInterface } from "./../scripts/game.interface";
+import { ProviderMessageLightbox } from "../scripts/provider-message-lightbox";
+import { RestrictedCountryLightbox } from "../scripts/restricted-country-lightbox";
+import { ErrorMessageLightbox } from "../scripts/error-message-lightbox";
 
 export class JSystemModule implements ModuleInterface, GameInterface {
     private key: string = "jsystem";
@@ -15,10 +16,12 @@ export class JSystemModule implements ModuleInterface, GameInterface {
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
     private restrictedCountryLightbox: RestrictedCountryLightbox;
+    private errorMessageLightbox: ErrorMessageLightbox;
 
     onLoad(attachments: {}) {
         this.messageLightbox =  new ProviderMessageLightbox();
         this.restrictedCountryLightbox = new RestrictedCountryLightbox();
+        this.errorMessageLightbox = new ErrorMessageLightbox();
     }
 
     init() {
@@ -55,7 +58,8 @@ export class JSystemModule implements ModuleInterface, GameInterface {
                 method: "post",
                 data: {
                     product,
-                    gameCode: options.code,
+                    gameCode: options.code || "",
+                    extGameId: options.extgameid || "",
                     subprovider: options.subprovider || undefined,
                     lang,
                     lobby: options.lobby,
@@ -80,6 +84,13 @@ export class JSystemModule implements ModuleInterface, GameInterface {
                         this.launchGame(options.target);
                         this.updatePopupWindow(response.gameurl);
                     }
+                }
+
+                if (response.errors) {
+                    this.errorMessageLightbox.showMessage(
+                        response,
+                    );
+                    return;
                 }
 
                 if (!response.currency) {

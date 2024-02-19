@@ -11,6 +11,8 @@ class JSystemModuleController
 
     const KEY = 'jsystem';
 
+    const ICORE_KEY = 'icore_jsystem';
+
     private $rest;
 
     private $jsystem;
@@ -24,6 +26,8 @@ class JSystemModuleController
      */
     private $viewsFetcher;
 
+    private $playerGameFetcher;
+
     /**
      *
      */
@@ -34,73 +38,35 @@ class JSystemModuleController
             $container->get('game_provider_fetcher'),
             $container->get('config_fetcher'),
             $container->get('player'),
-            $container->get('views_fetcher')
+            $container->get('views_fetcher'),
+            $container->get('player_game_fetcher')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($rest, $jsystem, $config, $player, $viewsFetcher)
+    public function __construct($rest, $jsystem, $config, $player, $viewsFetcher, $playerGameFetcher)
     {
         $this->rest = $rest;
         $this->jsystem = $jsystem;
         $this->config = $config->withProduct('mobile-games');
         $this->player = $player;
         $this->viewsFetcher = $viewsFetcher->withProduct('mobile-games');
+        $this->playerGameFetcher = $playerGameFetcher;
     }
 
-    /**
-     * @{inheritdoc}
-     */
-    public function launch($request, $response)
-    {
-        $data['gameurl'] = false;
-        $data['currency'] = false;
-
-        $countryRestriction = $this->checkCountryRestriction($request);
-
-        if ($countryRestriction['restricted']) {
-            $data['restricted_country'] = $countryRestriction;
-            return $this->rest->output($response, $data);
-        }
-
-        if ($this->checkCurrency($request)) {
-            $data['currency'] = true;
-            $requestData = $request->getParsedBody();
-
-            try  {
-                if (($requestData['gameCode'] && $requestData['gameCode'] !== 'undefined') &&
-                    $requestData['lobby'] === "false"
-                ) {
-                    $data = $this->getGameUrl($request);
-                }
-
-                if ((!$requestData['gameCode'] || $requestData['gameCode'] === 'undefined') ||
-                    $requestData['lobby'] === "true"
-                ) {
-                    $data = $this->getGameLobby($request);
-                }
-            } catch (\Exception $e) {
-                $data['currency'] = true;
-            }
-        }
-
-        return $this->rest->output($response, $data);
-    }
-
-    private function getGameLobby($request)
+    private function getGameLobby($request, $requestData)
     {
         $data['currency'] = true;
-        $requestData = $request->getParsedBody();
-        $params = explode('|', $requestData['gameCode']);
+        list($gameCode, $product) = explode('|', $requestData['gameCode']);
 
         try {
-            $responseData = $this->jsystem->getLobby('icore_jsystem', [
+            $responseData = $this->jsystem->getLobby(self::ICORE_KEY, [
                 'options' => [
                     'languageCode' => $this->languageCode($request),
-                    'providerProduct' => $params[1] ?? null,
-                    'gameCode' => $params[0] ?? null,
+                    'providerProduct' => $product,
+                    'gameCode' => $gameCode,
                 ]
             ]);
             if ($responseData) {
@@ -113,16 +79,16 @@ class JSystemModuleController
         return $data;
     }
 
-    private function getGameUrl($request)
+    private function getGameUrl($request, $requestData)
     {
         $data['currency'] = true;
-        $requestData = $request->getParsedBody();
-        $params = explode('|', $requestData['gameCode']);
+        list($gameCode, $product) = explode('|', $requestData['gameCode']);
+
         try {
-            $responseData = $this->jsystem->getGameUrlById('icore_jsystem', $params[0], [
+            $responseData = $this->jsystem->getGameUrlById(self::ICORE_KEY, $gameCode, [
                 'options' => [
                     'languageCode' => $this->languageCode($request),
-                    'providerProduct' => $params[1] ?? null,
+                    'providerProduct' => $product,
                 ]
             ]);
             if ($responseData['url']) {
