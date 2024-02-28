@@ -1,13 +1,14 @@
 <footer class="footer footer-{{ app.product_resolver.getProduct }}">
-        {{ include('@component/Footer/templates/sponsor.html.twig') }}
-        <div class="footer-mobile-menu" id="footer-menu"></div>
-        {{ include('@component/Footer/templates/copyright.html.twig') }}
-        <div class="floating-section"></div>
+    {{ include('@component/Footer/templates/sponsor.html.twig') }}
+    {{ include('@component/Footer/templates/pt/gambling-restirction.html.twig') }}
+    <div class="footer-mobile-menu" id="footer-menu"></div>
+    {{ include('@component/Footer/templates/copyright.html.twig') }}
+    <div class="floating-section"></div>
 </footer>
 <div class="floating-{{ app.product_resolver.getProduct }}">
-        {% if app.product_resolver.getProduct == "mobile-ptplus" and floatingFooter %}
-                {{ include('@component/Footer/templates/footer-menu.html.twig') }}
-        {% endif %}
+    {% if app.product_resolver.getProduct == "mobile-ptplus" and floatingFooter %}
+        {{ include('@component/Footer/templates/footer-menu.html.twig') }}
+    {% endif %}
 </div>
 <span class="hidden">
     {% include '@app/web/images/svg/footer/footer-icons.svg' ignore missing %}
@@ -17,11 +18,11 @@
     <span class="cookie-notif-close">x</span>
 </div>
 {% if back_to_top %}
-<span class="back-to-top hide">
-    <svg viewBox="0 30 24 44.999">
-        <use xlink:href="#arrow" />
-    </svg>
-</span>
+    <span class="back-to-top hide">
+        <svg viewBox="0 30 24 44.999">
+            <use xlink:href="#arrow" />
+        </svg>
+    </span>
 {% endif %}
 <span class="hidden">
     {% include '@app/web/images/svg/backtotop/dafabet-backtotop.svg' ignore missing %}

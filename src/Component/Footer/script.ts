@@ -101,8 +101,12 @@ export class FooterComponent implements ComponentInterface {
      */
     private generateFooterMarkup(data) {
         const footer: HTMLElement = this.element.querySelector("#footer-menu");
+
         data = this.procesFooterMenu(data);
         data = this.casinoGoldVisibility(data);
+
+        this.showGamblingRestrictionText();
+
         const template = footerTemplate({
             footerData: data,
             footerMenuClass: data.footer_menu.length === 2 ? "footer-mobile-item half"
@@ -151,5 +155,14 @@ export class FooterComponent implements ComponentInterface {
     private activeBackToTop(element) {
         const backtoTop = new BacktoTop(element);
         backtoTop.init();
+    }
+
+    private showGamblingRestrictionText() {
+        const language = document.body.getAttribute("data-language");
+        const route = document.body.getAttribute("data-route");
+        const gamblingRestrictionWrapper = document.getElementById("language-gambling-restriction") as HTMLElement;
+        if (language === "pt" && route === "/") {
+            gamblingRestrictionWrapper.removeAttribute("hidden");
+        }
     }
 }
