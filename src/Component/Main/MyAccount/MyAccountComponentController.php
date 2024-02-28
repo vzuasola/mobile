@@ -2,6 +2,9 @@
 
 namespace App\MobileEntry\Component\Main\MyAccount;
 
+use App\RateLimiter\PredisRateLimiter;
+use App\RateLimiter\PredisLimiterMode;
+use App\RateLimiter\PredisLimiterRate;
 use App\Player\Player;
 use App\Fetcher\Integration\Exception\ServerDownException;
 
@@ -46,9 +49,9 @@ class MyAccountComponentController
     private $session;
 
     /**
-     * Rate Limit
+     * @var PredisRateLimiter
      */
-    private $rateLimit;
+    private $rateLimiter;
 
     /**
      *
@@ -64,7 +67,7 @@ class MyAccountComponentController
             $container->get('receive_news'),
             $container->get('player_session'),
             $container->get('session'),
-            $container->get('rate_limit')
+            $container->get('predis_rate_limiter')
         );
     }
 
@@ -80,7 +83,7 @@ class MyAccountComponentController
         $receiveNews,
         $playerSession,
         $session,
-        $rate_limit
+        $rate_limiter
     ) {
         $this->rest = $rest;
         $this->changePassword = $changePass;
@@ -90,7 +93,7 @@ class MyAccountComponentController
         $this->subscription = $receiveNews;
         $this->playerSession = $playerSession;
         $this->session = $session;
-        $this->rateLimit = $rate_limit;
+        $this->rateLimiter = $rate_limiter;
     }
 
     /**
@@ -129,7 +132,9 @@ class MyAccountComponentController
         $interval = $config['rate_limit_sms_interval'] ?? 60;
         $operation = $config['rate_limit_sms_operation'] ?? 1;
 
-        $isLimitExceeded = $this->rateLimit->checkLimit("sms_verification", $operation, $interval);
+        $userMode = PredisLimiterMode::createUserMode();
+        $rate = new PredisLimiterRate($interval, $operation);
+        $isLimitExceeded = $this->rateLimiter->shouldLimit('sms_verification', $userMode, $rate);
 
         if ($isLimitExceeded) {
             return $this->rest->output($response, [
@@ -405,7 +410,9 @@ class MyAccountComponentController
             $interval = $config['rate_limit_bonus_code_interval'] ?? 60;
             $operation = $config['rate_limit_bonus_code_operation'] ?? 1;
 
-            $isLimitExceeded = $this->rateLimit->checkLimit("bonus_code", $operation, $interval);
+            $ipMode = PredisLimiterMode::createIpMode();
+            $rate = new PredisLimiterRate($interval, $operation);
+            $isLimitExceeded = $this->rateLimiter->shouldLimit('bonus_code', $ipMode, $rate);
 
             if ($isLimitExceeded) {
                 $data = [
