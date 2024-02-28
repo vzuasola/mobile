@@ -1,0 +1,27 @@
+#language-gambilng-restriction {
+    background-color: $light-gray;
+    hr {
+        margin: 1.5rem 0;
+    }
+    a {
+        text-decoration: none;
+        color: #5E5E5E;
+    }
+}
+.gambling-restriction-container {
+    width: 330px;
+    height: 108px;
+    margin-bottom: 10px;
+}
+.gambling-restriction-image {
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.gambling-restriction-text {
+    color: #5E5E5E;
+    font: normal 14px Roboto;
+    line-height: 18px;
+    width: 204px;
+    float: right;
+}
