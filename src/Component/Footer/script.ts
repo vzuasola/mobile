@@ -160,7 +160,7 @@ export class FooterComponent implements ComponentInterface {
     private showGamblingRestrictionText() {
         const language = document.body.getAttribute("data-language");
         const route = document.body.getAttribute("data-route");
-        const gamblingRestrictionWrapper = document.getElementById("language-gambilng-restriction") as HTMLElement;
+        const gamblingRestrictionWrapper = document.getElementById("language-gambling-restriction") as HTMLElement;
         if (language === "pt" && route === "/") {
             gamblingRestrictionWrapper.removeAttribute("hidden");
         }
