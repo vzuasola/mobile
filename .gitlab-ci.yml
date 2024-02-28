@@ -117,5 +117,6 @@ production:
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine
   only:
     - /^release-.*$/
+    - /^hotfix-.*$/
     - tags
 
