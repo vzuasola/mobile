@@ -95,15 +95,16 @@ export class HeaderComponent implements ComponentInterface {
     }
 
     private refreshBalance() {
+        // Prevent balance call if dafacoin is enabled;
+        if (this.attachments.useDafacoinBalanceMenu) {
+            return;
+        }
         ComponentManager.broadcast("balance.return", {
             success: (response) => {
                 if (typeof response.balance === "undefined") {
                     return;
                 }
 
-                if (this.attachments.useDafacoinBalanceMenu) {
-                    return;
-                }
                 const wrapper = this.element.querySelector(".account-balance");
 
                 if (wrapper) {
