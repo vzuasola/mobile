@@ -23,7 +23,7 @@ validations:
   capital_letter_required: App\MobileEntry\Extensions\Forms\Validators\Validators:requireCapitalLetterValue
   lower_letter_required: App\MobileEntry\Extensions\Forms\Validators\Validators:requireLowerLetterValue
   number_required: App\MobileEntry\Extensions\Forms\Validators\Validators:requiredNumberValue
-  new_password_different_from_current: App\Account\Extensions\Forms\Validators\Validators:newPasswordDifferentFromCurrent
+  new_password_different_from_current: App\MobileEntry\Extensions\Forms\Validators\Validators:newPasswordDifferentFromCurrent
 
 # Form type mapping
 #
