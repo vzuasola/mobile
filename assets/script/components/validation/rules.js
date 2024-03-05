@@ -283,7 +283,7 @@ validators.verify_password = {
  */
 validators.not_match_username = {
     callback: function (value, param, field) {
-        return value.toUpperCase() !== field.element.getAttribute('data-username');
+        return value.toUpperCase() !== field.element.getAttribute('data-username').toUpperCase();
     },
 };
 
