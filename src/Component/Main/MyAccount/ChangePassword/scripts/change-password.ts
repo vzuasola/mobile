@@ -58,6 +58,7 @@ export class ChangePassword extends FormBase {
                 this.newPasswordField.dataset.username = this.attachments.username;
                 new PasswordChecklist({
                     passwordFieldId: "ChangePasswordForm_new_password",
+                    passwordCurrentFieldId: "ChangePasswordForm_current_password",
                     passwordVerifyFieldId: "ChangePasswordForm_verify_password",
                     submitButtonId: "ChangePasswordForm_submit",
                     pwdValidations: passwordValidations,
