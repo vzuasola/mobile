@@ -350,4 +350,14 @@ validators.invalid_words = {
     },
 };
 
+/**
+ * Verify new password.
+ */
+validators.new_password_different_from_current = {
+    callback: function (value) {
+        var currentPasswordField = document.querySelector("#ChangePasswordForm_current_password");
+        return value && value !== currentPasswordField.value;
+    }
+};
+
 export default validators;

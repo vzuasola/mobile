@@ -3,6 +3,7 @@ import RuleFunctions from "@app/assets/script/components/validation/rules";
 
 export default class PasswordChecklist {
     private options;
+    private currentPasswordField: HTMLFormElement;
     private newPasswordField: HTMLFormElement;
     private verifyPasswordField: HTMLFormElement;
     private submitButton: HTMLElement;
@@ -16,6 +17,7 @@ export default class PasswordChecklist {
 
     constructor(options) {
         this.options = options || {};
+        this.currentPasswordField = document.querySelector("#" + this.options.passwordCurrentFieldId);
         this.newPasswordField = document.querySelector("#" + this.options.passwordFieldId);
         this.verifyPasswordField = document.querySelector("#" + this.options.passwordVerifyFieldId);
         this.submitButton = document.getElementById(this.options.submitButtonId);
@@ -24,11 +26,13 @@ export default class PasswordChecklist {
         this.customRules = {
             verify_password: this.verifyBothPasswordFieldsAreEqual,
             not_match_username: this.verifyPasswordNotSameAsUsername,
+            new_password_different_from_current: this.verifyPasswordNotSameAsCurrentPassword,
         };
 
         this.ruleConcatenations = {
             max_length: "min_length",
             not_match_username: "invalid_words",
+            new_password_different_from_current: "new_password",
         };
 
         if (this.newPasswordField && this.verifyPasswordField && this.submitButton) {
@@ -84,6 +88,12 @@ export default class PasswordChecklist {
         const formItem = document.createElement("div");
         utility.addClass(formItem, "form-item");
 
+        this.currentPasswordField && this.currentPasswordField.addEventListener("input", () => {
+            if (this.newPasswordField.value.length !== 0) {
+                $that.runChecklistBoxRules($that.newPasswordField);
+                $that.newPasswordField.dispatchEvent(new Event ("keyup"));
+            }
+        });
         this.newPasswordField.addEventListener("input", () => {
             $that.runChecklistBoxRules($that.newPasswordField);
         });
@@ -146,17 +156,34 @@ export default class PasswordChecklist {
             if ((ruleName === "verify_password") && ($that.verifyPasswordField.value.length === 0)) {
                 checklistElement.classList.remove("checklist-item-green");
                 checklistElement.classList.remove("checklist-item-red");
-                checklistElement.classList.add("checklist-item-gray");
+                return;
+            }
+            if ((ruleName === "invalid_words") && !ruleStatus) {
+                checklistElement.classList.remove("checklist-item-green");
+                checklistElement.classList.remove("checklist-item-gray");
+                checklistElement.classList.add("checklist-item-red");
+                return;
+            }
+            if (($that.verifyPasswordField.value.length === 0) && ($that.newPasswordField.value.length === 0)) {
+                checklistElement.classList.remove("checklist-item-green");
+                checklistElement.classList.remove("checklist-item-gray");
+                checklistElement.classList.remove("checklist-item-red");
+                return;
+            }
+            if ((ruleName === "invalid_words") && ($that.newPasswordField.value.length === 0) && ruleStatus) {
+                checklistElement.classList.remove("checklist-item-green");
+                checklistElement.classList.remove("checklist-item-gray");
+                checklistElement.classList.add("checklist-item-red");
+                return;
+            }
+            if (ruleStatus) {
+                checklistElement.classList.remove("checklist-item-gray");
+                checklistElement.classList.remove("checklist-item-red");
+                checklistElement.classList.add("checklist-item-green");
             } else {
-                if (ruleStatus) {
-                    checklistElement.classList.remove("checklist-item-gray");
-                    checklistElement.classList.remove("checklist-item-red");
-                    checklistElement.classList.add("checklist-item-green");
-                } else {
-                    checklistElement.classList.remove("checklist-item-green");
-                    checklistElement.classList.remove("checklist-item-gray");
-                    checklistElement.classList.add("checklist-item-red");
-                }
+                checklistElement.classList.remove("checklist-item-green");
+                checklistElement.classList.remove("checklist-item-gray");
+                checklistElement.classList.add("checklist-item-red");
             }
         });
 
@@ -192,6 +219,11 @@ export default class PasswordChecklist {
     }
 
     private verifyPasswordNotSameAsUsername(passwordChecklistObj) {
-        return (passwordChecklistObj.newPasswordField.value !== passwordChecklistObj.newPasswordField.dataset.username);
+        return (passwordChecklistObj.newPasswordField.value.toLowerCase() !==
+        passwordChecklistObj.newPasswordField.dataset.username.toLowerCase());
+    }
+
+    private verifyPasswordNotSameAsCurrentPassword(passwordChecklistObj) {
+        return (passwordChecklistObj.newPasswordField.value !== passwordChecklistObj.currentPasswordField.value);
     }
 }
