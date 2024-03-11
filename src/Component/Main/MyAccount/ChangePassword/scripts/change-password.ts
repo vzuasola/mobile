@@ -156,6 +156,8 @@ export class ChangePassword extends FormBase {
         });
 
         // remove password meter
-        this.passwordMeter.passwordMeterRender("hidden");
+        if (this.attachments.usePasswordChecklist === 0) {
+            this.passwordMeter.passwordMeterRender("hidden");
+        }
     }
 }
