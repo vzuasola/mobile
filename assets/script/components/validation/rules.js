@@ -283,7 +283,7 @@ validators.verify_password = {
  */
 validators.not_match_username = {
     callback: function (value, param, field) {
-        return value.toUpperCase() !== field.element.getAttribute('data-username');
+        return value.toUpperCase() !== field.element.getAttribute('data-username').toUpperCase();
     },
 };
 
@@ -348,6 +348,16 @@ validators.invalid_words = {
 
         return (obj.indexOf(value.toUpperCase()) === -1);
     },
+};
+
+/**
+ * Verify new password.
+ */
+validators.new_password_different_from_current = {
+    callback: function (value) {
+        var currentPasswordField = document.querySelector("#ChangePasswordForm_current_password");
+        return value && value !== currentPasswordField.value;
+    }
 };
 
 export default validators;

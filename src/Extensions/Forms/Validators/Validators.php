@@ -48,4 +48,9 @@ class Validators
     {
         return true;
     }
+
+    public function newPasswordDifferentFromCurrent()
+    {
+        return true;
+    }
 }

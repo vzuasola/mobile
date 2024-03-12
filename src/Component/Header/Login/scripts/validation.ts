@@ -21,7 +21,7 @@ export class Validation {
             callback_pass_required: [],
             callback_check_mobile_format: [],
             callback_min_length: ["6"],
-            callback_max_length: ["10"],
+            callback_max_length: ["15"],
         },
     }];
 
