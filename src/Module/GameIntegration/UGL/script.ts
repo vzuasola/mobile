@@ -92,6 +92,13 @@ export class UGLModule implements ModuleInterface, GameInterface {
             data: launchData,
         }).then((response) => {
 
+            if (response.errors) {
+                this.errorMessageLightbox.showMessage(
+                    response,
+                );
+                return;
+            }
+
             if (!response.currency && !response.gameurl) {
                 this.messageLightbox.showMessage(
                     this.moduleName,
