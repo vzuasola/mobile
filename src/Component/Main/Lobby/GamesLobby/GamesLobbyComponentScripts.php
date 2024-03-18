@@ -58,6 +58,7 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
             $gtsGeneralConfig = $this->configs->getConfig('gts.gts_configuration');
             $gamesListV = $this->gamesListVersion ? 'games_list_v2' : 'games_list';
             $pager = $this->views->getViewById($gamesListV, ['pager' => 1]);
+            $uglConfig = $this->configs->getConfig('webcomposer_config.games_playtech_provider');
         } catch (\Exception $e) {
             $config = [];
         }
@@ -89,6 +90,7 @@ class GamesLobbyComponentScripts implements ComponentAttachmentInterface
         ];
 
         return [
+            'uglConfig' => $uglConfig['ugl_switch'] ?? false,
             'authenticated' => $this->playerSession->isLogin(),
             'user' => $user,
             'search_blurb' => $config['search_blurb'] ?? "",
