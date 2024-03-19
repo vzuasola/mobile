@@ -6,11 +6,13 @@ export class QuickLauncher {
     private configs: any[];
     private isLogin: boolean;
     private launchViaIframe: boolean;
+    private uglConfig: boolean;
 
-    constructor(configs, isLogin, launchViaIframe) {
+    constructor(configs, isLogin, launchViaIframe, uglConfig) {
         this.configs = configs;
         this.isLogin = isLogin;
         this.launchViaIframe = launchViaIframe;
+        this.uglConfig = uglConfig;
     }
 
     /**
@@ -24,6 +26,7 @@ export class QuickLauncher {
             activeTab,
             isLogin: this.isLogin,
             launchViaIframe: this.launchViaIframe,
+            uglConfig: Boolean(this.uglConfig),
         });
 
         if (quickTabsEl) {
