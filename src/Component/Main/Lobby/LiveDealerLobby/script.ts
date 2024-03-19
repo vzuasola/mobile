@@ -32,11 +32,20 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private currentPage: number;
     private pager: number;
     private launchViaIframe: boolean;
+    private uglConfig: boolean;
     private gameLauncherManager: GameLauncherManager;
 
     constructor() {
         this.lazyLoader = new LazyLoader();
         this.gameLauncherManager = new GameLauncherManager();
+
+        Handlebars.registerHelper("equals", function(value, compare, options) {
+            if (value === compare) {
+                return options.fn(this);
+            }
+
+            return options.inverse(this);
+        });
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -45,6 +54,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         tabs: any[],
         configs: any[],
         launch_via_iframe: boolean,
+        uglConfig: boolean,
     }) {
         this.groupedGames = undefined;
         this.attachments = attachments;
@@ -54,6 +64,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.tabs = attachments.tabs;
         this.configs = attachments.configs;
         this.launchViaIframe = attachments.launch_via_iframe;
+        this.uglConfig = attachments.uglConfig;
         this.liveDealerXhrRequest("maintenance", (response) => {
             this.providers = response.game_providers;
             ComponentManager.broadcast("provider.maintenance", {
@@ -79,6 +90,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         tabs: any[],
         configs: any[],
         launch_via_iframe: boolean,
+        uglConfig: boolean,
     }) {
         if (!this.element) {
             this.listenHashChange();
@@ -96,6 +108,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.tabs = attachments.tabs;
         this.configs = attachments.configs;
         this.launchViaIframe = attachments.launch_via_iframe;
+        this.uglConfig = attachments.uglConfig;
         this.liveDealerXhrRequest("maintenance", (response) => {
             this.providers = response.game_providers;
             ComponentManager.broadcast("provider.maintenance", {
@@ -221,7 +234,12 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.setLobbyTabs();
         const activeTab = this.getActiveTab();
         if (this.groupedGames.hasOwnProperty("providers")) {
-            const quickLauncher = new QuickLauncher(this.attachments.configs, this.isLogin, this.launchViaIframe);
+            const quickLauncher = new QuickLauncher(
+                this.attachments.configs,
+                this.isLogin,
+                this.launchViaIframe,
+                this.uglConfig,
+            );
             quickLauncher.activate(this.groupedGames.providers, activeTab);
         }
         this.populateTabs();
@@ -269,6 +287,7 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             activeTab,
             enableLazyLoad,
             this.launchViaIframe,
+            this.uglConfig,
         );
     }
 
