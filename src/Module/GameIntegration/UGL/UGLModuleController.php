@@ -115,8 +115,14 @@ class UGLModuleController
 
                 $queryString = [];
                 foreach ($uglConfigs as $key => $value) {
-                    $param = str_replace($search, $replacements, $value);
-                    $queryString[] = $key . "=" . urlencode($this->parser->processTokens($param));
+                    if ($key === 'tableAlias') {
+                        if (!empty($requestData['tableAlias'])) {
+                            $queryString[] = $key . "=" . urlencode($requestData['tableAlias']);
+                        }
+                    } else {
+                        $param = str_replace($search, $replacements, $value);
+                        $queryString[] = $key . "=" . urlencode($this->parser->processTokens($param));
+                    }
                 }
 
                 $url = $url . '?' . implode('&', $queryString);
