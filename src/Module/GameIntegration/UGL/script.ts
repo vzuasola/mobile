@@ -72,6 +72,7 @@ export class UGLModule implements ModuleInterface, GameInterface {
             platform: options.platform || "",
             lobby: options.lobby || false,
             gameCode: options.code || "",
+            tableAlias: options.tablename || "",
             extGameId: options.extgameid || "",
             keywords: options.keywords || "",
             title: options.title || "",
