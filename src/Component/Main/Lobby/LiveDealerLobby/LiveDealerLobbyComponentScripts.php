@@ -46,8 +46,10 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
     {
         try {
             $liveDealerGeneralConfig = $this->configs->getConfig('live_dealer.live_dealer_configuration');
+            $uglConfig = $this->configs->getConfig('webcomposer_config.games_playtech_provider');
         } catch (\Exception $e) {
             $liveDealerGeneralConfig = [];
+            $uglConfig = [];
         }
 
         try {
@@ -68,7 +70,8 @@ class LiveDealerLobbyComponentScripts implements ComponentAttachmentInterface
             'pagerConfig' => $pager ?? [],
             'tabs' => $tabs,
             'configs' => $liveDealerGeneralConfig ?? [],
-            'launch_via_iframe' => $liveDealerGeneralConfig['launch_via_iframe'] ?? false
+            'launch_via_iframe' => $liveDealerGeneralConfig['launch_via_iframe'] ?? false,
+            'uglConfig' => $uglConfig['ugl_switch'] ?? false
         ];
     }
 

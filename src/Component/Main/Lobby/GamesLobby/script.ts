@@ -53,6 +53,7 @@ export class GamesLobbyComponent implements ComponentInterface {
     private productMenu: string = "product-games";
     private launchViaIframe: boolean;
     private gameLauncherManager: GameLauncherManager;
+    private uglConfig: boolean;
     private bannerWidgets: {
         [key: string]:
         { widget: string, link: string, target: string, height: string, width: string };
@@ -64,8 +65,17 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.gamesFilter = new GamesFilter();
         this.gamesCollectionSort = new GamesCollectionSorting();
         this.gameLauncherManager = new GameLauncherManager();
+
         Handlebars.registerHelper("getIndex", (offset, parentIndex, index, options) => {
             return (parseInt(parentIndex, 10) * 3) + offset + index;
+        });
+
+        Handlebars.registerHelper("equals", function(value, compare, options) {
+            if (value === compare) {
+                return options.fn(this);
+            }
+
+            return options.inverse(this);
         });
     }
 
@@ -83,8 +93,10 @@ export class GamesLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         infinite_scroll: boolean,
         launch_via_iframe: boolean,
+        uglConfig: boolean,
         user,
     }) {
+        this.uglConfig = attachments.uglConfig;
         this.response = null;
         this.element = element;
         this.attachments = attachments;
@@ -146,11 +158,13 @@ export class GamesLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         infinite_scroll: boolean,
         launch_via_iframe: boolean,
+        uglConfig: boolean,
         user,
     }) {
         const enableClickStream = (attachments.configs.graphyte.hasOwnProperty("enabled")) ?
             attachments.configs.graphyte.enabled : false;
         this.graphyteRecommends = new GraphyteRecommends(attachments);
+        this.uglConfig = attachments.uglConfig;
         if (!this.element) {
             this.listenChangeCategory();
             this.listenHashChange();
@@ -614,6 +628,7 @@ export class GamesLobbyComponent implements ComponentInterface {
             isAllGames: activeCategory === "all-games",
             offset: page,
             launchViaIframe: this.launchViaIframe,
+            uglConfig: Boolean(this.uglConfig),
         });
 
         if (this.currentPage > page) {
@@ -626,6 +641,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                     isAllGames: activeCategory === "all-games",
                     offset: ctr * 12,
                     launchViaIframe: this.launchViaIframe,
+                    uglConfig: Boolean(this.uglConfig),
                 });
             }
         }
@@ -1027,6 +1043,7 @@ export class GamesLobbyComponent implements ComponentInterface {
                             isAllGames: hash === "all-games",
                             offset: this.currentPage * 12,
                             launchViaIframe: this.launchViaIframe,
+                            uglConfig: Boolean(this.uglConfig),
                         });
 
                         const loader = gameLoader.querySelector(".mobile-game-loader");

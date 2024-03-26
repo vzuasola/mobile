@@ -5,6 +5,9 @@ namespace App\MobileEntry\Component\Main\CantLogin;
 use App\Cookies\Cookies;
 use App\Utils\Host;
 use App\Fetcher\Integration\Exception\ServerDownException;
+use App\RateLimiter\PredisRateLimiter;
+use App\RateLimiter\PredisLimiterMode;
+use App\RateLimiter\PredisLimiterRate;
 
 /**
  *
@@ -34,7 +37,7 @@ class CantLoginComponentController
     /**
      * Rate Limit
      */
-    private $rateLimit;
+    private $rateLimiter;
 
     /**
      *
@@ -45,7 +48,7 @@ class CantLoginComponentController
             $container->get('rest'),
             $container->get('user_fetcher'),
             $container->get('change_password'),
-            $container->get('rate_limit'),
+            $container->get('predis_rate_limiter'),
             $container->get('config_fetcher')
         );
     }
@@ -53,13 +56,13 @@ class CantLoginComponentController
     /**
      * Public constructor
      */
-    public function __construct($rest, $userFetcher, $changePassword, $rate_limit, $config_fetcher)
+    public function __construct($rest, $userFetcher, $changePassword, $rateLimiter, $configFetcher)
     {
         $this->rest = $rest;
         $this->userFetcher = $userFetcher;
         $this->changePassword = $changePassword;
-        $this->rateLimit = $rate_limit;
-        $this->configFetcher = $config_fetcher->withProduct('account');
+        $this->rateLimiter = $rateLimiter;
+        $this->configFetcher = $configFetcher->withProduct('account');
     }
 
     /**
@@ -96,10 +99,13 @@ class CantLoginComponentController
     public function forgotusername($request, $response)
     {
         $config = $this->configFetcher->getConfigById('rate_limit');
+        $type = $config['rate_limit_username_type'] ?? PredisLimiterMode::IP_MODE;
         $interval = $config['rate_limit_username_interval'] ?? 60;
         $operation = $config['rate_limit_username_operation'] ?? 1;
 
-        $isLimitExceeded = $this->rateLimit->checkLimit("forgotusername", $operation, $interval);
+        $mode = PredisLimiterMode::createPredisLimiterModeByType($type);
+        $rate = new PredisLimiterRate($interval, $operation);
+        $isLimitExceeded = $this->rateLimiter->shouldLimit('forgotusername', $mode, $rate);
 
         if ($isLimitExceeded) {
             return $this->rest->output($response, [
