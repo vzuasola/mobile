@@ -186,11 +186,6 @@ export default class PasswordChecklist {
                 checklistElement.classList.add("checklist-item-red");
             }
 
-            const tryAgainbtn = document.querySelector(".try-again-btn");
-            utility.listen(tryAgainbtn, "click", (event, src) => {
-                event.preventDefault();
-                checklistElement.classList.remove("checklist-item-green");
-            });
         });
 
         if (aggregatedStatus) {
