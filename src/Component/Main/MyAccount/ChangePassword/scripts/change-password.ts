@@ -159,6 +159,12 @@ export class ChangePassword extends FormBase {
         // enable fields
         utility.forEach(form.elements, (input) => {
             input.readOnly = false;
+            if (this.attachments.usePasswordChecklist === 1 &&
+                input.type === "submit" && !(input.hasAttribute("disabled"))) {
+                setTimeout(() => {
+                    input.setAttribute("disabled", "disabled");
+                }, 50);
+            }
         });
 
         // remove password meter
