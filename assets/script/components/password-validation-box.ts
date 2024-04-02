@@ -219,7 +219,9 @@ export default class PasswordChecklist {
             }
 
         });
-
+        if ($that.currentPasswordField && $that.currentPasswordField.value === "") {
+            $that.currentPasswordStatus = false;
+        }
         this.checkEnableSubmitButton();
     }
 
