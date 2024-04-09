@@ -76,6 +76,12 @@ export class ChangePassword extends FormBase {
         utility.listen(this.form, "submit", (event, src) => {
             event.preventDefault();
 
+            if (this.attachments.usePasswordChecklist) {
+                const checklistParent = document.querySelector(".password-checklist-box");
+                const checklistElement = checklistParent.querySelectorAll(":scope > ul > li");
+                checklistElement.forEach((item) => item.classList.remove("checklist-item-green"));
+            }
+
             if (!this.validator.hasError) {
                 this.checkField();
             }
@@ -153,6 +159,12 @@ export class ChangePassword extends FormBase {
         // enable fields
         utility.forEach(form.elements, (input) => {
             input.readOnly = false;
+            if (this.attachments.usePasswordChecklist === 1 &&
+                input.type === "submit" && !(input.hasAttribute("disabled"))) {
+                setTimeout(() => {
+                    input.setAttribute("disabled", "disabled");
+                }, 50);
+            }
         });
 
         // remove password meter

@@ -54,6 +54,11 @@ class MyAccountComponentController
     private $rateLimiter;
 
     /**
+     * @var SMSBlocker
+     */
+    private $smsBlocker;
+
+    /**
      *
      */
     public static function create($container)
@@ -67,7 +72,8 @@ class MyAccountComponentController
             $container->get('receive_news'),
             $container->get('player_session'),
             $container->get('session'),
-            $container->get('predis_rate_limiter')
+            $container->get('predis_rate_limiter'),
+            $container->get('sms_blocker')
         );
     }
 
@@ -83,7 +89,8 @@ class MyAccountComponentController
         $receiveNews,
         $playerSession,
         $session,
-        $rateLimiter
+        $rateLimiter,
+        $smsBlocker
     ) {
         $this->rest = $rest;
         $this->changePassword = $changePass;
@@ -94,6 +101,7 @@ class MyAccountComponentController
         $this->playerSession = $playerSession;
         $this->session = $session;
         $this->rateLimiter = $rateLimiter;
+        $this->smsBlocker = $smsBlocker;
     }
 
     /**
@@ -127,15 +135,23 @@ class MyAccountComponentController
      */
     public function sendverificationcode($request, $response)
     {
-        $config = $this->configFetcher->getConfigById('rate_limit');
+        $userMobileNumberIndex = $request->getParsedBody()['data'] ?? null;
+        // Check for SMS Blocker
+        if ($userMobileNumberIndex && $this->smsBlocker->isBlockedByCountry($userMobileNumberIndex)) {
+            return $this->rest->output($response, [
+                'response_code' => 'ERROR',
+                'message' => $this->smsBlocker->getErrorMessage(),
+            ]);
+        }
 
+        $config = $this->configFetcher->getConfigById('rate_limit');
         $type = $config['rate_limit_sms_type'] ?? PredisLimiterMode::USER_MODE;
         $interval = $config['rate_limit_sms_interval'] ?? 60;
         $operation = $config['rate_limit_sms_operation'] ?? 1;
 
         $mode = PredisLimiterMode::createPredisLimiterModeByType($type);
         $rate = new PredisLimiterRate($interval, $operation);
-        $isLimitExceeded = $this->rateLimiter->shouldLimit('sms_verification', $mode, $rate);
+        $isLimitExceeded = $this->rateLimiter->shouldLimit('sms_verification', $mode, $rate, $userMobileNumberIndex);
 
         if ($isLimitExceeded) {
             return $this->rest->output($response, [
@@ -145,10 +161,8 @@ class MyAccountComponentController
             ]);
         }
 
-        $subTypeId = $request->getParsedBody()['data'] ?? null;
-
         try {
-            $smsVerificationStatus = $this->sms->sendSmsVerificationCode($subTypeId);
+            $smsVerificationStatus = $this->sms->sendSmsVerificationCode($userMobileNumberIndex);
         } catch (ServerDownException $e) {
             $status = 'ERROR_MID_DOWN';
             $myAccountConfigV2 = $this->configFetcher->getConfig('my_account_config.general_configuration');

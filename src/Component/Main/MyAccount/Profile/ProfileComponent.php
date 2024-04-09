@@ -55,7 +55,7 @@ class ProfileComponent implements ComponentWidgetInterface
         $formMyProfile = $this->formManager->getForm(MyProfileForm::class);
         $SmsVerificationForm = $this->formManager->getForm(SmsVerificationForm::class);
         $accountConfig = $this->configFetcher->getConfig('my_account_config.general_configuration');
-        if ($accountConfig && $accountConfig['enabled']) {
+        if ($accountConfig && $accountConfig['enable_sms_verification']) {
             $config = $accountConfig;
         } else {
             $myProfileConfig = $this->configFetcher->getConfigById('my_account_profile_general_configuration');
@@ -73,6 +73,7 @@ class ProfileComponent implements ComponentWidgetInterface
             'modalVerificationCodePlaceholder' => $config['modal_verification_code_placeholder'] ?? 'Code',
             'modalVerificationResendCodeText' => $config['modal_verification_resend_code_text'] ?? 'Resend',
             'modalVerificationSubmitText' => $config['modal_verification_submit_text'] ?? 'Submit',
+            'enableSmsVerification' => $config['enable_sms_verification'],
             'verifyText' => $config['verify_text'] ?? 'Verify',
         ];
     }

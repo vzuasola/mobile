@@ -8,6 +8,8 @@ export default class PasswordChecklist {
     private verifyPasswordField: HTMLFormElement;
     private submitButton: HTMLElement;
     private passwordContainer;
+    private currentPasswordStatus: boolean;
+    private aggregatedStatus: boolean;
     // Password rules that participate in checklist box
     private checklistRulesConfig;
     // Rules for which we will use a custom implementation instead of getting one from rules.js
@@ -18,6 +20,8 @@ export default class PasswordChecklist {
     constructor(options) {
         this.options = options || {};
         this.currentPasswordField = document.querySelector("#" + this.options.passwordCurrentFieldId);
+        this.currentPasswordStatus = !this.currentPasswordField;
+        this.aggregatedStatus = false;
         this.newPasswordField = document.querySelector("#" + this.options.passwordFieldId);
         this.verifyPasswordField = document.querySelector("#" + this.options.passwordVerifyFieldId);
         this.submitButton = document.getElementById(this.options.submitButtonId);
@@ -68,6 +72,34 @@ export default class PasswordChecklist {
         });
 
         this.submitButton.setAttribute("disabled", "disabled");
+        const options = {attributes: true};
+        const currPasswordFieldMutationObserver = new MutationObserver(
+            this.currPasswordFieldMutationObserverCallback
+                .bind(this),
+        );
+        if (this.currentPasswordField) {
+            currPasswordFieldMutationObserver.observe(
+                document.querySelector("." + this.options.passwordCurrentFieldId),
+                options,
+            );
+        }
+
+    }
+
+    private currPasswordFieldMutationObserverCallback(mutationList, mutationObserver) {
+        const $that = this;
+        const submitButton = document.getElementById("ChangePasswordForm_submit");
+        mutationList.forEach((mutation) => {
+            const targetElement = mutation.target as HTMLElement;
+            if (mutation.type === "attributes" && mutation.attributeName === "class") {
+                if ( targetElement.classList.contains("has-error") && !(submitButton.hasAttribute("disabled"))) {
+                    $that.currentPasswordStatus = false;
+                } else if (targetElement.classList.contains("has-success")) {
+                    $that.currentPasswordStatus = true;
+                }
+                $that.checkEnableSubmitButton();
+            }
+        });
     }
 
     private orderRulesByWeight(enabledRulesConfig) {
@@ -145,11 +177,11 @@ export default class PasswordChecklist {
             checklistRuleStatus[statusKey] = ruleStatus && checklistRuleStatus[statusKey];
         });
 
-        let aggregatedStatus = true;
+        this.aggregatedStatus = true;
         // Update rule description style in checklist HTML
         Object.keys(checklistRuleStatus).forEach((ruleName) => {
             const ruleStatus = checklistRuleStatus[ruleName];
-            aggregatedStatus = aggregatedStatus && ruleStatus;
+            this.aggregatedStatus = this.aggregatedStatus && ruleStatus;
 
             const checklistElement = document.getElementById(ruleName);
 
@@ -185,12 +217,20 @@ export default class PasswordChecklist {
                 checklistElement.classList.remove("checklist-item-gray");
                 checklistElement.classList.add("checklist-item-red");
             }
-        });
 
-        if (aggregatedStatus) {
+        });
+        if ($that.currentPasswordField && $that.currentPasswordField.value === "") {
+            $that.currentPasswordStatus = false;
+        }
+        this.checkEnableSubmitButton();
+    }
+
+    private checkEnableSubmitButton() {
+
+        this.submitButton.setAttribute("disabled", "disabled");
+
+        if (this.aggregatedStatus && this.currentPasswordStatus) {
             this.submitButton.removeAttribute("disabled");
-        } else {
-            this.submitButton.setAttribute("disabled", "disabled");
         }
     }
 

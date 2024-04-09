@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f290b410814aeb7331f9e6ff1e52dd3d",
+    "content-hash": "24abc487d82b982b74826d91af29f1af",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -253,7 +253,7 @@
                 "shasum": ""
             },
             "require": {
-                "psr/container": "^1.0"
+                "psr/container": "1.0"
             },
             "type": "library",
             "autoload": {
@@ -1693,16 +1693,6 @@
                 "nosql",
                 "predis",
                 "redis"
-            ],
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/tillkruss",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/tillkruss",
-                    "type": "github"
-                }
             ],
             "time": "2016-06-16T16:22:20+00:00"
         },
@@ -3484,16 +3474,16 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.260.0",
+            "version": "dev-release-v1.261.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:sportion/marketing/websites/websites-commons/fe-core.git",
-                "reference": "747f39bf1165f67f7235fdac6afc38676a507a8c"
+                "reference": "8c28a3568932ff1ace2497e2f4077ee16526cf94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=747f39bf1165f67f7235fdac6afc38676a507a8c",
-                "reference": "747f39bf1165f67f7235fdac6afc38676a507a8c",
+                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=8c28a3568932ff1ace2497e2f4077ee16526cf94",
+                "reference": "8c28a3568932ff1ace2497e2f4077ee16526cf94",
                 "shasum": ""
             },
             "require": {
@@ -3546,10 +3536,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "support": {
-                "issues": "https://gitlab.com/api/v4/projects/48796472/issues"
-            },
-            "time": "2024-03-19T09:50:51+00:00"
+            "time": "2024-04-02T10:38:40+00:00"
         },
         {
             "name": "willdurand/negotiation",
