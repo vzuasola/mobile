@@ -65,8 +65,9 @@ class ALSIntegrationModuleController
         $dsbCookieHelper->setDafaUrlCookies();
 
         $postData = $request->getParsedBody();
+        $language = $postData['language'] ?? 'en';
 
-        $data['redirect']  = $this->playerMatrixLobby($url, $postData['language']);
+        $data['redirect']  = $this->playerMatrixLobby($url, $language);
         $this->maintenance($request, $data);
 
         // If with query params redirect_product, this means that the referer is from middleware

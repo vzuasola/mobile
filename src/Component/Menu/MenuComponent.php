@@ -207,15 +207,16 @@ class MenuComponent implements ComponentWidgetInterface
         if ($quicklinks) {
             foreach ($quicklinks as $key => $link) {
                 // Check if post-login url needs to be returned
-                $postLoginURLEnabled = ($link['attributes']['postLoginURLEnabled'] ?? 0 ) === 1;
+                $postLoginURLEnabled = ($link['attributes']['postLoginURLEnabled'] ?? 0) === 1;
                 $postLoginURL = $link['attributes']['postLoginURL'] ?? '#';
                 if ($postLoginURLEnabled && $this->playerSession->isLogin()) {
                     $quicklinks[$key]['alias'] = $postLoginURL;
                 }
 
                 // Remoev Casino Gold Link if not enabled
+                $quicklinkClass = $link['attributes']['class'] ?? '';
                 if ((($this->product->getProduct() == 'mobile-casino-gold')) &&
-                    strpos($link['attributes']['class'], 'language-trigger') !== false
+                    strpos($quicklinkClass, 'language-trigger') !== false
                 ) {
                     unset($quicklinks[$key]);
                 }
