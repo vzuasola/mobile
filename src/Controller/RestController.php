@@ -321,9 +321,10 @@ class RestController extends BaseController
         $data['drawer_promotions'] = $quicklinksMenu['quicklinks-promotions'] ?? 'Promotions';
         $data['drawer_payments'] = $quicklinksMenu['quicklinks-payments'] ?? 'Payments';
         $data['drawer_contact_us'] = $quicklinksMenu['quicklinks-contact'] ?? 'Contact Us';
-        $data['drawer_notification'] = $quicklinksMenu['quicklinks-notifications'] ?? 'Notifications';
+        $data['drawer_notification'] = $quicklinksMenu['quicklinks-notification'] ?? 'Notifications';
+        $data['drawer_faq'] = $quicklinksMenu['quicklinks-faq'] ?? 'Help & FAQs ';
         $data['drawer_payments'] = $quicklinksMenu['quicklinks-payments'] ?? 'Payments';
-        $data['drawer_logout'] = $secondaryMenu['logout'] ?? 'Logout';
+        $data['drawer_logout'] = $headerConfigs['profile_logout_text'] ?? 'Logout';
         $data['drawer_AboutUs'] = $secondaryMenu['about'] ?? 'About Us';
         $data['drawer_security'] = $secondaryMenu['security'] ?? 'Security';
         $data['drawer_privacy_policy'] = $secondaryMenu['privacy'] ?? 'Privacy Policy';
@@ -562,7 +563,7 @@ class RestController extends BaseController
     {
         $menu_item = [];
         try {
-            $menu = $this->menus->getMultilingualMenu('mobile-contact-us');
+            $menu = $this->get('menu_fetcher')->getMultilingualMenu('mobile-contact-us');
         } catch (\Exception $e) {
             $menu = [];
         }
