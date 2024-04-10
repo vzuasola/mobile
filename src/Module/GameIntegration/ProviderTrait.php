@@ -199,7 +199,7 @@ trait ProviderTrait
             }
 
             $icoreConfig = $productConfig->getConfig('webcomposer_config.icore_games_integration');
-            $launcherType = $icoreConfig[self::KEY . '_use_html_param'] ? 'html' : 'redirect';
+            $launcherType = ( $icoreConfig[self::KEY . '_use_html_param'] ?? 0 ) ? 'html' : 'redirect';
         } catch (\Exception $e) {
             $launcherType = 'redirect';
         }

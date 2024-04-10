@@ -156,7 +156,7 @@ class PTPlusLobbyComponentController
         $data = [];
         try {
             $favoritesGamesList = $this->getSpecialCategoriesGameList([$this::FAVORITE_GAMES]);
-            $favoritesGamesList = $this->proccessSpecialGames($favoritesGamesList[$this::FAVORITE_GAMES]);
+            $favoritesGamesList = $this->proccessSpecialGames($favoritesGamesList[$this::FAVORITE_GAMES] ?? []);
             usort($favoritesGamesList, [$this, 'sortRecentGames']);
 
             foreach ($favoritesGamesList as $games) {
@@ -174,7 +174,7 @@ class PTPlusLobbyComponentController
         $data = [];
         try {
             $recentGamesList = $this->getSpecialCategoriesGameList([$this::RECENTLY_PLAYED_GAMES]);
-            $recentGamesList = $this->proccessSpecialGames($recentGamesList[$this::RECENTLY_PLAYED_GAMES]);
+            $recentGamesList = $this->proccessSpecialGames($recentGamesList[$this::RECENTLY_PLAYED_GAMES] ?? []);
             usort($recentGamesList, [$this, 'sortRecentGames']);
 
             foreach ($recentGamesList as $games) {

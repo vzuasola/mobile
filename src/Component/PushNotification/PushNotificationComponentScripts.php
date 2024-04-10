@@ -26,7 +26,11 @@ class PushNotificationComponentScripts implements ComponentAttachmentInterface
         'ru' => 'en',
         'el' => 'gr',
         'pl' => 'pl',
-        'af' => 'en'
+        'af' => 'en',
+        'bn' => 'bn',
+        'pk' => 'pk',
+        'es' => 'es',
+        'pt-br' => 'pt'
     ];
 
     /**
