@@ -103,6 +103,10 @@ export class Bonuses extends FormBase {
             },
         })
         .then((resp) => {
+            if (resp.data === null) {
+                this.showMessage(this.bonusCodeContainer, this.attachments.default_error_message);
+                return;
+            }
             this.bonusType = resp.data.type;
             if (resp.data.statusCode === "Success") {
                 this.claimBonus(this.bonusType);
