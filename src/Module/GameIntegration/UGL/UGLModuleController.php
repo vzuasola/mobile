@@ -139,6 +139,26 @@ class UGLModuleController
     /**
      * @{inheritdoc}
      */
+    public function error($request, $response)
+    {
+        $data = [];
+        try {
+            $requestData = $request->getParsedBody();
+            $productKey = $requestData['product'];
+            $configPerProd = $this->config->withProduct($productKey);
+            $this->ptConfig = $configPerProd->getConfig('webcomposer_config.games_playtech_provider');
+
+            $data['uglError'] = $this->ptConfig['ugl_errors'] ?? '';
+        } catch (\Exception $e) {
+            $data = [];
+        }
+
+        return $this->rest->output($response, $data);
+    }
+
+    /**
+     * @{inheritdoc}
+     */
     private function getParameters($ptConfig)
     {
         $params = $ptConfig['ugl_parameters'] ?? '';

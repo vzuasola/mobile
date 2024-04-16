@@ -32,8 +32,8 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private currentPage: number;
     private pager: number;
     private launchViaIframe: boolean;
-    private uglConfig: boolean;
     private gameLauncherManager: GameLauncherManager;
+    private uglConfig: boolean;
 
     constructor() {
         this.lazyLoader = new LazyLoader();
