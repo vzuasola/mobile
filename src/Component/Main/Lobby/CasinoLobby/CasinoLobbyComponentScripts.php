@@ -47,7 +47,7 @@ class CasinoLobbyComponentScripts implements ComponentAttachmentInterface
         try {
             $config = $this->configs->getConfig('games_search.search_configuration');
             $casinoGeneralConfig = $this->configs->getConfig('casino.casino_configuration');
-            $uglConfig = $this->configs->getConfig('webcomposer_config.games_playtech_provider')['ugl_switch'];
+            $uglConfig = $this->configs->getConfig('webcomposer_config.games_playtech_provider');
         } catch (\Exception $e) {
             $config = [];
         }
@@ -59,7 +59,7 @@ class CasinoLobbyComponentScripts implements ComponentAttachmentInterface
         }
 
         return [
-            'uglConfig' => $uglConfig,
+            'uglConfig' => $uglConfig['ugl_switch'] ?? false,
             'authenticated' => $this->playerSession->isLogin(),
             'search_blurb' => $config['search_blurb'] ?? "",
             'pagerConfig' => $pager ?? [],
