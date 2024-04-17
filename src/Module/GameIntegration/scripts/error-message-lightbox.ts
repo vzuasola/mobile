@@ -29,9 +29,9 @@ export class ErrorMessageLightbox {
         utility.addEventListener(document, "click", (event, src) => {
             event = event || window.event;
             const target = event.target || event.srcElement;
-            utility.preventDefault(event);
 
             if (utility.hasClass(target, "modal-close")) {
+                utility.preventDefault(event);
                 window.close();
             }
         });
