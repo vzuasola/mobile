@@ -1,3 +1,4 @@
+import * as utility from "@core/assets/js/components/utility";
 import * as xhr from "@core/assets/js/vendor/reqwest";
 import PopupWindow from "@app/assets/script/components/popup";
 import {ComponentManager, ModuleInterface} from "@plugins/ComponentWidget/asset/component";
@@ -18,7 +19,7 @@ export class UGLModule implements ModuleInterface, GameInterface {
     private windowObject: any;
     private gameLink: string;
     private lang: string;
-
+    private currentUrl: string;
     private messageLightbox: ProviderMessageLightbox;
     private errorMessageLightbox: ErrorMessageLightbox;
 
@@ -30,6 +31,7 @@ export class UGLModule implements ModuleInterface, GameInterface {
         token: string,
         lang: string,
     }) {
+        this.currentUrl = window.location.href;
         this.lang = attachments.lang;
         this.token = attachments.token;
         if (attachments.username) {
@@ -40,6 +42,14 @@ export class UGLModule implements ModuleInterface, GameInterface {
 
         this.messageLightbox = new ProviderMessageLightbox();
         this.errorMessageLightbox = new ErrorMessageLightbox();
+        utility.listen(document, "components.early.finish", async (event, target) => {
+            const errorCodeValue = this.listenUrl();
+            const errorData = await this.getUGglErrorsMap(errorCodeValue);
+
+            if (errorCodeValue) {
+                this.errorLightbox(errorData);
+            }
+        });
     }
 
     init() {
@@ -202,5 +212,112 @@ export class UGLModule implements ModuleInterface, GameInterface {
                 this.windowObject.focus();
             }
         }
+    }
+
+    /**
+     * Mapping UGL errors
+     */
+    private async getUGglErrorsMap(errorCode) {
+        return new Promise((resolve, reject) => {
+            xhr({
+                url: Router.generateModuleRoute(this.moduleName, "error"),
+                type: "json",
+                method: "post",
+                data: {
+                    product: ComponentManager.getAttribute("product"),
+                },
+            }).then((response) => {
+                let valueObject = {
+                    errors: {
+                        errorCode: "",
+                        errorButton: "",
+                    },
+                };
+                const lines = response.uglError.trim().split("\r\n");
+
+                lines.forEach((line) => {
+                    const valueArray = line.split("|");
+                    const configErrorCode = valueArray[0] || "";
+
+                    if (errorCode === configErrorCode) {
+                        const message = valueArray[1] || "";
+                        const button = valueArray[2] || "";
+                        valueObject = {
+                            errors: {
+                                errorCode: message,
+                                errorButton: button,
+                            },
+                        };
+                    }
+                });
+
+                resolve(valueObject);
+            }).catch((error) => {
+
+                const valueObject = {
+                    errors: {
+                        errorCode: "",
+                        errorButton: "",
+                    },
+                };
+
+                reject(valueObject);
+            });
+        });
+    }
+
+    /**
+     * Check if URL contains errorCode parameter
+     */
+    private listenUrl() {
+        let errorCodeValue = "";
+
+        if (this.currentUrl.includes("errorCode=")) {
+            errorCodeValue = this.currentUrl.split("errorCode=")[1] || "6";
+        }
+
+        return errorCodeValue;
+    }
+
+    /**
+     * Show Error Lightbox if Got Error From PT
+     */
+    private errorLightbox(errorData) {
+
+        if ((errorData as any).errors && (errorData as any).errors.errorCode) {
+            this.errorMessageLightbox.showMessage(
+                errorData,
+            );
+
+            if (window.self !== window.top) {
+                const iframe = window.frameElement;
+                if (iframe && iframe.id === "gameframe") {
+                    this.listenIframe();
+                }
+            }
+
+            // Remove errorCode from the URL
+            const currentUrl = this.currentUrl.replace(/[?&]errorCode=\d+\b/, "");
+
+            // Modify the URL in the browser's history without reloading the page
+            window.history.replaceState(null, "", currentUrl);
+        }
+    }
+
+    /**
+     * Listen iFrame
+     */
+    private listenIframe() {
+        const modal = document.querySelector("#error-message-lightbox") ;
+
+        utility.addEventListener(modal, "click", (event, src) => {
+            event = event || window.event;
+            const target = event.target || event.srcElement;
+            utility.preventDefault(event);
+
+            if (utility.hasClass(target, "modal-overlay") || utility.hasClass(target, "modal-close")) {
+                window.parent.location.href = window.location.origin + window.location.pathname;
+            }
+        });
     }
 }

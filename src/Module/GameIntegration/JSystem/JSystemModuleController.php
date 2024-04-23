@@ -82,7 +82,9 @@ class JSystemModuleController
     private function getGameUrl($request, $requestData)
     {
         $data['currency'] = true;
-        list($gameCode, $product) = explode('|', $requestData['gameCode']);
+        $expl = explode('|', $requestData['gameCode']);
+        $gameCode = $expl[0] ?? '';
+        $product = $expl[1] ?? '';
 
         try {
             $responseData = $this->jsystem->getGameUrlById(self::ICORE_KEY, $gameCode, [
