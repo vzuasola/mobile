@@ -16,6 +16,9 @@ import Xlider from "@app/assets/script/components/xlider";
  */
 export class LobbySliderComponent implements ComponentInterface {
     private element: HTMLElement;
+    private attachments: any;
+    private isLogin: boolean;
+    private products: any[];
     private sliderData: any;
     private providers: any;
     private gamesTile: any;
@@ -42,15 +45,21 @@ export class LobbySliderComponent implements ComponentInterface {
         });
     }
 
-    onLoad(element: HTMLElement, attachments: {}) {
+    onLoad(element: HTMLElement, attachments: { authenticated: boolean, products: any[] }) {
         this.element = element;
+        this.attachments = attachments;
+        this.isLogin = attachments.authenticated;
+        this.products = attachments.products;
         this.getSliders();
         this.listenClickslider();
         this.listenForProviders();
     }
 
-    onReload(element: HTMLElement, attachments: {}) {
+    onReload(element: HTMLElement, attachments: { authenticated: boolean, products: any[] }) {
         this.element = element;
+        this.attachments = attachments;
+        this.isLogin = attachments.authenticated;
+        this.products = attachments.products;
         this.getSliders();
     }
 
@@ -142,12 +151,14 @@ export class LobbySliderComponent implements ComponentInterface {
                 }
             });
 
-            if (el) {
+            if (el && !this.isLogin) {
                 const product = ComponentManager.getAttribute("product");
+                const currentProduct = this.products[product];
                 event.preventDefault();
                 ComponentManager.broadcast("header.login", {
                     src: el,
                     loginStyle: product,
+                    productVia: currentProduct.login_via,
                 });
             }
         });
