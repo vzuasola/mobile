@@ -13,7 +13,6 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
     const PRODUCT = 'mobile-ptplus';
     private $configs;
     private $playerSession;
-    private $product;
     private $views;
 
     /**
@@ -32,10 +31,13 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $configs, $product, $views)
-    {
+    public function __construct(
+        \App\Player\PlayerSession $playerSession,
+        \App\Fetcher\Drupal\ConfigFetcher $configs,
+        \App\MobileEntry\Services\Product\ProductResolver $product,
+        \App\Fetcher\Drupal\ViewsFetcher $views
+    ) {
         $this->playerSession = $playerSession;
-        $this->product = $product;
         $this->configs = $configs;
         $this->views = $views->withProduct($product->getProduct());
     }
@@ -85,19 +87,6 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
             }
         }
 
-        try {
-            $settings =  $this->configs->withProduct('mobile-ptplus')
-                ->getConfig('webcomposer_config.tournament_settings');
-            $tournament['button_learn_more'] = $settings['button_learn_more'] ?? 'Learn More';
-            $tournament['button_join'] = $settings['button_join'] ?? 'Join';
-            $tournament['blurb_animation'] = $settings['enable_transition_api'] ?? 't-none';
-            $tournament['ends_in'] = $settings['label_ends_in'] ?? 'Ends in';
-            $tournament['days'] = $settings['label_days'] ?? 'Days';
-            $tournament['hours'] = $settings['label_hours'] ?? 'Hours';
-            $tournament['minutes'] = $settings['label_minutes'] ?? 'Minutes';
-        } catch (\Exception $e) {
-            $tournament = [];
-        }
 
         return [
             'search_blurb' => $searchBlurb
@@ -113,7 +102,6 @@ class PTPlusLobbyComponentScripts implements ComponentAttachmentInterface
             'pagerConfig' => $pager ?? [],
             'configs' => $ptplusGeneralConfig ?? [],
             'pageData' => $pageContents ?? [],
-            'tournamentSettings' => $tournament ?? [],
             'launch_via_iframe' => $launchViaIFrame ?? false
         ];
     }

@@ -1,11 +1,9 @@
 <?php
 
 use App\MobileEntry\Dependencies\Manifest;
-
 use App\MobileEntry\Services\CookieService\CookieService;
 use App\MobileEntry\Services\Domains\IDDomain;
 use App\MobileEntry\Services\Accounts\Accounts;
-use App\MobileEntry\Services\Tournament\TournamentService;
 use App\MobileEntry\Services\Currency\CurrencyTranslation;
 use App\MobileEntry\Services\Product\ProductResolver;
 use App\MobileEntry\Component\Main\CantLogin\RateLimit;
