@@ -382,6 +382,3 @@ modules:
 
   partner_matrix:
     class: App\MobileEntry\Module\PartnerMatrix\PartnerMatrixModule
-
-  ptplus_tournament:
-    class: App\MobileEntry\Module\PtplusTournament\PtplusTournamentModule

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "219969c9a2a28f6f40c4cca034cb6bdb",
+    "content-hash": "0d53056239e8784efe41d33aab19340d",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3460,16 +3460,16 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.262.0",
+            "version": "dev-release-v1.264.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:sportion/marketing/websites/websites-commons/fe-core.git",
-                "reference": "9f40835546284f07c351646f800f299c8077315a"
+                "reference": "67273e7e6adf98d868b710286bd426d31a1e2cfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=9f40835546284f07c351646f800f299c8077315a",
-                "reference": "9f40835546284f07c351646f800f299c8077315a",
+                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=67273e7e6adf98d868b710286bd426d31a1e2cfc",
+                "reference": "67273e7e6adf98d868b710286bd426d31a1e2cfc",
                 "shasum": ""
             },
             "require": {
@@ -3522,7 +3522,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2024-04-10T09:51:55+00:00"
+            "time": "2024-05-10T13:06:36+00:00"
         },
         {
             "name": "willdurand/negotiation",
