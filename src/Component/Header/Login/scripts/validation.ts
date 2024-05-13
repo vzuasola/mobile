@@ -84,7 +84,7 @@ export class Validation {
         });
 
         validator.registerCallback("check_username_format", (value, param, field) => {
-            const pattern = /^\w+$/i;
+            const pattern = /^[\w@\/\!\.\+\-]+$/i;
             return pattern.test(value.trim());
         });
 
