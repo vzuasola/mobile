@@ -3464,12 +3464,12 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:sportion/marketing/websites/websites-commons/fe-core.git",
-                "reference": "67273e7e6adf98d868b710286bd426d31a1e2cfc"
+                "reference": "79ec5e30e2309fb19c960250062c5e94c1af3311"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=67273e7e6adf98d868b710286bd426d31a1e2cfc",
-                "reference": "67273e7e6adf98d868b710286bd426d31a1e2cfc",
+                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=79ec5e30e2309fb19c960250062c5e94c1af3311",
+                "reference": "79ec5e30e2309fb19c960250062c5e94c1af3311",
                 "shasum": ""
             },
             "require": {
@@ -3522,7 +3522,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2024-05-10T13:06:36+00:00"
+            "time": "2024-05-21T07:33:48+00:00"
         },
         {
             "name": "willdurand/negotiation",

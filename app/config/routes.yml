@@ -509,7 +509,13 @@ routes:
     method: ANY
     action: App\Plugins\ComponentWidget\ComponentWidgetController:moduleList
     headers:
-      Cache-Control: no-cache, no-store, must-revalidate
+      Cache-Control: public, max-age=300
+
+  /api/plugins/module/{loggedInUserCacheKey}:
+    method: ANY
+    action: App\Plugins\ComponentWidget\ComponentWidgetController:moduleList
+    headers:
+      Cache-Control: private, max-age=300
 
   /api-fe/components:
     method: ANY
