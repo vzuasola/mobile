@@ -87,7 +87,6 @@ export class FooterComponent implements ComponentInterface {
             this.getOriginalUrl();
             this.attachProduct();
             new CookieNotif({
-                geoIp: false,
                 element: this.element,
             });
         });
