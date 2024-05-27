@@ -60,6 +60,7 @@ export class EzugiGamingModule implements ModuleInterface, GameInterface {
                 product,
                 lang,
                 gameCode: options.code,
+                lobby: options.lobby || undefined,
                 subprovider: options.subprovider || undefined,
                 tableName: options.tablename,
             },
