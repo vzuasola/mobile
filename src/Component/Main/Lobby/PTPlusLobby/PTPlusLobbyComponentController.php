@@ -24,8 +24,6 @@ class PTPlusLobbyComponentController
     private $favorite;
     private $cacher;
     private $currentLanguage;
-    private $player;
-    private $tournamentApi;
 
     /**
      *
@@ -41,9 +39,7 @@ class PTPlusLobbyComponentController
             $container->get('recents_fetcher'),
             $container->get('favorites_fetcher'),
             $container->get('redis_cache_adapter'),
-            $container->get('lang'),
-            $container->get('player'),
-            $container->get('tournament_fetcher')
+            $container->get('lang')
         );
     }
 
@@ -51,17 +47,15 @@ class PTPlusLobbyComponentController
      * Public constructor
      */
     public function __construct(
-        $playerSession,
-        $views,
-        $rest,
-        $configs,
-        $asset,
-        $recentGames,
-        $favorite,
+        \App\Player\PlayerSession $playerSession,
+        \App\Fetcher\Drupal\ViewsFetcher $views,
+        \App\Rest\Resource $rest,
+        \App\Fetcher\Drupal\ConfigFetcher $configs,
+        \App\Url\Asset $asset,
+        \App\Fetcher\Integration\RecentGamesFetcher $recentGames,
+        \App\Fetcher\Integration\FavoriteGamesFetcher $favorite,
         $cacher,
-        $currentLanguage,
-        $player,
-        $tournamentApi
+        $currentLanguage
     ) {
         $this->playerSession = $playerSession;
         $this->views = $views->withProduct(self::PRODUCT);
@@ -72,8 +66,6 @@ class PTPlusLobbyComponentController
         $this->favorite = $favorite;
         $this->cacher = $cacher;
         $this->currentLanguage = $currentLanguage;
-        $this->player = $player;
-        $this->tournamentApi = $tournamentApi;
     }
 
     public function lobby($request, $response)
@@ -224,74 +216,6 @@ class PTPlusLobbyComponentController
         }
     }
 
-    public function banners($request, $response)
-    {
-        $generalConfiguration = $this->getTournamentSettings();
-        $activeTounaments = $this->tournamentApi->getActiveTournaments($generalConfiguration);
-
-        try {
-            $data = [];
-            $banners = $this->views->getViewById('tournament_banners');
-
-            foreach ($banners as $banner) {
-                $bannerData = [];
-                // check if tournament duration is not yet expired
-                if (PublishingOptions::checkDuration(
-                    $banner['field_tournament_start_date'][0]['value'],
-                    $banner['field_tournament_end_date'][0]['value']
-                )) {
-                    $bannerData['banner_id'] = $banner['field_banner_id'][0]['value'] ?? '';
-                    $bannerData['type_board'] = $banner['field_type_board'][0]['value'] ?? '';
-                    $bannerData['image'] = [
-                        'alt' => $banner['field_banner_image'][0]['value']['alt'],
-                        'url' =>
-                            $this->asset->generateAssetUri(
-                                $banner['field_banner_image'][0]['value']['url'],
-                                ['product' => self::PRODUCT]
-                            )
-                    ];
-                    $bannerData['image_landscape'] = [
-                        'alt' => $banner['field_banner_image_landscape'][0]['value']['alt'] ?? '',
-                        'url' =>
-                            $this->asset->generateAssetUri(
-                                $banner['field_banner_image_landscape'][0]['value']['url'] ?? ''
-                            )
-                    ];
-                    $lightbox_status = $banner['field_lightbox_status'][0]['value'] ?? '0';
-                    $bannerData['lightbox_status'] = filter_var($lightbox_status, FILTER_VALIDATE_BOOLEAN);
-
-                    if ($bannerData['lightbox_status']) {
-                        $bannerData['lightbox'] = json_encode([
-                            'lightbox_games_title' => $banner['field_lightbox_games_title'][0]['value'] ?? '',
-                            'lightbox_intro' => $banner['field_lightbox_intro'][0]['value'] ?? '',
-                            'lightbox_join_button' => $banner['field_lightbox_join_button'][0]['value'] ?? '',
-                            'lightbox_mechanics' => $banner['field_lightbox_mechanics'][0]['value'] ?? '',
-                            'lightbox_mechanics_title' => $banner['field_lightbox_mechanics_title'][0]['value'] ?? '',
-                            'lightbox_rewards' => $banner['field_lightbox_rewards'][0]['value'] ?? '',
-                            'lightbox_rewards_title' => $banner['field_lightbox_rewards_title'][0]['value'] ?? '',
-                        ]);
-                    }
-
-                    $bannerData['date_time'] = ['days' => 0, 'hours' => 0, 'minutes' => 0];
-                    if (array_key_exists($bannerData['banner_id'], $activeTounaments)) {
-                        $bannerData['date_time'] =
-                            $this->getEndTime($activeTounaments[$bannerData['banner_id']]['end_time']);
-                        $bannerData['lightbox_games'] = $activeTounaments[$bannerData['banner_id']]['games'];
-                    } else {
-                        $now  = new \DateTime();
-                        $now = $now->sub(new \DateInterval('P1D'));
-                        $bannerData['date_time'] = $now->getTimestamp();
-                    }
-
-                    $data[] = $bannerData;
-                }
-            }
-        } catch (\Exception $e) {
-            $data = [];
-        }
-
-        return $this->rest->output($response, $data);
-    }
 
     /**
      * Get End Time by days, hours, minutes
@@ -309,34 +233,6 @@ class PTPlusLobbyComponentController
         }
     }
 
-    /**
-     * Get Settings Of Tournaments
-     */
-    private function getTournamentSettings()
-    {
-        $tournamentSettings = [];
-        $settings =  $this->configs->withProduct('mobile-ptplus')
-            ->getConfig('webcomposer_config.tournament_settings');
-        $tournamentSettings['urlMappings'] = [
-            'leaderboard' => $settings['leaderboards_api'],
-            'dailymission' => $settings['daily_mission_api'],
-        ];
-        $tournamentSettings['key_mapping'] = Config::parseMultidimensional($settings['key_mapping']);
-        $tournamentSettings['default_key_name'] = Config::parseMultidimensional($settings['default_key_name_mapping']);
-        $tournamentSettings['currency'] = $tournamentSettings['default_key_name'][strtolower($this->currentLanguage)];
-        $langMapping = Config::parseMultidimensional($settings['api_language_mapping']);
-        $tournamentSettings['language'] = $langMapping[$this->currentLanguage];
-
-        if ($this->playerSession->isLogin()) {
-            $tournamentSettings['currency']  = $this->player->getCurrency();
-        }
-
-        if ($tournamentSettings['currency'] === 'RMB') {
-            $tournamentSettings['currency'] = 'CNY';
-        }
-
-        return $tournamentSettings;
-    }
 
     private function getSpecialCategoriesGameList($categories)
     {
@@ -367,21 +263,6 @@ class PTPlusLobbyComponentController
             $gamesList[$category] = array_chunk($game, $group);
         }
         return $gamesList;
-    }
-
-    /**
-     * Get list of special categories
-     */
-    private function getSpecialCategories($categories)
-    {
-        $specialCategories = [];
-        foreach ($categories as $category) {
-            if (strtolower($category['field_isordinarycategory']) === "false") {
-                $specialCategories[$category['field_games_alias']] = $category;
-            }
-        }
-
-        return $specialCategories;
     }
 
     /**
@@ -486,19 +367,6 @@ class PTPlusLobbyComponentController
         return $categoryList;
     }
 
-    private function getFavoriteGamesList($favGames)
-    {
-        $gameList = [];
-        if ($this->playerSession->isLogin()) {
-            $favGames = $this->proccessSpecialGames($favGames);
-            if (is_array($favGames) && count($favGames) > 0) {
-                foreach ($favGames as $gameCode) {
-                    $gameList[$gameCode['id']] = 'active';
-                }
-            }
-        }
-        return $gameList;
-    }
 
     private function proccessSpecialGames($games)
     {

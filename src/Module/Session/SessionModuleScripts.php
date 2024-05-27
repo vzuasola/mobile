@@ -51,12 +51,6 @@ class SessionModuleScripts implements ComponentAttachmentInterface
         $data = [];
 
         try {
-            $data['geoip'] = $this->idDomain->getGeoIpCountry();
-        } catch (\Exception $e) {
-            $data['geoip'] = '';
-        }
-
-        try {
             $data['authenticated'] = $this->playerSession->isLogin();
         } catch (\Exception $e) {
             $data['authenticated'] = false;

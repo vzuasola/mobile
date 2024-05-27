@@ -21,22 +21,12 @@ class SliderComponentController
         'pen' => 'pe',
         'ars' => 'ar'
     ];
-     /**
-     * @var App\Fetcher\Drupal\ViewsFetcher
-     */
+
     private $viewsFetcher;
 
-    /**
-     * @var App\Fetcher\Drupal\ConfigFetcher
-     */
     private $configs;
 
-    /**
-     * @var App\Player\PlayerSession
-     */
     private $playerSession;
-
-    private $product;
 
     private $rest;
 
@@ -73,18 +63,17 @@ class SliderComponentController
      *
      */
     public function __construct(
-        $product,
-        $configs,
-        $viewsFetcher,
-        $playerSession,
-        $rest,
-        $asset,
-        $url,
+        \App\MobileEntry\Services\Product\ProductResolver $product,
+        \App\Fetcher\Drupal\ConfigFetcher $configs,
+        \App\Fetcher\Drupal\ViewsFetcher $viewsFetcher,
+        \App\Player\PlayerSession $playerSession,
+        \App\Rest\Resource $rest,
+        \App\Url\Asset $asset,
+        \App\Url\Url $url,
         $currentLanguage,
-        $idDomain,
-        $user
+        \App\MobileEntry\Services\Domains\IDDomain $idDomain,
+        \App\Fetcher\Integration\UserFetcher $user
     ) {
-        $this->product = $product;
         $this->configs = $configs->withProduct($product->getProduct());
         $this->viewsFetcher = $viewsFetcher->withProduct($product->getProduct());
         $this->playerSession = $playerSession;
@@ -277,8 +266,6 @@ class SliderComponentController
                     $slider['banner_pos'] = $slide['field_post_content_position'][0]['value'] ?? '';
                     $slider['banner_blurb'] = $slide['field_post_banner_blurb'][0]['value'] ?? '';
                 }
-
-                $slider['pt_tournament_page'] = $slide['field_pt_tournament_page'][0]['value'] ?? '';
 
                 $sliders[] = $slider;
             }

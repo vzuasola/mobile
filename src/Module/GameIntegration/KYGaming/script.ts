@@ -7,23 +7,19 @@ import { Router } from "@plugins/ComponentWidget/asset/router";
 
 import { GameInterface } from "../scripts/game.interface";
 import { ProviderMessageLightbox } from "../scripts/provider-message-lightbox";
+import { ErrorMessageLightbox } from "../scripts/error-message-lightbox";
 
 export class KYGamingModule implements ModuleInterface, GameInterface {
     private key: string = "ky_gaming";
     private moduleName: string = "ky_gaming_integration";
-    private currencies: any;
-    private languages: any;
     private windowObject: any;
     private gameLink: string;
     private messageLightbox: ProviderMessageLightbox;
+    private errorMessageLightbox: ErrorMessageLightbox;
 
-    onLoad(attachments: {
-        currencies: any,
-        languages: any,
-    }) {
-        this.currencies = attachments.currencies;
-        this.languages = attachments.languages;
+    onLoad(attachments: {}) {
         this.messageLightbox = new ProviderMessageLightbox();
+        this.errorMessageLightbox = new ErrorMessageLightbox();
     }
 
     init() {
@@ -41,11 +37,6 @@ export class KYGamingModule implements ModuleInterface, GameInterface {
     launch(options) {
         if (options.provider === this.key) {
             const lang = Router.getLanguage();
-            let langCode = "en";
-
-            if (typeof this.languages[lang] !== "undefined") {
-                langCode = this.languages[lang];
-            }
 
             if (options.maintenance === "true") {
                 this.messageLightbox.showMessage(
@@ -66,8 +57,9 @@ export class KYGamingModule implements ModuleInterface, GameInterface {
                 data: {
                     product,
                     gameCode: options.code,
+                    extGameId: options.extgameid || "",
                     subprovider: options.subprovider || undefined,
-                    langCode,
+                    lang,
                     playMode: true,
                     lobby: options.lobby,
                 },
@@ -84,6 +76,13 @@ export class KYGamingModule implements ModuleInterface, GameInterface {
                         this.launchGame(options.target);
                         this.updatePopupWindow(response.gameurl);
                     }
+                }
+
+                if (response.errors) {
+                    this.errorMessageLightbox.showMessage(
+                        response,
+                    );
+                    return;
                 }
 
                 if (!response.currency) {

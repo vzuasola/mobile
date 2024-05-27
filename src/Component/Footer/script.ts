@@ -86,10 +86,7 @@ export class FooterComponent implements ComponentInterface {
             this.generateFooterMarkup(this.footerData);
             this.getOriginalUrl();
             this.attachProduct();
-            const session = ComponentManager.getModuleInstance("session");
-            /* tslint:disable:no-string-literal */
             new CookieNotif({
-                geoIp: session["geoip"],
                 element: this.element,
             });
         });

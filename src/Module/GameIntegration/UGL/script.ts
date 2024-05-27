@@ -43,10 +43,10 @@ export class UGLModule implements ModuleInterface, GameInterface {
         this.messageLightbox = new ProviderMessageLightbox();
         this.errorMessageLightbox = new ErrorMessageLightbox();
         utility.listen(document, "components.early.finish", async (event, target) => {
-            const errorCodeValue = this.listenUrl();
-            const errorData = await this.getUGglErrorsMap(errorCodeValue);
+            const errorCodeValue = this.getErrorCodeFromUrl();
 
             if (errorCodeValue) {
+                const errorData = await this.getUglErrorsMap(errorCodeValue);
                 this.errorLightbox(errorData);
             }
         });
@@ -217,7 +217,7 @@ export class UGLModule implements ModuleInterface, GameInterface {
     /**
      * Mapping UGL errors
      */
-    private async getUGglErrorsMap(errorCode) {
+    private async getUglErrorsMap(errorCode) {
         return new Promise((resolve, reject) => {
             xhr({
                 url: Router.generateModuleRoute(this.moduleName, "error"),
@@ -269,7 +269,7 @@ export class UGLModule implements ModuleInterface, GameInterface {
     /**
      * Check if URL contains errorCode parameter
      */
-    private listenUrl() {
+    private getErrorCodeFromUrl() {
         let errorCodeValue = "";
 
         if (this.currentUrl.includes("errorCode=")) {

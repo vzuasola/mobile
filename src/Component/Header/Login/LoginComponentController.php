@@ -68,6 +68,13 @@ class LoginComponentController
             $username = trim($body['username']);
             $password = $body['password'];
 
+            if ($this->isUsernameInvalid($username)) {
+                $response = $response->withStatus(401);
+                $this->addResponseDataForInvalidUsername($data);
+
+                return $this->rest->output($response, $data);
+            }
+
             $options = [];
 
             if (!empty($body['product'])) {
@@ -130,6 +137,24 @@ class LoginComponentController
         }
 
         return $this->rest->output($response, $data);
+    }
+
+    private function isUsernameInvalid($username)
+    {
+        $isInvalidUSername = preg_match('/^[\p{L}0-9_@\/\!\.\+\-]+$/u', $username) ? false : true ;
+
+        return $isInvalidUSername;
+    }
+
+    private function addResponseDataForInvalidUsername(&$data)
+    {
+        $data['code'] = 401;
+        $data['reason'] = 'Invalid login credentials';
+        $data['reasonJson'] = [
+            'responseCode' => 'INT003',
+            'responseMessage' => 'Invalid login credentials',
+            'body' => []
+        ];
     }
 
     /**
