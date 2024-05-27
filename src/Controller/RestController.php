@@ -252,17 +252,54 @@ class RestController extends BaseController
             $headerConfigs = [];
         }
 
+        // Build drawer__menu
+        $prefix = 'product-';
+        $prefixLength = strlen($prefix);
         try {
-            $menu = [];
-            $tiles = $this->get('views_fetcher')->getViewById('mobile_product_menu');
-
-            foreach ($tiles as $key => $tile) {
-                $menu[$tile['field_product_menu_id'][0]["value"]] = $tile["field_product_menu_title"][0]["value"];
+            $drawerTiles = $this->get('views_fetcher')->getViewById('mobile_product_menu');
+            foreach ($drawerTiles as $tile) {
+                // Build key
+                $key = $tile['field_product_menu_id'][0]["value"];
+                if (substr($key, 0, $prefixLength) == $prefix) {
+                    $key = substr($key, $prefixLength);
+                }
+                $data['drawer__menu_' . $key] = $tile["field_product_menu_title"][0]["value"];
             }
         } catch (\Exception $e) {
-            $menu = [];
+            $this->get('logger')->error('APP.REST.DRAWERTILES', [
+                'status_code' => 'NOT OK',
+                'request' => '',
+                'others' => [
+                    'exception' => $e->getMessage(),
+                ],
+            ]);
         }
 
+        // Set initial values
+        $data['homescreen__menu_lottery'] = 'Lottery';
+        $data['homescreen__menu_virtuals'] = 'Virtuals';
+        $data['homescreen__menu_casino'] = 'Casino';
+        $data['homescreen__menu_promotions'] = 'Promotions';
+        // Build homescreen__menu
+        try {
+            $homescreenTiles = $this->get('views_fetcher')->getViewById('product_lobby_tiles_entity');
+            foreach ($homescreenTiles as $tile) {
+                // Build key
+                $key = $tile['field_product_lobby_id'][0]["value"];
+                if (substr($key, 0, $prefixLength) == $prefix) {
+                    $key = substr($key, $prefixLength);
+                }
+                $data['homescreen__menu_' . $key] = $tile["field_product_lobby_title"][0]["value"];
+            }
+        } catch (\Exception $e) {
+            $this->get('logger')->error('APP.REST.HOMESCREENTILES', [
+                'status_code' => 'NOT OK',
+                'request' => '',
+                'others' => [
+                    'exception' => $e->getMessage(),
+                ],
+            ]);
+        }
 
         try {
             $quicklinksMenu = [];
@@ -312,10 +349,6 @@ class RestController extends BaseController
 
         $data['drawer_total-balance'] = $headerConfigs['total_balance_label'] ?? 'Total Balance';
         $data['drawer_links'] = $headerConfigs['links_title'] ?? 'Links';
-        $data['homescreen__menu_lottery'] = $menu['product-lottery'] ?? 'Lottery';
-        $data['homescreen__menu_virtuals'] = $menu['product-virtuals']  ?? 'Virtuals';
-        $data['homescreen__menu_casino'] = $menu['product-casino']  ?? 'Casino';
-        $data['homescreen__menu_promotions'] = $menu['product-promotions'] ?? 'Promotions';
         $data['drawer_home'] = $quicklinksMenu['quicklinks-home'] ?? 'Home';
         $data['drawer_announcement'] = $quicklinksMenu['quicklinks-announcement'] ?? 'Announcement';
         $data['drawer_promotions'] = $quicklinksMenu['quicklinks-promotions'] ?? 'Promotions';
