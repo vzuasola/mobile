@@ -23,7 +23,6 @@ export class LoginComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {
         authenticated: boolean,
         logip: string,
-        metricsEndpoint: string,
         error_messages: {[name: string]: string},
     }) {
         this.validationService.handleOnLoad(element, attachments);
@@ -33,7 +32,6 @@ export class LoginComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {
         authenticated: boolean,
         logip: string,
-        metricsEndpoint: string,
         error_messages: {[name: string]: string},
     }) {
         this.validationService.handleOnReload(element, attachments);
