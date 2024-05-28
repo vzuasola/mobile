@@ -6,7 +6,7 @@ import { Router } from "@plugins/ComponentWidget/asset/router";
 
 import { GameInterface } from "./../scripts/game.interface";
 import { ProviderMessageLightbox } from "../scripts/provider-message-lightbox";
-import {ErrorMessageLightbox} from "../scripts/error-message-lightbox";
+import { ErrorMessageLightbox } from "../scripts/error-message-lightbox";
 
 export class EzugiGamingModule implements ModuleInterface, GameInterface {
     private key: string = "ezugi_gaming";
@@ -60,6 +60,7 @@ export class EzugiGamingModule implements ModuleInterface, GameInterface {
                 product,
                 lang,
                 gameCode: options.code,
+                extGameId: options.extgameid || "",
                 lobby: options.lobby || undefined,
                 subprovider: options.subprovider || undefined,
                 tableName: options.tablename,
