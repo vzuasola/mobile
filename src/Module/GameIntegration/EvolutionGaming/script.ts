@@ -53,6 +53,7 @@ export class EvolutionGamingModule implements ModuleInterface, GameInterface {
                 data: {
                     product,
                     gameCode: options.code,
+                    extGameId: options.extgameid || "",
                     subprovider: options.subprovider || undefined,
                     lang,
                     playMode: true,
