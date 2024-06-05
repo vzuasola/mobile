@@ -12,6 +12,9 @@
             data-game-launch="true"
             {{/if}}
             data-game-code="{{this.game_code}}"
+            {{#if this.external_game_id }}
+                data-game-extgameid="{{this.external_game_id}}"
+            {{/if}}
             data-game-title="{{this.title}}"
             data-game-keywords ="{{this.keywords}}"
             data-game-provider="{{this.game_provider}}"
