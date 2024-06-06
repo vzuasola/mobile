@@ -21,6 +21,7 @@ import "./modules";
 import "./loader";
 import "./worker-registration";
 import "./notify";
+import "./optin-form";
 
 // whenever the bootstrap AJAX receives a redirect, follow it
 ComponentManager.setOption("module-response-handle-redirect", (request: XMLHttpRequest) => {

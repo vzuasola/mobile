@@ -1,0 +1,45 @@
+{% form_theme form '@site/form/standard.html.twig' %}
+
+{# Define the variables #}
+{% set formAttribute = {
+    'class': 'pure-form form-vertical form-optin center-block text-14 tag-color-rich-black',
+    'data-country': form_settings.third_party_settings.webcomposer_webform.webform_country_code.enable ?
+    form_settings.third_party_settings.webcomposer_webform.webform_country_code.country_code|raw,
+} %}
+
+{% set formStyleAttribute = [] %}
+
+{# Define the styles #}
+{% if form_settings.third_party_settings.webcomposer_webform.webcomposer_webform_layout.label_font_color is defined %}
+    {% set formStyleAttribute = formStyleAttribute|merge([
+        ('color: ' ~ form_settings.third_party_settings.webcomposer_webform.webcomposer_webform_layout.label_font_color ~ ';'),
+    ]) %}
+{% endif %}
+
+{% if form_background is not empty %}
+    {% set formStyleAttribute = formStyleAttribute|merge([
+        ('background-image: url(' ~ asset(form_background) ~ ');'),
+    ]) %}
+{% endif %}
+
+{# Put error color as an attribute #}
+{% if form_settings.third_party_settings.webcomposer_webform.webcomposer_webform_layout.error_font_color is defined %}
+    {% set formAttribute = formAttribute|merge({
+        'error-color': form_settings.third_party_settings.webcomposer_webform.webcomposer_webform_layout.error_font_color,
+        'style': formStyleAttribute|join(' '),
+    }) %}
+{% endif %}
+
+{{ form_start(form, {
+    'attr': formAttribute,
+    'markup_header': form_settings.third_party_settings.webcomposer_webform.webcomposer_webform_layout.header_markup.value,
+
+    'success_message': app.session.getFlash('webform.success'),
+
+    'error_font_color': form_settings.third_party_settings.webcomposer_webform.webcomposer_webform_submission_layout.error_font_color,
+    'error_background_color': form_settings.third_party_settings.webcomposer_webform.webcomposer_webform_submission_layout.error_background_color,
+
+    'success_font_color': form_settings.third_party_settings.webcomposer_webform.webcomposer_webform_submission_layout.success_font_color,
+    'success_background_color': form_settings.third_party_settings.webcomposer_webform.webcomposer_webform_submission_layout.success_background_color,
+}) }}
+{{ form_end(form) }}
