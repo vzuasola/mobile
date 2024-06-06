@@ -7,6 +7,7 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 
 import PopupWindow from "@app/assets/script/components/popup";
 import {GameLauncherManager} from "@app/assets/script/components/game-launcher-manager";
+import {OptinForm} from "./scripts/optin";
 
 /**
  *
@@ -19,6 +20,7 @@ export class PromotionsNodeComponent implements ComponentInterface {
     private response: any;
     private launchViaIframe: boolean;
     private gameLauncherManager: GameLauncherManager;
+    private optin;
 
     constructor() {
         this.gameLauncher = GameLauncher;
@@ -40,6 +42,7 @@ export class PromotionsNodeComponent implements ComponentInterface {
         this.refreshPreviousPage();
         this.launchViaIframe = attachments.launch_via_iframe;
         this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
+        this.activateOptinForm(element, attachments);
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -59,6 +62,14 @@ export class PromotionsNodeComponent implements ComponentInterface {
         this.element = element;
         this.refreshPreviousPage();
         this.launchViaIframe = attachments.launch_via_iframe;
+        this.activateOptinForm(element, attachments);
+    }
+
+    private activateOptinForm(element, attachments) {
+        this.optin = new OptinForm(
+            element,
+            attachments);
+        this.optin.init();
     }
 
     private getCountdown(element, countdownFormat) {

@@ -1,0 +1,36 @@
+.form-field-element {
+    color: #373737 !important;
+}
+
+.form-optin .optin-container {
+    width: 100%;
+    height: auto;
+}
+
+.form-optin.pure-form {
+    .btn {
+        color: #fff;
+        background-color: #af0000;
+        border-color: #af0000;
+        transition: color .3s, background-color .3s, border-color .3s;
+        outline: none;
+    } 
+
+    .form-label {
+        display: block; 
+    }
+}
+
+.form-optin {
+    width: 100%;
+}
+
+
+.form-submit-message {
+    font-size: 1.4rem;
+
+    .text-left.mb-10 {
+        text-align: left;
+        font-size: 1.4rem;
+    }
+}
