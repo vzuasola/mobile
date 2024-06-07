@@ -123,15 +123,15 @@ class PTPlusModuleController
      */
     protected function getPlayerGameExtraParams(array $requestData)
     {
-        $gameCode = explode('|', $requestData['gameCode']);
+        $codeParams = explode('|', $requestData['gameCode']);
         $params = [
             [
                 'Key' => 'GameCode',
-                'Value' => $gameCode[0] ?? ''
+                'Value' => $codeParams[0] ?? ''
             ],
             [
                 'Key' => 'GameType',
-                'Value' => '1'
+                'Value' => $codeParams[1] ?? ''
             ],
             [
                 'Key' => 'GameMode',
