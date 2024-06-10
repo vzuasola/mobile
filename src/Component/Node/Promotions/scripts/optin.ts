@@ -29,55 +29,36 @@ export class OptinForm extends FormBase {
     private bindEvent(formWrapper) {
 
         utility.addEventListener(formWrapper, "click", (event) => {
+            const optinFormEl = formWrapper.querySelector(".form-optin");
 
+            // handle form submission
             if (event.target && event.target.matches('button[type="submit"]')) {
                 event.preventDefault();
-                const optinFormEl = formWrapper.querySelector(".form-optin");
+                const formData = new FormData(optinFormEl);
+                formData.append("formId", optinFormEl.parentElement.getAttribute("data-form-id"));
+                formData.append("formType", optinFormEl.parentElement.getAttribute("data-form-type"));
+
                 xhr({
                     url: Router.generateRoute("node_promotions", "submit"),
                     type: "json",
                     method: "post",
-                    data: this.getFormFieldsValue(optinFormEl),
+                    processData: false,
+                    data: formData,
                 }).then((response) => {
                     if (response.success) {
                         this.element.querySelector("#container-" + response.formId).innerHTML = response.form;
                     }
                 });
             }
+
+            // handle form reset
+            if (event.target && event.target.matches('button[type="reset"]')) {
+                optinFormEl.reset();
+                const textAreas = optinFormEl.querySelectorAll("textarea");
+                utility.forEach(textAreas, (textArea) => {
+                    textArea.innerHTML = "";
+                });
+            }
         });
     }
-
-    private getFormFieldsValue(optinFormEl) {
-        const data = {
-            formId: optinFormEl.parentElement.getAttribute("data-form-id"),
-            formType: optinFormEl.parentElement.getAttribute("data-form-type"),
-        };
-        const formFields = optinFormEl.querySelectorAll(".form-field");
-
-        for (const fieldKey in formFields) {
-            if (formFields.hasOwnProperty(fieldKey)) {
-                const field = formFields[fieldKey];
-                if (field.querySelector("input")) {
-                    const id = field.querySelector("input").getAttribute("id");
-                    const fieldName = id.replace("FormBase_", "");
-                    data["FormBase[" + fieldName + "]"] = optinFormEl[id].value;
-                }
-
-                if (field.querySelector("select")) {
-                    const id = field.querySelector("select").getAttribute("id");
-                    const fieldName = id.replace("FormBase_", "");
-                    data["FormBase[" + fieldName + "]"] = optinFormEl[id].value;
-                }
-
-                if (field.querySelector("textarea")) {
-                    const id = field.querySelector("textarea").getAttribute("id");
-                    const fieldName = id.replace("FormBase_", "");
-                    data["FormBase[" + fieldName + "]"] = optinFormEl[id].value;
-                }
-            }
-        }
-
-        return data;
-    }
-
 }
