@@ -54,10 +54,6 @@ export class OptinForm extends FormBase {
             // handle form reset
             if (event.target && event.target.matches('button[type="reset"]')) {
                 optinFormEl.reset();
-                const textAreas = optinFormEl.querySelectorAll("textarea");
-                utility.forEach(textAreas, (textArea) => {
-                    textArea.innerHTML = "";
-                });
             }
         });
     }
