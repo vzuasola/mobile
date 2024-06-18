@@ -34,6 +34,25 @@ validations:
 # Fields are a mapping of 'index' to the actual FormMap class
 # Validatable lists all FormMap class that can be validated
 types:
+  # Mapping for webforms
+  webform:
+    fields:
+      textfield: App\Extensions\Form\Webform\Fields\Text
+      select: App\Extensions\Form\Webform\Fields\Select
+      textarea: App\Extensions\Form\Webform\Fields\Textarea
+      radios: App\Extensions\Form\Webform\Fields\Radios
+      checkboxes: App\Extensions\Form\Webform\Fields\Checkboxes
+      webform_custom_submit: App\Extensions\Form\Webform\Fields\Submit
+      webform_reset: App\Extensions\Form\Webform\Fields\Reset
+      processed_text: App\Extensions\Form\Webform\Fields\Markup
+      fieldset: App\Extensions\Form\Webform\Fields\Fieldset
+      email: App\Extensions\Form\Webform\Fields\Email
+    validation:
+      - App\Extensions\Form\Webform\Fields\Text
+      - App\Extensions\Form\Webform\Fields\Select
+      - App\Extensions\Form\Webform\Fields\Textarea
+      - App\Extensions\Form\Webform\Fields\Radios
+      - App\Extensions\Form\Webform\Fields\Checkboxes
   # Mapping for Webcomposer Form
   configurable_form:
     fields:

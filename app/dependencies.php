@@ -7,6 +7,9 @@ use App\MobileEntry\Services\Accounts\Accounts;
 use App\MobileEntry\Services\Currency\CurrencyTranslation;
 use App\MobileEntry\Services\Product\ProductResolver;
 use App\MobileEntry\Component\Main\CantLogin\RateLimit;
+use App\MobileEntry\Form\FaqWebform;
+use App\MobileEntry\Form\MobileEpgWebform;
+
 
 require APP_ROOT . '/core/app/dependencies.php';
 
@@ -36,4 +39,12 @@ $container['currency_translation'] = function ($c) {
 
 $container['rate_limit'] = function ($c) {
     return RateLimit::create($c);
+};
+
+$container['faq_webform'] = function ($c) {
+    return FaqWebform::create($c);
+};
+
+$container['mobile_epg_webform'] = function ($c) {
+    return MobileEpgWebform::create($c);
 };

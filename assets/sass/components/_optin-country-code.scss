@@ -1,0 +1,1340 @@
+div[class*="country-area-code-"] {
+    position: relative;
+
+    // Dropdown
+    div[class*="country-dropdown-"] {
+        position: absolute;
+        top: 31px;
+        left: 0;
+        text-align: left;
+        z-index: 2;
+        max-height: 300px;
+        vertical-align: top;
+        padding: 0;
+        overflow: auto !important; // Need !important to overwrite declaration from dropdown.js
+        list-style-type: none;
+        background: #fff;
+
+        &.active {
+            padding: 10px;
+            border: 1px solid #999;
+        }
+    }
+
+    input[class*="country-search-"] {
+        position: relative;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 23px;
+    }
+
+    ul {
+        padding: 0;
+        margin-bottom: 0;
+    }
+
+    li {
+        display: inline;
+
+        &:first-child span {
+            padding-top: 4px;
+        }
+    }
+
+    li span,
+    span[class*="trigger-"] {
+        position: relative;
+        display: block;
+        padding: 0 6px 4px;
+        line-height: 32px;
+        cursor: pointer;
+        color: $dark-gray;
+        font-size: 14px;
+
+        em {
+            font-style: normal;
+        }
+
+        .country-num {
+            margin-left: 6px;
+            color: $input-color-placeholder;
+        }
+    }
+
+    li span:before,
+    span[class*="trigger-"]:before {
+        display: inline-block;
+        margin-right: 5px;
+        content: "";
+    }
+
+    // Trigger
+    span[class*="trigger-"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        &:before {
+            position: relative;
+            top: 0;
+            margin-right: 15px;
+        }
+
+        // arrow
+        &:after {
+            @include triangle(bottom, 6px, $gray);
+            position: absolute;
+            top: 12px;
+            left: 45px;
+            border-top-width: 10px;
+            content: "";
+        }
+    }
+
+    .af span:before,
+    span.af:before {
+        background-position: -420px -360px;
+    }
+
+    .al span:before,
+    span.al:before {
+        background-position: -480px -240px;
+    }
+
+    .dz span:before,
+    span.dz:before {
+        background-position: -480px -400px;
+    }
+
+    .as span:before,
+    span.as:before {
+        background-position: -360px -520px;
+    }
+
+    .ad span:before,
+    span.ad:before {
+        background-position: -480px -160px;
+    }
+
+    .ao span:before,
+    span.ao:before {
+        background-position: -420px -400px;
+    }
+
+    .ai span:before,
+    span.ai:before {
+        background-position: -420px -520px;
+    }
+
+    .aq span:before,
+    span.aq:before {
+        background-position: -480px -520px;
+    }
+
+    .ag span:before,
+    span.ag:before {
+        background-position: -240px -120px;
+    }
+
+    .ar span:before,
+    span.ar:before {
+        background-position: -600px 0;
+    }
+
+    .am span:before,
+    span.am:before {
+        background-position: -360px -240px;
+    }
+
+    .aw span:before,
+    span.aw:before {
+        background-position: -540px -520px;
+    }
+
+    .au span:before,
+    span.au:before {
+        background-position: -600px -40px;
+    }
+
+    .at span:before,
+    span.at:before {
+        background-position: -300px -240px;
+    }
+
+    .ax span:before,
+    span.ax:before {
+        background-position: -180px -720px;
+    }
+
+    .az span:before,
+    span.az:before {
+        background-position: -240px -240px;
+    }
+
+    .bs span:before,
+    span.bs:before {
+        background-position: -180px -120px;
+    }
+
+    .bh span:before,
+    span.bh:before {
+        background-position: -360px -360px;
+    }
+
+    .bd span:before,
+    span.bd:before {
+        background-position: -300px -360px;
+    }
+
+    .bb span:before,
+    span.bb:before {
+        background-position: -120px -120px;
+    }
+
+    .by span:before,
+    span.by:before {
+        background-position: -180px -240px;
+    }
+
+    .be span:before,
+    span.be:before {
+        background-position: -120px -240px;
+    }
+
+    .bz span:before,
+    span.bz:before {
+        background-position: -60px -120px;
+    }
+
+    .bj span:before,
+    span.bj:before {
+        background-position: -360px -400px;
+    }
+
+    .bm span:before,
+    span.bm:before {
+        background-position: -600px -520px;
+    }
+
+    .bt span:before,
+    span.bt:before {
+        background-position: -240px -360px;
+    }
+
+    .bo span:before,
+    span.bo:before {
+        background-position: -540px 0;
+    }
+
+    .ba span:before,
+    span.ba:before {
+        background-position: -60px -240px;
+    }
+
+    .bw span:before,
+    span.bw:before {
+        background-position: -300px -400px;
+    }
+
+    .br span:before,
+    span.br:before {
+        background-position: -480px 0;
+    }
+
+    .io span:before,
+    span.io:before {
+        background-position: -660px -520px;
+    }
+
+    .vg span:before,
+    span.vg:before {
+        background-position: -720px -520px;
+    }
+
+    .bn span:before,
+    span.bn:before {
+        background-position: -180px -360px;
+    }
+
+    .bg span:before,
+    span.bg:before {
+        background-position: 0 -240px;
+    }
+
+    .bf span:before,
+    span.bf:before {
+        background-position: -240px -400px;
+    }
+
+    .bi span:before,
+    span.bi:before {
+        background-position: -180px -400px;
+    }
+
+    .kh span:before,
+    span.kh:before {
+        background-position: -120px -360px;
+    }
+
+    .cm span:before,
+    span.cm:before {
+        background-position: -120px -400px;
+    }
+
+    .ca span:before,
+    span.ca:before {
+        background-position: 0 -120px;
+    }
+
+    .cv span:before,
+    span.cv:before {
+        background-position: -60px -400px;
+    }
+
+    .ky span:before,
+    span.ky:before {
+        background-position: -780px -520px;
+    }
+
+    .cf span:before,
+    span.cf:before {
+        background-position: 0 -400px;
+    }
+
+    .td span:before,
+    span.td:before {
+        background-position: -60px -160px;
+    }
+
+    .cl span:before,
+    span.cl:before {
+        background-position: -420px 0;
+    }
+
+    .cn span:before,
+    span.cn:before {
+        background-position: -60px -360px;
+    }
+
+    .cx span:before,
+    span.cx:before {
+        background-position: 0 -560px;
+    }
+
+    .cc span:before,
+    span.cc:before {
+        background-position: -60px -560px;
+    }
+
+    .co span:before,
+    span.co:before {
+        background-position: -360px 0;
+    }
+
+    .km span:before,
+    span.km:before {
+        background-position: -780px -360px;
+    }
+
+    .ck span:before,
+    span.ck:before {
+        background-position: -120px -560px;
+    }
+
+    .cr span:before,
+    span.cr:before {
+        background-position: -780px -80px;
+    }
+
+    .hr span:before,
+    span.hr:before {
+        background-position: -780px -200px;
+    }
+
+    .cu span:before,
+    span.cu:before {
+        background-position: -720px -80px;
+    }
+
+    .cw span:before,
+    span.cw:before {
+        background-position: -180px -560px;
+    }
+
+    .cy span:before,
+    span.cy:before {
+        background-position: -720px -200px;
+    }
+
+    .cz span:before,
+    span.cz:before {
+        background-position: -660px -200px;
+    }
+
+    .cd span:before,
+    span.cd:before {
+        background-position: -240px -560px;
+    }
+
+    .dk span:before,
+    span.dk:before {
+        background-position: -600px -200px;
+    }
+
+    .dj span:before,
+    span.dj:before {
+        background-position: -600px -360px;
+    }
+
+    .dm span:before,
+    span.dm:before {
+        background-position: -660px -80px;
+    }
+
+    .do span:before,
+    span.do:before {
+        background-position: -600px -80px;
+    }
+
+    .tl span:before,
+    span.tl:before {
+        background-position: 0 -360px;
+    }
+
+    .ec span:before,
+    span.ec:before {
+        background-position: -360px -560px;
+    }
+
+    .eg span:before,
+    span.eg:before {
+        background-position: -480px -360px;
+    }
+
+    .sv span:before,
+    span.sv:before {
+        background-position: -600px 0;
+    }
+
+    .gq span:before,
+    span.gq:before {
+        background-position: -540px -360px;
+    }
+
+    .er span:before,
+    span.er:before {
+        background-position: -180px -520px;
+    }
+
+    .ee span:before,
+    span.ee:before {
+        background-position: -300px -560px;
+    }
+
+    .et span:before,
+    span.et:before {
+        background-position: -120px -520px;
+    }
+
+    .fk span:before,
+    span.fk:before {
+        background-position: -420px -560px;
+    }
+
+    .fo span:before,
+    span.fo:before {
+        background-position: -480px -560px;
+    }
+
+    .fj span:before,
+    span.fj:before {
+        background-position: -720px 0;
+    }
+
+    .fi span:before,
+    span.fi:before {
+        background-position: -540px -200px;
+    }
+
+    .fr span:before,
+    span.fr:before {
+        background-position: -540px -560px;
+    }
+
+    .pf span:before,
+    span.pf:before {
+        background-position: -600px -560px;
+    }
+
+    .ga span:before,
+    span.ga:before {
+        background-position: -60px -520px;
+    }
+
+    .gm span:before,
+    span.gm:before {
+        background-position: 0 -520px;
+    }
+
+    .ge span:before,
+    span.ge:before {
+        background-position: -660px -560px;
+    }
+
+    .de span:before,
+    span.de:before {
+        background-position: -720px -560px;
+    }
+
+    .gh span:before,
+    span.gh:before {
+        background-position: -780px -480px;
+    }
+
+    .gi span:before,
+    span.gi:before {
+        background-position: -780px -560px;
+    }
+
+    .gr span:before,
+    span.gr:before {
+        background-position: -300px -200px;
+    }
+
+    .gl span:before,
+    span.gl:before {
+        background-position: 0 -600px;
+    }
+
+    .gd span:before,
+    span.gd:before {
+        background-position: -480px -80px;
+    }
+
+    .gu span:before,
+    span.gu:before {
+        background-position: -60px -600px;
+    }
+
+    .gt span:before,
+    span.gt:before {
+        background-position: -420px -80px;
+    }
+
+    .gg span:before,
+    span.gg:before {
+        background-position: -120px -600px;
+    }
+
+    .gn span:before,
+    span.gn:before {
+        background-position: -660px -480px;
+    }
+
+    .gw span:before,
+    span.gw:before {
+        background-position: -720px -480px;
+    }
+
+    .gy span:before,
+    span.gy:before {
+        background-position: -300px 0;
+    }
+
+    .ht span:before,
+    span.ht:before {
+        background-position: -360px -80px;
+    }
+
+    .hn span:before,
+    span.hn:before {
+        background-position: -300px -80px;
+    }
+
+    .hk span:before,
+    span.hk:before {
+        background-position: -180px -600px;
+    }
+
+    .hu span:before,
+    span.hu:before {
+        background-position: -240px -200px;
+    }
+
+    .is span:before,
+    span.is:before {
+        background-position: -180px -200px;
+    }
+
+    .in span:before,
+    span.in:before {
+        background-position: -780px -320px;
+    }
+
+    .id span:before,
+    span.id:before {
+        background-position: -420px -160px;
+    }
+
+    .ir span:before,
+    span.ir:before {
+        background-position: -660px -320px;
+    }
+
+    .iq span:before,
+    span.iq:before {
+        background-position: -600px -320px;
+    }
+
+    .ie span:before,
+    span.ie:before {
+        background-position: -120px -200px;
+    }
+
+    .im span:before,
+    span.im:before {
+        background-position: -240px -600px;
+    }
+
+    .il span:before,
+    span.il:before {
+        background-position: -300px -600px;
+    }
+
+    .it span:before,
+    span.it:before {
+        background-position: -360px -600px;
+    }
+
+    .ci span:before,
+    span.ci:before {
+        background-position: -240px -520px;
+    }
+
+    .jm span:before,
+    span.jm:before {
+        background-position: -240px -80px;
+    }
+
+    .jp span:before,
+    span.jp:before {
+        background-position: -540px -320px;
+    }
+
+    .je span:before,
+    span.je:before {
+        background-position: -420px -600px;
+    }
+
+    .jo span:before,
+    span.jo:before {
+        background-position: -480px -320px;
+    }
+
+    .kz span:before,
+    span.kz:before {
+        background-position: -180px -40px;
+    }
+
+    .ke span:before,
+    span.ke:before {
+        background-position: -600px -480px;
+    }
+
+    .ki span:before,
+    span.ki:before {
+        background-position: -480px -600px;
+    }
+
+    .xk span:before,
+    span.xk:before {
+        background-position: -60px -720px;
+    }
+
+    .kw span:before,
+    span.kw:before {
+        background-position: -540px -600px;
+    }
+
+    .kg span:before,
+    span.kg:before {
+        background-position: -180px -320px;
+    }
+
+    .la span:before,
+    span.la:before {
+        background-position: -120px -320px;
+    }
+
+    .lv span:before,
+    span.lv:before {
+        background-position: 0 -200px;
+    }
+
+    .lb span:before,
+    span.lb:before {
+        background-position: -60px -320px;
+    }
+
+    .ls span:before,
+    span.ls:before {
+        background-position: -600px -600px;
+    }
+
+    .lr span:before,
+    span.lr:before {
+        background-position: -480px -480px;
+    }
+
+    .ly span:before,
+    span.ly:before {
+        background-position: -660px -600px;
+    }
+
+    .li span:before,
+    span.li:before {
+        background-position: -720px -600px;
+    }
+
+    .lt span:before,
+    span.lt:before {
+        background-position: -720px -160px;
+    }
+
+    .lu span:before,
+    span.lu:before {
+        background-position: -660px -160px;
+    }
+
+    .mo span:before,
+    span.mo:before {
+        background-position: -780px -600px;
+    }
+
+    .mk span:before,
+    span.mk:before {
+        background-position: -600px -160px;
+    }
+
+    .mg span:before,
+    span.mg:before {
+        background-position: -360px -480px;
+    }
+
+    .mw span:before,
+    span.mw:before {
+        background-position: -300px -480px;
+    }
+
+    .my span:before,
+    span.my:before {
+        background-position: 0 -320px;
+    }
+
+    .mv span:before,
+    span.mv:before {
+        background-position: -780px -280px;
+    }
+
+    .ml span:before,
+    span.ml:before {
+        background-position: -240px -480px;
+    }
+
+    .mt span:before,
+    span.mt:before {
+        background-position: -540px -160px;
+    }
+
+    .mh span:before,
+    span.mh:before {
+        background-position: -420px -40px;
+    }
+
+    .mr span:before,
+    span.mr:before {
+        background-position: -180px -480px;
+    }
+
+    .mu span:before,
+    span.mu:before {
+        background-position: -120px -480px;
+    }
+
+    .yt span:before,
+    span.yt:before {
+        background-position: -540px -560px;
+    }
+
+    .mx span:before,
+    span.mx:before {
+        background-position: -180px -80px;
+    }
+
+    .fm span:before,
+    span.fm:before {
+        background-position: -360px -40px;
+    }
+
+    .md span:before,
+    span.md:before {
+        background-position: -420px -240px;
+    }
+
+    .mc span:before,
+    span.mc:before {
+        background-position: -720px -320px;
+    }
+
+    .mn span:before,
+    span.mn:before {
+        background-position: -720px -280px;
+    }
+
+    .me span:before,
+    span.me:before {
+        background-position: -360px -160px;
+    }
+
+    .ms span:before,
+    span.ms:before {
+        background-position: -60px -640px;
+    }
+
+    .ma span:before,
+    span.ma:before {
+        background-position: -60px -480px;
+    }
+
+    .mz span:before,
+    span.mz:before {
+        background-position: -120px -640px;
+    }
+
+    .mm span:before,
+    span.mm:before {
+        background-position: -180px -640px;
+    }
+
+    .na span:before,
+    span.na:before {
+        background-position: -780px -440px;
+    }
+
+    .nr span:before,
+    span.nr:before {
+        background-position: -300px -40px;
+    }
+
+    .np span:before,
+    span.np:before {
+        background-position: -300px -520px;
+    }
+
+    .nl span:before,
+    span.nl:before {
+        background-position: -300px -160px;
+    }
+
+    .an span:before,
+    span.an:before {
+        background-position: -240px -640px;
+    }
+
+    .nc span:before,
+    span.nc:before {
+        background-position: -300px -640px;
+    }
+
+    .nz span:before,
+    span.nz:before {
+        background-position: -240px -40px;
+    }
+
+    .ni span:before,
+    span.ni:before {
+        background-position: -120px -80px;
+    }
+
+    .ne span:before,
+    span.ne:before {
+        background-position: -720px -440px;
+    }
+
+    .ng span:before,
+    span.ng:before {
+        background-position: -660px -440px;
+    }
+
+    .nu span:before,
+    span.nu:before {
+        background-position: -360px -640px;
+    }
+
+    .kp span:before,
+    span.kp:before {
+        background-position: -360px -320px;
+    }
+
+    .mp span:before,
+    span.mp:before {
+        background-position: -420px -640px;
+    }
+
+    .no span:before,
+    span.no:before {
+        background-position: -480px -640px;
+    }
+
+    .om span:before,
+    span.om:before {
+        background-position: -660px -280px;
+    }
+
+    .pk span:before,
+    span.pk:before {
+        background-position: -600px -280px;
+    }
+
+    .pw span:before,
+    span.pw:before {
+        background-position: -540px -640px;
+    }
+
+    .ps span:before,
+    span.ps:before {
+        background-position: -660px -640px;
+    }
+
+    .pa span:before,
+    span.pa:before {
+        background-position: -600px -640px;
+    }
+
+    .pg span:before,
+    span.pg:before {
+        background-position: -120px -40px;
+    }
+
+    .py span:before,
+    span.py:before {
+        background-position: -240px 0;
+    }
+
+    .pe span:before,
+    span.pe:before {
+        background-position: -60px 0;
+    }
+
+    .ph span:before,
+    span.ph:before {
+        background-position: -540px -280px;
+    }
+
+    .pn span:before,
+    span.pn:before {
+        background-position: -720px -640px;
+    }
+
+    .pl span:before,
+    span.pl:before {
+        background-position: -180px -160px;
+    }
+
+    .pt span:before,
+    span.pt:before {
+        background-position: -120px -160px;
+    }
+
+    .pr span:before,
+    span.pr:before {
+        background-position: -780px -640px;
+    }
+
+    .qa span:before,
+    span.qa:before {
+        background-position: -480px -280px;
+    }
+
+    .cg span:before,
+    span.cg:before {
+        background-position: -660px -360px;
+    }
+
+    .re span:before,
+    span.re:before {
+        background-position: 0 -680px;
+    }
+
+    .ro span:before,
+    span.ro:before {
+        background-position: -60px -680px;
+    }
+
+    .ru span:before,
+    span.ru:before {
+        background-position: -420px -280px;
+    }
+
+    .rw span:before,
+    span.rw:before {
+        background-position: -600px -440px;
+    }
+
+    .bl span:before,
+    span.bl:before {
+        background-position: -180px -680px;
+    }
+
+    .sh span:before,
+    span.sh:before {
+        background-position: -120px -680px;
+    }
+
+    .kn span:before,
+    span.kn:before {
+        background-position: -60px -80px;
+    }
+
+    .lc span:before,
+    span.lc:before {
+        background-position: 0 -80px;
+    }
+
+    .mf span:before,
+    span.mf:before {
+        background-position: -240px -680px;
+    }
+
+    .pm span:before,
+    span.pm:before {
+        background-position: -300px -680px;
+    }
+
+    .vc span:before,
+    span.vc:before {
+        background-position: -780px -40px;
+    }
+
+    .ws span:before,
+    span.ws:before {
+        background-position: -360px -680px;
+    }
+
+    .sm span:before,
+    span.sm:before {
+        background-position: 0 -160px;
+    }
+
+    .st span:before,
+    span.st:before {
+        background-position: -540px -440px;
+    }
+
+    .sa span:before,
+    span.sa:before {
+        background-position: -360px -280px;
+    }
+
+    .sn span:before,
+    span.sn:before {
+        background-position: -480px -440px;
+    }
+
+    .rs span:before,
+    span.rs:before {
+        background-position: -780px -120px;
+    }
+
+    .sc span:before,
+    span.sc:before {
+        background-position: -420px -440px;
+    }
+
+    .sl span:before,
+    span.sl:before {
+        background-position: -360px -440px;
+    }
+
+    .sg span:before,
+    span.sg:before {
+        background-position: -300px -280px;
+    }
+
+    .sx span:before,
+    span.sx:before {
+        background-position: -120px -720px;
+    }
+
+    .sk span:before,
+    span.sk:before {
+        background-position: -720px -120px;
+    }
+
+    .si span:before,
+    span.si:before {
+        background-position: -660px -120px;
+    }
+
+    .sb span:before,
+    span.sb:before {
+        background-position: 0 -40px;
+    }
+
+    .so span:before,
+    span.so:before {
+        background-position: -300px -440px;
+    }
+
+    .za span:before,
+    span.za:before {
+        background-position: -240px -440px;
+    }
+
+    .kr span:before,
+    span.kr:before {
+        background-position: -300px -320px;
+    }
+
+    .ss span:before,
+    span.ss:before {
+        background-position: -420px -680px;
+    }
+
+    .es span:before,
+    span.es:before {
+        background-position: -600px -120px;
+    }
+
+    .lk span:before,
+    span.lk:before {
+        background-position: -240px -280px;
+    }
+
+    .sd span:before,
+    span.sd:before {
+        background-position: -120px -440px;
+    }
+
+    .sr span:before,
+    span.sr:before {
+        background-position: -540px -680px;
+    }
+
+    .sj span:before,
+    span.sj:before {
+        background-position: -240px -160px;
+    }
+
+    .sz span:before,
+    span.sz:before {
+        background-position: -60px -440px;
+    }
+
+    .se span:before,
+    span.se:before {
+        background-position: -540px -120px;
+    }
+
+    .ch span:before,
+    span.ch:before {
+        background-position: -480px -120px;
+    }
+
+    .sy span:before,
+    span.sy:before {
+        background-position: -180px -280px;
+    }
+
+    .tw span:before,
+    span.tw:before {
+        background-position: -60px -40px;
+    }
+
+    .tj span:before,
+    span.tj:before {
+        background-position: -120px -280px;
+    }
+
+    .tz span:before,
+    span.tz:before {
+        background-position: 0 -440px;
+    }
+
+    .th span:before,
+    span.th:before {
+        background-position: -60px -280px;
+    }
+
+    .tg span:before,
+    span.tg:before {
+        background-position: -480px -680px;
+    }
+
+    .tk span:before,
+    span.tk:before {
+        background-position: -600px -680px;
+    }
+
+    .to span:before,
+    span.to:before {
+        background-position: -780px 0;
+    }
+
+    .tt span:before,
+    span.tt:before {
+        background-position: -720px -40px;
+    }
+
+    .tn span:before,
+    span.tn:before {
+        background-position: -720px -400px;
+    }
+
+    .tr span:before,
+    span.tr:before {
+        background-position: 0 -280px;
+    }
+
+    .tm span:before,
+    span.tm:before {
+        background-position: -780px -240px;
+    }
+
+    .tc span:before,
+    span.tc:before {
+        background-position: -660px -680px;
+    }
+
+    .tv span:before,
+    span.tv:before {
+        background-position: -720px -680px;
+    }
+
+    .vi span:before,
+    span.vi:before {
+        background-position: -780px -680px;
+    }
+
+    .ug span:before,
+    span.ug:before {
+        background-position: -660px -400px;
+    }
+
+    .ua span:before,
+    span.ua:before {
+        background-position: -420px -120px;
+    }
+
+    .ae span:before,
+    span.ae:before {
+        background-position: -720px -240px;
+    }
+
+    .gb span:before,
+    span.gb:before {
+        background-position: -360px -120px;
+    }
+
+    .us span:before,
+    span.us:before {
+        background-position: -660px -40px;
+    }
+
+    .uy span:before,
+    span.uy:before {
+        background-position: -120px 0;
+    }
+
+    .uz span:before,
+    span.uz:before {
+        background-position: -660px -240px;
+    }
+
+    .vu span:before,
+    span.vu:before {
+        background-position: -660px 0;
+    }
+
+    .va span:before,
+    span.va:before {
+        background-position: -300px -120px;
+    }
+
+    .ve span:before,
+    span.ve:before {
+        background-position: -180px 0;
+    }
+
+    .vn span:before,
+    span.vn:before {
+        background-position: -600px -240px;
+    }
+
+    .wf span:before,
+    span.wf:before {
+        background-position: -480px -200px;
+    }
+
+    .eh span:before,
+    span.eh:before {
+        background-position: 0 -720px;
+    }
+
+    .ye span:before,
+    span.ye:before {
+        background-position: -540px -240px;
+    }
+
+    .zm span:before,
+    span.zm:before {
+        background-position: -600px -400px;
+    }
+
+    .zw span:before,
+    span.zw:before {
+        background-position: -540px -400px;
+    }
+
+    .gs span:before,
+    span.gs:before {
+        background-position: -240px -720px;
+    }
+
+    .bv span:before,
+    span.bv:before {
+        background-position: -300px -720px;
+    }
+
+    .gf span:before,
+    span.gf:before {
+        background-position: -540px -560px;
+    }
+
+    .tf span:before,
+    span.tf:before {
+        background-position: -420px -720px;
+    }
+
+    .gp span:before,
+    span.gp:before {
+        background-position: -480px -720px;
+    }
+
+    .hm span:before,
+    span.hm:before {
+        background-position: -600px -40px;
+    }
+
+    .mq span:before,
+    span.mq:before {
+        background-position: -540px -560px;
+    }
+
+    .nf span:before,
+    span.nf:before {
+        background-position: -660px -720px;
+    }
+}

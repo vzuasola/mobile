@@ -3,6 +3,7 @@
 # the list of available tokens
 extensions:
   - App\Extensions\Token\DomainTokens
+  - App\MobileEntry\Extensions\Token\WebformTokens
 
 lazy:
   - tracking

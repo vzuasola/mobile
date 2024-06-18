@@ -1,0 +1,266 @@
+{% extends "form_div_layout.html.twig" %}
+
+{%- block form_row -%}
+    {% if form.vars.block_prefixes.1 == 'fieldset' %}
+        {{- form_widget(form) -}}
+    {% else %}
+
+        {% if form.vars.block_prefixes.1 == 'markup' %}
+            <div class="blurb {{ id }}">
+        {% else %}
+            <div class="form-item {{ id }}">
+        {% endif %}
+            {{- form_label(form) -}}
+            {{- form_errors(form) -}}
+            {{- form_widget(form) -}}
+        </div>
+
+    {% endif %}
+{%- endblock form_row -%}
+
+{%- block button_row -%}
+    <div class="form-item {{ id }}">
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock button_row -%}
+
+{%- block form_start -%}
+    {% set method = method|upper %}
+    {%- if method in ["GET", "POST"] -%}
+        {% set form_method = method %}
+    {%- else -%}
+        {% set form_method = "POST" %}
+    {%- endif -%}
+    <form name="{{ name }}" method="{{ form_method|lower }}"{% if action != '' %} action="{{ action }}"{% endif %}{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {%- if form_method != method -%}
+        <input type="hidden" name="_method" value="{{ method }}" />
+    {%- endif -%}
+
+    {{- block('markup_header') -}}
+    {{- block('overview_form_success') -}}
+    {{- block('overview_form_error') -}}
+{%- endblock form_start -%}
+
+{%- block markup_header -%}
+    {% if markup_header is not empty %}
+        <div>
+            {{ markup_header|raw }}
+        </div>
+    {% endif %}
+{%- endblock markup_header -%}
+
+{%- block overview_form_error -%}
+    {% if form.vars.errors and form.vars.errors|length > 0 %}
+        <div class="form-submit-message text-center text-18 p-20 mb-20" style="color: {{ error_font_color }}; background-color: {{ error_background_color }};">
+            {% for error in form.vars.errors %}
+                <p class="text-left mb-10">{{ error.getMessage()|raw }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{%- endblock overview_form_error -%}
+
+{%- block overview_form_success -%}
+    {% if success_message is not empty %}
+        <div class="form-submit-message text-center text-18 p-20 mb-20" style="color: {{ success_font_color }}; background-color: {{ success_background_color }};">
+            {{ success_message|raw }}
+        </div>
+    {% endif %}
+{%- endblock overview_form_success -%}
+
+{%- block password_widget -%}
+    <div class="form-field">
+        {% set attr = attr|merge({'class': 'form-field-element'}) %}
+        {% set type = "password" %}
+        {% if compound %}
+            {{- block('form_widget_compound') -}}
+        {% else %}
+            {{- block('form_widget_simple') -}}
+        {% endif %}
+    </div>
+{%- endblock password_widget -%}
+
+{%- block email_widget -%}
+    <div class="form-field">
+        {% set attr = attr|merge({'class': 'form-field-element'}) %}
+        {% if compound %}
+            {{- block('form_widget_compound') -}}
+        {% else %}
+            {{- block('form_widget_simple') -}}
+        {% endif %}
+    </div>
+{%- endblock email_widget -%}
+
+{%- block form_widget -%}
+    <div class="form-field">
+        {% set attrclass = attr.class|join(' ')%}
+        {% set attr = attr|merge({'class': 'form-field-element ' ~ attrclass}) %}
+        {% if compound %}
+            {{- block('form_widget_compound') -}}
+        {% else %}
+            {{- block('form_widget_simple') -}}
+        {% endif %}
+    </div>
+{%- endblock form_widget -%}
+
+{%- block form_label -%}
+    {% if form.vars.block_prefixes.1 == 'markup' %}
+
+    {% else %}
+        {% if label is not same as(false) -%}
+            {% if not compound -%}
+                {% set label_attr = label_attr|merge({'for': id}) %}
+            {%- endif -%}
+            {% if required -%}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+            {%- endif -%}
+            {% if label is empty -%}
+                {%- if label_format is not empty -%}
+                    {% set label = label_format|replace({
+                        '%name%': name,
+                        '%id%': id,
+                    }) %}
+                {%- else -%}
+                    {% set label = name|humanize %}
+                {%- endif -%}
+            {%- endif -%}
+
+            {% if form.vars.block_prefixes.1 == 'checkbox' %}
+
+            {% else %}
+                {% set label_attr = label_attr|merge({'class': 'form-label'}) %}
+                {{- block('label_markup') -}}
+            {% endif %}
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock form_label -%}
+
+{%- block label_markup -%}
+    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ translation_domain is same as(false) ? label|raw : label|trans({}, translation_domain)|raw }}</label>
+{%- endblock label_markup -%}
+
+{%- block widget_attributes -%}
+    id="{{ id }}" name="{{ full_name }}"
+    {%- if disabled %} disabled="disabled"{% endif -%}
+    {%- if required %} required="required"{% endif -%}
+
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ translation_domain is same as(false) ? attrvalue : attrvalue|trans({}, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock widget_attributes -%}
+
+{%- block textarea_widget -%}
+    {% set attrclass = attr.class|join(' ')%}
+    {% set attr = attr|merge({'class': 'input-block-level' ~ attrclass}) %}
+
+    <div class="form-field">
+        <textarea class="form-field-element {{attr.class}}" {{ block('widget_attributes') }}>{{ value }}</textarea>
+    </div>
+{%- endblock textarea_widget -%}
+
+{%- block choice_widget -%}
+    {% set attr = attr|merge({'class': 'form-field'}) %}
+
+    <div class="form-item {{ id }}">
+        {% if expanded %}
+            {{- block('choice_widget_expanded') -}}
+        {% else %}
+            {{- block('choice_widget_collapsed') -}}
+        {% endif %}
+    </div>
+{%- endblock choice_widget -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
+        {% set required = false %}
+    {%- endif -%}
+    {% set attr = attr|merge({'class': 'form-field-element'}) %}
+    <div class="form-field">
+        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+            {%- if placeholder is not none -%}
+                <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+            {%- endif -%}
+            {%- if preferred_choices|length > 0 -%}
+                {% set options = preferred_choices %}
+                {{- block('choice_widget_options') -}}
+                {%- if choices|length > 0 and separator is not none -%}
+                    <option disabled="disabled">{{ separator }}</option>
+                {%- endif -%}
+            {%- endif -%}
+            {%- set options = choices -%}
+            {{- block('choice_widget_options') -}}
+        </select>
+    </div>
+{%- endblock choice_widget_collapsed -%}
+
+{%- block checkbox_widget -%}
+    {% set label_attr = label_attr|merge({'for': id, 'class': 'pure-checkbox'}) %}
+    <div class="checkbox">
+        <label {% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+            {{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}
+        </label>
+    </div>
+{%- endblock checkbox_widget -%}
+
+{%- block radio_widget -%}
+    {% set label_attr = label_attr|merge({'for': id, 'class': 'pure-radio'}) %}
+    <div class="radio-inline">
+        <label {% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+            <span class="label-span">{{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</span>
+        </label>
+    </div>
+{%- endblock radio_widget -%}
+
+{%- block button_widget -%}
+    <div class="form-field">
+        {% set attr = {'class': 'btn btn-small btn-blue mr-5'}|merge(attr) %}
+        {%- if label is empty -%}
+            {%- if label_format is not empty -%}
+                {% set label = label_format|replace({
+                    '%name%': name,
+                    '%id%': id,
+                }) %}
+            {%- else -%}
+                {% set label = name|humanize %}
+            {%- endif -%}
+        {%- endif -%}
+        <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</button>
+    </div>
+{%- endblock button_widget -%}
+
+{%- block submit_widget -%}
+    {%- set type = type|default('submit') -%}
+    {{ block('button_widget') }}
+{%- endblock submit_widget -%}
+
+{% block markup_widget %}
+    {{ markup|raw }}
+{% endblock %}
+
+{% block fieldset_widget %}
+    {% if wrapper == 'open' %}
+        {% set attr = attr|merge({'class': 'fieldset'}) %}
+
+            {% if class %}
+                {% set attr = attr|merge({'class': class}) %}
+            {% endif %}
+
+        <div {{ block('widget_container_attributes') }}>
+
+        {% if legend %}
+            <div class="form-description">{{ legend }}</div>
+        {% endif %}
+    {% endif %}
+
+    {% if wrapper == 'close' %}
+        </div>
+    {% endif %}
+{% endblock %}
