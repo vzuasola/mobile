@@ -70,8 +70,8 @@ export default function accordion(element, options) {
             });
 
             // Set active accordion for <dt> with class "active" on doc ready
-            utility.forEach(dt, function (item, i) {
-                if (utility.hasClass(item, "active") || options.openByDefault === i) {
+            utility.forEach(dt, function (item) {
+                if (utility.hasClass(item, "active") || options.openByDefault === 1) {
                     setActive(item);
                 }
             });
