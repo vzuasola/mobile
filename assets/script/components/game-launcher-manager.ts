@@ -85,10 +85,10 @@ export class GameLauncherManager {
             return;
         }
 
-        if (data.options.target === "popup") {
+        if (data.options.target === "popup" || data.options.target === "window") {
             this.setupPopupWindow(url);
             return;
-        } else if (data.options.target === "_blank" || data.options.target === "window") {
+        } else if (data.options.target === "_blank") {
             window.open(url);
             return;
         } else {
