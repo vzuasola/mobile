@@ -222,7 +222,7 @@ class SliderComponentController
                 $slider['game_subprovider'] = $slide['field_games_subprovider'][0]['name'][0]['value'] ?? "";
                 $slider['game_platform'] = $slide['field_game_platform'][0]['value'] ?? '';
                 $slider['field_title'] = $slide['field_title'][0]['value'] ?? '';
-                $slider['use_game_loader'] = $slide['field_slider_use_game_loader'][0]['value'] ?? 'false';
+                $slider['use_game_loader'] = $slide['field_slider_use_game_loader'][0]['value'] ?? 'true';
                 $slider['forced_game_launch'] = $slide['field_slider_enable_game_launch'][0]['value'] ?? false;
                 $slider['table_id'] = $slide['field_table_id'][0]['value'] ?? "";
                 $slider['extgame_id'] = $slide['field_external_game_id'][0]['value'] ?? "";
