@@ -20,6 +20,9 @@
             data-game-subprovider="{{this.game_subprovider}}"
         {{/if}}
         data-game-code="{{this.game_code}}"
+        {{#if this.table_id }}
+            data-game-tablename="{{this.table_id}}"
+        {{/if}}
         data-game-extgameid="{{this.external_game_id}}"
         data-game-platform="{{this.game_platform}}"
         data-game-keywords ="{{this.keywords}}"
