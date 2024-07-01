@@ -2,7 +2,7 @@
     {{ include('@component/Header/templates/coin-logo-image.html.twig') }}
     {% if is_login %}
         <div class="container clearfix hidden-desktop">
-            {{ include('@responsive/components/dafacoin-menu/menu-mobile.html.twig') }}
+            {{ include('@responsive/components/dafacoin-menu/cashier-account-balance.html.twig', { 'device' : 'mobile' }) }}
         </div>
     {% else %}
         <span class="mobile-action-button mobile-action-button-{{ app.lang }}">

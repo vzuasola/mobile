@@ -136,7 +136,8 @@ class GameLauncher {
         });
 
         if (el) {
-           this.sendGameLaunchEvents(el, e, redirect, loader);
+            e.preventDefault();
+            this.sendGameLaunchEvents(el, e, redirect, loader);
         }
     }
 
@@ -193,7 +194,6 @@ class GameLauncher {
         }
 
         if (!loader) {
-            event.preventDefault();
             const provider = el.getAttribute("data-game-provider");
 
             options.provider = provider;

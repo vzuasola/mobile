@@ -51,18 +51,10 @@ export class GameLauncherManager {
      * @param data
      */
     private launchViaGameLoader(data) {
-        const source = utility.getParameterByName("source");
         let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
         url = this.getLauncherUrl(url, data);
 
-        // handle redirects if we are on a PWA standalone
-        if (this.isPWA(source) || data.options.target !== "popup"
-        ) {
-            window.location.href = url;
-            return;
-        }
-
-        this.setupPopupWindow(url);
+        this.launchGameByTarget(data, url);
     }
 
     /**
@@ -71,23 +63,37 @@ export class GameLauncherManager {
      * @param data
      */
     private launchViaIFrame(data) {
-        const source = utility.getParameterByName("source");
         let product = data.options.currentProduct;
         product = product.replace("mobile-", "");
         let url = "/" + ComponentManager.getAttribute("language") + "/" + product + "/game/launch";
 
         url = this.getLauncherUrl(url, data);
+        this.launchGameByTarget(data, url);
+    }
+
+    /**
+     * Handle game launching if will open in a tab, popup or same window
+     * @param data
+     * @param url
+     * @returns
+     */
+    private launchGameByTarget(data, url) {
+        const source = utility.getParameterByName("source");
         // handle redirects if we are on a PWA standalone
-        if (this.isPWA(source) || data.options.target !== "popup"
-        ) {
+        if (this.isPWA(source)) {
             window.location.href = url;
             return;
         }
 
-        if (data.options.target === "popup") {
+        if (data.options.target === "popup" || data.options.target === "window") {
             this.setupPopupWindow(url);
+            return;
+        } else if (data.options.target === "_blank") {
+            window.open(url);
+            return;
         } else {
             window.location.href = url;
+            return;
         }
     }
 
