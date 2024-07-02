@@ -150,7 +150,7 @@ class Products
         'exchange' => 'mobile-exchange',
         'arcade' => 'mobile-arcade',
         'soda-casino' => 'mobile-soda-casino',
-        'virtual-sports' => 'mobile-virtuals',
+        'virtuals' => 'mobile-virtuals',
         'sports' => 'mobile-sports',
         'sports-df' => 'mobile-sports-df',
         'ptplus' => 'mobile-ptplus',
