@@ -48,6 +48,7 @@ trait GameTrait
                 $processGame['game_code'] = $game['field_game_code'] ?? "";
                 $processGame['game_provider'] = $game['field_game_provider'] ?? "pas"; // HERE
                 $processGame['game_platform'] = $game['field_game_platform'] ?? "";
+                $processGame['table_id'] = $game['field_table_id'] ?? "";
                 $processGame['keywords'] = $game['field_keywords'] ?? "";
                 $processGame['weight'] = 0;
                 $processGame['target'] = $game['field_games_target'] ?? "popup";
@@ -205,6 +206,7 @@ trait GameTrait
 
             $processGame['title'] = $game['title'][0]['value'] ?? "";
             $processGame['game_code'] = $game['field_game_code'][0]['value'] ?? "";
+            $processGame['table_id'] = $game['field_table_id'][0]['value'] ?? "";
             $processGame['game_provider'] = $game['field_game_provider'][0]['value'] ?? "pas";
             $processGame['game_platform'] = $game['field_game_platform'][0]['value'] ?? "";
             $processGame['keywords'] = $game['field_keywords'][0]['value'] ?? "";
