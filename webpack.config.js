@@ -20,7 +20,8 @@ module.exports = function(env, argv) {
             sw: path.resolve(__dirname, "./assets/script/worker.ts"),
             homepage: path.resolve(__dirname, "./assets/script/homepage/home.ts"),
             eurt: path.resolve(__dirname, "./assets/script/eurt/home.ts"),
-            late: path.resolve(__dirname, "./assets/script/homepage/late.ts")
+            late: path.resolve(__dirname, "./assets/script/homepage/late.ts"),
+            promotions: path.resolve(__dirname, "./assets/script/promotions.ts")
         },
 
         output: {
