@@ -1,16 +1,20 @@
-@import "@core/assets/sass/base/_variable.scss";
+.optin-form-wrapper{
 
-// Images OVERWRITE ----------------------------------------
-$base-sprite:  "/@core/assets/images/sprite.png";
-$sprite-responsive:  "/@core/assets/responsive/images/sprite-responsive.png";
-$sprite-flags:  "/@core/assets/responsive/images/sprite_flags.png";
-$sprite-flags-small:  "/@core/assets/responsive/images/sprite_flags_small.png";
-$base-default-image:  "/@core/assets/images/default_image.png";
-$base-balance-loader-white: "/@core/assets/images/balance-loader-white.gif";
-$base-balance-loader: "/@core/assets/images/loader.gif";
-$base-404-error-page: "/@core/assets/images/404/sprite_404.png";
-$login-lightbox-background: "/@core/assets/images/responsive/mobile-login-bg-min.jpg";
+  @import "@core/assets/sass/base/_variable.scss";
 
-@import "@core/assets/sass/base/_mixin.scss";
-@import "@core/assets/sass/base/_helper.scss";
-@import "@core/assets/sass/base/_form-base.scss";
+  // Images path fix
+  $base-sprite:  "/@core/assets/images/sprite.png";
+  $sprite-responsive:  "/@core/assets/responsive/images/sprite-responsive.png";
+  $sprite-flags:  "/@core/assets/responsive/images/sprite_flags.png";
+  $sprite-flags-small:  "/@core/assets/responsive/images/sprite_flags_small.png";
+  $base-default-image:  "/@core/assets/images/default_image.png";
+  $base-balance-loader-white: "/@core/assets/images/balance-loader-white.gif";
+  $base-balance-loader: "/@core/assets/images/loader.gif";
+  $base-404-error-page: "/@core/assets/images/404/sprite_404.png";
+  $login-lightbox-background: "/@core/assets/images/responsive/mobile-login-bg-min.jpg";
+
+  @import "@core/assets/sass/base/_mixin.scss";
+  @import "@core/assets/sass/base/_helper.scss";
+  @import "@core/assets/sass/base/_form-base.scss";
+
+}
