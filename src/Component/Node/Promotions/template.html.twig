@@ -10,6 +10,10 @@
     {% include '@component/Node/Promotions/templates/multiple-games.html.twig' %}
 {%- endset -%}
 
+{% block css %}
+    <link href="{{ asset('css/promotions.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% if is_login %}
     <div class="promotions-body-banner">
         {% if node.field_banner_game_launch.0.field_product.0.value %}

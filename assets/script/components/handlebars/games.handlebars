@@ -19,6 +19,9 @@
         {{/if}}
         data-game-code="{{this.game_code}}"
         data-game-extgameid="{{this.external_game_id}}"
+        {{#if this.table_id }}
+            data-game-tablename="{{this.table_id}}"
+        {{/if}}
         data-game-platform="{{this.game_platform}}"
         data-game-keywords ="{{this.keywords}}"
         data-game-title="{{this.title}}"
