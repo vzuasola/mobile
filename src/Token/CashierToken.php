@@ -60,6 +60,8 @@ class CashierToken implements TokenInterface
 
                     if (isset($mapping[$currency][$country])) {
                         $link = $mapping[$currency][$country];
+                    } elseif (isset($mapping[$currency]['*'])) {
+                        $link = $mapping[$currency]['*'];
                     }
                 } catch (\Exception $e) {
                     // do nothing
