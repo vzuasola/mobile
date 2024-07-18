@@ -55,7 +55,7 @@
 } %}
 
 <div class="copyright clear">
-    <p class="container text-center">
+    <p class="container text-center {% if enable_new_style  %}bg-very-light-gray text-gray{% endif %}">
     {% if use_cms_copyright %}
 	    {{ copyright }}
 	    &copy;
