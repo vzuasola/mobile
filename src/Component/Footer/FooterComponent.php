@@ -125,6 +125,15 @@ class FooterComponent implements ComponentWidgetInterface
             $data['use_cms_copyright'] = $footerConfigs['use_cms_copyright_label'] ?? 0;
             $data['copyright'] = $footerConfigs['copyright'] ?? '';
             $data['all_rights_translation'] = $footerConfigs['all_rights_reserved'] ?? '';
+            $data['enable_new_style'] = $footerConfigs['enable_new_style'] ?? false;
+            $data['footer']['about_dafabet_title'] = $footerConfigs['about_dafabet_title'] ?? '';
+            $data['footer']['about_dafabet_content'] = $footerConfigs['about_dafabet_content'] ?? '';
+            $imageUrl = $footerConfigs['file_image_ambassador_image'];
+            $data['footer']['file_image_ambassador_image'] = $this->asset
+                ->generateAssetUri($imageUrl);
+            $data['footer']['ambassador_redirection_link'] = $footerConfigs['ambassador_redirection_link'];
+            $data['footer']['ambassador_link_target'] = $footerConfigs['ambassador_link_target'];
+            $data['footer']['ambassador_title'] = $footerConfigs['ambassador_title'];
 
             if (!empty($footerConfigs['back_to_top_title'])) {
                 $data['back_to_top'] = !$this->blockUtils->isVisibleOn($footerConfigs['back_to_top_title']);

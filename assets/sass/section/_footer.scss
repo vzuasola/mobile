@@ -1,6 +1,30 @@
 .footer {
     color: $white;
 
+    .footer-section {
+        background: $light-gray;
+
+        .site-keyword {
+            padding: 2rem;
+
+            h4 {
+                margin: 1rem 0 !important;
+            }
+    
+            p {
+                color: $gray;
+            }
+        }
+
+        .brandambassador {
+            padding: 0 2rem 2rem;
+
+            p {
+                text-align: center;
+            }
+        }
+    }
+
     h4 {
         font-size: 1.8rem;
         font-weight: bold;
@@ -28,6 +52,7 @@
 }
 
 @import "../components/footer-sponsor";
+@import "../../core/core/assets/responsive/sass/components/footer-mobile-sponsor";
 @import "../components/pt/gambling-restriction";
 @import "../components/footer-mobile-menu";
 @import "../components/footer-copyright";

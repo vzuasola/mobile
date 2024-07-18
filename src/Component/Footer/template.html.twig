@@ -1,5 +1,11 @@
 <footer class="footer footer-{{ app.product_resolver.getProduct }}">
-    {{ include('@component/Footer/templates/sponsor.html.twig') }}
+    <div class="footer-section">
+        {{ include('@component/Footer/templates/sponsor.html.twig') }}
+        {% if enable_new_style  %}
+            {{ include('@responsive/components/footer-site-keyword.html.twig') }}
+            {{ include('@responsive/components/footer-brand-ambassador.html.twig', { 'device' : 'mobile' }) }}
+        {% endif %}
+    </div>
     {{ include('@component/Footer/templates/pt/gambling-restirction.html.twig') }}
     <div class="footer-mobile-menu" id="footer-menu"></div>
     {{ include('@component/Footer/templates/copyright.html.twig') }}
