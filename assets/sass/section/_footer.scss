@@ -1,8 +1,10 @@
 .footer {
-    color: $white;
+    color: $white;;
+    margin: 0 0 -1.8rem;
 
     .footer-section {
         background: $light-gray;
+        margin: 0 0 -0.1rem;
 
         .site-keyword {
             padding: 2rem;
@@ -23,12 +25,35 @@
                 text-align: center;
             }
         }
+
+        .social-media {
+            padding: 0 2rem 2rem;
+        }
+
+        .partners-logo {
+            padding: 0 2rem 2rem;
+
+            #curacao-container {
+                display: inline-block;
+                vertical-align: middle;
+                width: 4.8rem;
+            }
+        }
+
+        .quicklinks-mobile-revamp {
+            padding: 0 2rem 2rem;
+        }
     }
 
     h4 {
-        font-size: 1.8rem;
+        font-size: 1.2rem;
         font-weight: bold;
         line-height: 2.4rem;
+    }
+
+    .copyright-revamp {
+        background-color: $copyright-bg;
+        padding: 1rem 0;
     }
 }
 
@@ -56,3 +81,5 @@
 @import "../components/pt/gambling-restriction";
 @import "../components/footer-mobile-menu";
 @import "../components/footer-copyright";
+@import "../../core/core/assets/responsive/sass/components/footer-quicklink";
+@import "../../core/core/assets/responsive/sass/components/footer-mobile-social-icon";

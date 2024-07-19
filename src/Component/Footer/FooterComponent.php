@@ -87,6 +87,7 @@ class FooterComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+        $footerData = [];
         $data['back_to_top'] = true;
         $data['copyright'] = 'Copyright';
 
@@ -94,12 +95,6 @@ class FooterComponent implements ComponentWidgetInterface
             $data['sponsors'] = $this->views->getViewById('mobile_sponsor_list_v2');
         } catch (\Exception $e) {
             $data['sponsors'] = [];
-        }
-
-        try {
-            $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
-        } catch (\Exception $e) {
-            $data['footer_menu'] = [];
         }
 
         try {
@@ -114,18 +109,14 @@ class FooterComponent implements ComponentWidgetInterface
         }
 
         try {
-            $data['entrypage_config'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
-        } catch (\Exception $e) {
-            $data['entrypage_config'] = [];
-        }
-
-        try {
             $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
+            $data['enable_new_style'] = $footerConfigs['enable_new_style'] ?? false;
+            $data['footer']['quicklinks_title'] = $footerConfigs['quicklinks_title'] ?? 'Quicklinks';
+            $data['footer']['social_media_title'] = $footerConfigs['social_media_title'] ?? '';
             $data['cookie_notification'] = $footerConfigs['cookie_notification']['value'] ?? 'cookie notification';
             $data['use_cms_copyright'] = $footerConfigs['use_cms_copyright_label'] ?? 0;
             $data['copyright'] = $footerConfigs['copyright'] ?? '';
             $data['all_rights_translation'] = $footerConfigs['all_rights_reserved'] ?? '';
-            $data['enable_new_style'] = $footerConfigs['enable_new_style'] ?? false;
             $data['footer']['about_dafabet_title'] = $footerConfigs['about_dafabet_title'] ?? '';
             $data['footer']['about_dafabet_content'] = $footerConfigs['about_dafabet_content'] ?? '';
             $imageUrl = $footerConfigs['file_image_ambassador_image'];
@@ -138,6 +129,8 @@ class FooterComponent implements ComponentWidgetInterface
             if (!empty($footerConfigs['back_to_top_title'])) {
                 $data['back_to_top'] = !$this->blockUtils->isVisibleOn($footerConfigs['back_to_top_title']);
             }
+
+            $this->setFooterDataByVersion($data['enable_new_style'], $data);
         } catch (\Exception $e) {
             $footerConfigs = [];
             $data['cookie_notification'] = 'Cookie Notification';
@@ -178,5 +171,102 @@ class FooterComponent implements ComponentWidgetInterface
         array_multisort($counts, SORT_ASC, SORT_NUMERIC, $footerTabs);
 
         return $footerTabs;
+    }
+
+    /**
+     * Set data needed by footer based on version
+     * @param boolean $isV2
+     * @param array $data
+     */
+    private function setFooterDataByVersion($isV2, &$data)
+    {
+        if ($isV2) {
+            $this->setFooterV2($data);
+        } else {
+            $this->setFooterV1($data);
+        }
+    }
+
+     /**
+     * Sets data needed for footer version 1.0
+     * @param array $data
+     */
+    private function setFooterV1(&$data)
+    {
+        try {
+            $data['entrypage_config'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
+        } catch (\Exception $e) {
+            $data['entrypage_config'] = [];
+        }
+
+        try {
+            $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
+        } catch (\Exception $e) {
+            $data['footer_menu'] = [];
+        }
+    }
+
+    /**
+     * Returns data needed for footer version 2.0
+     * @param array $data
+     */
+    private function setFooterV2(&$data)
+    {
+        // Quick links
+        try {
+            $data['footer']['quicklinks'] = $this->menus->getMultilingualMenu('footer-quicklinks');
+        } catch (\Exception $e) {
+            $data['footer']['quicklinks'] = [];
+        }
+
+        // Social Media
+        try {
+            $socialMediaData = $this->views->getViewById('social-media');
+            $socialdata = reset($socialMediaData);
+            $socialIcons = $socialdata['field_social_media_cmi'] ?? [];
+            $media = [];
+
+            foreach ($socialIcons as $icon) {
+                if ($icon['field_socialmedia_cmi_enable'][0]['value'] == 1) {
+                    $media[] = $icon;
+                }
+            }
+
+            $data['footer']['socialmedia'] = $media;
+        } catch (\Exception $e) {
+            $data['footer']['socialmedia'] = [];
+        }
+
+        // Partners
+        try {
+            $partners =  $this->views->getViewById('partner_mobile');
+            $data['footer']['partners'] = $this->processPartners($partners);
+        } catch (\Exception $e) {
+            $data['footer']['partners'] = [];
+        }
+    }
+
+    /**
+     * Process partners list
+     */
+    private function processPartners($partners)
+    {
+        $partnersArr = [];
+        foreach ($partners as $id => $partner) {
+            foreach ($partner as $key => $items) {
+                if ($key === 'field_res_partner_mobile_logo') {
+                    $partnersArr[$id][$key] = $items;
+                    if (isset($items[0]['url'])) {
+                        $partnersArr[$id][$key][0]['url'] = $this->asset->generateAssetUri(
+                            $items[0]['url'],
+                            ['product' => $this->product->getProduct()]
+                        );
+                    }
+                }
+
+                $partnersArr[$id][$key] = $items;
+            }
+        }
+        return $partnersArr;
     }
 }

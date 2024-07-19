@@ -36,6 +36,8 @@ export class FooterComponent implements ComponentInterface {
         this.element = element;
         this.getFooter();
         this.activeBackToTop(element);
+        // Send event to inform when Curacao seal will be reloaded
+        ComponentManager.broadcast("footer.reload");
     }
 
     private getOriginalUrl() {
@@ -99,18 +101,19 @@ export class FooterComponent implements ComponentInterface {
     private generateFooterMarkup(data) {
         const footer: HTMLElement = this.element.querySelector("#footer-menu");
 
-        data = this.procesFooterMenu(data);
-        data = this.casinoGoldVisibility(data);
-
         this.showGamblingRestrictionText();
+        if (footer) {
+            data = this.procesFooterMenu(data);
+            data = this.casinoGoldVisibility(data);
 
-        const template = footerTemplate({
-            footerData: data,
-            footerMenuClass: data.footer_menu.length === 2 ? "footer-mobile-item half"
-                : ((data.footer_menu.length === 1) ? "footer-mobile full" : "footer-mobile-item"),
-        });
+            const template = footerTemplate({
+                footerData: data,
+                footerMenuClass: data.footer_menu.length === 2 ? "footer-mobile-item half"
+                    : ((data.footer_menu.length === 1) ? "footer-mobile full" : "footer-mobile-item"),
+            });
 
-        footer.innerHTML = template;
+            footer.innerHTML = template;
+        }
     }
 
     private procesFooterMenu(data) {
