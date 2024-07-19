@@ -3,7 +3,7 @@
         {% if entrypage_config.parnerts_and_sponsor_title_text %}
             <p class="sponsors-title">{{ entrypage_config.parnerts_and_sponsor_title_text }}</p>
         {% endif %}
-        <ul class="sponsors-lists {% if enable_new_style %}footer-revamp{% endif %}">
+        <ul class="sponsors-lists {% if enable_new_style %}footer-revamp mt-20{% endif %}">
             {% for sponsor in sponsors %}
                 {% if sponsor.field_sponsor_enable[0].value and sponsor.field_sponsor_image[0].url != ''%}
                     <li class="{{ sponsor.field_sponsor_svg_class[0].value }}">
