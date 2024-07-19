@@ -17,8 +17,8 @@
     data-game-product = "{{ product }}"
     data-game-code = "{{ node.field_banner_game_launch.0.field_game_code.0.value }}"
     data-game-keywords = "{{ node.keywords.0.keywords.0.value }}"
-    data-game-ugl = "{{ uglConfig }}"
-    {% if uglConfig %}
+    data-game-ugl = "{{ uglConfigs[product] }}"
+    {% if uglConfigs[product] %}
         {% if game_provider[node.field_banner_game_launch.0.field_game_provider.0.target_id] is defined %}
             {% set provider = game_provider[node.field_banner_game_launch.0.field_game_provider.0.target_id] %}
             {% if provider == "pas" %}
