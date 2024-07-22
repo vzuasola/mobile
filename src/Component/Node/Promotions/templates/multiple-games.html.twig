@@ -21,8 +21,8 @@
                     {% endif %}
                     data-game-product = "{{ product }}"
                     data-game-code = "{{ game_list.field_game_code.0.value }}"
-                    data-game-ugl = "{{ uglConfig }}"
-                    {% if uglConfig %}
+                    data-game-ugl = "{{ uglConfigs[product] }}"
+                    {% if uglConfigs[product] %}
                         {% if game_provider[game_list.field_game_provider.0.target_id] is defined %}
                             {% set provider = game_provider[game_list.field_game_provider.0.target_id] %}
                             {% if provider == "pas" %}
