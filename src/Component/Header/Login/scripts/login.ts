@@ -228,7 +228,7 @@ export class Login {
                     this.loader.hide();
                 } else {
                     ComponentManager.refreshComponents(
-                        ["header", "menu", "main", "announcement", "push_notification", "language"],
+                        ["header", "menu", "main", "announcement", "push_notification", "language", "footer"],
                         () => {
                             ComponentManager.broadcast("session.login", {
                                 src: this.srcElement,
@@ -410,7 +410,7 @@ export class Login {
                     this.loader.hide();
                 } else {
                     ComponentManager.refreshComponents(
-                        ["header", "menu", "main", "announcement", "push_notification", "language"],
+                        ["header", "menu", "main", "announcement", "push_notification", "language", "footer"],
                         () => {
                             ComponentManager.broadcast("session.logout.finished");
                             this.loader.hide();
@@ -501,7 +501,7 @@ export class Login {
 
         if (!casinoResponse.preferredProduct) {
             ComponentManager.refreshComponents(
-                ["header", "menu", "main", "announcement", "push_notification", "language"]);
+                ["header", "menu", "main", "announcement", "push_notification", "language", "footer"]);
             ComponentManager.broadcast("casino.preference");
         }
     }

@@ -33,6 +33,10 @@ class FooterComponent implements ComponentWidgetInterface
      * @var object
      */
     private $blockUtils;
+     /**
+     * @var App\Player\PlayerSession
+     */
+    private $playerSession;
 
     /**
      *
@@ -45,7 +49,8 @@ class FooterComponent implements ComponentWidgetInterface
             $container->get('product_resolver'),
             $container->get('config_fetcher'),
             $container->get('asset'),
-            $container->get('block_utils')
+            $container->get('block_utils'),
+            $container->get('player_session')
         );
     }
 
@@ -58,7 +63,8 @@ class FooterComponent implements ComponentWidgetInterface
         $product,
         $configs,
         $asset,
-        $blockUtils
+        $blockUtils,
+        $playerSession
     ) {
         $this->menus = $menus;
         $this->views = $views;
@@ -67,6 +73,7 @@ class FooterComponent implements ComponentWidgetInterface
         $this->asset = $asset;
         $this->blockUtils = $blockUtils;
         $this->viewsFloating = $views->withProduct($product->getProduct());
+        $this->playerSession = $playerSession;
     }
 
     /**
@@ -214,7 +221,9 @@ class FooterComponent implements ComponentWidgetInterface
     {
         // Quick links
         try {
-            $data['footer']['quicklinks'] = $this->menus->getMultilingualMenu('footer-quicklinks');
+            $quicklinks = $this->menus->getMultilingualMenu('footer-quicklinks');
+            $this->processQuicklinks($quicklinks);
+            $data['footer']['quicklinks'] = $quicklinks;
         } catch (\Exception $e) {
             $data['footer']['quicklinks'] = [];
         }
@@ -268,5 +277,23 @@ class FooterComponent implements ComponentWidgetInterface
             }
         }
         return $partnersArr;
+    }
+
+    /**
+     * Process quicklinks menu items
+     * @param array $quicklinks
+     */
+    private function processQuicklinks(&$quicklinks)
+    {
+        if ($quicklinks) {
+            foreach ($quicklinks as $key => $link) {
+                // Check if post-login url needs to be returned
+                $postLoginURLEnabled = ($link['attributes']['postLoginURLEnabled'] ?? 0) === 1;
+                $postLoginURL = $link['attributes']['postLoginURL'] ?? '#';
+                if ($postLoginURLEnabled && $this->playerSession->isLogin()) {
+                    $quicklinks[$key]['alias'] = $postLoginURL;
+                }
+            }
+        }
     }
 }
