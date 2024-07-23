@@ -219,6 +219,16 @@ class FooterComponent implements ComponentWidgetInterface
      */
     private function setFooterV2(&$data)
     {
+        // Sponsor
+        try {
+            $sponsorConfigs = $this->configs->getConfig('webcomposer_config.mobile_sponsor_list_v2');
+            $data['sponsor_title_font_size'] = $sponsorConfigs['field_sponsor_title_font_size'] ?? '';
+            $data['sponsor_subtitle_font_size'] = $sponsorConfigs['field_sponsor_subtitle_font_size'];
+        } catch (\Exception $e) {
+            $data['sponsor_title_font_size'] = '';
+            $data['sponsor_subtitle_font_size'] = '';
+        }
+
         // Quick links
         try {
             $quicklinks = $this->menus->getMultilingualMenu('footer-quicklinks');
