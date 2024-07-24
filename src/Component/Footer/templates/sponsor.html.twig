@@ -15,11 +15,15 @@
                                     <image xlink:href="{{sponsor.field_sponsor_image[0].url}}" width="5rem" height="5rem" />
                                 </svg>
                             <p {% if not enable_new_style %}class="hidden"{% endif %}
-                                {% if enable_new_style and sponsor_title_font_size %} style="font-size: {{ sponsor_title_font_size }}"{% endif %}>
+                                {% if enable_new_style and sponsor_title_font_size %}
+                                    style="font-size: {{ sponsor_title_font_size }}; line-height: normal;"
+                                {% endif %}>
                                 {{ sponsor.field_title[0].value }}
                             </p>
                             <span {% if not enable_new_style %}class="hidden"{% endif %}
-                                {% if enable_new_style and sponsor_subtitle_font_size %} style="font-size: {{ sponsor_subtitle_font_size }}"{% endif %}>
+                                {% if enable_new_style and sponsor_subtitle_font_size %}
+                                    style="font-size: {{ sponsor_subtitle_font_size }}; line-height: normal;"
+                                {% endif %}>
                                 {{ sponsor.field_subtitle[0].value }}
                             </span>
                             {% if sponsor.field_sponsor_link[0].uri %}
