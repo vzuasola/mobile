@@ -54,8 +54,8 @@
 	bd:'সকল অধিকার সংরক্ষিত',
 } %}
 
-<div class="copyright clear">
-    <p class="container text-center">
+<div class="copyright {% if enable_new_style  %} copyright-revamp {% endif %} clear">
+    <p class="container text-center {% if enable_new_style  %}text-gray{% endif %}">
     {% if use_cms_copyright %}
 	    {{ copyright }}
 	    &copy;

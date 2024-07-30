@@ -1,7 +1,5 @@
 // Main Club sponsor
 .sponsors {
-    background: $light-gray;
-
     &-lists {
         margin-right: auto;
         margin-left: auto;
@@ -14,6 +12,10 @@
             margin: 0 2%;
             overflow: hidden;
             display: inline-block;
+
+            a {
+                color: $gray;
+            }
 
             svg {
                 width: 6rem;

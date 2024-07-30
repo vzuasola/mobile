@@ -112,11 +112,20 @@ class PromotionsComponent implements ComponentWidgetInterface
             $data['game_provider'] = $providers;
             $data['game_subprovider'] = $subProviders;
 
-            $product = $data['node']['field_banner_game_launch'][0]['field_product'][0]['value'];
-            $data['launch_via_iframe'] = $this->getIframeToggle($product);
-            $data['uglConfig'] = $this->getUglConfig($product);
+            $product = $data['node']['field_banner_game_launch'][0]['field_product'][0]['value'] ?? false;
+            $gamesList = $data['node']['field_games_list'] ?? false;
+
+            if ($product) {
+                $data['launch_via_iframe'] = $this->getIframeToggle($product);
+            }
+
+            // Fetch UGL configs for unique products
+            if ($gamesList || $product) {
+                $data['uglConfigs'] = $this->getUglConfig($this->getUniqueProducts($data, $product));
+            }
         }
         $data['is_login'] = $this->playerSession->isLogin();
+
         return $data;
     }
 
@@ -145,17 +154,34 @@ class PromotionsComponent implements ComponentWidgetInterface
         return $dataToggle;
     }
 
-    private function getUglConfig($product)
+    private function getUglConfig($products)
     {
-        $uglConfig = false;
-
-        try {
-            $perProduct = $this->config->withProduct($product);
-            $uglConfig = $perProduct->getConfig('webcomposer_config.games_playtech_provider')['ugl_switch'];
-        } catch (\Exception $e) {
-            $uglConfig = false;
+        $uglData = [];
+        foreach ($products as $product) {
+            try {
+                $perProduct = $this->config->withProduct($product);
+                $uglConfig = $perProduct->getConfig('webcomposer_config.games_playtech_provider');
+                $uglData[$product] = $uglConfig['ugl_switch'] ?? false;
+            } catch (\Exception $e) {
+                $uglData = [];
+            }
         }
 
-        return $uglConfig;
+        return $uglData;
+    }
+
+    private function getUniqueProducts($data, $bannerProduct)
+    {
+        $products = [];
+        foreach ($data['node']['field_games_list'] as $gameItem) {
+            $val = $gameItem['field_product'][0]['value'];
+            $products[] = $val;
+        }
+
+        if ($bannerProduct) {
+            $products[] = $bannerProduct;
+        }
+
+        return array_unique($products);
     }
 }

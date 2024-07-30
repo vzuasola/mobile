@@ -1,10 +1,16 @@
-<footer class="footer footer-{{ app.product_resolver.getProduct }}">
-    {{ include('@component/Footer/templates/sponsor.html.twig') }}
-    {{ include('@component/Footer/templates/pt/gambling-restirction.html.twig') }}
-    <div class="footer-mobile-menu" id="footer-menu"></div>
-    {{ include('@component/Footer/templates/copyright.html.twig') }}
-    <div class="floating-section"></div>
-</footer>
+{% if enable_new_style %}
+    {{ include('@component/Footer/templates/footer-revamp.html.twig') }}
+{% else %}
+    <footer class="footer footer-{{ app.product_resolver.getProduct }}">
+        <section class="footer-section">
+            {{ include('@component/Footer/templates/sponsor.html.twig') }}
+            {{ include('@component/Footer/templates/pt/gambling-restirction.html.twig') }}
+        </section>
+        <div class="footer-mobile-menu" id="footer-menu"></div>
+        {{ include('@component/Footer/templates/copyright.html.twig') }}
+        <div class="floating-section"></div>
+    </footer>
+{% endif %}
 <div class="floating-{{ app.product_resolver.getProduct }}">
     {% if app.product_resolver.getProduct == "mobile-ptplus" and floatingFooter %}
         {{ include('@component/Footer/templates/footer-menu.html.twig') }}

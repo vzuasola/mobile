@@ -33,6 +33,10 @@ class FooterComponent implements ComponentWidgetInterface
      * @var object
      */
     private $blockUtils;
+     /**
+     * @var App\Player\PlayerSession
+     */
+    private $playerSession;
 
     /**
      *
@@ -45,7 +49,8 @@ class FooterComponent implements ComponentWidgetInterface
             $container->get('product_resolver'),
             $container->get('config_fetcher'),
             $container->get('asset'),
-            $container->get('block_utils')
+            $container->get('block_utils'),
+            $container->get('player_session')
         );
     }
 
@@ -58,7 +63,8 @@ class FooterComponent implements ComponentWidgetInterface
         $product,
         $configs,
         $asset,
-        $blockUtils
+        $blockUtils,
+        $playerSession
     ) {
         $this->menus = $menus;
         $this->views = $views;
@@ -67,6 +73,7 @@ class FooterComponent implements ComponentWidgetInterface
         $this->asset = $asset;
         $this->blockUtils = $blockUtils;
         $this->viewsFloating = $views->withProduct($product->getProduct());
+        $this->playerSession = $playerSession;
     }
 
     /**
@@ -87,6 +94,7 @@ class FooterComponent implements ComponentWidgetInterface
     public function getData()
     {
         $data = [];
+        $footerData = [];
         $data['back_to_top'] = true;
         $data['copyright'] = 'Copyright';
 
@@ -94,12 +102,6 @@ class FooterComponent implements ComponentWidgetInterface
             $data['sponsors'] = $this->views->getViewById('mobile_sponsor_list_v2');
         } catch (\Exception $e) {
             $data['sponsors'] = [];
-        }
-
-        try {
-            $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
-        } catch (\Exception $e) {
-            $data['footer_menu'] = [];
         }
 
         try {
@@ -114,21 +116,28 @@ class FooterComponent implements ComponentWidgetInterface
         }
 
         try {
-            $data['entrypage_config'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
-        } catch (\Exception $e) {
-            $data['entrypage_config'] = [];
-        }
-
-        try {
             $footerConfigs = $this->configs->getConfig('webcomposer_config.footer_configuration');
+            $data['enable_new_style'] = $footerConfigs['enable_new_style'] ?? false;
+            $data['footer']['quicklinks_title'] = $footerConfigs['quicklinks_title'] ?? 'Quicklinks';
+            $data['footer']['social_media_title'] = $footerConfigs['social_media_title'] ?? '';
             $data['cookie_notification'] = $footerConfigs['cookie_notification']['value'] ?? 'cookie notification';
             $data['use_cms_copyright'] = $footerConfigs['use_cms_copyright_label'] ?? 0;
             $data['copyright'] = $footerConfigs['copyright'] ?? '';
             $data['all_rights_translation'] = $footerConfigs['all_rights_reserved'] ?? '';
+            $data['footer']['about_dafabet_title'] = $footerConfigs['about_dafabet_title'] ?? '';
+            $data['footer']['about_dafabet_content'] = $footerConfigs['about_dafabet_content'] ?? '';
+            $imageUrl = $footerConfigs['file_image_ambassador_image'];
+            $data['footer']['file_image_ambassador_image'] = $this->asset
+                ->generateAssetUri($imageUrl);
+            $data['footer']['ambassador_redirection_link'] = $footerConfigs['ambassador_redirection_link'];
+            $data['footer']['ambassador_link_target'] = $footerConfigs['ambassador_link_target'];
+            $data['footer']['ambassador_title'] = $footerConfigs['ambassador_title'];
 
             if (!empty($footerConfigs['back_to_top_title'])) {
                 $data['back_to_top'] = !$this->blockUtils->isVisibleOn($footerConfigs['back_to_top_title']);
             }
+
+            $this->setFooterDataByVersion($data['enable_new_style'], $data);
         } catch (\Exception $e) {
             $footerConfigs = [];
             $data['cookie_notification'] = 'Cookie Notification';
@@ -169,5 +178,132 @@ class FooterComponent implements ComponentWidgetInterface
         array_multisort($counts, SORT_ASC, SORT_NUMERIC, $footerTabs);
 
         return $footerTabs;
+    }
+
+    /**
+     * Set data needed by footer based on version
+     * @param boolean $isV2
+     * @param array $data
+     */
+    private function setFooterDataByVersion($isV2, &$data)
+    {
+        if ($isV2) {
+            $this->setFooterV2($data);
+        } else {
+            $this->setFooterV1($data);
+        }
+    }
+
+     /**
+     * Sets data needed for footer version 1.0
+     * @param array $data
+     */
+    private function setFooterV1(&$data)
+    {
+        try {
+            $data['entrypage_config'] = $this->configs->getConfig('mobile_entrypage.entrypage_configuration');
+        } catch (\Exception $e) {
+            $data['entrypage_config'] = [];
+        }
+
+        try {
+            $data['footer_menu'] = $this->menus->getMultilingualMenu('mobile-footer');
+        } catch (\Exception $e) {
+            $data['footer_menu'] = [];
+        }
+    }
+
+    /**
+     * Returns data needed for footer version 2.0
+     * @param array $data
+     */
+    private function setFooterV2(&$data)
+    {
+        // Sponsor
+        try {
+            $sponsorConfigs = $this->configs->getConfig('webcomposer_config.mobile_sponsor_list_v2');
+            $data['sponsor_title_font_size'] = $sponsorConfigs['field_sponsor_title_font_size'] ?? '';
+            $data['sponsor_subtitle_font_size'] = $sponsorConfigs['field_sponsor_subtitle_font_size'];
+        } catch (\Exception $e) {
+            $data['sponsor_title_font_size'] = '';
+            $data['sponsor_subtitle_font_size'] = '';
+        }
+
+        // Quick links
+        try {
+            $quicklinks = $this->menus->getMultilingualMenu('footer-quicklinks');
+            $this->processQuicklinks($quicklinks);
+            $data['footer']['quicklinks'] = $quicklinks;
+        } catch (\Exception $e) {
+            $data['footer']['quicklinks'] = [];
+        }
+
+        // Social Media
+        try {
+            $socialMediaData = $this->views->getViewById('social-media');
+            $socialdata = reset($socialMediaData);
+            $socialIcons = $socialdata['field_social_media_cmi'] ?? [];
+            $media = [];
+
+            foreach ($socialIcons as $icon) {
+                if ($icon['field_socialmedia_cmi_enable'][0]['value'] == 1) {
+                    $media[] = $icon;
+                }
+            }
+
+            $data['footer']['socialmedia'] = $media;
+        } catch (\Exception $e) {
+            $data['footer']['socialmedia'] = [];
+        }
+
+        // Partners
+        try {
+            $partners =  $this->views->getViewById('partner_mobile');
+            $data['footer']['partners'] = $this->processPartners($partners);
+        } catch (\Exception $e) {
+            $data['footer']['partners'] = [];
+        }
+    }
+
+    /**
+     * Process partners list
+     */
+    private function processPartners($partners)
+    {
+        $partnersArr = [];
+        foreach ($partners as $id => $partner) {
+            foreach ($partner as $key => $items) {
+                if ($key === 'field_res_partner_mobile_logo') {
+                    $partnersArr[$id][$key] = $items;
+                    if (isset($items[0]['url'])) {
+                        $partnersArr[$id][$key][0]['url'] = $this->asset->generateAssetUri(
+                            $items[0]['url'],
+                            ['product' => $this->product->getProduct()]
+                        );
+                    }
+                }
+
+                $partnersArr[$id][$key] = $items;
+            }
+        }
+        return $partnersArr;
+    }
+
+    /**
+     * Process quicklinks menu items
+     * @param array $quicklinks
+     */
+    private function processQuicklinks(&$quicklinks)
+    {
+        if ($quicklinks) {
+            foreach ($quicklinks as $key => $link) {
+                // Check if post-login url needs to be returned
+                $postLoginURLEnabled = ($link['attributes']['postLoginURLEnabled'] ?? 0) === 1;
+                $postLoginURL = $link['attributes']['postLoginURL'] ?? '#';
+                if ($postLoginURLEnabled && $this->playerSession->isLogin()) {
+                    $quicklinks[$key]['alias'] = $postLoginURL;
+                }
+            }
+        }
     }
 }
