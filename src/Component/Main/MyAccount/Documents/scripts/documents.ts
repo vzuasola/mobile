@@ -97,6 +97,9 @@ export class Documents extends FormBase {
         blurbDiv.innerText = "(" + this.commentField.dataset.blurb + ")";
         commentMarkup.appendChild(blurbDiv);
 
+        // Add placeholder to comment field
+        this.commentField.placeholder = this.commentField.dataset.placeholder;
+
         // Add success/error icon to comment markup
         const commentMarkupErrorDiv = document.createElement("div");
         commentMarkupErrorDiv.classList.add("field_status_icon");
@@ -108,7 +111,6 @@ export class Documents extends FormBase {
         this.purposeField.addEventListener(
             "change",
             (e: TGenericEvent<HTMLSelectElement>) => {
-                this.commentFieldPlaceholderCallback(e.target);
                 this.purposeFieldRequiredCallback(e.target);
                 this.commentFieldRequiredCallback(this.commentField);
                 if (e.target.value !== "") {
@@ -226,19 +228,6 @@ export class Documents extends FormBase {
         this.form.querySelector(".DocumentsForm_comment").after(commentErrormsg);
     }
 
-    // Check if user selected "Change Information" and add the place holder and required * in the comment field
-    private commentFieldPlaceholderCallback(el: HTMLSelectElement) {
-        const commentFieldMarkup = this.form.querySelector(".DocumentsForm_comment_markup > .comment_field_title");
-        if (el.value === "change") {
-            this.commentField.placeholder = this.commentField.dataset.placeholder;
-            commentFieldMarkup.classList.add("field_required");
-            return;
-        }
-        // User selected some other value, no special logic required
-        commentFieldMarkup.classList.remove("field_required");
-        this.commentField.placeholder = "";
-    }
-
     // Check if user selected the placeholder option in purpose dropdown
     private purposeFieldRequiredCallback(el: HTMLSelectElement) {
         if (el.value === "") {
@@ -253,9 +242,9 @@ export class Documents extends FormBase {
         this.cleanupValidation("DocumentsForm_purpose");
     }
 
-    // Comment field is only required if the purpose is "Change information"
+    // Check if user added comment
     private commentFieldRequiredCallback(el: HTMLTextAreaElement) {
-        if (this.purposeField.value === "change" && el.value === "") {
+        if (el.value === "") {
             this.validatorErrors.DocumentsForm_comment = { commentFieldRequired: el.dataset.required_error };
             return;
         }
