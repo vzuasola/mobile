@@ -95,13 +95,20 @@ export class GameIFrameComponent implements ComponentInterface {
             utility.removeClass(iframe, "hidden");
             element.querySelector(".game-iframe-loader-container").remove();
 
-            // resize iframe
+            // calculate height for iframe wrapper
             const headerElement = document.querySelector(".header-mobile-entrypage") as HTMLElement;
             const headerHeight = headerElement.offsetHeight;
-            const documentHeight = document.documentElement.clientHeight - headerHeight;
-            iframeWrapper.style.height = documentHeight + "px";
-            iframe.setAttribute("width", 360);
-            iframe.setAttribute("height", "auto");
+
+            let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+            let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+            vh = (vh - headerHeight) * 0.01;
+            vw = vw * 0.01;
+            iframeWrapper.style.height = "calc(" + vh + "px" + " * 100)";
+            iframeWrapper.style.width = "calc(" + vw + "px" + " * 100)";
+
+            iframe.setAttribute("width", "100vw");
+            iframe.setAttribute("height", "100vh");
+
             if (response.type === "html") {
                 iframe.contentDocument.open();
                 iframe.contentDocument.write(response.gameurl);
@@ -117,13 +124,27 @@ export class GameIFrameComponent implements ComponentInterface {
      */
     private listenOnResize() {
         window.addEventListener("resize", () => {
-            const iframeWrapper = document.querySelector(".game-iframe-container") as HTMLElement;
-            const headerElement = document.querySelector(".header-mobile-entrypage") as HTMLElement;
-            const headerHeight = headerElement.offsetHeight;
-            const documentHeight = document.documentElement.clientHeight - headerHeight;
-            iframeWrapper.style.height = documentHeight + "px";
+            this.caculateIframeWrapperDimension();
         });
 
+    }
+
+    /**
+     * Calculate height and width of iframe wrapper
+     * to set correct dimension
+     */
+    private caculateIframeWrapperDimension() {
+        const iframeWrapper = document.querySelector(".game-iframe-container") as HTMLElement;
+        const headerElement = document.querySelector(".header-mobile-entrypage") as HTMLElement;
+        const headerHeight = headerElement.offsetHeight;
+
+        let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+        let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+        vh = (vh - headerHeight) * 0.01;
+        vw = vw * 0.01;
+
+        iframeWrapper.style.height = "calc(" + vh + "px" + " * 100)";
+        iframeWrapper.style.width = "calc(" + vw + "px" + " * 100)";
     }
 
     /**

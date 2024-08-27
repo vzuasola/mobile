@@ -232,10 +232,13 @@
             padding: 0;
             margin: 0;
             list-style-type: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .game-listing {
-            width: 33.33333333%;
+            flex: 0 0 calc(33.33333%);
             padding: 0 0.2% 1% 0.2%;
         }
     }

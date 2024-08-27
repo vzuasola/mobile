@@ -11,7 +11,7 @@
 }
 .game-iframe-loader-container {
     position: relative;
-    height: 100vh;
+    height: calc(100vh - 50px);
     display: table;
     margin: 0 auto;
     width: auto;
@@ -26,4 +26,9 @@
         position: absolute;
         left: 7rem !important;
     }
+}
+
+.game-iframe-container {
+    position: relative;
+    margin: 0 auto !important;
 }
