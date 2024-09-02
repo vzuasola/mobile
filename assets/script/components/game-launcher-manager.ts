@@ -15,34 +15,15 @@ export class GameLauncherManager {
     private listenToGameLaunchEvents(product) {
         ComponentManager.subscribe("game.launch.loader", (event, src, data) => {
             if (ComponentManager.getAttribute("product") === product) {
-                this.launchByLauncherType("games.launch.loader", data);
-            }
-        });
-
-        ComponentManager.subscribe("game.launch.iframe", (event, src, data) => {
-            if (ComponentManager.getAttribute("product") === product) {
-                this.launchByLauncherType("game.launch.iframe", data);
+                this.launchViaGameLoader(data);
             }
         });
 
         ComponentManager.subscribe("game.launch.promo.loader", (event, src, data) => {
             if (ComponentManager.getAttribute("product") === product) {
-                this.launchByLauncherType("games.launch.loader", data);
+                this.launchViaGameLoader(data);
             }
         });
-    }
-
-     /**
-      * Call launcher type depending on game events
-      * @param event
-      * @param data
-      */
-      private launchByLauncherType(event, data) {
-        if (event === "game.launch.iframe") {
-            this.launchViaIFrame(data);
-        } else {
-            this.launchViaGameLoader(data);
-        }
     }
 
     /**
@@ -54,20 +35,6 @@ export class GameLauncherManager {
         let url = "/" + ComponentManager.getAttribute("language") + "/game/loader";
         url = this.getLauncherUrl(url, data);
 
-        this.launchGameByTarget(data, url);
-    }
-
-    /**
-     * Handle game launching via /game/frame
-     * Game is loaded in an iframe
-     * @param data
-     */
-    private launchViaIFrame(data) {
-        let product = data.options.currentProduct;
-        product = product.replace("mobile-", "");
-        let url = "/" + ComponentManager.getAttribute("language") + "/" + product + "/game/launch";
-
-        url = this.getLauncherUrl(url, data);
         this.launchGameByTarget(data, url);
     }
 

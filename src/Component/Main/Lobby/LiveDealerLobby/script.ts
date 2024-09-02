@@ -31,7 +31,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
     private lazyLoader: LazyLoader;
     private currentPage: number;
     private pager: number;
-    private launchViaIframe: boolean;
     private gameLauncherManager: GameLauncherManager;
     private uglConfig: boolean;
 
@@ -53,7 +52,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         product: any[],
         tabs: any[],
         configs: any[],
-        launch_via_iframe: boolean,
         uglConfig: boolean,
     }) {
         this.groupedGames = undefined;
@@ -63,7 +61,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.tabs = attachments.tabs;
         this.configs = attachments.configs;
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.uglConfig = attachments.uglConfig;
         this.liveDealerXhrRequest("maintenance", (response) => {
             this.providers = response.game_providers;
@@ -89,7 +86,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         product: any[],
         tabs: any[],
         configs: any[],
-        launch_via_iframe: boolean,
         uglConfig: boolean,
     }) {
         if (!this.element) {
@@ -107,7 +103,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
         this.product = attachments.product;
         this.tabs = attachments.tabs;
         this.configs = attachments.configs;
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.uglConfig = attachments.uglConfig;
         this.liveDealerXhrRequest("maintenance", (response) => {
             this.providers = response.game_providers;
@@ -237,7 +232,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             const quickLauncher = new QuickLauncher(
                 this.attachments.configs,
                 this.isLogin,
-                this.launchViaIframe,
                 this.uglConfig,
             );
             quickLauncher.activate(this.groupedGames.providers, activeTab);
@@ -286,7 +280,6 @@ export class LiveDealerLobbyComponent implements ComponentInterface {
             this.element.querySelector("#game-container"),
             activeTab,
             enableLazyLoad,
-            this.launchViaIframe,
             this.uglConfig,
         );
     }
