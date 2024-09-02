@@ -5,13 +5,11 @@ import * as quickLaunchTemplate from "../handlebars/quick-launcher-tabs.handleba
 export class QuickLauncher {
     private configs: any[];
     private isLogin: boolean;
-    private launchViaIframe: boolean;
     private uglConfig: boolean;
 
-    constructor(configs, isLogin, launchViaIframe, uglConfig) {
+    constructor(configs, isLogin, uglConfig) {
         this.configs = configs;
         this.isLogin = isLogin;
-        this.launchViaIframe = launchViaIframe;
         this.uglConfig = uglConfig;
     }
 
@@ -25,7 +23,6 @@ export class QuickLauncher {
             configs: this.configs,
             activeTab,
             isLogin: this.isLogin,
-            launchViaIframe: this.launchViaIframe,
             uglConfig: Boolean(this.uglConfig),
         });
 
