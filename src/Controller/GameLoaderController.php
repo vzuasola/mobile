@@ -70,7 +70,7 @@ class GameLoaderController extends BaseController
 
         switch ($provider) {
             case 'gpi':
-                $gpiConfig = $this->get('config_fetcher')->getGeneralConfigById('games_gpi_provider') ?? [];
+                $gpiConfig = $configFetcher->getGeneralConfigById('games_gpi_provider') ?? [];
                 $isLaunchIframe = $gpiConfig['gpi_live_dealer_use_iframe'] ?? false;
                 $disabledSubprovider = $gpiConfig['gpi_live_dealer_disable_iframe_subprovider'] ?? '';
                 break;
