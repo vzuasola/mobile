@@ -35,7 +35,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
     private graphyteRecommends: GraphyteRecommends;
     private productMenu: string = "product-arcade";
     private recommendationAlias: any = [];
-    private launchViaIframe: boolean;
     private gameLauncherManager: GameLauncherManager;
 
     constructor() {
@@ -55,12 +54,10 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         configs: any[],
         user,
-        launch_via_iframe: boolean,
     }) {
         this.response = undefined;
         this.element = element;
         this.attachments = attachments;
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.graphyteRecommends = new GraphyteRecommends(this.attachments);
         const enableClickStream = (this.attachments.configs.graphyte.hasOwnProperty("enabled")) ?
             this.attachments.configs.graphyte.enabled : false;
@@ -103,7 +100,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         configs,
         user,
-        launch_via_iframe: boolean,
     }) {
         const enableClickStream = (attachments.configs.graphyte.hasOwnProperty("enabled")) ?
             attachments.configs.graphyte.enabled : false;
@@ -115,7 +111,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.listenClickGameTile();
             this.listenGameLaunch();
             this.listenFavoriteClick();
-            this.launchViaIframe = attachments.launch_via_iframe;
             this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
             this.listenOnLogin();
             this.listenOnLogout();
@@ -400,7 +395,6 @@ export class ArcadeLobbyComponent implements ComponentInterface {
             this.favoritesList,
             activeCategory,
             enableLazyLoad,
-            this.launchViaIframe,
         );
 
         ComponentManager.broadcast("clickstream.category.change", {
