@@ -25,7 +25,6 @@ export class GamesSearch {
     private recommendedGames;
     private response;
     private timer;
-    private launchViaIframe: boolean;
     private uglConfig: boolean;
 
     constructor() {
@@ -51,14 +50,12 @@ export class GamesSearch {
             msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
-            launch_via_iframe: boolean,
             uglConfig: boolean,
         }) {
         this.uglConfig = attachments.uglConfig;
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.listenActivateSearchLightbox();
         this.listenActivateSearchFilterLightbox();
         this.listenChangeGameSearch();
@@ -79,7 +76,6 @@ export class GamesSearch {
             msg_recommended_available: string,
             msg_no_recommended: string,
             product: any[],
-            launch_via_iframe: boolean,
             uglConfig: boolean,
         }) {
         if (!this.element) {
@@ -98,7 +94,6 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.launchViaIframe = attachments.launch_via_iframe;
     }
 
     setGamesList(gamesList) {
@@ -222,7 +217,6 @@ export class GamesSearch {
             favorites: this.favoritesList,
             isLogin: this.isLogin,
             isRecommended: this.isRecommended,
-            launchViaIframe: this.launchViaIframe,
             uglConfig: Boolean(this.uglConfig),
         });
 
