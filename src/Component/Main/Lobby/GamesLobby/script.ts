@@ -51,7 +51,6 @@ export class GamesLobbyComponent implements ComponentInterface {
     private gameLink: string;
     private gameCategories: any;
     private productMenu: string = "product-games";
-    private launchViaIframe: boolean;
     private gameLauncherManager: GameLauncherManager;
     private uglConfig: boolean;
     private bannerWidgets: {
@@ -92,7 +91,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         configs: any[],
         pagerConfig: any[],
         infinite_scroll: boolean,
-        launch_via_iframe: boolean,
         uglConfig: boolean,
         user,
     }) {
@@ -102,7 +100,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.attachments = attachments;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.pager = 0;
         this.load = true;
         this.graphyteRecommends = new GraphyteRecommends(this.attachments);
@@ -157,7 +154,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         configs,
         pagerConfig: any[],
         infinite_scroll: boolean,
-        launch_via_iframe: boolean,
         uglConfig: boolean,
         user,
     }) {
@@ -189,7 +185,6 @@ export class GamesLobbyComponent implements ComponentInterface {
         this.attachments = attachments;
         this.isLogin = attachments.authenticated;
         this.product = attachments.product;
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.pager = 0;
         this.load = true;
         this.generateLobby(() => {
@@ -627,7 +622,6 @@ export class GamesLobbyComponent implements ComponentInterface {
             isRecommended: isRecommend,
             isAllGames: activeCategory === "all-games",
             offset: page,
-            launchViaIframe: this.launchViaIframe,
             uglConfig: Boolean(this.uglConfig),
         });
 
@@ -640,7 +634,6 @@ export class GamesLobbyComponent implements ComponentInterface {
                     isLogin: this.isLogin,
                     isAllGames: activeCategory === "all-games",
                     offset: ctr * 12,
-                    launchViaIframe: this.launchViaIframe,
                     uglConfig: Boolean(this.uglConfig),
                 });
             }
@@ -1042,7 +1035,6 @@ export class GamesLobbyComponent implements ComponentInterface {
                             isLogin: this.isLogin,
                             isAllGames: hash === "all-games",
                             offset: this.currentPage * 12,
-                            launchViaIframe: this.launchViaIframe,
                             uglConfig: Boolean(this.uglConfig),
                         });
 
