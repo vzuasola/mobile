@@ -14,156 +14,56 @@
     <link href="{{ asset('css/promotions.css') }}" rel="stylesheet">
 {% endblock %}
 
-{% if is_login %}
-    <div class="promotions-body-banner">
-        {% if node.field_banner_game_launch.0.field_product.0.value %}
-            {% include '@component/Node/Promotions/templates/single-game.html.twig' %}
+<div class="promotions-body-banner {{ chickpea_enabled ? 'chickpea-lightbox-enabled' : '' }}">
+    {% if node.field_banner_game_launch.0.field_product.0.value %}
+        {% include '@component/Node/Promotions/templates/single-game.html.twig' %}
+    {% else %}
+        {% if chickpea_enabled %}
+            {% include '@component/Node/Promotions/templates/promotion-chickpea.html.twig' %}
         {% else %}
-            {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
-                <a
-                    href="{{ url(node.field_post_banner_link.0.uri) }}"
-                    target="{{node.field_post_banner_link_target.0.value }}"
-                    
-                    data-router="true"
-                    data-router-refresh="main"
-                >
-            {% endif %}
-            {% if node.field_post_banner_image.0.url %}
-                <img src="{{ node.field_post_banner_image.0.url }}" alt="{{ node.field_post_banner_image.0.alt }}" class="w-100">
-            {% endif %}
-
-            {% if not node.field_hide_countdown.0.value %}
-                <div class="promotions-body-banner-scheduler hidden">
-                    <svg class="clock" viewBox="0 120 24 24">
-                        <use xlink:href="#clock" />
-                    </svg>
-                    <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
-                </div>
-            {% endif %}
-
-            {% if node.field_post_banner_link.0.uri or node.field_post_banner_link_target.0.value %}
-                </a>
-            {% endif %}
+            {% include '@component/Node/Promotions/templates/promotion-banner.html.twig' %}
         {% endif %}
-        </div>
+    {% endif %}
+</div>
 
-        <div class="container page-promotion-inner">
-            {% set content = node.field_post_body.0.value %}
-            {% set content = content|replace({'[[promotion_game_widget]]': gameWidget }) %}
-            {{ content|raw }}
-        </div>
-{% else %}
-    <div class="promotions-body-banner">
-        {% if node.field_banner_game_launch.0.field_product.0.value %}
-            {% include '@component/Node/Promotions/templates/single-game.html.twig' %}
-        {% else %}
-            {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
-                <a
-                    href="{{ url(node.field_banner_link.0.uri) }}"
-                    target="{{ node.field_banner_link_target.0.value }}"
+<div class="container page-promotion-inner">
+    {% set content = node_body.0.value %}
+    {% set content = content|replace({'[[promotion_game_widget]]': gameWidget }) %}
+    {{ content|raw }}
+</div>
 
-                    data-router="true"
-                    data-router-refresh="main"
-                >
-            {% endif %}
+{% if node_enable_sticky.0.value or node_enable_sticky2.0.value %}
+<ul class="page-promotion-inner page-promotion-sticky">
+{% set sticky_enabled_half = (node_enable_sticky.0.value and node_enable_sticky2.0.value) %}
+{% if node_enable_sticky.0.value %}
+    <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
+        <a
+            href="{{ url(node_sticky_url.0.uri) }}"
+            target="{{ node_sticky_link_target.0.value }}"
+            class="sticky-box btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
+            style="background-color: {{ node_sticky_background.0.color }}; color: {{ node_sticky_text_color.0.color }};"
 
-           {% if node.field_banner_image.0.url %}
-                <img src="{{ node.field_banner_image.0.url }}" alt="{{ node.field_banner_image.0.alt }}" class="w-100">
-            {% endif %}
-
-            {% if not node.field_hide_countdown.0.value %}
-                <div class="promotions-body-banner-scheduler hidden">
-                    <svg class="clock" viewBox="0 120 24 24">
-                        <use xlink:href="#clock" />
-                    </svg>
-                    <span data-end-time="{{ node.unpublish_on.0.value }}" class="countdown-text"></span>
-                </div>
-            {% endif %}
-
-            {% if node.field_banner_link.0.uri or node.field_banner_link_target.0.value %}
-                </a>
-            {% endif %}
-        {% endif %}
-    </div>
-
-    <div class="container page-promotion-inner">
-        {% set content = node.body.0.value %}
-        {% set content = content|replace({'[[promotion_game_widget]]': gameWidget }) %}
-        {{ content|raw }}
-    </div>
+            data-router="true"
+            data-router-refresh="main"
+        >
+            {{ node_sticky_url.0.title }}
+        </a>
+    </li>
 {% endif %}
+{% if node_enable_sticky2.0.value %}
+    <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
+        <a
+            href="{{ url(node_sticky_url2.0.uri) }}"
+            target="{{ node_sticky_link_target2.0.value }}"
+            class="sticky-box btn btn-medium {{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}"
+            style="background-color: {{ node_sticky_background2.0.color }}; color: {{ node_sticky_text_color2.0.color }};"
 
-{% if is_login %}
-    {% if node.field_field_enable_sticky_post.0.value or node.field_field_enable_sticky_post2.0.value  %}
-        <ul class="page-promotion-inner page-promotion-sticky">
-        {% set sticky_enabled_half = (node.field_field_enable_sticky_post.0.value and node.field_field_enable_sticky_post2.0.value) %}
-        {% if node.field_field_enable_sticky_post.0.value %}
-            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
-                <a
-                    href="{{ url(node.field_sticky_url_post.0.uri) }}"
-                    target="{{ node.field_sticky_link_target_post.0.value }}"
-                    class="sticky-box btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
-                    style="background-color: {{ node.field_sticky_background_post.0.color }}; color: {{ node.field_sticky_text_color_post.0.color }};"
-
-                    data-router="true"
-                    data-router-refresh="main"
-                >
-                    {{ node.field_sticky_url_post.0.title }}
-                </a>
-            </li>
-        {% endif %}
-
-        {% if node.field_field_enable_sticky_post2.0.value %}
-            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
-                <a
-                    href="{{ url(node.field_sticky_url_post2.0.uri) }}"
-                    target="{{ node.field_sticky_link_target_post2.0.value }}"
-                    class="sticky-box btn btn-medium {{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}"
-                    style="background-color: {{ node.field_sticky_background_post2.0.color }}; color: {{ node.field_sticky_text_color_post2.0.color }};"
-
-                    data-router="true"
-                    data-router-refresh="main"
-                >
-                    {{ node.field_sticky_url_post2.0.title }}
-                </a>
-            </li>
-        {% endif %}
-        </ul>
-    {% endif %}
-{% else %}
-    {% if node.field_field_enable_sticky_pre.0.value or node.field_field_enable_sticky_pre2.0.value %}
-        <ul class="page-promotion-inner page-promotion-sticky">
-        {% set sticky_enabled_half = (node.field_field_enable_sticky_pre.0.value and node.field_field_enable_sticky_pre2.0.value) %}
-        {% if node.field_field_enable_sticky_pre.0.value %}
-            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
-                <a
-                    href="{{ url(node.field_sticky_url_pre.0.uri) }}"
-                    target="{{ node.field_sticky_link_target_pre.0.value }}"
-                    class="sticky-box btn btn-medium page-promotion-sticky-{{ sticky_enabled_half ? 'half' : 'full' }}"
-                    style="background-color: {{ node.field_sticky_background_pre.0.color }}; color: {{ node.field_sticky_text_color_pre.0.color }};"
-
-                    data-router="true"
-                    data-router-refresh="main"
-                >
-                    {{ node.field_sticky_url_pre.0.title }}
-                </a>
-            </li>
-        {% endif %}
-        {% if node.field_field_enable_sticky_pre2.0.value %}
-            <li class="{{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}">
-                <a
-                    href="{{ url(node.field_sticky_url_pre2.0.uri) }}"
-                    target="{{ node.field_sticky_link_target_pre2.0.value }}"
-                    class="sticky-box btn btn-medium {{ sticky_enabled_half ? 'page-promotion-sticky-half' : 'page-promotion-sticky-full' }}"
-                    style="background-color: {{ node.field_sticky_background_pre2.0.color }}; color: {{ node.field_sticky_text_color_pre2.0.color }};"
-
-                    data-router="true"
-                    data-router-refresh="main"
-                >
-                    {{ node.field_sticky_url_pre2.0.title }}
-                </a>
-            </li>
-        {% endif %}
-        </ul>
-    {% endif %}
+            data-router="true"
+            data-router-refresh="main"
+        >
+            {{ node_sticky_url2.0.title }}
+        </a>
+    </li>
+{% endif %}
+</ul>
 {% endif %}
