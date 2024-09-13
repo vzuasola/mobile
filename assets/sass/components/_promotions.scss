@@ -311,3 +311,44 @@
         }
     }
 }
+
+.promotions-body-banner{
+
+    .chickpea-controls{
+        .chickpea-lightbox-close {
+            display: none;
+        }
+    }
+&.chickpea-lightbox-enabled {
+    .chickpea-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        background: rgba(0,0,0,0.5);
+        z-index: 100;
+    }
+    .chickpea-content {
+        z-index: 150;
+        position: relative;
+      }
+    .chickpea-controls{
+        .chickpea-lightbox-close
+        {
+            display: block;
+            height: 0;
+            > svg{
+                border: 2px solid white;
+                position: relative;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    }
+  }
+}
+body.chickpea-lighbox-overlay-enabled {
+    overflow: hidden !important;
+    height: 100vh;
+}
