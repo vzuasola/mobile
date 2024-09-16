@@ -180,8 +180,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
             return;
         }
 
-        document.body.classList.add("chickpea-lighbox-overlay-enabled");
-
         const lightboxCloseBtn = document.querySelector(".chickpea-controls .chickpea-lightbox-close");
         lightboxCloseBtn.addEventListener("click", () => { this.chickpeaLightboxHandler(chickpeaVideoElement); });
 
@@ -198,7 +196,7 @@ export class PromotionsNodeComponent implements ComponentInterface {
         if (chickpeaVideoElement.chickpeaPlayer) {
             chickpeaVideoElement.chickpeaPlayer.pause();
         }
-        document.body.classList.remove("chickpea-lighbox-overlay-enabled");
+
         document.querySelector(".promotions-body-banner").classList.remove("chickpea-lightbox-enabled");
     }
 }
