@@ -20,7 +20,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
     private gameLauncher;
     private windowObject: any;
     private response: any;
-    private launchViaIframe: boolean;
     private gameLauncherManager: GameLauncherManager;
     private optin;
 
@@ -32,7 +31,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {
         countdown: string,
         authenticated: boolean,
-        launch_via_iframe: boolean,
     }) {
         this.initChickpea();
         this.getCountdown(element, attachments.countdown);
@@ -43,7 +41,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.response = null;
         this.refreshPreviousPage();
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
         this.activateOptinForm(element, attachments);
     }
@@ -51,7 +48,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
     onReload(element: HTMLElement, attachments: {
         countdown: string,
         authenticated: boolean,
-        launch_via_iframe: boolean,
     }) {
         this.initChickpea();
         this.getCountdown(element, attachments.countdown);
@@ -65,7 +61,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
         }
         this.element = element;
         this.refreshPreviousPage();
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.activateOptinForm(element, attachments);
     }
 
