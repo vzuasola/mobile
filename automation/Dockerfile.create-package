@@ -32,6 +32,7 @@ COPY src ./src
 COPY web/app.php ./web/app.php
 COPY web/index.php ./web/index.php
 COPY web/data.json ./web/data.json
+COPY web/en/mobile/sureroute.html ./web/en/mobile/sureroute.html
 COPY web/version.json ./web/version.json
 COPY templates ./templates
 COPY app ./app
