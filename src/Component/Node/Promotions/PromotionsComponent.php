@@ -9,16 +9,16 @@ use App\MobileEntry\Services\Product\Products;
 class PromotionsComponent implements ComponentWidgetInterface
 {
     /**
-     * @var App\Player\PlayerSession
+     * @var \App\Player\PlayerSession
      */
     private $playerSession;
     /**
-     * @var App\Fetcher\Drupal\ConfigFetcher
+     * @var \App\Fetcher\Drupal\ConfigFetcher
      */
     private $config;
 
     /**
-     * @var App\Fetcher\AsyncDrupal\ViewsFetcher
+     * @var \App\Fetcher\AsyncDrupal\ViewsFetcher
      */
     private $views;
 
@@ -125,6 +125,56 @@ class PromotionsComponent implements ComponentWidgetInterface
             }
         }
         $data['is_login'] = $this->playerSession->isLogin();
+        // Standardise content between pre and post login
+        if ($data['is_login']) {
+            // Banner
+            $data['node_banner_link'] = $data['node']['field_post_banner_link'];
+            $data['node_banner_image'] = $data['node']['field_post_banner_image'];
+            $data['node_body'] = $data['node']['field_post_body'];
+
+            // Sticky
+            $data['node_enable_sticky'] = $data['node']['field_field_enable_sticky_post'];
+            $data['node_sticky_url'] = $data['node']['field_sticky_url_post'];
+            $data['node_sticky_link_target'] = $data['node']['field_sticky_link_target_post'];
+            $data['node_sticky_background'] = $data['node']['field_sticky_background_post'];
+            $data['node_sticky_text_color'] = $data['node']['field_sticky_text_color_post'];
+            $data['node_enable_sticky2'] = $data['node']['field_field_enable_sticky_post2'];
+            $data['node_sticky_url2'] = $data['node']['field_sticky_url_post2'];
+            $data['node_sticky_link_target2'] = $data['node']['field_sticky_link_target_post2'];
+            $data['node_sticky_background2'] = $data['node']['field_sticky_background_post2'];
+            $data['node_sticky_text_color2'] = $data['node']['field_sticky_text_color_post2'];
+
+            $data['chickpea_enabled'] = $data['node']['field_chickpea_enabled_post'][0]['value'] ?? false;
+        } else {
+            // Banner
+            $data['node_banner_link'] = $data['node']['field_banner_link'];
+            $data['node_banner_image'] = $data['node']['field_banner_image'];
+            $data['node_body'] = $data['node']['body'];
+
+            // Sticky
+            $data['node_enable_sticky'] = $data['node']['field_field_enable_sticky_pre'];
+            $data['node_sticky_url'] = $data['node']['field_sticky_url_pre'];
+            $data['node_sticky_link_target'] = $data['node']['field_sticky_link_target_pre'];
+            $data['node_sticky_background'] = $data['node']['field_sticky_background_pre'];
+            $data['node_sticky_text_color'] = $data['node']['field_sticky_text_color_pre'];
+            $data['node_enable_sticky2'] = $data['node']['field_field_enable_sticky_pre2'];
+            $data['node_sticky_url2'] = $data['node']['field_sticky_url_pre2'];
+            $data['node_sticky_link_target2'] = $data['node']['field_sticky_link_target_pre2'];
+            $data['node_sticky_background2'] = $data['node']['field_sticky_background_pre2'];
+            $data['node_sticky_text_color2'] = $data['node']['field_sticky_text_color_pre2'];
+
+            $data['chickpea_enabled'] = $data['node']['field_chickpea_enabled_pre'][0]['value'] ?? false;
+        }
+        $playerDetails = $this->playerSession->getDetails();
+        $firstName = ($playerDetails['firstName'] ?? '');
+        $lastName = ($playerDetails['lastName'] ?? '');
+        $vip = ($playerDetails['vipLevel'] ?? '');
+        $data['user_details'] = [
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'vip' => $vip,
+        ];
+
 
         return $data;
     }

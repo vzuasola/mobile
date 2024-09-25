@@ -9,6 +9,8 @@ import PopupWindow from "@app/assets/script/components/popup";
 import {GameLauncherManager} from "@app/assets/script/components/game-launcher-manager";
 import {OptinForm} from "./scripts/optin";
 
+type ChickpeaSciptElement = HTMLScriptElement & { chickpeaPlayer: { pause: () => void} };
+
 /**
  *
  */
@@ -32,6 +34,7 @@ export class PromotionsNodeComponent implements ComponentInterface {
         authenticated: boolean,
         launch_via_iframe: boolean,
     }) {
+        this.initChickpea();
         this.getCountdown(element, attachments.countdown);
         this.componentFinish(element);
         this.element = element;
@@ -50,6 +53,7 @@ export class PromotionsNodeComponent implements ComponentInterface {
         authenticated: boolean,
         launch_via_iframe: boolean,
     }) {
+        this.initChickpea();
         this.getCountdown(element, attachments.countdown);
         this.componentFinish(element);
         this.isLogin = attachments.authenticated;
@@ -167,5 +171,32 @@ export class PromotionsNodeComponent implements ComponentInterface {
                 window.location.reload();
             }, 200);
         };
+    }
+
+    private initChickpea() {
+
+        const chickpeaVideoElement = document.getElementById("chickpea-video") as ChickpeaSciptElement;
+        if (!chickpeaVideoElement) {
+            return;
+        }
+
+        const lightboxCloseBtn = document.querySelector(".chickpea-controls .chickpea-lightbox-close");
+        lightboxCloseBtn.addEventListener("click", () => { this.chickpeaLightboxHandler(chickpeaVideoElement); });
+
+        document.querySelector(".chickpea-overlay")
+            .addEventListener("click", () => { this.chickpeaLightboxHandler(chickpeaVideoElement); });
+
+        const scriptTag = document.createElement("script");
+        scriptTag.id = "chickpea-script";
+        scriptTag.src = chickpeaVideoElement.dataset.scriptUrl;
+        document.body.appendChild(scriptTag);
+    }
+
+    private chickpeaLightboxHandler(chickpeaVideoElement: ChickpeaSciptElement) {
+        if (chickpeaVideoElement.chickpeaPlayer) {
+            chickpeaVideoElement.chickpeaPlayer.pause();
+        }
+
+        document.querySelector(".promotions-body-banner").classList.remove("chickpea-lightbox-enabled");
     }
 }
