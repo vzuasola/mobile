@@ -103,41 +103,63 @@ class PromotionsComponentController
     }
 
     /**
+     * Gets list of promotions and promotion filters
      *
      */
     public function promotions($request, $response)
     {
         $isLogin = $this->playerSession->isLogin();
         $isProvisioned = false;
+        $queryParams = $request->getQueryParams();
+        $language = $queryParams['language'] ?? 'en';
+        $isFlutter = (isset($queryParams['flutter']) && $queryParams['flutter'] === '1');
+
+        // Fetch promotion custom configurations
+        try {
+            $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
+        } catch (\Exception $e) {
+            $promoConfigs = [];
+        }
+
+        // Check if player is casino gold provisioned
         if ($isLogin) {
             $isProvisioned = $this->accountService->hasAccount('casino-gold');
         }
-        $languageParam = $request->getQueryParams();
-        $language = $languageParam['language'] ?? 'en';
+
+        // Fetch filters by language
         try {
             $filters = $this->getFilters($language);
         } catch (\Exception $e) {
             $filters = [];
         }
 
-        try {
-            $promoConfigs = $this->configs->getConfig('mobile_promotions.promotions_configuration');
-        } catch (\Exception $e) {
-            $promoConfigs = [];
-        }
         $promotionData = [];
         $filterData = [];
-        $featured = $this->getFeatured($language);
-        $promotionProducts = $this->getPromotionProducts($filters, $language);
 
-        if ($language !== $this->currentLanguage
+        // Fetch featured promotions
+        $featured = $this->getFeatured($language);
+
+        // Filter out products based on enabled filters for flutter app
+        if ($isFlutter) {
+            $flutterOverrides = $this->getFlutterOverrides($filters, $featured);
+            $featured = $flutterOverrides['featured'];
+            $filters = $flutterOverrides['filters'];
+        }
+
+        // Fetch product promotions
+        $promotionProducts = $this->getPromotionProducts($filters, $language, $isFlutter);
+
+         // Override promotion list for LATAM Territory if featured and product promotions is empty
+        if (!$isFlutter
+            && $language !== $this->currentLanguage
             && count($featured) <= 0
             && count($promotionProducts) <= 0) {
             $featured = $this->getFeatured($this::LATAM_LANG_DEFAULT);
             $filters = $this->getFilters($this::LATAM_LANG_DEFAULT);
-            $promotionProducts = $this->getPromotionProducts($filters, $this::LATAM_LANG_DEFAULT);
+            $promotionProducts = $this->getPromotionProducts($filters, $this::LATAM_LANG_DEFAULT, $isFlutter);
         }
 
+        // Create promotion collection
         foreach ($filters as $filter) {
             $id = $filter['field_product_filter_id'][0]['value'];
             if ($id === 'featured') {
@@ -171,6 +193,9 @@ class PromotionsComponentController
         return $this->rest->output($response, $data);
     }
 
+    /**
+     * Check if player is from LATAM Territory base on currency and countrycode
+     */
     public function getLatamLang($request, $response)
     {
         if ($this->currentLanguage === $this::LATAM_LANG_DEFAULT) {
@@ -197,6 +222,9 @@ class PromotionsComponentController
         return $this->rest->output($response, ['language' => $this->currentLanguage]);
     }
 
+    /**
+     * Get list of archived promotions
+     */
     public function archive($request, $response)
     {
         $languageParam = $request->getQueryParams();
@@ -229,6 +257,47 @@ class PromotionsComponentController
         return $this->rest->output($response, ['promotions' =>  array_slice($archived, 0, 3)]);
     }
 
+    /**
+     * Get available filters for flutter app
+     * Filter featured promotions based on filter for flutter app
+     * @param array $filters
+     * @param array $featuredPromos
+     * @return array Array containing filters and filtered featured promotions
+     */
+    private function getFlutterOverrides($filters, $featuredPromos)
+    {
+        $flutterFilters = [];
+        $featured = [];
+        $filtersKey = [];
+
+        // Filter enabled filters for Flutter
+        foreach ($filters as $filter) {
+            if (isset($filter['field_show_in_flutter_app'][0]['value']) &&
+                $filter['field_show_in_flutter_app'][0]['value'] === true) {
+                $filtersKey[] = $filter['tid'][0]['value'];
+                $flutterFilters[] = $filter;
+            }
+        }
+
+        // Filter featured promotions based on flutter filters
+        foreach ($featuredPromos as $featuredPromo) {
+            $promoCategory = $featuredPromo['field_product_category'][0]['tid'][0]['value'] ?? '';
+            if (in_array($promoCategory, $filtersKey)) {
+                $featured[] = $featuredPromo;
+            }
+        }
+
+        return [
+            'featured' => $featured,
+            'filters' => $flutterFilters
+        ];
+    }
+
+    /**
+     * Get featured promotions
+     * @param string $language
+     * @return array Array of featured promotions
+     */
     private function getFeatured($language)
     {
         $featured = [];
@@ -242,7 +311,9 @@ class PromotionsComponentController
     }
 
     /**
-     *
+     * Get list of promotion filters
+     * @param string $language
+     * @return array Array of promotion filters
      */
     private function getFilters($language)
     {
@@ -267,12 +338,18 @@ class PromotionsComponentController
     }
 
     /**
-     *
+     * Get promotions grouped by Product
+     * @param array $filters list of promotion category to fetch
+     * @param string $language
+     * @param boolean $isFlutter
+     * @return array Array of promotions per product
      */
-    private function getPromotionProducts($filters, $language)
+    private function getPromotionProducts($filters, $language, $isFlutter)
     {
         $promotions = [];
-        $item = $this->cacher->getItem('views.promotion-products.'. $language);
+        $cacheKey = $isFlutter ? 'views.promotion-products.flutter.'. $language
+            : 'views.promotion-products.'. $language;
+        $item = $this->cacher->getItem($cacheKey);
         $viewsLang = $this->views->withLanguage($language);
         if (!$item->isHit()) {
             foreach ($filters as $filter) {
@@ -305,7 +382,9 @@ class PromotionsComponentController
     }
 
     /**
-     *
+     * Create Promotion Filter list
+     * @param array $filter
+     * @return array Array of filters
      */
     private function createFilter($filter)
     {
@@ -319,7 +398,13 @@ class PromotionsComponentController
     }
 
     /**
-     *
+     * Create Promotion Collection
+     * @param array $promotions
+     * @param array $config
+     * @param boolean $isLogin is player authenticated
+     * @param boolean $isProvisioned is player casino gold provisioned
+     * @param string $category
+     * @return array Array of promotion collection
      */
     private function createPromotions($promotions, $config, $isLogin, $isProvisioned, $category = null)
     {
