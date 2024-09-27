@@ -2,9 +2,28 @@
 {{ form_start(formDocuments, {'attr': {'class': 'pure-form documents-form'}}) }}
 {{ form_end(formDocuments) }}
 
+{% if showDocumentStatus == true %}
+    <div class="document-status">
+        <div class="document-status-overlay">
+        </div>
+        <div class="document-status-content">
+            <div class="document-status-content-body">
+                <p>{{ documentStatusMessage }}</p>
+            </div>
+            <div class="document-status-content-footer">
+                <a href="javascript:history.go(-1)" class="back-button">{{ backText }}</a>
+                <a href="#" class="document-status-close">
+                    <svg class="document-status-close" width="40" height="40" viewBox="0 0 40 40">
+                        <use xlink:href="#upload-close" class="document-status-close" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endif %}
 <span class="hidden">
+    {% include '@app/web/images/svg/close-icon.svg' ignore missing %}
     {% include '@app/web/images/svg/upload.svg' ignore missing %}
     {% include '@app/web/images/svg/att-icon.svg' ignore missing %}
     {% include '@app/web/images/svg/ok-icon.svg' ignore missing %}
-
 </span>
