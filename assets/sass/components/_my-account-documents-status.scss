@@ -1,0 +1,76 @@
+// Document Status
+.document-status {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1020;
+
+    &-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1021;
+        background-color: #333; // Fallback for IE8
+        background-color: $modal-overlay-bg;
+        opacity: 0.5;
+    }
+
+    &-content {
+        @include translate(0,-40%);
+        position: relative;
+        top: 40%;
+        z-index: 1022;
+        max-height: 90%;
+        margin: 0 auto;
+        max-width: 80%;
+        width: 80%;
+        overflow: auto;
+        background: #ffeacd;
+        border-radius: 8px;
+        padding: 14px 12px 0;
+
+        &-body {
+            color: #727272;
+            display: grid;
+            grid-auto-flow: column;
+
+            // icon
+            &:before {
+                background: $upload-warning no-repeat 0 2px;
+                margin-right: 6px;
+                vertical-align: middle;
+                content: "";
+                width: 18px;
+            }
+        }
+
+        &-footer {
+            display: block;
+            text-align: right;
+            margin-right: -10px;
+
+            a {
+                color: #373737;
+            }
+    
+            svg {
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+.form-disabled {
+    #DocumentsForm_purpose {
+        display: inherit;
+    }
+
+    .select-selected {
+        display: none;
+    }
+}
+
