@@ -25,6 +25,7 @@ class PromotionsComponent implements ComponentWidgetInterface
     private $provisioned;
     private $preference;
     private $product;
+    private $request;
 
     /**
      *
@@ -36,20 +37,22 @@ class PromotionsComponent implements ComponentWidgetInterface
             $container->get('config_fetcher'),
             $container->get('views_fetcher'),
             $container->get('accounts_service'),
-            $container->get('preferences_fetcher')
+            $container->get('preferences_fetcher'),
+            $container->get('router_request')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($playerSession, $config, $views, $provisioned, $preference)
+    public function __construct($playerSession, $config, $views, $provisioned, $preference, $request)
     {
         $this->playerSession = $playerSession;
         $this->config = $config;
         $this->views = $views;
         $this->provisioned = $provisioned;
         $this->preference = $preference;
+        $this->request = $request;
     }
 
     /**
@@ -65,6 +68,8 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     public function getData($options = [])
     {
+        $params = $this->request->getQueryParams();
+        $data['is_embed'] = (isset($params['flutter']) && $params['flutter'] === '1');
         try {
             $data['node'] = $options['node'];
         } catch (\Exception $e) {
