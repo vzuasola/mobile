@@ -1,5 +1,9 @@
 @import "my-account-documents";
 
+.my-account-wrapper {
+    position: relative;
+}
+
 form.profile-form,
 form.change-password-form,
 form.verify-password-form,

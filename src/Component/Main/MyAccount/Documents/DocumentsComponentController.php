@@ -107,12 +107,13 @@ class DocumentsComponentController
      */
     public function documentUpload($request, $response)
     {
-        if ($this->userFetcher->getDocumentStatus() != 2) {
+        $getDocumentStatus = $this->userFetcher->getDocumentStatus()['Status'] ?? "Error";
+        if ($getDocumentStatus != 2) {
             return $this->rest->output(
                 $response,
                 [
                     'status' => 'failure',
-                    'message' => 'Could not create ticket. User input error',
+                    'message' => 'Could not create ticket. User input error (DDU0)',
                 ]
             );
         }

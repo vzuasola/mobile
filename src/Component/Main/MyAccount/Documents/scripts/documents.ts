@@ -110,7 +110,7 @@ export class Documents extends FormBase {
         commentMarkup.append(commentMarkupErrorDiv);
 
         if (this.attachments.documentStatus === true) {
-            const disableField = document.querySelector(".DocumentsForm_purpose");
+            const disableField = document.querySelector(".documents-form");
             disableField.classList.add("form-disabled");
             this.disableattrFields(this.form);
         }
@@ -145,7 +145,7 @@ export class Documents extends FormBase {
             "click",
             (e: TGenericEvent<HTMLLinkElement>) => {
                 e.preventDefault();
-                const closeButton = this.element.querySelector(".document-status");
+                const closeButton = this.element.querySelector(".document-status-content");
                 if (closeButton) {
                     closeButton.classList.add("hidden");
                 }
@@ -156,7 +156,7 @@ export class Documents extends FormBase {
             "click",
             (e: TGenericEvent<HTMLLinkElement>) => {
                 e.preventDefault();
-                const closeButton = this.element.querySelector(".document-status");
+                const closeButton = this.element.querySelector(".document-status-content");
                 closeButton.classList.remove("hidden");
             },
         );

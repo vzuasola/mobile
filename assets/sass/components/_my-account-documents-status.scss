@@ -1,6 +1,6 @@
 // Document Status
 .document-status {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
@@ -8,8 +8,8 @@
     z-index: 1020;
 
     &-overlay {
-        position: fixed;
-        top: 0;
+        position: absolute;
+        top: -2rem;
         left: 0;
         bottom: 0;
         right: 0;
@@ -22,7 +22,7 @@
     &-content {
         @include translate(0,-40%);
         position: relative;
-        top: 40%;
+        top: 5rem;
         z-index: 1022;
         max-height: 90%;
         margin: 0 auto;
@@ -55,6 +55,7 @@
 
             a {
                 color: #373737;
+                font-weight: 500;
             }
     
             svg {
@@ -67,10 +68,20 @@
 .form-disabled {
     #DocumentsForm_purpose {
         display: inherit;
+        background: #eaeded;
+        -webkit-text-fill-color: $gray;
     }
 
     .select-selected {
         display: none;
     }
-}
 
+    .DocumentsForm_first_upload label,
+    .DocumentsForm_second_upload label,
+    .DocumentsForm_third_upload label,
+    .DocumentsForm_comment textarea[disabled] {
+        cursor: not-allowed;
+        background: #c0bfbf !important;
+        -webkit-text-fill-color: $gray;
+    }
+}
