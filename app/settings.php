@@ -13,6 +13,7 @@ $settings['settings']['configurations']['inheritance'] = false;
 $settings['settings']['renderer']['template_path']['app'] = __DIR__ . '/../';
 $settings['settings']['renderer']['template_path']['site'] = __DIR__ . '/../templates';
 $settings['settings']['renderer']['template_path']['component'] = __DIR__ . '/../src/Component';
+$settings['settings']['renderer']['template_path']['core'] = __DIR__ . '/../core/core';
 
 // Product
 

@@ -8,6 +8,7 @@
         {{ include('@responsive/components/footer-mobile-partners-revamp.html.twig', {'lazy_load': 'off'}) }}
         {{ include('@component/Footer/templates/pt/gambling-restirction.html.twig') }}
     </section>
+    {{ include('@core/templates/dafabet-responsive/components/footer-gambling-restriction.html.twig') }}
     {{ include('@component/Footer/templates/copyright.html.twig') }}
     {% if app.product_resolver.getProduct == "mobile-ptplus" and floatingFooter %}
         <div class="floating-section"></div>
