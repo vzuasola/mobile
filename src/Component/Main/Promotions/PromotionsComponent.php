@@ -15,6 +15,8 @@ class PromotionsComponent implements ComponentWidgetInterface
      */
     private $config;
 
+    private $request;
+
     /**
      *
      */
@@ -22,17 +24,19 @@ class PromotionsComponent implements ComponentWidgetInterface
     {
         return new static(
             $container->get('views_fetcher'),
-            $container->get('config_fetcher')
+            $container->get('config_fetcher'),
+            $container->get('router_request')
         );
     }
 
     /**
      * Public constructor
      */
-    public function __construct($views, $configs)
+    public function __construct($views, $configs, $request)
     {
         $this->views = $views;
         $this->configs = $configs;
+        $this->request = $request;
     }
 
     /**
@@ -58,6 +62,8 @@ class PromotionsComponent implements ComponentWidgetInterface
             $promoConfigs = [];
         }
 
+        $params = $this->request->getQueryParams();
+        $data['is_embed'] = (isset($params['flutter']) && $params['flutter'] === '1');
         $data['title'] = $promoConfigs['title'] ?? 'Promotions';
         $data['filter_label'] = $promoConfigs['filter_label'] ?? 'Filter';
         $data['no_available_promotions'] = $promoConfigs['no_available_msg'] ?? '';
