@@ -20,9 +20,10 @@
     }
 
     &-content {
-        @include translate(0,-40%);
-        position: relative;
-        top: 5rem;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
         z-index: 1022;
         max-height: 90%;
         margin: 0 auto;
