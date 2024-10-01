@@ -1,19 +1,32 @@
-<div class="chickpea-overlay"></div>
-<div class="chickpea-content">
-{% set chickpea_data_set = "data-name='#{user_details.firstName} #{user_details.lastName}' data-viplevel='#{user_details.vip}'" %}
-    <div id="chickpea-video"
-        {{ is_login ? chickpea_data_set|raw : '' }} data-event="{{node.field_chickpea_event_name.0.value}}"
-        data-autoplay="false"
-        data-mute="false"
-        data-script-url="{{ node.field_chickpea_script.0.uri}}"
-    ></div>
-    <div class="chickpea-controls"> 
-        <div class="chickpea-lightbox-close">
-            <svg viewBox="0 0 70.24 70.24" class="modal-close modal-close-button">
-                    <rect class="modal-close" />
-                    <path class="modal-close"
-                        d="M39.53 35.12L53 21.17a3.18 3.18 0 0 0-.09-4.49 3.18 3.18 0 0 0-4.49.09l-13.3 13.78-13.26-13.78a3.18 3.18 0 0 0-4.49-.09 3.18 3.18 0 0 0-.08 4.49l13.43 13.95-13.43 14a3.17 3.17 0 1 0 4.57 4.4L35.12 39.7l13.26 13.77a3.18 3.18 0 0 0 4.49.09 3.18 3.18 0 0 0 .13-4.49z" />
-            </svg>
+<div id="chickpea-lightbox-modal" class="modal">
+    <div class="modal-body">
+        <div class="chickpea-content">
+        {% set chickpea_data_set = "data-name='#{user_details.firstName} #{user_details.lastName}' data-viplevel='#{user_details.vip}'" %}
+            <div id="chickpea-video"
+                {{ is_login ? chickpea_data_set|raw : '' }} data-event="{{node.field_chickpea_event_name.0.value}}"
+                data-autoplay="false"
+                data-mute="false"
+                data-script-url="{{ node.field_chickpea_script.0.uri}}"
+            ></div>
+            
         </div>
     </div>
+    {% include '@app/web/images/svg/closed.svg' ignore missing %}
 </div>
+
+{% if chickpea_thumbnail.url %}
+    <div class="promotions-body-banner">
+        <img src="{{ chickpea_thumbnail.url }}" alt=" {{ chickpea_thumbnail.alt }}">
+        <div class="play-btn">
+            <a href="#" class="open-chickpea-lightbox">
+                 <?xml version="1.0" encoding="utf-8"?>
+                <svg width="50px" height="50px" viewBox="0 0 21 21">
+                    <g fill="none" fill-rule="evenodd" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 5)">
+                        <path d="m2.49368982.53498937 11.99999998-.03787142c1.0543566-.00331643 1.9207298.80983192 2.0003436 1.84444575l.0059666.15555425v6.00288205c0 1.1045695-.8954305 2-2 2h-12c-1.1045695 0-2-.8954305-2-2v-5.96502059c0-1.10210602.89158929-1.9965128 1.99368982-1.99999004z"/>
+                        <path d="m7.5 7.5 3-2-3-2z" fill="#FFFFFF"/>
+                    </g>
+                </svg>
+            </a>
+        </div>
+    </div>
+{% endif %}
