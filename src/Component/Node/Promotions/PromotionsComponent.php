@@ -166,6 +166,7 @@ class PromotionsComponent implements ComponentWidgetInterface
 
             $data['chickpea_enabled'] = $data['node']['field_chickpea_enabled_pre'][0]['value'] ?? false;
         }
+        $data['chickpea_thumbnail'] = $data['node']['field_chickpea_video_thumbnail'][0] ?? false;
         $playerDetails = $this->playerSession->getDetails();
         $firstName = ($playerDetails['firstName'] ?? '');
         $lastName = ($playerDetails['lastName'] ?? '');
