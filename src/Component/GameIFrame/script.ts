@@ -91,6 +91,7 @@ export class GameIFrameComponent implements ComponentInterface {
         const iframeWrapper = element.querySelector(".game-iframe-container");
         // assign src to iframe
         if (iframe !== null || iframe !== undefined && response.gameurl !== undefined) {
+            document.body.style.overflow = "hidden";
             utility.removeClass(iframeWrapper, "hidden");
             utility.removeClass(iframe, "hidden");
             element.querySelector(".game-iframe-loader-container").remove();

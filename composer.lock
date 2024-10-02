@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "205dc749fbfc3b0c475661ba95cec477",
+    "content-hash": "4564e71d1039bb56d990b5e32ff83a93",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3484,16 +3484,16 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.273.0",
+            "version": "dev-release-v1.274.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:sportion/marketing/websites/websites-commons/fe-core.git",
-                "reference": "2e16a2bd810cda810e95c605de9fcf5a163606e0"
+                "reference": "847cc784bbf5da1b5aaf0868e612fe6ced339ab5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=2e16a2bd810cda810e95c605de9fcf5a163606e0",
-                "reference": "2e16a2bd810cda810e95c605de9fcf5a163606e0",
+                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=847cc784bbf5da1b5aaf0868e612fe6ced339ab5",
+                "reference": "847cc784bbf5da1b5aaf0868e612fe6ced339ab5",
                 "shasum": ""
             },
             "require": {
@@ -3549,7 +3549,7 @@
             "support": {
                 "issues": "https://gitlab.com/api/v4/projects/48796472/issues"
             },
-            "time": "2024-09-26T13:39:17+00:00"
+            "time": "2024-10-02T05:28:58+00:00"
         },
         {
             "name": "willdurand/negotiation",

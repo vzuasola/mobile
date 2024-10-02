@@ -2,6 +2,8 @@
 
 namespace App\MobileEntry\Component\Main\MyAccount\Documents;
 
+use App\Drupal\Config;
+
 /**
  *
  */
@@ -99,33 +101,29 @@ class DocumentsComponentController
         $this->logger = $logger;
     }
 
-    private function getErrorMessages($documentsConfigErrorMessage)
-    {
-        $documentsConfigErrorMessages = explode(PHP_EOL, $documentsConfigErrorMessage);
-        $documentsConfigErrorMessageList = array();
-
-        foreach ($documentsConfigErrorMessages as $value) {
-            [$newKey, $newValue] = explode("|", $value);
-            $documentsConfigErrorMessageList[$newKey] = $newValue;
-        }
-
-        return $documentsConfigErrorMessageList;
-    }
-
     /**
      * Document Upload handler
      *
      */
     public function documentUpload($request, $response)
     {
+        $getDocumentStatus = $this->userFetcher->getDocumentStatus()['Status'] ?? "Error";
+        if ($getDocumentStatus != 2) {
+            return $this->rest->output(
+                $response,
+                [
+                    'status' => 'failure',
+                    'message' => 'Could not create ticket. User input error (DDU0)',
+                ]
+            );
+        }
 
         // Fetch Documents Feature Configuration for necessary IDs
         try {
             $documentsConfig = $this->configFetcher->getConfig('my_account_config.documents_configuration');
             $jiraProjectId = $documentsConfig['jira_project_id'];
             $jiraIssueTypeId = $documentsConfig['jira_issue_type_id'];
-            $documentsConfigErrorMessage = $documentsConfig['submit_error'];
-            $documentsConfigErrorMessageList = $this->getErrorMessages($documentsConfigErrorMessage);
+            $documentsConfigErrorMessageList = Config::parse($documentsConfig['submit_error'] ?? '');
         } catch (\Throwable $e) {
             $this->logger->error('DOCUMENT.UPLOADTO.CONFERROR', [
                 'status_code' => 'NOT OK',

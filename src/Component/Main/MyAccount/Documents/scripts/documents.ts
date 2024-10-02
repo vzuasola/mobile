@@ -42,6 +42,8 @@ export class Documents extends FormBase {
     private form: HTMLFormElement;
     private purposeField: HTMLSelectElement;
     private commentField: HTMLTextAreaElement;
+    private documentClosed: HTMLLinkElement;
+    private documentshowStatus: HTMLLinkElement;
     private validators;
     private storage: Storage;
 
@@ -54,6 +56,8 @@ export class Documents extends FormBase {
         this.form = this.element.querySelector(".documents-form");
         this.purposeField = this.form.querySelector("#DocumentsForm_purpose");
         this.commentField = this.form.querySelector("#DocumentsForm_comment");
+        this.documentClosed = document.querySelector(".document-status-close");
+        this.documentshowStatus = document.querySelector(".document-tab");
         this.validators = validators;
         this.storage = new Storage();
 
@@ -105,6 +109,12 @@ export class Documents extends FormBase {
         commentMarkupErrorDiv.classList.add("field_status_icon");
         commentMarkup.append(commentMarkupErrorDiv);
 
+        if (this.attachments.documentStatus === true) {
+            const disableField = document.querySelector(".documents-form");
+            disableField.classList.add("form-disabled");
+            this.disableattrFields(this.form);
+        }
+
         // Configure Purpose field logic
         // Change Comment Field P/holder depending on selection
         /// Check if an actual selection has been made
@@ -128,6 +138,26 @@ export class Documents extends FormBase {
             (e: TGenericEvent<HTMLTextAreaElement>) => {
                 this.commentFieldRequiredCallback(e.target);
                 this.handleCommentFieldIcon();
+            },
+        );
+
+        this.documentClosed && this.documentClosed.addEventListener(
+            "click",
+            (e: TGenericEvent<HTMLLinkElement>) => {
+                e.preventDefault();
+                const closeButton = this.element.querySelector(".document-status-content");
+                if (closeButton) {
+                    closeButton.classList.add("hidden");
+                }
+            },
+        );
+
+        this.documentshowStatus && this.documentshowStatus.addEventListener(
+            "click",
+            (e: TGenericEvent<HTMLLinkElement>) => {
+                e.preventDefault();
+                const closeButton = this.element.querySelector(".document-status-content");
+                closeButton.classList.remove("hidden");
             },
         );
 
