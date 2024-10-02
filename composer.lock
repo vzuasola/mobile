@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "4564e71d1039bb56d990b5e32ff83a93",
@@ -3464,12 +3464,12 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:sportion/marketing/websites/websites-commons/fe-core.git",
-                "reference": "e4ab3b9f8259633c1e8458b4d11635a4715f8307"
+                "reference": "9c416b992011385e5923b0f814ef750fb4a5c872"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=e4ab3b9f8259633c1e8458b4d11635a4715f8307",
-                "reference": "e4ab3b9f8259633c1e8458b4d11635a4715f8307",
+                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=9c416b992011385e5923b0f814ef750fb4a5c872",
+                "reference": "9c416b992011385e5923b0f814ef750fb4a5c872",
                 "shasum": ""
             },
             "require": {
@@ -3522,7 +3522,10 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2024-10-02T10:49:09+00:00"
+            "support": {
+                "issues": "https://gitlab.com/api/v4/projects/48796472/issues"
+            },
+            "time": "2024-10-02T13:16:31+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -5170,5 +5173,6 @@
     "platform": {
         "php": ">=7.1.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
