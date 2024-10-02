@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "4564e71d1039bb56d990b5e32ff83a93",
@@ -1580,20 +1580,6 @@
                 "x.509",
                 "x509"
             ],
-            "funding": [
-                {
-                    "url": "https://github.com/terrafrost",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/phpseclib",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2023-07-09T15:24:48+00:00"
         },
         {
@@ -1693,16 +1679,6 @@
                 "nosql",
                 "predis",
                 "redis"
-            ],
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/tillkruss",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/tillkruss",
-                    "type": "github"
-                }
             ],
             "time": "2016-06-16T16:22:20+00:00"
         },
@@ -3488,12 +3464,12 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:sportion/marketing/websites/websites-commons/fe-core.git",
-                "reference": "847cc784bbf5da1b5aaf0868e612fe6ced339ab5"
+                "reference": "e4ab3b9f8259633c1e8458b4d11635a4715f8307"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=847cc784bbf5da1b5aaf0868e612fe6ced339ab5",
-                "reference": "847cc784bbf5da1b5aaf0868e612fe6ced339ab5",
+                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=e4ab3b9f8259633c1e8458b4d11635a4715f8307",
+                "reference": "e4ab3b9f8259633c1e8458b4d11635a4715f8307",
                 "shasum": ""
             },
             "require": {
@@ -3546,10 +3522,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "support": {
-                "issues": "https://gitlab.com/api/v4/projects/48796472/issues"
-            },
-            "time": "2024-10-02T05:28:58+00:00"
+            "time": "2024-10-02T10:49:09+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -5183,6 +5156,5 @@
     "platform": {
         "php": ">=7.1.0"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }
