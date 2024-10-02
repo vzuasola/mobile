@@ -1,5 +1,3 @@
-@import "../../../core/core/assets/responsive/sass/components/footer-gambling-restriction";
-
 .footer {
     color: $white;;
     margin: 0 0 -1.8rem;
@@ -85,3 +83,4 @@
 @import "../components/footer-copyright";
 @import "../../core/core/assets/responsive/sass/components/footer-quicklink";
 @import "../../core/core/assets/responsive/sass/components/footer-mobile-social-icon";
+@import "@core/assets/responsive/sass/components/_footer-gambling-restriction.scss";
