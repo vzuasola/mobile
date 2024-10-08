@@ -57,7 +57,20 @@ export abstract class FormBase {
     }
 
     /**
-     * Disable form elements
+     * Disable form elements [attr][disabled]
+     *
+     * @param Node form form tag element
+     */
+    disableattrFields(form): void {
+        utility.forEach(form.elements, (elem) => {
+            elem.disabled = true;
+        });
+
+        this.showOverlay(form);
+    }
+
+    /**
+     * Disable form elements [attr][readOnly]
      *
      * @param Node form form tag element
      */

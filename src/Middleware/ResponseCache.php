@@ -8,6 +8,12 @@ use App\Middleware\Cache\ResponseCache as Base;
 
 class ResponseCache extends Base
 {
+
+    /**
+     * @var \Slim\Http\Request
+     */
+    private $request;
+
     /**
      * Public constructor
      */
@@ -35,6 +41,7 @@ class ResponseCache extends Base
         $pvw = $this->request->getQueryParam('pvw');
         $lobbyProduct = $this->request->getQueryParam('lobbyProduct');
         $isMaintenance = $request->getAttribute('is_maintenance', false);
+        $isFlutter = $this->request->getQueryParam('flutter');
         if ($isMaintenance) {
             $params['maintenance'] = true;
         }
@@ -58,6 +65,10 @@ class ResponseCache extends Base
 
         if ($language) {
             $params['language'] = $language;
+        }
+
+        if ($isFlutter === "1") {
+            $params['flutter'] = $isFlutter;
         }
 
         if (count($params)) {

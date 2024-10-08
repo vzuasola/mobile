@@ -8,6 +8,7 @@ import {Router} from "@core/src/Plugins/ComponentWidget/asset/router";
 import PopupWindow from "@app/assets/script/components/popup";
 import {GameLauncherManager} from "@app/assets/script/components/game-launcher-manager";
 import {OptinForm} from "./scripts/optin";
+import {Modal} from "@app/assets/script/components/modal";
 
 type ChickpeaSciptElement = HTMLScriptElement & { chickpeaPlayer: { pause: () => void} };
 
@@ -20,7 +21,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
     private gameLauncher;
     private windowObject: any;
     private response: any;
-    private launchViaIframe: boolean;
     private gameLauncherManager: GameLauncherManager;
     private optin;
 
@@ -32,7 +32,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
     onLoad(element: HTMLElement, attachments: {
         countdown: string,
         authenticated: boolean,
-        launch_via_iframe: boolean,
     }) {
         this.initChickpea();
         this.getCountdown(element, attachments.countdown);
@@ -43,15 +42,14 @@ export class PromotionsNodeComponent implements ComponentInterface {
         this.listenGameLaunch();
         this.response = null;
         this.refreshPreviousPage();
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
         this.activateOptinForm(element, attachments);
+        this.listenModalOpen();
     }
 
     onReload(element: HTMLElement, attachments: {
         countdown: string,
         authenticated: boolean,
-        launch_via_iframe: boolean,
     }) {
         this.initChickpea();
         this.getCountdown(element, attachments.countdown);
@@ -65,7 +63,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
         }
         this.element = element;
         this.refreshPreviousPage();
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.activateOptinForm(element, attachments);
     }
 
@@ -180,23 +177,31 @@ export class PromotionsNodeComponent implements ComponentInterface {
             return;
         }
 
-        const lightboxCloseBtn = document.querySelector(".chickpea-controls .chickpea-lightbox-close");
+        const lightboxCloseBtn = document.querySelector(".modal-close-button");
         lightboxCloseBtn.addEventListener("click", () => { this.chickpeaLightboxHandler(chickpeaVideoElement); });
-
-        document.querySelector(".chickpea-overlay")
-            .addEventListener("click", () => { this.chickpeaLightboxHandler(chickpeaVideoElement); });
 
         const scriptTag = document.createElement("script");
         scriptTag.id = "chickpea-script";
         scriptTag.src = chickpeaVideoElement.dataset.scriptUrl;
         document.body.appendChild(scriptTag);
+
+        Modal.open("#chickpea-lightbox-modal");
     }
 
     private chickpeaLightboxHandler(chickpeaVideoElement: ChickpeaSciptElement) {
         if (chickpeaVideoElement.chickpeaPlayer) {
             chickpeaVideoElement.chickpeaPlayer.pause();
         }
+    }
 
-        document.querySelector(".promotions-body-banner").classList.remove("chickpea-lightbox-enabled");
+    // open chickpea video modal window
+    private listenModalOpen() {
+        ComponentManager.subscribe("click", (event: Event, src) => {
+            const el = utility.hasClass(src, "open-chickpea-lightbox", true);
+            if (el) {
+                event.preventDefault();
+                Modal.open("#chickpea-lightbox-modal");
+            }
+        });
     }
 }

@@ -132,7 +132,9 @@ class FooterComponent implements ComponentWidgetInterface
             $data['footer']['ambassador_redirection_link'] = $footerConfigs['ambassador_redirection_link'];
             $data['footer']['ambassador_link_target'] = $footerConfigs['ambassador_link_target'];
             $data['footer']['ambassador_title'] = $footerConfigs['ambassador_title'];
-
+            $data['footer']['enable_18plus'] = $footerConfigs['enable_18plus'];
+            $data['footer']['file_image_18plus_image'] = $footerConfigs['file_image_18plus_image'];
+            $data['footer']['responsible_gaming_message'] = $footerConfigs['responsible_gaming_message'];
             if (!empty($footerConfigs['back_to_top_title'])) {
                 $data['back_to_top'] = !$this->blockUtils->isVisibleOn($footerConfigs['back_to_top_title']);
             }
@@ -223,7 +225,7 @@ class FooterComponent implements ComponentWidgetInterface
         try {
             $sponsorConfigs = $this->configs->getConfig('webcomposer_config.mobile_sponsor_list_v2');
             $data['sponsor_title_font_size'] = $sponsorConfigs['field_sponsor_title_font_size'] ?? '';
-            $data['sponsor_subtitle_font_size'] = $sponsorConfigs['field_sponsor_subtitle_font_size'];
+            $data['sponsor_subtitle_font_size'] = $sponsorConfigs['field_sponsor_subtitle_font_size'] ?? '';
         } catch (\Exception $e) {
             $data['sponsor_title_font_size'] = '';
             $data['sponsor_subtitle_font_size'] = '';
