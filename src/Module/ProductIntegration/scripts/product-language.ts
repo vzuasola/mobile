@@ -40,6 +40,8 @@ export class  ProductLanguage {
             "pk",
             "bd",
             "bg",
+            "kz",
+            "ru",
         ],
         "sports-df" : [
             "en",
@@ -65,6 +67,8 @@ export class  ProductLanguage {
             "pk",
             "bg",
             "bd",
+            "kz",
+            "ru",
         ],
         "lottery" : [
             "en",
