@@ -18,6 +18,8 @@ export class  ProductLanguage {
             "jp",
             "bg",
             "bd",
+            "kz",
+            "ru"
         ],
         "sports" : [
             "en",
