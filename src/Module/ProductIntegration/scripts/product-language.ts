@@ -19,7 +19,7 @@ export class  ProductLanguage {
             "bg",
             "bd",
             "kz",
-            "ru"
+            "ru",
         ],
         "sports" : [
             "en",
@@ -111,6 +111,8 @@ export class  ProductLanguage {
             "pt",
             "bg",
             "bd",
+            "kz",
+            "ru",
         ],
         "games" : [
             "en",
