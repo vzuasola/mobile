@@ -162,6 +162,8 @@ export class  ProductLanguage {
             "jp",
             "bg",
             "bd",
+            "kz",
+            "ru",
         ],
         "virtual-sports" : [
             "en",
