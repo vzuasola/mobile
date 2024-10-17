@@ -10,7 +10,7 @@ import {GameLauncherManager} from "@app/assets/script/components/game-launcher-m
 import {OptinForm} from "./scripts/optin";
 import {Modal} from "@app/assets/script/components/modal";
 
-type ChickpeaSciptElement = HTMLScriptElement & { chickpeaPlayer: { pause: () => void} };
+type ChickpeaVideoElement = HTMLElement & { chickpeaPlayer: { pause: () => void, play: () => void} };
 
 /**
  *
@@ -44,7 +44,6 @@ export class PromotionsNodeComponent implements ComponentInterface {
         this.refreshPreviousPage();
         this.gameLauncherManager.handleGameLaunch(ComponentManager.getAttribute("product"));
         this.activateOptinForm(element, attachments);
-        this.listenModalOpen();
     }
 
     onReload(element: HTMLElement, attachments: {
@@ -172,36 +171,28 @@ export class PromotionsNodeComponent implements ComponentInterface {
 
     private initChickpea() {
 
-        const chickpeaVideoElement = document.getElementById("chickpea-video") as ChickpeaSciptElement;
+        const chickpeaVideoElement = document.getElementById("chickpea-video") as ChickpeaVideoElement;
         if (!chickpeaVideoElement) {
             return;
         }
-
-        const lightboxCloseBtn = document.querySelector(".modal-close-button");
-        lightboxCloseBtn.addEventListener("click", () => { this.chickpeaLightboxHandler(chickpeaVideoElement); });
 
         const scriptTag = document.createElement("script");
         scriptTag.id = "chickpea-script";
         scriptTag.src = chickpeaVideoElement.dataset.scriptUrl;
         document.body.appendChild(scriptTag);
-
         Modal.open("#chickpea-lightbox-modal");
-    }
 
-    private chickpeaLightboxHandler(chickpeaVideoElement: ChickpeaSciptElement) {
-        if (chickpeaVideoElement.chickpeaPlayer) {
-            chickpeaVideoElement.chickpeaPlayer.pause();
-        }
-    }
-
-    // open chickpea video modal window
-    private listenModalOpen() {
-        ComponentManager.subscribe("click", (event: Event, src) => {
-            const el = utility.hasClass(src, "open-chickpea-lightbox", true);
-            if (el) {
-                event.preventDefault();
-                Modal.open("#chickpea-lightbox-modal");
+        ComponentManager.subscribe("modal.closed", (event, src, data) => {
+            if (data.selector === "#chickpea-lightbox-modal") {
+                chickpeaVideoElement.chickpeaPlayer.pause();
             }
         });
+
+        const openLightBoxElement = document.querySelector(".open-chickpea-lightbox");
+        openLightBoxElement.addEventListener("click", () => {
+            Modal.open("#chickpea-lightbox-modal");
+            chickpeaVideoElement.chickpeaPlayer.play();
+        });
     }
+
 }

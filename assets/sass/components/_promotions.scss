@@ -325,6 +325,10 @@
         }
     }
 
+    #chickpea-lightbox-modal:not(.modal-active) > * {
+        display: none;
+      }
+
     #chickpea-video {
         display: flex;
         justify-content: center;
