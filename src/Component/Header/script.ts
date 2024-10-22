@@ -29,11 +29,13 @@ export class HeaderComponent implements ComponentInterface {
         Router.on(RouterClass.afterNavigate, (event) => {
             if (this.attachments.authenticated) {
                 const wrapper = this.element.querySelector(".account-balance");
-                const link = wrapper.querySelector("a");
-                const loader = wrapper.querySelector("div");
+                if (wrapper) {
+                    const link = wrapper.querySelector("a");
+                    const loader = wrapper.querySelector("div");
 
-                utility.addClass(link, "hidden");
-                utility.removeClass(loader, "hidden");
+                    utility.addClass(link, "hidden");
+                    utility.removeClass(loader, "hidden");
+                }
 
                 this.refreshBalance();
                 this.componentFinish();

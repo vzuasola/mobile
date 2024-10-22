@@ -18,6 +18,8 @@ export class  ProductLanguage {
             "jp",
             "bg",
             "bd",
+            "kz",
+            "ru",
         ],
         "sports" : [
             "en",
@@ -40,6 +42,8 @@ export class  ProductLanguage {
             "pk",
             "bd",
             "bg",
+            "kz",
+            "ru",
         ],
         "sports-df" : [
             "en",
@@ -65,6 +69,8 @@ export class  ProductLanguage {
             "pk",
             "bg",
             "bd",
+            "kz",
+            "ru",
         ],
         "lottery" : [
             "en",
@@ -105,6 +111,8 @@ export class  ProductLanguage {
             "pt",
             "bg",
             "bd",
+            "kz",
+            "ru",
         ],
         "games" : [
             "en",
@@ -126,6 +134,8 @@ export class  ProductLanguage {
             "jp",
             "bg",
             "bd",
+            "kz",
+            "ru",
         ],
         "exchange" : [
             "in",
@@ -152,6 +162,8 @@ export class  ProductLanguage {
             "jp",
             "bg",
             "bd",
+            "kz",
+            "ru",
         ],
         "virtual-sports" : [
             "en",
