@@ -115,8 +115,10 @@ trait GameTrait
                 && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $fieldGameCode = $this->gamesListVersion
-                    ? $game['field_game_code'] : $game['field_game_code'][0]['value'];
-                $gamesList['id:' . $fieldGameCode] = $this->gamesListVersion
+                    ? $game['field_game_code'] ?? '' : $game['field_game_code'][0]['value'] ?? '';
+                $fieldTableId = $this->gamesListVersion
+                    ? $game['field_table_id'] ?? '' : $game['field_table_id'][0]['value'] ?? '';
+                $gamesList['id:' . $fieldGameCode . $fieldTableId] = $this->gamesListVersion
                     ? $this->processGameV2($product, $game, $special)
                     : $this->processGameV1($product, $game, $special);
             }

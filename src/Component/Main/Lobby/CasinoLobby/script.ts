@@ -62,6 +62,10 @@ export class CasinoLobbyComponent implements ComponentInterface {
 
             return options.inverse(this);
         });
+
+        Handlebars.registerHelper("concat", (...args) => {
+            return args.slice(0, -1).join("");
+        });
     }
 
     onLoad(element: HTMLElement, attachments: {
@@ -452,6 +456,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
             isAllGames: activeCategory === "all-games",
             launchViaIframe: this.launchViaIframe,
             uglConfig: Boolean(this.uglConfig),
+            useGameCodeCombi: true,
         });
 
         if (this.currentPage > page) {
@@ -464,6 +469,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                     isAllGames: activeCategory === "all-games",
                     launchViaIframe: this.launchViaIframe,
                     uglConfig: Boolean(this.uglConfig),
+                    useGameCodeCombi: true,
                 });
             }
         }
@@ -564,7 +570,10 @@ export class CasinoLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("game.launch", (event, src, data) => {
             const el = utility.hasClass(data.src, "game-list", true);
             if (el) {
-                const gameCode = el.getAttribute("data-game-code");
+                const code = el.getAttribute("data-game-code") || "";
+                const tableName = el.getAttribute("data-game-tablename") || "";
+                const gameCode = code + tableName;
+
                 xhr({
                     url: Router.generateRoute("casino_lobby", "recent"),
                     type: "json",
@@ -595,7 +604,10 @@ export class CasinoLobbyComponent implements ComponentInterface {
         ComponentManager.subscribe("click", (event, src) => {
             const el = utility.hasClass(src, "game-favorite", true);
             if (el && this.isLogin) {
-                const gameCode = el.parentElement.getAttribute("data-game-code");
+                const code = el.parentElement.getAttribute("data-game-code") || "";
+                const tableName = el.parentElement.getAttribute("data-game-tablename") || "";
+                const gameCode = code + tableName;
+
                 xhr({
                     url: Router.generateRoute("casino_lobby", "favorite"),
                     type: "json",
@@ -780,6 +792,7 @@ export class CasinoLobbyComponent implements ComponentInterface {
                             isAllGames: hash === "all-games",
                             launchViaIframe: this.launchViaIframe,
                             uglConfig: Boolean(this.uglConfig),
+                            useGameCodeCombi: true,
                         });
                         const loader = gameLoader.querySelector(".mobile-game-loader");
                         utility.removeClass(loader, "hidden");

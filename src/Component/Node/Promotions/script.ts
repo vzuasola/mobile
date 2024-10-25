@@ -140,7 +140,13 @@ export class PromotionsNodeComponent implements ComponentInterface {
                 }
                 const routeUrl = gameProduct.replace("mobile-", "");
                 const url = routeUrl.concat("_lobby");
-                const gameCode = el.getAttribute("data-game-code");
+                let gameCode = el.getAttribute("data-game-code") || "";
+
+                if (gameProduct === "mobile-casino") {
+                    const tableName = el.getAttribute("data-game-tablename") || "";
+                    gameCode = gameCode + tableName;
+                }
+
                 xhr({
                     url: Router.generateRoute(url, "recent"),
                     type: "json",
