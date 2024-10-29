@@ -447,58 +447,48 @@ class DocumentsComponentController
         $uploadReturn = [
             'Success' => true,
             'UniqueID' => $uniqueId,
+            'Documents' => [],
         ];
 
-        try {
-            $playerDetails = $this->userFetcher->getPlayerDetails();
-        } catch (\Exception $e) {
-            throw new \Exception('Could not upload documents');
-        }
+        $playerDetails = $this->userFetcher->getPlayerDetails();
 
         if (count($this->validateFiles($uploadedFiles)) > 0) {
             throw new \Exception('File Validation Failed');
         }
 
-        try {
-            $fileNameFormat = strtr(
-                "{username} - {brand} - {currency} - {vip} - {purpose} - {uniqueId}",
-                [
-                    '{username}' => $playerDetails['username'],
-                    '{brand}' => $brand,
-                    '{currency}' => $playerDetails['currency'],
-                    '{vip}' => $playerDetails['vipLevel'],
-                    '{purpose}' => $purpose,
-                    '{uniqueId}' => $uniqueId,
-                ]
-            );
+        $fileNameFormat = strtr(
+            "{username} - {brand} - {currency} - {vip} - {purpose} - {uniqueId}",
+            [
+                '{username}' => $playerDetails['username'],
+                '{brand}' => $brand,
+                '{currency}' => $playerDetails['currency'],
+                '{vip}' => $playerDetails['vipLevel'],
+                '{purpose}' => $purpose,
+                '{uniqueId}' => $uniqueId,
+            ]
+        );
 
-            foreach ($uploadedFiles as $document) {
-                if (!empty($document->getClientFilename())) {
-                    $currentFileName = strtoupper($fileNameFormat . " - [$docNum]");
+        foreach ($uploadedFiles as $document) {
+            if (!empty($document->getClientFilename())) {
+                $currentFileName = strtoupper($fileNameFormat . " - [$docNum]");
 
-                    $response = $this->googleService->storeUsingServiceAccount(
-                        $driveFolderId,
-                        $document->getStream()->getMetadata('uri'),
-                        $currentFileName,
-                        $document->getClientMediaType()
-                    );
+                $response = $this->googleService->storeUsingServiceAccount(
+                    $driveFolderId,
+                    $document->getStream()->getMetadata('uri'),
+                    $currentFileName,
+                    $document->getClientMediaType()
+                );
 
-                    if ($response['status'] === 'success') {
-                        $uploadReturn["Documents"]["Document$docNum"] = $response['data'];
-                    }
-
-                    $docNum++;
+                if ($response['status'] === 'success') {
+                    $uploadReturn["Documents"]["Document$docNum"] = $response['data'];
                 }
+
+                $docNum++;
             }
-        } catch (\Exception $e) {
-            $uploadReturn['Success'] = false;
         }
+
 
         if (count($uploadReturn["Documents"]) === 0) {
-            $uploadReturn['Success'] = false;
-        }
-
-        if ($uploadReturn['Success'] !== true) {
             throw new \Exception('Could not upload documents');
         }
 
