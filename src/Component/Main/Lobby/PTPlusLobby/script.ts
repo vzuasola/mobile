@@ -43,7 +43,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
     private pageData: any[];
     private groupedGames: any;
     private productMenu: string = "product-ptplus";
-    private launchViaIframe: boolean;
     private gameLauncherManager: GameLauncherManager;
 
     constructor() {
@@ -67,7 +66,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         pageData: any[],
         infinite_scroll: boolean,
-        launch_via_iframe: boolean,
     }) {
         this.groupedGames = undefined;
         this.response = null;
@@ -78,7 +76,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pageData = attachments.pageData;
         this.pager = 0;
         this.load = true;
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.listenClickGameTile();
         this.listenGameLaunch();
         this.listenFavoriteClick();
@@ -111,7 +108,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         pagerConfig: any[],
         pageData: any[],
         infinite_scroll: boolean,
-        launch_via_iframe: boolean,
     }) {
         if (!this.element) {
             this.listenClickGameTile();
@@ -130,7 +126,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
         this.pageData = attachments.pageData;
         this.pager = 0;
         this.load = true;
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.generateLobby(() => {
             this.lobby();
         });
@@ -529,7 +524,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             gameCatCount: pageContent[`gameCount`],
             pageTemplate: pageContent[`templateType`],
             backUrl: pageContent[`backUrl`],
-            launchViaIframe: this.launchViaIframe,
         });
 
         if (this.currentPage > page) {
@@ -546,7 +540,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
                     gameCatCount: pageContent[`gameCount`],
                     pageTemplate: pageContent[`templateType`],
                     backUrl: pageContent[`backUrl`],
-                    launchViaIframe: this.launchViaIframe,
                 });
             }
         }
@@ -787,7 +780,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             favorites: this.response.favorite_list,
             categoryName: categoryTitle,
             isLogin: this.isLogin,
-            launchViaIframe: this.launchViaIframe,
         });
 
         if (rectGameEl) {
@@ -871,7 +863,6 @@ export class PTPlusLobbyComponent implements ComponentInterface {
             gameCatCount: "",
             pageTemplate: "home-page-content",
             backUrl: "",
-            launchViaIframe: this.launchViaIframe,
         });
 
         if (categoriesEl) {

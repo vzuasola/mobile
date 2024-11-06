@@ -26,7 +26,6 @@ export class GamesSearch {
     private response;
     private timer;
     private timerLog;
-    private launchViaIframe;
 
     constructor() {
         this.searchObj = new Search({
@@ -52,12 +51,10 @@ export class GamesSearch {
         msg_recommended_available: string,
         msg_no_recommended: string,
         product: any[],
-        launch_via_iframe: boolean,
     }) {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.launchViaIframe = attachments.launch_via_iframe;
         this.listenActivateSearchLightbox();
         this.listenActivateSearchFilterLightbox();
         this.listenChangeGameSearch();
@@ -76,7 +73,6 @@ export class GamesSearch {
         msg_recommended_available: string,
         msg_no_recommended: string,
         product: any[],
-        launch_via_iframe: boolean,
     }) {
         if (!this.element) {
             this.listenActivateSearchLightbox();
@@ -90,7 +86,6 @@ export class GamesSearch {
         this.isLogin = attachments.authenticated;
         this.config = attachments;
         this.element = element;
-        this.launchViaIframe = attachments.launch_via_iframe;
     }
 
     /**
@@ -255,7 +250,6 @@ export class GamesSearch {
             /*favorites: this.favoritesList,*/
             isLogin: this.isLogin,
             isRecommended: this.isRecommended,
-            launchViaIframe: this.launchViaIframe,
         });
 
         const gamesPreview = this.element.querySelector(".games-search-result");
