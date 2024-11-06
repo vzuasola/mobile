@@ -260,6 +260,16 @@ class MyProfileForm extends FormBase implements FormInterface
     {
         // initiate values config
         $apiValues = $this->user->getPlayerDetails();
+
+        // Temporary workaround till iCore changes all player locales
+        // from "bn" to "bn-EN" and from "pk" to "pa-EN"
+        if ($apiValues['locale'] == 'bn') {
+            $apiValues['locale'] = 'bn-EN';
+        }
+        if ($apiValues['locale'] == 'pk') {
+            $apiValues['locale'] = 'pa-EN';
+        }
+
         $dateFormat = $definition['birthdate']['options']['attr']['date-format'];
         $receiveNews = $this->playerSubscription->isSubscribed();
         $apiValues['email'] = $this->obfuscateEmail($apiValues['email']);

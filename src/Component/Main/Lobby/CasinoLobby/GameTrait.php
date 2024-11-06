@@ -46,7 +46,9 @@ trait GameTrait
                 $processGame['filters'] = $game['field_game_filter'] ?? [];
                 $processGame['title'] = $game['title'] ?? "";
                 $processGame['game_code'] = $game['field_game_code'] ?? "";
-                $processGame['game_provider'] = $game['field_game_provider'] ?? "pas"; // HERE
+                $processGame['game_provider'] = !empty($game['field_game_provider'])
+                    ? $game['field_game_provider']
+                    : "pas";
                 $processGame['game_platform'] = $game['field_game_platform'] ?? "";
                 $processGame['table_id'] = $game['field_table_id'] ?? "";
                 $processGame['keywords'] = $game['field_keywords'] ?? "";
@@ -54,7 +56,7 @@ trait GameTrait
                 $processGame['target'] = $game['field_games_target'] ?? "popup";
                 $processGame['preview_mode'] = $game['field_preview_mode'] ?? 0;
                 $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'])
-                    && $game['field_disable_game_loader']) ? "false" : "true";
+                    && $game['field_disable_game_loader'] === 'False') ? 'true' : 'false';
 
                 $categoryList = [];
 
@@ -113,8 +115,10 @@ trait GameTrait
                 && $status) {
                 $special = ($categoryId === $this::RECOMMENDED_GAMES);
                 $fieldGameCode = $this->gamesListVersion
-                    ? $game['field_game_code'] : $game['field_game_code'][0]['value'];
-                $gamesList['id:' . $fieldGameCode] = $this->gamesListVersion
+                    ? $game['field_game_code'] ?? '' : $game['field_game_code'][0]['value'] ?? '';
+                $fieldTableId = $this->gamesListVersion
+                    ? $game['field_table_id'] ?? '' : $game['field_table_id'][0]['value'] ?? '';
+                $gamesList['id:' . $fieldGameCode . $fieldTableId] = $this->gamesListVersion
                     ? $this->processGameV2($product, $game, $special)
                     : $this->processGameV1($product, $game, $special);
             }
@@ -214,7 +218,7 @@ trait GameTrait
             $processGame['target'] = $game['field_games_target'][0]['value'] ?? "popup";
             $processGame['preview_mode'] = $game['field_preview_mode'][0]['value'] ?? 0;
             $processGame['use_game_loader'] = (isset($game['field_disable_game_loader'][0]['value'])
-                && $game['field_disable_game_loader'][0]['value']) ? "false" : "false";
+                && $game['field_disable_game_loader'][0]['value'] === false) ? 'false' : 'true';
 
             $categoryList = [];
 
