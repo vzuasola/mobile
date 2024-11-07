@@ -200,12 +200,21 @@ class PromotionsComponent implements ComponentWidgetInterface
     private function getUniqueProducts($data, $bannerProduct)
     {
         $products = [];
+        // Get products from game tiles
         foreach ($data['node']['field_games_list'] as $gameItem) {
-            $val = $gameItem['field_product'][0]['value'];
-            $products[] = $val;
+            $gameProduct = $gameItem['field_product'][0]['value'];
+
+            if ($gameItem['field_product'][0]['value'] == 'mobile-casino') {
+                $gameProduct = $data['casino_preferred'];
+            }
+            $products[] = $gameProduct;
         }
 
+        // Get product from Game launch via banner
         if ($bannerProduct) {
+            if ($bannerProduct == 'mobile-casino') {
+                $bannerProduct = $data['casino_preferred'];
+            }
             $products[] = $bannerProduct;
         }
 
