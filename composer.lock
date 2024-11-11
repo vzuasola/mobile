@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a23cd60e2ec968d899b1fcb78486913c",
+    "content-hash": "b500cd140964ab8448a0c5ab57d42446",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1679,6 +1679,16 @@
                 "nosql",
                 "predis",
                 "redis"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/tillkruss",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tillkruss",
+                    "type": "github"
+                }
             ],
             "time": "2016-06-16T16:22:20+00:00"
         },
@@ -3460,16 +3470,16 @@
         },
         {
             "name": "webcomposer/fe-core",
-            "version": "dev-release-v1.276.0",
+            "version": "dev-release-v1.277.0",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:sportion/marketing/websites/websites-commons/fe-core.git",
-                "reference": "da73921801400b069091a87efb1a6e8214730e22"
+                "reference": "bffdf63dfeb743d74200de9fc2713c5bde18263d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=da73921801400b069091a87efb1a6e8214730e22",
-                "reference": "da73921801400b069091a87efb1a6e8214730e22",
+                "url": "https://gitlab.com/api/v4/projects/sportion%2Fmarketing%2Fwebsites%2Fwebsites-commons%2Ffe-core/repository/archive.zip?sha=bffdf63dfeb743d74200de9fc2713c5bde18263d",
+                "reference": "bffdf63dfeb743d74200de9fc2713c5bde18263d",
                 "shasum": ""
             },
             "require": {
@@ -3522,7 +3532,7 @@
                 "proprietary"
             ],
             "description": "The core component of the Slim Web Composer framework",
-            "time": "2024-10-29T10:48:21+00:00"
+            "time": "2024-11-11T13:03:02+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -5156,5 +5166,6 @@
     "platform": {
         "php": ">=7.1.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
