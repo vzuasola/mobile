@@ -1,8 +1,9 @@
 #!/bin/bash
 set +e
 # Trigger Deployment
+ESL_PLAYBOOKS_BRANCH=${ESL_PLAYBOOKS_BRANCH:=master}
 echo "Starting Deployment . . . . ."
-curl -s -S --user $DEPLOY_TOKEN -X POST "$DEPLOY_URL/buildWithParameters?project=$CI_PROJECT_NAME&version=$PACKAGE_VERSION&gitlab_user_email=$GITLAB_EMAIL"
+curl -s -S --user $DEPLOY_TOKEN -X POST "$DEPLOY_URL/buildWithParameters?project=$CI_PROJECT_NAME&version=$PACKAGE_VERSION&gitlab_user_email=$GITLAB_EMAIL&gitlab_branch=$ESL_PLAYBOOKS_BRANCH"
 
 
 # Wait for 20 seconds before polling the job
@@ -20,4 +21,14 @@ do
 done
 
 echo "Build finished"
-curl -s -S --user $DEPLOY_TOKEN "$DEPLOY_RESULT_URL"
+LOG=$(curl -s -S --user $DEPLOY_TOKEN "$DEPLOY_RESULT_URL")
+
+RET=$(echo "$LOG" | tail -n 1)
+echo "$LOG"
+if [[ "$RET" == *"Finished: SUCCESS"* ]]; then
+    echo "Deployment Successful'"
+    exit 0  # Exit successfully
+else
+    echo "Deployment failed"
+    exit 1  # Exit with an error code
+fi

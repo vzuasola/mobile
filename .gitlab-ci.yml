@@ -44,7 +44,6 @@ php vulnerability checker:
     - /tmp/vendor/bin/local-php-security-checker
   allow_failure: true
 
-
 create package:
   stage: package
   when: manual
@@ -74,13 +73,13 @@ tct:
   variables:
     env: tct
   script:
-    - apk add --no-cache bash curl
-    - export DEPLOY_TOKEN DEPLOY_URL
+    - export DEPLOY_TOKEN DEPLOY_URL ESL_PLAYBOOKS_BRANCH
     - bash automation/jenkins_deploy.sh
   when: manual
   needs: [create package]
   tags: [build, docker]
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine
+  image: registry.gitlab.com/sportion/marketing/websites/websites-commons/shared-images/deployment
+  allow_failure: false
 
 
 staging:
@@ -90,13 +89,13 @@ staging:
   variables:
     env: stg
   script:
-    - apk add --no-cache bash curl
-    - export DEPLOY_TOKEN DEPLOY_URL
+    - export DEPLOY_TOKEN DEPLOY_URL ESL_PLAYBOOKS_BRANCH
     - bash automation/jenkins_deploy.sh
   when: manual
   needs: [create package]
   tags: [build, docker]
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine
+  image: registry.gitlab.com/sportion/marketing/websites/websites-commons/shared-images/deployment
+  allow_failure: false
 
 production:
   stage: deploy-production
@@ -105,16 +104,16 @@ production:
   variables:
     env: prd
   script:
-    - apk add --no-cache bash curl
     - export DEPLOY_URL="$PROD_DEPLOY_URL"
     - export DEPLOY_STATUS_URL="$DEPLOY_URL/lastBuild/api/json"
     - export DEPLOY_RESULT_URL="$DEPLOY_URL/lastBuild/logText/progressiveText?start=0"
     - export DEPLOY_TOKEN="$PROD_DEPLOY_TOKEN"
+    - export ESL_PLAYBOOKS_BRANCH
     - bash automation/jenkins_deploy.sh
   when: manual
   needs: [create package]
   tags: [build, docker]
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine
+  image: registry.gitlab.com/sportion/marketing/websites/websites-commons/shared-images/deployment
   only:
     - /^release-.*$/
     - /^hotfix-.*$/
