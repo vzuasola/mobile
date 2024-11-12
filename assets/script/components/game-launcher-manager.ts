@@ -1,4 +1,5 @@
 declare var navigator: any;
+declare var window: any;
 
 import * as utility from "@core/assets/js/components/utility";
 import {ComponentManager} from "@plugins/ComponentWidget/asset/component";
@@ -46,9 +47,15 @@ export class GameLauncherManager {
      */
     private launchGameByTarget(data, url) {
         const source = utility.getParameterByName("source");
+        const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         // handle redirects if we are on a PWA standalone
         if (this.isPWA(source)) {
             window.location.href = url;
+            return;
+        }
+
+        if ((data.options.target === "popup" || data.options.target === "window") && ios) {
+            window.open(url);
             return;
         }
 
